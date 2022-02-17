@@ -8,3 +8,6 @@
  */
 
 rootProject.name = 'open-school'
+
+include 'os-server'
+include 'os-ui'
