@@ -4,10 +4,9 @@ name: CI-upload-artifact
 #   pull_request:
 #      types:
 #       - closed
-on:
+on: [push]
 
-  pull_request:
-    branches: [OS_2_Integrate_Spring_Boot]
+  
 
 jobs:
   build:
