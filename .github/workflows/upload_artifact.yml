@@ -26,11 +26,15 @@ jobs:
       - name: Build
         run: ./gradlew build
         
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+      - name: Download a single artifact
+        uses: actions/download-artifact@v2
         with:
-          name: dist-without-markdown
-          path: |
-            dist
-            !dist/**/*.md
+          name: my-artifact
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dist-without-markdown
+#           path: |
+#             dist
+#             !dist/**/*.md
       
