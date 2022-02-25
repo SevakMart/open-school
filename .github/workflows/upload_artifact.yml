@@ -20,18 +20,22 @@ jobs:
         with:
           java-version: 11
           
-#       - name: Run gradle
-#         run: chmod +x gradlew
+      - name: Run gradle
+        run: chmod +x gradlew
         
-#       - name: Build
-#         run: ./gradlew build
-        
-      
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+      - name: Build
+        run: ./gradlew build
+       
+      - uses: actions/upload-artifact@v2
         with:
-          name: dist-without-markdown
-          path: |
-            dist
-            !dist/**/*.md
+          name: Package
+          path: build/libs
+      
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dist-without-markdown
+#           path: |
+#             dist
+#             !dist/**/*.md
       
