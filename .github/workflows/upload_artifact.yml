@@ -1,34 +1,27 @@
 name: CI-upload-artifact
 
-# on:
-#   pull_request:
-#      types:
-#       - closed
-on: [push]
-
-  
-
+on:
+  pull_request:
+     types:
+      - closed
 jobs:
-  upload-artifact:
-#   if_merged:
-#     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-java@v2
-      with:
-        java-version: '11'
-        distribution: 'adopt'
-    - name: Run gradle
-      run: chmod +x gradlew
-      
-#     - name: Validate Gradle wrapper
-#       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
-      with:
-        arguments: build
-    - uses: actions/upload-artifact@v2
-      with:
-        name: Package
-        path: os-server/build/libs
+   if_merged:
+       if: github.event.pull_request.merged == true
+   
+       runs-on: ubuntu-latest
+       steps:
+          - uses: actions/checkout@v2
+          - uses: actions/setup-java@v2
+            with:
+               java-version: '11'
+               distribution: 'adopt'
+          - name: Run gradle
+            run: chmod +x gradlew
+          - name: Build with Gradle
+            uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
+            with:
+              arguments: build
+          - uses: actions/upload-artifact@v2
+            with:
+              name: Package
+              path: os-server/build/libs
