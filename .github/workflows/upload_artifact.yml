@@ -1,14 +1,18 @@
 name: CI-upload-artifact
 
-on:
-  pull_request:
-    types:
-      - closed
+# on:
 #   pull_request:
-#     branches: [OS_2_Integrate_Spring_Boot]
+#      types:
+#       - closed
+on:
+
+  pull_request:
+    branches: [OS_2_Integrate_Spring_Boot]
+
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
+  build:
+#   if_merged:
+#     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
