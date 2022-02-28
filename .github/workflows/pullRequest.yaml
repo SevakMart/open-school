@@ -15,6 +15,10 @@ jobs:
           java-version: 11
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      - name: Check google java format into main/java package
+        run: ./gradlew checkstyleMain
+      - name: Check google java format into test/java package
+        run: ./gradlew checkstyleTest
       - name: Build with Gradle
         run: ./gradlew build
       - name: Print Message

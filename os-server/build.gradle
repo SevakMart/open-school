@@ -3,6 +3,7 @@ plugins {
     id 'application'
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'checkstyle'
 }
 
 group 'app.open-school'
@@ -19,3 +20,23 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+checkstyle {
+    toolVersion '8.40'
+    maxWarnings = 0
+    ignoreFailures false
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+
+
+
+
+
+
