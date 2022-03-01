@@ -28,10 +28,6 @@ checkstyle {
     ignoreFailures false
 }
 
-repositories {
-    mavenCentral()
-}
-
 tasks.withType(Checkstyle) {
     reports {
         xml.required = true
