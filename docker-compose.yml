@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  open-school-db:
+    image: mysql:8.0.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'open-school-db'
+      MYSQL_USER: 'open-school-user'
+      MYSQL_PASSWORD: 'open-school-password'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - '3307:3306'
+    expose:
+      - '3307'
+
+# useful commands
+# docker-compose up -d
+# docker-compose config
