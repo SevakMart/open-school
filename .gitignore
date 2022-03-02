@@ -30,3 +30,6 @@ hs_err_pid*
 
 # Ignore Gradle build output directory
 build
+
+# Ignore data directory (data volume for mysql docker container)
+data

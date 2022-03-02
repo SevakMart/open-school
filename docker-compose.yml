@@ -10,9 +10,11 @@ services:
       MYSQL_PASSWORD: 'open-school-password'
       MYSQL_ROOT_PASSWORD: 'root'
     ports:
-      - '3307:3306'
+      - '3306:3306'
     expose:
-      - '3307'
+      - '3306'
+    volumes:
+      - ./data/db:/var/lib/mysql
 
 # useful commands
 # docker-compose up -d
