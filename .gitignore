@@ -24,7 +24,7 @@ hs_err_pid*
 
 .idea
 
-
+node_modules
 # Ignore Gradle project-specific cache directory
 .gradle
 

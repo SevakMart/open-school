@@ -1,9 +1,3 @@
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/open-school-db?useSSL=false
-    username: open-school-user
-    password: open-school-password
-
-
+server:
+  port: 5000
 
