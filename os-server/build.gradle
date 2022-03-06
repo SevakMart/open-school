@@ -10,11 +10,12 @@ group 'app.open-school'
 version '1.0-SNAPSHOT'
 
 dependencies {
+    runtimeOnly project(':os-ui')
+    // spring dependencies
     implementation 'org.springframework.boot:spring-boot-dependencies:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
     runtimeOnly 'mysql:mysql-connector-java'
-//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 

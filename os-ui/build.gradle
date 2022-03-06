@@ -1,3 +1,60 @@
+plugins {
+    id "com.github.node-gradle.node" version "3.0.1"
+}
+
+apply plugin: 'base'
+
 group 'app.open-school'
 version '1.0-SNAPSHOT'
 
+node {
+    version = "16.14.0"
+    download = true
+}
+
+ext {
+    nodeExec = 'node'
+}
+
+task buildProd(type: NpmTask, dependsOn: 'npmInstall') {
+    // declare input to avoid build when nothing has changed
+    inputs.files fileTree("public")
+    inputs.files fileTree("src")
+    inputs.files file("build.gradle")
+
+    inputs.file 'package.json'
+    inputs.file 'package-lock.json'
+
+    args = ['run', 'build','--', '--profile']
+    outputs.dir 'build'
+}
+
+task packageApp(type: Zip) {
+    dependsOn buildProd
+    baseName 'os-ui'
+    extension 'jar'
+    destinationDir file("${projectDir}/dist")
+    from('build') {
+        // optional path under which output will be visible in Java classpath, e.g. static resources path
+        into 'static'
+    }
+}
+
+configurations {
+    npmResources
+}
+
+configurations.default.extendsFrom(configurations.npmResources)
+
+artifacts {
+    npmResources(packageApp.archiveFile) {
+        builtBy packageApp
+        type 'jar'
+    }
+}
+
+assemble.dependsOn packageApp
+
+clean {
+    delete packageApp.archiveFile
+}
