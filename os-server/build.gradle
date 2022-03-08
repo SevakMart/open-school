@@ -4,6 +4,7 @@ plugins {
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'checkstyle'
+    id 'org.flywaydb.flyway' version '8.0.0'
 }
 
 group 'app.open-school'
@@ -18,6 +19,13 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.3'
+}
+
+flyway {
+    url = 'jdbc:mysql://localhost:3306/open-school-db?useSSL=false'
+    user = 'open-school-user'
+    password = 'open-school-password'
+    schemas = ['open-school-db']
 }
 
 test {
