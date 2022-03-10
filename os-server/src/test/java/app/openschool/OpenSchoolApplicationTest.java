@@ -10,6 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class OpenSchoolApplicationTest {
 
-  @Test
-  void contextLoads() {}
+//  @Test
+//  void contextLoads() {}
 }
