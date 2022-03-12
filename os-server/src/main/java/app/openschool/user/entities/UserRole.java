@@ -1,7 +1,9 @@
 package app.openschool.user.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,32 +13,34 @@ import javax.persistence.Table;
 
 /** Useful Javadoc. */
 @Entity
-@Table(name = "role")
-public class Role {
-
+@Table(name = "user_role")
+public class UserRole {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(nullable = false, updatable = false)
+  @Column(name = "role_id", nullable = false)
   private Long id;
 
+  @Column(name = "role_type", nullable = false)
   private String roleType;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id")
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", nullable = false)
+  @JsonIgnore
   private User user;
 
-  public Role() {}
+  public UserRole() {}
 
-  public Role(String roleType) {
+  public UserRole(String roleType, User user) {
     this.roleType = roleType;
+    this.user = user;
   }
 
-  public Long getId() {
-    return id;
+  public User getUser() {
+    return user;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setUser(User user) {
+    this.user = user;
   }
 
   public String getRoleType() {
@@ -47,11 +51,11 @@ public class Role {
     this.roleType = roleType;
   }
 
-  public User getUser() {
-    return user;
+  public Long getId() {
+    return id;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setId(Long id) {
+    this.id = id;
   }
 }

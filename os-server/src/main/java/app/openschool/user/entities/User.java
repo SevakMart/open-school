@@ -15,26 +15,37 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(nullable = false, updatable = false)
+  @Column(name = "user_id", nullable = false)
   private Long id;
 
+  @Column(name = "first_name", nullable = false)
   private String firstName;
+
+  @Column(name = "last_name")
   private String lastName;
+
+  @Column(name = "phone")
   private Integer phone;
+
+  @Column(name = "email", nullable = false)
   private String email;
+
+  @Column(name = "password", nullable = false)
   private String password;
+
+  @Column(name = "profession")
   private String profession;
+
+  @Column(name = "course_total_count")
   private Integer courseTotalCount;
-  private Byte[] userPhoto;
 
-  @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-  private Set<Role> userRoles = new HashSet<>();
+  @Column(name = "user_photo")
+  private byte[] userPhoto;
 
-  @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-  private Set<Company> companies = new HashSet<>();
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  private Set<UserRole> userRoles = new HashSet<>();
 
   public User() {}
 
@@ -45,52 +56,28 @@ public class User {
     this.password = password;
   }
 
-  public Long getId() {
-    return id;
+  public Set<UserRole> getUserRoles() {
+    return userRoles;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setUserRoles(Set<UserRole> userRoles) {
+    this.userRoles = userRoles;
   }
 
-  public String getFirstName() {
-    return firstName;
+  public byte[] getUserPhoto() {
+    return userPhoto;
   }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
+  public void setUserPhoto(byte[] userPhoto) {
+    this.userPhoto = userPhoto;
   }
 
-  public String getLastName() {
-    return lastName;
+  public Integer getCourseTotalCount() {
+    return courseTotalCount;
   }
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public Integer getPhone() {
-    return phone;
-  }
-
-  public void setPhone(Integer phone) {
-    this.phone = phone;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
+  public void setCourseTotalCount(Integer courseTotalCount) {
+    this.courseTotalCount = courseTotalCount;
   }
 
   public String getProfession() {
@@ -101,35 +88,51 @@ public class User {
     this.profession = profession;
   }
 
-  public Integer getCourseTotalCount() {
-    return courseTotalCount;
+  public String getPassword() {
+    return password;
   }
 
-  public void setCourseTotalCount(Integer courseTotal) {
-    this.courseTotalCount = courseTotal;
+  public void setPassword(String password) {
+    this.password = password;
   }
 
-  public Byte[] getUserPhoto() {
-    return userPhoto;
+  public String getEmail() {
+    return email;
   }
 
-  public void setUserPhoto(Byte[] userPhoto) {
-    this.userPhoto = userPhoto;
+  public void setEmail(String email) {
+    this.email = email;
   }
 
-  public Set<Role> getUserRoles() {
-    return userRoles;
+  public Integer getPhone() {
+    return phone;
   }
 
-  public void setUserRoles(Set<Role> userRoles) {
-    this.userRoles = userRoles;
+  public void setPhone(Integer phone) {
+    this.phone = phone;
   }
 
-  public Set<Company> getCompanies() {
-    return companies;
+  public String getLastName() {
+    return lastName;
   }
 
-  public void setCompanies(Set<Company> companies) {
-    this.companies = companies;
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 }

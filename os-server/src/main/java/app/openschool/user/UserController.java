@@ -1,8 +1,8 @@
 package app.openschool.user;
 
 import app.openschool.user.dto.UserRegistrationDto;
-import app.openschool.user.entities.User;
-import org.springframework.http.HttpStatus;
+import app.openschool.user.dto.UserRegistrationHttpResponse;
+import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,10 +20,8 @@ public class UserController {
 
   /** Useful Javadoc. */
   @PostMapping("/register")
-  public ResponseEntity<User> register(@RequestBody UserRegistrationDto userDto) {
-
-    User registeredUser = userService.register(userDto);
-
-    return new ResponseEntity<>(registeredUser, HttpStatus.OK);
+  public ResponseEntity<UserRegistrationHttpResponse> register(
+      @Valid @RequestBody UserRegistrationDto userDto) {
+    return userService.register(userDto);
   }
 }
