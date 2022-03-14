@@ -1,6 +1,5 @@
 package app.openschool.usermanagement;
 
-import static app.openschool.usermanagement.enums.UserRoles.USER;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
@@ -10,6 +9,7 @@ import app.openschool.usermanagement.entities.UserEntity;
 import app.openschool.usermanagement.exceptions.EmailAlreadyExistException;
 import java.util.Locale;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +19,16 @@ public class UserServiceImpl implements UserService {
 
   public static final String EMAIL_ALREADY_EXISTS = "User with this email already exists";
   private final UserRepository userRepository;
+  private final RoleRepository roleRepository;
+  private final BCryptPasswordEncoder passwordEncoder;
 
-  public UserServiceImpl(UserRepository userRepository) {
+  public UserServiceImpl(
+      UserRepository userRepository,
+      RoleRepository roleRepository,
+      BCryptPasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
+    this.roleRepository = roleRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
@@ -33,9 +40,12 @@ public class UserServiceImpl implements UserService {
     }
 
     UserEntity user =
-        new UserEntity(userDto.getFirstName(), userDto.getEmail(), userDto.getPassword());
-    RoleEntity userRole = new RoleEntity(USER.name(), user);
-    user.getUserRoles().add(userRole);
+        new UserEntity(
+            userDto.getFirstName(),
+            userDto.getEmail(),
+            passwordEncoder.encode(userDto.getPassword()));
+    RoleEntity userRole = findRoleEntityByRoleType("USER");
+    user.setRole(userRole);
     userRepository.save(user);
     String message = user.getName() + " you've successfully registered";
     UserRegistrationHttpResponse httpResponse =
@@ -47,6 +57,11 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserEntity findUserByEmail(String email) {
     return userRepository.findUserByEmail(email);
+  }
+
+  @Override
+  public RoleEntity findRoleEntityByRoleType(String roleType) {
+    return roleRepository.findRoleEntityByRoleType(roleType);
   }
 
   private boolean emailAlreadyExist(String email) {

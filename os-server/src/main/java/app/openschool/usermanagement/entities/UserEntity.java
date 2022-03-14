@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -44,8 +46,13 @@ public class UserEntity {
   @Column(name = "user_photo")
   private byte[] userPhoto;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-  private Set<RoleEntity> userRoles = new HashSet<>();
+  @ManyToOne
+  @JoinColumn(name = "role_id", nullable = false)
+  private RoleEntity role;
+
+  @ManyToOne
+  @JoinColumn(name = "company_id")
+  private CompanyEntity company;
 
   public UserEntity() {}
 
@@ -56,12 +63,12 @@ public class UserEntity {
     this.password = password;
   }
 
-  public Set<RoleEntity> getUserRoles() {
-    return userRoles;
+  public RoleEntity getRole() {
+    return role;
   }
 
-  public void setUserRoles(Set<RoleEntity> userRoles) {
-    this.userRoles = userRoles;
+  public void setRole(RoleEntity role) {
+    this.role = role;
   }
 
   public byte[] getUserPhoto() {
