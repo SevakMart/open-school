@@ -1,4 +1,4 @@
-package app.openschool.user.exceptions;
+package app.openschool.usermanagement.exceptions;
 
 /** Useful Javadoc. */
 public class EmailAlreadyExistException extends RuntimeException {

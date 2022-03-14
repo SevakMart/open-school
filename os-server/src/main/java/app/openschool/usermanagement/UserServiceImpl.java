@@ -1,13 +1,13 @@
-package app.openschool.user;
+package app.openschool.usermanagement;
 
-import static app.openschool.user.enums.UserRoles.USER;
+import static app.openschool.usermanagement.enums.UserRoles.USER;
 import static org.springframework.http.HttpStatus.CREATED;
 
-import app.openschool.user.dto.UserRegistrationDto;
-import app.openschool.user.dto.UserRegistrationHttpResponse;
-import app.openschool.user.entities.User;
-import app.openschool.user.entities.UserRole;
-import app.openschool.user.exceptions.EmailAlreadyExistException;
+import app.openschool.usermanagement.api.dto.UserRegistrationDto;
+import app.openschool.usermanagement.api.dto.UserRegistrationHttpResponse;
+import app.openschool.usermanagement.entities.RoleEntity;
+import app.openschool.usermanagement.entities.UserEntity;
+import app.openschool.usermanagement.exceptions.EmailAlreadyExistException;
 import java.util.Locale;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,19 +32,20 @@ public class UserServiceImpl implements UserService {
       throw new EmailAlreadyExistException(EMAIL_ALREADY_EXISTS);
     }
 
-    User user = new User(userDto.getFirstName(), userDto.getEmail(), userDto.getPassword());
-    UserRole userRole = new UserRole(USER.name(), user);
+    UserEntity user =
+        new UserEntity(userDto.getFirstName(), userDto.getEmail(), userDto.getPassword());
+    RoleEntity userRole = new RoleEntity(USER.name(), user);
     user.getUserRoles().add(userRole);
     userRepository.save(user);
-    String message = user.getFirstName() + " you've successfully registered";
+    String message = user.getName() + " you've successfully registered";
     UserRegistrationHttpResponse httpResponse =
         new UserRegistrationHttpResponse(
             CREATED.value(), CREATED, message.toUpperCase(Locale.ROOT));
-    return new ResponseEntity<UserRegistrationHttpResponse>(httpResponse, CREATED);
+    return new ResponseEntity<>(httpResponse, CREATED);
   }
 
   @Override
-  public User findUserByEmail(String email) {
+  public UserEntity findUserByEmail(String email) {
     return userRepository.findUserByEmail(email);
   }
 

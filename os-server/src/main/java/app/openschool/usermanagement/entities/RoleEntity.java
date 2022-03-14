@@ -1,4 +1,4 @@
-package app.openschool.user.entities;
+package app.openschool.usermanagement.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
@@ -14,7 +14,7 @@ import javax.persistence.Table;
 /** Useful Javadoc. */
 @Entity
 @Table(name = "user_role")
-public class UserRole {
+public class RoleEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "role_id", nullable = false)
@@ -26,20 +26,20 @@ public class UserRole {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
   @JsonIgnore
-  private User user;
+  private UserEntity user;
 
-  public UserRole() {}
+  public RoleEntity() {}
 
-  public UserRole(String roleType, User user) {
+  public RoleEntity(String roleType, UserEntity user) {
     this.roleType = roleType;
     this.user = user;
   }
 
-  public User getUser() {
+  public UserEntity getUser() {
     return user;
   }
 
-  public void setUser(User user) {
+  public void setUser(UserEntity user) {
     this.user = user;
   }
 

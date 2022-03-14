@@ -1,4 +1,4 @@
-package app.openschool.user.entities;
+package app.openschool.usermanagement.entities;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,20 +14,20 @@ import javax.persistence.Table;
 /** Useful Javadoc. */
 @Entity
 @Table(name = "user")
-public class User {
+public class UserEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id", nullable = false)
   private Long id;
 
   @Column(name = "first_name", nullable = false)
-  private String firstName;
+  private String name;
 
   @Column(name = "last_name")
-  private String lastName;
+  private String surname;
 
-  @Column(name = "phone")
-  private Integer phone;
+  @Column(name = "phone_number")
+  private String phoneNumber;
 
   @Column(name = "email", nullable = false)
   private String email;
@@ -35,32 +35,32 @@ public class User {
   @Column(name = "password", nullable = false)
   private String password;
 
-  @Column(name = "profession")
-  private String profession;
+  @Column(name = "profession_name")
+  private String professionName;
 
-  @Column(name = "course_total_count")
-  private Integer courseTotalCount;
+  @Column(name = "course_count")
+  private Integer courseCount;
 
   @Column(name = "user_photo")
   private byte[] userPhoto;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-  private Set<UserRole> userRoles = new HashSet<>();
+  private Set<RoleEntity> userRoles = new HashSet<>();
 
-  public User() {}
+  public UserEntity() {}
 
   /** Useful Javadoc. */
-  public User(String firstName, String email, String password) {
-    this.firstName = firstName;
+  public UserEntity(String firstName, String email, String password) {
+    this.name = firstName;
     this.email = email;
     this.password = password;
   }
 
-  public Set<UserRole> getUserRoles() {
+  public Set<RoleEntity> getUserRoles() {
     return userRoles;
   }
 
-  public void setUserRoles(Set<UserRole> userRoles) {
+  public void setUserRoles(Set<RoleEntity> userRoles) {
     this.userRoles = userRoles;
   }
 
@@ -72,20 +72,20 @@ public class User {
     this.userPhoto = userPhoto;
   }
 
-  public Integer getCourseTotalCount() {
-    return courseTotalCount;
+  public Integer getCourseCount() {
+    return courseCount;
   }
 
-  public void setCourseTotalCount(Integer courseTotalCount) {
-    this.courseTotalCount = courseTotalCount;
+  public void setCourseCount(Integer courseTotalCount) {
+    this.courseCount = courseTotalCount;
   }
 
-  public String getProfession() {
-    return profession;
+  public String getProfessionName() {
+    return professionName;
   }
 
-  public void setProfession(String profession) {
-    this.profession = profession;
+  public void setProfessionName(String profession) {
+    this.professionName = profession;
   }
 
   public String getPassword() {
@@ -104,28 +104,28 @@ public class User {
     this.email = email;
   }
 
-  public Integer getPhone() {
-    return phone;
+  public String getPhoneNumber() {
+    return phoneNumber;
   }
 
-  public void setPhone(Integer phone) {
-    this.phone = phone;
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
   }
 
-  public String getLastName() {
-    return lastName;
+  public String getSurname() {
+    return surname;
   }
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
+  public void setSurname(String lastName) {
+    this.surname = lastName;
   }
 
-  public String getFirstName() {
-    return firstName;
+  public String getName() {
+    return name;
   }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
+  public void setName(String firstName) {
+    this.name = firstName;
   }
 
   public Long getId() {

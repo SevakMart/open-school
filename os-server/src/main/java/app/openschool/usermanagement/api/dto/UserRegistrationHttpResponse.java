@@ -1,4 +1,4 @@
-package app.openschool.user.dto;
+package app.openschool.usermanagement.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;

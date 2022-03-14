@@ -1,4 +1,4 @@
-package app.openschool.user.dto;
+package app.openschool.usermanagement.api.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;

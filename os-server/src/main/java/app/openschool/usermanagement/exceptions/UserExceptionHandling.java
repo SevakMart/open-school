@@ -1,8 +1,8 @@
-package app.openschool.user.exceptions;
+package app.openschool.usermanagement.exceptions;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-import app.openschool.user.dto.UserRegistrationHttpResponse;
+import app.openschool.usermanagement.api.dto.UserRegistrationHttpResponse;
 import java.util.HashMap;
 import java.util.Locale;
 import org.springframework.boot.web.servlet.error.ErrorController;
