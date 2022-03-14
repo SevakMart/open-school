@@ -1,0 +1,37 @@
+@import "../../styles/Mixins/ButtonMixin.scss";
+@import "../../styles/Mixins/FlexMixins.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+
+.mainContainer {
+  @include flexStyle(row, none, space-between);
+  background-color: #333941;
+  padding-left: 6.25%;
+  padding-right: 16.6%;
+  padding-top: 4%;
+  padding-bottom: 7%;
+  & button:nth-of-type(1) {
+    @include buttonStyle(
+      transparent,
+      #ffffff,
+      none,
+      none,
+      93px,
+      52px,
+      52px,
+      35px,
+      35px
+    );
+    @include fontStyle("Helvetica Neue", italic, 700, 20px, 24px);
+    margin-top: 3%;
+    border: 1px solid #000000;
+  }
+  h2 {
+    @include fontStyle("Montserrat", normal, 700, 24px, 29px);
+    color: #ffffff;
+  }
+  p {
+    @include fontStyle("Montserrat", normal, 400, 16px, 24px);
+    color: #d9dbe9;
+    cursor: pointer;
+  }
+}
