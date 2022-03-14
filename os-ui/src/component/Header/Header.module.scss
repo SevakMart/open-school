@@ -1,0 +1,74 @@
+@import "../../styles/Mixins/ButtonMixin.scss";
+@import "../../styles/Mixins/FlexMixins.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+
+.mainContent {
+  @include flexStyle(row, center, space-between);
+  padding-left: 10.7%;
+  padding-right: 9.5%;
+  padding-top: 7%;
+  background-color: #eeeff4;
+  .leftContent {
+    border: 2px solid blue;
+    width: 40%;
+    @include flexStyle(column, flex-start, space-between);
+    h1 {
+      display: inline;
+      @include fontStyle("Montserrat", normal, 800, 48px, 59px);
+      color: #5e617b;
+      &::before {
+        content: "Free ";
+        color: #222427;
+      }
+    }
+    p {
+      display: inline;
+      @include fontStyle("Montserrat", normal, 400, 16px, 24px);
+      color: #5e617b;
+    }
+    .buttonContainer {
+      width: 60%;
+      @include flexStyle(row, center, space-between);
+      & button:nth-of-type(1) {
+        @include buttonStyle(
+          #5e617b,
+          #ffffff,
+          16px,
+          none,
+          64px,
+          32px,
+          32px,
+          22px,
+          22px
+        );
+        @include fontStyle("Montserrat", normal, 500, 16px, 20px);
+        text-transform: uppercase;
+      }
+      & button:nth-of-type(2) {
+        @include buttonStyle(
+          transparent,
+          #5e617b,
+          16px,
+          none,
+          64px,
+          32px,
+          32px,
+          22px,
+          22px
+        );
+        @include fontStyle("Montserrat", normal, 500, 16px, 20px);
+        text-transform: uppercase;
+        border-color: #5e617b;
+      }
+    }
+  }
+  .rightContent {
+    border: 2px solid red;
+    width: 50%;
+    .arrowImage {
+      & img:nth-of-type(2) {
+        transform: translate(-75px, 10%);
+      }
+    }
+  }
+}

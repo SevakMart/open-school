@@ -1,6 +1,6 @@
-import Navbar from '../../component/Navbar/Navbar';
+import Header from '../../component/Header/Header';
 
 const Homepage = () => (
-  <Navbar />
+  <Header />
 );
 export default Homepage;
