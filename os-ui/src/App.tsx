@@ -1,7 +1,11 @@
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from './component/AppRoutes/Routes';
 import './App.scss';
 
 const App = () => (
-  <h1>Hello world</h1>
+  <Router>
+    <AppRoutes />
+  </Router>
 );
 
 export default App;

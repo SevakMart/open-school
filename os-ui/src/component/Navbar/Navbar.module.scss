@@ -1,0 +1,60 @@
+@import "../../styles/Mixins/FlexMixins.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+@import "../../styles/Mixins/ButtonMixin.scss";
+
+.navContainer {
+  @include flexStyle(row, center, space-between);
+  padding-left: 6%;
+  padding-right: 6%;
+  h2 {
+    @include fontStyle("Helvetica Neue", italic, 700, 28px, 24px);
+    color: #222427;
+  }
+  .navMainContent {
+    @include flexStyle(row, center, space-between);
+    width: 40%;
+  }
+  .categoriesMentors {
+    @include flexStyle(row, center, space-between);
+    width: 45%;
+    p {
+      @include fontStyle("Montserrat", normal, 500, 16px, 24px);
+      color: #5e617b;
+      cursor: pointer;
+    }
+  }
+  .buttonContent {
+    @include flexStyle(row, center, space-between);
+    width: 50%;
+    & button:nth-of-type(1) {
+      @include buttonStyle(
+        none,
+        #5e617b,
+        8px,
+        none,
+        35px,
+        16px,
+        16px,
+        10px,
+        10px
+      );
+      @include fontStyle("Montserrat", normal, 500, 12px, 15px);
+      text-transform: uppercase;
+    }
+    & button:nth-of-type(2) {
+      @include buttonStyle(
+        #5e617b,
+        #ffffff,
+        8px,
+        none,
+        35px,
+        16px,
+        16px,
+        10px,
+        10px
+      );
+      @include fontStyle("Montserrat", normal, 500, 12px, 15px);
+      text-transform: uppercase;
+    }
+  }
+}
