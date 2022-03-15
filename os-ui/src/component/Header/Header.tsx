@@ -1,15 +1,13 @@
 import Navbar from '../Navbar/Navbar';
-import Polygon from '../../svg/Polygon.svg';
-import Rectangle from '../../svg/Rectangle.svg';
 import styles from './Header.module.scss';
 import {
-  FREE_EDUCATIONAL_PLATFORM, SIGN_UP, HEADER_INTRODUCTION, SIGN_IN,
+  FREE_EDUCATIONAL_PLATFORM, SIGN_UP, HEADER_INTRODUCTION, SIGN_IN, EDUCATION_PLATFORM_IMAGE,
 } from '../../constants/Strings';
 import Button from '../Button/Button';
 
 const Header = () => {
   const {
-    headerContainer, mainContent, leftContent, rightContent, buttonContainer, arrowImage,
+    headerContainer, mainContent, leftContent, rightContent, buttonContainer,
   } = styles;
   return (
     <div className={headerContainer}>
@@ -24,11 +22,7 @@ const Header = () => {
           </div>
         </div>
         <div className={rightContent}>
-          <div className={arrowImage}>
-            <img src={Polygon} alt="arrow icon" />
-            <img src={Rectangle} alt="arrow icon" />
-          </div>
-
+          <img src={EDUCATION_PLATFORM_IMAGE} alt="Education platform logo" />
         </div>
       </div>
     </div>

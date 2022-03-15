@@ -8,7 +8,6 @@
     padding: 7% 9.5% 7% 10.7%;
     background-color: #eeeff4;
     .leftContent {
-      border: 2px solid blue;
       width: 40%;
       @include flexStyle(column, flex-start, space-between);
       h1 {
@@ -62,13 +61,8 @@
       }
     }
     .rightContent {
-      border: 2px solid red;
       width: 50%;
-      .arrowImage {
-        & img:nth-of-type(2) {
-          transform: translate(-75px, 10%);
-        }
-      }
+      text-align: center;
     }
   }
 }
