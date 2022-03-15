@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService {
   private final RoleRepository roleRepository;
   private final BCryptPasswordEncoder passwordEncoder;
 
+  /** Useful Javadoc. */
   public UserServiceImpl(
       UserRepository userRepository,
       RoleRepository roleRepository,
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
             userDto.getFirstName(),
             userDto.getEmail(),
             passwordEncoder.encode(userDto.getPassword()));
-    RoleEntity userRole = findRoleEntityByRoleType("USER");
+    RoleEntity userRole = findRoleEntityByType("USER");
     user.setRole(userRole);
     userRepository.save(user);
     String message = user.getName() + " you've successfully registered";
@@ -60,8 +61,8 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public RoleEntity findRoleEntityByRoleType(String roleType) {
-    return roleRepository.findRoleEntityByRoleType(roleType);
+  public RoleEntity findRoleEntityByType(String roleType) {
+    return roleRepository.findRoleEntityByType(roleType);
   }
 
   private boolean emailAlreadyExist(String email) {

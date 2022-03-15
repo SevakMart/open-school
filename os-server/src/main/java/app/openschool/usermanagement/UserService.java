@@ -13,5 +13,5 @@ public interface UserService {
 
   UserEntity findUserByEmail(String email);
 
-  RoleEntity findRoleEntityByRoleType(String roleType);
+  RoleEntity findRoleEntityByType(String roleType);
 }

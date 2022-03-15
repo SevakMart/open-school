@@ -16,16 +16,20 @@ import javax.persistence.Table;
 public class RoleEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "role_id", nullable = false)
+  @Column(name = "id", nullable = false)
   private Integer id;
 
   @Column(name = "role_type", nullable = false)
-  private String roleType;
+  private String type;
 
   @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
   private Set<UserEntity> users;
 
   public RoleEntity() {}
+
+  public RoleEntity(String type) {
+    this.type = type;
+  }
 
   public Set<UserEntity> getUsers() {
     return users;
@@ -35,12 +39,12 @@ public class RoleEntity {
     this.users = users;
   }
 
-  public String getRoleType() {
-    return roleType;
+  public String getType() {
+    return type;
   }
 
-  public void setRoleType(String roleType) {
-    this.roleType = roleType;
+  public void setType(String roleType) {
+    this.type = roleType;
   }
 
   public Integer getId() {

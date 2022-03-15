@@ -10,12 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/** Useful Javadoc. */
 @Entity
 @Table(name = "company")
 public class CompanyEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "company_id", nullable = false)
+  @Column(name = "id", nullable = false)
   private Integer id;
 
   @Column(name = "company_name", nullable = false, length = 45)

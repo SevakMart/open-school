@@ -1,4 +1,4 @@
-package app.openschool.common.security.configurations;
+package app.openschool.common.security;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -21,7 +21,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/**/logo192.png",
     "/**/logo512.png",
     "/",
-    "/register"
+    "/api/register"
   };
 
   @Override
@@ -39,7 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
-  public BCryptPasswordEncoder bCryptPasswordEncoder() {
+  public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 }

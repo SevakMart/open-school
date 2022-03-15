@@ -7,9 +7,9 @@ import javax.validation.constraints.Pattern;
 public class UserRegistrationDto {
 
   private static final String PASSWORD_PATTERN =
-      "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*()_{}]).{8,})";
+      "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*()_{}]).{8,20})";
   private static final String PASSWORD_ERROR_MASSAGE =
-      "Password should have at least 8 characters,"
+      "Password should have 8-20 characters,"
           + "including upper and lower case letters,"
           + "numbers and signs(~!@#$%^&*()_{})";
   private static final String FIRST_NAME_ERROR_MASSAGE = "First name is mandatory";

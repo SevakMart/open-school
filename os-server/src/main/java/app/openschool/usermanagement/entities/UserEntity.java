@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class UserEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_id", nullable = false)
+  @Column(name = "id", nullable = false)
   private Long id;
 
   @Column(name = "first_name", nullable = false)
@@ -43,8 +43,8 @@ public class UserEntity {
   @Column(name = "course_count")
   private Integer courseCount;
 
-  @Column(name = "user_photo")
-  private byte[] userPhoto;
+  @Column(name = "user_img_path")
+  private String userImgPath;
 
   @ManyToOne
   @JoinColumn(name = "role_id", nullable = false)
@@ -71,12 +71,20 @@ public class UserEntity {
     this.role = role;
   }
 
-  public byte[] getUserPhoto() {
-    return userPhoto;
+  public String getUserImgPath() {
+    return userImgPath;
   }
 
-  public void setUserPhoto(byte[] userPhoto) {
-    this.userPhoto = userPhoto;
+  public void setUserImgPath(String userImgPath) {
+    this.userImgPath = userImgPath;
+  }
+
+  public CompanyEntity getCompany() {
+    return company;
+  }
+
+  public void setCompany(CompanyEntity company) {
+    this.company = company;
   }
 
   public Integer getCourseCount() {
