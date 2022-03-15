@@ -1,4 +1,4 @@
-import Header from '../../component/Header/Header';
+import HomepageHeader from '../../component/HomepageHeader/HomepageHeader';
 import Footer from '../../component/Footer/Footer';
 import Button from '../../component/Button/Button';
 import styles from './Homepage.module.scss';
@@ -7,7 +7,7 @@ const Homepage = () => {
   const { mainContainer, buttonContainer } = styles;
   return (
     <>
-      <Header />
+      <HomepageHeader />
       <div className={mainContainer}>
         <h2>Start Your Journey Now!</h2>
         <div className={buttonContainer}>
