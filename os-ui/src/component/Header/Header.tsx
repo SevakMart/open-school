@@ -9,10 +9,10 @@ import Button from '../Button/Button';
 
 const Header = () => {
   const {
-    mainContent, leftContent, rightContent, buttonContainer, arrowImage,
+    headerContainer, mainContent, leftContent, rightContent, buttonContainer, arrowImage,
   } = styles;
   return (
-    <>
+    <div className={headerContainer}>
       <Navbar />
       <div className={mainContent}>
         <div className={leftContent}>
@@ -31,7 +31,7 @@ const Header = () => {
 
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default Header;
