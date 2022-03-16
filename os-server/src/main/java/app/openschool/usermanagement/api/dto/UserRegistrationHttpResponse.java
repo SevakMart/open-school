@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 
-/** Useful Javadoc. */
 public class UserRegistrationHttpResponse {
 
   private String timeStamp;
@@ -15,14 +14,12 @@ public class UserRegistrationHttpResponse {
 
   public UserRegistrationHttpResponse() {}
 
-  /** Useful Javadoc. */
   public UserRegistrationHttpResponse(HttpStatus httpStatus, String message) {
     this.timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
     this.httpStatus = httpStatus;
     this.message = message;
   }
 
-  /** Useful Javadoc. */
   public UserRegistrationHttpResponse(
       HttpStatus httpStatus, String message, Map<String, String> validationErrors) {
     this.timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));

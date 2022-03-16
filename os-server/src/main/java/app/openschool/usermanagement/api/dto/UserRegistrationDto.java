@@ -3,7 +3,6 @@ package app.openschool.usermanagement.api.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-/** Useful Javadoc. */
 public class UserRegistrationDto {
 
   private static final String PASSWORD_PATTERN =

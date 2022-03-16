@@ -14,7 +14,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-/** Useful Javadoc. */
 @RestControllerAdvice
 public class UserExceptionHandling implements ErrorController {
   private static final String VALIDATION_ERROR = "validation errors";

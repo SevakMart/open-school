@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-/** Useful Javadoc. */
 @Entity
 @Table(name = "user")
 public class User {
@@ -52,11 +51,11 @@ public class User {
 
   public User() {}
 
-  /** Useful Javadoc. */
-  public User(String firstName, String email, String password) {
+  public User(String firstName, String email, String password, Role role) {
     this.name = firstName;
     this.email = email;
     this.password = password;
+    this.role = role;
   }
 
   public Role getRole() {

@@ -16,7 +16,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-/** Useful Javadoc. */
 @Component
 public class JwtTokenProvider {
 
@@ -29,7 +28,6 @@ public class JwtTokenProvider {
   private static final String AUTHORITIES = "authorities";
   private static final String TOKEN_CANNOT_BE_VERIFIED = "Token can not be verified";
 
-  /** Useful Javadoc. */
   public String generateJwtToken(UserPrincipal userPrincipal) {
     return JWT.create()
         .withIssuedAt(new Date())

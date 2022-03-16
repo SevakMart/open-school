@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/** Useful Javadoc. */
 @Entity
 @Table(name = "user_role")
 public class Role {
@@ -26,6 +25,11 @@ public class Role {
   private Set<User> users;
 
   public Role() {}
+
+  public Role(Integer id, String type) {
+    this.id = id;
+    this.type = type;
+  }
 
   public Role(String type) {
     this.type = type;

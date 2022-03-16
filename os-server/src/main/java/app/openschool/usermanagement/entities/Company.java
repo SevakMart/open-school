@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/** Useful Javadoc. */
 @Entity
 @Table(name = "company")
 public class Company {

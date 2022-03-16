@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/** Useful Javadoc. */
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
@@ -25,7 +24,6 @@ public class UserController {
     this.userService = userService;
   }
 
-  /** Useful Javadoc. */
   @PostMapping("/register")
   public ResponseEntity<UserRegistrationHttpResponse> register(
       @Valid @RequestBody UserRegistrationDto userDto) {
