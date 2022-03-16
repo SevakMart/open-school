@@ -2,7 +2,15 @@
 @import "../../styles/Mixins/FlexMixins.scss";
 @import "../../styles/Mixins/FontMixin.scss";
 
-.mentorMainContainer {
+.categoriesMainContainer {
+  background-color: #e5e5e5 !important;
+  .categoriesListContainer {
+    flex-wrap: wrap;
+  }
+}
+
+.mentorMainContainer,
+.categoriesMainContainer {
   background-color: #eeeff4;
   padding: 5% 1% 7% 1%;
   @include flexStyle(column, center, space-between);
@@ -26,7 +34,8 @@
     text-transform: uppercase;
     margin-top: 5%;
   }
-  .mentorListContainer {
+  .mentorListContainer,
+  .categoriesListContainer {
     width: 90%;
     @include flexStyle(row, center, space-between);
     .leftArrow {

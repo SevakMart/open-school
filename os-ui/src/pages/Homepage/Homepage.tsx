@@ -5,49 +5,101 @@ import Button from '../../component/Button/Button';
 import RightArrowIcon from '../../icons/RightArrow';
 import LeftArrowIcon from '../../icons/LeftArrow';
 import MentorCard from '../../component/MentorProfile/MentorProfile';
+import CategoryCard from '../../component/CategoryProfile/CategoryProfile';
 import styles from './Homepage.module.scss';
 import { MentorType } from '../../types/MentorType';
+import { CategoryType } from '../../types/CategoryType';
 import { getMentors } from '../../services/getMentors';
-import { GET_MENTORS_URL, ERROR_MESSAGE } from '../../constants/Strings';
+import { getCategories } from '../../services/getCategories';
+import { GET_MENTORS_URL, ERROR_MESSAGE, GET_CATEGORIES_URL } from '../../constants/Strings';
 
 const Homepage = () => {
   const [mentors, setMentors] = useState<MentorType[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   // This page state is temporary until the final api is ready
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(10);
   const [errorMessage, setErrorMessage] = useState('');
+  const [categoryPage, setCategoryPage] = useState(1);
+  const [maxCategoryPage, setMaxCategoryPage] = useState(10);
+  const [listType, setListType] = useState('');
   const {
     mainContainer, buttonContainer, mentorMainContainer, mentorListContainer,
-    leftArrow, rightArrow,
+    leftArrow, rightArrow, categoriesMainContainer, categoriesListContainer,
   } = styles;
 
-  const getNextMentorList = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
-  const getPreviousMentorList = () => {
-    setPage((prevPage) => prevPage - 1);
-  };
-
   useEffect(() => {
-    getMentors(GET_MENTORS_URL, page)
-      .then((data) => {
-        setMentors(data.mentors.slice((page - 1) * 4, page * 4));
-        setMaxPage(data.totalPages);
-      })
-      .catch(() => setErrorMessage(ERROR_MESSAGE));
-  }, [page]);
+    if (listType === 'Mentor' || listType === '') {
+      getMentors(GET_MENTORS_URL, page)
+        .then((data) => {
+          setMentors(data.mentors.slice((page - 1) * 4, page * 4));
+          setMaxPage(data.totalPages);
+        })
+        .catch(() => setErrorMessage(ERROR_MESSAGE));
+    } if (listType === 'Category' || listType === '') {
+      getCategories(GET_CATEGORIES_URL)
+        .then((data) => {
+          setCategories(data.categories.slice((categoryPage - 1) * 6, categoryPage * 6));
+          setMaxCategoryPage(data.totalPages);
+        })
+        .catch(() => setErrorMessage(ERROR_MESSAGE));
+    }
+  }, [page, categoryPage]);
 
   return (
     <>
       <HomepageHeader />
-      <div>
-        <p>{'      '}</p>
+      {/* This section below is dedicated to implement the category list */}
+      <div className={categoriesMainContainer}>
+        <h2>Explore Categories You Are Interested In</h2>
+        <div className={categoriesListContainer}>
+          { categoryPage > 1 ? (
+            <p
+              className={leftArrow}
+              onClick={() => {
+                setCategoryPage((prevPage) => prevPage - 1);
+                setListType('Category');
+              }}
+            >
+              <LeftArrowIcon />
+            </p>
+          ) : null}
+          {
+            categories.length > 0 && !errorMessage ? categories.map((category, index) => (
+              <CategoryCard
+                key={index}
+                title={category.title}
+                logoPath={category.logoPath}
+              />
+            )) : errorMessage ? <h2>{errorMessage}</h2>
+              : <h2>We do not have courses yet</h2>
+          }
+          {categoryPage < maxCategoryPage ? (
+            <p
+              className={rightArrow}
+              onClick={() => {
+                setCategoryPage((prevPage) => prevPage + 1);
+                setListType('Category');
+              }}
+            >
+              <RightArrowIcon />
+            </p>
+          ) : null}
+        </div>
+        <Button>SEE ALL</Button>
       </div>
+      {/* This section below is dedicated to implement the mentor list */}
       <div className={mentorMainContainer}>
         <h2>Our Mentors</h2>
         <div className={mentorListContainer}>
           { page > 1 ? (
-            <p className={leftArrow} onClick={getPreviousMentorList}>
+            <p
+              className={leftArrow}
+              onClick={() => {
+                setPage((prevPage) => prevPage - 1);
+                setListType('Mentor');
+              }}
+            >
               <LeftArrowIcon />
             </p>
           ) : null}
@@ -68,7 +120,13 @@ const Homepage = () => {
               : <h2>We do not have mentors yet</h2>
           }
           {page < maxPage ? (
-            <p className={rightArrow} onClick={getNextMentorList}>
+            <p
+              className={rightArrow}
+              onClick={() => {
+                setPage((prevPage) => prevPage + 1);
+                setListType('Mentor');
+              }}
+            >
               <RightArrowIcon />
             </p>
           ) : null}
