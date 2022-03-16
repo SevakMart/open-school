@@ -13,3 +13,6 @@ export const EDUCATION_PLATFORM_IMAGE = 'https://image.shutterstock.com/image-ve
 
 // URLS
 export const GET_MENTORS_URL = '../../mentorData.json';
+
+// Error Message
+export const ERROR_MESSAGE = 'Something went wrong please refresh the page :(';

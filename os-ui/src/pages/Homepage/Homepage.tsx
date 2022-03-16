@@ -8,12 +8,14 @@ import MentorCard from '../../component/MentorProfile/MentorProfile';
 import styles from './Homepage.module.scss';
 import { MentorType } from '../../types/MentorType';
 import { getMentors } from '../../services/getMentors';
-import { GET_MENTORS_URL } from '../../constants/Strings';
+import { GET_MENTORS_URL, ERROR_MESSAGE } from '../../constants/Strings';
 
 const Homepage = () => {
   const [mentors, setMentors] = useState<MentorType[]>([]);
   // This page state is temporary until the final api is ready
   const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(10);
+  const [errorMessage, setErrorMessage] = useState('');
   const {
     mainContainer, buttonContainer, mentorMainContainer, mentorListContainer,
     leftArrow, rightArrow,
@@ -27,8 +29,12 @@ const Homepage = () => {
   };
 
   useEffect(() => {
-    getMentors(GET_MENTORS_URL)
-      .then((mentorsData) => setMentors(mentorsData));
+    getMentors(GET_MENTORS_URL, page)
+      .then((data) => {
+        setMentors(data.mentors.slice((page - 1) * 4, page * 4));
+        setMaxPage(data.totalPages);
+      })
+      .catch(() => setErrorMessage(ERROR_MESSAGE));
   }, [page]);
 
   return (
@@ -40,13 +46,13 @@ const Homepage = () => {
       <div className={mentorMainContainer}>
         <h2>Our Mentors</h2>
         <div className={mentorListContainer}>
-          { page > 2 ? (
+          { page > 1 ? (
             <p className={leftArrow} onClick={getPreviousMentorList}>
               <LeftArrowIcon />
             </p>
           ) : null}
           {
-            mentors.length > 0 ? mentors.map((mentor, index) => (
+            mentors.length > 0 && !errorMessage ? mentors.map((mentor, index) => (
               <MentorCard
                 key={index}
                 name={mentor.name}
@@ -58,12 +64,14 @@ const Homepage = () => {
                 emailPath={mentor.emailPath}
                 linkedinPath={mentor.linkedinPath}
               />
-            ))
+            )) : errorMessage ? <h2>{errorMessage}</h2>
               : <h2>We do not have mentors yet</h2>
           }
-          <p className={rightArrow} onClick={getNextMentorList}>
-            <RightArrowIcon />
-          </p>
+          {page < maxPage ? (
+            <p className={rightArrow} onClick={getNextMentorList}>
+              <RightArrowIcon />
+            </p>
+          ) : null}
         </div>
         <Button>Register as a mentor</Button>
       </div>

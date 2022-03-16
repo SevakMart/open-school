@@ -1,4 +1,5 @@
-export const getMentors = async (url:string) => {
+// This service is susceptible of changes until the api is ready.
+export const getMentors = async (url:string, page:number) => {
   const res = await fetch(url, {
     method: 'GET',
     mode: 'cors',
@@ -7,5 +8,5 @@ export const getMentors = async (url:string) => {
     },
   });
   const data = await res.json();
-  return data.mentors;
+  return data;
 };
