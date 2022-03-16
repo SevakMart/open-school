@@ -15,20 +15,20 @@
   padding: 5% 1% 7% 1%;
   @include flexStyle(column, center, space-between);
   & h2:nth-of-type(1) {
-    @include fontStyle("Montserrat", normal, 800, 36px, 44px);
+    @include fontStyle("Montserrat", normal, 800, 2.25rem, 2.75rem);
     color: #333941;
   }
   & button:nth-of-type(1) {
     @include buttonStyle(
       transparent,
       #5e617b,
-      16px,
+      1rem,
       none,
-      64px,
-      32px,
-      32px,
-      22px,
-      22px
+      4rem,
+      2rem,
+      2rem,
+      1.375rem,
+      1.375rem
     );
     border: 1px solid #5e617b;
     text-transform: uppercase;
@@ -60,7 +60,7 @@
   h2 {
     display: inline;
     width: 30%;
-    @include fontStyle("Montserrat", normal, 800, 48px, 59px);
+    @include fontStyle("Montserrat", normal, 800, 3rem, 3.688rem);
     color: #333941;
   }
   .buttonContainer {
@@ -70,13 +70,13 @@
       @include buttonStyle(
         #5e617b,
         #ffffff,
-        16px,
+        1rem,
         none,
-        64px,
-        32px,
-        32px,
-        22px,
-        22px
+        4rem,
+        2rem,
+        2rem,
+        1.375rem,
+        1.375rem
       );
       text-transform: uppercase;
     }
@@ -84,13 +84,13 @@
       @include buttonStyle(
         transparent,
         #5e617b,
-        16px,
+        1rem,
         none,
-        64px,
-        32px,
-        32px,
-        22px,
-        22px
+        4rem,
+        2rem,
+        2rem,
+        1.375rem,
+        1.375rem
       );
       border: 1px solid #5e617b;
       text-transform: uppercase;

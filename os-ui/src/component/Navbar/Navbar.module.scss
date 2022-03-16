@@ -7,7 +7,7 @@
   padding-left: 6%;
   padding-right: 6%;
   h2 {
-    @include fontStyle("Helvetica Neue", italic, 700, 28px, 24px);
+    @include fontStyle("Helvetica Neue", italic, 700, 1.75rem, 1.5rem);
     color: #222427;
   }
   .navMainContent {
@@ -18,7 +18,7 @@
     @include flexStyle(row, center, space-between);
     width: 45%;
     p {
-      @include fontStyle("Montserrat", normal, 500, 16px, 24px);
+      @include fontStyle("Montserrat", normal, 500, 1rem, 1.5rem);
       color: #5e617b;
       cursor: pointer;
     }
@@ -30,15 +30,15 @@
       @include buttonStyle(
         transparent,
         #5e617b,
-        8px,
+        0.5rem,
         none,
-        35px,
-        16px,
-        16px,
-        10px,
-        10px
+        2.188rem,
+        1rem,
+        1rem,
+        0.625rem,
+        0.625rem
       );
-      @include fontStyle("Montserrat", normal, 500, 12px, 15px);
+      @include fontStyle("Montserrat", normal, 500, 0.75rem, 0.938rem);
       text-transform: uppercase;
       border-color: #5e617b;
     }
@@ -46,15 +46,15 @@
       @include buttonStyle(
         #5e617b,
         #ffffff,
-        8px,
+        0.5rem,
         none,
-        35px,
-        16px,
-        16px,
-        10px,
-        10px
+        2.188rem,
+        1rem,
+        1rem,
+        0.625rem,
+        0.625rem
       );
-      @include fontStyle("Montserrat", normal, 500, 12px, 15px);
+      @include fontStyle("Montserrat", normal, 500, 0.75rem, 0.938rem);
       text-transform: uppercase;
     }
   }

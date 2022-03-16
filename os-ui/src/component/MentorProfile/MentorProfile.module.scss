@@ -8,7 +8,7 @@
   .headerContainer {
     @include flexStyle(row, center, space-between);
     background-color: #f9f9fd;
-    border-radius: 40px 40px 0 0;
+    border-radius: 2.5rem 2.5rem 0 0;
     padding-left: 6%;
     padding-right: 6%;
     .MailLinkedinIconsContainer {
@@ -21,7 +21,7 @@
   }
   .bodyContainer {
     background-color: #ffff;
-    border-radius: 0 0 40px 40px;
+    border-radius: 0 0 2.5rem 2.5rem;
     .mentorInfoContainer {
       @include flexStyle(row, center, space-evenly);
       .mentorAvatar {
@@ -34,15 +34,15 @@
       }
       .mentorInfo {
         h3 {
-          @include fontStyle("Montserrat", normal, 500, 16px, 24px);
+          @include fontStyle("Montserrat", normal, 500, 1rem, 1.5rem);
           color: #333941;
         }
         & p:nth-of-type(1) {
-          @include fontStyle("Montserrat", normal, 400, 10px, 12px);
+          @include fontStyle("Montserrat", normal, 400, 0.625rem, 0.75rem);
           color: #848a9d;
         }
         & p:nth-of-type(2) {
-          @include fontStyle("Montserrat", normal, 500, 12px, 15px);
+          @include fontStyle("Montserrat", normal, 500, 0.75rem, 0.938rem);
           color: #5e617b;
         }
       }
@@ -54,10 +54,10 @@
       & p:nth-of-type(1) {
         &::before {
           content: "Total Courses: ";
-          @include fontStyle("Montserrat", normal, 500, 12px, 15px);
+          @include fontStyle("Montserrat", normal, 500, 0.75rem, 0.938rem);
           color: #848a9d;
         }
-        @include fontStyle("Montserrat", normal, 800, 12px, 15px);
+        @include fontStyle("Montserrat", normal, 800, 0.75rem, 0.938rem);
         color: #333941;
       }
     }
