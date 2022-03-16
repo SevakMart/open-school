@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -19,12 +20,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
 
-  private static final long EXPIRATION_TIME = 432_000_000; // 5 days
+  @Value("${jwt.token-exp-time}")
+  private long expirationTime;
+
+  @Value("${jwt.secret}")
+  private String secret;
+
   private static final String AUTHORITIES = "authorities";
   private static final String TOKEN_CANNOT_BE_VERIFIED = "Token can not be verified";
-
-  private String secret =
-      "ksfhlksjlkesjl;jksl;kfldskdl;ksfl;ks65456s465f4ds68f4dsf46ds4f5snkldj+dlksfnklslsjdkfljsdk";
 
   /** Useful Javadoc. */
   public String generateJwtToken(UserPrincipal userPrincipal) {
@@ -32,7 +35,7 @@ public class JwtTokenProvider {
         .withIssuedAt(new Date())
         .withSubject(userPrincipal.getUsername())
         .withArrayClaim(AUTHORITIES, getClaimsFromUser(userPrincipal))
-        .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+        .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
         .sign(Algorithm.HMAC512(secret.getBytes(StandardCharsets.UTF_8)));
   }
 

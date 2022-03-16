@@ -10,9 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 /** Useful Javadoc. */
 public class UserPrincipal implements UserDetails {
 
-  private final UserEntity user;
+  private final User user;
 
-  public UserPrincipal(UserEntity user) {
+  public UserPrincipal(User user) {
     this.user = user;
   }
 

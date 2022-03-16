@@ -1,69 +1,50 @@
 package app.openschool.usermanagement.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import java.util.Date;
-import java.util.HashMap;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 
 /** Useful Javadoc. */
 public class UserRegistrationHttpResponse {
 
-  @JsonFormat(
-      shape = JsonFormat.Shape.STRING,
-      pattern = "MM-dd-yyyy hh:mm:ss",
-      timezone = "Asia/Yerevan")
-  private Date timeStamp;
-
-  private int httpStatusCode;
+  private String timeStamp;
   private HttpStatus httpStatus;
   private String message;
-  private HashMap<String, String> validationErrors;
+  private Map<String, String> validationErrors;
 
   public UserRegistrationHttpResponse() {}
 
   /** Useful Javadoc. */
-  public UserRegistrationHttpResponse(int httpStatusCode, HttpStatus httpStatus, String message) {
-    this.timeStamp = new Date();
-    this.httpStatusCode = httpStatusCode;
+  public UserRegistrationHttpResponse(HttpStatus httpStatus, String message) {
+    this.timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
     this.httpStatus = httpStatus;
     this.message = message;
   }
 
   /** Useful Javadoc. */
   public UserRegistrationHttpResponse(
-      int httpStatusCode,
-      HttpStatus httpStatus,
-      String message,
-      HashMap<String, String> validationErrors) {
-    this.timeStamp = new Date();
-    this.httpStatusCode = httpStatusCode;
+      HttpStatus httpStatus, String message, Map<String, String> validationErrors) {
+    this.timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
     this.httpStatus = httpStatus;
     this.message = message;
     this.validationErrors = validationErrors;
   }
 
-  public HashMap<String, String> getValidationErrors() {
+  public Map<String, String> getValidationErrors() {
     return validationErrors;
   }
 
-  public void setValidationErrors(HashMap<String, String> validationErrors) {
+  public void setValidationErrors(Map<String, String> validationErrors) {
     this.validationErrors = validationErrors;
   }
 
-  public Date getTimeStamp() {
+  public String getTimeStamp() {
     return timeStamp;
   }
 
-  public void setTimeStamp(Date timeStamp) {
+  public void setTimeStamp(String timeStamp) {
     this.timeStamp = timeStamp;
-  }
-
-  public int getHttpStatusCode() {
-    return httpStatusCode;
-  }
-
-  public void setHttpStatusCode(int httpStatusCode) {
-    this.httpStatusCode = httpStatusCode;
   }
 
   public HttpStatus getHttpStatus() {

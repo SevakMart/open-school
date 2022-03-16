@@ -1,8 +1,5 @@
 package app.openschool.usermanagement.entities;
 
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,13 +7,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /** Useful Javadoc. */
 @Entity
 @Table(name = "user")
-public class UserEntity {
+public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
@@ -48,26 +44,26 @@ public class UserEntity {
 
   @ManyToOne
   @JoinColumn(name = "role_id", nullable = false)
-  private RoleEntity role;
+  private Role role;
 
   @ManyToOne
   @JoinColumn(name = "company_id")
-  private CompanyEntity company;
+  private Company company;
 
-  public UserEntity() {}
+  public User() {}
 
   /** Useful Javadoc. */
-  public UserEntity(String firstName, String email, String password) {
+  public User(String firstName, String email, String password) {
     this.name = firstName;
     this.email = email;
     this.password = password;
   }
 
-  public RoleEntity getRole() {
+  public Role getRole() {
     return role;
   }
 
-  public void setRole(RoleEntity role) {
+  public void setRole(Role role) {
     this.role = role;
   }
 
@@ -79,11 +75,11 @@ public class UserEntity {
     this.userImgPath = userImgPath;
   }
 
-  public CompanyEntity getCompany() {
+  public Company getCompany() {
     return company;
   }
 
-  public void setCompany(CompanyEntity company) {
+  public void setCompany(Company company) {
     this.company = company;
   }
 

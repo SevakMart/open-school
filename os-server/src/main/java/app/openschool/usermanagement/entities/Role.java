@@ -12,25 +12,39 @@ import javax.persistence.Table;
 
 /** Useful Javadoc. */
 @Entity
-@Table(name = "company")
-public class CompanyEntity {
+@Table(name = "user_role")
+public class Role {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Integer id;
 
-  @Column(name = "company_name", nullable = false, length = 45)
-  private String companyName;
+  @Column(name = "role_type", nullable = false)
+  private String type;
 
-  @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
-  private Set<UserEntity> users;
+  @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+  private Set<User> users;
 
-  public String getCompanyName() {
-    return companyName;
+  public Role() {}
+
+  public Role(String type) {
+    this.type = type;
   }
 
-  public void setCompanyName(String companyName) {
-    this.companyName = companyName;
+  public Set<User> getUsers() {
+    return users;
+  }
+
+  public void setUsers(Set<User> users) {
+    this.users = users;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String roleType) {
+    this.type = roleType;
   }
 
   public Integer getId() {

@@ -1,14 +1,10 @@
 package app.openschool.usermanagement;
 
-import static org.springframework.http.HttpStatus.CREATED;
-
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
-import app.openschool.usermanagement.api.dto.UserRegistrationHttpResponse;
-import app.openschool.usermanagement.entities.RoleEntity;
-import app.openschool.usermanagement.entities.UserEntity;
+import app.openschool.usermanagement.api.mapper.UserRegistrationMapper;
+import app.openschool.usermanagement.entities.Role;
+import app.openschool.usermanagement.entities.User;
 import app.openschool.usermanagement.exceptions.EmailAlreadyExistException;
-import java.util.Locale;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserServiceImpl implements UserService {
 
-  public static final String EMAIL_ALREADY_EXISTS = "User with this email already exists";
+  private static final String EMAIL_ALREADY_EXISTS = "User with this email already exists";
+  private static final String ROLE_USER = "USER";
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
   private final BCryptPasswordEncoder passwordEncoder;
@@ -34,34 +31,26 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public ResponseEntity<UserRegistrationHttpResponse> register(UserRegistrationDto userDto) {
+  public User register(UserRegistrationDto userDto) {
 
     if (emailAlreadyExist(userDto.getEmail())) {
       throw new EmailAlreadyExistException(EMAIL_ALREADY_EXISTS);
     }
 
-    UserEntity user =
-        new UserEntity(
-            userDto.getFirstName(),
-            userDto.getEmail(),
-            passwordEncoder.encode(userDto.getPassword()));
-    RoleEntity userRole = findRoleEntityByType("USER");
-    user.setRole(userRole);
-    userRepository.save(user);
-    String message = user.getName() + " you've successfully registered";
-    UserRegistrationHttpResponse httpResponse =
-        new UserRegistrationHttpResponse(
-            CREATED.value(), CREATED, message.toUpperCase(Locale.ROOT));
-    return new ResponseEntity<>(httpResponse, CREATED);
+    User user = UserRegistrationMapper.userRegistrationDtoToUser(userDto, passwordEncoder);
+    Role role = findRoleEntityByType(ROLE_USER);
+    user.setRole(role);
+
+    return userRepository.save(user);
   }
 
   @Override
-  public UserEntity findUserByEmail(String email) {
+  public User findUserByEmail(String email) {
     return userRepository.findUserByEmail(email);
   }
 
   @Override
-  public RoleEntity findRoleEntityByType(String roleType) {
+  public Role findRoleEntityByType(String roleType) {
     return roleRepository.findRoleEntityByType(roleType);
   }
 

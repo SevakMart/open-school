@@ -1,10 +1,10 @@
 package app.openschool.usermanagement;
 
-import app.openschool.usermanagement.entities.RoleEntity;
+import app.openschool.usermanagement.entities.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /** Useful Javadoc. */
-public interface RoleRepository extends JpaRepository<RoleEntity, Integer> {
+public interface RoleRepository extends JpaRepository<Role, Integer> {
 
-  RoleEntity findRoleEntityByType(String roleType);
+  Role findRoleEntityByType(String roleType);
 }
