@@ -37,9 +37,9 @@ public class JwtTokenProvider {
   }
 
   // this method logic could be changed according further implementation
-  public boolean isTokenValid(String username, String token) {
+  public boolean isTokenValid(String token) {
     JWTVerifier verifier = getJwtVerifier();
-    return getSubject(token).equals(username) && !isTokenExpired(verifier, token);
+    return !isTokenExpired(verifier, token);
   }
 
   private String[] getClaimsFromToken(String token) {
