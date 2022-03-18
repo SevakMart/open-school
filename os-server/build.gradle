@@ -19,9 +19,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'com.auth0:java-jwt:3.18.3'
 
-
-    //db dependencies
+    // db dependencies
     runtimeOnly 'mysql:mysql-connector-java'
+    implementation 'org.flywaydb:flyway-core:8.5.4'
+    implementation 'org.flywaydb:flyway-mysql:8.4.4'
+
+    // testing
 
     //testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
