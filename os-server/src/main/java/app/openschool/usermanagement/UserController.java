@@ -30,7 +30,7 @@ public class UserController {
     User user = userService.register(userDto);
     String message = user.getName() + SUCCESSFULLY_REGISTERED;
     UserRegistrationHttpResponse httpResponse =
-        new UserRegistrationHttpResponse(CREATED, message.toUpperCase(Locale.ROOT));
+        new UserRegistrationHttpResponse(message.toUpperCase(Locale.ROOT));
 
     return new ResponseEntity<>(httpResponse, CREATED);
   }
