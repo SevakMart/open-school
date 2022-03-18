@@ -1,11 +1,6 @@
+import { fetchData } from './fetchData';
+
 export const getCategories = async (url:string) => {
-  const res = await fetch(url, {
-    method: 'GET',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  const data = await res.json();
+  const data = await fetchData(url);
   return data;
 };

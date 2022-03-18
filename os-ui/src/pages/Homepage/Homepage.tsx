@@ -11,7 +11,7 @@ import { MentorType } from '../../types/MentorType';
 import { CategoryType } from '../../types/CategoryType';
 import { getMentors } from '../../services/getMentors';
 import { getCategories } from '../../services/getCategories';
-import { GET_MENTORS_URL, ERROR_MESSAGE, GET_CATEGORIES_URL } from '../../constants/Strings';
+import { GET_MENTORS_URL, GET_CATEGORIES_URL } from '../../constants/Strings';
 
 const Homepage = () => {
   const [mentors, setMentors] = useState<MentorType[]>([]);
@@ -30,19 +30,21 @@ const Homepage = () => {
 
   useEffect(() => {
     if (listType === 'Mentor' || listType === '') {
-      getMentors(GET_MENTORS_URL, page)
+      getMentors(GET_MENTORS_URL)
         .then((data) => {
-          setMentors(data.mentors.slice((page - 1) * 4, page * 4));
-          setMaxPage(data.totalPages);
-        })
-        .catch(() => setErrorMessage(ERROR_MESSAGE));
+          if (!data.errorMessage) {
+            setMentors(data.mentors.slice((page - 1) * 4, page * 4));
+            setMaxPage(data.totalPages);
+          } else setErrorMessage(data.errorMessage);
+        });
     } if (listType === 'Category' || listType === '') {
       getCategories(GET_CATEGORIES_URL)
         .then((data) => {
-          setCategories(data.categories.slice((categoryPage - 1) * 6, categoryPage * 6));
-          setMaxCategoryPage(data.totalPages);
-        })
-        .catch(() => setErrorMessage(ERROR_MESSAGE));
+          if (!data.errorMessage) {
+            setCategories(data.categories.slice((categoryPage - 1) * 6, categoryPage * 6));
+            setMaxCategoryPage(data.totalPages);
+          } else setErrorMessage(data.errorMessage);
+        });
     }
   }, [page, categoryPage]);
 
@@ -56,6 +58,7 @@ const Homepage = () => {
           { categoryPage > 1 ? (
             <p
               className={leftArrow}
+              data-testid="categoryLeftArrow"
               onClick={() => {
                 setCategoryPage((prevPage) => prevPage - 1);
                 setListType('Category');
@@ -71,12 +74,13 @@ const Homepage = () => {
                 title={category.title}
                 logoPath={category.logoPath}
               />
-            )) : errorMessage ? <h2>{errorMessage}</h2>
+            )) : errorMessage ? <h2 data-testid="categoriesErrorMessage">{errorMessage}</h2>
               : <h2>We do not have courses yet</h2>
           }
           {categoryPage < maxCategoryPage ? (
             <p
               className={rightArrow}
+              data-testid="categoryRightArrow"
               onClick={() => {
                 setCategoryPage((prevPage) => prevPage + 1);
                 setListType('Category');
@@ -95,6 +99,7 @@ const Homepage = () => {
           { page > 1 ? (
             <p
               className={leftArrow}
+              data-testid="mentorLeftArrow"
               onClick={() => {
                 setPage((prevPage) => prevPage - 1);
                 setListType('Mentor');
@@ -116,12 +121,13 @@ const Homepage = () => {
                 emailPath={mentor.emailPath}
                 linkedinPath={mentor.linkedinPath}
               />
-            )) : errorMessage ? <h2>{errorMessage}</h2>
+            )) : errorMessage ? <h2 data-testid="mentorsErrorMessage">{errorMessage}</h2>
               : <h2>We do not have mentors yet</h2>
           }
           {page < maxPage ? (
             <p
               className={rightArrow}
+              data-testid="mentorRightArrow"
               onClick={() => {
                 setPage((prevPage) => prevPage + 1);
                 setListType('Mentor');
