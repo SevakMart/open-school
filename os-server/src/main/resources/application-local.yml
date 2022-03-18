@@ -1,9 +1,17 @@
+jwt:
+  token-exp-time: 432_000_000 # 5 days
+  secret: 'ksfhlksjlkesjl;jksl;kfldskdl;ksfl;ks65456s465f4ds68f4dsf46ds4f5snkldj+dlksfnklslsjdkfljsdk'
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/open-school-db?useSSL=false
     username: open-school-user
     password: open-school-password
+  jpa:
+    show-sql: true
+
+
 
 
 

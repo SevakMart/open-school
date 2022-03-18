@@ -15,6 +15,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-dependencies:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'com.auth0:java-jwt:3.18.3'
+
 
     //db dependencies
     runtimeOnly 'mysql:mysql-connector-java'
@@ -22,6 +26,7 @@ dependencies {
     //testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    implementation 'org.springframework.security:spring-security-test'
 }
 
 test {
