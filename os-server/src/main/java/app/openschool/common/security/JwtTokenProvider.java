@@ -19,14 +19,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
 
-  @Value("${jwt.token-exp-time}")
-  private long expirationTime;
-
-  @Value("${jwt.secret}")
-  private String secret;
-
   private static final String AUTHORITIES = "authorities";
   private static final String TOKEN_CANNOT_BE_VERIFIED = "Token can not be verified";
+
+  private final long expirationTime;
+  private final String secret;
+
+  public JwtTokenProvider(
+      @Value("${jwt.token-exp-time}") long expirationTime, @Value("${jwt.secret}") String secret) {
+    this.expirationTime = expirationTime;
+    this.secret = secret;
+  }
 
   public String generateJwtToken(UserPrincipal userPrincipal) {
     return JWT.create()
