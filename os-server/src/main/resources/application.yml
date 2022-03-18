@@ -1,7 +1,11 @@
-spring:
-  profiles:
-    active: local
 server:
   port: 5000
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database-1.cbeyaci1cgqp.eu-central-1.rds.amazonaws.com:3306/open_school_db?useSSL=false
+    username: dev_user
+    password: Password1!
 
 
