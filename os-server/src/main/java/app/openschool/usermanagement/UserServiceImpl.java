@@ -1,9 +1,13 @@
 package app.openschool.usermanagement;
 
+import app.openschool.usermanagement.api.dto.MentorDto;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
+import app.openschool.usermanagement.api.mapper.MentorMapper;
 import app.openschool.usermanagement.api.mapper.UserRegistrationMapper;
 import app.openschool.usermanagement.entities.User;
 import app.openschool.usermanagement.exceptions.EmailAlreadyExistException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,4 +42,10 @@ public class UserServiceImpl implements UserService {
   private boolean emailAlreadyExist(String email) {
     return findUserByEmail(email) != null;
   }
+
+  @Override
+  public Page<MentorDto> findAllMentors(Pageable pageable) {
+    return MentorMapper.toMentorDtoPage(userRepository.findAllMentors(pageable));
+  }
+
 }

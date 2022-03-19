@@ -41,6 +41,12 @@ public class User {
   @Column(name = "user_img_path")
   private String userImgPath;
 
+  @Column(name = "email_path")
+  private String emailPath;
+
+  @Column(name = "linkedin_path")
+  private String linkedinPath;
+
   @ManyToOne
   @JoinColumn(name = "role_id", nullable = false)
   private Role role;
@@ -144,5 +150,21 @@ public class User {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getEmailPath() {
+    return emailPath;
+  }
+
+  public void setEmailPath(String emailPath) {
+    this.emailPath = emailPath;
+  }
+
+  public String getLinkedinPath() {
+    return linkedinPath;
+  }
+
+  public void setLinkedinPath(String linkedinPath) {
+    this.linkedinPath = linkedinPath;
   }
 }
