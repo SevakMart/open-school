@@ -20,11 +20,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/**/logo192.png",
     "/**/logo512.png",
     "/",
-    "/api/v1/register"
+    "/api/v1/register",
+    "/h2/**"
   };
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+    //http.headers ().frameOptions ().disable ();
     http.csrf()
         .disable()
         .sessionManagement()

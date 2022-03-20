@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserRegistrationMapper {
 
-  private static final String ROLE_USER = "USER";
+  private static final String ROLE_USER = "STUDENT";
 
   public static User userRegistrationDtoToUser(
       UserRegistrationDto userDto, BCryptPasswordEncoder passwordEncoder) {

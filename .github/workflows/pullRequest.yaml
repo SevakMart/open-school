@@ -20,6 +20,6 @@ jobs:
       - name: Check google java format into test/java package
         run: ./gradlew checkstyleTest
       - name: Build with Gradle
-        run: ./gradlew build
+        run: SPRING_PROFILES_ACTIVE=test ./gradlew build
       - name: Print Message
         run: echo "CI pipeline part finished successfully!"
