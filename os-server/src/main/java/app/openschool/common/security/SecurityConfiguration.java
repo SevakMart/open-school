@@ -20,7 +20,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/**/logo192.png",
     "/**/logo512.png",
     "/",
-    "/api/v1/register"
+    "/api/v1/register",
   };
 
   @Override

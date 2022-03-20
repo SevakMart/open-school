@@ -21,10 +21,9 @@ dependencies {
 
     // db dependencies
     runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly('com.h2database:h2')
     implementation 'org.flywaydb:flyway-core:8.5.4'
     implementation 'org.flywaydb:flyway-mysql:8.4.4'
-
-    // testing
 
     //testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
@@ -34,6 +33,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    environment "SPRING_PROFILES_ACTIVE","test"
 }
 
 checkstyle {
