@@ -1,10 +1,4 @@
 -- -----------------------------------------------------
--- Schema open_school_db
--- -----------------------------------------------------
--- CREATE SCHEMA IF NOT EXISTS open_school_db;
-
-
--- -----------------------------------------------------
 -- Table user_role
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS user_role
@@ -189,7 +183,7 @@ CREATE TABLE IF NOT EXISTS learning_path_student
 
 
 -- -----------------------------------------------------
--- Table `open_school_db`.`learning_path_mentor`
+-- Table learning_path_mentor
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS learning_path_mentor
 (
@@ -201,7 +195,7 @@ CREATE TABLE IF NOT EXISTS learning_path_mentor
             REFERENCES learning_path (id)
             ON DELETE CASCADE
             ON UPDATE CASCADE,
-    CONSTRAINT `fk_learning_path_has_user_user2`
+    CONSTRAINT fk_learning_path_has_user_user2
         FOREIGN KEY (user_id)
             REFERENCES user (id)
             ON DELETE CASCADE
