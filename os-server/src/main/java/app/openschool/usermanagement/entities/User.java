@@ -1,5 +1,6 @@
 package app.openschool.usermanagement.entities;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -56,6 +57,20 @@ public class User {
     this.email = email;
     this.password = password;
     this.role = role;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    User user = (User) o;
+    return name.equals(user.name)
+        && email.equals(user.email)
+        && role.getId().equals(user.role.getId());
   }
 
   public Role getRole() {
