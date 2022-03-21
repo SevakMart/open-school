@@ -1,7 +1,15 @@
-spring:
-  profiles:
-    active: local
 server:
   port: 5000
+
+jwt:
+  token-exp-time: 432_000_000 # 5 days
+  secret: 'ksfhlksjlkesjl;jksl;kfldskdl;ksfl;ks65456s465f4ds68f4dsf46ds4f5snkldj+dlksfnklslsjdkfljsdk'
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database-1.cbeyaci1cgqp.eu-central-1.rds.amazonaws.com:3306/open_school_db?useSSL=false
+    username: dev_user
+    password: Password1!
 
 
