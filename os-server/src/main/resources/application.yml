@@ -14,3 +14,7 @@ spring:
 
   flyway:
     locations: "classpath:db/migration/{vendor}"
+
+springdoc:
+  api-docs:
+    enabled: false

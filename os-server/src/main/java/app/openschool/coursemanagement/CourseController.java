@@ -1,6 +1,7 @@
 package app.openschool.coursemanagement;
 
 import app.openschool.coursemanagement.api.dto.CategoryDto;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ public class CourseController {
   }
 
   @GetMapping("/categories")
+  @Operation(summary = "find all categories")
   public ResponseEntity<Page<CategoryDto>> allCategories(Pageable pageable) {
     return ResponseEntity.ok(this.courseService.findAllCategories(pageable));
   }
