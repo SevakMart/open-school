@@ -12,4 +12,9 @@ spring:
     username: dev_user
     password: Password1!
 
+  flyway:
+    locations: "classpath:db/migration/{vendor}"
 
+springdoc:
+  api-docs:
+    enabled: false
