@@ -6,11 +6,16 @@ jwt:
   secret: 'ksfhlksjlkesjl;jksl;kfldskdl;ksfl;ks65456s465f4ds68f4dsf46ds4f5snkldj+dlksfnklslsjdkfljsdk'
 
 spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/open_school_db?useSSL=false
-    username: open-school-user
-    password: open-school-password
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+
   jpa:
     show-sql: true
 
@@ -19,8 +24,9 @@ spring:
 
 springdoc:
   api-docs:
-    enabled: false
-
-
+    enabled: true
+  swagger-ui:
+    path: /open-school-api
+    operationsSorter: method
 
 

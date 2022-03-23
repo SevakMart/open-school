@@ -2,29 +2,19 @@ package app.openschool.common.security;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
+@Profile({"prod", "local", "test"})
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private static final String[] PUBLIC_URLS = {
-    "/static/**",
-    "/**/favicon.ico",
-    "/**/manifest.json",
-    "/**/logo192.png",
-    "/**/logo512.png",
-    "/",
-    "/api/v1/register",
-    "/swagger-ui/**",
-    "/open-school-api",
-    "/v3/api-docs/**",
-    "/h2/**"
+    "/static/**", "/index.html", "/", "/api/v1/register", "/h2/**"
   };
 
   @Override
@@ -40,10 +30,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .permitAll()
         .anyRequest()
         .authenticated();
-  }
-
-  @Bean
-  public BCryptPasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
   }
 }
