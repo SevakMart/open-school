@@ -23,15 +23,6 @@
     box-shadow: 0px 2px 20px rgba(199, 202, 221, 0.5);
     border-radius: 2.5rem;
     width: 40%;
-    .closeButton {
-      background-color: transparent;
-      color: #848a9d;
-      cursor: pointer;
-      float: inline-end;
-      border: none;
-      margin-right: 3%;
-      font-size: 2rem;
-    }
     .headerContent {
       @include flexStyle(column, center, space-between);
       margin-top: 7%;

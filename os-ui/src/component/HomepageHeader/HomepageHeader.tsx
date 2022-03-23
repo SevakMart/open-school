@@ -14,12 +14,18 @@ const HomepageHeader = () => {
     headerContainer, mainContent, leftContent, rightContent, buttonContainer,
   } = styles;
   const handleButtonClick = (buttonType:string) => {
-    if (buttonType === 'signUp') {
-      setIsOpen(true);
-      setClickedButtonType(buttonType);
-    } else if (buttonType === 'signIn') {
-      setIsOpen(true);
-      setClickedButtonType(buttonType);
+    switch (buttonType) {
+      case 'signUp':
+        setIsOpen(true);
+        setClickedButtonType(buttonType);
+        break;
+      case 'signIn':
+        setIsOpen(true);
+        setClickedButtonType(buttonType);
+        break;
+      case 'closeButton':
+        setIsOpen(false);
+        break;
     }
   };
 
@@ -50,8 +56,13 @@ const HomepageHeader = () => {
         </div>
       </div>
       {
-        isOpen && clickedButtonType === 'signUp'
-          ? <Form formType={clickedButtonType} /> : null
+        isOpen && (clickedButtonType === 'signUp' || clickedButtonType === 'signIn')
+          ? (
+            <Form
+              formType={clickedButtonType}
+              formClick={handleButtonClick}
+            />
+          ) : null
       }
     </div>
   );

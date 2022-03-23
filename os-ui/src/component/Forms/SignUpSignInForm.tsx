@@ -5,23 +5,29 @@ import LinkedinIcon1 from '../../icons/Linkedin1';
 import EmailIcon1 from '../../icons/Email1';
 import HiddenIcon from '../../icons/Hidden';
 import { SIGN_UP, SIGN_IN } from '../../constants/Strings';
-import Button from '../Button/Button';
+// import Button from '../Button/Button';
 
-const Form = ({ formType }:{formType:string}) => {
+interface FormProps{
+  formType:string;
+  formClick(arg:string):void;
+}
+
+const Form = ({ formType, formClick }:FormProps) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {
     mainContainer, formContainer, headerContent, iconContent,
-    inputContent, closeButton, alreadyHaveAccount,
+    inputContent, alreadyHaveAccount,
     passwordVisibilityIcon,
   } = styles;
+
   return (
     <div className={mainContainer}>
       <div className={formContainer}>
-        <button className={closeButton} type="button"><CloseIcon /></button>
+        <CloseIcon handleClosing={() => formClick('closeButton')} />
         <div className={headerContent}>
-          <h2>Sign Up!</h2>
+          {formType === 'signUp' ? <h2>Sign Up!</h2> : <h2>Sign In!</h2>}
           <div className={iconContent}>
             <button type="button"><LinkedinIcon1 /></button>
             <button type="button"><EmailIcon1 /></button>
@@ -62,18 +68,14 @@ const Form = ({ formType }:{formType:string}) => {
             <p className={alreadyHaveAccount}>
               Have An Account?
               <span>
-                <Button buttonType="signIn">
-                  {SIGN_IN}
-                </Button>
+                <button type="button">{SIGN_IN}</button>
               </span>
             </p>
           ) : (
             <p className={alreadyHaveAccount}>
               Dont Have An Account?
               <span>
-                <Button buttonType="signIn">
-                  {SIGN_UP}
-                </Button>
+                <button type="button">{SIGN_UP}</button>
               </span>
             </p>
           )}
