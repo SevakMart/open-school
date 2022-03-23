@@ -5,7 +5,7 @@ import {
   FREE_EDUCATIONAL_PLATFORM, SIGN_UP, HEADER_INTRODUCTION, SIGN_IN, EDUCATION_PLATFORM_IMAGE,
 } from '../../constants/Strings';
 import Button from '../Button/Button';
-import SignUp from '../SignUp/SignUp';
+import Form from '../Forms/SignUpSignInForm';
 
 const HomepageHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +51,7 @@ const HomepageHeader = () => {
       </div>
       {
         isOpen && clickedButtonType === 'signUp'
-          ? <SignUp /> : null
+          ? <Form formType={clickedButtonType} /> : null
       }
     </div>
   );

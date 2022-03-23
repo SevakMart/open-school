@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import SignUp from '../SignUp/SignUp';
+import SignUp from '../Forms/SignUpSignInForm';
 import styles from './Modal.module.scss';
 /* const modalDiv = document.createElement('div');
   modalDiv.setAttribute('id', 'modal-root');
