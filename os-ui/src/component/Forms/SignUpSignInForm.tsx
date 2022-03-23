@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './SignUpSignInForm.module.scss';
 import CloseIcon from '../../icons/Close';
 import LinkedinIcon1 from '../../icons/Linkedin1';
 import EmailIcon1 from '../../icons/Email1';
 import HiddenIcon from '../../icons/Hidden';
+import VisibileIcon from '../../icons/Visibility';
 import { SIGN_UP, SIGN_IN } from '../../constants/Strings';
 // import Button from '../Button/Button';
 
@@ -16,12 +17,23 @@ const Form = ({ formType, formClick }:FormProps) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
+  const passwordInputRef = useRef<null|HTMLInputElement>(null);
   const {
     mainContainer, formContainer, headerContent, iconContent,
     inputContent, alreadyHaveAccount,
-    passwordVisibilityIcon,
   } = styles;
-
+  const handleVisibility = () => {
+    setIsVisible((prevState) => !prevState);
+  };
+  const handlePassword = (e:React.SyntheticEvent) => {
+    setPassword((e.target as HTMLInputElement).value);
+  };
+  useEffect(() => {
+    if (isVisible) {
+      (passwordInputRef.current as HTMLInputElement).type = 'text';
+    } else (passwordInputRef.current as HTMLInputElement).type = 'password';
+  }, [isVisible]);
   return (
     <div className={mainContainer}>
       <div className={formContainer}>
@@ -57,8 +69,18 @@ const Form = ({ formType, formClick }:FormProps) => {
               Password
               <span style={{ color: 'red' }}>*</span>
             </label>
-            <input id="password" type="password" value={password} name="password" placeholder="Enter your password" />
-            <i className={passwordVisibilityIcon}><HiddenIcon /></i>
+            <input
+              id="password"
+              type="password"
+              ref={passwordInputRef}
+              value={password}
+              name="password"
+              placeholder="Enter your password"
+              onChange={handlePassword}
+            />
+            {isVisible
+              ? <VisibileIcon makeInvisible={handleVisibility} />
+              : <HiddenIcon makeVisible={handleVisibility} />}
           </div>
           <p>Forgot Password?</p>
           {formType === 'signUp' ? <button type="submit">{SIGN_UP}</button> : <button type="submit">{SIGN_IN}</button>}
