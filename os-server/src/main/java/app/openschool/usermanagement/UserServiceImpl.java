@@ -47,5 +47,4 @@ public class UserServiceImpl implements UserService {
   public Page<MentorDto> findAllMentors(Pageable pageable) {
     return MentorMapper.toMentorDtoPage(userRepository.findAllMentors(pageable));
   }
-
 }

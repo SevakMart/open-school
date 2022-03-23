@@ -29,6 +29,14 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     implementation 'org.springframework.security:spring-security-test'
+
+    //open api
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+
+
+
+
+
 }
 
 test {

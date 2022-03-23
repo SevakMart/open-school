@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    @Query(value = "SELECT * FROM category WHERE parent_category_id IS NULL", nativeQuery = true)
-    Page<Category> findAllCategories(Pageable pageable);
+  @Query(value = "SELECT * FROM category WHERE parent_category_id IS NULL", nativeQuery = true)
+  Page<Category> findAllCategories(Pageable pageable);
 }

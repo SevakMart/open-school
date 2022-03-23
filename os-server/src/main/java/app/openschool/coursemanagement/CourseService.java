@@ -6,6 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface CourseService {
 
-    Page<CategoryDto> findAllCategories(Pageable pageable);
-
+  Page<CategoryDto> findAllCategories(Pageable pageable);
 }
