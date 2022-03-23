@@ -19,6 +19,11 @@ spring:
   flyway:
     locations: "classpath:db/migration/{vendor}"
 
-
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /open-school-api
+    operationsSorter: method
 
 

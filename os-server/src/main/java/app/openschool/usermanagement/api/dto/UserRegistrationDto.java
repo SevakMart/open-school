@@ -23,6 +23,14 @@ public class UserRegistrationDto {
   @Pattern(regexp = PASSWORD_PATTERN, message = PASSWORD_ERROR_MASSAGE)
   private String password;
 
+  public UserRegistrationDto() {}
+
+  public UserRegistrationDto(String firstName, String email, String password) {
+    this.firstName = firstName;
+    this.email = email;
+    this.password = password;
+  }
+
   public String getFirstName() {
     return firstName;
   }

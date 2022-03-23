@@ -21,10 +21,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/**/logo512.png",
     "/",
     "/api/v1/register",
+    "/swagger-ui/**",
+    "/open-school-api",
+    "/v3/api-docs/**",
+    "/h2/**"
   };
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+    http.headers().frameOptions().sameOrigin();
     http.csrf()
         .disable()
         .sessionManagement()
