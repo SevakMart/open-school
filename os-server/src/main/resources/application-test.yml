@@ -1,3 +1,6 @@
+server:
+  port: 5000
+
 jwt:
   token-exp-time: 432_000_000 # 5 days
   secret: 'ksfhlksjlkesjl;jksl;kfldskdl;ksfl;ks65456s465f4ds68f4dsf46ds4f5snkldj+dlksfnklslsjdkfljsdk'
@@ -21,9 +24,6 @@ spring:
 
 springdoc:
   api-docs:
-    enabled: true
-  swagger-ui:
-    path: /open-school-api
-    operationsSorter: method
+    enabled: false
 
 
