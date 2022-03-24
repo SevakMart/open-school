@@ -38,19 +38,6 @@
   .categoriesListContainer {
     width: 90%;
     @include flexStyle(row, center, space-between);
-    .leftArrow {
-      position: absolute;
-      z-index: 1;
-      font-size: 3rem;
-      cursor: pointer;
-    }
-    .rightArrow {
-      position: absolute;
-      z-index: 1;
-      font-size: 3rem;
-      right: 6%;
-      cursor: pointer;
-    }
   }
 }
 

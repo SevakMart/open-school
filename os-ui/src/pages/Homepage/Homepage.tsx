@@ -28,7 +28,7 @@ const Homepage = () => {
   const [clickedButtonType, setClickedButtonType] = useState('');
   const {
     mainContainer, buttonContainer, mentorMainContainer, mentorListContainer,
-    leftArrow, rightArrow, categoriesMainContainer, categoriesListContainer,
+    categoriesMainContainer, categoriesListContainer,
   } = styles;
   const handleButtonClick = (buttonType:string) => {
     switch (buttonType) {
@@ -75,17 +75,14 @@ const Homepage = () => {
       <div className={categoriesMainContainer}>
         <h2>Explore Categories You Are Interested In</h2>
         <div className={categoriesListContainer}>
-          { categoryPage > 1 ? (
-            <p
-              className={leftArrow}
-              data-testid="categoryLeftArrow"
-              onClick={() => {
+          {categoryPage > 1 ? (
+            <LeftArrowIcon
+              testId="categoryLeftArrow"
+              handleArrowClick={() => {
                 setCategoryPage((prevPage) => prevPage - 1);
                 setListType('Category');
               }}
-            >
-              <LeftArrowIcon />
-            </p>
+            />
           ) : null}
           {
             categories.length > 0 && !errorMessage ? categories.map((category, index) => (
@@ -98,16 +95,13 @@ const Homepage = () => {
               : <h2>We do not have courses yet</h2>
           }
           {categoryPage < maxCategoryPage ? (
-            <p
-              className={rightArrow}
-              data-testid="categoryRightArrow"
-              onClick={() => {
+            <RightArrowIcon
+              testId="categoryRightArrow"
+              handleArrowClick={() => {
                 setCategoryPage((prevPage) => prevPage + 1);
                 setListType('Category');
               }}
-            >
-              <RightArrowIcon />
-            </p>
+            />
           ) : null}
         </div>
         <Button>SEE ALL</Button>
@@ -117,16 +111,13 @@ const Homepage = () => {
         <h2>Our Mentors</h2>
         <div className={mentorListContainer}>
           { page > 1 ? (
-            <p
-              className={leftArrow}
-              data-testid="mentorLeftArrow"
-              onClick={() => {
+            <LeftArrowIcon
+              testId="mentorLeftArrow"
+              handleArrowClick={() => {
                 setPage((prevPage) => prevPage - 1);
                 setListType('Mentor');
               }}
-            >
-              <LeftArrowIcon />
-            </p>
+            />
           ) : null}
           {
             mentors.length > 0 && !errorMessage ? mentors.map((mentor, index) => (
@@ -145,51 +136,26 @@ const Homepage = () => {
               : <h2>We do not have mentors yet</h2>
           }
           {page < maxPage ? (
-            <p
-              className={rightArrow}
-              data-testid="mentorRightArrow"
-              onClick={() => {
+            <RightArrowIcon
+              testId="mentorRightArrow"
+              handleArrowClick={() => {
                 setPage((prevPage) => prevPage + 1);
                 setListType('Mentor');
               }}
-            >
-              <RightArrowIcon />
-            </p>
+            />
           ) : null}
         </div>
-        <Button
-          buttonType="signUp"
-          buttonClick={handleButtonClick}
-        >
-          Register as a mentor
-        </Button>
+        <Button buttonType="signUp" buttonClick={handleButtonClick}>Register as a mentor</Button>
       </div>
       <div className={mainContainer}>
         <h2>Start Your Journey Now!</h2>
         <div className={buttonContainer}>
-          <Button
-            buttonType="signUp"
-            buttonClick={handleButtonClick}
-          >
-            Sign up as a Student
-          </Button>
-          <Button
-            buttonType="signUp"
-            buttonClick={handleButtonClick}
-          >
-            sign up as a mentor
-          </Button>
+          <Button buttonType="signUp" buttonClick={handleButtonClick}>Sign up as a Student</Button>
+          <Button buttonType="signUp" buttonClick={handleButtonClick}>sign up as a mentor</Button>
         </div>
       </div>
       <Footer />
-      {
-        isOpen && clickedButtonType === 'signUp'
-          ? (
-            <SignUp
-              handleSignUpClicks={handleButtonClick}
-            />
-          ) : null
-          }
+      {isOpen && clickedButtonType === 'signUp' ? <SignUp handleSignUpClicks={handleButtonClick} /> : null}
     </>
   );
 };
