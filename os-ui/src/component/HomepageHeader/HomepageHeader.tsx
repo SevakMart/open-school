@@ -1,11 +1,9 @@
-import { useState } from 'react';
 import Navbar from '../Navbar/Navbar';
 import styles from './HomepageHeader.module.scss';
 import {
   FREE_EDUCATIONAL_PLATFORM, SIGN_UP, HEADER_INTRODUCTION, SIGN_IN, EDUCATION_PLATFORM_IMAGE,
 } from '../../constants/Strings';
 import Button from '../Button/Button';
-import SignUp from '../SignUp/SignUp';
 
 const HomepageHeader = ({ handleFormVisibility }:
   {handleFormVisibility(buttonType:string):void}) => {

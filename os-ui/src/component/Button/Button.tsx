@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface ButtonProps{
   buttonType:string;
   children:string;
