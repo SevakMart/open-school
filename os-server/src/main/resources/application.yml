@@ -16,5 +16,6 @@ spring:
     locations: "classpath:db/migration/{vendor}"
 
 springdoc:
-  api-docs:
-    enabled: false
+  swagger-ui:
+    path: /open-school-api
+    operationsSorter: method
