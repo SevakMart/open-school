@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from './SignUp.module.scss';
 import CloseIcon from '../../icons/Close';
 import LinkedinIcon1 from '../../icons/Linkedin1';
@@ -7,7 +8,7 @@ import Form from '../Forms/SignUpSignInForm';
 
 const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) => {
   const {
-    mainContainer, formContainer, headerContent, iconContent, alreadyHaveAccount,
+    mainContainer, formContainer, headerContent, iconContent, alreadyHaveAccount, inputContent,
   } = styles;
 
   return (
@@ -22,7 +23,9 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
           </div>
           <p>Or</p>
         </div>
-        <Form formType="signUp" />
+        <form className={inputContent}>
+          <Form formType="signUp" />
+        </form>
         <p className={alreadyHaveAccount}>
           Have An Account?
           <span><button type="button">{SIGN_IN}</button></span>

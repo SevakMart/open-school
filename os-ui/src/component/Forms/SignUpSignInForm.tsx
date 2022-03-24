@@ -1,21 +1,41 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styles from './SignUpSignInForm.module.scss';
 import HiddenIcon from '../../icons/Hidden';
 import VisibileIcon from '../../icons/Visibility';
+import { validateSignUpForm } from '../../helpers/SignUpFormValidate';
 import { SIGN_UP, SIGN_IN } from '../../constants/Strings';
+import styles from './SignUpSignInForm.module.scss';
+
+interface FormValues{
+  fullName:string;
+  email:string;
+  password:string;
+}
 
 const Form = ({ formType }:{formType:string}) => {
-  const [password, setPassword] = useState('');
+  const [formValues, setFormValues] = useState<FormValues>({ fullName: '', email: '', password: '' });
+  const [errorFormValue, setErrorFormValue] = useState({ fullNameError: '', emailError: '', passwordError: '' });
   const [isVisible, setIsVisible] = useState(false);
   const passwordInputRef = useRef<null|HTMLInputElement>(null);
-  const { inputContent } = styles;
-
-  const handleVisibility = () => {
+  const { errorField } = styles;
+  const handlePasswordVisibility = () => {
     setIsVisible((prevState) => !prevState);
   };
-  const handlePassword = (e:React.SyntheticEvent) => {
-    setPassword((e.target as HTMLInputElement).value);
+
+  const handleInputChange = (e:React.SyntheticEvent) => {
+    setFormValues({
+      ...formValues,
+      [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value,
+    });
   };
+  const handleSubmitForm = () => {
+    const { fullNameError, emailError, passwordError } = validateSignUpForm(formValues);
+    if (!fullNameError && !emailError && !passwordError) {
+      console.log('This will be submited to database');
+      setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
+      setFormValues({ fullName: '', email: '', password: '' });
+    } else setErrorFormValue(validateSignUpForm(formValues));
+  };
+
   useEffect(() => {
     if (isVisible) {
       (passwordInputRef.current as HTMLInputElement).type = 'text';
@@ -23,7 +43,7 @@ const Form = ({ formType }:{formType:string}) => {
   }, [isVisible]);
 
   return (
-    <form className={inputContent}>
+    <>
       {formType === 'signUp'
         ? (
           <div>
@@ -31,7 +51,18 @@ const Form = ({ formType }:{formType:string}) => {
               Full Name
               <span style={{ color: 'red' }}>*</span>
             </label>
-            <input id="fullName" type="text" name="fullName" placeholder="Fill in first name" />
+            <input
+              id="fullName"
+              type="text"
+              value={formValues.fullName}
+              name="fullName"
+              placeholder="Fill in first name"
+              onChange={handleInputChange}
+              required
+            />
+            {errorFormValue.fullNameError
+              ? <h4 className={errorField}>{errorFormValue.fullNameError}</h4>
+              : null}
           </div>
         ) : null}
       <div>
@@ -39,7 +70,18 @@ const Form = ({ formType }:{formType:string}) => {
           Email
           <span style={{ color: 'red' }}>*</span>
         </label>
-        <input id="email" type="email" name="email" placeholder="ex: namesurname@gmail.com" />
+        <input
+          id="email"
+          type="email"
+          value={formValues.email}
+          name="email"
+          placeholder="ex: namesurname@gmail.com"
+          onChange={handleInputChange}
+          required
+        />
+        {errorFormValue.emailError
+          ? <h4 className={errorField}>{errorFormValue.emailError}</h4>
+          : null}
       </div>
       <div>
         <label htmlFor="password">
@@ -50,18 +92,23 @@ const Form = ({ formType }:{formType:string}) => {
           id="password"
           type="password"
           ref={passwordInputRef}
-          value={password}
+          value={formValues.password}
           name="password"
           placeholder="Enter your password"
-          onChange={handlePassword}
+          onChange={handleInputChange}
+          required
         />
+        {errorFormValue.passwordError
+          ? <h4 className={errorField}>{errorFormValue.passwordError}</h4>
+          : null}
         {isVisible
-          ? <VisibileIcon makeInvisible={handleVisibility} />
-          : <HiddenIcon makeVisible={handleVisibility} />}
+          ? <VisibileIcon makeInvisible={handlePasswordVisibility} />
+          : <HiddenIcon makeVisible={handlePasswordVisibility} />}
       </div>
       <p>Forgot Password?</p>
-      {formType === 'signUp' ? <button type="submit">{SIGN_UP}</button> : <button type="submit">{SIGN_IN}</button>}
-    </form>
+      {formType === 'signUp' ? <button type="button" onClick={handleSubmitForm}>{SIGN_UP}</button>
+        : <button type="submit">{SIGN_IN}</button>}
+    </>
   );
 };
 export default Form;

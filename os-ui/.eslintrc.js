@@ -21,6 +21,7 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     'consistent-return': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
+    'no-useless-escape': 'off',
     'no-param-reassign': 0,
     'no-use-before-define': 'off',
     'no-alert': 'off',

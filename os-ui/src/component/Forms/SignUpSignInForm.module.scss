@@ -2,7 +2,11 @@
 @import "../../styles/Mixins/FlexMixins.scss";
 @import "../../styles/Mixins/FontMixin.scss";
 
-.inputContent {
+.errorField {
+  @include fontStyle("Montserrat", normal, 800, 0.875rem, 1rem);
+  color: #ff0000;
+}
+/*.inputContent {
   @include flexStyle(column, flex-start, space-between);
   margin-top: 3%;
   padding-left: 8%;
@@ -47,4 +51,4 @@
     color: #ffffff;
     cursor: pointer;
   }
-}
+}*/
