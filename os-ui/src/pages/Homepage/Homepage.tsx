@@ -12,6 +12,7 @@ import { CategoryType } from '../../types/CategoryType';
 import { getMentors } from '../../services/getMentors';
 import { getCategories } from '../../services/getCategories';
 import { GET_MENTORS_URL, GET_CATEGORIES_URL } from '../../constants/Strings';
+import SignUp from '../../component/SignUp/SignUp';
 
 const Homepage = () => {
   const [mentors, setMentors] = useState<MentorType[]>([]);
@@ -23,10 +24,27 @@ const Homepage = () => {
   const [categoryPage, setCategoryPage] = useState(1);
   const [maxCategoryPage, setMaxCategoryPage] = useState(10);
   const [listType, setListType] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [clickedButtonType, setClickedButtonType] = useState('');
   const {
     mainContainer, buttonContainer, mentorMainContainer, mentorListContainer,
     leftArrow, rightArrow, categoriesMainContainer, categoriesListContainer,
   } = styles;
+  const handleButtonClick = (buttonType:string) => {
+    switch (buttonType) {
+      case 'signUp':
+        setIsOpen(true);
+        setClickedButtonType(buttonType);
+        break;
+      case 'signIn':
+        setIsOpen(true);
+        setClickedButtonType(buttonType);
+        break;
+      case 'closeButton':
+        setIsOpen(false);
+        break;
+    }
+  };
 
   useEffect(() => {
     if (listType === 'Mentor' || listType === '') {
@@ -50,7 +68,9 @@ const Homepage = () => {
 
   return (
     <>
-      <HomepageHeader />
+      <HomepageHeader
+        handleFormVisibility={handleButtonClick}
+      />
       {/* This section below is dedicated to implement the category list */}
       <div className={categoriesMainContainer}>
         <h2>Explore Categories You Are Interested In</h2>
@@ -137,16 +157,39 @@ const Homepage = () => {
             </p>
           ) : null}
         </div>
-        <Button>Register as a mentor</Button>
+        <Button
+          buttonType="signUp"
+          buttonClick={handleButtonClick}
+        >
+          Register as a mentor
+        </Button>
       </div>
       <div className={mainContainer}>
         <h2>Start Your Journey Now!</h2>
         <div className={buttonContainer}>
-          <Button>Sign up as a Student</Button>
-          <Button>sign up as a mentor</Button>
+          <Button
+            buttonType="signUp"
+            buttonClick={handleButtonClick}
+          >
+            Sign up as a Student
+          </Button>
+          <Button
+            buttonType="signUp"
+            buttonClick={handleButtonClick}
+          >
+            sign up as a mentor
+          </Button>
         </div>
       </div>
       <Footer />
+      {
+        isOpen && clickedButtonType === 'signUp'
+          ? (
+            <SignUp
+              handleSignUpClicks={handleButtonClick}
+            />
+          ) : null
+          }
     </>
   );
 };

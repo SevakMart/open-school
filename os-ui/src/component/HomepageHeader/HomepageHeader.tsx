@@ -7,27 +7,11 @@ import {
 import Button from '../Button/Button';
 import SignUp from '../SignUp/SignUp';
 
-const HomepageHeader = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [clickedButtonType, setClickedButtonType] = useState('');
+const HomepageHeader = ({ handleFormVisibility }:
+  {handleFormVisibility(buttonType:string):void}) => {
   const {
     headerContainer, mainContent, leftContent, rightContent, buttonContainer,
   } = styles;
-  const handleButtonClick = (buttonType:string) => {
-    switch (buttonType) {
-      case 'signUp':
-        setIsOpen(true);
-        setClickedButtonType(buttonType);
-        break;
-      case 'signIn':
-        setIsOpen(true);
-        setClickedButtonType(buttonType);
-        break;
-      case 'closeButton':
-        setIsOpen(false);
-        break;
-    }
-  };
 
   return (
     <div className={headerContainer}>
@@ -39,13 +23,13 @@ const HomepageHeader = () => {
           <div className={buttonContainer}>
             <Button
               buttonType="signUp"
-              buttonClick={handleButtonClick}
+              buttonClick={(buttonType) => handleFormVisibility(buttonType)}
             >
               {SIGN_UP}
             </Button>
             <Button
               buttonType="signIn"
-              buttonClick={handleButtonClick}
+              buttonClick={(buttonType) => handleFormVisibility(buttonType)}
             >
               {SIGN_IN}
             </Button>
@@ -55,14 +39,6 @@ const HomepageHeader = () => {
           <img src={EDUCATION_PLATFORM_IMAGE} alt="Education platform logo" />
         </div>
       </div>
-      {
-        isOpen && clickedButtonType === 'signUp'
-          ? (
-            <SignUp
-              handleSignUpClicks={handleButtonClick}
-            />
-          ) : null
-      }
     </div>
   );
 };
