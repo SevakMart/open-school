@@ -1,7 +1,6 @@
 import {
   APP_LOGO, EXPLORE_CATEGORIES, MENTORS, BECOME_A_MENTOR, SIGN_IN,
 } from '../../constants/Strings';
-import Button from '../Button/Button';
 import styles from './Navbar.module.scss';
 
 const Navbar = () => {
@@ -17,8 +16,8 @@ const Navbar = () => {
           <p>{MENTORS}</p>
         </div>
         <div className={buttonContent}>
-          <Button>{BECOME_A_MENTOR}</Button>
-          <Button>{SIGN_IN}</Button>
+          <button type="button">{BECOME_A_MENTOR}</button>
+          <button type="button">{SIGN_IN}</button>
         </div>
       </div>
     </nav>

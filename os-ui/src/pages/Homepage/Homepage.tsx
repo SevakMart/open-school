@@ -104,7 +104,7 @@ const Homepage = () => {
             />
           ) : null}
         </div>
-        <Button>SEE ALL</Button>
+        <button type="button">SEE ALL</button>
       </div>
       {/* This section below is dedicated to implement the mentor list */}
       <div className={mentorMainContainer}>

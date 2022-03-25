@@ -1,5 +1,4 @@
 import styles from './Footer.module.scss';
-import Button from '../Button/Button';
 
 const Footer = () => {
   const {
@@ -7,7 +6,7 @@ const Footer = () => {
   } = styles;
   return (
     <div className={mainContainer}>
-      <Button>Open-School</Button>
+      <button type="button">Open-School</button>
       <div className={categories}>
         <h2>Categories</h2>
         <p>Software Engineering</p>
