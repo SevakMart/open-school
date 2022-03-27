@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
 import app.openschool.usermanagement.entities.User;
 import app.openschool.usermanagement.exceptions.EmailAlreadyExistException;
@@ -22,11 +23,12 @@ class UserServiceImplTest {
 
   @Mock private UserRepository userRepository;
   @Mock private BCryptPasswordEncoder passwordEncoder;
+  @Mock private JwtTokenProvider jwtTokenProvider;
   private UserService userService;
 
   @BeforeEach
   void setUp() {
-    userService = new UserServiceImpl(userRepository, passwordEncoder);
+    userService = new UserServiceImpl(userRepository, passwordEncoder, jwtTokenProvider);
   }
 
   @Test
