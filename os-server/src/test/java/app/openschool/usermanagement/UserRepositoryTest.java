@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import app.openschool.usermanagement.entities.Role;
 import app.openschool.usermanagement.entities.User;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @DataJpaTest
 class UserRepositoryTest {
@@ -45,11 +44,10 @@ class UserRepositoryTest {
   }
 
   @Test
-  void findAllMentorsCheckPageable () {
-    Page<User> allMentorsPage = userRepository.findAllMentors(PageRequest.of(0,3));
+  void findAllMentorsCheckPageable() {
+    Page<User> allMentorsPage = userRepository.findAllMentors(PageRequest.of(0, 3));
     double pageCount = allMentorsPage.getTotalPages();
     double mentorsCount = allMentorsPage.getTotalElements();
     assertThat(pageCount).isEqualTo(Math.ceil(mentorsCount / 3));
   }
-
 }
