@@ -57,7 +57,7 @@ const Form = ({ formType }:{formType:string}) => {
               required
             />
             {errorFormValue.fullNameError
-              ? <h4 className={errorField}>{errorFormValue.fullNameError}</h4>
+              ? <h4 data-testid="fullnameErrorField" className={errorField}>{errorFormValue.fullNameError}</h4>
               : null}
           </div>
         ) : null}
@@ -76,7 +76,7 @@ const Form = ({ formType }:{formType:string}) => {
           required
         />
         {errorFormValue.emailError
-          ? <h4 className={errorField}>{errorFormValue.emailError}</h4>
+          ? <h4 data-testid="emailErrorField" className={errorField}>{errorFormValue.emailError}</h4>
           : null}
       </div>
       <div>
@@ -95,14 +95,14 @@ const Form = ({ formType }:{formType:string}) => {
           required
         />
         {errorFormValue.passwordError
-          ? <h4 className={errorField}>{errorFormValue.passwordError}</h4>
+          ? <h4 data-testid="passwordErrorField" className={errorField}>{errorFormValue.passwordError}</h4>
           : null}
         {isVisible
           ? <VisibileIcon makeInvisible={handlePasswordVisibility} />
           : <HiddenIcon makeVisible={handlePasswordVisibility} />}
       </div>
       <p>Forgot Password?</p>
-      {formType === 'signUp' ? <button type="button" onClick={handleSubmitForm}>{SIGN_UP}</button>
+      {formType === 'signUp' ? <button type="button" data-testid="signUpButton" onClick={handleSubmitForm}>{SIGN_UP}</button>
         : <button type="submit">{SIGN_IN}</button>}
     </>
   );

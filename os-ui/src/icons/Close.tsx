@@ -12,7 +12,7 @@ const styles = {
 } as React.CSSProperties;
 
 const CloseIcon = ({ handleClosing }:{handleClosing():void}) => (
-  <div style={styles}>
+  <div data-testid="closeButton" style={styles}>
     <GrFormClose onClick={() => handleClosing()} />
   </div>
 );
