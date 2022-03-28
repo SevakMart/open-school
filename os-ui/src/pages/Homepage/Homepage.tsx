@@ -11,13 +11,12 @@ import { MentorType } from '../../types/MentorType';
 import { CategoryType } from '../../types/CategoryType';
 import { getMentors } from '../../services/getMentors';
 import { getCategories } from '../../services/getCategories';
-import { GET_MENTORS_URL, GET_CATEGORIES_URL, GET_REAL_MENTORS_URL } from '../../constants/Strings';
+import { GET_CATEGORIES_URL, GET_REAL_MENTORS_URL } from '../../constants/Strings';
 import SignUp from '../../component/SignUp/SignUp';
 
 const Homepage = () => {
   const [mentors, setMentors] = useState<MentorType[]>([]);
   const [categories, setCategories] = useState<CategoryType[]>([]);
-  // This page state is temporary until the final api is ready
   const [page, setPage] = useState(0);
   const [maxPage, setMaxPage] = useState(10);
   const [errorMessage, setErrorMessage] = useState('');
@@ -48,13 +47,13 @@ const Homepage = () => {
 
   useEffect(() => {
     if (listType === 'Mentor' || listType === '') {
-      getMentors(`${GET_REAL_MENTORS_URL}page=${page}&size=1`)
+      getMentors(`${GET_REAL_MENTORS_URL}page=${page}&size=4`)
         .then((data) => {
           if (!data.errorMessage) {
             /* setMentors(data.mentors.slice((page - 1) * 4, page * 4));
             setMaxPage(data.totalPages); */
             setMentors(data.content);
-            setMaxPage(data.totalPages);
+            setMaxPage(data.totalPages - 1);
           } else setErrorMessage(data.errorMessage);
         });
     } if (listType === 'Category' || listType === '') {
@@ -112,7 +111,7 @@ const Homepage = () => {
       <div className={mentorMainContainer}>
         <h2>Our Mentors</h2>
         <div className={mentorListContainer}>
-          { page > 1 ? (
+          { page > 0 ? (
             <LeftArrowIcon
               testId="mentorLeftArrow"
               handleArrowClick={() => {

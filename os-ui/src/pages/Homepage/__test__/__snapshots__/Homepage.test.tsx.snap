@@ -56,11 +56,15 @@ Array [
           className="buttonContainer"
         >
           <button
+            name="signUp"
+            onClick={[Function]}
             type="button"
           >
             SIGN UP
           </button>
           <button
+            name="signIn"
+            onClick={[Function]}
             type="button"
           >
             Sign In
@@ -89,14 +93,22 @@ Array [
       <h2>
         We do not have courses yet
       </h2>
-      <p
-        className="rightArrow"
+      <i
         data-testid="categoryRightArrow"
-        onClick={[Function]}
+        style={
+          Object {
+            "cursor": "pointer",
+            "fontSize": "3rem",
+            "position": "absolute",
+            "right": "6%",
+            "zIndex": "1",
+          }
+        }
       >
         <svg
           fill="currentColor"
           height="1em"
+          onClick={[Function]}
           stroke="currentColor"
           strokeWidth="0"
           style={
@@ -112,7 +124,7 @@ Array [
             d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
           />
         </svg>
-      </p>
+      </i>
     </div>
     <button
       type="button"
@@ -132,14 +144,22 @@ Array [
       <h2>
         We do not have mentors yet
       </h2>
-      <p
-        className="rightArrow"
+      <i
         data-testid="mentorRightArrow"
-        onClick={[Function]}
+        style={
+          Object {
+            "cursor": "pointer",
+            "fontSize": "3rem",
+            "position": "absolute",
+            "right": "6%",
+            "zIndex": "1",
+          }
+        }
       >
         <svg
           fill="currentColor"
           height="1em"
+          onClick={[Function]}
           stroke="currentColor"
           strokeWidth="0"
           style={
@@ -155,9 +175,11 @@ Array [
             d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
           />
         </svg>
-      </p>
+      </i>
     </div>
     <button
+      name="signUp"
+      onClick={[Function]}
       type="button"
     >
       Register as a mentor
@@ -173,11 +195,15 @@ Array [
       className="buttonContainer"
     >
       <button
+        name="signUp"
+        onClick={[Function]}
         type="button"
       >
         Sign up as a Student
       </button>
       <button
+        name="signUp"
+        onClick={[Function]}
         type="button"
       >
         sign up as a mentor

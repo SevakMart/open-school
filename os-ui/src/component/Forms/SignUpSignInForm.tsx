@@ -2,17 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import HiddenIcon from '../../icons/Hidden';
 import VisibileIcon from '../../icons/Visibility';
 import { validateSignUpForm } from '../../helpers/SignUpFormValidate';
-import { SIGN_UP, SIGN_IN } from '../../constants/Strings';
+import { SIGN_UP, SIGN_IN, REGISTRATION_URL } from '../../constants/Strings';
+import { register } from '../../services/register';
+import { RegistrationFormType } from '../../types/RegistartionFormType';
 import styles from './SignUpSignInForm.module.scss';
 
-interface FormValues{
-  fullName:string;
-  email:string;
-  password:string;
-}
-
 const Form = ({ formType }:{formType:string}) => {
-  const [formValues, setFormValues] = useState<FormValues>({ fullName: '', email: '', password: '' });
+  const [formValues, setFormValues] = useState<RegistrationFormType>({ firstName: '', email: '', password: '' });
   const [errorFormValue, setErrorFormValue] = useState({ fullNameError: '', emailError: '', passwordError: '' });
   const [isVisible, setIsVisible] = useState(false);
   const passwordInputRef = useRef<null|HTMLInputElement>(null);
@@ -30,9 +26,9 @@ const Form = ({ formType }:{formType:string}) => {
   const handleSubmitForm = () => {
     const { fullNameError, emailError, passwordError } = validateSignUpForm(formValues);
     if (!fullNameError && !emailError && !passwordError) {
-      console.log('This will be submited to database');
+      register(REGISTRATION_URL, formValues);
       setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
-      setFormValues({ fullName: '', email: '', password: '' });
+      setFormValues({ firstName: '', email: '', password: '' });
     } else setErrorFormValue(validateSignUpForm(formValues));
   };
 
@@ -54,8 +50,8 @@ const Form = ({ formType }:{formType:string}) => {
             <input
               id="fullName"
               type="text"
-              value={formValues.fullName}
-              name="fullName"
+              value={formValues.firstName}
+              name="firstName"
               placeholder="Fill in first name"
               onChange={handleInputChange}
               required

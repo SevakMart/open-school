@@ -62,7 +62,7 @@ const categoryData = {
 };
 
 const mentorData = {
-  mentors: [
+  content: [
     {
       name: 'John',
       surname: 'Smith',
@@ -192,7 +192,7 @@ describe('Create several unit tests for Homepage Component', () => {
     expect(mentorName).toBeInTheDocument();
   });
   test('Create a resolved Promise test with empty mentor list', async () => {
-    jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue({ mentors: [], totalPages: 0 });
+    jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue({ content: [], totalPages: 0 });
     jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue(categoryData);
     render(<Homepage />);
     const emptyMentorHeading = await screen.findByText('We do not have mentors yet');
