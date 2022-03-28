@@ -61,7 +61,7 @@ public class CourseServiceImpl implements CourseService {
   private List<Category> getCategories(String title, Predicate<Category> predicate) {
     return categoryRepository.findByTitleIgnoreCaseStartingWith(title).stream()
         .filter(predicate)
-        .toList();
+        .collect(Collectors.toList());
   }
 
   private Map<String, List<CategoryDtoForRegistration>> mapCategoriesToSubcategories(
