@@ -14,7 +14,9 @@ spring:
 
   flyway:
     locations: "classpath:db/migration/{vendor}"
+    clean-on-validation-error: true
 
 springdoc:
-  api-docs:
-    enabled: false
+  swagger-ui:
+    path: /open-school-api
+    operationsSorter: method

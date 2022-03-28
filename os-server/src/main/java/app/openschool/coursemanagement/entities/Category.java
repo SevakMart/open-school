@@ -10,13 +10,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table (name = "category")
+@Table(name = "category")
 public class Category {
 
   @Id
-  @GeneratedValue (strategy = GenerationType.IDENTITY)
-  @Column (nullable = false)
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(nullable = false)
+  private Integer id;
 
   @Column(nullable = false)
   private String title;
@@ -30,13 +30,26 @@ public class Category {
   @Column(name = "sub_category_count")
   private Integer subCategoryCount;
 
-  @OneToMany (mappedBy = "category")
+  @OneToMany(mappedBy = "category")
   private List<Course> courses;
 
   public Category() {}
 
-  public Long getId() {
+  public Category(Integer id) {
+    this.id = id;
+  }
+
+  public Category(String title, Integer parentCategoryId) {
+    this.title = title;
+    this.parentCategoryId = parentCategoryId;
+  }
+
+  public Integer getId() {
     return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
   }
 
   public String getTitle() {
@@ -51,20 +64,12 @@ public class Category {
     return logoPath;
   }
 
-  public Integer getParentCategoryId() {
-    return parentCategoryId;
-  }
-
   public List<Course> getCourses() {
     return courses;
   }
 
   public void setSubCategoryCount(Integer subCategoryCount) {
     this.subCategoryCount = subCategoryCount;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 
   public void setTitle(String title) {
@@ -77,5 +82,9 @@ public class Category {
 
   public void setParentCategoryId(Integer parentCategoryId) {
     this.parentCategoryId = parentCategoryId;
+  }
+
+  public Integer getParentCategoryId() {
+    return parentCategoryId;
   }
 }
