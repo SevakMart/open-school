@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
-@Profile({"prod", "local", "test"})
+@Profile({"local", "test"})
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private static final String[] PUBLIC_URLS = {
@@ -19,6 +19,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/",
     "/api/v1/register",
     "/h2/**",
+    "/open-school-api",
+    "/swagger-ui/**",
+    "/v3/api-docs/**",
     "/api/v1/mentors",
     "/api/v1/categories",
   };
