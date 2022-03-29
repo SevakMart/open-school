@@ -1,10 +1,3 @@
-server:
-  port: 5000
-
-jwt:
-  token-exp-time: 432_000_000 # 5 days
-  secret: 'ksfhlksjlkesjl;jksl;kfldskdl;ksfl;ks65456s465f4ds68f4dsf46ds4f5snkldj+dlksfnklslsjdkfljsdk'
-
 spring:
   h2:
     console:
@@ -15,15 +8,9 @@ spring:
     url: jdbc:h2:mem:testdb
     username: sa
     password:
-
   jpa:
     show-sql: true
 
-  flyway:
-    locations: "classpath:db/migration/{vendor}"
 
-springdoc:
-  api-docs:
-    enabled: false
 
 
