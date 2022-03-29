@@ -14,7 +14,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private static final String[] PUBLIC_URLS = {
-    "/static/**", "/index.html", "/", "/api/v1/register", "/h2/**"
+    "/static/**",
+    "/index.html",
+    "/",
+    "/api/v1/register",
+    "/h2/**",
+    "/api/v1/mentors",
+    "/api/v1/categories",
   };
 
   @Override
