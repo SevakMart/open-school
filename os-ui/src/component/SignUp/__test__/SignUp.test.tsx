@@ -80,4 +80,24 @@ describe('Create tests for sign up form', () => {
     expect(emailErrorMessage).toBeInTheDocument();
     expect(passwordErrorMessage).toBeInTheDocument();
   });
+  test('Test signUp form error messages: Create a valid form on submit', () => {
+    render(<SignUp handleSignUpClicks={() => null} />);
+    const fullNameInputField = screen.queryByPlaceholderText('Fill in first name');
+    const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
+    const passwordInputField = screen.queryByPlaceholderText('Enter your password');
+    const signUpButton = screen.queryByTestId('signUpButton');
+
+    userEvent.type(fullNameInputField as HTMLInputElement, 'hello world');
+    userEvent.type(emailInputField as HTMLInputElement, 'hello@hello.com');
+    userEvent.type(passwordInputField as HTMLInputElement, 'HelloWorld93$');
+    userEvent.click(signUpButton as HTMLButtonElement);
+
+    const fullNameErrorMessage = screen.queryByTestId('fullnameErrorField');
+    const emailErrorMessage = screen.queryByText(INVALID_EMAIL_ERROR_MESSAGE);
+    const passwordErrorMessage = screen.queryByText(INVALID_PASSWORD_ERROR_MESSAGE);
+
+    expect(fullNameErrorMessage).not.toBeInTheDocument();
+    expect(emailErrorMessage).not.toBeInTheDocument();
+    expect(passwordErrorMessage).not.toBeInTheDocument();
+  });
 });
