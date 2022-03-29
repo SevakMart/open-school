@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
-//@CrossOrigin("http://localhost:3000")
 public class CourseController {
 
   private final CourseService courseService;
