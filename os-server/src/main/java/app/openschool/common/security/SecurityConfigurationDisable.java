@@ -21,10 +21,12 @@ public class SecurityConfigurationDisable extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.cors ().configurationSource (request -> {
-      CorsConfiguration cors = new CorsConfiguration ();
-      cors.setAllowedOrigins (List.of ("http://localhost:3000"));
-      return cors;
-    });
+    http.cors()
+        .configurationSource(
+            request -> {
+              CorsConfiguration cors = new CorsConfiguration();
+              cors.setAllowedOrigins(List.of("http://localhost:3000"));
+              return cors;
+            });
   }
 }
