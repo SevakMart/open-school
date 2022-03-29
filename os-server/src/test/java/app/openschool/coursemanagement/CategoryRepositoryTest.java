@@ -3,12 +3,14 @@ package app.openschool.coursemanagement;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
+import static org.springframework.test.util.AssertionErrors.assertNull;
 
 import app.openschool.coursemanagement.entities.Category;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,5 +58,14 @@ class CategoryRepositoryTest {
     Category fetchedCategory = categoryRepository.findCategoryById(1);
 
     assertThat(category.getId()).isEqualTo(fetchedCategory.getId());
+  
+  @Test
+  void findAllCategoriesCheckIsParentCategory() {
+    List<Category> categoryList =
+        categoryRepository.findAllCategories(PageRequest.of(0, 10)).toList();
+    for (Category category : categoryList) {
+      assertNull(category.getTitle() + "isn't parent category", category.getParentCategoryId());
+    }
+
   }
 }

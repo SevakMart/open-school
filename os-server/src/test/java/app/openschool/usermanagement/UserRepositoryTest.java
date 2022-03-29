@@ -8,12 +8,16 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER
 import app.openschool.coursemanagement.entities.Category;
 import app.openschool.usermanagement.entities.Role;
 import app.openschool.usermanagement.entities.User;
+import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @DataJpaTest
@@ -36,5 +40,21 @@ class UserRepositoryTest {
     assertThat(registeredUser).isEqualTo(fetchedUser);
     assertTrue(fetchedUser.getCategories().contains(category));
     assertEquals(1, fetchedUser.getCategories().size());
+  }
+
+  @Test
+  void findAllMentorsCheckIsMentor() {
+    List<User> mentorsList = userRepository.findAllMentors(PageRequest.of(0, 5)).toList();
+    for (User mentor : mentorsList) {
+      assertEquals("MENTOR", mentor.getRole().getType());
+    }
+  }
+
+  @Test
+  void findAllMentorsCheckPageable() {
+    Page<User> allMentorsPage = userRepository.findAllMentors(PageRequest.of(0, 3));
+    double pageCount = allMentorsPage.getTotalPages();
+    double mentorsCount = allMentorsPage.getTotalElements();
+    assertThat(pageCount).isEqualTo(Math.ceil(mentorsCount / 3));
   }
 }

@@ -3,22 +3,31 @@ package app.openschool.coursemanagement;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
+import app.openschool.coursemanagement.api.CategoryGenerator;
 import app.openschool.coursemanagement.api.dto.CategoryDtoForRegistration;
 import app.openschool.coursemanagement.entities.Category;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class CourseServiceImplTest {
 
   @Mock CategoryRepository categoryRepository;
+  
   private CourseService courseService;
 
   @BeforeEach
@@ -27,6 +36,7 @@ class CourseServiceImplTest {
   }
 
   @Test
+  @Transactional
   void mapAllCategoriesToSubcategories() {
     List<Category> categories = new ArrayList<>();
     Category parentCategory1 = new Category("Java", null);
@@ -78,5 +88,19 @@ class CourseServiceImplTest {
     assertEquals(1, categoryMap3.size());
     assertEquals(1, categoryMap3.get("JS").size());
     assertThat(categoryMap3.get("JS").get(0).getTitle()).isEqualTo("Angular-JS");
+  
+  @Test  
+  void findAllCategories() {
+    List<Category> categoryList = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      categoryList.add(CategoryGenerator.generateCategory());
+    }
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<Category> categoryPage = new PageImpl<>(categoryList, pageable, 5);
+    when(categoryRepository.findAllCategories(pageable)).thenReturn(categoryPage);
+    Assertions.assertEquals(3, courseService.findAllCategories(pageable).getTotalPages());
+    Assertions.assertEquals(5, courseService.findAllCategories(pageable).getTotalElements());
+    Mockito.verify(categoryRepository, Mockito.times(2)).findAllCategories(pageable);
+
   }
 }

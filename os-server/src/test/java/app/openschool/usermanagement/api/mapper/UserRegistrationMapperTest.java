@@ -28,7 +28,6 @@ class UserRegistrationMapperTest {
     categoryIdSet.add(1);
     userDto.setCategoryIdSet(categoryIdSet);
     User mappedUser = UserRegistrationMapper.userRegistrationDtoToUser(userDto, passwordEncoder);
-
     assertThat(user).isEqualTo(mappedUser);
   }
 }

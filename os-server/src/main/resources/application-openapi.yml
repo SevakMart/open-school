@@ -10,5 +10,3 @@ spring:
     password:
   jpa:
     show-sql: true
-
-
