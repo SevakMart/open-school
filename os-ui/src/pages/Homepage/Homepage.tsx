@@ -11,7 +11,7 @@ import { MentorType } from '../../types/MentorType';
 import { CategoryType } from '../../types/CategoryType';
 import { getMentors } from '../../services/getMentors';
 import { getCategories } from '../../services/getCategories';
-import { GET_CATEGORIES_URL, GET_REAL_MENTORS_URL } from '../../constants/Strings';
+import { GET_REAL_MENTORS_URL, GET_MAIN_CATEGORIES_URL } from '../../constants/Strings';
 import SignUp from '../../component/SignUp/SignUp';
 
 const Homepage = () => {
@@ -20,7 +20,7 @@ const Homepage = () => {
   const [page, setPage] = useState(0);
   const [maxPage, setMaxPage] = useState(10);
   const [errorMessage, setErrorMessage] = useState('');
-  const [categoryPage, setCategoryPage] = useState(1);
+  const [categoryPage, setCategoryPage] = useState(0);
   const [maxCategoryPage, setMaxCategoryPage] = useState(10);
   const [listType, setListType] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -57,11 +57,12 @@ const Homepage = () => {
           } else setErrorMessage(data.errorMessage);
         });
     } if (listType === 'Category' || listType === '') {
-      getCategories(GET_CATEGORIES_URL)
+      getCategories(`${GET_MAIN_CATEGORIES_URL}page=${categoryPage}&size=6`)
         .then((data) => {
           if (!data.errorMessage) {
-            setCategories(data.categories.slice((categoryPage - 1) * 6, categoryPage * 6));
-            setMaxCategoryPage(data.totalPages);
+            // setCategories(data.categories.slice((categoryPage - 1) * 6, categoryPage * 6));
+            setCategories(data.content);
+            setMaxCategoryPage(data.totalPages - 1);
           } else setErrorMessage(data.errorMessage);
         });
     }
@@ -76,7 +77,7 @@ const Homepage = () => {
       <div className={categoriesMainContainer}>
         <h2>Explore Categories You Are Interested In</h2>
         <div className={categoriesListContainer}>
-          {categoryPage > 1 ? (
+          {categoryPage > 0 ? (
             <LeftArrowIcon
               testId="categoryLeftArrow"
               handleArrowClick={() => {
