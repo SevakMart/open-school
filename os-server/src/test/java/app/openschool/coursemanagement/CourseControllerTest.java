@@ -1,8 +1,6 @@
 package app.openschool.coursemanagement;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -11,8 +9,8 @@ import app.openschool.coursemanagement.api.CategoryGenerator;
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +39,8 @@ class CourseControllerTest {
     mockMvc
         .perform(get("/api/v1/category-search").queryParam("title", " "))
         .andExpect(status().isForbidden());
-  
+  }
+
   @Test
   void findAllCategories() throws Exception {
     List<CategoryDto> categoryDtoList = new ArrayList<>();
@@ -58,5 +57,5 @@ class CourseControllerTest {
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isOk());
-   }
+  }
 }

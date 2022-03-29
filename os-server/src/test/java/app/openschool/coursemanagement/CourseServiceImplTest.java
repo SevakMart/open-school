@@ -16,18 +16,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(MockitoExtension.class)
 class CourseServiceImplTest {
 
   @Mock CategoryRepository categoryRepository;
-  
+
   private CourseService courseService;
 
   @BeforeEach
@@ -88,8 +89,9 @@ class CourseServiceImplTest {
     assertEquals(1, categoryMap3.size());
     assertEquals(1, categoryMap3.get("JS").size());
     assertThat(categoryMap3.get("JS").get(0).getTitle()).isEqualTo("Angular-JS");
-  
-  @Test  
+  }
+
+  @Test
   void findAllCategories() {
     List<Category> categoryList = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
@@ -101,6 +103,5 @@ class CourseServiceImplTest {
     Assertions.assertEquals(3, courseService.findAllCategories(pageable).getTotalPages());
     Assertions.assertEquals(5, courseService.findAllCategories(pageable).getTotalElements());
     Mockito.verify(categoryRepository, Mockito.times(2)).findAllCategories(pageable);
-
   }
 }

@@ -58,7 +58,8 @@ class CategoryRepositoryTest {
     Category fetchedCategory = categoryRepository.findCategoryById(1);
 
     assertThat(category.getId()).isEqualTo(fetchedCategory.getId());
-  
+  }
+
   @Test
   void findAllCategoriesCheckIsParentCategory() {
     List<Category> categoryList =
@@ -66,6 +67,5 @@ class CategoryRepositoryTest {
     for (Category category : categoryList) {
       assertNull(category.getTitle() + "isn't parent category", category.getParentCategoryId());
     }
-
   }
 }

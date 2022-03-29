@@ -8,16 +8,15 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER
 import app.openschool.coursemanagement.entities.Category;
 import app.openschool.usermanagement.entities.Role;
 import app.openschool.usermanagement.entities.User;
-import java.util.List;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 @DataJpaTest
