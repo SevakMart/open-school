@@ -8,7 +8,7 @@ import * as fetchCategory from '../../../services/getCategories';
 import * as fetchMentor from '../../../services/getMentors';
 
 const categoryData = {
-  categories: [
+  content: [
     {
       title: 'JavaScript',
       logoPath: 'https://reactjs.org/logo-og.png',
@@ -161,7 +161,7 @@ describe('Create several unit tests for Homepage Component', () => {
     expect(categoryTitle1).toBeInTheDocument();
   });
   test('Create a resolved Promise test with empty course categories', async () => {
-    jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue({ categories: [], totalPages: 0 });
+    jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue({ content: [], totalPages: 0 });
     jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue(mentorData);
     render(<Homepage />);
     const emptyCategoryHeading = await screen.findByText('We do not have courses yet');
