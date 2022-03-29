@@ -22,7 +22,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/open-school-api",
     "/swagger-ui/**",
     "/v3/api-docs/**"
-  };
+    "/api/v1/mentors",
+    "/api/v1/categories",
+};
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
