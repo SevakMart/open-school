@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react';
-import { create } from 'react-test-renderer';
+import {
+  render, screen, waitFor,
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import Homepage from '../Homepage';
@@ -150,22 +151,26 @@ const mentorData = {
 
 describe('Create several unit tests for Homepage Component', () => {
   test('Create a Snapshot test', () => {
-    const component = create(<Homepage />);
-    expect(component.toJSON()).toMatchSnapshot();
+    const { asFragment } = render(<Homepage />);
+    expect(asFragment()).toMatchSnapshot();
   });
   test('Create a resolved promise test for course category', async () => {
     jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue(categoryData);
     jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue(mentorData);
     render(<Homepage />);
-    const categoryTitle1 = await screen.findByText('JavaScript');
-    expect(categoryTitle1).toBeInTheDocument();
+    await waitFor(() => {
+      const categoryTitle1 = screen.queryByText('JavaScript');
+      expect(categoryTitle1).toBeInTheDocument();
+    });
   });
   test('Create a resolved Promise test with empty course categories', async () => {
     jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue({ content: [], totalPages: 0 });
     jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue(mentorData);
     render(<Homepage />);
-    const emptyCategoryHeading = await screen.findByText('We do not have courses yet');
-    expect(emptyCategoryHeading).toBeInTheDocument();
+    await waitFor(() => {
+      const emptyCategoryHeading = screen.queryByText('We do not have courses yet');
+      expect(emptyCategoryHeading).toBeInTheDocument();
+    });
   });
   test('Test a resolved Promise for categories when clicking next group of courses', async () => {
     jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue(categoryData);
@@ -173,30 +178,38 @@ describe('Create several unit tests for Homepage Component', () => {
     render(<Homepage />);
     const rightArrowButton = screen.getByTestId('categoryRightArrow');
     userEvent.click(rightArrowButton);
-    const categoryTitle2 = await screen.findByText('JEST');
-    expect(categoryTitle2).toBeInTheDocument();
+    await waitFor(() => {
+      const categoryTitle2 = screen.queryByText('JEST');
+      expect(categoryTitle2).toBeInTheDocument();
+    });
   });
   test('Create a rejected Promise test for categories', async () => {
     jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue({ errorMessage: ERROR_MESSAGE });
     jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue(mentorData);
     render(<Homepage />);
-    const errorMessageHeading = await screen.findByTestId('categoriesErrorMessage');
-    expect(errorMessageHeading).toBeInTheDocument();
+    await waitFor(() => {
+      const errorMessageHeading = screen.queryByTestId('categoriesErrorMessage');
+      expect(errorMessageHeading).toBeInTheDocument();
+    });
   });
 
   test('Create a resolved promise test for mentorList', async () => {
     jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue(mentorData);
     jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue(categoryData);
     render(<Homepage />);
-    const mentorName = await screen.findByText('John Smith');
-    expect(mentorName).toBeInTheDocument();
+    await waitFor(() => {
+      const mentorName = screen.queryByText('John Smith');
+      expect(mentorName).toBeInTheDocument();
+    });
   });
   test('Create a resolved Promise test with empty mentor list', async () => {
     jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue({ content: [], totalPages: 0 });
     jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue(categoryData);
     render(<Homepage />);
-    const emptyMentorHeading = await screen.findByText('We do not have mentors yet');
-    expect(emptyMentorHeading).toBeInTheDocument();
+    await waitFor(() => {
+      const emptyMentorHeading = screen.queryByText('We do not have mentors yet');
+      expect(emptyMentorHeading).toBeInTheDocument();
+    });
   });
   test('Test a resolved Promise for mentors when clicking next group of courses', async () => {
     jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue(mentorData);
@@ -204,14 +217,18 @@ describe('Create several unit tests for Homepage Component', () => {
     render(<Homepage />);
     const rightArrowButton = screen.getByTestId('mentorRightArrow');
     userEvent.click(rightArrowButton);
-    const mentorName = await screen.findByText('Claire Smith');
-    expect(mentorName).toBeInTheDocument();
+    await waitFor(() => {
+      const mentorName = screen.queryByText('Claire Smith');
+      expect(mentorName).toBeInTheDocument();
+    });
   });
   test('Create a rejected Promise test for mentors list', async () => {
     jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue(categoryData);
     jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue({ errorMessage: ERROR_MESSAGE });
     render(<Homepage />);
-    const errorMessageHeading = await screen.findByTestId('mentorsErrorMessage');
-    expect(errorMessageHeading).toBeInTheDocument();
+    await waitFor(() => {
+      const errorMessageHeading = screen.queryByTestId('mentorsErrorMessage');
+      expect(errorMessageHeading).toBeInTheDocument();
+    });
   });
 });

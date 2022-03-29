@@ -1,21 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Create several unit tests for Homepage Component Create a Snapshot test 1`] = `
-Array [
+<DocumentFragment>
   <div
-    className="headerContainer"
+    class="headerContainer"
   >
     <nav
-      className="navContainer"
+      class="navContainer"
     >
       <h2>
         Open-School
       </h2>
       <div
-        className="navMainContent"
+        class="navMainContent"
       >
         <div
-          className="categoriesMentors"
+          class="categoriesMentors"
         >
           <p>
             Explore Categories
@@ -25,7 +25,7 @@ Array [
           </p>
         </div>
         <div
-          className="buttonContent"
+          class="buttonContent"
         >
           <button
             type="button"
@@ -41,10 +41,10 @@ Array [
       </div>
     </nav>
     <div
-      className="mainContent"
+      class="mainContent"
     >
       <div
-        className="leftContent"
+        class="leftContent"
       >
         <h1>
           Educational Platform
@@ -53,18 +53,16 @@ Array [
           Choose Categories You Are Interested In Choose Categories You Are Interested InChoose Categories You Are Interested
         </p>
         <div
-          className="buttonContainer"
+          class="buttonContainer"
         >
           <button
             name="signUp"
-            onClick={[Function]}
             type="button"
           >
             SIGN UP
           </button>
           <button
             name="signIn"
-            onClick={[Function]}
             type="button"
           >
             Sign In
@@ -72,7 +70,7 @@ Array [
         </div>
       </div>
       <div
-        className="rightContent"
+        class="rightContent"
       >
         <img
           alt="Education platform logo"
@@ -80,42 +78,28 @@ Array [
         />
       </div>
     </div>
-  </div>,
+  </div>
   <div
-    className="categoriesMainContainer"
+    class="categoriesMainContainer"
   >
     <h2>
       Explore Categories You Are Interested In
     </h2>
     <div
-      className="categoriesListContainer"
+      class="categoriesListContainer"
     >
       <h2>
         We do not have courses yet
       </h2>
       <i
         data-testid="categoryRightArrow"
-        style={
-          Object {
-            "cursor": "pointer",
-            "fontSize": "3rem",
-            "position": "absolute",
-            "right": "6%",
-            "zIndex": "1",
-          }
-        }
+        style="position: absolute; z-index: 1; font-size: 3rem; right: 6%; cursor: pointer;"
       >
         <svg
           fill="currentColor"
           height="1em"
-          onClick={[Function]}
           stroke="currentColor"
-          strokeWidth="0"
-          style={
-            Object {
-              "color": undefined,
-            }
-          }
+          stroke-width="0"
           viewBox="0 0 16 16"
           width="1em"
           xmlns="http://www.w3.org/2000/svg"
@@ -131,42 +115,28 @@ Array [
     >
       SEE ALL
     </button>
-  </div>,
+  </div>
   <div
-    className="mentorMainContainer"
+    class="mentorMainContainer"
   >
     <h2>
       Our Mentors
     </h2>
     <div
-      className="mentorListContainer"
+      class="mentorListContainer"
     >
       <h2>
         We do not have mentors yet
       </h2>
       <i
         data-testid="mentorRightArrow"
-        style={
-          Object {
-            "cursor": "pointer",
-            "fontSize": "3rem",
-            "position": "absolute",
-            "right": "6%",
-            "zIndex": "1",
-          }
-        }
+        style="position: absolute; z-index: 1; font-size: 3rem; right: 6%; cursor: pointer;"
       >
         <svg
           fill="currentColor"
           height="1em"
-          onClick={[Function]}
           stroke="currentColor"
-          strokeWidth="0"
-          style={
-            Object {
-              "color": undefined,
-            }
-          }
+          stroke-width="0"
           viewBox="0 0 16 16"
           width="1em"
           xmlns="http://www.w3.org/2000/svg"
@@ -179,39 +149,36 @@ Array [
     </div>
     <button
       name="signUp"
-      onClick={[Function]}
       type="button"
     >
       Register as a mentor
     </button>
-  </div>,
+  </div>
   <div
-    className="mainContainer"
+    class="mainContainer"
   >
     <h2>
       Start Your Journey Now!
     </h2>
     <div
-      className="buttonContainer"
+      class="buttonContainer"
     >
       <button
         name="signUp"
-        onClick={[Function]}
         type="button"
       >
         Sign up as a Student
       </button>
       <button
         name="signUp"
-        onClick={[Function]}
         type="button"
       >
         sign up as a mentor
       </button>
     </div>
-  </div>,
+  </div>
   <div
-    className="mainContainer"
+    class="mainContainer"
   >
     <button
       type="button"
@@ -219,7 +186,7 @@ Array [
       Open-School
     </button>
     <div
-      className="categories"
+      class="categories"
     >
       <h2>
         Categories
@@ -235,7 +202,7 @@ Array [
       </p>
     </div>
     <div
-      className="becomeMentor"
+      class="becomeMentor"
     >
       <h2>
         Become a Mentor
@@ -248,7 +215,7 @@ Array [
       </p>
     </div>
     <div
-      className="findUsOn"
+      class="findUsOn"
     >
       <h2>
         Find Us On
@@ -260,6 +227,6 @@ Array [
         Instagram
       </p>
     </div>
-  </div>,
-]
+  </div>
+</DocumentFragment>
 `;

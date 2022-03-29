@@ -46,26 +46,28 @@ const Homepage = () => {
   };
 
   useEffect(() => {
+    let cancel = false;
     if (listType === 'Mentor' || listType === '') {
       getMentors(`${GET_REAL_MENTORS_URL}page=${page}&size=4`)
         .then((data) => {
-          if (!data.errorMessage) {
-            /* setMentors(data.mentors.slice((page - 1) * 4, page * 4));
-            setMaxPage(data.totalPages); */
+          if (cancel) return;
+          if (!data.errorMessage && data.content.length > 0) {
             setMentors(data.content);
             setMaxPage(data.totalPages - 1);
-          } else setErrorMessage(data.errorMessage);
+          } else if (data.errorMessage) setErrorMessage(data.errorMessage);
         });
     } if (listType === 'Category' || listType === '') {
       getCategories(`${GET_MAIN_CATEGORIES_URL}page=${categoryPage}&size=6`)
         .then((data) => {
-          if (!data.errorMessage) {
-            // setCategories(data.categories.slice((categoryPage - 1) * 6, categoryPage * 6));
+          if (cancel) return;
+          if (!data.errorMessage && data.content.length > 0) {
             setCategories(data.content);
             setMaxCategoryPage(data.totalPages - 1);
-          } else setErrorMessage(data.errorMessage);
+          } else if (data.errorMessage) setErrorMessage(data.errorMessage);
         });
     }
+    // The return is to prevent memory leackage
+    return () => { cancel = true; };
   }, [page, categoryPage]);
 
   return (
