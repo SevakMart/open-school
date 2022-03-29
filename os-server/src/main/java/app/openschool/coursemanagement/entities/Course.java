@@ -1,6 +1,5 @@
 package app.openschool.coursemanagement.entities;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,12 +10,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table (name = "learning_path")
+@Table(name = "learning_path")
 public class Course {
 
   @Id
-  @GeneratedValue (strategy = GenerationType.IDENTITY)
-  @Column (nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(nullable = false)
   private Long id;
 
   @Column(name = "title", nullable = false)
@@ -25,9 +24,16 @@ public class Course {
   @Column(name = "description")
   private String description;
 
+  @Column(name = "rating")
+  private double rating;
+
   @ManyToOne
-  @JoinColumn (name = "category_id")
+  @JoinColumn(name = "category_id")
   private Category category;
+
+  @ManyToOne
+  @JoinColumn(name = "difficulty_id")
+  private Difficulty difficulty;
 
   public Course() {}
 
@@ -63,5 +69,13 @@ public class Course {
 
   public Category getCategory() {
     return category;
+  }
+
+  public double getRating() {
+    return rating;
+  }
+
+  public void setRating(double rating) {
+    this.rating = rating;
   }
 }

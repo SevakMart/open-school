@@ -1,11 +1,18 @@
 package app.openschool.coursemanagement.entities;
 
+import app.openschool.usermanagement.entities.User;
+
 import java.util.List;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -32,6 +39,17 @@ public class Category {
 
   @OneToMany (mappedBy = "category")
   private List<Course> courses;
+
+  @ManyToMany(cascade= CascadeType.ALL)
+  @JoinTable(name = "category_user",
+          joinColumns = {
+                  @JoinColumn(name="category_Id")
+          },
+          inverseJoinColumns = {
+                  @JoinColumn(name="user_id")
+          }
+  )
+  private Set<User> users;
 
   public Category() {}
 
