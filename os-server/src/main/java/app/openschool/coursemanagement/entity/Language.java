@@ -1,4 +1,4 @@
-package app.openschool.coursemanagement.entities;
+package app.openschool.coursemanagement.entity;
 
 import java.util.List;
 import javax.persistence.Column;

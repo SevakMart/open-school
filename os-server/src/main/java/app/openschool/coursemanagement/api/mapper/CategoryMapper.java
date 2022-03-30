@@ -1,7 +1,7 @@
 package app.openschool.coursemanagement.api.mapper;
 
 import app.openschool.coursemanagement.api.dto.CategoryDto;
-import app.openschool.coursemanagement.entities.Category;
+import app.openschool.coursemanagement.entity.Category;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.Page;

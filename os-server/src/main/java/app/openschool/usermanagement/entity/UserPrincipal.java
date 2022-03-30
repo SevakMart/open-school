@@ -1,4 +1,4 @@
-package app.openschool.usermanagement.entities;
+package app.openschool.usermanagement.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;

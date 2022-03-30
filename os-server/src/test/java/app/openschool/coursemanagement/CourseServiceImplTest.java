@@ -3,7 +3,12 @@ package app.openschool.coursemanagement;
 import static org.mockito.Mockito.when;
 
 import app.openschool.coursemanagement.api.CategoryGenerator;
-import app.openschool.coursemanagement.entities.Category;
+import app.openschool.coursemanagement.entity.Category;
+import app.openschool.coursemanagement.repository.CategoryRepository;
+import app.openschool.coursemanagement.repository.CourseRepository;
+import app.openschool.coursemanagement.service.CourseService;
+import app.openschool.coursemanagement.service.CourseServiceImpl;
+import app.openschool.usermanagement.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -22,12 +27,14 @@ import org.springframework.data.domain.Pageable;
 public class CourseServiceImplTest {
 
   @Mock private CategoryRepository categoryRepository;
+  @Mock private CourseRepository courseRepository;
+  @Mock private UserRepository userRepository;
 
   private CourseService courseService;
 
   @BeforeEach
   void setUp() {
-    courseService = new CourseServiceImpl(categoryRepository);
+    courseService = new CourseServiceImpl(categoryRepository, courseRepository, userRepository);
   }
 
   @Test

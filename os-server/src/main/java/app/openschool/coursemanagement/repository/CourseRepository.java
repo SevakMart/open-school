@@ -1,6 +1,6 @@
-package app.openschool.coursemanagement;
+package app.openschool.coursemanagement.repository;
 
-import app.openschool.coursemanagement.entities.Course;
+import app.openschool.coursemanagement.entity.Course;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

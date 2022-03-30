@@ -1,11 +1,13 @@
-package app.openschool.coursemanagement;
+package app.openschool.coursemanagement.service;
 
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.CourseDto;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
 import app.openschool.coursemanagement.api.mapper.CourseMapper;
-import app.openschool.coursemanagement.entities.Course;
-import app.openschool.usermanagement.UserRepository;
+import app.openschool.coursemanagement.entity.Course;
+import app.openschool.coursemanagement.repository.CategoryRepository;
+import app.openschool.coursemanagement.repository.CourseRepository;
+import app.openschool.usermanagement.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,11 +1,12 @@
-package app.openschool.usermanagement;
+package app.openschool.usermanagement.service;
 
 import app.openschool.usermanagement.api.dto.MentorDto;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
+import app.openschool.usermanagement.api.exceptions.EmailAlreadyExistException;
 import app.openschool.usermanagement.api.mapper.MentorMapper;
 import app.openschool.usermanagement.api.mapper.UserRegistrationMapper;
-import app.openschool.usermanagement.entities.User;
-import app.openschool.usermanagement.exceptions.EmailAlreadyExistException;
+import app.openschool.usermanagement.entity.User;
+import app.openschool.usermanagement.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

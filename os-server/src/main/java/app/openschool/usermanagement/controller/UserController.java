@@ -1,12 +1,12 @@
-package app.openschool.usermanagement;
+package app.openschool.usermanagement.controller;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import app.openschool.usermanagement.api.dto.MentorDto;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
 import app.openschool.usermanagement.api.dto.UserRegistrationHttpResponse;
-import app.openschool.usermanagement.entities.User;
+import app.openschool.usermanagement.entity.User;
+import app.openschool.usermanagement.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.Locale;
 import javax.validation.Valid;

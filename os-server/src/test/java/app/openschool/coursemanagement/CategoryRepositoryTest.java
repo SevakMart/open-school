@@ -2,7 +2,8 @@ package app.openschool.coursemanagement;
 
 import static org.springframework.test.util.AssertionErrors.assertNull;
 
-import app.openschool.coursemanagement.entities.Category;
+import app.openschool.coursemanagement.entity.Category;
+import app.openschool.coursemanagement.repository.CategoryRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

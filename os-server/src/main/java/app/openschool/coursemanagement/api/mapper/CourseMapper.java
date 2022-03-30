@@ -1,8 +1,8 @@
 package app.openschool.coursemanagement.api.mapper;
 
 import app.openschool.coursemanagement.api.dto.CourseDto;
-import app.openschool.coursemanagement.entities.Course;
-import app.openschool.coursemanagement.entities.Keyword;
+import app.openschool.coursemanagement.entity.Course;
+import app.openschool.coursemanagement.entity.Keyword;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

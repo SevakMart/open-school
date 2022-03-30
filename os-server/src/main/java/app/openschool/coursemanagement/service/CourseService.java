@@ -1,4 +1,4 @@
-package app.openschool.coursemanagement;
+package app.openschool.coursemanagement.service;
 
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.CourseDto;

@@ -3,8 +3,9 @@ package app.openschool.usermanagement;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import app.openschool.usermanagement.entities.Role;
-import app.openschool.usermanagement.entities.User;
+import app.openschool.usermanagement.entity.Role;
+import app.openschool.usermanagement.entity.User;
+import app.openschool.usermanagement.repository.UserRepository;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;

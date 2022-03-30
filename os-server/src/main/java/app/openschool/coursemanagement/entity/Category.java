@@ -1,6 +1,6 @@
-package app.openschool.coursemanagement.entities;
+package app.openschool.coursemanagement.entity;
 
-import app.openschool.usermanagement.entities.User;
+import app.openschool.usermanagement.entity.User;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;

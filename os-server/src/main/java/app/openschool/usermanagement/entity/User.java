@@ -1,6 +1,6 @@
-package app.openschool.usermanagement.entities;
+package app.openschool.usermanagement.entity;
 
-import app.openschool.coursemanagement.entities.Category;
+import app.openschool.coursemanagement.entity.Category;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

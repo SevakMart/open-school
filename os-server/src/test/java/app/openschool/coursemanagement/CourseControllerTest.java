@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import app.openschool.coursemanagement.api.CategoryGenerator;
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
+import app.openschool.coursemanagement.controller.CourseController;
+import app.openschool.coursemanagement.service.CourseService;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;

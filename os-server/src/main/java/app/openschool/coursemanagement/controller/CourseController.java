@@ -1,7 +1,8 @@
-package app.openschool.coursemanagement;
+package app.openschool.coursemanagement.controller;
 
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.CourseDto;
+import app.openschool.coursemanagement.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import org.springframework.data.domain.Page;
