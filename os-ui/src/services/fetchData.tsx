@@ -3,6 +3,7 @@ import { ERROR_MESSAGE } from '../constants/Strings';
 const handleError = () => {
   const fetchedResponse = new Response(JSON.stringify({
     errorMessage: ERROR_MESSAGE,
+
   }));
   return fetchedResponse;
 };

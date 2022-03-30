@@ -9,7 +9,7 @@ const CategoryCard = ({ title, logoPath }:CategoryType) => {
         <div className={logoContainer}>
           <img src={logoPath} alt={title} />
         </div>
-        <p data-testid="categoryTitle">{title}</p>
+        <p data-testid={title}>{title}</p>
       </div>
     </div>
   );

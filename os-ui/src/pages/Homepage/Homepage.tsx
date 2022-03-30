@@ -96,7 +96,7 @@ const Homepage = () => {
                 logoPath={category.logoPath}
               />
             )) : errorMessage ? <h2 data-testid="categoriesErrorMessage">{errorMessage}</h2>
-              : <h2>We do not have courses yet</h2>
+              : <h2 data-testid="emptyCategoryMessage">We do not have courses yet</h2>
           }
           {categoryPage < maxCategoryPage ? (
             <RightArrowIcon
@@ -137,7 +137,7 @@ const Homepage = () => {
                 linkedinPath={mentor.linkedinPath}
               />
             )) : errorMessage ? <h2 data-testid="mentorsErrorMessage">{errorMessage}</h2>
-              : <h2>We do not have mentors yet</h2>
+              : <h2 data-testid="emptyMentorMessage">We do not have mentors yet</h2>
           }
           {page < maxPage ? (
             <RightArrowIcon

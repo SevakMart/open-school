@@ -88,7 +88,9 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
     <div
       class="categoriesListContainer"
     >
-      <h2>
+      <h2
+        data-testid="emptyCategoryMessage"
+      >
         We do not have courses yet
       </h2>
       <i
@@ -125,7 +127,9 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
     <div
       class="mentorListContainer"
     >
-      <h2>
+      <h2
+        data-testid="emptyMentorMessage"
+      >
         We do not have mentors yet
       </h2>
       <i

@@ -28,18 +28,18 @@ const MentorCard = ({
             <img src={userImgPath} alt="mentor_avatar" />
           </div>
           <div className={mentorInfo}>
-            <h3>
+            <h3 data-testid={`${name} ${surname}`}>
               {name}
               {' '}
               {surname}
             </h3>
-            <p>{professionName}</p>
-            <p>{companyName}</p>
+            <p data-testid={professionName}>{professionName}</p>
+            <p data-testid={companyName}>{companyName}</p>
           </div>
         </div>
         <div className={mentorExtraInfo}>
           <BookIcon />
-          <p>
+          <p data-testid={courseCount}>
             {courseCount}
           </p>
         </div>
