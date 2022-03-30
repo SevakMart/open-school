@@ -10,23 +10,23 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "difficulty")
-public class Difficulty {
+@Table(name = "language")
+public class Language {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false)
   private Integer id;
 
-  @Column(name = "title", nullable = false)
+  @Column(name = "language_name", nullable = false)
   private String title;
 
-  @OneToMany(mappedBy = "difficulty")
+  @OneToMany(mappedBy = "language")
   private List<Course> courses;
 
-  public Difficulty() {}
+  public Language() {}
 
-  public Difficulty(String title) {
+  public Language(String title) {
     this.title = title;
   }
 

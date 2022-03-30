@@ -1,11 +1,15 @@
 package app.openschool.coursemanagement.entities;
 
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -25,7 +29,7 @@ public class Course {
   private String description;
 
   @Column(name = "rating")
-  private double rating;
+  private Double rating;
 
   @ManyToOne
   @JoinColumn(name = "category_id")
@@ -34,6 +38,17 @@ public class Course {
   @ManyToOne
   @JoinColumn(name = "difficulty_id")
   private Difficulty difficulty;
+
+  @ManyToOne
+  @JoinColumn(name = "language_id")
+  private Language language;
+
+  @ManyToMany(cascade = CascadeType.ALL)
+  @JoinTable(
+      name = "keyword_learning_path",
+      joinColumns = {@JoinColumn(name = "learning_path_id")},
+      inverseJoinColumns = {@JoinColumn(name = "keyword_id")})
+  private Set<Keyword> keywords;
 
   public Course() {}
 
@@ -71,11 +86,35 @@ public class Course {
     return category;
   }
 
-  public double getRating() {
+  public Double getRating() {
     return rating;
   }
 
-  public void setRating(double rating) {
+  public void setRating(Double rating) {
     this.rating = rating;
+  }
+
+  public Difficulty getDifficulty() {
+    return difficulty;
+  }
+
+  public void setDifficulty(Difficulty difficulty) {
+    this.difficulty = difficulty;
+  }
+
+  public Language getLanguage() {
+    return language;
+  }
+
+  public void setLanguage(Language language) {
+    this.language = language;
+  }
+
+  public Set<Keyword> getKeywords() {
+    return keywords;
+  }
+
+  public void setKeywords(Set<Keyword> keywords) {
+    this.keywords = keywords;
   }
 }

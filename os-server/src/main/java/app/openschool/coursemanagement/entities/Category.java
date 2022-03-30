@@ -1,7 +1,6 @@
 package app.openschool.coursemanagement.entities;
 
 import app.openschool.usermanagement.entities.User;
-
 import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -17,12 +16,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table (name = "category")
+@Table(name = "category")
 public class Category {
 
   @Id
-  @GeneratedValue (strategy = GenerationType.IDENTITY)
-  @Column (nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(nullable = false)
   private Long id;
 
   @Column(nullable = false)
@@ -37,18 +36,14 @@ public class Category {
   @Column(name = "sub_category_count")
   private Integer subCategoryCount;
 
-  @OneToMany (mappedBy = "category")
+  @OneToMany(mappedBy = "category")
   private List<Course> courses;
 
-  @ManyToMany(cascade= CascadeType.ALL)
-  @JoinTable(name = "category_user",
-          joinColumns = {
-                  @JoinColumn(name="category_Id")
-          },
-          inverseJoinColumns = {
-                  @JoinColumn(name="user_id")
-          }
-  )
+  @ManyToMany(cascade = CascadeType.ALL)
+  @JoinTable(
+      name = "category_user",
+      joinColumns = {@JoinColumn(name = "category_id")},
+      inverseJoinColumns = {@JoinColumn(name = "user_id")})
   private Set<User> users;
 
   public Category() {}
