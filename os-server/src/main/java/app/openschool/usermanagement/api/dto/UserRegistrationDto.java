@@ -24,7 +24,7 @@ public class UserRegistrationDto {
   @Pattern(regexp = PASSWORD_PATTERN, message = PASSWORD_ERROR_MASSAGE)
   private String password;
 
-  private Set<Integer> categoryIdSet;
+  private Set<Long> categoryIdSet;
 
   public UserRegistrationDto() {}
 
@@ -58,11 +58,11 @@ public class UserRegistrationDto {
     this.password = password;
   }
 
-  public Set<Integer> getCategoryIdSet() {
+  public Set<Long> getCategoryIdSet() {
     return categoryIdSet;
   }
 
-  public void setCategoryIdSet(Set<Integer> categoryIdSet) {
+  public void setCategoryIdSet(Set<Long> categoryIdSet) {
     this.categoryIdSet = categoryIdSet;
   }
 }

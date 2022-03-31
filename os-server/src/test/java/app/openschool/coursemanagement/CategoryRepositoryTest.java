@@ -25,9 +25,9 @@ class CategoryRepositoryTest {
   void findCategoriesByParentCategoryId() {
     Category category = new Category("JS", null);
     Category savedCategory = categoryRepository.save(category);
-    categoryRepository.save(new Category("JS-React", 1));
+    categoryRepository.save(new Category("JS-React", 1L));
 
-    List<Category> subcategories = categoryRepository.findCategoriesByParentCategoryId(1);
+    List<Category> subcategories = categoryRepository.findCategoriesByParentCategoryId(1L);
 
     assertThat(savedCategory.getId()).isEqualTo(subcategories.get(0).getParentCategoryId());
   }
@@ -55,7 +55,7 @@ class CategoryRepositoryTest {
   void findCategoryById() {
     Category category = new Category("JS", null);
     categoryRepository.save(category);
-    Category fetchedCategory = categoryRepository.findCategoryById(1);
+    Category fetchedCategory = categoryRepository.findCategoryById(1L);
 
     assertThat(category.getId()).isEqualTo(fetchedCategory.getId());
   }

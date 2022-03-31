@@ -20,7 +20,7 @@ public class UserRegistrationMapper {
             passwordEncoder.encode(userDto.getPassword()),
             new Role(1, ROLE_USER));
 
-    Set<Integer> categoryIdSet = userDto.getCategoryIdSet();
+    Set<Long> categoryIdSet = userDto.getCategoryIdSet();
     if (categoryIdSet != null) {
       user.setCategories(CategoryMapper.categoryIdSetToCategorySet(categoryIdSet));
     }

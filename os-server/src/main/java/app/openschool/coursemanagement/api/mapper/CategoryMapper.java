@@ -31,7 +31,7 @@ public class CategoryMapper {
     return new CategoryDtoForRegistration(category.getId(), category.getTitle());
   }
 
-  public static Set<Category> categoryIdSetToCategorySet(Set<Integer> categoryIdSet) {
+  public static Set<Category> categoryIdSetToCategorySet(Set<Long> categoryIdSet) {
     return categoryIdSet.stream().map(Category::new).collect(Collectors.toSet());
   }
 }

@@ -16,13 +16,13 @@ public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false)
-  private Integer id;
+  private Long id;
 
   @Column(nullable = false)
   private String title;
 
   @Column(name = "parent_category_id")
-  private Integer parentCategoryId;
+  private Long parentCategoryId;
 
   @Column(name = "logo_path")
   private String logoPath;
@@ -35,20 +35,20 @@ public class Category {
 
   public Category() {}
 
-  public Category(Integer id) {
+  public Category(Long id) {
     this.id = id;
   }
 
-  public Category(String title, Integer parentCategoryId) {
+  public Category(String title,Long parentCategoryId) {
     this.title = title;
     this.parentCategoryId = parentCategoryId;
   }
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -80,11 +80,11 @@ public class Category {
     this.logoPath = logoPath;
   }
 
-  public void setParentCategoryId(Integer parentCategoryId) {
+  public void setParentCategoryId(Long parentCategoryId) {
     this.parentCategoryId = parentCategoryId;
   }
 
-  public Integer getParentCategoryId() {
+  public Long getParentCategoryId() {
     return parentCategoryId;
   }
 }

@@ -2,21 +2,21 @@ package app.openschool.coursemanagement.api.dto;
 
 public class CategoryDtoForRegistration {
 
-  private Integer id;
+  private Long id;
   private String title;
 
   public CategoryDtoForRegistration() {}
 
-  public CategoryDtoForRegistration(Integer id, String title) {
+  public CategoryDtoForRegistration(Long id, String title) {
     this.id = id;
     this.title = title;
   }
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

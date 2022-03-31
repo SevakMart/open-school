@@ -41,31 +41,31 @@ class CourseServiceImplTest {
   void mapAllCategoriesToSubcategories() {
     List<Category> categories = new ArrayList<>();
     Category parentCategory1 = new Category("Java", null);
-    parentCategory1.setId(1);
+    parentCategory1.setId(1L);
     Category parentCategory2 = new Category("JS", null);
-    parentCategory2.setId(2);
+    parentCategory2.setId(2L);
     categories.add(parentCategory1);
     categories.add(parentCategory2);
     List<Category> subcategories1 = new ArrayList<>();
-    subcategories1.add(new Category("Collections", 1));
-    subcategories1.add(new Category("Generics", 1));
+    subcategories1.add(new Category("Collections", 1L));
+    subcategories1.add(new Category("Generics", 1L));
     List<Category> subcategories2 = new ArrayList<>();
-    subcategories2.add(new Category("Angular-JS", 2));
-    subcategories2.add(new Category("React-JS", 2));
+    subcategories2.add(new Category("Angular-JS", 2L));
+    subcategories2.add(new Category("React-JS", 2L));
 
     List<Category> categoriesSearchedByJs = new ArrayList<>();
     List<Category> categoriesSearchedByAng = new ArrayList<>();
     categoriesSearchedByJs.add(parentCategory2);
-    categoriesSearchedByAng.add(new Category("Angular-JS", 2));
+    categoriesSearchedByAng.add(new Category("Angular-JS", 2L));
 
     given(categoryRepository.findCategoriesByParentCategoryId(null)).willReturn(categories);
     given(categoryRepository.findByTitleIgnoreCaseStartingWith("Js"))
         .willReturn(categoriesSearchedByJs);
     given(categoryRepository.findByTitleIgnoreCaseStartingWith("ang"))
         .willReturn(categoriesSearchedByAng);
-    given(categoryRepository.findCategoryById(2)).willReturn(parentCategory2);
-    given(categoryRepository.findCategoriesByParentCategoryId(1)).willReturn(subcategories1);
-    given(categoryRepository.findCategoriesByParentCategoryId(2)).willReturn(subcategories2);
+    given(categoryRepository.findCategoryById(2L)).willReturn(parentCategory2);
+    given(categoryRepository.findCategoriesByParentCategoryId(1L)).willReturn(subcategories1);
+    given(categoryRepository.findCategoriesByParentCategoryId(2L)).willReturn(subcategories2);
 
     Map<String, List<CategoryDtoForRegistration>> categoryMap1 =
         courseService.findCategoriesByTitle(" ");

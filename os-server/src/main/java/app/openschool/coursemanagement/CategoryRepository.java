@@ -9,14 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Integer> {
+public interface CategoryRepository extends JpaRepository<Category, Long> {
 
   @Query(value = "SELECT * FROM category WHERE parent_category_id IS NULL", nativeQuery = true)
   Page<Category> findAllCategories(Pageable pageable);
 
-  List<Category> findCategoriesByParentCategoryId(Integer id);
+  List<Category> findCategoriesByParentCategoryId(Long id);
 
-  Category findCategoryById(Integer id);
+  Category findCategoryById(Long id);
 
   List<Category> findByTitleIgnoreCaseStartingWith(String prefix);
 }

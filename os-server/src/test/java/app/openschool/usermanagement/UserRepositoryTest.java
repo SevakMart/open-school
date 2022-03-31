@@ -30,7 +30,7 @@ class UserRepositoryTest {
   void findUserByEmail() {
     String email = "test@gmail.com";
     Set<Category> categories = new HashSet<>();
-    Category category = new Category("Java", 2);
+    Category category = new Category("Java", 2L);
     categories.add(category);
     User user = new User("Test", email, "1234$dhjsHH*", categories, new Role(1, "STUDENT"));
     User registeredUser = userRepository.save(user);
