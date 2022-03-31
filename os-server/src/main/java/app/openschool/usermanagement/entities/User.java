@@ -1,6 +1,5 @@
 package app.openschool.usermanagement.entities;
 
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,6 +47,7 @@ public class User {
   @Column(name = "linkedin_path")
   private String linkedinPath;
 
+  //  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "role_id", nullable = false)
   private Role role;

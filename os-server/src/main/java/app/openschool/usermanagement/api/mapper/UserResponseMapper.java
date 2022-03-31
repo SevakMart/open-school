@@ -7,6 +7,6 @@ public class UserResponseMapper {
 
   public static UserResponse toUserResponse(User user) {
     return new UserResponse(user.getName(), user.getSurname(), user.getProfessionName(),
-        user.getCourseCount(), user.getUserImgPath(),user.getRole().getType(),user.getCompany());
+        user.getCourseCount(), user.getUserImgPath(), user.getRole().getType(), user.getCompany());
   }
 }

@@ -15,5 +15,5 @@ public interface UserService {
 
   Page<MentorDto> findAllMentors(Pageable pageable);
 
-  UserAuthResponse login (User user);
+  UserAuthResponse login(User user);
 }

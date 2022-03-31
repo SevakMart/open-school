@@ -1,5 +1,7 @@
 package app.openschool.usermanagement;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 import app.openschool.usermanagement.api.dto.MentorDto;
 import app.openschool.usermanagement.api.dto.UserAuthRequest;
 import app.openschool.usermanagement.api.dto.UserAuthResponse;
@@ -7,6 +9,8 @@ import app.openschool.usermanagement.api.dto.UserRegistrationDto;
 import app.openschool.usermanagement.api.dto.UserRegistrationHttpResponse;
 import app.openschool.usermanagement.entities.User;
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.Locale;
+import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -18,11 +22,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import javax.validation.Valid;
-import java.util.Locale;
-
-import static org.springframework.http.HttpStatus.CREATED;
-
 
 @RestController
 @RequestMapping("/api/v1")

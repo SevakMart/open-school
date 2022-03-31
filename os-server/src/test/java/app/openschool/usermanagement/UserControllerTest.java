@@ -5,6 +5,9 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import app.openschool.common.security.JwtAuthenticationEntryPoint;
+import app.openschool.usermanagement.api.dto.UserAuthRequest;
+import app.openschool.usermanagement.api.dto.UserAuthResponse;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
 import app.openschool.usermanagement.entities.User;
 import org.junit.jupiter.api.Test;
@@ -20,9 +23,11 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(UserController.class)
 class UserControllerTest {
 
-  @Autowired private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-  @MockBean private UserService userService;
+  @MockBean
+  private UserService userService;
 
   @Test
   void registerValidUser() throws Exception {
@@ -58,5 +63,56 @@ class UserControllerTest {
         .perform(
             post("/api/v1/register").contentType(MediaType.APPLICATION_JSON).content(requestBody))
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void loginValidPasswordAndEmail() throws Exception {
+    when(userService.login(any(User.class))).thenReturn(new UserAuthResponse());
+
+    String requestBody =
+        "{\"firstName\": \"userName\" ,"
+            + " \"email\": \"email@mail.com\" ,"
+            + " \"password\": \"Password_1\" }";
+
+    mockMvc
+        .perform(
+            post("/api/v1/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void loginInvalidPassword() throws Exception {
+    when(userService.login(any(User.class))).thenReturn(new UserAuthResponse());
+
+    String requestBody =
+        "{\"firstName\": \"userName\" ,"
+            + " \"email\": \"email@mail.com\" ,"
+            + " \"password\": \"\" }";
+
+    mockMvc
+        .perform(
+            post("/api/v1/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void loginInvalidEmail() throws Exception {
+    when(userService.login(any(User.class))).thenReturn(new UserAuthResponse());
+
+    String requestBody =
+        "{\"firstName\": \"userName\" ,"
+            + " \"email\": \"\" ,"
+            + " \"password\": \"Password_1\" }";
+
+    mockMvc
+        .perform(
+            post("/api/v1/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+        .andExpect(status().isUnauthorized());
   }
 }

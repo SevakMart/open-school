@@ -7,5 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class OpenSchoolApplicationTest {
 
   @Test
-  void contextLoads() {}
+  void contextLoads() {
+  }
 }

@@ -1,7 +1,7 @@
 package app.openschool.usermanagement.api.dto;
 
 import app.openschool.usermanagement.entities.Company;
-import app.openschool.usermanagement.entities.Role;
+import java.util.Objects;
 
 public class UserResponse {
 
@@ -10,17 +10,17 @@ public class UserResponse {
   private String professionName;
   private Integer courseCount;
   private String userImgPath;
-  //  private Role role;
   private String roleType;
   private Company company;
 
+  public UserResponse() {
+  }
 
   public UserResponse(String name,
                       String surname,
                       String professionName,
                       Integer courseCount,
                       String userImgPath,
-//                      Role role,
                       String roleType,
                       Company company) {
     this.name = name;
@@ -28,7 +28,6 @@ public class UserResponse {
     this.professionName = professionName;
     this.courseCount = courseCount;
     this.userImgPath = userImgPath;
-//    this.role = role;
     this.roleType = roleType;
     this.company = company;
 
@@ -89,5 +88,28 @@ public class UserResponse {
 
   public void setCompany(Company company) {
     this.company = company;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    UserResponse that = (UserResponse) o;
+    return Objects.equals(name, that.name)
+        && Objects.equals(surname, that.surname)
+        && Objects.equals(professionName, that.professionName)
+        && Objects.equals(courseCount, that.courseCount)
+        && Objects.equals(userImgPath, that.userImgPath)
+        && Objects.equals(roleType, that.roleType)
+        && Objects.equals(company, that.company);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, surname, professionName, courseCount, userImgPath, roleType, company);
   }
 }

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -55,12 +54,15 @@ public class JwtTokenProvider {
     JWTVerifier verifier = getJwtVerifier();
     return verifier.verify(token).getClaim(AUTHORITIES).asString();
   }
-//this method has been changed
-    public List<GrantedAuthority> getAuthorities(String token) {
-//    String[] claims = getClaimsFromToken(token);
-//    return Arrays.stream(claims).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+
+  //this method has been changed
+  public List<GrantedAuthority> getAuthorities(String token) {
+    //  String[] claims = getClaimsFromToken(token);
+    //  return Arrays.stream(claims).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     String claims = getClaimsFromToken(token);
-    return Arrays.stream(new String []{claims}).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    return Arrays.stream(new String[]{claims})
+        .map(SimpleGrantedAuthority::new)
+        .collect(Collectors.toList());
   }
 
   private JWTVerifier getJwtVerifier() {
