@@ -9,6 +9,7 @@ import app.openschool.coursemanagement.api.CategoryGenerator;
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,11 +25,21 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(CourseController.class)
-public class CourseControllerTest {
+class CourseControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
   @MockBean private CourseService courseService;
+
+  @Test
+  void findCategoriesByTitle() throws Exception {
+
+    when(courseService.findCategoriesByTitle(" ")).thenReturn(new HashMap<>());
+
+    mockMvc
+        .perform(get("/api/v1/category-search").queryParam("title", " "))
+        .andExpect(status().isForbidden());
+  }
 
   @Test
   void findAllCategories() throws Exception {

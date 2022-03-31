@@ -204,7 +204,6 @@ ENGINE = InnoDB;
 
 USE `open_school_db` ;
 
-
 INSERT INTO user_role (role_type) VALUES ('STUDENT');
 INSERT INTO user_role (role_type) VALUES ('ADMIN');
 INSERT INTO user_role (role_type) VALUES ('MENTOR');
