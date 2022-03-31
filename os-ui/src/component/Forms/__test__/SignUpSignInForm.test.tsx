@@ -5,6 +5,7 @@ import Form from '../SignUpSignInForm';
 import {
   INVALID_EMAIL_ERROR_MESSAGE, INVALID_PASSWORD_ERROR_MESSAGE,
   INVALID_FULL_NAME_ERROR_MESSAGE, FULL_NAME_TOO_SHORT, EMAIL_TOO_SHORT, PASSWORD_TOO_SHORT,
+  EMAIL_REQUIRED, PASSWORD_REQUIRED,
 } from '../../../constants/Strings';
 
 describe('Create tests for From component', () => {
@@ -93,6 +94,102 @@ describe('Create tests for From component', () => {
     const passwordErrorMessage = screen.queryByText(INVALID_PASSWORD_ERROR_MESSAGE);
 
     expect(fullNameErrorMessage).not.toBeInTheDocument();
+    expect(emailErrorMessage).not.toBeInTheDocument();
+    expect(passwordErrorMessage).not.toBeInTheDocument();
+  });
+});
+describe('Create tests for sign in form component', () => {
+  test('Create a snapshot test', () => {
+    const { asFragment } = render(<Form formType="signIn" />);
+    expect(asFragment()).toMatchSnapshot();
+  });
+  test('Verify if the full name input field is absent in sign in form', () => {
+    render(<Form formType="signIn" />);
+    const fullNameInputField = screen.queryByPlaceholderText('Fill in first name');
+    expect(fullNameInputField).toBeNull();
+  });
+  test('Test sign In form error message:absent email', () => {
+    render(<Form formType="signIn" />);
+    const passwordInputField = screen.queryByPlaceholderText('Enter your password');
+    const signInButton = screen.queryByTestId('signInButton');
+
+    userEvent.type(passwordInputField as HTMLInputElement, 'hello');
+    userEvent.click(signInButton as HTMLButtonElement);
+
+    const emailErrorMessage = screen.queryByTestId('emailErrorField');
+    expect(emailErrorMessage).toBeInTheDocument();
+    expect(emailErrorMessage).toHaveTextContent(EMAIL_REQUIRED);
+  });
+  test('Test sign In form error message:absent password', () => {
+    render(<Form formType="signIn" />);
+    const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
+    const signInButton = screen.queryByTestId('signInButton');
+
+    userEvent.type(emailInputField as HTMLInputElement, 'hello@hello.com');
+    userEvent.click(signInButton as HTMLButtonElement);
+
+    const passwordErrorMessage = screen.queryByTestId('passwordErrorField');
+    expect(passwordErrorMessage).toBeInTheDocument();
+    expect(passwordErrorMessage).toHaveTextContent(PASSWORD_REQUIRED);
+  });
+  test('Test sign In form error message:absent email & password', () => {
+    render(<Form formType="signIn" />);
+    const signInButton = screen.queryByTestId('signInButton');
+
+    userEvent.click(signInButton as HTMLButtonElement);
+
+    const passwordErrorMessage = screen.queryByTestId('passwordErrorField');
+    const emailErrorMessage = screen.queryByTestId('emailErrorField');
+
+    expect(emailErrorMessage).toBeInTheDocument();
+    expect(emailErrorMessage).toHaveTextContent(EMAIL_REQUIRED);
+    expect(passwordErrorMessage).toBeInTheDocument();
+    expect(passwordErrorMessage).toHaveTextContent(PASSWORD_REQUIRED);
+  });
+  test('Test sign In form error message:invalid email', () => {
+    render(<Form formType="signIn" />);
+    const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
+    const passwordInputField = screen.queryByPlaceholderText('Enter your password');
+    const signInButton = screen.queryByTestId('signInButton');
+
+    userEvent.type(emailInputField as HTMLInputElement, 'hello');
+    userEvent.type(passwordInputField as HTMLInputElement, 'hello');
+    userEvent.click(signInButton as HTMLButtonElement);
+
+    const emailErrorMessage = screen.queryByTestId('emailErrorField');
+    expect(emailErrorMessage).toBeInTheDocument();
+    expect(emailErrorMessage).toHaveTextContent(INVALID_EMAIL_ERROR_MESSAGE);
+  });
+  test('Test sign In form error message:invalid email & absent password', () => {
+    render(<Form formType="signIn" />);
+    const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
+    const signInButton = screen.queryByTestId('signInButton');
+
+    userEvent.type(emailInputField as HTMLInputElement, 'hello');
+    userEvent.click(signInButton as HTMLButtonElement);
+
+    const emailErrorMessage = screen.queryByTestId('emailErrorField');
+    const passwordErrorMessage = screen.queryByTestId('passwordErrorField');
+
+    expect(emailErrorMessage).toBeInTheDocument();
+    expect(emailErrorMessage).toHaveTextContent(INVALID_EMAIL_ERROR_MESSAGE);
+    expect(passwordErrorMessage).toBeInTheDocument();
+    expect(passwordErrorMessage).toHaveTextContent(PASSWORD_REQUIRED);
+  });
+
+  test('Test sign In form error message:valid email & password', () => {
+    render(<Form formType="signIn" />);
+    const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
+    const passwordInputField = screen.queryByPlaceholderText('Enter your password');
+    const signInButton = screen.queryByTestId('signInButton');
+
+    userEvent.type(emailInputField as HTMLInputElement, 'hello@hello.com');
+    userEvent.type(passwordInputField as HTMLInputElement, 'hello');
+    userEvent.click(signInButton as HTMLButtonElement);
+
+    const passwordErrorMessage = screen.queryByTestId('passwordErrorField');
+    const emailErrorMessage = screen.queryByTestId('emailErrorField');
+
     expect(emailErrorMessage).not.toBeInTheDocument();
     expect(passwordErrorMessage).not.toBeInTheDocument();
   });
