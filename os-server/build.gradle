@@ -33,15 +33,14 @@ dependencies {
     //open api
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
 
-
-
-
+    // apache commons-lang3
+    implementation 'org.apache.commons:commons-lang3:3.0'
 
 }
 
 test {
     useJUnitPlatform()
-    environment "SPRING_PROFILES_ACTIVE","test"
+    environment "SPRING_PROFILES_ACTIVE", "test"
 }
 
 checkstyle {

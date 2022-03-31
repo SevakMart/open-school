@@ -6,9 +6,3 @@ spring:
     password: open-school-password
   jpa:
     show-sql: true
-
-
-
-
-
-
