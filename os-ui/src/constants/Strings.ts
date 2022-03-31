@@ -34,3 +34,5 @@ export const INVALID_PASSWORD_ERROR_MESSAGE = 'Password should be at least 8 cha
 export const FULL_NAME_TOO_SHORT = 'full name is too short';
 export const EMAIL_TOO_SHORT = 'email is too short';
 export const PASSWORD_TOO_SHORT = 'password is too short';
+export const PASSWORD_REQUIRED = 'password is required';
+export const EMAIL_REQUIRED = 'email is required';

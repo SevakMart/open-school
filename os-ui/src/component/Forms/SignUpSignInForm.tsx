@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import HiddenIcon from '../../icons/Hidden';
 import VisibileIcon from '../../icons/Visibility';
 import { validateSignUpForm } from '../../helpers/SignUpFormValidate';
+import { validateSignInForm } from '../../helpers/SignInFormValidate';
 import { SIGN_UP, SIGN_IN, REGISTRATION_URL } from '../../constants/Strings';
 import { register } from '../../services/register';
 import { RegistrationFormType } from '../../types/RegistartionFormType';
@@ -30,6 +31,13 @@ const Form = ({ formType }:{formType:string}) => {
       setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
       setFormValues({ firstName: '', email: '', password: '' });
     } else setErrorFormValue(validateSignUpForm(formValues));
+  };
+
+  const handleSignInForm = () => {
+    const { fullNameError, emailError, passwordError } = validateSignInForm(formValues);
+    if (!fullNameError && !emailError && !passwordError) {
+      console.log('Your form will be authenticated');
+    } else setErrorFormValue(validateSignInForm(formValues));
   };
 
   useEffect(() => {
@@ -103,7 +111,7 @@ const Form = ({ formType }:{formType:string}) => {
       </div>
       <p>Forgot Password?</p>
       {formType === 'signUp' ? <button type="button" data-testid="signUpButton" onClick={handleSubmitForm}>{SIGN_UP}</button>
-        : <button type="submit">{SIGN_IN}</button>}
+        : <button type="button" data-testid="signInButton" onClick={handleSignInForm}>{SIGN_IN}</button>}
     </>
   );
 };

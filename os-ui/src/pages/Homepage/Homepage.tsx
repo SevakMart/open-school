@@ -13,6 +13,7 @@ import { getMentors } from '../../services/getMentors';
 import { getCategories } from '../../services/getCategories';
 import { GET_REAL_MENTORS_URL, GET_MAIN_CATEGORIES_URL } from '../../constants/Strings';
 import SignUp from '../../component/SignUp/SignUp';
+import SignIn from '../../component/SignIn/SignIn';
 
 const Homepage = () => {
   const [mentors, setMentors] = useState<MentorType[]>([]);
@@ -159,7 +160,11 @@ const Homepage = () => {
         </div>
       </div>
       <Footer />
-      {isOpen && clickedButtonType === 'signUp' ? <SignUp handleSignUpClicks={handleButtonClick} /> : null}
+      {isOpen && clickedButtonType === 'signUp'
+        ? <SignUp handleSignUpClicks={handleButtonClick} />
+        : isOpen && clickedButtonType === 'signIn'
+          ? <SignIn handleSignInClicks={handleButtonClick} />
+          : null}
     </>
   );
 };
