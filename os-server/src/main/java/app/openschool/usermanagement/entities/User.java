@@ -1,12 +1,15 @@
 package app.openschool.usermanagement.entities;
 
-import java.util.Objects;
+import app.openschool.coursemanagement.entities.Category;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -56,7 +59,23 @@ public class User {
   @JoinColumn(name = "company_id")
   private Company company;
 
+  @ManyToMany
+  @JoinTable(
+      name = "category_user",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "category_id")})
+  private Set<Category> categories;
+
   public User() {}
+
+  public User(
+      String firstName, String email, String password, Set<Category> categories, Role role) {
+    this.name = firstName;
+    this.email = email;
+    this.password = password;
+    this.categories = categories;
+    this.role = role;
+  }
 
   public User(String firstName, String email, String password, Role role) {
     this.name = firstName;
@@ -76,7 +95,16 @@ public class User {
     User user = (User) o;
     return name.equals(user.name)
         && email.equals(user.email)
-        && role.getId().equals(user.role.getId());
+        && role.getId().equals(user.role.getId())
+        && categories.size() == (user.categories.size());
+  }
+
+  public Set<Category> getCategories() {
+    return categories;
+  }
+
+  public void setCategories(Set<Category> categories) {
+    this.categories = categories;
   }
 
   public Role getRole() {
