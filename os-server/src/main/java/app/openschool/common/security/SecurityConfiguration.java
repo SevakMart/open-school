@@ -16,11 +16,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@Profile({"prod", "local", "test"})
+@Profile({"local", "test"})
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private static final String[] PUBLIC_URLS = {
-      "/static/**", "/index.html", "/", "/api/v1/register", "/api/v1/login", "/h2/**"
+    "/static/**",
+    "/index.html",
+    "/",
+    "/api/v1/register",
+    "/h2/**",
+    "/open-school-api",
+    "/swagger-ui/**",
+    "/v3/api-docs/**",
+    "/api/v1/mentors",
+    "/api/v1/categories",
   };
 
   private final UserDetailsService userDetailsService;

@@ -20,7 +20,6 @@ class UserRegistrationMapperTest {
     User user = new User(name, email, password, new Role(1, "STUDENT"));
     UserRegistrationDto userDto = new UserRegistrationDto(name, email, password);
     User mappedUser = UserRegistrationMapper.userRegistrationDtoToUser(userDto, passwordEncoder);
-
     assertThat(user).isEqualTo(mappedUser);
   }
 }
