@@ -39,7 +39,7 @@ public class Category {
     this.id = id;
   }
 
-  public Category(String title,Long parentCategoryId) {
+  public Category(String title, Long parentCategoryId) {
     this.title = title;
     this.parentCategoryId = parentCategoryId;
   }
