@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Make unit tests of Navbar component Create a snapshot test 1`] = `
+<DocumentFragment>
+  <nav
+    class="navContainer"
+  >
+    <h2>
+      Open-School
+    </h2>
+    <div
+      class="navMainContent"
+    >
+      <div
+        class="categoriesMentors"
+      >
+        <p>
+          Explore Categories
+        </p>
+        <p>
+          Mentors
+        </p>
+      </div>
+      <div
+        class="buttonContent"
+      >
+        <button
+          type="button"
+        >
+          Become a mentor
+        </button>
+        <button
+          type="button"
+        >
+          Sign In
+        </button>
+      </div>
+    </div>
+  </nav>
+</DocumentFragment>
+`;
