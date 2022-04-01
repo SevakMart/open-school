@@ -16,7 +16,7 @@ public class Language {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false)
-  private Integer id;
+  private Long id;
 
   @Column(name = "language_name", nullable = false)
   private String title;
@@ -30,7 +30,7 @@ public class Language {
     this.title = title;
   }
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
@@ -48,5 +48,9 @@ public class Language {
 
   public void setCourses(List<Course> courses) {
     this.courses = courses;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 }

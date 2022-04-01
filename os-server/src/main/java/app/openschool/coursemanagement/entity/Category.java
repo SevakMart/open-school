@@ -91,4 +91,12 @@ public class Category {
   public void setParentCategoryId(Integer parentCategoryId) {
     this.parentCategoryId = parentCategoryId;
   }
+
+  public void setCourses(List<Course> courses) {
+    this.courses = courses;
+  }
+
+  public void setUsers(Set<User> users) {
+    this.users = users;
+  }
 }

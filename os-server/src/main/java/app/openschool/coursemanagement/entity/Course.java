@@ -117,4 +117,10 @@ public class Course {
   public void setKeywords(Set<Keyword> keywords) {
     this.keywords = keywords;
   }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+
 }

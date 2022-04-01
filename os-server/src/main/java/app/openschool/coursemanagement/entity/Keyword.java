@@ -56,4 +56,8 @@ public class Keyword {
   public void setCourses(Set<Course> courses) {
     this.courses = courses;
   }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 }
