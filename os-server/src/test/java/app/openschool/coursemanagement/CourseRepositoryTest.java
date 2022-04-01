@@ -1,6 +1,7 @@
 package app.openschool.coursemanagement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 import app.openschool.coursemanagement.api.CategoryGenerator;
 import app.openschool.coursemanagement.entity.Category;
@@ -24,8 +25,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 @DataJpaTest
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 public class CourseRepositoryTest {
   @Autowired CategoryRepository categoryRepository;
   @Autowired UserRepository userRepository;
@@ -37,6 +40,28 @@ public class CourseRepositoryTest {
 
   @BeforeEach
   public void setup() {
+
+    for (long i = 1L; i < 7L; i++) {
+      Course course = new Course();
+      course.setId(i);
+      course.setTitle("Medium");
+      course.setDescription("AAA");
+      course.setRating(5.5);
+      Difficulty difficulty = new Difficulty();
+      difficulty.setId(1L);
+      difficulty.setTitle("Initial");
+      Language language = new Language();
+      language.setId(1L);
+      language.setTitle("English");
+      Category category = CategoryGenerator.generateCategory();
+      course.setDifficulty(difficulty);
+      course.setLanguage(language);
+      course.setCategory(category);
+      difficultyRepository.save(difficulty);
+      languageRepository.save(language);
+      categoryRepository.save(category);
+      courseRepository.save(course);
+    }
     User user = new User();
     user.setName("John");
     user.setSurname("Smith");
@@ -61,28 +86,6 @@ public class CourseRepositoryTest {
     roleRepository.save(role);
     companyRepository.save(company);
     userRepository.save(user);
-
-    for (long i = 1L; i < 7L; i++) {
-      Course course = new Course();
-      course.setId(i);
-      course.setTitle("Medium");
-      course.setDescription("AAA");
-      course.setRating(5.5);
-      Difficulty difficulty = new Difficulty();
-      difficulty.setId(1L);
-      difficulty.setTitle("Initial");
-      Language language = new Language();
-      language.setId(1L);
-      language.setTitle("English");
-      Category category = CategoryGenerator.generateCategory();
-      course.setDifficulty(difficulty);
-      course.setLanguage(language);
-      course.setCategory(category);
-      difficultyRepository.save(difficulty);
-      languageRepository.save(language);
-      categoryRepository.save(category);
-      courseRepository.save(course);
-    }
   }
 
   @Test
