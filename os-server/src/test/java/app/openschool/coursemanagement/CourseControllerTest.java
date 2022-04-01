@@ -17,8 +17,8 @@ import app.openschool.coursemanagement.entity.Keyword;
 import app.openschool.coursemanagement.entity.Language;
 import app.openschool.coursemanagement.service.CourseService;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,16 +74,6 @@ class CourseControllerTest {
   }
 
   @Test
-  void findCategoriesByTitle() throws Exception {
-
-    when(courseService.findCategoriesByTitle(" ")).thenReturn(new HashMap<>());
-
-    mockMvc
-        .perform(get("/api/v1/category-search").queryParam("title", " "))
-        .andExpect(status().isForbidden());
-  }
-
-  @Test
   void findAllCategories() throws Exception {
     List<CategoryDto> categoryDtoList = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
@@ -98,6 +88,16 @@ class CourseControllerTest {
                 .queryParam("page", "1")
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void findCategoriesByTitle() throws Exception {
+
+    when(courseService.findCategoriesByTitle(" ")).thenReturn(new HashMap<>());
+
+    mockMvc
+        .perform(get("/api/v1/category-search").queryParam("title", " "))
         .andExpect(status().isForbidden());
   }
 

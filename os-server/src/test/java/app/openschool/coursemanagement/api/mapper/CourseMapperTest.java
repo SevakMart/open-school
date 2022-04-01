@@ -48,7 +48,7 @@ public class CourseMapperTest {
   }
 
   @Test
-  public void toCategoryDtoTest() {
+  public void toCourseDtoTest() {
     CourseDto actual = CourseMapper.toCourseDto(courseList.get(0));
     assertThat(actual).hasOnlyFields("title", "rating", "difficulty", "keywords");
   }

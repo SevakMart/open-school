@@ -211,12 +211,4 @@ public class User {
   public void setLinkedinPath(String linkedinPath) {
     this.linkedinPath = linkedinPath;
   }
-
-  public Set<Category> getCategories() {
-    return categories;
-  }
-
-  public void setCategories(Set<Category> categories) {
-    this.categories = categories;
-  }
 }

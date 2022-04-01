@@ -1,7 +1,6 @@
 package app.openschool.coursemanagement.repository;
 
 import app.openschool.coursemanagement.entity.Category;
-import app.openschool.coursemanagement.entities.Category;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

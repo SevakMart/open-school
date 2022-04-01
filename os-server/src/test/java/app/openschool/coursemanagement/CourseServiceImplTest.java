@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 import app.openschool.coursemanagement.api.CategoryGenerator;
+import app.openschool.coursemanagement.api.dto.CategoryDtoForRegistration;
 import app.openschool.coursemanagement.entity.Category;
 import app.openschool.coursemanagement.entity.Course;
 import app.openschool.coursemanagement.entity.Difficulty;
@@ -19,8 +20,6 @@ import app.openschool.usermanagement.entity.Company;
 import app.openschool.usermanagement.entity.Role;
 import app.openschool.usermanagement.entity.User;
 import app.openschool.usermanagement.repository.UserRepository;
-import app.openschool.coursemanagement.api.dto.CategoryDtoForRegistration;
-import app.openschool.coursemanagement.entities.Category;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -102,6 +101,20 @@ class CourseServiceImplTest {
   }
 
   @Test
+  void findAllCategories() {
+    List<Category> categoryList = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      categoryList.add(CategoryGenerator.generateCategory());
+    }
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<Category> categoryPage = new PageImpl<>(categoryList, pageable, 5);
+    when(categoryRepository.findAllCategories(pageable)).thenReturn(categoryPage);
+    Assertions.assertEquals(3, courseService.findAllCategories(pageable).getTotalPages());
+    Assertions.assertEquals(5, courseService.findAllCategories(pageable).getTotalElements());
+    Mockito.verify(categoryRepository, Mockito.times(2)).findAllCategories(pageable);
+  }
+
+  @Test
   @Transactional
   void mapAllCategoriesToSubcategories() {
     List<Category> categories = new ArrayList<>();
@@ -154,20 +167,6 @@ class CourseServiceImplTest {
     assertEquals(1, categoryMap3.size());
     assertEquals(1, categoryMap3.get("JS").size());
     assertThat(categoryMap3.get("JS").get(0).getTitle()).isEqualTo("Angular-JS");
-  }
-
-  @Test
-  void findAllCategories() {
-    List<Category> categoryList = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
-      categoryList.add(CategoryGenerator.generateCategory());
-    }
-    Pageable pageable = PageRequest.of(0, 2);
-    Page<Category> categoryPage = new PageImpl<>(categoryList, pageable, 5);
-    when(categoryRepository.findAllCategories(pageable)).thenReturn(categoryPage);
-    Assertions.assertEquals(3, courseService.findAllCategories(pageable).getTotalPages());
-    Assertions.assertEquals(5, courseService.findAllCategories(pageable).getTotalElements());
-    Mockito.verify(categoryRepository, Mockito.times(2)).findAllCategories(pageable);
   }
 
   @Test
