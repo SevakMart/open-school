@@ -18,6 +18,7 @@ import app.openschool.coursemanagement.entity.Language;
 import app.openschool.coursemanagement.service.CourseService;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(CourseController.class)
-public class CourseControllerTest {
+class CourseControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
@@ -70,6 +71,16 @@ public class CourseControllerTest {
       course.setKeywords(keywordSet);
       courseList.add(course);
     }
+  }
+
+  @Test
+  void findCategoriesByTitle() throws Exception {
+
+    when(courseService.findCategoriesByTitle(" ")).thenReturn(new HashMap<>());
+
+    mockMvc
+        .perform(get("/api/v1/category-search").queryParam("title", " "))
+        .andExpect(status().isForbidden());
   }
 
   @Test

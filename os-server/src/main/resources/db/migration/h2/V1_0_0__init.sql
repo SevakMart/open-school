@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS category
             ON UPDATE CASCADE
 );
 
-    CREATE INDEX fk_category_category1_idx ON category(parent_category_id ASC);
+    CREATE INDEX fk_category_category1_idx ON category(parent_category_id ASC); 
 
 -- -----------------------------------------------------
 -- Table language
@@ -120,6 +120,7 @@ CREATE TABLE IF NOT EXISTS learning_path
     CREATE INDEX fk_learning_path_category1_idx ON learning_path (category_id ASC);
     CREATE INDEX fk_learning_path_language1_idx ON learning_path (language_id ASC);
     CREATE INDEX fk_learning_path_difficulty1_idx ON learning_path (difficulty_id ASC);
+
 
 -- -----------------------------------------------------
 -- Table module
@@ -217,3 +218,4 @@ INSERT INTO status (status_type)
 VALUES ('IN_PROGRESS');
 INSERT INTO status (status_type)
 VALUES ('COMPLETED');
+

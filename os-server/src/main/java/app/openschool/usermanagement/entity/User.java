@@ -69,6 +69,15 @@ public class User {
 
   public User() {}
 
+  public User(
+      String firstName, String email, String password, Set<Category> categories, Role role) {
+    this.name = firstName;
+    this.email = email;
+    this.password = password;
+    this.categories = categories;
+    this.role = role;
+  }
+
   public User(String firstName, String email, String password, Role role) {
     this.name = firstName;
     this.email = email;
@@ -87,7 +96,16 @@ public class User {
     User user = (User) o;
     return name.equals(user.name)
         && email.equals(user.email)
-        && role.getId().equals(user.role.getId());
+        && role.getId().equals(user.role.getId())
+        && categories.size() == (user.categories.size());
+  }
+
+  public Set<Category> getCategories() {
+    return categories;
+  }
+
+  public void setCategories(Set<Category> categories) {
+    this.categories = categories;
   }
 
   public Role getRole() {

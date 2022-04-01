@@ -1,0 +1,22 @@
+@mixin buttonStyle(
+  $backgroundColor,
+  $color,
+  $borderRadius,
+  $width,
+  $height,
+  $paddingLeft,
+  $paddingRight,
+  $paddingTop,
+  $paddingBottom
+) {
+  background-color: $backgroundColor;
+  color: $color;
+  border-radius: $borderRadius;
+  width: $width;
+  height: $height;
+  padding-left: $paddingLeft;
+  padding-right: $paddingRight;
+  padding-top: $paddingTop;
+  padding-bottom: $paddingBottom;
+  cursor: pointer;
+}
