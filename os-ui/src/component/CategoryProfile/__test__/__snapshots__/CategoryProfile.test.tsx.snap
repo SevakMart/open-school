@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create unit tests of category profile Make a snapshot tests 1`] = `
+<DocumentFragment>
+  <div
+    class="mainContainer"
+  >
+    <div
+      class="categoryInfoContainer"
+    >
+      <div
+        class="logoContainer"
+      >
+        <img
+          alt="JavaScript"
+          src="https://reactjs.org/logo-og.png"
+        />
+      </div>
+      <p
+        data-testid="JavaScript"
+      >
+        JavaScript
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;

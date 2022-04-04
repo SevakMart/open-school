@@ -8,8 +8,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import app.openschool.coursemanagement.api.CategoryGenerator;
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
+import app.openschool.coursemanagement.api.mapper.CourseMapper;
+import app.openschool.coursemanagement.controller.CourseController;
+import app.openschool.coursemanagement.entity.Category;
+import app.openschool.coursemanagement.entity.Course;
+import app.openschool.coursemanagement.entity.Difficulty;
+import app.openschool.coursemanagement.entity.Keyword;
+import app.openschool.coursemanagement.entity.Language;
+import app.openschool.coursemanagement.service.CourseService;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +36,42 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(CourseController.class)
-public class CourseControllerTest {
+class CourseControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
   @MockBean private CourseService courseService;
+
+  private final List<Course> courseList = new ArrayList<>();
+
+  @Test
+  @BeforeEach
+  void setUp() {
+    for (long i = 1L; i < 5L; i++) {
+      Course course = new Course();
+      course.setId(i);
+      course.setTitle("Medium");
+      course.setDescription("AAA");
+      course.setRating(5.5);
+      Difficulty difficulty = new Difficulty();
+      difficulty.setId(1L);
+      difficulty.setTitle("Initial");
+      Language language = new Language();
+      language.setId(1L);
+      language.setTitle("English");
+      Category category = CategoryGenerator.generateCategory();
+      course.setDifficulty(difficulty);
+      course.setLanguage(language);
+      course.setCategory(category);
+      Keyword keyword = new Keyword();
+      keyword.setId(1L);
+      keyword.setTitle("Programming");
+      Set<Keyword> keywordSet = new HashSet<>();
+      keywordSet.add(keyword);
+      course.setKeywords(keywordSet);
+      courseList.add(course);
+    }
+  }
 
   @Test
   void findAllCategories() throws Exception {
@@ -45,6 +88,29 @@ public class CourseControllerTest {
                 .queryParam("page", "1")
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
-        .andExpect(status().isOk());
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void findCategoriesByTitle() throws Exception {
+
+    when(courseService.findCategoriesByTitle(" ")).thenReturn(new HashMap<>());
+
+    mockMvc
+        .perform(get("/api/v1/category-search").queryParam("title", " "))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void getSuggestedCourses() throws Exception {
+
+    when(courseService.getSuggestedCourses(1L))
+        .thenReturn(CourseMapper.toCourseDtoList(courseList));
+    mockMvc
+        .perform(
+            get("/api/v1/courses/suggested")
+                .queryParam("userId", "1")
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isForbidden());
   }
 }

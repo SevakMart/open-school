@@ -10,8 +10,11 @@ import static org.mockito.Mockito.when;
 
 import app.openschool.usermanagement.api.UserGenerator;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
-import app.openschool.usermanagement.entities.User;
-import app.openschool.usermanagement.exceptions.EmailAlreadyExistException;
+import app.openschool.usermanagement.api.exceptions.EmailAlreadyExistException;
+import app.openschool.usermanagement.entity.User;
+import app.openschool.usermanagement.repository.UserRepository;
+import app.openschool.usermanagement.service.UserService;
+import app.openschool.usermanagement.service.UserServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;

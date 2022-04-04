@@ -11,7 +11,9 @@ import app.openschool.usermanagement.api.UserGenerator;
 import app.openschool.usermanagement.api.dto.MentorDto;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
 import app.openschool.usermanagement.api.mapper.MentorMapper;
-import app.openschool.usermanagement.entities.User;
+import app.openschool.usermanagement.controller.UserController;
+import app.openschool.usermanagement.entity.User;
+import app.openschool.usermanagement.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -82,6 +84,6 @@ class UserControllerTest {
                 .queryParam("page", "1")
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
-        .andExpect(status().isOk());
+        .andExpect(status().isForbidden());
   }
 }

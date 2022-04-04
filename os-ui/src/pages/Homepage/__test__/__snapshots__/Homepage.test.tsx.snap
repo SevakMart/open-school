@@ -1,0 +1,236 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create several unit tests for Homepage Component Create a Snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="headerContainer"
+  >
+    <nav
+      class="navContainer"
+    >
+      <h2>
+        Open-School
+      </h2>
+      <div
+        class="navMainContent"
+      >
+        <div
+          class="categoriesMentors"
+        >
+          <p>
+            Explore Categories
+          </p>
+          <p>
+            Mentors
+          </p>
+        </div>
+        <div
+          class="buttonContent"
+        >
+          <button
+            type="button"
+          >
+            Become a mentor
+          </button>
+          <button
+            type="button"
+          >
+            Sign In
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div
+      class="mainContent"
+    >
+      <div
+        class="leftContent"
+      >
+        <h1>
+          Educational Platform
+        </h1>
+        <p>
+          Choose Categories You Are Interested In Choose Categories You Are Interested InChoose Categories You Are Interested
+        </p>
+        <div
+          class="buttonContainer"
+        >
+          <button
+            name="signUp"
+            type="button"
+          >
+            SIGN UP
+          </button>
+          <button
+            name="signIn"
+            type="button"
+          >
+            Sign In
+          </button>
+        </div>
+      </div>
+      <div
+        class="rightContent"
+      >
+        <img
+          alt="Education platform logo"
+          src="https://image.shutterstock.com/image-vector/ebook-logo-design-vector-electronic-260nw-1767373559.jpg"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="categoriesMainContainer"
+  >
+    <h2>
+      Explore Categories You Are Interested In
+    </h2>
+    <div
+      class="categoriesListContainer"
+    >
+      <h2
+        data-testid="emptyCategoryMessage"
+      >
+        We do not have courses yet
+      </h2>
+      <i
+        data-testid="categoryRightArrow"
+        style="position: absolute; z-index: 1; font-size: 3rem; right: 6%; cursor: pointer;"
+      >
+        <svg
+          fill="currentColor"
+          height="1em"
+          stroke="currentColor"
+          stroke-width="0"
+          viewBox="0 0 16 16"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
+          />
+        </svg>
+      </i>
+    </div>
+    <button
+      type="button"
+    >
+      SEE ALL
+    </button>
+  </div>
+  <div
+    class="mentorMainContainer"
+  >
+    <h2>
+      Our Mentors
+    </h2>
+    <div
+      class="mentorListContainer"
+    >
+      <h2
+        data-testid="emptyMentorMessage"
+      >
+        We do not have mentors yet
+      </h2>
+      <i
+        data-testid="mentorRightArrow"
+        style="position: absolute; z-index: 1; font-size: 3rem; right: 6%; cursor: pointer;"
+      >
+        <svg
+          fill="currentColor"
+          height="1em"
+          stroke="currentColor"
+          stroke-width="0"
+          viewBox="0 0 16 16"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
+          />
+        </svg>
+      </i>
+    </div>
+    <button
+      name="signUp"
+      type="button"
+    >
+      Register as a mentor
+    </button>
+  </div>
+  <div
+    class="mainContainer"
+  >
+    <h2>
+      Start Your Journey Now!
+    </h2>
+    <div
+      class="buttonContainer"
+    >
+      <button
+        name="signUp"
+        type="button"
+      >
+        Sign up as a Student
+      </button>
+      <button
+        name="signUp"
+        type="button"
+      >
+        sign up as a mentor
+      </button>
+    </div>
+  </div>
+  <div
+    class="mainContainer"
+  >
+    <button
+      type="button"
+    >
+      Open-School
+    </button>
+    <div
+      class="categories"
+    >
+      <h2>
+        Categories
+      </h2>
+      <p>
+        Software Engineering
+      </p>
+      <p>
+        Design
+      </p>
+      <p>
+        Management
+      </p>
+    </div>
+    <div
+      class="becomeMentor"
+    >
+      <h2>
+        Become a Mentor
+      </h2>
+      <p>
+        About
+      </p>
+      <p>
+        Help
+      </p>
+    </div>
+    <div
+      class="findUsOn"
+    >
+      <h2>
+        Find Us On
+      </h2>
+      <p>
+        Facebook
+      </p>
+      <p>
+        Instagram
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;
