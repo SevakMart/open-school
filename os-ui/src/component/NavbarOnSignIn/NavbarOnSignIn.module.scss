@@ -1,0 +1,31 @@
+@import "../../styles/Mixins/ButtonMixin.scss";
+@import "../../styles/Mixins/FlexMixins.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+.mainContent {
+    @include flexStyle(row, center, space-between);
+    padding-left: 6%;
+    padding-right: 6%;
+    background-color: transparent;
+    h2 {
+        @include fontStyle('Helvetica Neue',italic,700,1.25rem,1.5rem);
+        color:#222427;
+    }
+    .navMainContent{
+        @include flexStyle(row, center, space-between);
+        width:40%;
+        p{
+            @include fontStyle('Montserrat',normal,500,1rem,1.5rem);
+            color:#5E617B;
+            cursor:pointer;
+        }
+        .userInfoContent {
+            @include flexStyle(row, center, space-between);
+            width:10%;
+            img {
+                width:2rem;
+                height:2rem;
+                border-radius: 50%;
+            }
+        }
+    }
+}

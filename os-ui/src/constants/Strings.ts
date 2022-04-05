@@ -4,6 +4,8 @@ export const EXPLORE_CATEGORIES = 'Explore Categories';
 export const MENTORS = 'Mentors';
 export const BECOME_A_MENTOR = 'Become a mentor';
 export const SIGN_IN = 'Sign In';
+export const ALL_LEARNING_PATHS = 'All Learning Paths';
+export const MY_LEARNING_PATHS = 'My Learning Paths';
 
 // Header strings
 export const FREE_EDUCATIONAL_PLATFORM = 'Educational Platform';
