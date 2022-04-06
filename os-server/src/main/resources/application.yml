@@ -16,9 +16,6 @@ spring:
     locations: "classpath:db/migration/{vendor}"
     clean-on-validation-error: true
 
-  messages:
-    encoding: UTF-8
-
 springdoc:
   swagger-ui:
     path: /open-school-api
