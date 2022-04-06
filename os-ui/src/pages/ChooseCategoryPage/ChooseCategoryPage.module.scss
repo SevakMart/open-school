@@ -10,3 +10,10 @@
     margin-top:4%;
     margin-bottom:4%;
 }
+.categoriesList{
+    @include flexStyle(row,none,space-between);
+    flex-wrap:wrap;
+    padding-left: 6%;
+    padding-right:6%;
+    margin-top:5%;
+}
