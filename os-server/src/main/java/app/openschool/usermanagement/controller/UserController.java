@@ -10,10 +10,10 @@ import app.openschool.usermanagement.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.Locale;
 import javax.validation.Valid;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,20 +25,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class UserController {
 
-  public static final String SUCCESSFULLY_REGISTERED = " you've successfully registered";
   private final UserService userService;
+  private final MessageSource messageSource;
 
-  public UserController(UserService userService) {
+  public UserController(UserService userService, MessageSource messageSource) {
     this.userService = userService;
+    this.messageSource = messageSource;
   }
 
   @PostMapping("/register")
   @ResponseStatus(CREATED)
   @Operation(summary = "register students")
   public ResponseEntity<UserRegistrationHttpResponse> register(
-      @Valid @RequestBody UserRegistrationDto userDto) {
+      @Valid @RequestBody UserRegistrationDto userDto, Locale locale) {
     User user = userService.register(userDto);
-    String message = user.getName() + SUCCESSFULLY_REGISTERED;
+    String message =
+        user.getName() + " " + messageSource.getMessage("register-successful", null, locale);
     UserRegistrationHttpResponse httpResponse =
         new UserRegistrationHttpResponse(message.toUpperCase(Locale.ROOT));
 

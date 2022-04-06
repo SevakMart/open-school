@@ -1,6 +1,7 @@
 package app.openschool.coursemanagement.entity;
 
 import app.openschool.usermanagement.entity.User;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -55,6 +56,10 @@ public class Category {
   public Category(String title, Long parentCategoryId) {
     this.title = title;
     this.parentCategoryId = parentCategoryId;
+  }
+
+  public Set<User> getUsers() {
+    return users;
   }
 
   public Long getId() {

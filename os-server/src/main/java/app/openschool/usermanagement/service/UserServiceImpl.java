@@ -11,11 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-  private static final String EMAIL_ALREADY_EXISTS = "User with this email already exists";
   private final UserRepository userRepository;
   private final BCryptPasswordEncoder passwordEncoder;
 
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
   public User register(UserRegistrationDto userDto) {
 
     if (emailAlreadyExist(userDto.getEmail())) {
-      throw new EmailAlreadyExistException(EMAIL_ALREADY_EXISTS);
+      throw new EmailAlreadyExistException();
     }
 
     User user = UserRegistrationMapper.userRegistrationDtoToUser(userDto, passwordEncoder);
