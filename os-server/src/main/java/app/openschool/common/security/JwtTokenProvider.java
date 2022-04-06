@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -23,15 +22,11 @@ public class JwtTokenProvider {
   private static final String AUTHORITIES = "authorities";
   private static final String TOKEN_NOT_VERIFIED_MESSAGE = "Token can not be verified";
 
-  private final MessageSource messageSource;
   private final long expirationTime;
   private final String secret;
 
   public JwtTokenProvider(
-      MessageSource messageSource,
-      @Value("${jwt.token-exp-time}") long expirationTime,
-      @Value("${jwt.secret}") String secret) {
-    this.messageSource = messageSource;
+      @Value("${jwt.token-exp-time}") long expirationTime, @Value("${jwt.secret}") String secret) {
     this.expirationTime = expirationTime;
     this.secret = secret;
   }
