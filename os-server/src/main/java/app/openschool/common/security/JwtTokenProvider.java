@@ -22,14 +22,15 @@ public class JwtTokenProvider {
 
   private static final String AUTHORITIES = "authorities";
   private static final String TOKEN_NOT_VERIFIED_MESSAGE = "Token can not be verified";
-  
+
   private final MessageSource messageSource;
   private final long expirationTime;
   private final String secret;
 
-  public JwtTokenProvider (
+  public JwtTokenProvider(
       MessageSource messageSource,
-      @Value ("${jwt.token-exp-time}") long expirationTime, @Value ("${jwt.secret}") String secret) {
+      @Value("${jwt.token-exp-time}") long expirationTime,
+      @Value("${jwt.secret}") String secret) {
     this.messageSource = messageSource;
     this.expirationTime = expirationTime;
     this.secret = secret;
