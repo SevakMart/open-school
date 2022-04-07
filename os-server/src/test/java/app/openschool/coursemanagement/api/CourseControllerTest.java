@@ -1,11 +1,13 @@
-package app.openschool.coursemanagement;
+package app.openschool.coursemanagement.api;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import app.openschool.coursemanagement.CourseService;
 import app.openschool.coursemanagement.api.CategoryGenerator;
+import app.openschool.coursemanagement.api.CourseController;
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package app.openschool.usermanagement;
+package app.openschool.usermanagement.api;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import app.openschool.usermanagement.UserService;
+import app.openschool.usermanagement.api.UserController;
 import app.openschool.usermanagement.api.UserGenerator;
 import app.openschool.usermanagement.api.dto.MentorDto;
 import app.openschool.usermanagement.api.dto.UserAuthResponse;

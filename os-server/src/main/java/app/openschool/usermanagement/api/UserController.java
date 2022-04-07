@@ -1,7 +1,8 @@
-package app.openschool.usermanagement;
+package app.openschool.usermanagement.api;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
+import app.openschool.usermanagement.UserService;
 import app.openschool.usermanagement.api.dto.MentorDto;
 import app.openschool.usermanagement.api.dto.UserAuthRequest;
 import app.openschool.usermanagement.api.dto.UserAuthResponse;

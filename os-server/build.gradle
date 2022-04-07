@@ -41,7 +41,8 @@ dependencies {
 test {
     useJUnitPlatform()
     environment "SPRING_PROFILES_ACTIVE", "test"
-    exclude 'app/openschool/**'
+    exclude 'app/openschool/coursemanagement/api/CourseControllerTest**'
+    exclude 'app/openschool/usermanagement/api/UserControllerTest**'
 }
 
 checkstyle {

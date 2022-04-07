@@ -1,5 +1,6 @@
-package app.openschool.coursemanagement;
+package app.openschool.coursemanagement.api;
 
+import app.openschool.coursemanagement.CourseService;
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.CategoryDtoForRegistration;
 import io.swagger.v3.oas.annotations.Operation;
