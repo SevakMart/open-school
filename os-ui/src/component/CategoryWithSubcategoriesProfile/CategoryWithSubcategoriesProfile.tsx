@@ -15,11 +15,9 @@ const CategoryWithSubcategoriesProfile = ({
   const handleChange = (e:React.SyntheticEvent) => {
     if ((e.target as HTMLInputElement).checked) {
       dispatch(addSubcategory(+(e.target as HTMLInputElement).id));
-      // return addSubcategory(+(e.target as HTMLInputElement).id);
     } else dispatch(removeSubcategory(+(e.target as HTMLInputElement).id));
-    // return removeSubcategory(+(e.target as HTMLInputElement).id);
   };
-  // console.log(subcategoryIdArray);
+
   return (
     <div className={mainContent}>
       <h3>{parentCategory}</h3>

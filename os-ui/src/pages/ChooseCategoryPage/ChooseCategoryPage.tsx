@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
 import Search from '../../component/Search/Search';
 import { getSearchedCategories } from '../../services/getSearchedCategories';
@@ -9,31 +9,15 @@ import CategoryWithSubcategoriesProfile from '../../component/CategoryWithSubcat
 import styles from './ChooseCategoryPage.module.scss';
 
 const ChooseCategoryPage = () => {
-  const { search } = useLocation();
   const navigate = useNavigate();
-  const categoryOrSubcategoryTitle = new URLSearchParams(search).get('searchCategories')
-    ? new URLSearchParams(search).get('searchCategories') : '';
   const [title, setTitle] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [searchedCategories, setSearchedCategories] = useState<SearchedCategoryType>({});
-  // const [subcategoryArray, setSubcategoryArray] = useState<Array<number>>([]);
   const { mainHeader, categoriesList } = styles;
 
   const handleChangeUrlTitleParam = (titleParam:string) => {
     setTitle(titleParam);
   };
-
-  /* const handleAddingSubcategory = (subcategoryId:number) => {
-    if (!subcategoryArray.some((id) => id === subcategoryId)) {
-      setSubcategoryArray([...subcategoryArray, subcategoryId]);
-    }
-  };
-
-  const handleRemovingSubcategory = (subcategoryId:number) => {
-    const subcategoryIdIndex = subcategoryArray.findIndex((id) => id === subcategoryId);
-    subcategoryArray.splice(subcategoryIdIndex, 1);
-    setSubcategoryArray([...subcategoryArray]);
-  }; */
 
   useEffect(() => {
     if (!title) navigate('/choose_categories?searchCategories=all', { replace: true });
@@ -43,8 +27,7 @@ const ChooseCategoryPage = () => {
         else setErrorMessage(data.errorMessage);
       });
   }, [title]);
-  // console.log(searchedCategories);
-  // console.log(subcategoryArray);
+
   return (
     <>
       <NavbarOnSignIn />
@@ -57,8 +40,6 @@ const ChooseCategoryPage = () => {
             key={category[0]}
             parentCategory={category[0]}
             subcategories={category[1]}
-            /* addSubcategory={handleAddingSubcategory}
-            removeSubcategory={handleRemovingSubcategory} */
           />
         )) : <h2>{ERROR_MESSAGE}</h2>
       }
