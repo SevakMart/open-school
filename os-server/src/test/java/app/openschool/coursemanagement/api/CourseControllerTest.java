@@ -25,8 +25,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(CourseController.class)
 class CourseControllerTest {
 
   @Autowired private MockMvc mockMvc;
