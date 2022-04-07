@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
 import Search from '../../component/Search/Search';
+import Loader from '../../component/Loader/Loader';
 import { getSearchedCategories } from '../../services/getSearchedCategories';
 import { CHOOSE_CATEGORIES_HEADER, GET_CATEGORY_SUBCATEGORY_SEARCH_URL, ERROR_MESSAGE } from '../../constants/Strings';
 import { SearchedCategoryType } from '../../types/SearchedCategoryType';
@@ -13,6 +14,7 @@ const ChooseCategoryPage = () => {
   const [title, setTitle] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [searchedCategories, setSearchedCategories] = useState<SearchedCategoryType>({});
+  const [isLoading, setIsLoading] = useState(true);
   const { mainHeader, categoriesList } = styles;
 
   const handleChangeUrlTitleParam = (titleParam:string) => {
@@ -23,8 +25,13 @@ const ChooseCategoryPage = () => {
     if (!title) navigate('/choose_categories?searchCategories=all', { replace: true });
     getSearchedCategories(`${GET_CATEGORY_SUBCATEGORY_SEARCH_URL}${title}`)
       .then((data) => {
-        if (!data.errorMessage) setSearchedCategories({ ...data });
-        else setErrorMessage(data.errorMessage);
+        if (!data.errorMessage) {
+          setSearchedCategories({ ...data });
+          setIsLoading(false);
+        } else {
+          setErrorMessage(data.errorMessage);
+          setIsLoading(false);
+        }
       });
   }, [title]);
 
@@ -35,13 +42,14 @@ const ChooseCategoryPage = () => {
       <Search pathname="/choose_categories" searchKeyName="searchCategories" changeUrlQueries={handleChangeUrlTitleParam} />
       <div className={categoriesList}>
         {
-        !errorMessage ? Object.entries(searchedCategories).map((category) => (
-          <CategoryWithSubcategoriesProfile
-            key={category[0]}
-            parentCategory={category[0]}
-            subcategories={category[1]}
-          />
-        )) : <h2>{ERROR_MESSAGE}</h2>
+          isLoading ? <Loader />
+            : !errorMessage ? Object.entries(searchedCategories).map((category) => (
+              <CategoryWithSubcategoriesProfile
+                key={category[0]}
+                parentCategory={category[0]}
+                subcategories={category[1]}
+              />
+            )) : <h2>{ERROR_MESSAGE}</h2>
       }
       </div>
     </>
