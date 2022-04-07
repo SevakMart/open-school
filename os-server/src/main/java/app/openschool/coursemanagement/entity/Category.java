@@ -3,7 +3,6 @@ package app.openschool.coursemanagement.entity;
 import app.openschool.usermanagement.entity.User;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,7 +38,7 @@ public class Category {
   @OneToMany(mappedBy = "category")
   private List<Course> courses;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany
   @JoinTable(
       name = "category_user",
       joinColumns = {@JoinColumn(name = "category_id")},

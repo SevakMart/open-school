@@ -3,8 +3,10 @@ package app.openschool.coursemanagement.service;
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.CategoryDtoForRegistration;
 import app.openschool.coursemanagement.api.dto.CourseDto;
+import app.openschool.coursemanagement.api.dto.CourseOfUserDto;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
 import app.openschool.coursemanagement.api.mapper.CourseMapper;
+import app.openschool.coursemanagement.api.mapper.CourseOfUserMapper;
 import app.openschool.coursemanagement.entity.Category;
 import app.openschool.coursemanagement.entity.Course;
 import app.openschool.coursemanagement.repository.CategoryRepository;
@@ -133,5 +135,15 @@ public class CourseServiceImpl implements CourseService {
     courseList.addAll(suggestedCourses);
     courseList.addAll(randomSuggestedCourses);
     return CourseMapper.toCourseDtoList(courseList);
+  }
+
+  @Override
+  public List<CourseOfUserDto> coursesOfUser(Long userId, Long courseStatusId) {
+    if (courseStatusId == null) {
+      return CourseOfUserMapper.toCourseOfUserDtoList(
+          courseRepository.findAllCoursesOfUser(userId));
+    }
+    return CourseOfUserMapper.toCourseOfUserDtoList(
+        courseRepository.findAllCoursesOfUserByStatus(userId, courseStatusId));
   }
 }

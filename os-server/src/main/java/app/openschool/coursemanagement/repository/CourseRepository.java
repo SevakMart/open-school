@@ -30,4 +30,21 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
   List<Course> getRandomSuggestedCoursesIgnoredExistingCourses(
       @Param(value = "limit") int limit,
       @Param(value = "existingCoursesIds") List<Long> existingCoursesIds);
+
+  @Query(
+      value =
+          "SELECT * FROM learning_path lp JOIN learning_path_student lps "
+              + "ON lp.id = lps.learning_path_id "
+              + "WHERE lps.user_id = :userId ORDER BY lp.learning_path_status_id",
+      nativeQuery = true)
+  List<Course> findAllCoursesOfUser(@Param(value = "userId") Long userId);
+
+  @Query(
+      value =
+          "SELECT * FROM learning_path lp JOIN learning_path_student lps "
+              + "ON lp.id = lps.learning_path_id "
+              + "WHERE lps.user_id = :userId AND lp.learning_path_status_id = :courseStatusId",
+      nativeQuery = true)
+  List<Course> findAllCoursesOfUserByStatus(
+      @Param(value = "userId") Long userId, @Param(value = "courseStatusId") Long courseStatusId);
 }

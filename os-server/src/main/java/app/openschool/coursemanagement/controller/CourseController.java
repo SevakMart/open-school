@@ -3,6 +3,7 @@ package app.openschool.coursemanagement.controller;
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.CategoryDtoForRegistration;
 import app.openschool.coursemanagement.api.dto.CourseDto;
+import app.openschool.coursemanagement.api.dto.CourseOfUserDto;
 import app.openschool.coursemanagement.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,5 +44,12 @@ public class CourseController {
   @Operation(summary = "find suggested courses")
   public ResponseEntity<List<CourseDto>> getSuggestedCourses(@RequestParam Long userId) {
     return ResponseEntity.ok(this.courseService.getSuggestedCourses(userId));
+  }
+
+  @GetMapping("/users/{userId}/courses")
+  @Operation(summary = "find courses of user by course status")
+  public ResponseEntity<List<CourseOfUserDto>> findCoursesOfUser(
+      @PathVariable Long userId, @RequestParam(required = false) Long courseStatusId) {
+    return ResponseEntity.ok(this.courseService.coursesOfUser(userId, courseStatusId));
   }
 }

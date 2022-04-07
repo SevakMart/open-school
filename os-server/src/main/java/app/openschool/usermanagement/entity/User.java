@@ -1,8 +1,8 @@
 package app.openschool.usermanagement.entity;
 
 import app.openschool.coursemanagement.entity.Category;
+import app.openschool.coursemanagement.entity.Course;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -60,12 +60,19 @@ public class User {
   @JoinColumn(name = "company_id")
   private Company company;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany
   @JoinTable(
       name = "category_user",
       joinColumns = {@JoinColumn(name = "user_id")},
       inverseJoinColumns = {@JoinColumn(name = "category_id")})
   private Set<Category> categories;
+
+  @ManyToMany
+  @JoinTable(
+      name = "learning_path_student",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "learning_path_id")})
+  private Set<Course> courses;
 
   public User() {}
 
@@ -210,5 +217,13 @@ public class User {
 
   public void setLinkedinPath(String linkedinPath) {
     this.linkedinPath = linkedinPath;
+  }
+
+  public Set<Course> getCourses() {
+    return courses;
+  }
+
+  public void setCourses(Set<Course> courses) {
+    this.courses = courses;
   }
 }

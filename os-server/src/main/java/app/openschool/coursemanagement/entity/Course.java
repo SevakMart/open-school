@@ -1,5 +1,7 @@
 package app.openschool.coursemanagement.entity;
 
+import app.openschool.usermanagement.entity.User;
+import java.time.LocalDate;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -49,6 +52,23 @@ public class Course {
       joinColumns = {@JoinColumn(name = "learning_path_id")},
       inverseJoinColumns = {@JoinColumn(name = "keyword_id")})
   private Set<Keyword> keywords;
+
+  @ManyToOne
+  @JoinColumn(name = "learning_path_status_id")
+  private Status status;
+
+  @OneToMany(mappedBy = "course")
+  private Set<Module> modules;
+
+  @ManyToMany
+  @JoinTable(
+      name = "learning_path_student",
+      joinColumns = {@JoinColumn(name = "learning_path_id")},
+      inverseJoinColumns = {@JoinColumn(name = "user_id")})
+  private Set<User> users;
+
+  @Column(name = "due_date")
+  private LocalDate dueDate;
 
   public Course() {}
 
@@ -122,5 +142,35 @@ public class Course {
     this.id = id;
   }
 
+  public Status getStatus() {
+    return status;
+  }
 
+  public void setStatus(Status status) {
+    this.status = status;
+  }
+
+  public Set<Module> getModules() {
+    return modules;
+  }
+
+  public void setModules(Set<Module> modules) {
+    this.modules = modules;
+  }
+
+  public Set<User> getUsers() {
+    return users;
+  }
+
+  public void setUsers(Set<User> users) {
+    this.users = users;
+  }
+
+  public LocalDate getDueDate() {
+    return dueDate;
+  }
+
+  public void setDueDate(LocalDate dueDate) {
+    this.dueDate = dueDate;
+  }
 }
