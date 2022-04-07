@@ -13,14 +13,27 @@ const ChooseCategoryPage = () => {
   const navigate = useNavigate();
   const categoryOrSubcategoryTitle = new URLSearchParams(search).get('searchCategories')
     ? new URLSearchParams(search).get('searchCategories') : '';
-  const [title, setTitle] = useState(categoryOrSubcategoryTitle);
+  const [title, setTitle] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [searchedCategories, setSearchedCategories] = useState<SearchedCategoryType>({});
+  // const [subcategoryArray, setSubcategoryArray] = useState<Array<number>>([]);
   const { mainHeader, categoriesList } = styles;
 
   const handleChangeUrlTitleParam = (titleParam:string) => {
     setTitle(titleParam);
   };
+
+  /* const handleAddingSubcategory = (subcategoryId:number) => {
+    if (!subcategoryArray.some((id) => id === subcategoryId)) {
+      setSubcategoryArray([...subcategoryArray, subcategoryId]);
+    }
+  };
+
+  const handleRemovingSubcategory = (subcategoryId:number) => {
+    const subcategoryIdIndex = subcategoryArray.findIndex((id) => id === subcategoryId);
+    subcategoryArray.splice(subcategoryIdIndex, 1);
+    setSubcategoryArray([...subcategoryArray]);
+  }; */
 
   useEffect(() => {
     if (!title) navigate('/choose_categories?searchCategories=all', { replace: true });
@@ -30,7 +43,8 @@ const ChooseCategoryPage = () => {
         else setErrorMessage(data.errorMessage);
       });
   }, [title]);
-  console.log(searchedCategories);
+  // console.log(searchedCategories);
+  // console.log(subcategoryArray);
   return (
     <>
       <NavbarOnSignIn />
@@ -38,11 +52,13 @@ const ChooseCategoryPage = () => {
       <Search pathname="/choose_categories" searchKeyName="searchCategories" changeUrlQueries={handleChangeUrlTitleParam} />
       <div className={categoriesList}>
         {
-        !errorMessage ? Object.entries(searchedCategories).map((category, index) => (
+        !errorMessage ? Object.entries(searchedCategories).map((category) => (
           <CategoryWithSubcategoriesProfile
-            key={index}
+            key={category[0]}
             parentCategory={category[0]}
             subcategories={category[1]}
+            /* addSubcategory={handleAddingSubcategory}
+            removeSubcategory={handleRemovingSubcategory} */
           />
         )) : <h2>{ERROR_MESSAGE}</h2>
       }
