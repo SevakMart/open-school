@@ -8,10 +8,12 @@ import app.openschool.coursemanagement.entity.Category;
 import app.openschool.coursemanagement.entity.Course;
 import app.openschool.coursemanagement.entity.Difficulty;
 import app.openschool.coursemanagement.entity.Language;
+import app.openschool.coursemanagement.entity.Status;
 import app.openschool.coursemanagement.repository.CategoryRepository;
 import app.openschool.coursemanagement.repository.CourseRepository;
 import app.openschool.coursemanagement.repository.DifficultyRepository;
 import app.openschool.coursemanagement.repository.LanguageRepository;
+import app.openschool.coursemanagement.repository.StatusRepository;
 import app.openschool.usermanagement.entity.Company;
 import app.openschool.usermanagement.entity.Role;
 import app.openschool.usermanagement.entity.User;
@@ -37,6 +39,7 @@ public class CourseRepositoryTest {
   @Autowired LanguageRepository languageRepository;
   @Autowired RoleRepository roleRepository;
   @Autowired CompanyRepository companyRepository;
+  @Autowired StatusRepository statusRepository;
 
   @BeforeEach
   public void setup() {
@@ -54,12 +57,17 @@ public class CourseRepositoryTest {
       language.setId(1L);
       language.setTitle("English");
       Category category = CategoryGenerator.generateCategory();
+      Status status = new Status();
+      status.setId(1L);
+      status.setType("IN_PROGRESS");
+      course.setCategory(category);
       course.setDifficulty(difficulty);
       course.setLanguage(language);
-      course.setCategory(category);
+      course.setStatus(status);
       difficultyRepository.save(difficulty);
       languageRepository.save(language);
       categoryRepository.save(category);
+      statusRepository.save(status);
       courseRepository.save(course);
     }
     User user = new User();
