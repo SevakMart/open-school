@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import storage from 'redux-persist/lib/storage';
+import storageSession from 'redux-persist/lib/storage/session';
 import {
   persistReducer,
   FLUSH,
@@ -13,7 +13,7 @@ import rootReducer from './RootReducer';
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage: storageSession,
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
