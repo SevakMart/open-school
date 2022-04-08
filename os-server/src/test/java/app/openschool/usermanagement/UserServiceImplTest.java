@@ -8,6 +8,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.usermanagement.api.UserGenerator;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
 import app.openschool.usermanagement.api.exceptions.EmailAlreadyExistException;
@@ -33,14 +34,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
 
-  @Mock private UserRepository userRepository;
-  @Mock private BCryptPasswordEncoder passwordEncoder;
+  @Mock
+  private UserRepository userRepository;
+  @Mock
+  private BCryptPasswordEncoder passwordEncoder;
+  @Mock
+  private JwtTokenProvider jwtTokenProvider;
 
   private UserService userService;
 
   @BeforeEach
   void setUp() {
-    userService = new UserServiceImpl(userRepository, passwordEncoder);
+    userService = new UserServiceImpl(userRepository, passwordEncoder, jwtTokenProvider);
   }
 
   @Test

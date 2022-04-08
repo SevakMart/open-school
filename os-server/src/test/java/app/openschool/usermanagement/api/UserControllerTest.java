@@ -1,4 +1,4 @@
-package app.openschool.usermanagement;
+package app.openschool.usermanagement.api;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -7,8 +7,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import app.openschool.usermanagement.api.UserGenerator;
+import app.openschool.common.security.JwtAuthenticationEntryPoint;
+import app.openschool.common.security.JwtAuthenticationTokenFilter;
 import app.openschool.usermanagement.api.dto.MentorDto;
+import app.openschool.usermanagement.api.dto.UserAuthResponse;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
 import app.openschool.usermanagement.api.mapper.MentorMapper;
 import app.openschool.usermanagement.controller.UserController;
@@ -19,22 +21,40 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(UserController.class)
+//@AutoConfigureMockMvc(addFilters = false)
 class UserControllerTest {
 
-  @Autowired private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-  @MockBean private UserService userService;
+  @MockBean
+  private UserService userService;
+  @MockBean
+  public JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+  @MockBean
+  public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+  //  @MockBean
+  //  public JwtTokenProvider jwtTokenProvider;
+  //  @Autowired
+  //  private WebApplicationContext webApplicationContext;
+  
+  //  @BeforeEach
+  //  public void setup() {
+  //    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+  //  }
 
   @Test
   void registerValidUser() throws Exception {
@@ -85,5 +105,56 @@ class UserControllerTest {
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loginValidPasswordAndEmail() throws Exception {
+    when(userService.login(any(User.class))).thenReturn(new UserAuthResponse());
+
+    String requestBody =
+        "{\"firstName\": \"userName\" ,"
+            + " \"email\": \"email@mail.com\" ,"
+            + " \"password\": \"Password_1\" }";
+
+    mockMvc
+        .perform(
+            post("/api/v1/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void loginInvalidPassword() throws Exception {
+    when(userService.login(any(User.class))).thenReturn(new UserAuthResponse());
+
+    String requestBody =
+        "{\"firstName\": \"userName\" ,"
+            + " \"email\": \"email@mail.com\" ,"
+            + " \"password\": \"\" }";
+
+    mockMvc
+        .perform(
+            post("/api/v1/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void loginInvalidEmail() throws Exception {
+    when(userService.login(any(User.class))).thenReturn(new UserAuthResponse());
+
+    String requestBody =
+        "{\"firstName\": \"userName\" ,"
+            + " \"email\": \"\" ,"
+            + " \"password\": \"Password_1\" }";
+
+    mockMvc
+        .perform(
+            post("/api/v1/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+        .andExpect(status().isUnauthorized());
   }
 }

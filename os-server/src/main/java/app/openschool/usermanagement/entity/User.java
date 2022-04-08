@@ -52,6 +52,7 @@ public class User {
   @Column(name = "linkedin_path")
   private String linkedinPath;
 
+  //  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "role_id", nullable = false)
   private Role role;
@@ -67,7 +68,8 @@ public class User {
       inverseJoinColumns = {@JoinColumn(name = "category_id")})
   private Set<Category> categories;
 
-  public User() {}
+  public User() {
+  }
 
   public User(
       String firstName, String email, String password, Set<Category> categories, Role role) {

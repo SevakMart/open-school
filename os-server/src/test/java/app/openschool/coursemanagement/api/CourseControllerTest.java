@@ -1,4 +1,4 @@
-package app.openschool.coursemanagement;
+package app.openschool.coursemanagement.api;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
