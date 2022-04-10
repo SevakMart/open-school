@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create tests for the Component Create a Snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="mainContent"
+  >
+    <h3
+      data-testid="parentCategoryHeader"
+    >
+      Java
+    </h3>
+    <div
+      class="subcategoryContent"
+    >
+      <input
+        id="1"
+        type="checkbox"
+      />
+      <label
+        data-testid="Arrays"
+        for="1"
+      >
+        Arrays
+      </label>
+    </div>
+    <div
+      class="subcategoryContent"
+    >
+      <input
+        id="2"
+        type="checkbox"
+      />
+      <label
+        data-testid="Functions"
+        for="2"
+      >
+        Functions
+      </label>
+    </div>
+    <div
+      class="subcategoryContent"
+    >
+      <input
+        id="3"
+        type="checkbox"
+      />
+      <label
+        data-testid="Classes"
+        for="3"
+      >
+        Classes
+      </label>
+    </div>
+  </div>
+</DocumentFragment>
+`;

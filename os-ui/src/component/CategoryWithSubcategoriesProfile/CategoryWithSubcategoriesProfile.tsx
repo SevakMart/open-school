@@ -20,7 +20,7 @@ const CategoryWithSubcategoriesProfile = ({
 
   return (
     <div className={mainContent}>
-      <h3>{parentCategory}</h3>
+      <h3 data-testid="parentCategoryHeader">{parentCategory}</h3>
       {
             subcategories.length > 0 ? subcategories.map((subcategory) => (
               <div className={subcategoryContent} key={+subcategory.id}>
@@ -29,7 +29,7 @@ const CategoryWithSubcategoriesProfile = ({
                     ? <input type="checkbox" id={`${subcategory.id}`} onChange={handleChange} checked />
                     : <input type="checkbox" id={`${subcategory.id}`} onChange={handleChange} checked={false} />
                 }
-                <label htmlFor={`${subcategory.id}`}>{subcategory.title}</label>
+                <label data-testid={subcategory.title} htmlFor={`${subcategory.id}`}>{subcategory.title}</label>
               </div>
             )) : null
         }
