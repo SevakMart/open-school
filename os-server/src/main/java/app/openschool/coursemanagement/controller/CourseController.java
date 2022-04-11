@@ -27,24 +27,20 @@ public class CourseController {
   }
 
   @GetMapping("/categories")
-  @Operation(summary = "find all categories", security = @SecurityRequirement(name = "bearerAuth"))
+  @Operation(summary = "find all categories",security = @SecurityRequirement (name = "bearerAuth"))
   public ResponseEntity<Page<CategoryDto>> allCategories(Pageable pageable) {
     return ResponseEntity.ok(this.courseService.findAllCategories(pageable));
   }
 
   @GetMapping("/category-search")
-  @Operation(
-      summary = "find all categories by title mapped by subcategories",
-      security = @SecurityRequirement(name = "bearerAuth"))
+  @Operation(summary = "find all categories by title mapped by subcategories",security = @SecurityRequirement (name = "bearerAuth"))
   public ResponseEntity<Map<String, List<CategoryDtoForRegistration>>> findCategoriesByTitle(
       String title) {
     return ResponseEntity.ok(courseService.findCategoriesByTitle(title));
   }
 
   @GetMapping("/courses/suggested")
-  @Operation(
-      summary = "find suggested courses",
-      security = @SecurityRequirement(name = "bearerAuth"))
+  @Operation(summary = "find suggested courses",security = @SecurityRequirement (name = "bearerAuth"))
   public ResponseEntity<List<CourseDto>> getSuggestedCourses(@RequestParam Long userId) {
     return ResponseEntity.ok(this.courseService.getSuggestedCourses(userId));
   }
