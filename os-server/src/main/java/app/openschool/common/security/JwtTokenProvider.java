@@ -73,7 +73,7 @@ public class JwtTokenProvider {
   private String[] getClaimsFromUser(UserPrincipal userPrincipal) {
     return userPrincipal.getAuthorities().stream()
         .map(GrantedAuthority::getAuthority)
-        .toList()
+        .collect(Collectors.toList())
         .toArray(new String[0]);
   }
 
