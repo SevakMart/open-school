@@ -9,13 +9,13 @@ public class UserRegistrationDto {
   private static final String PASSWORD_PATTERN =
       "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*()_{}]).{8,20})";
 
-  @NotBlank(message = "{firstName.error.massage}")
+  @NotBlank(message = "{validation.firstName.error.message}")
   private String firstName;
 
-  @NotBlank(message = "{email.error.massage}")
+  @NotBlank(message = "{validation.email.error.message}")
   private String email;
 
-  @Pattern(regexp = PASSWORD_PATTERN, message = "{password.error.massage}")
+  @Pattern(regexp = PASSWORD_PATTERN, message = "{validation.password.error.message}")
   private String password;
 
   private Set<Long> categoryIdSet;

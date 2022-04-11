@@ -4,7 +4,6 @@ import app.openschool.usermanagement.entity.UserPrincipal;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider {
 
   private static final String AUTHORITIES = "authorities";
-  private static final String TOKEN_NOT_VERIFIED_MESSAGE = "Token can not be verified";
 
   private final long expirationTime;
   private final String secret;
@@ -57,13 +55,7 @@ public class JwtTokenProvider {
   }
 
   private JWTVerifier getJwtVerifier() {
-    JWTVerifier verifier;
-    try {
-      verifier = JWT.require(Algorithm.HMAC512(secret)).build();
-    } catch (JWTVerificationException exception) {
-      throw new JWTVerificationException(TOKEN_NOT_VERIFIED_MESSAGE);
-    }
-    return verifier;
+    return JWT.require(Algorithm.HMAC512(secret)).build();
   }
 
   private boolean isTokenExpired(JWTVerifier verifier, String token) {

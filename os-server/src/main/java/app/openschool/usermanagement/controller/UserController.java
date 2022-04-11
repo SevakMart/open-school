@@ -40,7 +40,9 @@ public class UserController {
       @Valid @RequestBody UserRegistrationDto userDto, Locale locale) {
     User user = userService.register(userDto);
     String message =
-        user.getName() + " " + messageSource.getMessage("register-successful", null, locale);
+        user.getName()
+            + " "
+            + messageSource.getMessage("response.register.successful.message", null, locale);
     UserRegistrationHttpResponse httpResponse =
         new UserRegistrationHttpResponse(message.toUpperCase(Locale.ROOT));
 

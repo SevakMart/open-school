@@ -27,7 +27,7 @@ public class UserExceptionHandling implements ErrorController {
   @ExceptionHandler(EmailAlreadyExistException.class)
   public ResponseEntity<UserRegistrationHttpResponse> emailExistException(
       EmailAlreadyExistException exception, Locale locale) {
-    String message = messageSource.getMessage("email-already-exist-exception", null, locale);
+    String message = messageSource.getMessage("exception.duplicate.email.message", null, locale);
     return createHttpResponse(BAD_REQUEST, message, null);
   }
 
@@ -35,7 +35,7 @@ public class UserExceptionHandling implements ErrorController {
   public ResponseEntity<UserRegistrationHttpResponse> validationFailedException(
       MethodArgumentNotValidException exception, Locale locale) {
     Map<String, String> errors = getValidationErrors(exception, locale);
-    String message = messageSource.getMessage("validation.errors", null, locale);
+    String message = messageSource.getMessage("validation.errors.message", null, locale);
     return createHttpResponse(BAD_REQUEST, message, errors);
   }
 
