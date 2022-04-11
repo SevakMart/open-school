@@ -60,7 +60,7 @@ public class User {
   @JoinColumn(name = "company_id")
   private Company company;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany()
   @JoinTable(
       name = "category_user",
       joinColumns = {@JoinColumn(name = "user_id")},
@@ -83,6 +83,11 @@ public class User {
     this.email = email;
     this.password = password;
     this.role = role;
+  }
+
+  public User(String email, String password) {
+    this.email = email;
+    this.password = password;
   }
 
   @Override

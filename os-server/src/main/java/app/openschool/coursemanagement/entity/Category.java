@@ -39,7 +39,7 @@ public class Category {
   @OneToMany(mappedBy = "category")
   private List<Course> courses;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany()
   @JoinTable(
       name = "category_user",
       joinColumns = {@JoinColumn(name = "category_id")},
@@ -107,5 +107,9 @@ public class Category {
 
   public void setUsers(Set<User> users) {
     this.users = users;
+  }
+
+  public Set<User> getUsers() {
+    return users;
   }
 }
