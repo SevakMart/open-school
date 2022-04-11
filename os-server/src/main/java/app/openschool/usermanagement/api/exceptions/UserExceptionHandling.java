@@ -1,7 +1,9 @@
 package app.openschool.usermanagement.api.exceptions;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
+import app.openschool.usermanagement.api.dto.UserLoginExceptionResponse;
 import app.openschool.usermanagement.api.dto.UserRegistrationHttpResponse;
 import java.util.Locale;
 import java.util.Map;
@@ -10,6 +12,7 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,8 +28,7 @@ public class UserExceptionHandling implements ErrorController {
   }
 
   @ExceptionHandler(EmailAlreadyExistException.class)
-  public ResponseEntity<UserRegistrationHttpResponse> emailExistException(
-      EmailAlreadyExistException exception, Locale locale) {
+  public ResponseEntity<UserRegistrationHttpResponse> emailExistException(Locale locale) {
     String message = messageSource.getMessage("exception.duplicate.email.message", null, locale);
     return createHttpResponse(BAD_REQUEST, message, null);
   }
@@ -37,6 +39,20 @@ public class UserExceptionHandling implements ErrorController {
     Map<String, String> errors = getValidationErrors(exception, locale);
     String message = messageSource.getMessage("validation.errors.message", null, locale);
     return createHttpResponse(BAD_REQUEST, message, errors);
+  }
+
+  @ExceptionHandler(EmailNotFoundException.class)
+  public ResponseEntity<UserLoginExceptionResponse> userEmailNotFoundException(
+      EmailNotFoundException exception, Locale locale) {
+    String[] args = {exception.getMessage()};
+    String message = messageSource.getMessage("exception.nonexistent.email.message", args, locale);
+    return new ResponseEntity<>(new UserLoginExceptionResponse(message), UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(BadCredentialsException.class)
+  public ResponseEntity<UserLoginExceptionResponse> badCredentialsException(Locale locale) {
+    String message = messageSource.getMessage("exception.bad.credentials.message", null, locale);
+    return new ResponseEntity<>(new UserLoginExceptionResponse(message), UNAUTHORIZED);
   }
 
   private Map<String, String> getValidationErrors(
