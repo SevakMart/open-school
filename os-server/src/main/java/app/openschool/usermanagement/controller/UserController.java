@@ -74,7 +74,7 @@ public class UserController {
   }
 
   @GetMapping("/mentors")
-  @Operation(summary = "find all mentors",security = @SecurityRequirement (name = "bearerAuth"))
+  @Operation(summary = "find all mentors", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<Page<MentorDto>> findAllMentors(Pageable pageable) {
     return ResponseEntity.ok(this.userService.findAllMentors(pageable));
   }
