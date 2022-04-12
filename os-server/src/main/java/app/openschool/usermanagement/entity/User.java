@@ -99,6 +99,8 @@ public class User {
         && role.getId().equals(user.role.getId())
         && categories.size() == (user.categories.size());
   }
+  
+  
 
   public Set<Category> getCategories() {
     return categories;

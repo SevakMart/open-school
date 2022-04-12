@@ -57,6 +57,10 @@ public class Category {
     this.parentCategoryId = parentCategoryId;
   }
 
+  public Set<User> getUsers() {
+    return users;
+  }
+
   public Long getId() {
     return id;
   }

@@ -7,36 +7,45 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class UserExceptionHandling implements ErrorController {
-  private static final String VALIDATION_ERROR = "validation errors";
+
+  private final MessageSource messageSource;
+
+  public UserExceptionHandling(MessageSource messageSource) {
+    this.messageSource = messageSource;
+  }
 
   @ExceptionHandler(EmailAlreadyExistException.class)
   public ResponseEntity<UserRegistrationHttpResponse> emailExistException(
-      EmailAlreadyExistException exception) {
-    return createHttpResponse(BAD_REQUEST, exception.getMessage(), null);
+      EmailAlreadyExistException exception, Locale locale) {
+    String message = messageSource.getMessage("exception.duplicate.email.message", null, locale);
+    return createHttpResponse(BAD_REQUEST, message, null);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<UserRegistrationHttpResponse> validationFailedException(
-      MethodArgumentNotValidException exception) {
-    Map<String, String> errors = getValidationErrors(exception);
-    return createHttpResponse(BAD_REQUEST, VALIDATION_ERROR, errors);
+      MethodArgumentNotValidException exception, Locale locale) {
+    Map<String, String> errors = getValidationErrors(exception, locale);
+    String message = messageSource.getMessage("validation.errors.message", null, locale);
+    return createHttpResponse(BAD_REQUEST, message, errors);
   }
 
-  private Map<String, String> getValidationErrors(MethodArgumentNotValidException exception) {
+  private Map<String, String> getValidationErrors(
+      MethodArgumentNotValidException exception, Locale locale) {
     return exception.getBindingResult().getAllErrors().stream()
         .collect(
             Collectors.toMap(
-                error -> ((FieldError) error).getField(), ObjectError::getDefaultMessage));
+                error -> ((FieldError) error).getField(),
+                objectError -> messageSource.getMessage(objectError, locale)));
   }
 
   private ResponseEntity<UserRegistrationHttpResponse> createHttpResponse(

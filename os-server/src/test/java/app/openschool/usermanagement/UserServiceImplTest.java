@@ -45,13 +45,11 @@ class UserServiceImplTest {
 
   @Test
   void registerUserWithNotUniqEmail() {
-    String message = "User with this email already exists";
 
     given(userRepository.findUserByEmail(any())).willReturn(new User());
 
     assertThatThrownBy(() -> userService.register(new UserRegistrationDto()))
-        .isInstanceOf(EmailAlreadyExistException.class)
-        .hasMessageContaining(message);
+        .isInstanceOf(EmailAlreadyExistException.class);
 
     verify(userRepository, never()).save(any());
   }
