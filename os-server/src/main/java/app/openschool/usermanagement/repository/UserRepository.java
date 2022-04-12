@@ -1,6 +1,6 @@
-package app.openschool.usermanagement;
+package app.openschool.usermanagement.repository;
 
-import app.openschool.usermanagement.entities.User;
+import app.openschool.usermanagement.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

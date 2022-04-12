@@ -1,6 +1,6 @@
 package app.openschool.coursemanagement.api;
 
-import app.openschool.coursemanagement.entities.Category;
+import app.openschool.coursemanagement.entity.Category;
 
 public class CategoryGenerator {
 

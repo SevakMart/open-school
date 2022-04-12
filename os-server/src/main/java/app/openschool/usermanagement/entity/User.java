@@ -1,7 +1,8 @@
-package app.openschool.usermanagement.entities;
+package app.openschool.usermanagement.entity;
 
-import app.openschool.coursemanagement.entities.Category;
+import app.openschool.coursemanagement.entity.Category;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -59,7 +60,7 @@ public class User {
   @JoinColumn(name = "company_id")
   private Company company;
 
-  @ManyToMany
+  @ManyToMany()
   @JoinTable(
       name = "category_user",
       joinColumns = {@JoinColumn(name = "user_id")},
@@ -84,6 +85,11 @@ public class User {
     this.role = role;
   }
 
+  public User(String email, String password) {
+    this.email = email;
+    this.password = password;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -98,6 +104,8 @@ public class User {
         && role.getId().equals(user.role.getId())
         && categories.size() == (user.categories.size());
   }
+  
+  
 
   public Set<Category> getCategories() {
     return categories;

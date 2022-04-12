@@ -1,9 +1,15 @@
-package app.openschool.coursemanagement;
+package app.openschool.coursemanagement.service;
 
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.CategoryDtoForRegistration;
+import app.openschool.coursemanagement.api.dto.CourseDto;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
-import app.openschool.coursemanagement.entities.Category;
+import app.openschool.coursemanagement.api.mapper.CourseMapper;
+import app.openschool.coursemanagement.entity.Category;
+import app.openschool.coursemanagement.entity.Course;
+import app.openschool.coursemanagement.repository.CategoryRepository;
+import app.openschool.coursemanagement.repository.CourseRepository;
+import app.openschool.usermanagement.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,9 +26,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class CourseServiceImpl implements CourseService {
 
   private final CategoryRepository categoryRepository;
+  private final CourseRepository courseRepository;
+  private final UserRepository userRepository;
 
-  public CourseServiceImpl(CategoryRepository categoryRepository) {
+  public CourseServiceImpl(
+      CategoryRepository categoryRepository,
+      CourseRepository courseRepository,
+      UserRepository userRepository) {
     this.categoryRepository = categoryRepository;
+    this.courseRepository = courseRepository;
+    this.userRepository = userRepository;
   }
 
   @Override
@@ -98,5 +111,27 @@ public class CourseServiceImpl implements CourseService {
         }));
 
     return categoryMap;
+  }
+
+  @Override
+  public List<CourseDto> getSuggestedCourses(Long userId) {
+    if (userRepository.getById(userId).getCategories().isEmpty()) {
+      return CourseMapper.toCourseDtoList(courseRepository.getRandomSuggestedCourses(4));
+    }
+    List<Course> suggestedCourses = courseRepository.getSuggestedCourses(userId);
+    int sizeOfSuggestedCourses = suggestedCourses.size();
+    if (sizeOfSuggestedCourses >= 4) {
+      return CourseMapper.toCourseDtoList(suggestedCourses);
+    }
+    List<Course> courseList = new ArrayList<>();
+    int sizeOfRandomSuggestedCourses = 4 - sizeOfSuggestedCourses;
+    List<Long> existingCoursesIds =
+        suggestedCourses.stream().map(Course::getId).collect(Collectors.toList());
+    List<Course> randomSuggestedCourses =
+        courseRepository.getRandomSuggestedCoursesIgnoredExistingCourses(
+            sizeOfRandomSuggestedCourses, existingCoursesIds);
+    courseList.addAll(suggestedCourses);
+    courseList.addAll(randomSuggestedCourses);
+    return CourseMapper.toCourseDtoList(courseList);
   }
 }

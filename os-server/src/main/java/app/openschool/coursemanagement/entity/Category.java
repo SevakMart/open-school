@@ -1,11 +1,17 @@
-package app.openschool.coursemanagement.entities;
+package app.openschool.coursemanagement.entity;
 
+import app.openschool.usermanagement.entity.User;
 import java.util.List;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -32,6 +38,13 @@ public class Category {
 
   @OneToMany(mappedBy = "category")
   private List<Course> courses;
+
+  @ManyToMany()
+  @JoinTable(
+      name = "category_user",
+      joinColumns = {@JoinColumn(name = "category_id")},
+      inverseJoinColumns = {@JoinColumn(name = "user_id")})
+  private Set<User> users;
 
   public Category() {}
 
@@ -86,5 +99,17 @@ public class Category {
 
   public Long getParentCategoryId() {
     return parentCategoryId;
+  }
+
+  public void setCourses(List<Course> courses) {
+    this.courses = courses;
+  }
+
+  public void setUsers(Set<User> users) {
+    this.users = users;
+  }
+
+  public Set<User> getUsers() {
+    return users;
   }
 }

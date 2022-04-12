@@ -1,4 +1,4 @@
-package app.openschool.usermanagement.entities;
+package app.openschool.usermanagement.entity;
 
 import java.util.Set;
 import javax.persistence.CascadeType;

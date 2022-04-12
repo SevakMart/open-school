@@ -1,8 +1,9 @@
-package app.openschool.usermanagement;
+package app.openschool.usermanagement.service;
 
 import app.openschool.usermanagement.api.dto.MentorDto;
+import app.openschool.usermanagement.api.dto.UserLoginDto;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
-import app.openschool.usermanagement.entities.User;
+import app.openschool.usermanagement.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,4 +14,6 @@ public interface UserService {
   User findUserByEmail(String email);
 
   Page<MentorDto> findAllMentors(Pageable pageable);
+
+  UserLoginDto login(String userEmail);
 }

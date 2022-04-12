@@ -1,26 +1,27 @@
 package app.openschool.common.security;
 
-import app.openschool.usermanagement.entities.UserPrincipal;
+import app.openschool.usermanagement.entity.UserPrincipal;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
 
   private static final String AUTHORITIES = "authorities";
-  private static final String TOKEN_CANNOT_BE_VERIFIED = "Token can not be verified";
 
   private final long expirationTime;
   private final String secret;
@@ -40,7 +41,6 @@ public class JwtTokenProvider {
         .sign(Algorithm.HMAC512(secret.getBytes(StandardCharsets.UTF_8)));
   }
 
-  // this method logic could be changed according further implementation
   public boolean isTokenValid(String token) {
     JWTVerifier verifier = getJwtVerifier();
     return !isTokenExpired(verifier, token);
@@ -57,13 +57,7 @@ public class JwtTokenProvider {
   }
 
   private JWTVerifier getJwtVerifier() {
-    JWTVerifier verifier;
-    try {
-      verifier = JWT.require(Algorithm.HMAC512(secret)).build();
-    } catch (JWTVerificationException exception) {
-      throw new JWTVerificationException(TOKEN_CANNOT_BE_VERIFIED);
-    }
-    return verifier;
+    return JWT.require(Algorithm.HMAC512(secret)).build();
   }
 
   private boolean isTokenExpired(JWTVerifier verifier, String token) {
@@ -77,10 +71,17 @@ public class JwtTokenProvider {
   }
 
   private String[] getClaimsFromUser(UserPrincipal userPrincipal) {
-    List<String> authorities = new ArrayList<>();
-    for (GrantedAuthority grantedAuthority : userPrincipal.getAuthorities()) {
-      authorities.add(grantedAuthority.getAuthority());
-    }
-    return authorities.toArray(new String[0]);
+    return userPrincipal.getAuthorities().stream()
+        .map(GrantedAuthority::getAuthority)
+        .collect(Collectors.toList())
+        .toArray(new String[0]);
+  }
+
+  public Authentication getAuthentication(
+      String username, List<GrantedAuthority> authorities, HttpServletRequest request) {
+    UsernamePasswordAuthenticationToken authenticationToken =
+        new UsernamePasswordAuthenticationToken(username, null, authorities);
+    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+    return authenticationToken;
   }
 }

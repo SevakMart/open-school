@@ -1,7 +1,7 @@
 package app.openschool.usermanagement.api.mapper;
 
 import app.openschool.usermanagement.api.dto.MentorDto;
-import app.openschool.usermanagement.entities.User;
+import app.openschool.usermanagement.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.Page;

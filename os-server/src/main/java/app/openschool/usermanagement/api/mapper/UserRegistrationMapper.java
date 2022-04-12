@@ -2,8 +2,8 @@ package app.openschool.usermanagement.api.mapper;
 
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
-import app.openschool.usermanagement.entities.Role;
-import app.openschool.usermanagement.entities.User;
+import app.openschool.usermanagement.entity.Role;
+import app.openschool.usermanagement.entity.User;
 import java.util.Set;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

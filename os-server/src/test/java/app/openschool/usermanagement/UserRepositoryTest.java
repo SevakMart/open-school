@@ -5,9 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
-import app.openschool.coursemanagement.entities.Category;
-import app.openschool.usermanagement.entities.Role;
-import app.openschool.usermanagement.entities.User;
+import app.openschool.coursemanagement.entity.Category;
+import app.openschool.usermanagement.entity.Role;
+import app.openschool.usermanagement.entity.User;
+import app.openschool.usermanagement.repository.UserRepository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

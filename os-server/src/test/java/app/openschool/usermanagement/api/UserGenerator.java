@@ -1,8 +1,8 @@
 package app.openschool.usermanagement.api;
 
-import app.openschool.usermanagement.entities.Company;
-import app.openschool.usermanagement.entities.Role;
-import app.openschool.usermanagement.entities.User;
+import app.openschool.usermanagement.entity.Company;
+import app.openschool.usermanagement.entity.Role;
+import app.openschool.usermanagement.entity.User;
 
 public class UserGenerator {
 

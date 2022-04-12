@@ -2,10 +2,10 @@ package app.openschool.usermanagement.api.mapper;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import app.openschool.coursemanagement.entities.Category;
+import app.openschool.coursemanagement.entity.Category;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
-import app.openschool.usermanagement.entities.Role;
-import app.openschool.usermanagement.entities.User;
+import app.openschool.usermanagement.entity.Role;
+import app.openschool.usermanagement.entity.User;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.Test;

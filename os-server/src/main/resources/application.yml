@@ -20,3 +20,4 @@ springdoc:
   swagger-ui:
     path: /open-school-api
     operationsSorter: method
+
