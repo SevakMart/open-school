@@ -23,7 +23,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,22 +35,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   private static final String TOKEN_PREFIX = "Bearer ";
-  public static final String JWT_TOKEN_HEADER = "Jwt-Token";
+  public static final String JWT_TOKEN_HEADER = "Authorization";
 
   private final UserService userService;
-  private final BCryptPasswordEncoder passwordEncoder;
   private final JwtTokenProvider jwtTokenProvider;
   private final AuthenticationManager authenticationManager;
   private final MessageSource messageSource;
 
   public UserController(
       UserService userService,
-      BCryptPasswordEncoder passwordEncoder,
       JwtTokenProvider jwtTokenProvider,
       AuthenticationManager authenticationManager,
       MessageSource messageSource) {
     this.userService = userService;
-    this.passwordEncoder = passwordEncoder;
     this.jwtTokenProvider = jwtTokenProvider;
     this.authenticationManager = authenticationManager;
     this.messageSource = messageSource;
