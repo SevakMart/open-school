@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import app.openschool.coursemanagement.api.CategoryGenerator;
 import app.openschool.coursemanagement.api.dto.CategoryDto;
+import app.openschool.coursemanagement.api.dto.UserCourseDto;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
 import app.openschool.coursemanagement.api.mapper.CourseMapper;
 import app.openschool.coursemanagement.controller.CourseController;
@@ -108,9 +109,20 @@ class CourseControllerTest {
         .thenReturn(CourseMapper.toCourseDtoList(courseList));
     mockMvc
         .perform(
-            get("/api/v1/courses/suggested")
-                .queryParam("userId", "1")
+            get("/api/v1/users/1/courses/suggested")
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void findUserCourses() throws Exception {
+    List<UserCourseDto> userCourseDtoList = new ArrayList<>();
+    when(courseService.findUserCourses(1L, null))
+            .thenReturn(userCourseDtoList);
+    mockMvc
+            .perform(
+                    get("/users/1/courses")
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isForbidden());
   }
 }

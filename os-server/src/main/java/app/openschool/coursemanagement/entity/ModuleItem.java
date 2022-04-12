@@ -21,8 +21,8 @@ public class ModuleItem {
   @Column(name = "module_item_type", nullable = false)
   private String moduleItemType;
 
-  @Column(name = "duration")
-  private Long estimatedTimeImMinutes;
+  @Column(name = "estimated_time")
+  private Long estimatedTime;
 
   @Column(name = "grade")
   private Integer grade;
@@ -33,23 +33,23 @@ public class ModuleItem {
 
   @ManyToOne
   @JoinColumn(name = "module_item_status_id")
-  private Status status;
+  private ModuleItemStatus moduleItemStatus;
 
   public ModuleItem() {}
 
   public ModuleItem(
       Long id,
       String moduleItemType,
-      Long estimatedTimeImMinutes,
+      Long estimatedTime,
       Integer grade,
       Module module,
-      Status status) {
+      ModuleItemStatus moduleItemStatus) {
     this.id = id;
     this.moduleItemType = moduleItemType;
-    this.estimatedTimeImMinutes = estimatedTimeImMinutes;
+    this.estimatedTime = estimatedTime;
     this.grade = grade;
     this.module = module;
-    this.status = status;
+    this.moduleItemStatus = moduleItemStatus;
   }
 
   public Long getId() {
@@ -68,12 +68,12 @@ public class ModuleItem {
     this.moduleItemType = moduleItemType;
   }
 
-  public Long getEstimatedTimeImMinutes() {
-    return estimatedTimeImMinutes;
+  public Long getEstimatedTime() {
+    return estimatedTime;
   }
 
-  public void setEstimatedTimeImMinutes(Long estimatedTimeImMinutes) {
-    this.estimatedTimeImMinutes = estimatedTimeImMinutes;
+  public void setEstimatedTime(Long estimatedTime) {
+    this.estimatedTime = estimatedTime;
   }
 
   public Integer getGrade() {
@@ -92,11 +92,11 @@ public class ModuleItem {
     this.module = module;
   }
 
-  public Status getStatus() {
-    return status;
+  public ModuleItemStatus getModuleItemStatus() {
+    return moduleItemStatus;
   }
 
-  public void setStatus(Status status) {
-    this.status = status;
+  public void setModuleItemStatus(ModuleItemStatus moduleItemStatus) {
+    this.moduleItemStatus = moduleItemStatus;
   }
 }

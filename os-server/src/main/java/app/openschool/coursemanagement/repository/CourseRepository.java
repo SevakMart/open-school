@@ -37,7 +37,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
               + "ON lp.id = lps.learning_path_id "
               + "WHERE lps.user_id = :userId ORDER BY lp.learning_path_status_id",
       nativeQuery = true)
-  List<Course> findAllCoursesOfUser(@Param(value = "userId") Long userId);
+  List<Course> findAllUserCourses(@Param(value = "userId") Long userId);
 
   @Query(
       value =
@@ -45,6 +45,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
               + "ON lp.id = lps.learning_path_id "
               + "WHERE lps.user_id = :userId AND lp.learning_path_status_id = :courseStatusId",
       nativeQuery = true)
-  List<Course> findAllCoursesOfUserByStatus(
+  List<Course> findUserCoursesByStatus(
       @Param(value = "userId") Long userId, @Param(value = "courseStatusId") Long courseStatusId);
 }

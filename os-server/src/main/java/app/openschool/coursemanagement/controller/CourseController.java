@@ -3,7 +3,7 @@ package app.openschool.coursemanagement.controller;
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.CategoryDtoForRegistration;
 import app.openschool.coursemanagement.api.dto.CourseDto;
-import app.openschool.coursemanagement.api.dto.CourseOfUserDto;
+import app.openschool.coursemanagement.api.dto.UserCourseDto;
 import app.openschool.coursemanagement.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -40,16 +40,16 @@ public class CourseController {
     return ResponseEntity.ok(courseService.findCategoriesByTitle(title));
   }
 
-  @GetMapping("/courses/suggested")
+  @GetMapping("/users/{userId}/courses/suggested")
   @Operation(summary = "find suggested courses")
-  public ResponseEntity<List<CourseDto>> getSuggestedCourses(@RequestParam Long userId) {
+  public ResponseEntity<List<CourseDto>> getSuggestedCourses(@PathVariable Long userId) {
     return ResponseEntity.ok(this.courseService.getSuggestedCourses(userId));
   }
 
   @GetMapping("/users/{userId}/courses")
-  @Operation(summary = "find courses of user by course status")
-  public ResponseEntity<List<CourseOfUserDto>> findCoursesOfUser(
+  @Operation(summary = "find user's courses by course status")
+  public ResponseEntity<List<UserCourseDto>> findUserCourses(
       @PathVariable Long userId, @RequestParam(required = false) Long courseStatusId) {
-    return ResponseEntity.ok(this.courseService.coursesOfUser(userId, courseStatusId));
+    return ResponseEntity.ok(this.courseService.findUserCourses(userId, courseStatusId));
   }
 }

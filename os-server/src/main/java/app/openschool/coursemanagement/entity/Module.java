@@ -26,18 +26,23 @@ public class Module {
 
   @ManyToOne
   @JoinColumn(name = "module_status_id")
-  private Status status;
+  private ModuleStatus moduleStatus;
 
   @OneToMany(mappedBy = "module")
   private Set<ModuleItem> moduleItems;
 
   public Module() {}
 
-  public Module(Long id, Course course, Set<ModuleItem> moduleItems, Status status) {
+  public Module(Course course, ModuleStatus moduleStatus) {
+    this.course = course;
+    this.moduleStatus = moduleStatus;
+  }
+
+  public Module(Long id, Course course, Set<ModuleItem> moduleItems, ModuleStatus moduleStatus) {
     this.id = id;
     this.course = course;
     this.moduleItems = moduleItems;
-    this.status = status;
+    this.moduleStatus = moduleStatus;
   }
 
   public Long getId() {
@@ -64,11 +69,11 @@ public class Module {
     this.moduleItems = moduleItems;
   }
 
-  public Status getStatus() {
-    return status;
+  public ModuleStatus getModuleStatus() {
+    return moduleStatus;
   }
 
-  public void setStatus(Status status) {
-    this.status = status;
+  public void setModuleStatus(ModuleStatus moduleStatus) {
+    this.moduleStatus = moduleStatus;
   }
 }

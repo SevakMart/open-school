@@ -24,7 +24,7 @@ public class Keyword {
   @Column(nullable = false)
   private String title;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany
   @JoinTable(
       name = "keyword_learning_path",
       joinColumns = {@JoinColumn(name = "keyword_id")},

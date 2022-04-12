@@ -2,61 +2,54 @@ package app.openschool.coursemanagement.api.dto;
 
 import java.time.LocalDate;
 
-public class CourseOfUserDto {
+public class UserCourseDto {
 
   private String title;
 
   private String courseStatus;
 
-  private Long percentage;
+  private long percentage;
 
-  private String remainingTime;
+  private long remainingTime;
 
   private Integer grade;
 
   private LocalDate dueDate;
 
-  private String buttonName;
+  public UserCourseDto() {}
 
-  public CourseOfUserDto() {}
-
-  public CourseOfUserDto(String title, String courseStatus, Integer grade, String buttonName) {
+  public UserCourseDto(String title, String courseStatus, Integer grade) {
     this.title = title;
     this.courseStatus = courseStatus;
     this.grade = grade;
-    this.buttonName = buttonName;
   }
 
-  public CourseOfUserDto(
+  public UserCourseDto(
       String title,
       String courseStatus,
-      Long percentage,
-      String remainingTime,
-      LocalDate dueDate,
-      String buttonName) {
+      long percentage,
+      long remainingTime,
+      LocalDate dueDate) {
     this.title = title;
     this.courseStatus = courseStatus;
     this.percentage = percentage;
     this.remainingTime = remainingTime;
     this.dueDate = dueDate;
-    this.buttonName = buttonName;
   }
 
-  public CourseOfUserDto(
+  public UserCourseDto(
       String title,
       String courseStatus,
-      Long percentage,
-      String remainingTime,
+      long percentage,
+      long remainingTime,
       Integer grade,
-      LocalDate dueDate,
-      String buttonName) {
+      LocalDate dueDate) {
     this.title = title;
     this.courseStatus = courseStatus;
     this.percentage = percentage;
     this.remainingTime = remainingTime;
     this.grade = grade;
     this.dueDate = dueDate;
-    this.buttonName = buttonName;
   }
 
   public String getTitle() {
@@ -83,11 +76,11 @@ public class CourseOfUserDto {
     this.percentage = percentage;
   }
 
-  public String getRemainingTime() {
+  public long getRemainingTime() {
     return remainingTime;
   }
 
-  public void setRemainingTime(String remainingTime) {
+  public void setRemainingTime(long remainingTime) {
     this.remainingTime = remainingTime;
   }
 
@@ -97,14 +90,6 @@ public class CourseOfUserDto {
 
   public void setDueDate(LocalDate dueDate) {
     this.dueDate = dueDate;
-  }
-
-  public String getButtonName() {
-    return buttonName;
-  }
-
-  public void setButtonName(String buttonName) {
-    this.buttonName = buttonName;
   }
 
   public Integer getGrade() {

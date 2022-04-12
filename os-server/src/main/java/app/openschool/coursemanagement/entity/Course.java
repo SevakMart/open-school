@@ -3,7 +3,6 @@ package app.openschool.coursemanagement.entity;
 import app.openschool.usermanagement.entity.User;
 import java.time.LocalDate;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -46,7 +45,7 @@ public class Course {
   @JoinColumn(name = "language_id")
   private Language language;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany
   @JoinTable(
       name = "keyword_learning_path",
       joinColumns = {@JoinColumn(name = "learning_path_id")},
@@ -55,7 +54,7 @@ public class Course {
 
   @ManyToOne
   @JoinColumn(name = "learning_path_status_id")
-  private Status status;
+  private CourseStatus courseStatus;
 
   @OneToMany(mappedBy = "course")
   private Set<Module> modules;
@@ -142,12 +141,12 @@ public class Course {
     this.id = id;
   }
 
-  public Status getStatus() {
-    return status;
+  public CourseStatus getCourseStatus() {
+    return courseStatus;
   }
 
-  public void setStatus(Status status) {
-    this.status = status;
+  public void setCourseStatus(CourseStatus courseStatus) {
+    this.courseStatus = courseStatus;
   }
 
   public Set<Module> getModules() {

@@ -10,8 +10,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "status")
-public class Status {
+@Table(name = "module_status")
+public class ModuleStatus {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false)
@@ -20,24 +21,23 @@ public class Status {
   @Column(name = "status_type", nullable = false)
   private String type;
 
-  @OneToMany(mappedBy = "status")
-  private Set<ModuleItem> moduleItems;
-
-  @OneToMany(mappedBy = "status")
+  @OneToMany(mappedBy = "moduleStatus")
   private Set<Module> modules;
 
-  @OneToMany(mappedBy = "status")
-  private Set<Course> courses;
+  public ModuleStatus() {}
 
-  public Status() {}
+  public ModuleStatus(String type) {
+    this.type = type;
+  }
 
-  public Status(
-      Long id, String type, Set<ModuleItem> moduleItems, Set<Module> modules, Set<Course> courses) {
+  public ModuleStatus(Long id, String type, Set<Module> modules) {
     this.id = id;
     this.type = type;
-    this.moduleItems = moduleItems;
     this.modules = modules;
-    this.courses = courses;
+  }
+
+  public boolean isInProgress() {
+    return this.type.equals("IN_PROGRESS");
   }
 
   public Long getId() {
@@ -56,27 +56,11 @@ public class Status {
     this.type = type;
   }
 
-  public Set<ModuleItem> getModuleItems() {
-    return moduleItems;
-  }
-
-  public void setModuleItems(Set<ModuleItem> moduleItems) {
-    this.moduleItems = moduleItems;
-  }
-
   public Set<Module> getModules() {
     return modules;
   }
 
   public void setModules(Set<Module> modules) {
     this.modules = modules;
-  }
-
-  public Set<Course> getCourses() {
-    return courses;
-  }
-
-  public void setCourses(Set<Course> courses) {
-    this.courses = courses;
   }
 }

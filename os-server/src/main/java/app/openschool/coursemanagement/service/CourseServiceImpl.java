@@ -3,10 +3,10 @@ package app.openschool.coursemanagement.service;
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.CategoryDtoForRegistration;
 import app.openschool.coursemanagement.api.dto.CourseDto;
-import app.openschool.coursemanagement.api.dto.CourseOfUserDto;
+import app.openschool.coursemanagement.api.dto.UserCourseDto;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
 import app.openschool.coursemanagement.api.mapper.CourseMapper;
-import app.openschool.coursemanagement.api.mapper.CourseOfUserMapper;
+import app.openschool.coursemanagement.api.mapper.UserCourseMapper;
 import app.openschool.coursemanagement.entity.Category;
 import app.openschool.coursemanagement.entity.Course;
 import app.openschool.coursemanagement.repository.CategoryRepository;
@@ -138,12 +138,12 @@ public class CourseServiceImpl implements CourseService {
   }
 
   @Override
-  public List<CourseOfUserDto> coursesOfUser(Long userId, Long courseStatusId) {
+  public List<UserCourseDto> findUserCourses(Long userId, Long courseStatusId) {
     if (courseStatusId == null) {
-      return CourseOfUserMapper.toCourseOfUserDtoList(
-          courseRepository.findAllCoursesOfUser(userId));
+      return UserCourseMapper.toUserCourseDtoList(
+          courseRepository.findAllUserCourses(userId));
     }
-    return CourseOfUserMapper.toCourseOfUserDtoList(
-        courseRepository.findAllCoursesOfUserByStatus(userId, courseStatusId));
+    return UserCourseMapper.toUserCourseDtoList(
+        courseRepository.findUserCoursesByStatus(userId, courseStatusId));
   }
 }
