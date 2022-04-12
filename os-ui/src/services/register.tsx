@@ -1,7 +1,7 @@
 import { RegistrationFormType } from '../types/RegistartionFormType';
 
-export const register = (url:string, content:RegistrationFormType) => {
-  fetch(url, {
+export const register = async (url:string, content:RegistrationFormType) => {
+  const response = await fetch(url, {
     method: 'POST',
     mode: 'cors',
     headers: {
@@ -9,4 +9,6 @@ export const register = (url:string, content:RegistrationFormType) => {
     },
     body: JSON.stringify(content),
   });
+  const data = await response.json();
+  return data;
 };

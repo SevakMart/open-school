@@ -17,6 +17,7 @@ export const GET_CATEGORIES_URL = '../../categorieData.json';
 export const GET_REAL_MENTORS_URL = 'http://localhost:5000/api/v1/mentors?';
 export const REGISTRATION_URL = 'http://localhost:5000/api/v1/register';
 export const GET_MAIN_CATEGORIES_URL = 'http://localhost:5000/api/v1/categories?';
+export const SIGNIN_URL = 'http://localhost:5000/api/v1/login';
 // Error Message
 export const ERROR_MESSAGE = 'Something went wrong please refresh the page :(';
 
