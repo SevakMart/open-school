@@ -26,7 +26,7 @@
     .headerContent {
       @include flexStyle(column, center, space-between);
       margin-top: 7%;
-      h2 {
+      h2,h3{
         @include fontStyle("Montserrat", normal, 800, 2.25rem, 2.75rem);
         color: #222427;
       }

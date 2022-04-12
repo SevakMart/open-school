@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import HiddenIcon from '../../icons/Hidden';
 import VisibileIcon from '../../icons/Visibility';
 import { validateSignUpForm } from '../../helpers/SignUpFormValidate';
@@ -19,7 +18,6 @@ interface FormProps{
 }
 
 const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
-  const navigate = useNavigate();
   const [formValues, setFormValues] = useState<RegistrationFormType>({ firstName: '', email: '', password: '' });
   const [errorFormValue, setErrorFormValue] = useState({ fullNameError: '', emailError: '', passwordError: '' });
   const [signInErrorMMessage, setSignInErrorMessage] = useState('');
@@ -54,9 +52,8 @@ const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
       if (response.status === 401) {
         setSignInErrorMessage(response.data.message);
       } else if (response.status === 200) {
-        navigate('/');
+        return handleSignIn!('You have Successfully signed in!');
       }
-      // console.log('Your form will be authenticated');
     } else setErrorFormValue(validateSignInForm(formValues));
   };
 
@@ -129,7 +126,7 @@ const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
           ? <VisibileIcon makeInvisible={handlePasswordVisibility} />
           : <HiddenIcon makeVisible={handlePasswordVisibility} />}
       </div>
-      {signInErrorMMessage ? <p className={errorField}>{signInErrorMMessage}</p> : null}
+      {signInErrorMMessage ? <h4 className={errorField}>{signInErrorMMessage}</h4> : null}
       <p>Forgot Password?</p>
       {formType === 'signUp' ? <button type="button" data-testid="signUpButton" onClick={handleSubmitForm}>{SIGN_UP}</button>
         : <button type="button" data-testid="signInButton" onClick={handleSignInForm}>{SIGN_IN}</button>}

@@ -13,11 +13,11 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
   } = styles;
   // const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
-  const [succesfullSignUpMessage, setSuccesfullSignUpMessage] = useState('');
+  const [succesfullSignUpMessage, setSuccessfulSignUpMessage] = useState('');
 
   const handleSignUp = (message:string) => {
     setIsSignUp(true);
-    setSuccesfullSignUpMessage(message);
+    setSuccessfulSignUpMessage(message);
   };
 
   useEffect(() => {
