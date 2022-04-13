@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from './SignUp.module.scss';
 import CloseIcon from '../../icons/Close';
 import LinkedinIcon1 from '../../icons/Linkedin1';
@@ -11,7 +10,6 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
   const {
     mainContainer, formContainer, headerContent, iconContent, alreadyHaveAccount, inputContent,
   } = styles;
-  // const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
   const [succesfullSignUpMessage, setSuccessfulSignUpMessage] = useState('');
 

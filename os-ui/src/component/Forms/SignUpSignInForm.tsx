@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import HiddenIcon from '../../icons/Hidden';
 import VisibileIcon from '../../icons/Visibility';
 import { validateSignUpForm } from '../../helpers/SignUpFormValidate';
@@ -9,6 +10,7 @@ import {
 import { register } from '../../services/register';
 import { signIn } from '../../services/signIn';
 import { RegistrationFormType } from '../../types/RegistartionFormType';
+import { addLoggedInUser } from '../../redux/Slices/loginUserSlice';
 import styles from './SignUpSignInForm.module.scss';
 
 interface FormProps{
@@ -18,6 +20,7 @@ interface FormProps{
 }
 
 const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
+  const dispatch = useDispatch();
   const [formValues, setFormValues] = useState<RegistrationFormType>({ firstName: '', email: '', password: '' });
   const [errorFormValue, setErrorFormValue] = useState({ fullNameError: '', emailError: '', passwordError: '' });
   const [signInErrorMMessage, setSignInErrorMessage] = useState('');
@@ -53,6 +56,7 @@ const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
         if (response.status === 401) {
           setSignInErrorMessage(response.message);
         } else if (response.status === 200) {
+          dispatch(addLoggedInUser(response));
           handleSignIn!('You have Successfully signed in!');
         }
       });
