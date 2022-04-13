@@ -6,6 +6,7 @@ import app.openschool.usermanagement.entity.User;
 public class UserLoginMapper {
   public static UserLoginDto toUserLoginDto(User user) {
     return new UserLoginDto(
+        user.getId(),
         user.getName(),
         user.getSurname(),
         user.getProfessionName(),
