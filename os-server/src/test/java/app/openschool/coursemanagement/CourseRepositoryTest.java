@@ -35,7 +35,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.event.annotation.AfterTestExecution;
+import org.springframework.test.context.event.annotation.AfterTestClass;
 
 @DataJpaTest
 public class CourseRepositoryTest {
@@ -165,7 +165,7 @@ public class CourseRepositoryTest {
     userRepository.save(user);
   }
 
-  @AfterTestExecution
+  @AfterTestClass
   public void tearDown() {
     categoryRepository.deleteAll();
     difficultyRepository.deleteAll();
@@ -185,7 +185,7 @@ public class CourseRepositoryTest {
     List<Course> courseList = courseRepository.getSuggestedCourses(user.getId());
     assertEquals(
         user.getCategories().stream().findFirst().get().getTitle(),
-        (courseList.get(0).getCategory().getTitle()));
+        courseList.get(0).getCategory().getTitle());
     assertEquals(4, courseList.size());
   }
 
