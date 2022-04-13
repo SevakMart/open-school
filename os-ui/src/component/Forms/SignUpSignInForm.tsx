@@ -34,26 +34,28 @@ const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
       [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value,
     });
   };
-  const handleSubmitForm = async () => {
+  const handleSubmitForm = () => {
     const { fullNameError, emailError, passwordError } = validateSignUpForm(formValues);
     if (!fullNameError && !emailError && !passwordError) {
-      const response = await register(REGISTRATION_URL, formValues);
-      setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
-      setFormValues({ firstName: '', email: '', password: '' });
-      return switchToSignInForm!(response.message);
-    } setErrorFormValue(validateSignUpForm(formValues));
+      register(REGISTRATION_URL, formValues).then((response) => {
+        setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
+        setFormValues({ firstName: '', email: '', password: '' });
+        switchToSignInForm!(response.message);
+      });
+    } else setErrorFormValue(validateSignUpForm(formValues));
   };
 
-  const handleSignInForm = async () => {
+  const handleSignInForm = () => {
     const { fullNameError, emailError, passwordError } = validateSignInForm(formValues);
     const { email, password } = formValues;
     if (!fullNameError && !emailError && !passwordError) {
-      const response = await signIn(SIGNIN_URL, { email, password });
-      if (response.status === 401) {
-        setSignInErrorMessage(response.data.message);
-      } else if (response.status === 200) {
-        return handleSignIn!('You have Successfully signed in!');
-      }
+      signIn(SIGNIN_URL, { email, password }).then((response) => {
+        if (response.status === 401) {
+          setSignInErrorMessage(response.message);
+        } else if (response.status === 200) {
+          handleSignIn!('You have Successfully signed in!');
+        }
+      });
     } else setErrorFormValue(validateSignInForm(formValues));
   };
 
