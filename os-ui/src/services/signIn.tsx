@@ -10,5 +10,9 @@ export const signIn = async (url:string, content:Omit<RegistrationFormType, 'fir
     body: JSON.stringify(content),
   });
   const data = await response.json();
-  return { ...data, status: response.status };
+  const FullTokenResponse = response.headers.get('Authorization');
+  const tokenStartingIndex = FullTokenResponse ? FullTokenResponse.indexOf(' ') : undefined;
+  const token = FullTokenResponse && tokenStartingIndex
+    ? FullTokenResponse.slice(tokenStartingIndex + 1) : null;
+  return { ...data, status: response.status, token };
 };
