@@ -6,6 +6,7 @@ import app.openschool.coursemanagement.api.dto.CourseDto;
 import app.openschool.coursemanagement.api.dto.UserCourseDto;
 import app.openschool.coursemanagement.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
@@ -28,13 +29,15 @@ public class CourseController {
   }
 
   @GetMapping("/categories")
-  @Operation(summary = "find all categories")
+  @Operation(summary = "find all categories", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<Page<CategoryDto>> allCategories(Pageable pageable) {
     return ResponseEntity.ok(this.courseService.findAllCategories(pageable));
   }
 
   @GetMapping("/category-search")
-  @Operation(summary = "find all categories by title mapped by subcategories")
+  @Operation(
+      summary = "find all categories by title mapped by subcategories",
+      security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<Map<String, List<CategoryDtoForRegistration>>> findCategoriesByTitle(
       String title) {
     return ResponseEntity.ok(courseService.findCategoriesByTitle(title));
@@ -43,6 +46,11 @@ public class CourseController {
   @GetMapping("/users/{userId}/courses/suggested")
   @Operation(summary = "find suggested courses")
   public ResponseEntity<List<CourseDto>> getSuggestedCourses(@PathVariable Long userId) {
+  @GetMapping("/courses/suggested")
+  @Operation(
+      summary = "find suggested courses",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<List<CourseDto>> getSuggestedCourses(@RequestParam Long userId) {
     return ResponseEntity.ok(this.courseService.getSuggestedCourses(userId));
   }
 

@@ -10,7 +10,6 @@ import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.UserCourseDto;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
 import app.openschool.coursemanagement.api.mapper.CourseMapper;
-import app.openschool.coursemanagement.controller.CourseController;
 import app.openschool.coursemanagement.entity.Category;
 import app.openschool.coursemanagement.entity.Course;
 import app.openschool.coursemanagement.entity.Difficulty;
@@ -26,7 +25,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -36,7 +36,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(CourseController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class CourseControllerTest {
 
   @Autowired private MockMvc mockMvc;
@@ -89,7 +90,7 @@ class CourseControllerTest {
                 .queryParam("page", "1")
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -99,7 +100,7 @@ class CourseControllerTest {
 
     mockMvc
         .perform(get("/api/v1/category-search").queryParam("title", " "))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -111,7 +112,7 @@ class CourseControllerTest {
         .perform(
             get("/api/v1/users/1/courses/suggested")
                 .contentType(APPLICATION_JSON))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
   }
 
   @Test

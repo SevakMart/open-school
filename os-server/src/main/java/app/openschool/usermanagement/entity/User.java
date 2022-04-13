@@ -3,6 +3,7 @@ package app.openschool.usermanagement.entity;
 import app.openschool.coursemanagement.entity.Category;
 import app.openschool.coursemanagement.entity.Course;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -90,6 +91,11 @@ public class User {
     this.email = email;
     this.password = password;
     this.role = role;
+  }
+
+  public User(String email, String password) {
+    this.email = email;
+    this.password = password;
   }
 
   @Override

@@ -3,6 +3,7 @@ package app.openschool.coursemanagement.entity;
 import app.openschool.usermanagement.entity.User;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -106,5 +107,9 @@ public class Category {
 
   public void setUsers(Set<User> users) {
     this.users = users;
+  }
+
+  public Set<User> getUsers() {
+    return users;
   }
 }

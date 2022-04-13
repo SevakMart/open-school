@@ -11,30 +11,38 @@ import app.openschool.usermanagement.api.UserGenerator;
 import app.openschool.usermanagement.api.dto.MentorDto;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
 import app.openschool.usermanagement.api.mapper.MentorMapper;
-import app.openschool.usermanagement.controller.UserController;
+import app.openschool.usermanagement.entity.Role;
 import app.openschool.usermanagement.entity.User;
-import app.openschool.usermanagement.service.UserService;
+import app.openschool.usermanagement.entity.UserPrincipal;
+import app.openschool.usermanagement.service.UserServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(UserController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class UserControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
-  @MockBean private UserService userService;
+  @MockBean private UserServiceImpl userService;
+
+  @MockBean AuthenticationManager authenticationManager;
 
   @Test
   void registerValidUser() throws Exception {
@@ -84,6 +92,38 @@ class UserControllerTest {
                 .queryParam("page", "1")
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void loginWithWrongCredentials() throws Exception {
+    User user = new User("test@gmail.com", "1234$dhjshh*");
+    when(authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())))
+        .thenThrow(BadCredentialsException.class);
+
+    String requestBody = "{ \"email\": \"test@gmail.com\",\"password\": \"1234$dhjshh*\" }";
+
+    mockMvc
+        .perform(post("/api/v1/login").contentType(APPLICATION_JSON).content(requestBody))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void loginWithRightCredentials() throws Exception {
+    User user = new User("test@gmail.com", "1234$dhjshh*");
+    user.setRole(new Role("STUDENT"));
+    UserPrincipal userPrincipal = new UserPrincipal(user);
+    when(authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())))
+        .thenReturn(new UsernamePasswordAuthenticationToken(null, null, null));
+
+    when(userService.findUserByEmail("test@gmail.com")).thenReturn(user);
+
+    String requestBody = "{ \"email\": \"test@gmail.com\",\"password\": \"1234$dhjshh*\" }";
+
+    mockMvc
+        .perform(post("/api/v1/login").contentType(APPLICATION_JSON).content(requestBody))
+        .andExpect(status().isOk());
   }
 }
