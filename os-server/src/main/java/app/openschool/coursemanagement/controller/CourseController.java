@@ -44,13 +44,10 @@ public class CourseController {
   }
 
   @GetMapping("/users/{userId}/courses/suggested")
-  @Operation(summary = "find suggested courses")
-  public ResponseEntity<List<CourseDto>> getSuggestedCourses(@PathVariable Long userId) {
-  @GetMapping("/courses/suggested")
   @Operation(
-      summary = "find suggested courses",
-      security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<List<CourseDto>> getSuggestedCourses(@RequestParam Long userId) {
+          summary = "find suggested courses",
+          security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<List<CourseDto>> getSuggestedCourses(@PathVariable Long userId) {
     return ResponseEntity.ok(this.courseService.getSuggestedCourses(userId));
   }
 
