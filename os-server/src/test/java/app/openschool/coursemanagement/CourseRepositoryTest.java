@@ -25,17 +25,16 @@ import app.openschool.usermanagement.entity.User;
 import app.openschool.usermanagement.repository.CompanyRepository;
 import app.openschool.usermanagement.repository.RoleRepository;
 import app.openschool.usermanagement.repository.UserRepository;
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.event.annotation.AfterTestClass;
 
 @DataJpaTest
 public class CourseRepositoryTest {
@@ -54,28 +53,23 @@ public class CourseRepositoryTest {
 
   @BeforeEach
   public void setup() {
-
     Difficulty difficulty = new Difficulty();
-    difficulty.setId(1L);
     difficulty.setTitle("Medium");
     difficultyRepository.save(difficulty);
     Language language = new Language();
-    language.setId(1L);
     language.setTitle("English");
     languageRepository.save(language);
-    Category category = CategoryGenerator.generateCategory();
+    Category category = new Category();
+    category.setTitle("Java");
     categoryRepository.save(category);
 
     for (long i = 1L; i < 7L; i++) {
       Course course = new Course();
-      course.setId(i);
       course.setTitle("Stream");
-      course.setDescription("AAA");
       course.setRating(5.5);
-      course.setDueDate(LocalDate.of(2022, 10, 7));
-      course.setCategory(category);
-      course.setDifficulty(difficulty);
-      course.setLanguage(language);
+      course.setCategory(categoryRepository.getById(1L));
+      course.setDifficulty(difficultyRepository.getById(1L));
+      course.setLanguage(languageRepository.getById(1L));
       course.setCourseStatus(
           courseStatusRepository.getById(i).getId() < 3
               ? courseStatusRepository.getById(i)
@@ -86,7 +80,6 @@ public class CourseRepositoryTest {
     Set<Module> moduleSet = new HashSet<>();
     for (long i = 1L; i < 5L; i++) {
       Module module = new Module();
-      module.setId(i);
       module.setModuleStatus(
           moduleStatusRepository.getById(i).getId() < 3
               ? moduleStatusRepository.getById(i)
@@ -97,16 +90,15 @@ public class CourseRepositoryTest {
     }
     courseRepository.getById(1L).setModules(moduleSet);
 
-    Set<ModuleItem> moduleItemSetModule1 = new HashSet<>();
+    Set<ModuleItem> moduleItemsModule1 = new HashSet<>();
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
-      moduleItem.setId(i);
       moduleItem.setModuleItemType("video");
       moduleItem.setEstimatedTime(35L);
       moduleItem.setGrade(100);
       moduleItem.setModuleItemStatus(moduleItemStatusRepository.getById(1L));
       moduleItem.setModule(moduleRepository.getById(1L));
-      moduleItemSetModule1.add(moduleItem);
+      moduleItemsModule1.add(moduleItem);
       moduleItemRepository.save(moduleItem);
     }
 
@@ -115,13 +107,12 @@ public class CourseRepositoryTest {
             .filter(module -> module.getId().equals(1L))
             .findFirst()
             .get();
-    module1.setModuleItems(moduleItemSetModule1);
+    module1.setModuleItems(moduleItemsModule1);
     moduleRepository.save(module1);
 
-    Set<ModuleItem> moduleItemSetModule2 = new HashSet<>();
+    Set<ModuleItem> moduleItemsModule2 = new HashSet<>();
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
-      moduleItem.setId(i + 2);
       moduleItem.setModuleItemType("reading");
       moduleItem.setEstimatedTime(25L);
       moduleItem.setModuleItemStatus(
@@ -129,7 +120,7 @@ public class CourseRepositoryTest {
               ? moduleItemStatusRepository.getById(i)
               : moduleItemStatusRepository.getById(2L));
       moduleItem.setModule(moduleRepository.getById(2L));
-      moduleItemSetModule2.add(moduleItem);
+      moduleItemsModule2.add(moduleItem);
       moduleItemRepository.save(moduleItem);
     }
 
@@ -138,45 +129,36 @@ public class CourseRepositoryTest {
             .filter(module -> module.getId().equals(2L))
             .findFirst()
             .get();
-    module2.setModuleItems(moduleItemSetModule2);
+    module2.setModuleItems(moduleItemsModule2);
     moduleRepository.save(module2);
 
     User user = new User();
     user.setName("John");
     user.setSurname("Smith");
-    user.setProfessionName("developer");
-    user.setCourseCount(3);
-    user.setUserImgPath("aaa");
-    user.setLinkedinPath("kkk");
-    user.setEmailPath("lll");
     user.setEmail("aaa@gmail.com");
     user.setPassword("pass");
-    user.setId(1L);
     user.setRole(roleRepository.getById(3));
     Company company = new Company();
     company.setCompanyName("AAA");
-    company.setId(1);
-    user.setCompany(company);
+    companyRepository.save(company);
+    user.setCompany(companyRepository.getById(1));
     Set<Category> categorySet = new HashSet<>();
-    categorySet.add(CategoryGenerator.generateCategory());
+    categorySet.add(categoryRepository.getById(1L));
     user.setCategories(categorySet);
     user.setCourses(new HashSet<>(courseRepository.findAll()));
-    companyRepository.save(company);
     userRepository.save(user);
   }
 
-  @AfterTestClass
+  @AfterEach
   public void tearDown() {
+    moduleItemRepository.deleteAll();
+    moduleRepository.deleteAll();
+    courseRepository.deleteAll();
+    userRepository.deleteAll();
+    companyRepository.deleteAll();
     categoryRepository.deleteAll();
     difficultyRepository.deleteAll();
     languageRepository.deleteAll();
-    courseStatusRepository.deleteAll();
-    moduleStatusRepository.deleteAll();
-    moduleItemStatusRepository.deleteAll();
-    courseRepository.deleteAll();
-    companyRepository.deleteAll();
-    roleRepository.deleteAll();
-    userRepository.deleteAll();
   }
 
   @Test
@@ -229,9 +211,7 @@ public class CourseRepositoryTest {
 
     assertEquals(5, coursesInProgress.size());
     List<CourseStatus> statusList =
-        coursesInProgress.stream()
-            .map(Course::getCourseStatus)
-            .collect(Collectors.toList());
+        coursesInProgress.stream().map(Course::getCourseStatus).collect(Collectors.toList());
     for (CourseStatus status : statusList) {
       assertTrue("COURSE STATUS ISN'T IN PROGRESS", status.isInProgress());
     }
@@ -241,9 +221,7 @@ public class CourseRepositoryTest {
 
     assertEquals(1, coursesCompeted.size());
     List<CourseStatus> statusListCompleted =
-        coursesCompeted.stream()
-            .map(Course::getCourseStatus)
-            .collect(Collectors.toList());
+        coursesCompeted.stream().map(Course::getCourseStatus).collect(Collectors.toList());
     for (CourseStatus status : statusListCompleted) {
       assertTrue("COURSE STATUS ISN'T COMPLETED", !status.isInProgress());
     }
