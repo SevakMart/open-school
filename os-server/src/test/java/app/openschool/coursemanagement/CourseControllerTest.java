@@ -124,6 +124,6 @@ class CourseControllerTest {
             .perform(
                     get("/users/1/courses")
                             .contentType(APPLICATION_JSON))
-            .andExpect(status().isForbidden());
+            .andExpect(status().isUnauthorized());
   }
 }
