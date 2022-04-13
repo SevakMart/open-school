@@ -68,8 +68,8 @@ public class CourseRepositoryTest {
       course.setTitle("Stream");
       course.setRating(5.5);
       course.setCategory(categoryRepository.getById(1L));
-      course.setDifficulty(difficultyRepository.getById(1L));
-      course.setLanguage(languageRepository.getById(1L));
+      course.setDifficulty(difficultyRepository.getById(1));
+      course.setLanguage(languageRepository.getById(1));
       course.setCourseStatus(
           i < 3 ? courseStatusRepository.getById(i) : courseStatusRepository.getById(1L));
       courseRepository.save(course);

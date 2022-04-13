@@ -56,10 +56,8 @@ class CourseControllerTest {
       course.setDescription("AAA");
       course.setRating(5.5);
       Difficulty difficulty = new Difficulty();
-      difficulty.setId(1L);
       difficulty.setTitle("Initial");
       Language language = new Language();
-      language.setId(1L);
       language.setTitle("English");
       Category category = CategoryGenerator.generateCategory();
       course.setDifficulty(difficulty);

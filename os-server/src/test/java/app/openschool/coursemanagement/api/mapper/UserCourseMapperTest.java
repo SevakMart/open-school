@@ -24,10 +24,8 @@ public class UserCourseMapperTest {
   public void toUserCourseDto() {
 
     Difficulty difficulty = new Difficulty();
-    difficulty.setId(1L);
     difficulty.setTitle("Medium");
     Language language = new Language();
-    language.setId(1L);
     language.setTitle("English");
     Category category = CategoryGenerator.generateCategory();
 

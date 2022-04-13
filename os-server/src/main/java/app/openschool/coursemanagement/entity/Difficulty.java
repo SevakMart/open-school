@@ -16,7 +16,7 @@ public class Difficulty {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false)
-  private Long id;
+  private Integer id;
 
   @Column(name = "title", nullable = false)
   private String title;
@@ -30,7 +30,7 @@ public class Difficulty {
     this.title = title;
   }
 
-  public Long getId() {
+  public Integer getId() {
     return id;
   }
 
@@ -50,7 +50,7 @@ public class Difficulty {
     this.courses = courses;
   }
 
-  public void setId(Long id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 }
