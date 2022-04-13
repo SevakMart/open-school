@@ -71,9 +71,7 @@ public class CourseRepositoryTest {
       course.setDifficulty(difficultyRepository.getById(1L));
       course.setLanguage(languageRepository.getById(1L));
       course.setCourseStatus(
-          courseStatusRepository.getById(i).getId() < 3
-              ? courseStatusRepository.getById(i)
-              : courseStatusRepository.getById(1L));
+          i < 3 ? courseStatusRepository.getById(i) : courseStatusRepository.getById(1L));
       courseRepository.save(course);
     }
 
@@ -81,9 +79,7 @@ public class CourseRepositoryTest {
     for (long i = 1L; i < 5L; i++) {
       Module module = new Module();
       module.setModuleStatus(
-          moduleStatusRepository.getById(i).getId() < 3
-              ? moduleStatusRepository.getById(i)
-              : moduleStatusRepository.getById(1L));
+          i < 3 ? moduleStatusRepository.getById(i) : moduleStatusRepository.getById(1L));
       module.setCourse(courseRepository.getById(1L));
       moduleSet.add(module);
       moduleRepository.save(module);
@@ -116,9 +112,7 @@ public class CourseRepositoryTest {
       moduleItem.setModuleItemType("reading");
       moduleItem.setEstimatedTime(25L);
       moduleItem.setModuleItemStatus(
-          moduleItemStatusRepository.getById(i).getId() < 2
-              ? moduleItemStatusRepository.getById(i)
-              : moduleItemStatusRepository.getById(2L));
+          i < 2 ? moduleItemStatusRepository.getById(i) : moduleItemStatusRepository.getById(2L));
       moduleItem.setModule(moduleRepository.getById(2L));
       moduleItemsModule2.add(moduleItem);
       moduleItemRepository.save(moduleItem);
