@@ -1,13 +1,13 @@
 package app.openschool.coursemanagement.api.dto;
 
-public class CategoryDtoForRegistration {
+public class PreferredCategoryDto {
 
   private Long id;
   private String title;
 
-  public CategoryDtoForRegistration() {}
+  public PreferredCategoryDto() {}
 
-  public CategoryDtoForRegistration(Long id, String title) {
+  public PreferredCategoryDto(Long id, String title) {
     this.id = id;
     this.title = title;
   }

@@ -29,7 +29,8 @@ public class UserExceptionHandling implements ErrorController {
 
   @ExceptionHandler(EmailAlreadyExistException.class)
   public ResponseEntity<UserRegistrationHttpResponse> emailExistException(Locale locale) {
-    String message = messageSource.getMessage("exception.duplicate.email.message", null, locale);
+    String message =
+        messageSource.getMessage("exception.duplicate.user.email.message", null, locale);
     return createHttpResponse(BAD_REQUEST, message, null);
   }
 
@@ -45,7 +46,8 @@ public class UserExceptionHandling implements ErrorController {
   public ResponseEntity<UserLoginExceptionResponse> userEmailNotFoundException(
       EmailNotFoundException exception, Locale locale) {
     String[] args = {exception.getMessage()};
-    String message = messageSource.getMessage("exception.nonexistent.email.message", args, locale);
+    String message =
+        messageSource.getMessage("exception.nonexistent.user.email.message", args, locale);
     return new ResponseEntity<>(new UserLoginExceptionResponse(message), UNAUTHORIZED);
   }
 

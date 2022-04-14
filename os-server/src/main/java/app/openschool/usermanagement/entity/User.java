@@ -2,7 +2,6 @@ package app.openschool.usermanagement.entity;
 
 import app.openschool.coursemanagement.entity.Category;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -101,11 +100,8 @@ public class User {
     User user = (User) o;
     return name.equals(user.name)
         && email.equals(user.email)
-        && role.getId().equals(user.role.getId())
-        && categories.size() == (user.categories.size());
+        && role.getId().equals(user.role.getId());
   }
-  
-  
 
   public Set<Category> getCategories() {
     return categories;

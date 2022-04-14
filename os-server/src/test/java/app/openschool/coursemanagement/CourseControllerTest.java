@@ -3,6 +3,7 @@ package app.openschool.coursemanagement;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import app.openschool.coursemanagement.api.CategoryGenerator;
@@ -112,6 +113,15 @@ class CourseControllerTest {
             get("/api/v1/courses/suggested")
                 .queryParam("userId", "1")
                 .contentType(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void savePreferredCategories() throws Exception {
+    String requestBody = "{  \"id\": 1L, \"categoriesIdSet\": [ 2, 3 ] }";
+    mockMvc
+        .perform(
+            post("/api/v1/choose-categories").content(requestBody).contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
   }
 }
