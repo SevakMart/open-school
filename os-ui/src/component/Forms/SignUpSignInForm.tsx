@@ -5,7 +5,7 @@ import VisibileIcon from '../../icons/Visibility';
 import { validateSignUpForm } from '../../helpers/SignUpFormValidate';
 import { validateSignInForm } from '../../helpers/SignInFormValidate';
 import {
-  SIGN_UP, SIGN_IN, REGISTRATION_URL, SIGNIN_URL,
+  SIGN_UP, SIGN_IN, REGISTRATION_URL, SIGNIN_URL, SUCCESSFUL_SIGNIN_MESSAGE,
 } from '../../constants/Strings';
 import { register } from '../../services/register';
 import { signIn } from '../../services/signIn';
@@ -23,7 +23,7 @@ const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
   const dispatch = useDispatch();
   const [formValues, setFormValues] = useState<RegistrationFormType>({ firstName: '', email: '', password: '' });
   const [errorFormValue, setErrorFormValue] = useState({ fullNameError: '', emailError: '', passwordError: '' });
-  const [signInErrorMMessage, setSignInErrorMessage] = useState('');
+  const [signInErrorMessage, setSignInErrorMessage] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const passwordInputRef = useRef<null|HTMLInputElement>(null);
   const { errorField } = styles;
@@ -57,7 +57,7 @@ const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
           setSignInErrorMessage(response.message);
         } else if (response.status === 200) {
           dispatch(addLoggedInUser(response));
-          handleSignIn!('You have Successfully signed in!');
+          handleSignIn!(SUCCESSFUL_SIGNIN_MESSAGE);
         }
       });
     } else setErrorFormValue(validateSignInForm(formValues));
@@ -132,7 +132,7 @@ const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
           ? <VisibileIcon makeInvisible={handlePasswordVisibility} />
           : <HiddenIcon makeVisible={handlePasswordVisibility} />}
       </div>
-      {signInErrorMMessage ? <h4 className={errorField}>{signInErrorMMessage}</h4> : null}
+      {signInErrorMessage ? <h4 data-testid="signInErrorMessage" className={errorField}>{signInErrorMessage}</h4> : null}
       <p>Forgot Password?</p>
       {formType === 'signUp' ? <button type="button" data-testid="signUpButton" onClick={handleSubmitForm}>{SIGN_UP}</button>
         : <button type="button" data-testid="signInButton" onClick={handleSignInForm}>{SIGN_IN}</button>}

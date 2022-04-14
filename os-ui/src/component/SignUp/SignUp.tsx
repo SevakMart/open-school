@@ -28,7 +28,7 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
   return (
     <div className={mainContainer}>
       <div className={formContainer}>
-        {isSignUp ? <h3>{succesfullSignUpMessage}</h3>
+        {isSignUp ? <h3 data-testid="successfulSignUpMessage">{succesfullSignUpMessage}</h3>
           : (
             <>
               <CloseIcon handleClosing={() => handleSignUpClicks('closeButton')} />

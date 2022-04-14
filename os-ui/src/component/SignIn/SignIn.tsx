@@ -30,7 +30,7 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
   return (
     <div className={mainContainer}>
       <div className={formContainer}>
-        { isSignedIn ? <h3>{succesfulSignInMessage}</h3>
+        { isSignedIn ? <h3 data-testid="successfulSignInMessage">{succesfulSignInMessage}</h3>
           : (
             <>
               <CloseIcon handleClosing={() => handleSignInClicks('closeButton')} />

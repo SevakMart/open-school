@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
+import { store } from '../../../redux/Store';
 import Form from '../SignUpSignInForm';
 import {
   INVALID_EMAIL_ERROR_MESSAGE, INVALID_PASSWORD_ERROR_MESSAGE,
@@ -10,15 +12,12 @@ import {
 
 describe('Create tests for From component', () => {
   test('Create a snapshot test', () => {
-    const { asFragment } = render(
-      <Form
-        formType="signUp"
-      />,
-    );
+    const { asFragment } = render(<Provider store={store}><Form formType="signUp" /></Provider>);
     expect(asFragment()).toMatchSnapshot();
   });
   test('Test signUp form error messages:test1', () => {
-    render(<Form formType="signUp" />);
+    expect.hasAssertions();
+    render(<Provider store={store}><Form formType="signUp" /></Provider>);
     const fullNameInputField = screen.queryByPlaceholderText('Fill in first name');
     const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
     const passwordInputField = screen.queryByPlaceholderText('Enter your password');
@@ -38,7 +37,8 @@ describe('Create tests for From component', () => {
     expect(passwordErrorMessage).toBeInTheDocument();
   });
   test('Test signUp form error messages:Show Invalid error messages', () => {
-    render(<Form formType="signUp" />);
+    expect.hasAssertions();
+    render(<Provider store={store}><Form formType="signUp" /></Provider>);
     const fullNameInputField = screen.queryByPlaceholderText('Fill in first name');
     const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
     const passwordInputField = screen.queryByPlaceholderText('Enter your password');
@@ -58,7 +58,8 @@ describe('Create tests for From component', () => {
     expect(passwordErrorMessage).toBeInTheDocument();
   });
   test('Test signUp form error messages: Create a valid full name only', () => {
-    render(<Form formType="signUp" />);
+    expect.hasAssertions();
+    render(<Provider store={store}><Form formType="signUp" /></Provider>);
     const fullNameInputField = screen.queryByPlaceholderText('Fill in first name');
     const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
     const passwordInputField = screen.queryByPlaceholderText('Enter your password');
@@ -78,7 +79,8 @@ describe('Create tests for From component', () => {
     expect(passwordErrorMessage).toBeInTheDocument();
   });
   test('Test signUp form error messages: Create a valid form on submit', () => {
-    render(<Form formType="signUp" />);
+    expect.hasAssertions();
+    render(<Provider store={store}><Form formType="signUp" /></Provider>);
     const fullNameInputField = screen.queryByPlaceholderText('Fill in first name');
     const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
     const passwordInputField = screen.queryByPlaceholderText('Enter your password');
@@ -100,16 +102,18 @@ describe('Create tests for From component', () => {
 });
 describe('Create tests for sign in form component', () => {
   test('Create a snapshot test', () => {
-    const { asFragment } = render(<Form formType="signIn" />);
+    const { asFragment } = render(<Provider store={store}><Form formType="signIn" /></Provider>);
     expect(asFragment()).toMatchSnapshot();
   });
   test('Verify if the full name input field is absent in sign in form', () => {
-    render(<Form formType="signIn" />);
+    expect.hasAssertions();
+    render(<Provider store={store}><Form formType="signIn" /></Provider>);
     const fullNameInputField = screen.queryByPlaceholderText('Fill in first name');
     expect(fullNameInputField).toBeNull();
   });
   test('Test sign In form error message:absent email', () => {
-    render(<Form formType="signIn" />);
+    expect.hasAssertions();
+    render(<Provider store={store}><Form formType="signIn" /></Provider>);
     const passwordInputField = screen.queryByPlaceholderText('Enter your password');
     const signInButton = screen.queryByTestId('signInButton');
 
@@ -121,7 +125,8 @@ describe('Create tests for sign in form component', () => {
     expect(emailErrorMessage).toHaveTextContent(EMAIL_REQUIRED);
   });
   test('Test sign In form error message:absent password', () => {
-    render(<Form formType="signIn" />);
+    expect.hasAssertions();
+    render(<Provider store={store}><Form formType="signIn" /></Provider>);
     const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
     const signInButton = screen.queryByTestId('signInButton');
 
@@ -133,7 +138,8 @@ describe('Create tests for sign in form component', () => {
     expect(passwordErrorMessage).toHaveTextContent(PASSWORD_REQUIRED);
   });
   test('Test sign In form error message:absent email & password', () => {
-    render(<Form formType="signIn" />);
+    expect.hasAssertions();
+    render(<Provider store={store}><Form formType="signIn" /></Provider>);
     const signInButton = screen.queryByTestId('signInButton');
 
     userEvent.click(signInButton as HTMLButtonElement);
@@ -147,7 +153,8 @@ describe('Create tests for sign in form component', () => {
     expect(passwordErrorMessage).toHaveTextContent(PASSWORD_REQUIRED);
   });
   test('Test sign In form error message:invalid email', () => {
-    render(<Form formType="signIn" />);
+    expect.hasAssertions();
+    render(<Provider store={store}><Form formType="signIn" /></Provider>);
     const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
     const passwordInputField = screen.queryByPlaceholderText('Enter your password');
     const signInButton = screen.queryByTestId('signInButton');
@@ -161,7 +168,8 @@ describe('Create tests for sign in form component', () => {
     expect(emailErrorMessage).toHaveTextContent(INVALID_EMAIL_ERROR_MESSAGE);
   });
   test('Test sign In form error message:invalid email & absent password', () => {
-    render(<Form formType="signIn" />);
+    expect.hasAssertions();
+    render(<Provider store={store}><Form formType="signIn" /></Provider>);
     const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
     const signInButton = screen.queryByTestId('signInButton');
 
@@ -178,7 +186,8 @@ describe('Create tests for sign in form component', () => {
   });
 
   test('Test sign In form error message:valid email & password', () => {
-    render(<Form formType="signIn" />);
+    expect.hasAssertions();
+    render(<Provider store={store}><Form formType="signIn" /></Provider>);
     const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
     const passwordInputField = screen.queryByPlaceholderText('Enter your password');
     const signInButton = screen.queryByTestId('signInButton');
