@@ -1,9 +1,9 @@
 package app.openschool.coursemanagement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
-import app.openschool.coursemanagement.api.CategoryGenerator;
 import app.openschool.coursemanagement.entity.Category;
 import app.openschool.coursemanagement.entity.Course;
 import app.openschool.coursemanagement.entity.CourseStatus;
@@ -30,13 +30,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 @DataJpaTest
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 public class CourseRepositoryTest {
   @Autowired CategoryRepository categoryRepository;
   @Autowired DifficultyRepository difficultyRepository;
@@ -65,6 +66,7 @@ public class CourseRepositoryTest {
 
     for (long i = 1L; i < 7L; i++) {
       Course course = new Course();
+      course.setId(i);
       course.setTitle("Stream");
       course.setRating(5.5);
       course.setCategory(categoryRepository.getById(1L));
@@ -78,6 +80,7 @@ public class CourseRepositoryTest {
     Set<Module> moduleSet = new HashSet<>();
     for (long i = 1L; i < 5L; i++) {
       Module module = new Module();
+      module.setId(i);
       module.setModuleStatus(
           i < 3 ? moduleStatusRepository.getById(i) : moduleStatusRepository.getById(1L));
       module.setCourse(courseRepository.getById(1L));
@@ -89,6 +92,7 @@ public class CourseRepositoryTest {
     Set<ModuleItem> moduleItemsModule1 = new HashSet<>();
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
+      moduleItem.setId(i);
       moduleItem.setModuleItemType("video");
       moduleItem.setEstimatedTime(35L);
       moduleItem.setGrade(100);
@@ -109,6 +113,7 @@ public class CourseRepositoryTest {
     Set<ModuleItem> moduleItemsModule2 = new HashSet<>();
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
+      moduleItem.setId(i + 2);
       moduleItem.setModuleItemType("reading");
       moduleItem.setEstimatedTime(25L);
       moduleItem.setModuleItemStatus(
@@ -127,6 +132,7 @@ public class CourseRepositoryTest {
     moduleRepository.save(module2);
 
     User user = new User();
+    user.setId(1L);
     user.setName("John");
     user.setSurname("Smith");
     user.setEmail("aaa@gmail.com");
@@ -141,18 +147,6 @@ public class CourseRepositoryTest {
     user.setCategories(categorySet);
     user.setCourses(new HashSet<>(courseRepository.findAll()));
     userRepository.save(user);
-  }
-
-  @AfterEach
-  public void tearDown() {
-    moduleItemRepository.deleteAll();
-    moduleRepository.deleteAll();
-    courseRepository.deleteAll();
-    userRepository.deleteAll();
-    companyRepository.deleteAll();
-    categoryRepository.deleteAll();
-    difficultyRepository.deleteAll();
-    languageRepository.deleteAll();
   }
 
   @Test
