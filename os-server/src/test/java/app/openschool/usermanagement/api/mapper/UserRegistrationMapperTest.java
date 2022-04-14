@@ -20,13 +20,8 @@ class UserRegistrationMapperTest {
     String email = "test@gmail.com";
     String name = "Test";
     String password = "1234$dhjsHH*";
-    Set<Category> categories = new HashSet<>();
-    categories.add(new Category(1L));
-    User user = new User(name, email, password, categories, new Role(1, "STUDENT"));
+    User user = new User(name, email, password, new Role(1, "STUDENT"));
     UserRegistrationDto userDto = new UserRegistrationDto(name, email, password);
-    Set<Long> categoryIdSet = new HashSet<>();
-    categoryIdSet.add(1L);
-    userDto.setCategoryIdSet(categoryIdSet);
     User mappedUser = UserRegistrationMapper.userRegistrationDtoToUser(userDto, passwordEncoder);
     assertThat(user).isEqualTo(mappedUser);
   }

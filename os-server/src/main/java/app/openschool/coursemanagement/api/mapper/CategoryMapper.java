@@ -1,7 +1,7 @@
 package app.openschool.coursemanagement.api.mapper;
 
 import app.openschool.coursemanagement.api.dto.CategoryDto;
-import app.openschool.coursemanagement.api.dto.CategoryDtoForRegistration;
+import app.openschool.coursemanagement.api.dto.PreferredCategoryDto;
 import app.openschool.coursemanagement.entity.Category;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +27,8 @@ public class CategoryMapper {
         category.getTitle(), category.getLogoPath(), category.getSubCategoryCount());
   }
 
-  public static CategoryDtoForRegistration toCategoryDtoForRegistration(Category category) {
-    return new CategoryDtoForRegistration(category.getId(), category.getTitle());
+  public static PreferredCategoryDto toPreferredCategoryDto(Category category) {
+    return new PreferredCategoryDto(category.getId(), category.getTitle());
   }
 
   public static Set<Category> categoryIdSetToCategorySet(Set<Long> categoryIdSet) {

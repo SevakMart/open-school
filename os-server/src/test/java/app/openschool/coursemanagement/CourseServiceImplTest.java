@@ -1,12 +1,17 @@
 package app.openschool.coursemanagement;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 import app.openschool.coursemanagement.api.CategoryGenerator;
-import app.openschool.coursemanagement.api.dto.CategoryDtoForRegistration;
+import app.openschool.coursemanagement.api.dto.PreferredCategoryDto;
+import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesRequestDto;
+import app.openschool.coursemanagement.api.exceptions.CategoryNotFoundException;
+import app.openschool.coursemanagement.api.exceptions.UserNotFoundException;
 import app.openschool.coursemanagement.entity.Category;
 import app.openschool.coursemanagement.entity.Course;
 import app.openschool.coursemanagement.entity.Difficulty;
@@ -145,22 +150,21 @@ class CourseServiceImplTest {
     given(categoryRepository.findCategoriesByParentCategoryId(1L)).willReturn(subcategories1);
     given(categoryRepository.findCategoriesByParentCategoryId(2L)).willReturn(subcategories2);
 
-    Map<String, List<CategoryDtoForRegistration>> categoryMap1 =
-        courseService.findCategoriesByTitle(" ");
+    Map<String, List<PreferredCategoryDto>> categoryMap1 = courseService.findCategoriesByTitle(" ");
 
-    CategoryDtoForRegistration categoryDto1 = new CategoryDtoForRegistration(null, "Collections");
-    CategoryDtoForRegistration categoryDto2 = new CategoryDtoForRegistration(null, "React-JS");
+    PreferredCategoryDto categoryDto1 = new PreferredCategoryDto(null, "Collections");
+    PreferredCategoryDto categoryDto2 = new PreferredCategoryDto(null, "React-JS");
 
     assertThat(categoryMap1.get("Java").get(0).getTitle()).isEqualTo(categoryDto1.getTitle());
     assertThat(categoryMap1.get("JS").get(1).getTitle()).isEqualTo(categoryDto2.getTitle());
 
-    Map<String, List<CategoryDtoForRegistration>> categoryMap2 =
+    Map<String, List<PreferredCategoryDto>> categoryMap2 =
         courseService.findCategoriesByTitle("Js");
 
     assertThat(categoryMap2.get("JS").get(1).getTitle()).isEqualTo(categoryDto2.getTitle());
     assertEquals(2, categoryMap2.get("JS").size());
 
-    Map<String, List<CategoryDtoForRegistration>> categoryMap3 =
+    Map<String, List<PreferredCategoryDto>> categoryMap3 =
         courseService.findCategoriesByTitle("ang");
 
     System.out.println(categoryMap3);
@@ -175,5 +179,33 @@ class CourseServiceImplTest {
     when(courseRepository.getSuggestedCourses(1L)).thenReturn(courseList);
     Assertions.assertEquals(4, courseService.getSuggestedCourses(1L).size());
     Mockito.verify(courseRepository, Mockito.times(1)).getSuggestedCourses(1L);
+  }
+
+  @Test
+  void savePreferredCategoriesWithWrongUserId() {
+    Long userId = 1L;
+    Set<Long> categoryIdSet = new HashSet<>();
+    SavePreferredCategoriesRequestDto savePreferredCategoriesDto =
+        new SavePreferredCategoriesRequestDto(userId, categoryIdSet);
+    when(userRepository.findUserById(userId)).thenReturn(null);
+
+    assertThatThrownBy(() -> courseService.savePreferredCategories(savePreferredCategoriesDto))
+        .isInstanceOf(UserNotFoundException.class)
+        .hasMessageContaining(String.valueOf(userId));
+  }
+
+  @Test
+  void savePreferredCategoriesWithWrongCategoryId() {
+    Long categoryId = 1L;
+    Set<Long> categoryIdSet = new HashSet<>();
+    categoryIdSet.add(categoryId);
+    SavePreferredCategoriesRequestDto savePreferredCategoriesDto =
+        new SavePreferredCategoriesRequestDto(1L, categoryIdSet);
+    when(userRepository.findUserById(any())).thenReturn(new User());
+    when(categoryRepository.findCategoryById(categoryId)).thenReturn(null);
+
+    assertThatThrownBy(() -> courseService.savePreferredCategories(savePreferredCategoriesDto))
+        .isInstanceOf(CategoryNotFoundException.class)
+        .hasMessageContaining(String.valueOf(categoryId));
   }
 }

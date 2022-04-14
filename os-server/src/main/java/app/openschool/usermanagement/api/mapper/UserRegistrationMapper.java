@@ -1,10 +1,8 @@
 package app.openschool.usermanagement.api.mapper;
 
-import app.openschool.coursemanagement.api.mapper.CategoryMapper;
 import app.openschool.usermanagement.api.dto.UserRegistrationDto;
 import app.openschool.usermanagement.entity.Role;
 import app.openschool.usermanagement.entity.User;
-import java.util.Set;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserRegistrationMapper {
@@ -13,18 +11,10 @@ public class UserRegistrationMapper {
 
   public static User userRegistrationDtoToUser(
       UserRegistrationDto userDto, BCryptPasswordEncoder passwordEncoder) {
-    User user =
-        new User(
-            userDto.getFirstName(),
-            userDto.getEmail(),
-            passwordEncoder.encode(userDto.getPassword()),
-            new Role(1, ROLE_USER));
-
-    Set<Long> categoryIdSet = userDto.getCategoryIdSet();
-    if (categoryIdSet != null) {
-      user.setCategories(CategoryMapper.categoryIdSetToCategorySet(categoryIdSet));
-    }
-
-    return user;
+    return new User(
+        userDto.getFirstName(),
+        userDto.getEmail(),
+        passwordEncoder.encode(userDto.getPassword()),
+        new Role(1, ROLE_USER));
   }
 }

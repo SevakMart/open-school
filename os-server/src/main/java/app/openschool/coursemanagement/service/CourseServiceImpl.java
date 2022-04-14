@@ -1,19 +1,26 @@
 package app.openschool.coursemanagement.service;
 
 import app.openschool.coursemanagement.api.dto.CategoryDto;
-import app.openschool.coursemanagement.api.dto.CategoryDtoForRegistration;
 import app.openschool.coursemanagement.api.dto.CourseDto;
+import app.openschool.coursemanagement.api.dto.PreferredCategoryDto;
+import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesRequestDto;
+import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesResponseDto;
+import app.openschool.coursemanagement.api.exceptions.CategoryNotFoundException;
+import app.openschool.coursemanagement.api.exceptions.UserNotFoundException;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
 import app.openschool.coursemanagement.api.mapper.CourseMapper;
 import app.openschool.coursemanagement.entity.Category;
 import app.openschool.coursemanagement.entity.Course;
 import app.openschool.coursemanagement.repository.CategoryRepository;
 import app.openschool.coursemanagement.repository.CourseRepository;
+import app.openschool.usermanagement.entity.User;
 import app.openschool.usermanagement.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
@@ -45,9 +52,9 @@ public class CourseServiceImpl implements CourseService {
 
   @Override
   @Transactional
-  public Map<String, List<CategoryDtoForRegistration>> findCategoriesByTitle(String title) {
+  public Map<String, List<PreferredCategoryDto>> findCategoriesByTitle(String title) {
 
-    Map<String, List<CategoryDtoForRegistration>> mappedCategories;
+    Map<String, List<PreferredCategoryDto>> mappedCategories;
 
     if (StringUtils.isBlank(title)) {
       return mapCategoriesToSubcategories(
@@ -77,7 +84,7 @@ public class CourseServiceImpl implements CourseService {
         .collect(Collectors.toList());
   }
 
-  private Map<String, List<CategoryDtoForRegistration>> mapCategoriesToSubcategories(
+  private Map<String, List<PreferredCategoryDto>> mapCategoriesToSubcategories(
       List<Category> categories) {
     return categories.stream()
         .collect(
@@ -85,14 +92,14 @@ public class CourseServiceImpl implements CourseService {
                 Category::getTitle,
                 (category) ->
                     categoryRepository.findCategoriesByParentCategoryId(category.getId()).stream()
-                        .map((CategoryMapper::toCategoryDtoForRegistration))
+                        .map((CategoryMapper::toPreferredCategoryDto))
                         .collect(Collectors.toList())));
   }
 
-  private Map<String, List<CategoryDtoForRegistration>> mapSubcategoriesToCategories(
+  private Map<String, List<PreferredCategoryDto>> mapSubcategoriesToCategories(
       List<Category> categories) {
 
-    Map<String, List<CategoryDtoForRegistration>> categoryMap = new HashMap<>();
+    Map<String, List<PreferredCategoryDto>> categoryMap = new HashMap<>();
 
     categories.forEach(
         (category -> {
@@ -102,10 +109,10 @@ public class CourseServiceImpl implements CourseService {
           if (categoryMap.containsKey(parentCategoryTitle)) {
             categoryMap
                 .get(parentCategoryTitle)
-                .add(CategoryMapper.toCategoryDtoForRegistration(category));
+                .add(CategoryMapper.toPreferredCategoryDto(category));
           } else {
-            List<CategoryDtoForRegistration> subcategories = new ArrayList<>();
-            subcategories.add(CategoryMapper.toCategoryDtoForRegistration(category));
+            List<PreferredCategoryDto> subcategories = new ArrayList<>();
+            subcategories.add(CategoryMapper.toPreferredCategoryDto(category));
             categoryMap.put(parentCategoryTitle, subcategories);
           }
         }));
@@ -133,5 +140,37 @@ public class CourseServiceImpl implements CourseService {
     courseList.addAll(suggestedCourses);
     courseList.addAll(randomSuggestedCourses);
     return CourseMapper.toCourseDtoList(courseList);
+  }
+
+  @Override
+  @Transactional
+  public SavePreferredCategoriesResponseDto savePreferredCategories(
+      SavePreferredCategoriesRequestDto savePreferredCategoriesRequestDto) {
+
+    Long userId = savePreferredCategoriesRequestDto.getUserId();
+    User user = userRepository.findUserById(userId);
+    Set<PreferredCategoryDto> userCategories = new HashSet<>();
+
+    if (user == null) {
+      throw new UserNotFoundException(String.valueOf(userId));
+    }
+
+    Set<Category> categories =
+        CategoryMapper.categoryIdSetToCategorySet(
+            savePreferredCategoriesRequestDto.getCategoriesIdSet());
+
+    categories.forEach(
+        (category -> {
+          Category fetchedCategory = categoryRepository.findCategoryById(category.getId());
+          if (fetchedCategory == null) {
+            throw new CategoryNotFoundException(String.valueOf(category.getId()));
+          } else {
+            userCategories.add(CategoryMapper.toPreferredCategoryDto(fetchedCategory));
+          }
+        }));
+
+    user.setCategories(categories);
+
+    return new SavePreferredCategoriesResponseDto(userId, userCategories);
   }
 }
