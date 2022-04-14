@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 
 import app.openschool.coursemanagement.api.CategoryGenerator;
 import app.openschool.coursemanagement.api.dto.PreferredCategoryDto;
-import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesDto;
+import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesRequestDto;
 import app.openschool.coursemanagement.api.exceptions.CategoryNotFoundException;
 import app.openschool.coursemanagement.api.exceptions.UserNotFoundException;
 import app.openschool.coursemanagement.entity.Category;
@@ -185,8 +185,8 @@ class CourseServiceImplTest {
   void savePreferredCategoriesWithWrongUserId() {
     Long userId = 1L;
     Set<Long> categoryIdSet = new HashSet<>();
-    SavePreferredCategoriesDto savePreferredCategoriesDto =
-        new SavePreferredCategoriesDto(userId, categoryIdSet);
+    SavePreferredCategoriesRequestDto savePreferredCategoriesDto =
+        new SavePreferredCategoriesRequestDto (userId, categoryIdSet);
     when(userRepository.findUserById(userId)).thenReturn(null);
 
     assertThatThrownBy(() -> courseService.savePreferredCategories(savePreferredCategoriesDto))
@@ -199,8 +199,8 @@ class CourseServiceImplTest {
     Long categoryId = 1L;
     Set<Long> categoryIdSet = new HashSet<>();
     categoryIdSet.add(categoryId);
-    SavePreferredCategoriesDto savePreferredCategoriesDto =
-        new SavePreferredCategoriesDto(1L, categoryIdSet);
+    SavePreferredCategoriesRequestDto savePreferredCategoriesDto =
+        new SavePreferredCategoriesRequestDto (1L, categoryIdSet);
     when(userRepository.findUserById(any())).thenReturn(new User());
     when(categoryRepository.findCategoryById(categoryId)).thenReturn(null);
 

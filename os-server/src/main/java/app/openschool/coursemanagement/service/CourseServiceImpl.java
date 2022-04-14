@@ -3,7 +3,8 @@ package app.openschool.coursemanagement.service;
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.CourseDto;
 import app.openschool.coursemanagement.api.dto.PreferredCategoryDto;
-import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesDto;
+import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesRequestDto;
+import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesResponseDto;
 import app.openschool.coursemanagement.api.exceptions.CategoryNotFoundException;
 import app.openschool.coursemanagement.api.exceptions.UserNotFoundException;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
@@ -16,6 +17,7 @@ import app.openschool.usermanagement.entity.User;
 import app.openschool.usermanagement.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -142,27 +144,33 @@ public class CourseServiceImpl implements CourseService {
 
   @Override
   @Transactional
-  public void savePreferredCategories(SavePreferredCategoriesDto savePreferredCategoriesDto) {
+  public SavePreferredCategoriesResponseDto savePreferredCategories(
+      SavePreferredCategoriesRequestDto savePreferredCategoriesRequestDto) {
 
-    Long userId = savePreferredCategoriesDto.getUserId();
+    Long userId = savePreferredCategoriesRequestDto.getUserId();
     User user = userRepository.findUserById(userId);
+    Set<PreferredCategoryDto> userCategories = new HashSet<>();
 
     if (user == null) {
       throw new UserNotFoundException(String.valueOf(userId));
     }
 
     Set<Category> categories =
-        CategoryMapper.categoryIdSetToCategorySet(savePreferredCategoriesDto.getCategoriesIdSet());
+        CategoryMapper.categoryIdSetToCategorySet(
+            savePreferredCategoriesRequestDto.getCategoriesIdSet());
 
     categories.forEach(
         (category -> {
-          if (categoryRepository.findCategoryById(category.getId()) == null) {
+          Category fetchedCategory = categoryRepository.findCategoryById(category.getId());
+          if (fetchedCategory == null) {
             throw new CategoryNotFoundException(String.valueOf(category.getId()));
+          } else {
+            userCategories.add(CategoryMapper.toPreferredCategoryDto(fetchedCategory));
           }
         }));
 
     user.setCategories(categories);
 
-    userRepository.save(user);
+    return new SavePreferredCategoriesResponseDto(userId, userCategories);
   }
 }

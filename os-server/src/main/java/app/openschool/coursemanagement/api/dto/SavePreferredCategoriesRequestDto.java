@@ -2,12 +2,12 @@ package app.openschool.coursemanagement.api.dto;
 
 import java.util.Set;
 
-public class SavePreferredCategoriesDto {
+public class SavePreferredCategoriesRequestDto {
 
   private Long userId;
   private Set<Long> categoriesIdSet;
 
-  public SavePreferredCategoriesDto(Long userId, Set<Long> categoriesIdSet) {
+  public SavePreferredCategoriesRequestDto(Long userId, Set<Long> categoriesIdSet) {
     this.userId = userId;
     this.categoriesIdSet = categoriesIdSet;
   }

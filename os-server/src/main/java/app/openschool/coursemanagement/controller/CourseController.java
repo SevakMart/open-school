@@ -3,7 +3,8 @@ package app.openschool.coursemanagement.controller;
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.CourseDto;
 import app.openschool.coursemanagement.api.dto.PreferredCategoryDto;
-import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesDto;
+import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesRequestDto;
+import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesResponseDto;
 import app.openschool.coursemanagement.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,11 +57,10 @@ public class CourseController {
   @Operation(
       summary = "save preferred categories",
       security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<Void> savePreferredCategories(
-      @RequestBody SavePreferredCategoriesDto savePreferredCategoriesDto) {
+  public ResponseEntity<SavePreferredCategoriesResponseDto> savePreferredCategories(
+      @RequestBody SavePreferredCategoriesRequestDto savePreferredCategoriesRequestDto) {
 
-    courseService.savePreferredCategories(savePreferredCategoriesDto);
-
-    return new ResponseEntity<>(HttpStatus.OK);
+    return ResponseEntity.ok(
+        courseService.savePreferredCategories(savePreferredCategoriesRequestDto));
   }
 }
