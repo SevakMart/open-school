@@ -6,17 +6,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import app.openschool.category.Category;
+import app.openschool.category.api.dto.CategoryDto;
+import app.openschool.category.api.mapper.CategoryMapper;
+import app.openschool.course.Course;
+import app.openschool.course.CourseService;
+import app.openschool.course.api.dto.UserCourseDto;
+import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.difficulty.Difficulty;
+import app.openschool.course.keyword.Keyword;
+import app.openschool.course.language.Language;
 import app.openschool.coursemanagement.api.CategoryGenerator;
-import app.openschool.coursemanagement.api.dto.CategoryDto;
-import app.openschool.coursemanagement.api.dto.UserCourseDto;
-import app.openschool.coursemanagement.api.mapper.CategoryMapper;
-import app.openschool.coursemanagement.api.mapper.CourseMapper;
-import app.openschool.coursemanagement.entity.Category;
-import app.openschool.coursemanagement.entity.Course;
-import app.openschool.coursemanagement.entity.Difficulty;
-import app.openschool.coursemanagement.entity.Keyword;
-import app.openschool.coursemanagement.entity.Language;
-import app.openschool.coursemanagement.service.CourseService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -110,22 +110,17 @@ class CourseControllerTest {
     when(courseService.getSuggestedCourses(1L))
         .thenReturn(CourseMapper.toCourseDtoList(courseList));
     mockMvc
-        .perform(
-            get("/api/v1/users/1/courses/suggested")
-                .contentType(APPLICATION_JSON))
+        .perform(get("/api/v1/users/1/courses/suggested").contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
   }
 
   @Test
   void findUserCourses() throws Exception {
     List<UserCourseDto> userCourseDtoList = new ArrayList<>();
-    when(courseService.findUserCourses(1L, null))
-            .thenReturn(userCourseDtoList);
+    when(courseService.findUserCourses(1L, null)).thenReturn(userCourseDtoList);
     mockMvc
-            .perform(
-                    get("/users/1/courses")
-                            .contentType(APPLICATION_JSON))
-            .andExpect(status().isUnauthorized());
+        .perform(get("/users/1/courses").contentType(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
   }
 
   @Test

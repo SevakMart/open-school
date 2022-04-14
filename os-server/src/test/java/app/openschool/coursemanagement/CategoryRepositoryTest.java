@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.util.AssertionErrors.assertNull;
 
-import app.openschool.coursemanagement.entity.Category;
-import app.openschool.coursemanagement.repository.CategoryRepository;
+import app.openschool.category.Category;
+import app.openschool.category.CategoryRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

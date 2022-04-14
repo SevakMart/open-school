@@ -2,12 +2,12 @@ package app.openschool.coursemanagement.api.mapper;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import app.openschool.category.Category;
+import app.openschool.category.api.dto.CategoryDto;
+import app.openschool.category.api.dto.PreferredCategoryDto;
+import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.coursemanagement.api.CategoryGenerator;
-import app.openschool.coursemanagement.api.dto.CategoryDto;
-import app.openschool.coursemanagement.api.dto.PreferredCategoryDto;
-import app.openschool.coursemanagement.entity.Category;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.Test;

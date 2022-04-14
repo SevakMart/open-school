@@ -1,0 +1,30 @@
+package app.openschool.category.api.dto;
+
+import java.util.Set;
+
+public class SavePreferredCategoriesRequestDto {
+
+  private Long userId;
+  private Set<Long> categoriesIdSet;
+
+  public SavePreferredCategoriesRequestDto(Long userId, Set<Long> categoriesIdSet) {
+    this.userId = userId;
+    this.categoriesIdSet = categoriesIdSet;
+  }
+
+  public Long getUserId() {
+    return userId;
+  }
+
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
+
+  public Set<Long> getCategoriesIdSet() {
+    return categoriesIdSet;
+  }
+
+  public void setCategoriesIdSet(Set<Long> categoriesIdSet) {
+    this.categoriesIdSet = categoriesIdSet;
+  }
+}

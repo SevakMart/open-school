@@ -2,13 +2,14 @@ package app.openschool.coursemanagement.api.mapper;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import app.openschool.category.Category;
+import app.openschool.course.Course;
+import app.openschool.course.api.dto.CourseDto;
+import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.difficulty.Difficulty;
+import app.openschool.course.keyword.Keyword;
+import app.openschool.course.language.Language;
 import app.openschool.coursemanagement.api.CategoryGenerator;
-import app.openschool.coursemanagement.api.dto.CourseDto;
-import app.openschool.coursemanagement.entity.Category;
-import app.openschool.coursemanagement.entity.Course;
-import app.openschool.coursemanagement.entity.Difficulty;
-import app.openschool.coursemanagement.entity.Keyword;
-import app.openschool.coursemanagement.entity.Language;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
