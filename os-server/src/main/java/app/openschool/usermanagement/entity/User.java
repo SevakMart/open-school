@@ -108,8 +108,7 @@ public class User {
     User user = (User) o;
     return name.equals(user.name)
         && email.equals(user.email)
-        && role.getId().equals(user.role.getId())
-        && categories.size() == (user.categories.size());
+        && role.getId().equals(user.role.getId());
   }
 
   public Set<Category> getCategories() {

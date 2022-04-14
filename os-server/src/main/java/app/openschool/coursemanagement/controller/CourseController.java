@@ -1,9 +1,11 @@
 package app.openschool.coursemanagement.controller;
 
 import app.openschool.coursemanagement.api.dto.CategoryDto;
-import app.openschool.coursemanagement.api.dto.CategoryDtoForRegistration;
 import app.openschool.coursemanagement.api.dto.CourseDto;
 import app.openschool.coursemanagement.api.dto.UserCourseDto;
+import app.openschool.coursemanagement.api.dto.PreferredCategoryDto;
+import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesRequestDto;
+import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesResponseDto;
 import app.openschool.coursemanagement.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -14,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +42,7 @@ public class CourseController {
   @Operation(
       summary = "find all categories by title mapped by subcategories",
       security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<Map<String, List<CategoryDtoForRegistration>>> findCategoriesByTitle(
+  public ResponseEntity<Map<String, List<PreferredCategoryDto>>> findCategoriesByTitle(
       String title) {
     return ResponseEntity.ok(courseService.findCategoriesByTitle(title));
   }
@@ -49,6 +53,17 @@ public class CourseController {
           security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<List<CourseDto>> getSuggestedCourses(@PathVariable Long userId) {
     return ResponseEntity.ok(this.courseService.getSuggestedCourses(userId));
+  }
+
+  @PostMapping("/choose-categories")
+  @Operation(
+      summary = "save preferred categories",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<SavePreferredCategoriesResponseDto> savePreferredCategories(
+      @RequestBody SavePreferredCategoriesRequestDto savePreferredCategoriesRequestDto) {
+
+    return ResponseEntity.ok(
+        courseService.savePreferredCategories(savePreferredCategoriesRequestDto));
   }
 
   @GetMapping("/users/{userId}/courses")

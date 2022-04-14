@@ -57,4 +57,14 @@ class UserRepositoryTest {
     double mentorsCount = allMentorsPage.getTotalElements();
     assertThat(pageCount).isEqualTo(Math.ceil(mentorsCount / 3));
   }
+
+  @Test
+  @Transactional
+  void findUserById() {
+    User user = new User("Test", "testEmail", "testPass", new Role(1, "STUDENT"));
+    userRepository.save(user);
+    User fetchedUser = userRepository.findUserById(1L);
+
+    assertThat(user).isEqualTo(fetchedUser);
+  }
 }

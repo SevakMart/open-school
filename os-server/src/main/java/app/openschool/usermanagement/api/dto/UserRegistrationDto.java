@@ -1,6 +1,5 @@
 package app.openschool.usermanagement.api.dto;
 
-import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -17,8 +16,6 @@ public class UserRegistrationDto {
 
   @Pattern(regexp = PASSWORD_PATTERN, message = "{validation.password.error.message}")
   private String password;
-
-  private Set<Long> categoryIdSet;
 
   public UserRegistrationDto() {}
 
@@ -50,13 +47,5 @@ public class UserRegistrationDto {
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public Set<Long> getCategoryIdSet() {
-    return categoryIdSet;
-  }
-
-  public void setCategoryIdSet(Set<Long> categoryIdSet) {
-    this.categoryIdSet = categoryIdSet;
   }
 }

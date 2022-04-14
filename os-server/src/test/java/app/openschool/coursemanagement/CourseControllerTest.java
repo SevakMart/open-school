@@ -3,6 +3,7 @@ package app.openschool.coursemanagement;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import app.openschool.coursemanagement.api.CategoryGenerator;
@@ -56,8 +57,10 @@ class CourseControllerTest {
       course.setDescription("AAA");
       course.setRating(5.5);
       Difficulty difficulty = new Difficulty();
+      difficulty.setId(1L);
       difficulty.setTitle("Initial");
       Language language = new Language();
+      language.setId(1L);
       language.setTitle("English");
       Category category = CategoryGenerator.generateCategory();
       course.setDifficulty(difficulty);
@@ -123,5 +126,14 @@ class CourseControllerTest {
                     get("/users/1/courses")
                             .contentType(APPLICATION_JSON))
             .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void savePreferredCategories() throws Exception {
+    String requestBody = "{  \"id\": 1L, \"categoriesIdSet\": [ 2, 3 ] }";
+    mockMvc
+        .perform(
+            post("/api/v1/choose-categories").content(requestBody).contentType(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
   }
 }

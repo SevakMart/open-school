@@ -4,6 +4,7 @@ import app.openschool.usermanagement.entity.Company;
 
 public class UserLoginDto {
 
+  private Long id;
   private String name;
   private String surname;
   private String professionName;
@@ -13,6 +14,7 @@ public class UserLoginDto {
   private Company company;
 
   public UserLoginDto(
+      Long id,
       String name,
       String surname,
       String professionName,
@@ -20,6 +22,7 @@ public class UserLoginDto {
       String userImgPath,
       String roleType,
       Company company) {
+    this.id = id;
     this.name = name;
     this.surname = surname;
     this.professionName = professionName;
@@ -27,6 +30,14 @@ public class UserLoginDto {
     this.userImgPath = userImgPath;
     this.roleType = roleType;
     this.company = company;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getName() {
