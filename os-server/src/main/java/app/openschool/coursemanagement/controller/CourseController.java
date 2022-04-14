@@ -2,10 +2,10 @@ package app.openschool.coursemanagement.controller;
 
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.CourseDto;
-import app.openschool.coursemanagement.api.dto.UserCourseDto;
 import app.openschool.coursemanagement.api.dto.PreferredCategoryDto;
 import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesRequestDto;
 import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesResponseDto;
+import app.openschool.coursemanagement.api.dto.UserCourseDto;
 import app.openschool.coursemanagement.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

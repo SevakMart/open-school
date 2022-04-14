@@ -17,11 +17,10 @@ public interface CourseService {
 
   Map<String, List<PreferredCategoryDto>> findCategoriesByTitle(String title);
 
-  List<CourseDto> getSuggestedCourses(@RequestParam Long userId);
+  List<CourseDto> getSuggestedCourses(Long userId);
 
   SavePreferredCategoriesResponseDto savePreferredCategories(
       SavePreferredCategoriesRequestDto savePreferredCategoriesDto);
-  List<CourseDto> getSuggestedCourses(Long userId);
 
   List<UserCourseDto> findUserCourses(Long userId, Long courseStatusId);
 }

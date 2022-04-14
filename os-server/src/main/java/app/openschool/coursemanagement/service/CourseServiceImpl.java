@@ -2,10 +2,10 @@ package app.openschool.coursemanagement.service;
 
 import app.openschool.coursemanagement.api.dto.CategoryDto;
 import app.openschool.coursemanagement.api.dto.CourseDto;
-import app.openschool.coursemanagement.api.dto.UserCourseDto;
 import app.openschool.coursemanagement.api.dto.PreferredCategoryDto;
 import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesRequestDto;
 import app.openschool.coursemanagement.api.dto.SavePreferredCategoriesResponseDto;
+import app.openschool.coursemanagement.api.dto.UserCourseDto;
 import app.openschool.coursemanagement.api.exceptions.CategoryNotFoundException;
 import app.openschool.coursemanagement.api.exceptions.UserNotFoundException;
 import app.openschool.coursemanagement.api.mapper.CategoryMapper;
