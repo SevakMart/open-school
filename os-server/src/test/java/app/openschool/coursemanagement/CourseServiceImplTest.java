@@ -186,7 +186,7 @@ class CourseServiceImplTest {
     Long userId = 1L;
     Set<Long> categoryIdSet = new HashSet<>();
     SavePreferredCategoriesRequestDto savePreferredCategoriesDto =
-        new SavePreferredCategoriesRequestDto (userId, categoryIdSet);
+        new SavePreferredCategoriesRequestDto(userId, categoryIdSet);
     when(userRepository.findUserById(userId)).thenReturn(null);
 
     assertThatThrownBy(() -> courseService.savePreferredCategories(savePreferredCategoriesDto))
@@ -200,7 +200,7 @@ class CourseServiceImplTest {
     Set<Long> categoryIdSet = new HashSet<>();
     categoryIdSet.add(categoryId);
     SavePreferredCategoriesRequestDto savePreferredCategoriesDto =
-        new SavePreferredCategoriesRequestDto (1L, categoryIdSet);
+        new SavePreferredCategoriesRequestDto(1L, categoryIdSet);
     when(userRepository.findUserById(any())).thenReturn(new User());
     when(categoryRepository.findCategoryById(categoryId)).thenReturn(null);
 
