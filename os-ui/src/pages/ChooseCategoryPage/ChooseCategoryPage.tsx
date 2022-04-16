@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
+import { removeLoggedInUser } from '../../redux/Slices/loginUserSlice';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
 import Search from '../../component/Search/Search';
 import Loader from '../../component/Loader/Loader';
@@ -12,6 +13,7 @@ import CategoryWithSubcategoriesProfile from '../../component/CategoryWithSubcat
 import styles from './ChooseCategoryPage.module.scss';
 
 const ChooseCategoryPage = () => {
+  const dispatch = useDispatch();
   const userInfo = useSelector<RootState>((state) => state.userInfo);
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
@@ -23,7 +25,10 @@ const ChooseCategoryPage = () => {
   const handleChangeUrlTitleParam = (titleParam:string) => {
     setTitle(titleParam);
   };
-
+  /* const handleSignOut = () => {
+    dispatch(removeLoggedInUser());
+    navigate('/homepage');
+  }; */
   useEffect(() => {
     if (!title) navigate(`/choose_categories/userId=${(userInfo as any).id}?searchCategories=all`, { replace: true });
     getSearchedCategories(`${GET_CATEGORY_SUBCATEGORY_SEARCH_URL}${title}`)
@@ -55,6 +60,7 @@ const ChooseCategoryPage = () => {
             )) : <h2>{ERROR_MESSAGE}</h2>
       }
       </div>
+      {/* <button type="button" onClick={handleSignOut}>Sign out</button> */}
     </>
   );
 };
