@@ -25,6 +25,20 @@ const data = {
     },
 
   ],
+  Python: [
+    {
+      id: 4,
+      title: 'Python Arrays',
+    },
+    {
+      id: 5,
+      title: 'Python Functions',
+    },
+    {
+      id: 6,
+      title: 'Python Classes',
+    },
+  ],
 };
 
 describe('Create test case to ChooSecategoryPage', () => {
@@ -44,11 +58,18 @@ describe('Create test case to ChooSecategoryPage', () => {
         <ChooseCategoryPage />
       </Provider>,
     );
-    const headerElement = await screen.findByTestId('parentCategoryHeader');
-    const labelElement = await screen.findByTestId('Functions');
-    expect(headerElement).toBeInTheDocument();
-    expect(headerElement).toHaveTextContent('Java');
-    expect(labelElement).toBeInTheDocument();
-    expect(labelElement).toHaveTextContent('Functions');
+    const headerElement1 = await screen.findByTestId('Java');
+    const headerElement2 = await screen.findByTestId('Python');
+    const labelElement1 = await screen.findByTestId('Functions');
+    const labelElement2 = await screen.findByTestId('Python Functions');
+
+    expect(headerElement1).toBeInTheDocument();
+    expect(headerElement1).toHaveTextContent('Java');
+    expect(labelElement1).toBeInTheDocument();
+    expect(labelElement1).toHaveTextContent('Functions');
+    expect(headerElement2).toBeInTheDocument();
+    expect(headerElement2).toHaveTextContent('Python');
+    expect(labelElement2).toBeInTheDocument();
+    expect(labelElement2).toHaveTextContent('Python Functions');
   });
 });

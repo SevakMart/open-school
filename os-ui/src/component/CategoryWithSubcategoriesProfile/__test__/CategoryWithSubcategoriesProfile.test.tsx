@@ -40,7 +40,7 @@ describe('Create tests for the Component', () => {
         />
       </Provider>,
     );
-    const headerElement = screen.queryByTestId('parentCategoryHeader');
+    const headerElement = screen.queryByTestId('Java');
     const labelElement = screen.queryByTestId('Functions');
     expect(headerElement).toBeInTheDocument();
     expect(headerElement).toHaveTextContent('Java');

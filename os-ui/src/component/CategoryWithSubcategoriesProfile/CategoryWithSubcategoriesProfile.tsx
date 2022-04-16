@@ -20,7 +20,7 @@ const CategoryWithSubcategoriesProfile = ({
 
   return (
     <div className={mainContent}>
-      <h3 data-testid="parentCategoryHeader">{parentCategory}</h3>
+      <h3 data-testid={parentCategory}>{parentCategory}</h3>
       {
             subcategories.length > 0 ? subcategories.map((subcategory) => (
               <div className={subcategoryContent} key={+subcategory.id}>

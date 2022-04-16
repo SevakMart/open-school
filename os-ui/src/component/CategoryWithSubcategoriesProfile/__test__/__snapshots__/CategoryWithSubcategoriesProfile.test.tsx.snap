@@ -6,7 +6,7 @@ exports[`Create tests for the Component Create a Snapshot test 1`] = `
     class="mainContent"
   >
     <h3
-      data-testid="parentCategoryHeader"
+      data-testid="Java"
     >
       Java
     </h3>
