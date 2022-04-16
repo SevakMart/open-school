@@ -12,14 +12,15 @@ const loggedInUserPersistConfig = {
 const persistConfig = {
   key: 'root',
   storage: storageSession,
+  blackList: ['userInfoReducer'],
 };
-const persistedChosenSubcategories = persistReducer(persistConfig, chooseSubcategoryReducer);
 
 const persistedLoggedInUserReducer = persistReducer(loggedInUserPersistConfig, userInfoReducer);
 
 const rootReducer = combineReducers({
-  chooseSubcategories: persistedChosenSubcategories,
+  chooseSubcategories: chooseSubcategoryReducer,
   userInfo: persistedLoggedInUserReducer,
 });
 
-export default rootReducer;
+const persistedRootReducer = persistReducer(persistConfig, rootReducer);
+export default persistedRootReducer;
