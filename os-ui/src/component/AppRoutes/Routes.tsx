@@ -6,7 +6,7 @@ const AppRoutes = () => (
   <Routes>
     <Route path="/homepage" element={<Homepage />} />
     <Route path="/" element={<Navigate replace to="/homepage" />} />
-    <Route path="/choose_categories" element={<ChooseCategoryPage />} />
+    <Route path="/choose_categories/userId=:id" element={<ChooseCategoryPage />} />
   </Routes>
 );
 export default AppRoutes;

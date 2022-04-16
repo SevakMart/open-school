@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/Store';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
 import Search from '../../component/Search/Search';
 import Loader from '../../component/Loader/Loader';
@@ -10,6 +12,7 @@ import CategoryWithSubcategoriesProfile from '../../component/CategoryWithSubcat
 import styles from './ChooseCategoryPage.module.scss';
 
 const ChooseCategoryPage = () => {
+  const userInfo = useSelector<RootState>((state) => state.userInfo);
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -22,7 +25,7 @@ const ChooseCategoryPage = () => {
   };
 
   useEffect(() => {
-    if (!title) navigate('/choose_categories?searchCategories=all', { replace: true });
+    if (!title) navigate(`/choose_categories/userId=${(userInfo as any).id}?searchCategories=all`, { replace: true });
     getSearchedCategories(`${GET_CATEGORY_SUBCATEGORY_SEARCH_URL}${title}`)
       .then((data) => {
         if (!data.errorMessage) {
@@ -39,7 +42,7 @@ const ChooseCategoryPage = () => {
     <>
       <NavbarOnSignIn />
       <h1 className={mainHeader}>{CHOOSE_CATEGORIES_HEADER}</h1>
-      <Search pathname="/choose_categories" searchKeyName="searchCategories" changeUrlQueries={handleChangeUrlTitleParam} />
+      <Search pathname={`/choose_categories/userId=${(userInfo as any).id}`} searchKeyName="searchCategories" changeUrlQueries={handleChangeUrlTitleParam} />
       <div className={categoriesList}>
         {
           isLoading ? <Loader />
