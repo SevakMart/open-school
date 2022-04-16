@@ -8,13 +8,14 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import app.openschool.user.User;
+import app.openschool.user.UserRepository;
+import app.openschool.user.UserService;
+import app.openschool.user.UserServiceImpl;
+import app.openschool.user.api.dto.UserRegistrationDto;
+import app.openschool.user.api.exceptions.EmailAlreadyExistException;
+import app.openschool.user.api.exceptions.EmailNotFoundException;
 import app.openschool.usermanagement.api.UserGenerator;
-import app.openschool.usermanagement.api.dto.UserRegistrationDto;
-import app.openschool.usermanagement.api.exceptions.EmailAlreadyExistException;
-import app.openschool.usermanagement.entity.User;
-import app.openschool.usermanagement.repository.UserRepository;
-import app.openschool.usermanagement.service.UserService;
-import app.openschool.usermanagement.service.UserServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -45,13 +46,11 @@ class UserServiceImplTest {
 
   @Test
   void registerUserWithNotUniqEmail() {
-    String message = "User with this email already exists";
 
     given(userRepository.findUserByEmail(any())).willReturn(new User());
 
     assertThatThrownBy(() -> userService.register(new UserRegistrationDto()))
-        .isInstanceOf(EmailAlreadyExistException.class)
-        .hasMessageContaining(message);
+        .isInstanceOf(EmailAlreadyExistException.class);
 
     verify(userRepository, never()).save(any());
   }
@@ -83,5 +82,15 @@ class UserServiceImplTest {
     Assertions.assertEquals(3, userService.findAllMentors(pageable).getTotalPages());
     Assertions.assertEquals(5, userService.findAllMentors(pageable).getTotalElements());
     verify(userRepository, Mockito.times(2)).findAllMentors(pageable);
+  }
+
+  @Test
+  void loadNonexistentUserByUsername() {
+    UserServiceImpl userService = new UserServiceImpl(userRepository, passwordEncoder);
+
+    given(userRepository.findUserByEmail(any())).willReturn(null);
+
+    assertThatThrownBy(() -> userService.loadUserByUsername("testEmail"))
+        .isInstanceOf(EmailNotFoundException.class);
   }
 }

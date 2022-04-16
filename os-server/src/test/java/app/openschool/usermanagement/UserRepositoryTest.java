@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
-import app.openschool.coursemanagement.entity.Category;
-import app.openschool.usermanagement.entity.Role;
-import app.openschool.usermanagement.entity.User;
-import app.openschool.usermanagement.repository.UserRepository;
+import app.openschool.category.Category;
+import app.openschool.user.User;
+import app.openschool.user.UserRepository;
+import app.openschool.user.role.Role;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,5 +56,15 @@ class UserRepositoryTest {
     double pageCount = allMentorsPage.getTotalPages();
     double mentorsCount = allMentorsPage.getTotalElements();
     assertThat(pageCount).isEqualTo(Math.ceil(mentorsCount / 3));
+  }
+
+  @Test
+  @Transactional
+  void findUserById() {
+    User user = new User("Test", "testEmail", "testPass", new Role(1, "STUDENT"));
+    userRepository.save(user);
+    User fetchedUser = userRepository.findUserById(1L);
+
+    assertThat(user).isEqualTo(fetchedUser);
   }
 }

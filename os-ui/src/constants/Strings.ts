@@ -21,8 +21,13 @@ export const GET_REAL_MENTORS_URL = 'http://localhost:5000/api/v1/mentors?';
 export const REGISTRATION_URL = 'http://localhost:5000/api/v1/register';
 export const GET_MAIN_CATEGORIES_URL = 'http://localhost:5000/api/v1/categories?';
 export const GET_CATEGORY_SUBCATEGORY_SEARCH_URL = 'http://localhost:5000/api/v1/category-search?title=';
+export const SIGNIN_URL = 'http://localhost:5000/api/v1/login';
+
 // Error Message
 export const ERROR_MESSAGE = 'Something went wrong please refresh the page :(';
+
+// Successful Sign in message
+export const SUCCESSFUL_SIGNIN_MESSAGE = 'You have Successfully signed in!';
 
 // Regex for form validation
 export const fullNameRegex = /^[A-Z\s]*$/i;
@@ -38,3 +43,5 @@ export const INVALID_PASSWORD_ERROR_MESSAGE = 'Password should be at least 8 cha
 export const FULL_NAME_TOO_SHORT = 'full name is too short';
 export const EMAIL_TOO_SHORT = 'email is too short';
 export const PASSWORD_TOO_SHORT = 'password is too short';
+export const PASSWORD_REQUIRED = 'password is required';
+export const EMAIL_REQUIRED = 'email is required';

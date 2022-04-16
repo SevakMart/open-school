@@ -3,19 +3,20 @@ package app.openschool.coursemanagement;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import app.openschool.category.Category;
+import app.openschool.category.api.dto.CategoryDto;
+import app.openschool.category.api.mapper.CategoryMapper;
+import app.openschool.course.Course;
+import app.openschool.course.CourseService;
+import app.openschool.course.api.dto.UserCourseDto;
+import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.difficulty.Difficulty;
+import app.openschool.course.keyword.Keyword;
+import app.openschool.course.language.Language;
 import app.openschool.coursemanagement.api.CategoryGenerator;
-import app.openschool.coursemanagement.api.dto.CategoryDto;
-import app.openschool.coursemanagement.api.mapper.CategoryMapper;
-import app.openschool.coursemanagement.api.mapper.CourseMapper;
-import app.openschool.coursemanagement.controller.CourseController;
-import app.openschool.coursemanagement.entity.Category;
-import app.openschool.coursemanagement.entity.Course;
-import app.openschool.coursemanagement.entity.Difficulty;
-import app.openschool.coursemanagement.entity.Keyword;
-import app.openschool.coursemanagement.entity.Language;
-import app.openschool.coursemanagement.service.CourseService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,7 +26,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -35,7 +37,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(CourseController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class CourseControllerTest {
 
   @Autowired private MockMvc mockMvc;
@@ -54,10 +57,10 @@ class CourseControllerTest {
       course.setDescription("AAA");
       course.setRating(5.5);
       Difficulty difficulty = new Difficulty();
-      difficulty.setId(1L);
+      difficulty.setId(1);
       difficulty.setTitle("Initial");
       Language language = new Language();
-      language.setId(1L);
+      language.setId(1);
       language.setTitle("English");
       Category category = CategoryGenerator.generateCategory();
       course.setDifficulty(difficulty);
@@ -88,7 +91,7 @@ class CourseControllerTest {
                 .queryParam("page", "1")
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -98,7 +101,7 @@ class CourseControllerTest {
 
     mockMvc
         .perform(get("/api/v1/category-search").queryParam("title", " "))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -107,10 +110,25 @@ class CourseControllerTest {
     when(courseService.getSuggestedCourses(1L))
         .thenReturn(CourseMapper.toCourseDtoList(courseList));
     mockMvc
+        .perform(get("/api/v1/users/1/courses/suggested").contentType(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void findUserCourses() throws Exception {
+    List<UserCourseDto> userCourseDtoList = new ArrayList<>();
+    when(courseService.findUserCourses(1L, null)).thenReturn(userCourseDtoList);
+    mockMvc
+        .perform(get("/users/1/courses").contentType(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void savePreferredCategories() throws Exception {
+    String requestBody = "{  \"id\": 1L, \"categoriesIdSet\": [ 2, 3 ] }";
+    mockMvc
         .perform(
-            get("/api/v1/courses/suggested")
-                .queryParam("userId", "1")
-                .contentType(APPLICATION_JSON))
-        .andExpect(status().isForbidden());
+            post("/api/v1/choose-categories").content(requestBody).contentType(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
   }
 }
