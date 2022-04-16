@@ -24,3 +24,4 @@ public class SecurityConfigurationDisable extends WebSecurityConfigurerAdapter {
     return super.authenticationManagerBean();
   }
 }
+
