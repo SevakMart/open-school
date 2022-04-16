@@ -1,6 +1,6 @@
 package app.openschool.common.security;
 
-import app.openschool.usermanagement.entity.UserPrincipal;
+import app.openschool.user.UserPrincipal;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;

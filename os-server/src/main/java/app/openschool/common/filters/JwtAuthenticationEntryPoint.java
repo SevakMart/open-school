@@ -3,9 +3,7 @@ package app.openschool.common.filters;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import app.openschool.usermanagement.api.dto.UserLoginExceptionResponse;
-import com.fasterxml.jackson.core.exc.StreamWriteException;
-import com.fasterxml.jackson.databind.DatabindException;
+import app.openschool.user.api.dto.UserLoginExceptionResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.OutputStream;

@@ -2,17 +2,18 @@ package app.openschool.coursemanagement.api.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import app.openschool.category.Category;
+import app.openschool.course.Course;
+import app.openschool.course.api.dto.UserCourseDto;
+import app.openschool.course.api.mapper.UserCourseMapper;
+import app.openschool.course.difficulty.Difficulty;
+import app.openschool.course.language.Language;
+import app.openschool.course.module.Module;
+import app.openschool.course.module.item.ModuleItem;
+import app.openschool.course.module.item.status.ModuleItemStatus;
+import app.openschool.course.module.status.ModuleStatus;
+import app.openschool.course.status.CourseStatus;
 import app.openschool.coursemanagement.api.CategoryGenerator;
-import app.openschool.coursemanagement.api.dto.UserCourseDto;
-import app.openschool.coursemanagement.entity.Category;
-import app.openschool.coursemanagement.entity.Course;
-import app.openschool.coursemanagement.entity.CourseStatus;
-import app.openschool.coursemanagement.entity.Difficulty;
-import app.openschool.coursemanagement.entity.Language;
-import app.openschool.coursemanagement.entity.Module;
-import app.openschool.coursemanagement.entity.ModuleItem;
-import app.openschool.coursemanagement.entity.ModuleItemStatus;
-import app.openschool.coursemanagement.entity.ModuleStatus;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;

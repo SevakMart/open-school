@@ -7,14 +7,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import app.openschool.user.User;
+import app.openschool.user.UserPrincipal;
+import app.openschool.user.UserServiceImpl;
+import app.openschool.user.api.dto.MentorDto;
+import app.openschool.user.api.dto.UserRegistrationDto;
+import app.openschool.user.api.mapper.MentorMapper;
+import app.openschool.user.role.Role;
 import app.openschool.usermanagement.api.UserGenerator;
-import app.openschool.usermanagement.api.dto.MentorDto;
-import app.openschool.usermanagement.api.dto.UserRegistrationDto;
-import app.openschool.usermanagement.api.mapper.MentorMapper;
-import app.openschool.usermanagement.entity.Role;
-import app.openschool.usermanagement.entity.User;
-import app.openschool.usermanagement.entity.UserPrincipal;
-import app.openschool.usermanagement.service.UserServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -32,6 +32,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+
+
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest

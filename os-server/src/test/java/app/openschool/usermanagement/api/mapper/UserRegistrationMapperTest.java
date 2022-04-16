@@ -2,12 +2,10 @@ package app.openschool.usermanagement.api.mapper;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import app.openschool.coursemanagement.entity.Category;
-import app.openschool.usermanagement.api.dto.UserRegistrationDto;
-import app.openschool.usermanagement.entity.Role;
-import app.openschool.usermanagement.entity.User;
-import java.util.HashSet;
-import java.util.Set;
+import app.openschool.user.User;
+import app.openschool.user.api.dto.UserRegistrationDto;
+import app.openschool.user.api.mapper.UserRegistrationMapper;
+import app.openschool.user.role.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
