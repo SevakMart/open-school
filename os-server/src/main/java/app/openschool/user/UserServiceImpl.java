@@ -1,50 +1,45 @@
 package app.openschool.user;
 
+import app.openschool.category.Category;
+import app.openschool.category.CategoryRepository;
+import app.openschool.category.api.dto.PreferredCategoryDto;
+import app.openschool.category.api.dto.SavePreferredCategoriesRequestDto;
+import app.openschool.category.api.dto.SavePreferredCategoriesResponseDto;
+import app.openschool.category.api.exception.CategoryNotFoundException;
+import app.openschool.category.api.mapper.CategoryMapper;
+import app.openschool.course.Course;
+import app.openschool.course.CourseRepository;
+import app.openschool.course.api.dto.CourseDto;
+import app.openschool.course.api.dto.UserCourseDto;
+import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.api.mapper.UserCourseMapper;
 import app.openschool.user.api.dto.MentorDto;
-import app.openschool.user.api.dto.UserLoginDto;
-import app.openschool.user.api.dto.UserRegistrationDto;
-import app.openschool.user.api.exceptions.EmailAlreadyExistException;
-import app.openschool.user.api.exceptions.EmailNotFoundException;
+import app.openschool.user.api.exception.UserNotFoundException;
 import app.openschool.user.api.mapper.MentorMapper;
-import app.openschool.user.api.mapper.UserLoginMapper;
-import app.openschool.user.api.mapper.UserRegistrationMapper;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
-  private final BCryptPasswordEncoder passwordEncoder;
+  private final CategoryRepository categoryRepository;
+  private final CourseRepository courseRepository;
 
-  public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+  public UserServiceImpl(
+      UserRepository userRepository,
+      CategoryRepository categoryRepository,
+      CourseRepository courseRepository) {
     this.userRepository = userRepository;
-    this.passwordEncoder = passwordEncoder;
-  }
-
-  @Override
-  public User register(UserRegistrationDto userDto) {
-
-    if (emailAlreadyExist(userDto.getEmail())) {
-      throw new EmailAlreadyExistException();
-    }
-
-    User user = UserRegistrationMapper.userRegistrationDtoToUser(userDto, passwordEncoder);
-    return userRepository.save(user);
-  }
-
-  @Override
-  public User findUserByEmail(String email) {
-    return userRepository.findUserByEmail(email);
-  }
-
-  private boolean emailAlreadyExist(String email) {
-    return findUserByEmail(email) != null;
+    this.categoryRepository = categoryRepository;
+    this.courseRepository = courseRepository;
   }
 
   @Override
@@ -53,16 +48,65 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   }
 
   @Override
-  public UserLoginDto login(String userEmail) {
-    return UserLoginMapper.toUserLoginDto(userRepository.findUserByEmail(userEmail));
+  public List<CourseDto> getSuggestedCourses(Long userId) {
+    if (userRepository.getById(userId).getCategories().isEmpty()) {
+      return CourseMapper.toCourseDtoList(courseRepository.getRandomSuggestedCourses(4));
+    }
+    List<Course> suggestedCourses = courseRepository.getSuggestedCourses(userId);
+    int sizeOfSuggestedCourses = suggestedCourses.size();
+    if (sizeOfSuggestedCourses >= 4) {
+      return CourseMapper.toCourseDtoList(suggestedCourses);
+    }
+    List<Course> courseList = new ArrayList<>();
+    int sizeOfRandomSuggestedCourses = 4 - sizeOfSuggestedCourses;
+    List<Long> existingCoursesIds =
+        suggestedCourses.stream().map(Course::getId).collect(Collectors.toList());
+    List<Course> randomSuggestedCourses =
+        courseRepository.getRandomSuggestedCoursesIgnoredExistingCourses(
+            sizeOfRandomSuggestedCourses, existingCoursesIds);
+    courseList.addAll(suggestedCourses);
+    courseList.addAll(randomSuggestedCourses);
+    return CourseMapper.toCourseDtoList(courseList);
   }
 
   @Override
-  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    User user = userRepository.findUserByEmail(email);
+  @Transactional
+  public SavePreferredCategoriesResponseDto savePreferredCategories(
+      SavePreferredCategoriesRequestDto savePreferredCategoriesRequestDto) {
+
+    Long userId = savePreferredCategoriesRequestDto.getUserId();
+    User user = userRepository.findUserById(userId);
+    Set<PreferredCategoryDto> userCategories = new HashSet<>();
+
     if (user == null) {
-      throw new EmailNotFoundException(email);
+      throw new UserNotFoundException(String.valueOf(userId));
     }
-    return new UserPrincipal(user);
+
+    Set<Category> categories =
+        CategoryMapper.categoryIdSetToCategorySet(
+            savePreferredCategoriesRequestDto.getCategoriesIdSet());
+
+    categories.forEach(
+        (category -> {
+          Category fetchedCategory = categoryRepository.findCategoryById(category.getId());
+          if (fetchedCategory == null) {
+            throw new CategoryNotFoundException(String.valueOf(category.getId()));
+          } else {
+            userCategories.add(CategoryMapper.toPreferredCategoryDto(fetchedCategory));
+          }
+        }));
+
+    user.setCategories(categories);
+
+    return new SavePreferredCategoriesResponseDto(userId, userCategories);
+  }
+
+  @Override
+  public List<UserCourseDto> findUserCourses(Long userId, Long courseStatusId) {
+    if (courseStatusId == null) {
+      return UserCourseMapper.toUserCourseDtoList(courseRepository.findAllUserCourses(userId));
+    }
+    return UserCourseMapper.toUserCourseDtoList(
+        courseRepository.findUserCoursesByStatus(userId, courseStatusId));
   }
 }
