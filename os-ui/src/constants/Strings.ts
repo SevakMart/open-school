@@ -22,6 +22,7 @@ export const REGISTRATION_URL = 'http://localhost:5000/api/v1/register';
 export const GET_MAIN_CATEGORIES_URL = 'http://localhost:5000/api/v1/categories?';
 export const GET_CATEGORY_SUBCATEGORY_SEARCH_URL = 'http://localhost:5000/api/v1/category-search?title=';
 export const SIGNIN_URL = 'http://localhost:5000/api/v1/login';
+export const SAVE_PREFERRED_CATEGORIES = 'http://localhost:5000/api/v1/choose-categories';
 
 // Error Message
 export const ERROR_MESSAGE = 'Something went wrong please refresh the page :(';

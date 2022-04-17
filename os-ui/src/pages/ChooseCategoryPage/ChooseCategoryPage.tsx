@@ -1,19 +1,27 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
+import { removeLoggedInUser } from '../../redux/Slices/loginUserSlice';
 import Search from '../../component/Search/Search';
 import Loader from '../../component/Loader/Loader';
 import { getSearchedCategories } from '../../services/getSearchedCategories';
-import { CHOOSE_CATEGORIES_HEADER, GET_CATEGORY_SUBCATEGORY_SEARCH_URL, ERROR_MESSAGE } from '../../constants/Strings';
+import { savePreferredCategories } from '../../services/savePreferredCategories';
+import {
+  CHOOSE_CATEGORIES_HEADER,
+  GET_CATEGORY_SUBCATEGORY_SEARCH_URL,
+  ERROR_MESSAGE,
+  SAVE_PREFERRED_CATEGORIES,
+} from '../../constants/Strings';
 import { SearchedCategoryType } from '../../types/SearchedCategoryType';
 import CategoryWithSubcategoriesProfile from '../../component/CategoryWithSubcategoriesProfile/CategoryWithSubcategoriesProfile';
 import styles from './ChooseCategoryPage.module.scss';
 
 const ChooseCategoryPage = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const userInfo = useSelector<RootState>((state) => state.userInfo);
+  const subcategoryIdArray = useSelector<RootState>((state) => state.chooseSubcategories);
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -24,10 +32,18 @@ const ChooseCategoryPage = () => {
   const handleChangeUrlTitleParam = (titleParam:string) => {
     setTitle(titleParam);
   };
-  /* const handleSignOut = () => {
+  const handleSignOut = () => {
     dispatch(removeLoggedInUser());
     navigate('/homepage');
-  }; */
+  };
+  const handleSavingCategories = () => {
+    savePreferredCategories(
+      `${SAVE_PREFERRED_CATEGORIES}`,
+      (userInfo as any).id,
+      (userInfo as any).token,
+      subcategoryIdArray as Array<number>,
+    );
+  };
   useEffect(() => {
     let cancel = false;
     if (!title) navigate(`/choose_categories/userId=${(userInfo as any).id}?searchCategories=all`, { replace: true });
@@ -62,8 +78,8 @@ const ChooseCategoryPage = () => {
             )) : <h2>{ERROR_MESSAGE}</h2>
       }
       </div>
-      <button className={nextButton} type="button">NEXT</button>
-      {/* <button type="button" onClick={handleSignOut}>Sign out</button> */}
+      <button className={nextButton} type="button" onClick={handleSavingCategories}>NEXT</button>
+      <button type="button" onClick={handleSignOut}>Sign out</button>
     </>
   );
 };
