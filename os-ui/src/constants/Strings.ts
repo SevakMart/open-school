@@ -26,6 +26,7 @@ export const SAVE_PREFERRED_CATEGORIES = 'http://localhost:5000/api/v1/choose-ca
 
 // Error Message
 export const ERROR_MESSAGE = 'Something went wrong please refresh the page :(';
+export const EMPTY_DATA_ERROR_MESSAGE = 'No data to display :(';
 
 // Successful Sign in message
 export const SUCCESSFUL_SIGNIN_MESSAGE = 'You have Successfully signed in!';

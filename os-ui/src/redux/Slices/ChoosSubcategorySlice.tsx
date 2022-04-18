@@ -13,7 +13,14 @@ const chooseSubcategories = createSlice({
       const index = state.findIndex((id) => id === action.payload);
       state.splice(index, 1);
     },
+    removeAllSubcategories() {
+      return [];
+    },
   },
 });
-export const { addSubcategory, removeSubcategory } = chooseSubcategories.actions;
+export const {
+  addSubcategory,
+  removeSubcategory,
+  removeAllSubcategories,
+} = chooseSubcategories.actions;
 export default chooseSubcategories.reducer;
