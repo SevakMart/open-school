@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import ChooseCategoryPage from '../ChooseCategoryPage';
+import { EMPTY_DATA_ERROR_MESSAGE } from '../../../constants/Strings';
 import { store } from '../../../redux/Store';
 import * as fetchSubcategories from '../../../services/getSearchedCategories';
 
@@ -71,5 +72,17 @@ describe('Create test case to ChooSecategoryPage', () => {
     expect(headerElement2).toHaveTextContent('Python');
     expect(labelElement2).toBeInTheDocument();
     expect(labelElement2).toHaveTextContent('Python Functions');
+  });
+  test('Test the output of page when the searched data is not found', async () => {
+    jest.spyOn(fetchSubcategories, 'getSearchedCategories').mockResolvedValue({});
+    expect.hasAssertions();
+    render(
+      <Provider store={store}>
+        <ChooseCategoryPage />
+      </Provider>,
+    );
+    const errorMessageHeader = await screen.findByTestId('chooseSubcategoriesErrorMessage');
+    expect(errorMessageHeader).toBeInTheDocument();
+    expect(errorMessageHeader).toHaveTextContent(EMPTY_DATA_ERROR_MESSAGE);
   });
 });

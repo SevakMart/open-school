@@ -72,7 +72,7 @@ const ChooseCategoryPage = () => {
                 parentCategory={category[0]}
                 subcategories={category[1]}
               />
-            )) : <h2>{errorMessage}</h2>
+            )) : <h2 data-testid="chooseSubcategoriesErrorMessage">{errorMessage}</h2>
       }
       </div>
       <button className={nextButton} type="button" onClick={handleSavingCategories}>NEXT</button>
