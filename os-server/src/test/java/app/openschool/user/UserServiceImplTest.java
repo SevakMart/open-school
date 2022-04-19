@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 import app.openschool.category.Category;
 import app.openschool.category.CategoryRepository;
 import app.openschool.category.api.CategoryGenerator;
-import app.openschool.category.api.dto.SavePreferredCategoriesRequestDto;
 import app.openschool.category.api.exception.CategoryNotFoundException;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
@@ -125,11 +124,9 @@ class UserServiceImplTest {
   void savePreferredCategoriesWithWrongUserId() {
     Long userId = 1L;
     Set<Long> categoryIdSet = new HashSet<>();
-    SavePreferredCategoriesRequestDto savePreferredCategoriesDto =
-        new SavePreferredCategoriesRequestDto(userId, categoryIdSet);
     when(userRepository.findUserById(userId)).thenReturn(null);
 
-    assertThatThrownBy(() -> userService.savePreferredCategories(savePreferredCategoriesDto))
+    assertThatThrownBy(() -> userService.savePreferredCategories(userId, categoryIdSet))
         .isInstanceOf(UserNotFoundException.class)
         .hasMessageContaining(String.valueOf(userId));
   }
@@ -139,12 +136,11 @@ class UserServiceImplTest {
     Long categoryId = 1L;
     Set<Long> categoryIdSet = new HashSet<>();
     categoryIdSet.add(categoryId);
-    SavePreferredCategoriesRequestDto savePreferredCategoriesDto =
-        new SavePreferredCategoriesRequestDto(1L, categoryIdSet);
+
     when(userRepository.findUserById(any())).thenReturn(new User());
     when(categoryRepository.findCategoryById(categoryId)).thenReturn(null);
 
-    assertThatThrownBy(() -> userService.savePreferredCategories(savePreferredCategoriesDto))
+    assertThatThrownBy(() -> userService.savePreferredCategories(1L, categoryIdSet))
         .isInstanceOf(CategoryNotFoundException.class)
         .hasMessageContaining(String.valueOf(categoryId));
   }

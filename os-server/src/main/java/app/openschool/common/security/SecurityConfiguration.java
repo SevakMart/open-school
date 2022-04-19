@@ -1,9 +1,9 @@
-package app.openschool.common.security.api;
+package app.openschool.common.security;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-import app.openschool.common.security.api.filters.JwtAuthenticationEntryPoint;
-import app.openschool.common.security.api.filters.JwtAuthenticationFilter;
+import app.openschool.common.security.filters.JwtAuthenticationEntryPoint;
+import app.openschool.common.security.filters.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

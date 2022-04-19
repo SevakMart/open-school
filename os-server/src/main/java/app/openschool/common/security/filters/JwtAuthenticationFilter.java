@@ -1,8 +1,8 @@
-package app.openschool.common.security.api.filters;
+package app.openschool.common.security.filters;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-import app.openschool.common.security.api.JwtTokenProvider;
+import app.openschool.common.security.JwtTokenProvider;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.FilterChain;

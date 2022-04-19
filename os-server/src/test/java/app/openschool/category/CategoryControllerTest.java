@@ -56,7 +56,7 @@ public class CategoryControllerTest {
     when(categoryService.findCategoriesByTitle(" ")).thenReturn(new HashMap<>());
 
     mockMvc
-        .perform(get("/api/v1/categories/search").queryParam("title", " "))
+        .perform(get("/api/v1/categories/subcategories").queryParam("title", " "))
         .andExpect(status().isUnauthorized());
   }
 }

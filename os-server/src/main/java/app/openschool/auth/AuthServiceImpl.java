@@ -1,11 +1,12 @@
-package app.openschool.common.security;
+package app.openschool.auth;
 
-import app.openschool.common.security.api.dto.UserLoginDto;
-import app.openschool.common.security.api.dto.UserRegistrationDto;
-import app.openschool.common.security.api.exception.EmailAlreadyExistException;
-import app.openschool.common.security.api.exception.EmailNotFoundException;
-import app.openschool.common.security.api.mapper.UserLoginMapper;
-import app.openschool.common.security.api.mapper.UserRegistrationMapper;
+import app.openschool.auth.dto.UserLoginDto;
+import app.openschool.auth.dto.UserRegistrationDto;
+import app.openschool.auth.exception.EmailAlreadyExistException;
+import app.openschool.auth.exception.EmailNotFoundException;
+import app.openschool.auth.mapper.UserLoginMapper;
+import app.openschool.auth.mapper.UserRegistrationMapper;
+import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;

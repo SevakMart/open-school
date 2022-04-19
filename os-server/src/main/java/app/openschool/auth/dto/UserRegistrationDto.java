@@ -1,4 +1,4 @@
-package app.openschool.common.security.api.dto;
+package app.openschool.auth.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;

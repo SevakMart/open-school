@@ -1,4 +1,4 @@
-package app.openschool.common;
+package app.openschool.auth;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -7,11 +7,11 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import app.openschool.common.security.AuthService;
-import app.openschool.common.security.AuthServiceImpl;
-import app.openschool.common.security.api.dto.UserRegistrationDto;
-import app.openschool.common.security.api.exception.EmailAlreadyExistException;
-import app.openschool.common.security.api.exception.EmailNotFoundException;
+import app.openschool.auth.AuthService;
+import app.openschool.auth.AuthServiceImpl;
+import app.openschool.auth.dto.UserRegistrationDto;
+import app.openschool.auth.exception.EmailAlreadyExistException;
+import app.openschool.auth.exception.EmailNotFoundException;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;

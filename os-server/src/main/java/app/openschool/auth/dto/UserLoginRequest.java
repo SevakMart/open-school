@@ -1,4 +1,4 @@
-package app.openschool.common.security.api.dto;
+package app.openschool.auth.dto;
 
 public class UserLoginRequest {
   private String password;

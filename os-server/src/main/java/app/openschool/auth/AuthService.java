@@ -1,7 +1,7 @@
-package app.openschool.common.security;
+package app.openschool.auth;
 
-import app.openschool.common.security.api.dto.UserLoginDto;
-import app.openschool.common.security.api.dto.UserRegistrationDto;
+import app.openschool.auth.dto.UserLoginDto;
+import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.user.User;
 
 public interface AuthService {

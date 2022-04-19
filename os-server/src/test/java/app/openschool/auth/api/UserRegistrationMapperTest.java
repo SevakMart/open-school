@@ -1,9 +1,9 @@
-package app.openschool.common.api;
+package app.openschool.auth.api;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import app.openschool.common.security.api.dto.UserRegistrationDto;
-import app.openschool.common.security.api.mapper.UserRegistrationMapper;
+import app.openschool.auth.dto.UserRegistrationDto;
+import app.openschool.auth.mapper.UserRegistrationMapper;
 import app.openschool.user.User;
 import app.openschool.user.role.Role;
 import org.junit.jupiter.api.Test;

@@ -75,10 +75,10 @@ class UserControllerTest {
 
   @Test
   void savePreferredCategories() throws Exception {
-    String requestBody = "{  \"id\": 1L, \"categoriesIdSet\": [ 2, 3 ] }";
+    String requestBody = "{  \"categoriesIdSet\": [ 2, 3 ] }";
     mockMvc
         .perform(
-            post("/api/v1/users/choose-categories")
+            post("/api/v1/users/1/categories")
                 .content(requestBody)
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());

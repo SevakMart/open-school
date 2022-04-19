@@ -1,4 +1,4 @@
-package app.openschool.common.security.api.dto;
+package app.openschool.auth.dto;
 
 import app.openschool.user.company.Company;
 

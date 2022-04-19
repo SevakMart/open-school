@@ -1,13 +1,14 @@
-package app.openschool.common.security;
+package app.openschool.auth;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
-import app.openschool.common.security.api.JwtTokenProvider;
-import app.openschool.common.security.api.dto.UserLoginDto;
-import app.openschool.common.security.api.dto.UserLoginRequest;
-import app.openschool.common.security.api.dto.UserRegistrationDto;
-import app.openschool.common.security.api.dto.UserRegistrationHttpResponse;
+import app.openschool.auth.dto.UserLoginDto;
+import app.openschool.auth.dto.UserLoginRequest;
+import app.openschool.auth.dto.UserRegistrationDto;
+import app.openschool.auth.dto.UserRegistrationHttpResponse;
+import app.openschool.common.security.JwtTokenProvider;
+import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.Locale;
@@ -50,7 +51,7 @@ public class AuthController {
   @ResponseStatus(CREATED)
   @Operation(summary = "register students")
   public ResponseEntity<UserRegistrationHttpResponse> register(
-      @Valid @RequestBody UserRegistrationDto userDto, Locale locale) {
+          @Valid @RequestBody UserRegistrationDto userDto, Locale locale) {
     User user = authService.register(userDto);
     String message =
         user.getName()

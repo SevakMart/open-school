@@ -1,11 +1,11 @@
 package app.openschool.user;
 
-import app.openschool.category.api.dto.SavePreferredCategoriesRequestDto;
-import app.openschool.category.api.dto.SavePreferredCategoriesResponseDto;
+import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.user.api.dto.MentorDto;
 import java.util.List;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,8 +15,7 @@ public interface UserService {
 
   List<CourseDto> getSuggestedCourses(Long userId);
 
-  SavePreferredCategoriesResponseDto savePreferredCategories(
-      SavePreferredCategoriesRequestDto savePreferredCategoriesDto);
+  Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds);
 
   List<UserCourseDto> findUserCourses(Long userId, Long courseStatusId);
 }

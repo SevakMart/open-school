@@ -29,7 +29,7 @@ public class CategoryController {
     return ResponseEntity.ok(this.categoryService.findAllCategories(pageable));
   }
 
-  @GetMapping("/search")
+  @GetMapping("/subcategories")
   @Operation(
       summary = "find all categories by title mapped by subcategories",
       security = @SecurityRequirement(name = "bearerAuth"))

@@ -1,13 +1,13 @@
 package app.openschool.user;
 
-import app.openschool.category.api.dto.SavePreferredCategoriesRequestDto;
-import app.openschool.category.api.dto.SavePreferredCategoriesResponseDto;
+import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.user.api.dto.MentorDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -43,15 +43,13 @@ public class UserController {
     return ResponseEntity.ok(this.userService.getSuggestedCourses(userId));
   }
 
-  @PostMapping("/choose-categories")
+  @PostMapping("/{userId}/categories")
   @Operation(
       summary = "save preferred categories",
       security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<SavePreferredCategoriesResponseDto> savePreferredCategories(
-      @RequestBody SavePreferredCategoriesRequestDto savePreferredCategoriesRequestDto) {
-
-    return ResponseEntity.ok(
-        userService.savePreferredCategories(savePreferredCategoriesRequestDto));
+  public ResponseEntity<Set<PreferredCategoryDto>> savePreferredCategories(
+      @PathVariable Long userId, @RequestBody Set<Long> categoryIds) {
+    return ResponseEntity.ok(userService.savePreferredCategories(userId, categoryIds));
   }
 
   @GetMapping("/{userId}/courses")

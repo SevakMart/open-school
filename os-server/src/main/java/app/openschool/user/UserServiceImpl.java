@@ -3,8 +3,6 @@ package app.openschool.user;
 import app.openschool.category.Category;
 import app.openschool.category.CategoryRepository;
 import app.openschool.category.api.dto.PreferredCategoryDto;
-import app.openschool.category.api.dto.SavePreferredCategoriesRequestDto;
-import app.openschool.category.api.dto.SavePreferredCategoriesResponseDto;
 import app.openschool.category.api.exception.CategoryNotFoundException;
 import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.course.Course;
@@ -71,10 +69,8 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public SavePreferredCategoriesResponseDto savePreferredCategories(
-      SavePreferredCategoriesRequestDto savePreferredCategoriesRequestDto) {
+  public Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds) {
 
-    Long userId = savePreferredCategoriesRequestDto.getUserId();
     User user = userRepository.findUserById(userId);
     Set<PreferredCategoryDto> userCategories = new HashSet<>();
 
@@ -82,9 +78,7 @@ public class UserServiceImpl implements UserService {
       throw new UserNotFoundException(String.valueOf(userId));
     }
 
-    Set<Category> categories =
-        CategoryMapper.categoryIdSetToCategorySet(
-            savePreferredCategoriesRequestDto.getCategoriesIdSet());
+    Set<Category> categories = CategoryMapper.categoryIdSetToCategorySet(categoryIds);
 
     categories.forEach(
         (category -> {
@@ -98,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
     user.setCategories(categories);
 
-    return new SavePreferredCategoriesResponseDto(userId, userCategories);
+    return userCategories;
   }
 
   @Override

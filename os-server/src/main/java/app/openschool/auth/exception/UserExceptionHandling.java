@@ -1,10 +1,10 @@
-package app.openschool.common.security.api.exception;
+package app.openschool.auth.exception;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-import app.openschool.common.security.api.dto.UserLoginExceptionResponse;
-import app.openschool.common.security.api.dto.UserRegistrationHttpResponse;
+import app.openschool.auth.dto.UserLoginExceptionResponse;
+import app.openschool.auth.dto.UserRegistrationHttpResponse;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;

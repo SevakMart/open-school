@@ -1,4 +1,4 @@
-package app.openschool.common;
+package app.openschool.auth;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -6,9 +6,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import app.openschool.common.security.AuthServiceImpl;
+import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.common.security.UserPrincipal;
-import app.openschool.common.security.api.dto.UserRegistrationDto;
 import app.openschool.user.User;
 import app.openschool.user.role.Role;
 import org.junit.jupiter.api.Test;
