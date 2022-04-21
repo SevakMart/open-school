@@ -2,8 +2,8 @@ package app.openschool.common.security;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-import app.openschool.common.filters.JwtAuthenticationEntryPoint;
-import app.openschool.common.filters.JwtAuthenticationFilter;
+import app.openschool.common.security.filters.JwtAuthenticationEntryPoint;
+import app.openschool.common.security.filters.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -25,8 +25,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/static/**",
     "/index.html",
     "/",
-    "/api/v1/register",
-    "/api/v1/login",
+    "/api/v1/auth/register",
+    "/api/v1/auth/login",
     "/h2/**",
     "/open-school-api",
     "/swagger-ui/**",
