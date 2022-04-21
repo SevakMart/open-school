@@ -47,7 +47,7 @@ public class CategoryControllerTest {
                 .queryParam("page", "1")
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
-        .andExpect(status().isUnauthorized());
+        .andExpect(status().isOk());
   }
 
   @Test
