@@ -4,13 +4,14 @@ import CloseIcon from '../../icons/Close';
 import LinkedinIcon1 from '../../icons/Linkedin1';
 import EmailIcon1 from '../../icons/Email1';
 import { SIGN_IN } from '../../constants/Strings';
-import Form from '../Forms/SignUpSignInForm';
+import SignUpRegistrationForm from './RegistrationForm';
 
 const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) => {
   const {
-    mainContainer, formContainer, headerContent, iconContent, alreadyHaveAccount, inputContent,
+    mainContainer, formContainer, headerContent, iconContent, alreadyHaveAccount,
   } = styles;
   const [isSignUp, setIsSignUp] = useState(false);
+  const [registrationForm, setupRegistrtationForm] = useState('default');
   const [succesfullSignUpMessage, setSuccessfulSignUpMessage] = useState('');
 
   const handleSignUp = (message:string) => {
@@ -40,12 +41,10 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
                 </div>
                 <p>Or</p>
               </div>
-              <form className={inputContent}>
-                <Form
-                  formType="signUp"
-                  switchToSignInForm={handleSignUp}
-                />
-              </form>
+              <SignUpRegistrationForm
+                registrationForm={registrationForm}
+                switchToSignInForm={handleSignUp}
+              />
               <p className={alreadyHaveAccount}>
                 Have An Account?
                 <span><button type="button" onClick={() => handleSignUpClicks('signIn')}>{SIGN_IN}</button></span>

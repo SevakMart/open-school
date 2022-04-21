@@ -2,20 +2,21 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../redux/Store';
+import SignInForm from './SignInForm';
 import styles from './SignIn.module.scss';
 import CloseIcon from '../../icons/Close';
 import LinkedinIcon1 from '../../icons/Linkedin1';
 import EmailIcon1 from '../../icons/Email1';
 import { SIGN_UP } from '../../constants/Strings';
-import Form from '../Forms/SignUpSignInForm';
 
 const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) => {
   const {
-    mainContainer, formContainer, headerContent, iconContent, alreadyHaveAccount, inputContent,
+    mainContainer, formContainer, headerContent, iconContent, alreadyHaveAccount,
   } = styles;
   const userInfo = useSelector<RootState>((state) => state.userInfo);
   const navigate = useNavigate();
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [signInForm, setSignInForm] = useState('default');
   const [succesfulSignInMessage, setSuccessfulSignInMessage] = useState('');
 
   const handleSignIn = (message:string) => {
@@ -45,12 +46,10 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
                 </div>
                 <p>Or</p>
               </div>
-              <form className={inputContent}>
-                <Form
-                  formType="signIn"
-                  handleSignIn={handleSignIn}
-                />
-              </form>
+              <SignInForm
+                signInForm={signInForm}
+                handleSignIn={handleSignIn}
+              />
               <p className={alreadyHaveAccount}>
                 {'Don\'t Have An Account?'}
                 <span><button type="button" onClick={() => handleSignInClicks('signUp')}>{SIGN_UP}</button></span>
