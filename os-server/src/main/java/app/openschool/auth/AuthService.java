@@ -3,7 +3,8 @@ package app.openschool.auth;
 import app.openschool.auth.dto.UserLoginDto;
 import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.user.User;
-import app.openschool.user.api.exception.UserNotFoundException;
+import java.io.UnsupportedEncodingException;
+import javax.mail.MessagingException;
 import org.springframework.http.HttpRequest;
 
 public interface AuthService {
@@ -14,9 +15,11 @@ public interface AuthService {
 
   UserLoginDto login(String userEmail);
 
-  void updateResetPasswordToken(HttpRequest httpRequest, String email) throws UserNotFoundException;
+  void sendEmail(String recipientEmail, String link)
+      throws MessagingException, UnsupportedEncodingException;
 
-//  User getByResetPasswordToken(String token);
+  void updateResetPasswordToken(String email)
+      throws MessagingException, UnsupportedEncodingException;
 
   void updatePassword(String token, String newPassword, String confirmedPassword);
 }

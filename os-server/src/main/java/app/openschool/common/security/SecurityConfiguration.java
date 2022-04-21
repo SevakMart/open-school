@@ -31,6 +31,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/open-school-api",
     "/swagger-ui/**",
     "/v3/api-docs/**",
+    "/api/v1/auth/forgot-password",
+    "/api/v1/auth/reset-password",
   };
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;

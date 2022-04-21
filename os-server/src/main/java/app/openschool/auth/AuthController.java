@@ -7,25 +7,25 @@ import app.openschool.auth.dto.UserLoginDto;
 import app.openschool.auth.dto.UserLoginRequest;
 import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.auth.dto.UserRegistrationHttpResponse;
+import app.openschool.auth.exception.NotMatchingPasswordsException;
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import app.openschool.user.api.exception.UserNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
-import java.net.URI;
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
+import javax.mail.MessagingException;
 import javax.validation.Valid;
-import net.bytebuddy.utility.RandomString;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,7 +56,7 @@ public class AuthController {
   @ResponseStatus(CREATED)
   @Operation(summary = "register students")
   public ResponseEntity<UserRegistrationHttpResponse> register(
-          @Valid @RequestBody UserRegistrationDto userDto, Locale locale) {
+      @Valid @RequestBody UserRegistrationDto userDto, Locale locale) {
     User user = authService.register(userDto);
     String message =
         user.getName()
@@ -92,34 +92,23 @@ public class AuthController {
   }
 
   @PostMapping("/forgot-password")
-  public ResponseEntity<HttpStatus> forgotPassword(HttpRequest httpRequest, String email) {
+  public ResponseEntity<String> forgotPassword(String email) {
     try {
-      authService.updateResetPasswordToken(httpRequest, email);
-    } catch (UserNotFoundException ex) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();}
-    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+      authService.updateResetPasswordToken(email);
+    } catch (MessagingException | UnsupportedEncodingException e) {
+      return ResponseEntity.internalServerError().body(e.getMessage());
+    }
+    return ResponseEntity.status(OK).body("We have sent a reset password link to your email. Please check.");
   }
 
-  @PostMapping("/reset_password")
-  public ResponseEntity<> processResetPassword(String token, String password, String confirmedPassword) {
-
+  @PostMapping("/reset-password")
+  public ResponseEntity<String> resetPassword(
+      @RequestParam String token, String password, String confirmedPassword) {
     try {
       authService.updatePassword(token, password, confirmedPassword);
-    } catch (UserNotFoundException ex) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();}
-    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-
-    User user = authService.getByResetPasswordToken(token);
-
-    if (user == null) {
-      model.addAttribute("message", "Invalid Token");
-      return "message";
-    } else {
-      customerService.updatePassword(customer, password);
-
-      model.addAttribute("message", "You have successfully changed your password.");
+    } catch (NotMatchingPasswordsException | UserNotFoundException ex) {
+      return ResponseEntity.badRequest().body(ex.getMessage());
     }
-
-    return "message";
+    return ResponseEntity.status(OK).body("Your password has been successfully changed");
   }
 }

@@ -10,3 +10,14 @@ spring:
     password:
   jpa:
     show-sql: true
+  mail:
+    host: smtp.gmail.com
+    username: open_school_gmail.com
+    password: open_school_password
+    port: 5000
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
