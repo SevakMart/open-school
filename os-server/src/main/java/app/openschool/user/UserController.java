@@ -1,69 +1,32 @@
 package app.openschool.user;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
-
-import app.openschool.common.security.JwtTokenProvider;
+import app.openschool.category.api.dto.PreferredCategoryDto;
+import app.openschool.course.api.dto.CourseDto;
+import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.user.api.dto.MentorDto;
-import app.openschool.user.api.dto.UserLoginDto;
-import app.openschool.user.api.dto.UserLoginRequest;
-import app.openschool.user.api.dto.UserRegistrationDto;
-import app.openschool.user.api.dto.UserRegistrationHttpResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import java.util.Locale;
-import javax.validation.Valid;
-import org.springframework.context.MessageSource;
+import java.util.List;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
-  private static final String TOKEN_PREFIX = "Bearer ";
-  public static final String JWT_TOKEN_HEADER = "Authorization";
-
   private final UserService userService;
-  private final JwtTokenProvider jwtTokenProvider;
-  private final AuthenticationManager authenticationManager;
-  private final MessageSource messageSource;
 
-  public UserController(
-      UserService userService,
-      JwtTokenProvider jwtTokenProvider,
-      AuthenticationManager authenticationManager,
-      MessageSource messageSource) {
+  public UserController(UserService userService) {
     this.userService = userService;
-    this.jwtTokenProvider = jwtTokenProvider;
-    this.authenticationManager = authenticationManager;
-    this.messageSource = messageSource;
-  }
-
-  @PostMapping("/register")
-  @ResponseStatus(CREATED)
-  @Operation(summary = "register students")
-  public ResponseEntity<UserRegistrationHttpResponse> register(
-      @Valid @RequestBody UserRegistrationDto userDto, Locale locale) {
-    User user = userService.register(userDto);
-    String message =
-        user.getName()
-            + " "
-            + messageSource.getMessage("response.register.successful.message", null, locale);
-    UserRegistrationHttpResponse httpResponse =
-        new UserRegistrationHttpResponse(message.toUpperCase(Locale.ROOT));
-
-    return new ResponseEntity<>(httpResponse, CREATED);
   }
 
   @GetMapping("/mentors")
@@ -72,26 +35,27 @@ public class UserController {
     return ResponseEntity.ok(this.userService.findAllMentors(pageable));
   }
 
-  @PostMapping("/login")
-  @Operation(summary = "login")
-  public ResponseEntity<UserLoginDto> login(@RequestBody UserLoginRequest userLoginRequest) {
-
-    authenticate(userLoginRequest.getEmail(), userLoginRequest.getPassword());
-
-    UserLoginDto userLoginDto = userService.login(userLoginRequest.getEmail());
-    User loggedUser = userService.findUserByEmail(userLoginRequest.getEmail());
-    UserPrincipal userPrincipal = new UserPrincipal(loggedUser);
-    HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
-    return new ResponseEntity<>(userLoginDto, jwtHeader, OK);
+  @GetMapping("/{userId}/courses/suggested")
+  @Operation(
+      summary = "find suggested courses",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<List<CourseDto>> getSuggestedCourses(@PathVariable Long userId) {
+    return ResponseEntity.ok(this.userService.getSuggestedCourses(userId));
   }
 
-  private void authenticate(String username, String password) {
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+  @PostMapping("/{userId}/categories")
+  @Operation(
+      summary = "save preferred categories",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<Set<PreferredCategoryDto>> savePreferredCategories(
+      @PathVariable Long userId, @RequestBody Set<Long> categoryIds) {
+    return ResponseEntity.ok(userService.savePreferredCategories(userId, categoryIds));
   }
 
-  private HttpHeaders getJwtHeader(UserPrincipal userPrincipal) {
-    HttpHeaders headers = new HttpHeaders();
-    headers.add(JWT_TOKEN_HEADER, TOKEN_PREFIX + jwtTokenProvider.generateJwtToken(userPrincipal));
-    return headers;
+  @GetMapping("/{userId}/courses")
+  @Operation(summary = "find user's courses by course status")
+  public ResponseEntity<List<UserCourseDto>> findUserCourses(
+      @PathVariable Long userId, @RequestParam(required = false) Long courseStatusId) {
+    return ResponseEntity.ok(this.userService.findUserCourses(userId, courseStatusId));
   }
 }
