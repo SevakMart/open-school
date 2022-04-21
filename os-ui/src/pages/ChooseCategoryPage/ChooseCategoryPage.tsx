@@ -32,15 +32,14 @@ const ChooseCategoryPage = () => {
   };
   const handleSavingCategories = () => {
     savePreferredCategories(
-      `${SAVE_PREFERRED_CATEGORIES}`,
-      (userInfo as any).id,
+      `${SAVE_PREFERRED_CATEGORIES}/${(userInfo as any).id}/categories`,
       (userInfo as any).token,
       subcategoryIdArray as Array<number>,
     ).then(() => navigate('/myLearningPath'));
   };
   useEffect(() => {
     let cancel = false;
-    if (!title) navigate(`/choose_categories/userId=${(userInfo as any).id}?searchCategories=all`, { replace: true });
+    if (!title) navigate(`/categories/subcategories/userId=${(userInfo as any).id}?searchCategories=all`, { replace: true });
     getSearchedCategories(`${GET_CATEGORY_SUBCATEGORY_SEARCH_URL}${title}`)
       .then((data) => {
         if (cancel) return;

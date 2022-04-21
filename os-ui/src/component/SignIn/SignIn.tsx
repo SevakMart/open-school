@@ -25,7 +25,7 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
   useEffect(() => {
     let timer:any;
     if (isSignedIn) {
-      timer = setTimeout(() => navigate(`/choose_categories/userId=${(userInfo as any).id}`), 3000);
+      timer = setTimeout(() => navigate(`/categories/subcategories/userId=${(userInfo as any).id}`), 3000);
     }
     return () => clearTimeout(timer);
   }, [isSignedIn]);
