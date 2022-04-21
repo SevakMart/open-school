@@ -54,6 +54,9 @@ public class User {
   @Column(name = "linkedin_path")
   private String linkedinPath;
 
+  @Column(name = "reset_password_token")
+  private String resetPasswordToken;
+
   @ManyToOne
   @JoinColumn(name = "role_id", nullable = false)
   private Role role;
@@ -229,7 +232,17 @@ public class User {
     return courses;
   }
 
+  public String getResetPasswordToken() {
+    return resetPasswordToken;
+  }
+
+  public void setResetPasswordToken(String resetPasswordToken) {
+    this.resetPasswordToken = resetPasswordToken;
+  }
+
   public void setCourses(Set<Course> courses) {
     this.courses = courses;
   }
+
+
 }

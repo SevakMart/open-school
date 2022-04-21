@@ -10,11 +10,16 @@ import app.openschool.auth.dto.UserRegistrationHttpResponse;
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
+import app.openschool.user.api.exception.UserNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
+import java.net.URI;
 import java.util.Locale;
 import javax.validation.Valid;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -84,5 +89,37 @@ public class AuthController {
     HttpHeaders headers = new HttpHeaders();
     headers.add(JWT_TOKEN_HEADER, TOKEN_PREFIX + jwtTokenProvider.generateJwtToken(userPrincipal));
     return headers;
+  }
+
+  @PostMapping("/forgot-password")
+  public ResponseEntity<HttpStatus> forgotPassword(HttpRequest httpRequest, String email) {
+    try {
+      authService.updateResetPasswordToken(httpRequest, email);
+    } catch (UserNotFoundException ex) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();}
+    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+  }
+
+  @PostMapping("/reset_password")
+  public ResponseEntity<> processResetPassword(String token, String password, String confirmedPassword) {
+
+    try {
+      authService.updatePassword(token, password, confirmedPassword);
+    } catch (UserNotFoundException ex) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();}
+    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+
+    User user = authService.getByResetPasswordToken(token);
+
+    if (user == null) {
+      model.addAttribute("message", "Invalid Token");
+      return "message";
+    } else {
+      customerService.updatePassword(customer, password);
+
+      model.addAttribute("message", "You have successfully changed your password.");
+    }
+
+    return "message";
   }
 }
