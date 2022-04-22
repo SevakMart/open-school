@@ -11,7 +11,6 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
     mainContainer, formContainer, headerContent, iconContent, alreadyHaveAccount,
   } = styles;
   const [isSignUp, setIsSignUp] = useState(false);
-  const [registrationForm, setupRegistrtationForm] = useState('default');
   const [succesfullSignUpMessage, setSuccessfulSignUpMessage] = useState('');
 
   const handleSignUp = (message:string) => {
@@ -42,7 +41,7 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
                 <p>Or</p>
               </div>
               <SignUpRegistrationForm
-                registrationForm={registrationForm}
+                registrationForm="default"
                 switchToSignInForm={handleSignUp}
               />
               <p className={alreadyHaveAccount}>

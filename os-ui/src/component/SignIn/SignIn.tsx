@@ -16,7 +16,6 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
   const userInfo = useSelector<RootState>((state) => state.userInfo);
   const navigate = useNavigate();
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [signInForm, setSignInForm] = useState('default');
   const [succesfulSignInMessage, setSuccessfulSignInMessage] = useState('');
 
   const handleSignIn = (message:string) => {
@@ -47,7 +46,7 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
                 <p>Or</p>
               </div>
               <SignInForm
-                signInForm={signInForm}
+                signInForm="default"
                 handleSignIn={handleSignIn}
               />
               <p className={alreadyHaveAccount}>
