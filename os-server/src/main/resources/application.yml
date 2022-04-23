@@ -16,6 +16,20 @@ spring:
     locations: "classpath:db/migration/{vendor}"
     clean-on-validation-error: true
 
+  mail:
+    username: epam.open.school@gmail.com
+    password: gaqbkpxlbmgjztwm
+    port: 587
+    host: smtp.gmail.com
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    default-encoding: UTF-8
+
 springdoc:
   swagger-ui:
     path: /open-school-api

@@ -2,6 +2,7 @@ package app.openschool.auth;
 
 import app.openschool.auth.dto.UserLoginDto;
 import app.openschool.auth.dto.UserRegistrationDto;
+import app.openschool.auth.verification.VerificationToken;
 import app.openschool.user.User;
 
 public interface AuthService {
@@ -11,4 +12,6 @@ public interface AuthService {
   User findUserByEmail(String email);
 
   UserLoginDto login(String userEmail);
+
+  User verifyAccount(VerificationToken verificationToken);
 }

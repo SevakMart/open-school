@@ -57,6 +57,12 @@ public class UserExceptionHandling implements ErrorController {
     return new ResponseEntity<>(new UserLoginExceptionResponse(message), UNAUTHORIZED);
   }
 
+  @ExceptionHandler(UserNotVerifiedException.class)
+  public ResponseEntity<UserLoginExceptionResponse> userNotVerifiedException(Locale locale) {
+    String message = messageSource.getMessage("exception.unverified.user.message", null, locale);
+    return new ResponseEntity<>(new UserLoginExceptionResponse(message), UNAUTHORIZED);
+  }
+
   private Map<String, String> getValidationErrors(
       MethodArgumentNotValidException exception, Locale locale) {
     return exception.getBindingResult().getAllErrors().stream()

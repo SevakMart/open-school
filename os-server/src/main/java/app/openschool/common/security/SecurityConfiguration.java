@@ -26,6 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/index.html",
     "/",
     "/api/v1/auth/register",
+    "/api/v1/auth/register/verification",
     "/api/v1/auth/login",
     "/h2/**",
     "/open-school-api",

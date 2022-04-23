@@ -7,6 +7,8 @@ import app.openschool.auth.dto.UserLoginDto;
 import app.openschool.auth.dto.UserLoginRequest;
 import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.auth.dto.UserRegistrationHttpResponse;
+import app.openschool.auth.mapper.UserLoginMapper;
+import app.openschool.auth.verification.VerificationToken;
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
@@ -18,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,7 +54,7 @@ public class AuthController {
   @ResponseStatus(CREATED)
   @Operation(summary = "register students")
   public ResponseEntity<UserRegistrationHttpResponse> register(
-          @Valid @RequestBody UserRegistrationDto userDto, Locale locale) {
+      @Valid @RequestBody UserRegistrationDto userDto, Locale locale) {
     User user = authService.register(userDto);
     String message =
         user.getName()
@@ -74,6 +77,15 @@ public class AuthController {
     UserPrincipal userPrincipal = new UserPrincipal(loggedUser);
     HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
     return new ResponseEntity<>(userLoginDto, jwtHeader, OK);
+  }
+
+  @PostMapping("/register/verification")
+  public ResponseEntity<UserLoginDto> verifyAccount(
+      @ModelAttribute VerificationToken verificationToken) {
+    User user = authService.verifyAccount(verificationToken);
+    UserPrincipal userPrincipal = new UserPrincipal(user);
+    HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
+    return new ResponseEntity<>(UserLoginMapper.toUserLoginDto(user), jwtHeader, OK);
   }
 
   private void authenticate(String username, String password) {

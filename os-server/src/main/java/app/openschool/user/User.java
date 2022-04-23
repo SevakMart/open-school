@@ -24,6 +24,9 @@ public class User {
   @Column(name = "id", nullable = false)
   private Long id;
 
+  @Column(name = "enabled", nullable = false)
+  private Boolean enabled;
+
   @Column(name = "first_name", nullable = false)
   private String name;
 
@@ -92,6 +95,7 @@ public class User {
     this.email = email;
     this.password = password;
     this.role = role;
+    this.enabled = false;
   }
 
   public User(String email, String password) {
@@ -231,5 +235,13 @@ public class User {
 
   public void setCourses(Set<Course> courses) {
     this.courses = courses;
+  }
+
+  public Boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(Boolean enabled) {
+    this.enabled = enabled;
   }
 }

@@ -36,6 +36,14 @@ dependencies {
     // apache commons-lang3
     implementation 'org.apache.commons:commons-lang3:3.0'
 
+    //email support
+    implementation 'org.springframework.boot:spring-boot-starter-mail:2.6.3'
+
+    //template engines
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.3'
+
+
+
 }
 
 test {
