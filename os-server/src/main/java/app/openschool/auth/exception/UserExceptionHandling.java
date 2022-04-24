@@ -5,9 +5,11 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import app.openschool.auth.dto.UserLoginExceptionResponse;
 import app.openschool.auth.dto.UserRegistrationHttpResponse;
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.mail.MessagingException;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -55,6 +57,26 @@ public class UserExceptionHandling implements ErrorController {
   public ResponseEntity<UserLoginExceptionResponse> badCredentialsException(Locale locale) {
     String message = messageSource.getMessage("exception.bad.credentials.message", null, locale);
     return new ResponseEntity<>(new UserLoginExceptionResponse(message), UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(NotMatchingPasswordsException.class)
+  public ResponseEntity<String> notMatchingPasswordException(Locale locale) {
+    return ResponseEntity.badRequest()
+        .body(messageSource.getMessage("exception.not.matching.passwords", null, locale));
+  }
+
+  @ExceptionHandler(ResetPasswordTokenNotFoundException.class)
+  public ResponseEntity<String> resetPasswordTokenNotFoundException(Locale locale) {
+    return ResponseEntity.badRequest()
+        .body(messageSource.getMessage("exception.not.valid.token", null, locale));
+  }
+
+  @ExceptionHandler(EmailNotExistsException.class)
+  public ResponseEntity<String> emailNotExistsException(
+      EmailNotExistsException exception, Locale locale) {
+    String[] args = {exception.getMessage()};
+    return ResponseEntity.badRequest()
+        .body(messageSource.getMessage("exception.nonexistent.user.email.message", args, locale));
   }
 
   private Map<String, String> getValidationErrors(

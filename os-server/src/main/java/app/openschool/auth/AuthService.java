@@ -1,11 +1,11 @@
 package app.openschool.auth;
 
+import app.openschool.auth.dto.ResetPasswordRequest;
 import app.openschool.auth.dto.UserLoginDto;
 import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.user.User;
 import java.io.UnsupportedEncodingException;
 import javax.mail.MessagingException;
-import org.springframework.http.HttpRequest;
 
 public interface AuthService {
 
@@ -15,11 +15,8 @@ public interface AuthService {
 
   UserLoginDto login(String userEmail);
 
-  void sendEmail(String recipientEmail, String link)
-      throws MessagingException, UnsupportedEncodingException;
-
   void updateResetPasswordToken(String email)
       throws MessagingException, UnsupportedEncodingException;
 
-  void updatePassword(String token, String newPassword, String confirmedPassword);
+  void resetPassword(ResetPasswordRequest request);
 }

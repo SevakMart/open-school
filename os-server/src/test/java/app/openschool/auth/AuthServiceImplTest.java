@@ -7,11 +7,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import app.openschool.auth.AuthService;
-import app.openschool.auth.AuthServiceImpl;
 import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.auth.exception.EmailAlreadyExistException;
 import app.openschool.auth.exception.EmailNotFoundException;
+import app.openschool.common.communication.Communication;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,11 +27,13 @@ public class AuthServiceImplTest {
 
   @Mock private BCryptPasswordEncoder passwordEncoder;
 
+  @Mock private Communication communication;
+
   private AuthService authService;
 
   @BeforeEach
   void setUp() {
-    authService = new AuthServiceImpl(userRepository, passwordEncoder);
+    authService = new AuthServiceImpl(userRepository, passwordEncoder, communication);
   }
 
   @Test
@@ -63,7 +64,8 @@ public class AuthServiceImplTest {
 
   @Test
   void loadNonexistentUserByUsername() {
-    AuthServiceImpl authService = new AuthServiceImpl(userRepository, passwordEncoder);
+    AuthServiceImpl authService =
+        new AuthServiceImpl(userRepository, passwordEncoder, communication);
 
     given(userRepository.findUserByEmail(any())).willReturn(null);
 

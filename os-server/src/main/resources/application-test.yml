@@ -10,3 +10,16 @@ spring:
     password:
   jpa:
     show-sql: true
+  mail:
+    username: epam.open.school@gmail.com
+    password: gaqbkpxlbmgjztwm
+    port: 587
+    host: smtp.gmail.com
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    default-encoding: UTF-8

@@ -3,15 +3,14 @@ package app.openschool.auth;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+import app.openschool.auth.dto.ResetPasswordRequest;
 import app.openschool.auth.dto.UserLoginDto;
 import app.openschool.auth.dto.UserLoginRequest;
 import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.auth.dto.UserRegistrationHttpResponse;
-import app.openschool.auth.exception.NotMatchingPasswordsException;
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
-import app.openschool.user.api.exception.UserNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
@@ -25,7 +24,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -91,24 +89,21 @@ public class AuthController {
     return headers;
   }
 
-  @PostMapping("/forgot-password")
-  public ResponseEntity<String> forgotPassword(String email) {
-    try {
-      authService.updateResetPasswordToken(email);
-    } catch (MessagingException | UnsupportedEncodingException e) {
-      return ResponseEntity.internalServerError().body(e.getMessage());
-    }
-    return ResponseEntity.status(OK).body("We have sent a reset password link to your email. Please check.");
+  @PostMapping("/password/forgot")
+  @Operation(summary = "send token to given email")
+  public ResponseEntity<String> forgotPassword(@RequestBody String email, Locale locale)
+      throws MessagingException, UnsupportedEncodingException {
+    authService.updateResetPasswordToken(email);
+    return ResponseEntity.status(OK)
+        .body(messageSource.getMessage("password.sending.success.message", null, locale));
   }
 
-  @PostMapping("/reset-password")
+  @PostMapping("/password/reset")
+  @Operation(summary = "reset password")
   public ResponseEntity<String> resetPassword(
-      @RequestParam String token, String password, String confirmedPassword) {
-    try {
-      authService.updatePassword(token, password, confirmedPassword);
-    } catch (NotMatchingPasswordsException | UserNotFoundException ex) {
-      return ResponseEntity.badRequest().body(ex.getMessage());
-    }
-    return ResponseEntity.status(OK).body("Your password has been successfully changed");
+      @Valid @RequestBody ResetPasswordRequest request, Locale locale) {
+    authService.resetPassword(request);
+    return ResponseEntity.status(OK)
+        .body(messageSource.getMessage("password.reset.success.message", null, locale));
   }
 }
