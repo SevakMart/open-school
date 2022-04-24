@@ -6,6 +6,9 @@ export const BECOME_A_MENTOR = 'Become a mentor';
 export const SIGN_IN = 'Sign In';
 export const ALL_LEARNING_PATHS = 'All Learning Paths';
 export const MY_LEARNING_PATHS = 'My Learning Paths';
+export const ALL = 'All';
+export const IN_PROGRESS = 'InProgress';
+export const COMPLETED = 'Completed';
 
 // Header strings
 export const FREE_EDUCATIONAL_PLATFORM = 'Educational Platform';

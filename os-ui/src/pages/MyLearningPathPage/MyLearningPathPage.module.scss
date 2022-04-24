@@ -1,0 +1,30 @@
+@import "../../styles/Mixins/ButtonMixin.scss";
+@import "../../styles/Mixins/FlexMixins.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+
+.mainHeader {
+    @include fontStyle('Montserrat',normal,800,4rem,3.688rem);
+    color:#000000;
+    margin-top:3%;
+    padding-left:6%
+}
+
+.courseNavigationBar{
+    @include flexStyle(row,center,space-between);
+    padding-left:6%;
+    width:15%;
+    .activeNav{
+        cursor:pointer;
+        @include fontStyle('Montserrat',normal,600,1.25rem,1.5rem);
+        color:#222427;
+        border-bottom: 2px solid #222427 ;
+    }
+    .nonActiveNav {
+        @include fontStyle('Montserrat',normal,500,1rem,1.5rem);
+        color:#5E617B;
+        cursor:pointer;
+        &:hover {
+            color:#222427;
+        }
+    }
+}
