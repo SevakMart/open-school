@@ -26,7 +26,7 @@ export const GET_MAIN_CATEGORIES_URL = 'http://localhost:5000/api/v1/categories?
 export const GET_CATEGORY_SUBCATEGORY_SEARCH_URL = 'http://localhost:5000/api/v1/categories/subcategories?title=';
 export const SIGNIN_URL = 'http://localhost:5000/api/v1/auth/login';
 export const SAVE_PREFERRED_CATEGORIES = 'http://localhost:5000/api/v1/users';
-
+export const USER_URL = 'http://localhost:5000/api/v1/users';
 // Error Message
 export const ERROR_MESSAGE = 'Something went wrong please refresh the page :(';
 export const EMPTY_DATA_ERROR_MESSAGE = 'No data to display :(';
@@ -50,3 +50,7 @@ export const EMAIL_TOO_SHORT = 'email is too short';
 export const PASSWORD_TOO_SHORT = 'password is too short';
 export const PASSWORD_REQUIRED = 'password is required';
 export const EMAIL_REQUIRED = 'email is required';
+
+// Other non-specific strings
+export const NO_COURSES_YET = 'No Courses Yet';
+export const EXPLORE_COURSES = 'Explore Courses';

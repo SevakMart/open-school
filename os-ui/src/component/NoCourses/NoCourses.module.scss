@@ -1,0 +1,17 @@
+@import "../../styles/Mixins/ButtonMixin.scss";
+@import "../../styles/Mixins/FlexMixins.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+
+.mainContainer{
+    @include flexStyle(column,center, space-between);
+    p{
+        @include fontStyle('Montserrat',normal,500,1rem,1.5rem);
+        color:#5E617B;
+    }
+    button {
+        @include buttonStyle(transparent,#5E617B,1rem,14.125rem,4rem,2rem,2rem,1.375rem,1.375rem);
+        @include fontStyle('Montserrat',normal,500,1rem,1.25rem);
+        border: 1px solid #5E617B;
+        color: #5E617B;
+    }
+}

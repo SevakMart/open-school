@@ -28,3 +28,6 @@
         }
     }
 }
+.courseContainer {
+    @include flexStyle(column,center,space-between);
+}
