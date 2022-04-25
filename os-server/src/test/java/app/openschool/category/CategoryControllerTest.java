@@ -43,7 +43,7 @@ public class CategoryControllerTest {
     when(categoryService.findAllCategories(pageable)).thenReturn(categoryDtoPage);
     mockMvc
         .perform(
-            get("/api/v1/categories")
+            get("/api/v1/categories/public")
                 .queryParam("page", "1")
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))

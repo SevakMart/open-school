@@ -46,7 +46,7 @@ class UserControllerTest {
     when(userService.findAllMentors(pageable)).thenReturn(mentorPage);
     mockMvc
         .perform(
-            get("/api/v1/users/mentors")
+            get("/api/v1/users/mentors/public")
                 .queryParam("page", "1")
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
