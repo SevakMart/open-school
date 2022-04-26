@@ -13,22 +13,26 @@ const LearningPath = ({
   return (
     <div className={mainContainer}>
       <div className={header}>
-        <p className={difficultyContent}>{difficulty}</p>
+        <p data-testid={difficulty} className={difficultyContent}>{difficulty}</p>
         <p><BookmarkIcon iconSize="1rem" /></p>
       </div>
       <div className={mainBody}>
         <div className={ratingContent}>
           <p><StarIcon /></p>
-          <p className={ratingValue}>{rating}</p>
+          <p data-testid={ratingValue} className={ratingValue}>{rating}</p>
         </div>
-        <p className={courseTitle}>{title}</p>
+        <p data-testid={title} className={courseTitle}>{title}</p>
         <div className={keywordsContent}>
           <div className={keyword}>{keywords[0]}</div>
           <div className={keyword}>{keywords[1]}</div>
-          <p>
-            +
-            {keywords.length > 2 ? (keywords.length - 2) : null}
-          </p>
+          {
+           keywords.length > 2 ? (
+             <p data-testid="remainingKeywordNumber">
+               +
+               {keywords.length - 2}
+             </p>
+           ) : null
+          }
         </div>
       </div>
     </div>
