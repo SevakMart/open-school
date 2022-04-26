@@ -54,3 +54,4 @@ export const EMAIL_REQUIRED = 'email is required';
 // Other non-specific strings
 export const NO_COURSES_YET = 'No Courses Yet';
 export const EXPLORE_COURSES = 'Explore Courses';
+export const SUGGESTED_LEARNING_PATHS = 'Suggested Learning Paths';

@@ -3,11 +3,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
 import NoCourses from '../../component/NoCourses/NoCourses';
+import LearningPath from '../../component/LearningPath/LearningPath';
 import {
-  MY_LEARNING_PATHS, ALL, IN_PROGRESS, COMPLETED, USER_URL,
+  MY_LEARNING_PATHS, ALL, IN_PROGRESS, COMPLETED, USER_URL, SUGGESTED_LEARNING_PATHS,
 } from '../../constants/Strings';
 import { getUserCourses } from '../../services/getUserCourses';
+import { getSuggestedCourses } from '../../services/getSuggestedCourses';
 import { UserCourseType } from '../../types/UserCourseType';
+import { SuggestedCourseType } from '../../types/SuggestedCourseType';
 import styles from './MyLearningPathPage.module.scss';
 
 enum LearningPathNav {
@@ -19,9 +22,11 @@ enum LearningPathNav {
 const MyLearningPathPage = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
   const [userCourses, setUserCourses] = useState<UserCourseType[]>([]);
+  const [suggestedCourses, setSuggestedCourses] = useState<SuggestedCourseType[]>([]);
   const [activeNavType, setActiveNavType] = useState(LearningPathNav.All);
   const {
     mainHeader, courseNavigationBar, activeNav, nonActiveNav, courseContainer,
+    suggestedCoursesTitle, suggestedCoursesContainer,
   } = styles;
 
   const handleNavigation = (e:React.SyntheticEvent) => {
@@ -36,7 +41,14 @@ const MyLearningPathPage = () => {
         }
       });
   }, [userCourses]);
-
+  useEffect(() => {
+    getSuggestedCourses(`${USER_URL}/${(userInfo as any).id}/courses/suggested`)
+      .then((data) => {
+        if (!data.errorMessage) {
+          setSuggestedCourses(data);
+        }
+      });
+  }, []);
   return (
     <>
       <NavbarOnSignIn />
@@ -49,6 +61,20 @@ const MyLearningPathPage = () => {
       <div className={courseContainer}>
         {
           userCourses.length === 0 ? <NoCourses /> : null
+        }
+      </div>
+      <p className={suggestedCoursesTitle}>{SUGGESTED_LEARNING_PATHS}</p>
+      <div className={suggestedCoursesContainer}>
+        {
+          suggestedCourses.length ? suggestedCourses.map((suggestedCourse, index) => (
+            <LearningPath
+              key={index}
+              title={suggestedCourse.title}
+              rating={suggestedCourse.rating}
+              difficulty={suggestedCourse.difficulty}
+              keywords={suggestedCourse.keywords}
+            />
+          )) : null
         }
       </div>
     </>

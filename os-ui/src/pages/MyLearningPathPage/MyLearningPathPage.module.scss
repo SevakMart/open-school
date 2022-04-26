@@ -31,3 +31,14 @@
 .courseContainer {
     @include flexStyle(column,center,space-between);
 }
+.suggestedCoursesTitle{
+    @include fontStyle('Montserrat',normal,500,1rem,1.5rem);
+    color:#5E617B;
+    margin-top:5%;
+    padding-left:6%;
+}
+.suggestedCoursesContainer{
+    @include flexStyle(row,center,space-between);
+    padding-left:6%;
+    padding-right:6%;
+}

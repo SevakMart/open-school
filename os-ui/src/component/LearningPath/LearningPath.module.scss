@@ -1,0 +1,55 @@
+@import "../../styles/Mixins/ButtonMixin.scss";
+@import "../../styles/Mixins/FlexMixins.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+
+.mainContainer{
+    width:18.25rem;
+    .header{
+        background-color:#EEEFF4;
+        border-radius:2.5rem 2.5rem 0 0;
+        padding-left:10%;
+        padding-right:10%;
+        @include flexStyle(row, center,space-between);
+
+        .difficultyContent{
+            @include fontStyle('Montserrat',normal,500,0.75rem,0.938rem);
+            color:#848A9D;
+        }
+    }
+    .mainBody{
+        background-color:#FFFFFF;
+        border-radius:0 0 2.5rem 2.5rem;
+        padding-left:10%;
+        padding-right:10%;
+        margin-bottom:10%;
+
+        .ratingContent{
+            @include flexStyle(row,center,space-between);
+            width:20%;
+            color:#5E617B;
+            .ratingValue{
+                @include fontStyle('Montserrat',normal,500,0.75rem,0.938rem);
+            }
+        }
+        .courseTitle{
+            display:inline;
+            @include fontStyle('Montserrat',normal,600,1.25rem,1.5rem);
+            color:#333941;
+        }
+        .keywordsContent {
+            @include flexStyle(row,center,space-between);
+            width:60%;
+            .keyword {
+                background-color: #EEEFF4;
+                border-radius: 1.25rem;
+                padding:0.156rem 0.5rem 0.156rem 0.5rem;
+            }
+            .keyword,p{
+                @include fontStyle('Montserrat',normal,400,0.75rem,0.938rem);
+                color: #848A9D;
+            }
+
+        }
+    }
+}
+
