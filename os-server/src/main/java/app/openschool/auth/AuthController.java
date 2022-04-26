@@ -1,7 +1,6 @@
 package app.openschool.auth;
 
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
 
 import app.openschool.auth.dto.UserLoginDto;
 import app.openschool.auth.dto.UserLoginRequest;
@@ -14,6 +13,7 @@ import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.Locale;
+import java.util.TimeZone;
 import javax.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
@@ -54,16 +54,15 @@ public class AuthController {
   @ResponseStatus(CREATED)
   @Operation(summary = "register students")
   public ResponseEntity<UserRegistrationHttpResponse> register(
-      @Valid @RequestBody UserRegistrationDto userDto, Locale locale) {
-    User user = authService.register(userDto);
+      @Valid @RequestBody UserRegistrationDto userDto, Locale locale, TimeZone timeZone) {
+    User user = authService.register(userDto, timeZone);
     String message =
         user.getName()
             + " "
             + messageSource.getMessage("response.register.successful.message", null, locale);
     UserRegistrationHttpResponse httpResponse =
         new UserRegistrationHttpResponse(message.toUpperCase(Locale.ROOT));
-
-    return new ResponseEntity<>(httpResponse, CREATED);
+    return ResponseEntity.status(CREATED).body(httpResponse);
   }
 
   @PostMapping("/login")
@@ -76,16 +75,16 @@ public class AuthController {
     User loggedUser = authService.findUserByEmail(userLoginRequest.getEmail());
     UserPrincipal userPrincipal = new UserPrincipal(loggedUser);
     HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
-    return new ResponseEntity<>(userLoginDto, jwtHeader, OK);
+    return ResponseEntity.ok().headers(jwtHeader).body(userLoginDto);
   }
 
   @PostMapping("/register/verification")
   public ResponseEntity<UserLoginDto> verifyAccount(
-      @ModelAttribute VerificationToken verificationToken) {
-    User user = authService.verifyAccount(verificationToken);
+      @ModelAttribute VerificationToken verificationToken, TimeZone timeZone) {
+    User user = authService.verifyAccount(verificationToken, timeZone);
     UserPrincipal userPrincipal = new UserPrincipal(user);
     HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
-    return new ResponseEntity<>(UserLoginMapper.toUserLoginDto(user), jwtHeader, OK);
+    return ResponseEntity.ok().headers(jwtHeader).body(UserLoginMapper.toUserLoginDto(user));
   }
 
   private void authenticate(String username, String password) {

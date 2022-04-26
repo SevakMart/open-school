@@ -12,10 +12,10 @@
 <div style="color: black; font-style: normal; font-size: 14px;">
     Hey <b th:text="${userName}"></b>
     <p>Click the button blow to verify your account.</p>
-    <p> It is valid until <b th:text="${date}"></b>.</p>
+    <p> It is valid until <b th:text="${expiresAtDate}"></b>.</p>
 
     <form th:method="post"
-          th:action="@{http://localhost:5000/api/v1/auth/register/verification}"
+          th:action="@{${verificationEndpoint}}"
           th:object="${verificationToken}">
         <input th:type="hidden" th:name="token" th:id="token" th:value="${verificationToken.token}">
         <button th:type="submit"

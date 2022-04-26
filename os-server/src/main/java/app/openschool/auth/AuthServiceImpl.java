@@ -10,45 +10,38 @@ import app.openschool.auth.mapper.UserRegistrationMapper;
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
 import app.openschool.common.security.UserPrincipal;
-import app.openschool.common.services.EmailSenderService;
+import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
-import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.UUID;
+import java.util.TimeZone;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.ITemplateEngine;
-import org.thymeleaf.context.Context;
 
 @Service
 public class AuthServiceImpl implements AuthService, UserDetailsService {
 
   private final UserRepository userRepository;
   private final BCryptPasswordEncoder passwordEncoder;
-  private final EmailSenderService emailSender;
-  private final ITemplateEngine templateEngine;
+  private final CommunicationService communicationService;
   private final VerificationTokenRepository verificationTokenRepository;
 
   public AuthServiceImpl(
       UserRepository userRepository,
       BCryptPasswordEncoder passwordEncoder,
-      EmailSenderService emailSender,
-      ITemplateEngine templateEngine,
+      CommunicationService communicationService,
       VerificationTokenRepository verificationTokenRepository) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
-    this.emailSender = emailSender;
-    this.templateEngine = templateEngine;
+    this.communicationService = communicationService;
     this.verificationTokenRepository = verificationTokenRepository;
   }
 
   @Override
-  public User register(UserRegistrationDto userDto) {
+  public User register(UserRegistrationDto userDto, TimeZone timeZone) {
 
     if (emailAlreadyExist(userDto.getEmail())) {
       throw new EmailAlreadyExistException();
@@ -57,27 +50,8 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     User user =
         userRepository.save(
             UserRegistrationMapper.userRegistrationDtoToUser(userDto, passwordEncoder));
-    sendEmailToVerifyUserAccount(user);
+    communicationService.sendEmailToVerifyUserAccount(user, timeZone);
     return user;
-  }
-
-  private void sendEmailToVerifyUserAccount(User user) {
-    String token = UUID.randomUUID().toString() + user.getId();
-    long expiresAt = ZonedDateTime.now().plusDays(1).toInstant().toEpochMilli();
-    String date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss").format(new Date(expiresAt));
-    VerificationToken verificationToken = new VerificationToken(user, token, expiresAt);
-    verificationTokenRepository.save(verificationToken);
-    emailSender.sendEmail(
-        user.getEmail(), createEmailContent(user.getName(), date, verificationToken));
-  }
-
-  private String createEmailContent(
-      String userName, String date, VerificationToken verificationToken) {
-    Context context = new Context();
-    context.setVariable("userName", userName);
-    context.setVariable("verificationToken", verificationToken);
-    context.setVariable("date", date);
-    return templateEngine.process("email/account-verification", context);
   }
 
   @Override
@@ -95,7 +69,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   }
 
   @Override
-  public User verifyAccount(VerificationToken verificationToken) {
+  public User verifyAccount(VerificationToken verificationToken, TimeZone timeZone) {
     Long now = ZonedDateTime.now().toInstant().toEpochMilli();
     VerificationToken fetchedToken =
         verificationTokenRepository.findVerificationTokenByToken(verificationToken.getToken());
@@ -105,7 +79,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
         user.setEnabled(true);
         return userRepository.save(user);
       } else {
-        sendEmailToVerifyUserAccount(fetchedToken.getUser());
+        communicationService.sendEmailToVerifyUserAccount(fetchedToken.getUser(), timeZone);
         throw new UserNotVerifiedException();
       }
     }
