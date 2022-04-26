@@ -19,11 +19,11 @@ public class EmailSenderServiceImpl implements EmailSenderService {
   }
 
   @Override
-  public void sendEmail(String toEmail, String emailContent) {
+  public void sendEmail(String toEmail, String emailContent, String subject) {
     MimeMessage message = mailSender.createMimeMessage();
     MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
     try {
-      helper.setSubject("Verify your account");
+      helper.setSubject(subject);
       helper.setText(emailContent, true);
       helper.setFrom("epam.open.school@gmail.com");
       helper.setTo(toEmail);

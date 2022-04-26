@@ -12,4 +12,4 @@ spring:
     show-sql: true
 
 verification:
-  endpoint: 'http://localhost:5000/api/v1/auth/register/verification'
+  endpoint: 'http://localhost:5000/api/v1/auth/account/verification'

@@ -17,6 +17,8 @@ import org.thymeleaf.context.Context;
 @Service
 public class EmailService implements CommunicationService {
 
+  private static final String emailSubject = "Verify your account";
+
   private final EmailSenderService emailSender;
   private final ITemplateEngine templateEngine;
   private final VerificationTokenRepository verificationTokenRepository;
@@ -50,7 +52,8 @@ public class EmailService implements CommunicationService {
     verificationTokenRepository.save(verificationToken);
     emailSender.sendEmail(
         user.getEmail(),
-        createEmailContent(user.getName(), expiresAtDate, verificationEndpoint, verificationToken));
+        createEmailContent(user.getName(), expiresAtDate, verificationEndpoint, verificationToken),
+        emailSubject);
   }
 
   private String createEmailContent(

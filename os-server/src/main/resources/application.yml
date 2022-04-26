@@ -37,3 +37,7 @@ springdoc:
   swagger-ui:
     path: /open-school-api
     operationsSorter: method
+
+logging:
+  file:
+    name: open-school-logs.log

@@ -13,6 +13,7 @@ import app.openschool.common.security.UserPrincipal;
 import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
+import app.openschool.user.api.exception.UserNotFoundException;
 import java.time.ZonedDateTime;
 import java.util.TimeZone;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -84,6 +85,15 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
       }
     }
     throw new UserNotVerifiedException();
+  }
+
+  @Override
+  public void sendVerificationEmail(Long userId, TimeZone timeZone) {
+    User user = userRepository.findUserById(userId);
+    if (user == null) {
+      throw new UserNotFoundException(String.valueOf(userId));
+    }
+    communicationService.sendEmailToVerifyUserAccount(user, timeZone);
   }
 
   @Override

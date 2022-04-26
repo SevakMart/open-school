@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,7 +62,7 @@ public class AuthController {
             + " "
             + messageSource.getMessage("response.register.successful.message", null, locale);
     UserRegistrationHttpResponse httpResponse =
-        new UserRegistrationHttpResponse(message.toUpperCase(Locale.ROOT));
+        new UserRegistrationHttpResponse(user.getId(), message.toUpperCase(Locale.ROOT));
     return ResponseEntity.status(CREATED).body(httpResponse);
   }
 
@@ -78,13 +79,19 @@ public class AuthController {
     return ResponseEntity.ok().headers(jwtHeader).body(userLoginDto);
   }
 
-  @PostMapping("/register/verification")
+  @PostMapping("/account/verification")
   public ResponseEntity<UserLoginDto> verifyAccount(
       @ModelAttribute VerificationToken verificationToken, TimeZone timeZone) {
     User user = authService.verifyAccount(verificationToken, timeZone);
     UserPrincipal userPrincipal = new UserPrincipal(user);
     HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
     return ResponseEntity.ok().headers(jwtHeader).body(UserLoginMapper.toUserLoginDto(user));
+  }
+
+  @PostMapping("/{userId}/account/verification")
+  public ResponseEntity<Void> sendVerificationEmail(@PathVariable Long userId, TimeZone timeZone) {
+    authService.sendVerificationEmail(userId, timeZone);
+    return ResponseEntity.ok(null);
   }
 
   private void authenticate(String username, String password) {

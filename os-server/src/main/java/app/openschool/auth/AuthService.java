@@ -15,4 +15,6 @@ public interface AuthService {
   UserLoginDto login(String userEmail);
 
   User verifyAccount(VerificationToken verificationToken, TimeZone timeZone);
+
+  void sendVerificationEmail(Long userId, TimeZone timeZone);
 }
