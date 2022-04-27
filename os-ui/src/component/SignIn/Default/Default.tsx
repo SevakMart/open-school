@@ -1,32 +1,22 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import HiddenIcon from '../../icons/Hidden';
-import VisibileIcon from '../../icons/Visibility';
-import { validateSignUpForm } from '../../helpers/SignUpFormValidate';
-import { validateSignInForm } from '../../helpers/SignInFormValidate';
-import {
-  SIGN_UP, SIGN_IN, REGISTRATION_URL, SIGNIN_URL, SUCCESSFUL_SIGNIN_MESSAGE,
-} from '../../constants/Strings';
-import { register } from '../../services/register';
-import { signIn } from '../../services/signIn';
-import { RegistrationFormType } from '../../types/RegistartionFormType';
-import { addLoggedInUser } from '../../redux/Slices/loginUserSlice';
-import styles from './SignUpSignInForm.module.scss';
+import { validateSignInForm } from '../../../helpers/SignInFormValidate';
+import { signIn } from '../../../services/signIn';
+import { addLoggedInUser } from '../../../redux/Slices/loginUserSlice';
+import VisibileIcon from '../../../icons/Visibility';
+import HiddenIcon from '../../../icons/Hidden';
+import { RegistrationFormType } from '../../../types/RegistartionFormType';
+import { SIGN_IN, SIGNIN_URL, SUCCESSFUL_SIGNIN_MESSAGE } from '../../../constants/Strings';
+import styles from './Default.module.scss';
 
-interface FormProps{
-  formType:string,
-  switchToSignInForm?(message:string):void;
-  handleSignIn?(message:string):void;
-}
-
-const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
+const SignInDefault = ({ handleSignIn }:{handleSignIn:(message:string)=>void}) => {
   const dispatch = useDispatch();
   const [formValues, setFormValues] = useState<RegistrationFormType>({ firstName: '', email: '', password: '' });
   const [errorFormValue, setErrorFormValue] = useState({ fullNameError: '', emailError: '', passwordError: '' });
   const [signInErrorMessage, setSignInErrorMessage] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const passwordInputRef = useRef<null|HTMLInputElement>(null);
-  const { errorField } = styles;
+  const { inputContent, errorField } = styles;
   const handlePasswordVisibility = () => {
     setIsVisible((prevState) => !prevState);
   };
@@ -36,16 +26,6 @@ const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
       ...formValues,
       [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value,
     });
-  };
-  const handleSubmitForm = () => {
-    const { fullNameError, emailError, passwordError } = validateSignUpForm(formValues);
-    if (!fullNameError && !emailError && !passwordError) {
-      register(REGISTRATION_URL, formValues).then((response) => {
-        setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
-        setFormValues({ firstName: '', email: '', password: '' });
-        switchToSignInForm!(response.message);
-      });
-    } else setErrorFormValue(validateSignUpForm(formValues));
   };
 
   const handleSignInForm = () => {
@@ -57,7 +37,7 @@ const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
           setSignInErrorMessage(response.message);
         } else if (response.status === 200) {
           dispatch(addLoggedInUser(response));
-          handleSignIn!(SUCCESSFUL_SIGNIN_MESSAGE);
+          handleSignIn(SUCCESSFUL_SIGNIN_MESSAGE);
         }
       });
     } else setErrorFormValue(validateSignInForm(formValues));
@@ -70,28 +50,7 @@ const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
   }, [isVisible]);
 
   return (
-    <>
-      {formType === 'signUp'
-        ? (
-          <div>
-            <label htmlFor="fullName">
-              Full Name
-              <span style={{ color: 'red' }}>*</span>
-            </label>
-            <input
-              id="fullName"
-              type="text"
-              value={formValues.firstName}
-              name="firstName"
-              placeholder="Fill in first name"
-              onChange={handleInputChange}
-              required
-            />
-            {errorFormValue.fullNameError
-              ? <h4 data-testid="fullnameErrorField" className={errorField}>{errorFormValue.fullNameError}</h4>
-              : null}
-          </div>
-        ) : null}
+    <form className={inputContent}>
       <div>
         <label htmlFor="email">
           Email
@@ -134,9 +93,8 @@ const Form = ({ formType, switchToSignInForm, handleSignIn }:FormProps) => {
       </div>
       {signInErrorMessage ? <h4 data-testid="signInErrorMessage" className={errorField}>{signInErrorMessage}</h4> : null}
       <p>Forgot Password?</p>
-      {formType === 'signUp' ? <button type="button" data-testid="signUpButton" onClick={handleSubmitForm}>{SIGN_UP}</button>
-        : <button type="button" data-testid="signInButton" onClick={handleSignInForm}>{SIGN_IN}</button>}
-    </>
+      <button type="button" data-testid="signInButton" onClick={handleSignInForm}>{SIGN_IN}</button>
+    </form>
   );
 };
-export default Form;
+export default SignInDefault;

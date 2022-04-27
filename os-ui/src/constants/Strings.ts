@@ -4,23 +4,29 @@ export const EXPLORE_CATEGORIES = 'Explore Categories';
 export const MENTORS = 'Mentors';
 export const BECOME_A_MENTOR = 'Become a mentor';
 export const SIGN_IN = 'Sign In';
+export const ALL_LEARNING_PATHS = 'All Learning Paths';
+export const MY_LEARNING_PATHS = 'My Learning Paths';
 
 // Header strings
 export const FREE_EDUCATIONAL_PLATFORM = 'Educational Platform';
 export const SIGN_UP = 'SIGN UP';
 export const HEADER_INTRODUCTION = 'Choose Categories You Are Interested In Choose Categories You Are Interested InChoose Categories You Are Interested';
 export const EDUCATION_PLATFORM_IMAGE = 'https://image.shutterstock.com/image-vector/ebook-logo-design-vector-electronic-260nw-1767373559.jpg';
+export const CHOOSE_CATEGORIES_HEADER = 'Choose Categories You Are Interested In';
 
 // URLS
 export const GET_MENTORS_URL = '../../mentorData.json';
 export const GET_CATEGORIES_URL = '../../categorieData.json';
-export const GET_REAL_MENTORS_URL = 'http://localhost:5000/api/v1/mentors?';
-export const REGISTRATION_URL = 'http://localhost:5000/api/v1/register';
+export const GET_REAL_MENTORS_URL = 'http://localhost:5000/api/v1/users/mentors?';
+export const REGISTRATION_URL = 'http://localhost:5000/api/v1/auth/register';
 export const GET_MAIN_CATEGORIES_URL = 'http://localhost:5000/api/v1/categories?';
-export const SIGNIN_URL = 'http://localhost:5000/api/v1/login';
+export const GET_CATEGORY_SUBCATEGORY_SEARCH_URL = 'http://localhost:5000/api/v1/categories/subcategories?title=';
+export const SIGNIN_URL = 'http://localhost:5000/api/v1/auth/login';
+export const SAVE_PREFERRED_CATEGORIES = 'http://localhost:5000/api/v1/users';
 
 // Error Message
 export const ERROR_MESSAGE = 'Something went wrong please refresh the page :(';
+export const EMPTY_DATA_ERROR_MESSAGE = 'No data to display :(';
 
 // Successful Sign in message
 export const SUCCESSFUL_SIGNIN_MESSAGE = 'You have Successfully signed in!';

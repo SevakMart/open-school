@@ -20,7 +20,7 @@ const MentorCard = ({
           <p>|</p>
           <p onClick={() => { window.location.href = linkedinPath; }}><LinkedinIcon /></p>
         </div>
-        <p><BookmarkIcon /></p>
+        <p><BookmarkIcon iconSize="1rem" /></p>
       </div>
       <div className={bodyContainer}>
         <div className={mentorInfoContainer}>
