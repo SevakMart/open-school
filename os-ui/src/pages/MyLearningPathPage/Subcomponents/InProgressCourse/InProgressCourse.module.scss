@@ -1,0 +1,75 @@
+@import "../../../../styles/Mixins/ButtonMixin.scss";
+@import "../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+
+.mainContainer{
+    @include flexStyle(row,center,space-between);
+    background-color: #FFFFFF;
+    border-radius:1.25rem;
+    width:100%;
+    margin-bottom:7%;
+    padding-left:3rem;
+    padding-right:3rem;
+    .container{
+        @include flexStyle(column,center,space-between);
+        .courseTitle{
+            @include fontStyle('Helvetica Neue',normal,700,1.5rem,1.813rem);
+            text-decoration-line: underline;
+            color: #222427;
+        }
+        .progressContainer{
+            @include flexStyle(row,center,space-between);
+            width:80%;
+        .progressBar{
+            background-color: #EEEFF4;
+            border-radius:0.406rem;
+            width:100%;
+            height:0.813rem;
+        }
+        .progressPercent{
+            @include fontStyle('Helvetica Neue',normal,500,0.75rem,0.938rem);
+            color: #333941;
+        }
+      }
+        .OverallProgress{
+            @include fontStyle('Montserrat',normal,400,0.75rem,0.938rem);
+            color: #5E617B;
+       }
+       .containerTitle{
+        @include fontStyle('Montserrat',normal,500,0.875rem,1.063rem);
+        color: #848A9D;
+       }
+       .remainingTimeContainer,.dueDateContainer{
+        @include flexStyle(row,center,space-between);
+       }
+       .dueDateContent,.remainingTimeContent{
+        @include fontStyle('Montserrat',normal,500,1rem,1.5rem);
+        color: #333941;
+       }
+       .statusContent{
+           background-color: #D9DBE9;
+           border-radius:1rem;
+           @include fontStyle('Montserrat',normal,500,0.75rem,0.938rem);
+           color: #5E617B;
+           padding:0.344rem 1rem 0.344rem 1rem;
+       }
+       &:nth-child(1){
+           width:25%;
+           border:none;
+       }
+    }
+    .buttonContainer button{
+        background-color: #848A9D;
+        border-radius:1rem;
+        @include fontStyle('Montserrat',normal,500,1rem,1.25rem);
+        color:#FFFFFF;
+        padding:1rem 2rem 1rem 2rem;
+        cursor:pointer;
+    }
+    .separator{
+        background-color:#EEEFF4;
+        border-radius: 0.469rem;
+        width:0.125rem;
+        height:5rem;
+    }
+}

@@ -3,9 +3,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
 import NoCourses from '../../component/NoCourses/NoCourses';
+import InProgressCourse from './Subcomponents/InProgressCourse/InProgressCourse';
+import CompletedCourse from './Subcomponents/CompletedCourse/CompledtedCourse';
 import LearningPath from '../../component/LearningPath/LearningPath';
 import {
-  MY_LEARNING_PATHS, ALL, IN_PROGRESS, COMPLETED, USER_URL, SUGGESTED_LEARNING_PATHS,
+  MY_LEARNING_PATHS, ALL, IN_PROGRESS, COMPLETED, USER_URL,
+  SUGGESTED_LEARNING_PATHS, EXPLORE_COURSES,
 } from '../../constants/Strings';
 import { getUserCourses } from '../../services/getUserCourses';
 import { getSuggestedCourses } from '../../services/getSuggestedCourses';
@@ -26,7 +29,7 @@ const MyLearningPathPage = () => {
   const [activeNavType, setActiveNavType] = useState(LearningPathNav.All);
   const {
     mainHeader, courseNavigationBar, activeNav, nonActiveNav, courseContainer,
-    suggestedCoursesTitle, suggestedCoursesContainer,
+    suggestedCoursesTitle, suggestedCoursesContainer, exploreCourseButton,
   } = styles;
 
   const handleNavigation = (e:React.SyntheticEvent) => {
@@ -34,18 +37,16 @@ const MyLearningPathPage = () => {
   };
 
   useEffect(() => {
-    getUserCourses(`${USER_URL}/${(userInfo as any).id}/courses`)
-      .then((data) => {
-        if (!data.errorMessage) {
-          setUserCourses(data);
-        }
-      });
-  }, [userCourses]);
-  useEffect(() => {
     getSuggestedCourses(`${USER_URL}/${(userInfo as any).id}/courses/suggested`)
       .then((data) => {
         if (!data.errorMessage) {
           setSuggestedCourses(data);
+        }
+      });
+    getUserCourses(`${USER_URL}/${(userInfo as any).id}/courses`)
+      .then((data) => {
+        if (!data.errorMessage) {
+          setUserCourses(data);
         }
       });
   }, []);
@@ -60,8 +61,31 @@ const MyLearningPathPage = () => {
       </nav>
       <div className={courseContainer}>
         {
-          userCourses.length === 0 ? <NoCourses /> : null
+          userCourses.length === 0 ? <NoCourses />
+            : userCourses.map((userCourse, index) => {
+              if (userCourse.courseStatus === 'IN_PROGRESS') {
+                return (
+                  <InProgressCourse
+                    key={index}
+                    title={userCourse.title}
+                    courseStatus={userCourse.courseStatus}
+                    percentage={userCourse.percentage}
+                    remainingTime={userCourse.remainingTime}
+                    dueDate={userCourse.dueDate}
+                  />
+                );
+              }
+              return (
+                <CompletedCourse
+                  key={index}
+                  title={userCourse.title}
+                  courseStatus={userCourse.courseStatus}
+                  grade={userCourse.grade}
+                />
+              );
+            })
         }
+        <button type="button" className={exploreCourseButton}>{EXPLORE_COURSES}</button>
       </div>
       <p className={suggestedCoursesTitle}>{SUGGESTED_LEARNING_PATHS}</p>
       <div className={suggestedCoursesContainer}>
