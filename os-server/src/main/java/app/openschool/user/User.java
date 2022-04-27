@@ -1,5 +1,6 @@
 package app.openschool.user;
 
+import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.category.Category;
 import app.openschool.course.Course;
 import app.openschool.user.company.Company;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -54,9 +56,6 @@ public class User {
   @Column(name = "linkedin_path")
   private String linkedinPath;
 
-  @Column(name = "reset_password_token")
-  private String resetPasswordToken;
-
   @ManyToOne
   @JoinColumn(name = "role_id", nullable = false)
   private Role role;
@@ -78,6 +77,9 @@ public class User {
       joinColumns = {@JoinColumn(name = "user_id")},
       inverseJoinColumns = {@JoinColumn(name = "learning_path_id")})
   private Set<Course> courses;
+
+  @OneToOne(mappedBy = "user")
+  private ResetPasswordToken resetPasswordToken;
 
   public User() {}
 
@@ -232,17 +234,15 @@ public class User {
     return courses;
   }
 
-  public String getResetPasswordToken() {
-    return resetPasswordToken;
-  }
-
-  public void setResetPasswordToken(String resetPasswordToken) {
-    this.resetPasswordToken = resetPasswordToken;
-  }
-
   public void setCourses(Set<Course> courses) {
     this.courses = courses;
   }
 
+  public ResetPasswordToken getResetPasswordToken() {
+    return resetPasswordToken;
+  }
 
+  public void setResetPasswordToken(ResetPasswordToken resetPasswordToken) {
+    this.resetPasswordToken = resetPasswordToken;
+  }
 }

@@ -3,6 +3,7 @@ package app.openschool.auth;
 import app.openschool.auth.dto.ResetPasswordRequest;
 import app.openschool.auth.dto.UserLoginDto;
 import app.openschool.auth.dto.UserRegistrationDto;
+import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.auth.exception.EmailAlreadyExistException;
 import app.openschool.auth.exception.EmailNotExistsException;
 import app.openschool.auth.exception.EmailNotFoundException;
@@ -15,7 +16,6 @@ import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.io.UnsupportedEncodingException;
-import java.util.Random;
 import javax.mail.MessagingException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,14 +27,14 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService, UserDetailsService {
 
   private final UserRepository userRepository;
+  private final ResetPasswordTokenRepository resetPasswordTokenRepository;
   private final BCryptPasswordEncoder passwordEncoder;
   private final Communication communication;
 
-  public AuthServiceImpl(
-      UserRepository userRepository,
-      BCryptPasswordEncoder passwordEncoder,
-      Communication communication) {
+  public AuthServiceImpl(UserRepository userRepository, ResetPasswordTokenRepository resetPasswordTokenRepository,
+                         BCryptPasswordEncoder passwordEncoder, Communication communication) {
     this.userRepository = userRepository;
+    this.resetPasswordTokenRepository = resetPasswordTokenRepository;
     this.passwordEncoder = passwordEncoder;
     this.communication = communication;
   }
@@ -80,9 +80,8 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     if (user == null) {
       throw new EmailNotExistsException(email);
     }
-    String token = String.valueOf(new Random().nextInt(9999));
-    user.setResetPasswordToken(token);
-    userRepository.save(user);
+    ResetPasswordToken token = ResetPasswordToken.generateToken(user);
+    resetPasswordTokenRepository.save(token);
     communication.sendResetPasswordEmail(email, token);
   }
 
