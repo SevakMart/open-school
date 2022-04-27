@@ -25,7 +25,7 @@ public class CategoryController {
 
   @GetMapping
   @Operation(summary = "find all categories", security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<Page<CategoryDto>> allCategories(Pageable pageable) {
+  public ResponseEntity<Page<CategoryDto>> getAllCategories(Pageable pageable) {
     return ResponseEntity.ok(this.categoryService.findAllCategories(pageable));
   }
 
