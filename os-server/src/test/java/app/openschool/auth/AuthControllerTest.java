@@ -35,7 +35,7 @@ public class AuthControllerTest {
 
   @Test
   void registerValidUser() throws Exception {
-    when(authService.register(any(UserRegistrationDto.class), any())).thenReturn(new User());
+    when(authService.register(any(UserRegistrationDto.class))).thenReturn(new User());
 
     String requestBody =
         "{ \"firstName\": \"Test\",\"email\": \"test@gmail.com\",\"password\": \"1234$dhjsHH*\" }";
@@ -46,7 +46,7 @@ public class AuthControllerTest {
 
   @Test
   void registerInvalidUserName() throws Exception {
-    when(authService.register(any(UserRegistrationDto.class), any())).thenReturn(new User());
+    when(authService.register(any(UserRegistrationDto.class))).thenReturn(new User());
 
     String requestBody =
         "{ \"firstName\": \"\",\"email\": \"test@gmail.com\",\"password\": \"1234$dhjsHH*\" }";
@@ -57,7 +57,7 @@ public class AuthControllerTest {
 
   @Test
   void registerInvalidUserPassword() throws Exception {
-    when(authService.register(any(UserRegistrationDto.class), any())).thenReturn(new User());
+    when(authService.register(any(UserRegistrationDto.class))).thenReturn(new User());
 
     String requestBody =
         "{ \"firstName\": \"Test\",\"email\": \"test@gmail.com\",\"password\": \"1234$dhjshh*\" }";

@@ -14,8 +14,7 @@ import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.api.exception.UserNotFoundException;
-import java.time.ZonedDateTime;
-import java.util.TimeZone;
+import java.time.Instant;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,7 +41,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   }
 
   @Override
-  public User register(UserRegistrationDto userDto, TimeZone timeZone) {
+  public User register(UserRegistrationDto userDto) {
 
     if (emailAlreadyExist(userDto.getEmail())) {
       throw new EmailAlreadyExistException();
@@ -51,7 +50,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     User user =
         userRepository.save(
             UserRegistrationMapper.userRegistrationDtoToUser(userDto, passwordEncoder));
-    communicationService.sendEmailToVerifyUserAccount(user, timeZone);
+    communicationService.sendEmailToVerifyUserAccount(user);
     return user;
   }
 
@@ -70,8 +69,8 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   }
 
   @Override
-  public User verifyAccount(VerificationToken verificationToken, TimeZone timeZone) {
-    Long now = ZonedDateTime.now().toInstant().toEpochMilli();
+  public User verifyAccount(VerificationToken verificationToken) {
+    long now = Instant.now().toEpochMilli();
     VerificationToken fetchedToken =
         verificationTokenRepository.findVerificationTokenByToken(verificationToken.getToken());
     if (fetchedToken != null) {
@@ -80,7 +79,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
         user.setEnabled(true);
         return userRepository.save(user);
       } else {
-        communicationService.sendEmailToVerifyUserAccount(fetchedToken.getUser(), timeZone);
+        communicationService.sendEmailToVerifyUserAccount(fetchedToken.getUser());
         throw new UserNotVerifiedException();
       }
     }
@@ -88,12 +87,12 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   }
 
   @Override
-  public void sendVerificationEmail(Long userId, TimeZone timeZone) {
+  public void sendVerificationEmail(Long userId) {
     User user = userRepository.findUserById(userId);
     if (user == null) {
       throw new UserNotFoundException(String.valueOf(userId));
     }
-    communicationService.sendEmailToVerifyUserAccount(user, timeZone);
+    communicationService.sendEmailToVerifyUserAccount(user);
   }
 
   @Override

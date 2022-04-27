@@ -4,17 +4,16 @@ import app.openschool.auth.dto.UserLoginDto;
 import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.user.User;
-import java.util.TimeZone;
 
 public interface AuthService {
 
-  User register(UserRegistrationDto userDto, TimeZone timeZone);
+  User register(UserRegistrationDto userDto);
 
   User findUserByEmail(String email);
 
   UserLoginDto login(String userEmail);
 
-  User verifyAccount(VerificationToken verificationToken, TimeZone timeZone);
+  User verifyAccount(VerificationToken verificationToken);
 
-  void sendVerificationEmail(Long userId, TimeZone timeZone);
+  void sendVerificationEmail(Long userId);
 }

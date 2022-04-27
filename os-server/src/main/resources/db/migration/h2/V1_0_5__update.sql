@@ -1,9 +1,6 @@
 ALTER TABLE user
 ADD COLUMN enabled BOOLEAN;
 
-ALTER TABLE user
-ADD COLUMN reset_password_token VARCHAR(45) NULL AFTER linkedin_path;
-
 CREATE TABLE IF NOT EXISTS verification_token (
  id BIGINT NOT NULL AUTO_INCREMENT,
  token VARCHAR(45) NOT NULL,

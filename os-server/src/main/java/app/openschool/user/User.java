@@ -81,6 +81,10 @@ public class User {
 
   public User() {}
 
+  public User(Long id) {
+    this.id = id;
+  }
+
   public User(
       String firstName, String email, String password, Set<Category> categories, Role role) {
     this.name = firstName;

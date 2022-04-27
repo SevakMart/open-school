@@ -13,13 +13,13 @@ import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.Locale;
-import java.util.TimeZone;
 import javax.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,8 +55,8 @@ public class AuthController {
   @ResponseStatus(CREATED)
   @Operation(summary = "register students")
   public ResponseEntity<UserRegistrationHttpResponse> register(
-      @Valid @RequestBody UserRegistrationDto userDto, Locale locale, TimeZone timeZone) {
-    User user = authService.register(userDto, timeZone);
+      @Valid @RequestBody UserRegistrationDto userDto, Locale locale) {
+    User user = authService.register(userDto);
     String message =
         user.getName()
             + " "
@@ -81,16 +81,16 @@ public class AuthController {
 
   @PostMapping("/account/verification")
   public ResponseEntity<UserLoginDto> verifyAccount(
-      @ModelAttribute VerificationToken verificationToken, TimeZone timeZone) {
-    User user = authService.verifyAccount(verificationToken, timeZone);
+      @ModelAttribute VerificationToken verificationToken) {
+    User user = authService.verifyAccount(verificationToken);
     UserPrincipal userPrincipal = new UserPrincipal(user);
     HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
     return ResponseEntity.ok().headers(jwtHeader).body(UserLoginMapper.toUserLoginDto(user));
   }
 
-  @PostMapping("/{userId}/account/verification")
-  public ResponseEntity<Void> sendVerificationEmail(@PathVariable Long userId, TimeZone timeZone) {
-    authService.sendVerificationEmail(userId, timeZone);
+  @GetMapping ("/{userId}/account/verification")
+  public ResponseEntity<Void> sendVerificationEmail(@PathVariable Long userId) {
+    authService.sendVerificationEmail(userId);
     return ResponseEntity.ok(null);
   }
 

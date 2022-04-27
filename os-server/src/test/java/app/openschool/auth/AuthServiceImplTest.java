@@ -11,10 +11,13 @@ import static org.mockito.Mockito.verify;
 import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.auth.exception.EmailAlreadyExistException;
 import app.openschool.auth.exception.EmailNotFoundException;
+import app.openschool.auth.exception.UserNotVerifiedException;
+import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
 import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
+import app.openschool.user.api.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,7 +50,7 @@ public class AuthServiceImplTest {
 
     given(userRepository.findUserByEmail(any())).willReturn(new User());
 
-    assertThatThrownBy(() -> authService.register(new UserRegistrationDto(), any()))
+    assertThatThrownBy(() -> authService.register(new UserRegistrationDto()))
         .isInstanceOf(EmailAlreadyExistException.class);
 
     verify(userRepository, never()).save(any());
@@ -58,7 +61,7 @@ public class AuthServiceImplTest {
     given(userRepository.findUserByEmail(any())).willReturn(null);
     doReturn(new User("John", "testPass")).when(userRepository).save(any());
 
-    authService.register(new UserRegistrationDto(), any());
+    authService.register(new UserRegistrationDto());
 
     verify(userRepository).save(any(User.class));
   }
@@ -77,5 +80,24 @@ public class AuthServiceImplTest {
 
     assertThatThrownBy(() -> authService.loadUserByUsername("testEmail"))
         .isInstanceOf(EmailNotFoundException.class);
+  }
+
+  @Test
+  void verifyAccountWithWrongToken() {
+    VerificationToken verificationToken = new VerificationToken();
+    verificationToken.setToken("testToken");
+    given(verificationTokenRepository.findVerificationTokenByToken(any())).willReturn(null);
+
+    assertThatThrownBy(() -> authService.verifyAccount(verificationToken))
+        .isInstanceOf(UserNotVerifiedException.class);
+  }
+
+  @Test
+  void sendVerificationEmailWithWrongUserId() {
+    long userId = 1L;
+    given(userRepository.findUserById(userId)).willReturn(null);
+
+    assertThatThrownBy(() -> authService.sendVerificationEmail(userId))
+        .isInstanceOf(UserNotFoundException.class);
   }
 }
