@@ -35,12 +35,6 @@ public class UserController {
     return ResponseEntity.ok(this.userService.findAllMentors(pageable));
   }
 
-  @GetMapping("/mentors/public")
-  @Operation(summary = "find all mentors")
-  public ResponseEntity<Page<MentorDto>> findAllMentors(Pageable pageable) {
-    return ResponseEntity.ok(this.userService.findAllMentors(pageable));
-  }
-
   @GetMapping("/{userId}/courses/suggested")
   @Operation(
       summary = "find suggested courses",

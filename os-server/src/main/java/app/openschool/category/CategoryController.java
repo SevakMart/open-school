@@ -29,12 +29,6 @@ public class CategoryController {
     return ResponseEntity.ok(this.categoryService.findAllCategories(pageable));
   }
 
-  @GetMapping("/public")
-  @Operation(summary = "find all categories")
-  public ResponseEntity<Page<CategoryDto>> findAllCategories(Pageable pageable) {
-    return ResponseEntity.ok(this.categoryService.findAllCategories(pageable));
-  }
-
   @GetMapping("/subcategories")
   @Operation(
       summary = "find all categories by title mapped by subcategories",

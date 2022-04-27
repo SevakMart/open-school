@@ -36,7 +36,7 @@ class UserControllerTest {
   @MockBean private UserServiceImpl userService;
 
   @Test
-  void findAllMentors() throws Exception {
+  void getAllMentors() throws Exception {
     List<MentorDto> mentorDtoList = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       mentorDtoList.add(MentorMapper.toMentorDto(UserGenerator.generateUser()));
@@ -46,11 +46,11 @@ class UserControllerTest {
     when(userService.findAllMentors(pageable)).thenReturn(mentorPage);
     mockMvc
         .perform(
-            get("/api/v1/users/mentors/public")
+            get("/api/v1/users/mentors")
                 .queryParam("page", "1")
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
-        .andExpect(status().isOk());
+        .andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -78,9 +78,7 @@ class UserControllerTest {
     String requestBody = "{  \"categoriesIdSet\": [ 2, 3 ] }";
     mockMvc
         .perform(
-            post("/api/v1/users/1/categories")
-                .content(requestBody)
-                .contentType(APPLICATION_JSON))
+            post("/api/v1/users/1/categories").content(requestBody).contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
   }
 }
