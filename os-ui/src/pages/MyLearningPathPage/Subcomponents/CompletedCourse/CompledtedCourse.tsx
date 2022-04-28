@@ -1,3 +1,4 @@
+import { GRADE, RATE_COURSE, STATUS } from '../../../../constants/Strings';
 import { UserCourseType } from '../../../../types/UserCourseType';
 import styles from './CompletedCourse.module.scss';
 
@@ -13,12 +14,12 @@ const CompletedCourse = ({ title, courseStatus, grade }:Pick<UserCourseType, 'ti
       </div>
       <div className={separator} />
       <div className={container}>
-        <p className={containerTitle}>Status</p>
+        <p className={containerTitle}>{STATUS}</p>
         <p className={statusContent}>{courseStatus}</p>
       </div>
       <div className={separator} />
       <div className={container}>
-        <p className={containerTitle}>Grade</p>
+        <p className={containerTitle}>{GRADE}</p>
         <p className={gradeContent}>
           {grade}
           /100
@@ -26,7 +27,7 @@ const CompletedCourse = ({ title, courseStatus, grade }:Pick<UserCourseType, 'ti
       </div>
       <div className={separator} />
       <div className={buttonContainer}>
-        <button type="button">Rate Course</button>
+        <button type="button">{RATE_COURSE}</button>
       </div>
     </div>
   );

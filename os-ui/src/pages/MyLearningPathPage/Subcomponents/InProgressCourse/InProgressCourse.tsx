@@ -3,6 +3,9 @@ import { UserCourseType } from '../../../../types/UserCourseType';
 import TimeIcon from '../../../../icons/Time';
 import CalendarIcon from '../../../../icons/CalenderIcon';
 import { transformTime } from '../../../../helpers/TimeTransform';
+import {
+  OVERALL_PROGRESS, STATUS, DUE_DATE, RESUME_COURSE, REMAINING_TIME,
+} from '../../../../constants/Strings';
 import styles from './InProgressCourse.module.scss';
 
 const InProgressCourse = ({
@@ -33,11 +36,11 @@ const InProgressCourse = ({
             %
           </p>
         </div>
-        <p className={OverallProgress}>Overall Progress</p>
+        <p className={OverallProgress}>{OVERALL_PROGRESS}</p>
       </div>
       <div className={separator} />
       <div className={container}>
-        <p className={containerTitle}>Remaining Time</p>
+        <p className={containerTitle}>{REMAINING_TIME}</p>
         <div className={remainingTimeContainer}>
           <p><TimeIcon /></p>
           <p className={remainingTimeContent}>{time}</p>
@@ -45,12 +48,12 @@ const InProgressCourse = ({
       </div>
       <div className={separator} />
       <div className={container}>
-        <p className={containerTitle}>Status</p>
+        <p className={containerTitle}>{STATUS}</p>
         <p className={statusContent}>{courseStatus}</p>
       </div>
       <div className={separator} />
       <div className={container}>
-        <p className={containerTitle}>Due Date</p>
+        <p className={containerTitle}>{DUE_DATE}</p>
         <div className={dueDateContainer}>
           <p><CalendarIcon /></p>
           <p className={dueDateContent}>{dueDate}</p>
@@ -58,7 +61,7 @@ const InProgressCourse = ({
       </div>
       <div className={separator} />
       <div className={buttonContainer}>
-        <button type="button">Resume Course</button>
+        <button type="button">{RESUME_COURSE}</button>
       </div>
     </div>
   );
