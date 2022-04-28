@@ -42,7 +42,7 @@ public class AuthServiceImplTest {
   void setUp() {
     authService =
         new AuthServiceImpl(
-            userRepository, passwordEncoder, communicationService, verificationTokenRepository);
+            userRepository, passwordEncoder, communicationService, verificationTokenRepository, 0L);
   }
 
   @Test
@@ -74,7 +74,8 @@ public class AuthServiceImplTest {
 
   @Test
   void loadNonexistentUserByUsername() {
-    AuthServiceImpl authService = new AuthServiceImpl(userRepository, passwordEncoder, null, null);
+    AuthServiceImpl authService =
+        new AuthServiceImpl(userRepository, passwordEncoder, null, null, 0L);
 
     given(userRepository.findUserByEmail(any())).willReturn(null);
 

@@ -6,6 +6,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.role.Role;
+import java.time.Instant;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -25,7 +26,7 @@ class VerificationTokenRepositoryTest {
     String token = "testToken";
     User user = new User("Test", "testEmail", "1234$dhjsHH*", new Role(1, "STUDENT"));
     userRepository.save(user);
-    verificationTokenRepository.save(new VerificationToken(user, token, 10L));
+    verificationTokenRepository.save(new VerificationToken(token, Instant.now(), user));
 
     assertThat(verificationTokenRepository.findVerificationTokenByToken(token).getToken())
         .isEqualTo(token);
@@ -36,7 +37,7 @@ class VerificationTokenRepositoryTest {
     String token = "testToken";
     User user = new User("Test", "testEmail", "1234$dhjsHH*", new Role(1, "STUDENT"));
     userRepository.save(user);
-    verificationTokenRepository.save(new VerificationToken(user, token, 10L));
+    verificationTokenRepository.save(new VerificationToken(token, Instant.now(), user));
 
     assertThat(verificationTokenRepository.findVerificationTokenByUser(user).getToken())
         .isEqualTo(token);

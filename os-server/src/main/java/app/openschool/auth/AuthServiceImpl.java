@@ -14,7 +14,9 @@ import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.api.exception.UserNotFoundException;
+import java.time.Duration;
 import java.time.Instant;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,16 +30,19 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   private final BCryptPasswordEncoder passwordEncoder;
   private final CommunicationService communicationService;
   private final VerificationTokenRepository verificationTokenRepository;
+  private final long expiresAt;
 
   public AuthServiceImpl(
       UserRepository userRepository,
       BCryptPasswordEncoder passwordEncoder,
       CommunicationService communicationService,
-      VerificationTokenRepository verificationTokenRepository) {
+      VerificationTokenRepository verificationTokenRepository,
+      @Value("${verification.duration}") long expiresAt) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
     this.communicationService = communicationService;
     this.verificationTokenRepository = verificationTokenRepository;
+    this.expiresAt = expiresAt;
   }
 
   @Override
@@ -70,11 +75,10 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
   @Override
   public User verifyAccount(VerificationToken verificationToken) {
-    long now = Instant.now().toEpochMilli();
     VerificationToken fetchedToken =
         verificationTokenRepository.findVerificationTokenByToken(verificationToken.getToken());
     if (fetchedToken != null) {
-      if (fetchedToken.getExpiresAt() > now) {
+      if (!isTokenExpired(fetchedToken.getCreatedAt())) {
         User user = fetchedToken.getUser();
         user.setEnabled(true);
         return userRepository.save(user);
@@ -102,5 +106,10 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
       throw new EmailNotFoundException(email);
     }
     return new UserPrincipal(user);
+  }
+
+  private boolean isTokenExpired(Instant createdAt) {
+    Duration difference = Duration.between(Instant.now(), createdAt);
+    return difference.toMinutes() < expiresAt;
   }
 }

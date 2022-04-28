@@ -1,6 +1,7 @@
 package app.openschool.auth.verification;
 
 import app.openschool.user.User;
+import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,8 +23,8 @@ public class VerificationToken {
   @Column(name = "token", nullable = false)
   private String token;
 
-  @Column(name = "expires_data", nullable = false)
-  private Long expiresAt;
+  @Column(name = "created_date", nullable = false)
+  private Instant createdAt;
 
   @OneToOne
   @JoinColumn(name = "user_id")
@@ -31,10 +32,18 @@ public class VerificationToken {
 
   public VerificationToken() {}
 
-  public VerificationToken(User user, String token, Long expiresAt) {
+  public VerificationToken(String token, Instant createdAt, User user) {
     this.token = token;
-    this.expiresAt = expiresAt;
+    this.createdAt = createdAt;
     this.user = user;
+  }
+
+  public Instant getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(Instant createdAt) {
+    this.createdAt = createdAt;
   }
 
   public Long getId() {
@@ -59,13 +68,5 @@ public class VerificationToken {
 
   public void setUser(User user) {
     this.user = user;
-  }
-
-  public Long getExpiresAt() {
-    return expiresAt;
-  }
-
-  public void setExpiresAt(Long expiresAt) {
-    this.expiresAt = expiresAt;
   }
 }

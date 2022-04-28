@@ -4,7 +4,6 @@ import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
 import app.openschool.user.User;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -43,8 +42,8 @@ public class EmailService implements CommunicationService {
   @Async
   public void sendEmailToVerifyUserAccount(User user) {
     String token = UUID.randomUUID().toString() + user.getId();
-    long expiresAt = Instant.now().plus(expirationDuration, ChronoUnit.MINUTES).toEpochMilli();
-    VerificationToken verificationToken = new VerificationToken(user, token, expiresAt);
+    Instant createdAt = Instant.now();
+    VerificationToken verificationToken = new VerificationToken(token, createdAt, user);
 
     VerificationToken alreadyExistingToken =
         verificationTokenRepository.findVerificationTokenByUser(user);

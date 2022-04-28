@@ -88,10 +88,10 @@ public class AuthController {
     return ResponseEntity.ok().headers(jwtHeader).body(UserLoginMapper.toUserLoginDto(user));
   }
 
-  @GetMapping ("/{userId}/account/verification")
+  @GetMapping("/{userId}/account/verification")
   public ResponseEntity<Void> sendVerificationEmail(@PathVariable Long userId) {
     authService.sendVerificationEmail(userId);
-    return ResponseEntity.ok(null);
+    return ResponseEntity.ok().build();
   }
 
   private void authenticate(String username, String password) {
