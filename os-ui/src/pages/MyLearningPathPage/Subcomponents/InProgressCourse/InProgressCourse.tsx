@@ -46,7 +46,7 @@ const InProgressCourse = ({
       <div className={separator} />
       <div className={container}>
         <p className={containerTitle}>Status</p>
-        <div className={statusContent}>{courseStatus}</div>
+        <p className={statusContent}>{courseStatus}</p>
       </div>
       <div className={separator} />
       <div className={container}>

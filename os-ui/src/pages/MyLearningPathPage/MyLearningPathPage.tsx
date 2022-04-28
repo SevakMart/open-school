@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
-import NoCourses from '../../component/NoCourses/NoCourses';
+import NoCourses from './Subcomponents/NoCourses/NoCourses';
 import InProgressCourse from './Subcomponents/InProgressCourse/InProgressCourse';
 import CompletedCourse from './Subcomponents/CompletedCourse/CompledtedCourse';
 import LearningPath from '../../component/LearningPath/LearningPath';
@@ -37,19 +37,41 @@ const MyLearningPathPage = () => {
   };
 
   useEffect(() => {
-    getSuggestedCourses(`${USER_URL}/${(userInfo as any).id}/courses/suggested`)
-      .then((data) => {
-        if (!data.errorMessage) {
-          setSuggestedCourses(data);
-        }
-      });
-    getUserCourses(`${USER_URL}/${(userInfo as any).id}/courses`)
-      .then((data) => {
-        if (!data.errorMessage) {
-          setUserCourses(data);
-        }
-      });
-  }, []);
+    if (!suggestedCourses.length) {
+      getSuggestedCourses(`${USER_URL}/${(userInfo as any).id}/courses/suggested`)
+        .then((data) => {
+          if (!data.errorMessage) {
+            setSuggestedCourses(data);
+          }
+        });
+    }
+    switch (activeNavType) {
+      case LearningPathNav.All:
+        getUserCourses(`${USER_URL}/${(userInfo as any).id}/courses`)
+          .then((data) => {
+            if (!data.errorMessage) {
+              setUserCourses(data);
+            }
+          });
+        break;
+      case LearningPathNav.InProgress:
+        getUserCourses(`${USER_URL}/${(userInfo as any).id}/courses?courseStatusId=1`)
+          .then((data) => {
+            if (!data.errorMessage) {
+              setUserCourses(data);
+            }
+          });
+        break;
+      case LearningPathNav.Completed:
+        getUserCourses(`${USER_URL}/${(userInfo as any).id}/courses?courseStatusId=2`)
+          .then((data) => {
+            if (!data.errorMessage) {
+              setUserCourses(data);
+            }
+          });
+        break;
+    }
+  }, [activeNavType]);
   return (
     <>
       <NavbarOnSignIn />

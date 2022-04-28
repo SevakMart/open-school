@@ -1,6 +1,5 @@
-@import "../../styles/Mixins/ButtonMixin.scss";
-@import "../../styles/Mixins/FlexMixins.scss";
-@import "../../styles/Mixins/FontMixin.scss";
+@import "../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
 
 .mainContainer{
     @include flexStyle(column,center, space-between);
