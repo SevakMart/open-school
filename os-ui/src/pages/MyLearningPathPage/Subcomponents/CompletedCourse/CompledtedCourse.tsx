@@ -10,17 +10,17 @@ const CompletedCourse = ({ title, courseStatus, grade }:Pick<UserCourseType, 'ti
   return (
     <div className={mainContainer}>
       <div className={container}>
-        <p className={courseTitle}>{title}</p>
+        <p data-testid={title} className={courseTitle}>{title}</p>
       </div>
       <div className={separator} />
       <div className={container}>
         <p className={containerTitle}>{STATUS}</p>
-        <p className={statusContent}>{courseStatus}</p>
+        <p data-testid={courseStatus} className={statusContent}>{courseStatus}</p>
       </div>
       <div className={separator} />
       <div className={container}>
         <p className={containerTitle}>{GRADE}</p>
-        <p className={gradeContent}>
+        <p data-testid={grade} className={gradeContent}>
           {grade}
           /100
         </p>

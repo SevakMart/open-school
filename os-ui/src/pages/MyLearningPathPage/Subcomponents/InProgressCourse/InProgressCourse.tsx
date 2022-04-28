@@ -21,7 +21,7 @@ const InProgressCourse = ({
   return (
     <div className={mainContainer}>
       <div className={container}>
-        <p className={courseTitle}>{title}</p>
+        <p data-testid={title} className={courseTitle}>{title}</p>
         <div className={progressContainer}>
           <div className={progressBar}>
             <div
@@ -31,7 +31,7 @@ const InProgressCourse = ({
               }}
             />
           </div>
-          <p className={progressPercent}>
+          <p data-testid={percentage} className={progressPercent}>
             {percentage}
             %
           </p>
@@ -43,20 +43,20 @@ const InProgressCourse = ({
         <p className={containerTitle}>{REMAINING_TIME}</p>
         <div className={remainingTimeContainer}>
           <p><TimeIcon /></p>
-          <p className={remainingTimeContent}>{time}</p>
+          <p data-testid={remainingTime} className={remainingTimeContent}>{time}</p>
         </div>
       </div>
       <div className={separator} />
       <div className={container}>
         <p className={containerTitle}>{STATUS}</p>
-        <p className={statusContent}>{courseStatus}</p>
+        <p data-testid={courseStatus} className={statusContent}>{courseStatus}</p>
       </div>
       <div className={separator} />
       <div className={container}>
         <p className={containerTitle}>{DUE_DATE}</p>
         <div className={dueDateContainer}>
           <p><CalendarIcon /></p>
-          <p className={dueDateContent}>{dueDate}</p>
+          <p data-testid={dueDate} className={dueDateContent}>{dueDate}</p>
         </div>
       </div>
       <div className={separator} />

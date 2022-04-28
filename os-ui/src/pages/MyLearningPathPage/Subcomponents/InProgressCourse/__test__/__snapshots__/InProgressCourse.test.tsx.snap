@@ -1,0 +1,153 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for InProgress component Create a snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="mainContainer"
+  >
+    <div
+      class="container"
+    >
+      <p
+        class="courseTitle"
+        data-testid="React js"
+      >
+        React js
+      </p>
+      <div
+        class="progressContainer"
+      >
+        <div
+          class="progressBar"
+        >
+          <div
+            class="progressing"
+            style="width: 47%; background-color: rgb(160, 163, 189); height: 100%; border-radius: 0.406rem;"
+          />
+        </div>
+        <p
+          class="progressPercent"
+          data-testid="47"
+        >
+          47%
+        </p>
+      </div>
+      <p
+        class="OverallProgress"
+      >
+        Overall Progress
+      </p>
+    </div>
+    <div
+      class="separator"
+    />
+    <div
+      class="container"
+    >
+      <p
+        class="containerTitle"
+      >
+        Remaining Time
+      </p>
+      <div
+        class="remainingTimeContainer"
+      >
+        <p>
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"
+            />
+            <path
+              d="M13 7h-2v6h6v-2h-4z"
+            />
+          </svg>
+        </p>
+        <p
+          class="remainingTimeContent"
+          data-testid="540000"
+        >
+          0h 9m
+        </p>
+      </div>
+    </div>
+    <div
+      class="separator"
+    />
+    <div
+      class="container"
+    >
+      <p
+        class="containerTitle"
+      >
+        Status
+      </p>
+      <p
+        class="statusContent"
+        data-testid="In_Progress"
+      >
+        In_Progress
+      </p>
+    </div>
+    <div
+      class="separator"
+    />
+    <div
+      class="container"
+    >
+      <p
+        class="containerTitle"
+      >
+        Due Date
+      </p>
+      <div
+        class="dueDateContainer"
+      >
+        <p>
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 16 16"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"
+            />
+            <path
+              d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z"
+            />
+          </svg>
+        </p>
+        <p
+          class="dueDateContent"
+          data-testid="2022-05-07"
+        >
+          2022-05-07
+        </p>
+      </div>
+    </div>
+    <div
+      class="separator"
+    />
+    <div
+      class="buttonContainer"
+    >
+      <button
+        type="button"
+      >
+        Resume Course
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;

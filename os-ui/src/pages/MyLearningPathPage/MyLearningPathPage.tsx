@@ -37,9 +37,11 @@ const MyLearningPathPage = () => {
   };
 
   useEffect(() => {
+    let cancel = false;
     if (!suggestedCourses.length) {
       getSuggestedCourses(`${USER_URL}/${(userInfo as any).id}/courses/suggested`)
         .then((data) => {
+          if (cancel) return;
           if (!data.errorMessage) {
             setSuggestedCourses(data);
           }
@@ -49,6 +51,7 @@ const MyLearningPathPage = () => {
       case LearningPathNav.All:
         getUserCourses(`${USER_URL}/${(userInfo as any).id}/courses`)
           .then((data) => {
+            if (cancel) return;
             if (!data.errorMessage) {
               setUserCourses(data);
             }
@@ -57,6 +60,7 @@ const MyLearningPathPage = () => {
       case LearningPathNav.InProgress:
         getUserCourses(`${USER_URL}/${(userInfo as any).id}/courses?courseStatusId=1`)
           .then((data) => {
+            if (cancel) return;
             if (!data.errorMessage) {
               setUserCourses(data);
             }
@@ -65,12 +69,14 @@ const MyLearningPathPage = () => {
       case LearningPathNav.Completed:
         getUserCourses(`${USER_URL}/${(userInfo as any).id}/courses?courseStatusId=2`)
           .then((data) => {
+            if (cancel) return;
             if (!data.errorMessage) {
               setUserCourses(data);
             }
           });
         break;
     }
+    return () => { cancel = true; };
   }, [activeNavType]);
   return (
     <>
