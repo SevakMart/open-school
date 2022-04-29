@@ -8,15 +8,16 @@ import app.openschool.auth.exception.EmailAlreadyExistException;
 import app.openschool.auth.exception.EmailNotExistsException;
 import app.openschool.auth.exception.EmailNotFoundException;
 import app.openschool.auth.exception.NotMatchingPasswordsException;
+import app.openschool.auth.exception.ResetPasswordTokenExpiredException;
 import app.openschool.auth.exception.ResetPasswordTokenNotFoundException;
 import app.openschool.auth.mapper.UserLoginMapper;
 import app.openschool.auth.mapper.UserRegistrationMapper;
-import app.openschool.common.communication.Communication;
+import app.openschool.auth.repository.ResetPasswordTokenRepository;
 import app.openschool.common.security.UserPrincipal;
+import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
-import java.io.UnsupportedEncodingException;
-import javax.mail.MessagingException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,14 +30,20 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   private final UserRepository userRepository;
   private final ResetPasswordTokenRepository resetPasswordTokenRepository;
   private final BCryptPasswordEncoder passwordEncoder;
-  private final Communication communication;
+  private final CommunicationService communicationService;
+  private final Integer tokenExpirationAfterMinutes;
 
-  public AuthServiceImpl(UserRepository userRepository, ResetPasswordTokenRepository resetPasswordTokenRepository,
-                         BCryptPasswordEncoder passwordEncoder, Communication communication) {
+  public AuthServiceImpl(
+      UserRepository userRepository,
+      ResetPasswordTokenRepository resetPasswordTokenRepository,
+      BCryptPasswordEncoder passwordEncoder,
+      CommunicationService communicationService,
+      @Value("${token.expiration}") Integer tokenExpirationAfterMinutes) {
     this.userRepository = userRepository;
     this.resetPasswordTokenRepository = resetPasswordTokenRepository;
     this.passwordEncoder = passwordEncoder;
-    this.communication = communication;
+    this.communicationService = communicationService;
+    this.tokenExpirationAfterMinutes = tokenExpirationAfterMinutes;
   }
 
   @Override
@@ -74,15 +81,16 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   }
 
   @Override
-  public void updateResetPasswordToken(String email)
-      throws UnsupportedEncodingException, MessagingException {
-    User user = userRepository.findUserByEmail(email);
-    if (user == null) {
-      throw new EmailNotExistsException(email);
+  public void updateResetPasswordToken(String email) {
+    User user =
+        userRepository.findByEmail(email).orElseThrow(() -> new EmailNotExistsException(email));
+    if (resetPasswordTokenRepository.findByUser(user.getId()).isPresent()) {
+      ResetPasswordToken currentToken = resetPasswordTokenRepository.findByUser(user.getId()).get();
+      resetPasswordTokenRepository.delete(currentToken);
     }
-    ResetPasswordToken token = ResetPasswordToken.generateToken(user);
-    resetPasswordTokenRepository.save(token);
-    communication.sendResetPasswordEmail(email, token);
+    ResetPasswordToken resetPasswordToken = ResetPasswordToken.generate(user);
+    resetPasswordTokenRepository.save(resetPasswordToken);
+    communicationService.sendResetPasswordEmail(email, resetPasswordToken.getToken());
   }
 
   @Override
@@ -90,13 +98,20 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     if (!request.getNewPassword().equals(request.getConfirmedPassword())) {
       throw new NotMatchingPasswordsException();
     }
-    User user = userRepository.findByResetPasswordToken(request.getToken());
+    ResetPasswordToken resetPasswordToken =
+        resetPasswordTokenRepository
+            .findByToken(request.getToken())
+            .orElseThrow(ResetPasswordTokenNotFoundException::new);
+    if (resetPasswordToken.isExpired(tokenExpirationAfterMinutes)) {
+      throw new ResetPasswordTokenExpiredException();
+    }
+    User user = resetPasswordToken.getUser();
     if (user == null) {
       throw new ResetPasswordTokenNotFoundException();
     }
     String encodedPassword = passwordEncoder.encode(request.getNewPassword());
     user.setPassword(encodedPassword);
-    user.setResetPasswordToken(null);
+    resetPasswordTokenRepository.delete(resetPasswordToken);
     userRepository.save(user);
   }
 }

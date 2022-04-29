@@ -5,11 +5,9 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import app.openschool.auth.dto.UserLoginExceptionResponse;
 import app.openschool.auth.dto.UserRegistrationHttpResponse;
-import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.mail.MessagingException;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -69,6 +67,12 @@ public class UserExceptionHandling implements ErrorController {
   public ResponseEntity<String> resetPasswordTokenNotFoundException(Locale locale) {
     return ResponseEntity.badRequest()
         .body(messageSource.getMessage("exception.not.valid.token", null, locale));
+  }
+
+  @ExceptionHandler(ResetPasswordTokenExpiredException.class)
+  public ResponseEntity<String> resetPasswordTokenExpiredException(Locale locale) {
+    return ResponseEntity.badRequest()
+        .body(messageSource.getMessage("exception.expired.token", null, locale));
   }
 
   @ExceptionHandler(EmailNotExistsException.class)

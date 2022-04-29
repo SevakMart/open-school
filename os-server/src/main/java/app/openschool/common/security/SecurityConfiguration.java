@@ -27,12 +27,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/",
     "/api/v1/auth/register",
     "/api/v1/auth/login",
+    "/api/v1/auth/password/forgot",
+    "/api/v1/auth/password/reset",
     "/h2/**",
     "/open-school-api",
     "/swagger-ui/**",
     "/v3/api-docs/**",
-    "/api/v1/auth/password/forgot",
-    "/api/v1/auth/password/reset",
   };
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
