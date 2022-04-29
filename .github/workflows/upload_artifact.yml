@@ -21,14 +21,17 @@ jobs:
             uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
             with:
               arguments: build
-          - uses: actions/upload-artifact@v2
+          - name: Store artifact in github
+            uses: actions/upload-artifact@v2
             with:
-              name: os-server-${{ github.run_id }}.jar
+              name: os-server-${{ github.run_number }}.jar
               path: os-server/build/libs/os-server-**.jar
+          - name: Rename file
+            run: mv os-server/build/libs/os-server-**.jar os-server/build/libs/os-server-${{ github.run_number }}.jar
           - name: Upload to S3 as artifact
             uses: medlypharmacy/s3-artifacts-action@master
             with:
               aws_access_key_id: ${{ secrets.AWS_S3_ACCESS_ID}}
               aws_secret_access_key: ${{ secrets.AWS_S3_ACCESS_KEY}}
               aws_s3_bucket_name: ${{ secrets.AWS_S3_BUCKET_NAME }}
-              source_path: 'os-server/build/libs/'
+              source_path: 'os-server/build/libs/os-server-${{ github.run_number }}.jar'
