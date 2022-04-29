@@ -33,7 +33,7 @@ public class CategoryControllerTest {
   @MockBean private CategoryServiceImpl categoryService;
 
   @Test
-  void findAllCategories() throws Exception {
+  void getAllCategories() throws Exception {
     List<CategoryDto> categoryDtoList = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       categoryDtoList.add(CategoryMapper.toCategoryDto(CategoryGenerator.generateCategory()));

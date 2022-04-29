@@ -29,6 +29,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/api/v1/auth/login",
     "/api/v1/auth/password/forgot",
     "/api/v1/auth/password/reset",
+    "/api/v1//public/categories",
+    "/api/v1/public/users/mentors",
     "/h2/**",
     "/open-school-api",
     "/swagger-ui/**",
