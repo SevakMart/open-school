@@ -7,7 +7,7 @@ on:
 jobs:
    if_merged:
        if: github.event.pull_request.merged == true
-   
+
        runs-on: ubuntu-latest
        steps:
           - uses: actions/checkout@v2
@@ -23,5 +23,5 @@ jobs:
               arguments: build
           - uses: actions/upload-artifact@v2
             with:
-              name: Package
-              path: os-server/build/libs
+              name: os-server-${{ github.run_id }}.jar
+              path: os-server/build/libs/os-server-**.jar
