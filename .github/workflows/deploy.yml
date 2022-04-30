@@ -24,7 +24,7 @@ jobs:
         uses: einaregilsson/beanstalk-deploy@v20
         with:
           aws_access_key: ${{ secrets.AWS_BT_SECRET_ID }}
-          aws_secret_key: ${{ secrets.AWS_BT_SECRET_KEY }}
+          aws_secret_key: ${{ secrets.AWS_BT_ACCESS_KEY }}
           application_name: open-school-dev
           environment_name: Openschooldev-env
           version_label: ${{ github.event.inputs.artifact-version }}
