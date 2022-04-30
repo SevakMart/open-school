@@ -20,7 +20,14 @@ const AppRoutes = () => {
           </ProtectedRoute>
      )}
       />
-      <Route path="/myLearningPath" element={<MyLearningPathPage />} />
+      <Route
+        path="/myLearningPath"
+        element={(
+          <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
+            <MyLearningPathPage />
+          </ProtectedRoute>
+   )}
+      />
     </Routes>
   );
 };

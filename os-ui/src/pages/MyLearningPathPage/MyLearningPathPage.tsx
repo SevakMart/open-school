@@ -126,7 +126,7 @@ const MyLearningPathPage = () => {
               difficulty={suggestedCourse.difficulty}
               keywords={suggestedCourse.keywords}
             />
-          )) : null
+          )) : <h2>There are no suggested courses yet</h2>
         }
       </div>
     </>
