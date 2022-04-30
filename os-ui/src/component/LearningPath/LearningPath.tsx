@@ -27,7 +27,7 @@ const LearningPath = ({
           <div className={keyword}>{keywords[1]}</div>
           {
            keywords.length > 2 ? (
-             <p data-testid="remainingKeywordNumber">
+             <p data-testid={`remainingKeywordNumber of ${title}`}>
                +
                {keywords.length - 2}
              </p>

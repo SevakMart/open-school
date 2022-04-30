@@ -32,7 +32,7 @@ describe('Create test cases to learning path component', () => {
     );
     const difficultyContentElement = screen.queryByTestId('Medium');
     const learningPathElement = screen.queryByTestId('React');
-    const remainingKeywordNumberElement = screen.queryByTestId('remainingKeywordNumber');
+    const remainingKeywordNumberElement = screen.queryByTestId('remainingKeywordNumber of React');
 
     expect(difficultyContentElement).toHaveTextContent('Medium');
     expect(learningPathElement).toHaveTextContent('React');

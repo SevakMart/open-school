@@ -83,7 +83,7 @@ exports[`Create test cases to learning path component Create a snapshot test 1`]
           database
         </div>
         <p
-          data-testid="remainingKeywordNumber"
+          data-testid="remainingKeywordNumber of React"
         >
           +1
         </p>
