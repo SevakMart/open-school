@@ -7,7 +7,7 @@ const NoCourses = () => {
   return (
     <div className={mainContainer}>
       <img src={NoCoursesIcon} alt="No Courses Yet" />
-      <p>{NO_COURSES_YET}</p>
+      <p data-testid="No courses yet">{NO_COURSES_YET}</p>
     </div>
   );
 };

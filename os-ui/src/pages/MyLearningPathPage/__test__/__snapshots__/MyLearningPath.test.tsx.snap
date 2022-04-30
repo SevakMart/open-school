@@ -118,7 +118,9 @@ exports[`Create test case for Learning path component Create a snapshot test 1`]
         alt="No Courses Yet"
         src="NoCoursesYet.svg"
       />
-      <p>
+      <p
+        data-testid="No courses yet"
+      >
         No Courses Yet
       </p>
     </div>

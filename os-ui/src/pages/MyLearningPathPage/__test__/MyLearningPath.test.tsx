@@ -52,7 +52,7 @@ describe('Create test case for Learning path component', () => {
     const { asFragment } = render(<Provider store={store}><MyLearningPathPage /></Provider>);
     expect(asFragment()).toMatchSnapshot();
   });
-  test('Check if clicking in_progress will show only in progress courses', async () => {
+  test('Check if the content is displayed as expected', async () => {
     expect.hasAssertions();
     jest.spyOn(fetchUserCourses, 'getUserCourses').mockResolvedValue(userAllCourseData);
     jest.spyOn(suggestedCourses, 'getSuggestedCourses').mockResolvedValue(suggestedCourse);
@@ -77,5 +77,16 @@ describe('Create test case for Learning path component', () => {
     expect(learningPathElement).toHaveTextContent('React');
     expect(remainingKeywordNumberElement).toBeInTheDocument();
     expect(remainingKeywordNumberElement).toHaveTextContent('+1');
+  });
+  test('Check if the no course component is displayed when the yser does not have courses yet', async () => {
+    expect.hasAssertions();
+    jest.spyOn(fetchUserCourses, 'getUserCourses').mockResolvedValue([]);
+    jest.spyOn(suggestedCourses, 'getSuggestedCourses').mockResolvedValue(suggestedCourse);
+    render(<Provider store={store}><MyLearningPathPage /></Provider>);
+
+    const noCourseParagraphElement = await screen.findByTestId('No courses yet');
+
+    expect(noCourseParagraphElement).toBeInTheDocument();
+    expect(noCourseParagraphElement).toHaveTextContent('No Courses Yet');
   });
 });
