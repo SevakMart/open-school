@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: keithweaver/aws-s3-github-action@v1.0.0 # Verifies the recursive flag
-        name: Download ${{ INPUT_artifact-version }}
+        name: Download ${{ github.event.inputs.artifact-version }}
         with:
           command: cp
-          source: s3://${{ secrets.AWS_S3_BUCKET_NAME }}/artifacts/os-server-${{artifact-version}}.jar
+          source: s3://${{ secrets.AWS_S3_BUCKET_NAME }}/artifacts/os-server-${{ github.event.inputs.artifact-version }}.jar
           destination: ./data/
-          aws_access_key_id: ${{ secrets.AWS_S3_ACCESS_ID}}
-          aws_secret_access_key: ${{ secrets.AWS_S3_ACCESS_KEY}}
+          aws_access_key_id: ${{ secrets.AWS_S3_ACCESS_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_S3_ACCESS_KEY }}
           aws_region: eu-central-1
 
       - name: Deploy to EB dev environment
@@ -27,6 +27,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_BT_SECRET_KEY }}
           application_name: open-school-dev
           environment_name: Openschooldev-env
-          version_label: ${{ INPUT_artifact-version }}
-          deployment_package: ./data/os-server-${{artifact-version}}.jar
+          version_label: ${{ github.event.inputs.artifact-version }}
+          deployment_package: ./data/os-server-${{ github.event.inputs.artifact-version }}.jar
           region: eu-central-1
