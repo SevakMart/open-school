@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: keithweaver/aws-s3-github-action@v1.0.0 # Verifies the recursive flag
-        name: Download ${{ artifact-version }}
+        name: Download ${{ INPUT_artifact-version }}
         with:
           command: cp
           source: s3://${{ secrets.AWS_S3_BUCKET_NAME }}/artifacts/os-server-${{artifact-version}}.jar
@@ -27,6 +27,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_BT_SECRET_KEY }}
           application_name: open-school-dev
           environment_name: Openschooldev-env
-          version_label: ${{artifact-version}}
+          version_label: ${{ INPUT_artifact-version }}
           deployment_package: ./data/os-server-${{artifact-version}}.jar
           region: eu-central-1
