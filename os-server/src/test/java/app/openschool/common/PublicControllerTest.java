@@ -1,15 +1,19 @@
-package app.openschool.category;
+package app.openschool.common;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import app.openschool.category.CategoryServiceImpl;
 import app.openschool.category.api.CategoryGenerator;
 import app.openschool.category.api.dto.CategoryDto;
 import app.openschool.category.api.mapper.CategoryMapper;
+import app.openschool.user.UserService;
+import app.openschool.user.api.UserGenerator;
+import app.openschool.user.api.dto.MentorDto;
+import app.openschool.user.api.mapper.MentorMapper;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,13 +31,16 @@ import org.springframework.test.web.servlet.MockMvc;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CategoryControllerTest {
+public class PublicControllerTest {
+
   @Autowired private MockMvc mockMvc;
 
   @MockBean private CategoryServiceImpl categoryService;
 
+  @MockBean private UserService userService;
+
   @Test
-  void getAllCategories() throws Exception {
+  void findAllCategories() throws Exception {
     List<CategoryDto> categoryDtoList = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       categoryDtoList.add(CategoryMapper.toCategoryDto(CategoryGenerator.generateCategory()));
@@ -43,20 +50,28 @@ public class CategoryControllerTest {
     when(categoryService.findAllCategories(pageable)).thenReturn(categoryDtoPage);
     mockMvc
         .perform(
-            get("/api/v1/categories")
+            get("/api/v1/public/categories")
                 .queryParam("page", "1")
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
-        .andExpect(status().isUnauthorized());
+        .andExpect(status().isOk());
   }
 
   @Test
-  void findCategoriesByTitle() throws Exception {
-
-    when(categoryService.findCategoriesByTitle(" ")).thenReturn(new HashMap<>());
-
+  void findAllMentors() throws Exception {
+    List<MentorDto> mentorDtoList = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      mentorDtoList.add(MentorMapper.toMentorDto(UserGenerator.generateUser()));
+    }
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<MentorDto> mentorPage = new PageImpl<>(mentorDtoList, pageable, 5);
+    when(userService.findAllMentors(pageable)).thenReturn(mentorPage);
     mockMvc
-        .perform(get("/api/v1/categories/subcategories").queryParam("title", " "))
-        .andExpect(status().isUnauthorized());
+        .perform(
+            get("/api/v1/public/users/mentors")
+                .queryParam("page", "1")
+                .queryParam("size", "2")
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk());
   }
 }
