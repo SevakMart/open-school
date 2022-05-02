@@ -13,9 +13,7 @@ import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import io.swagger.v3.oas.annotations.Operation;
-import java.io.UnsupportedEncodingException;
 import java.util.Locale;
-import javax.mail.MessagingException;
 import javax.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
@@ -92,8 +90,7 @@ public class AuthController {
 
   @PostMapping("/password/forgot")
   @Operation(summary = "send token to given email")
-  public ResponseEntity<ResponseMessage> forgotPassword(@RequestBody String email, Locale locale)
-      throws MessagingException, UnsupportedEncodingException {
+  public ResponseEntity<ResponseMessage> forgotPassword(@RequestBody String email, Locale locale) {
     authService.updateResetPasswordToken(email);
     return ResponseEntity.status(OK)
         .body(

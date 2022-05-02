@@ -4,8 +4,6 @@ import app.openschool.auth.dto.ResetPasswordRequest;
 import app.openschool.auth.dto.UserLoginDto;
 import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.user.User;
-import java.io.UnsupportedEncodingException;
-import javax.mail.MessagingException;
 
 public interface AuthService {
 
@@ -15,8 +13,7 @@ public interface AuthService {
 
   UserLoginDto login(String userEmail);
 
-  void updateResetPasswordToken(String email)
-      throws MessagingException, UnsupportedEncodingException;
+  void updateResetPasswordToken(String email);
 
   void resetPassword(ResetPasswordRequest request);
 }
