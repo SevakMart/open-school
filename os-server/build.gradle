@@ -47,6 +47,9 @@ test {
     useJUnitPlatform()
     environment "SPRING_PROFILES_ACTIVE", "test"
 }
+jar {
+    enabled = false
+}
 
 checkstyle {
     toolVersion '8.40'

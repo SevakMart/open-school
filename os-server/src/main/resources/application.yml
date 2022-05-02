@@ -8,8 +8,8 @@ jwt:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://database-1.cbeyaci1cgqp.eu-central-1.rds.amazonaws.com:3306/open_school_db?useSSL=false
-    username: dev_user
+    url: jdbc:mysql://awseb-e-ifh3vhuuyk-stack-awsebrdsdatabase-ihwfox4tu4ds.cbeyaci1cgqp.eu-central-1.rds.amazonaws.com:3306/open_school_db?useSSL=false
+    username: admin
     password: Password1!
 
   flyway:
