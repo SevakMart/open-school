@@ -36,10 +36,10 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3'
 
     //email support
-    implementation("org.springframework.boot:spring-boot-starter-mail:2.6.3")
+    implementation "org.springframework.boot:spring-boot-starter-mail"
 
     //template engines
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.3'
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
 
 }
 
