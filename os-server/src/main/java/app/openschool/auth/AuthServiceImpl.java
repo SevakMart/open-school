@@ -16,6 +16,7 @@ import app.openschool.user.UserRepository;
 import app.openschool.user.api.exception.UserNotFoundException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -75,15 +76,16 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
   @Override
   public User verifyAccount(VerificationToken verificationToken) {
-    VerificationToken fetchedToken =
+    Optional<VerificationToken> fetchedToken =
         verificationTokenRepository.findVerificationTokenByToken(verificationToken.getToken());
-    if (fetchedToken != null) {
-      if (!isTokenExpired(fetchedToken.getCreatedAt())) {
-        User user = fetchedToken.getUser();
+
+    if (fetchedToken.isPresent()) {
+      if (!isTokenExpired(fetchedToken.get().getCreatedAt())) {
+        User user = fetchedToken.get().getUser();
         user.setEnabled(true);
         return userRepository.save(user);
       } else {
-        communicationService.sendEmailToVerifyUserAccount(fetchedToken.getUser());
+        communicationService.sendEmailToVerifyUserAccount(fetchedToken.get().getUser());
         throw new UserNotVerifiedException();
       }
     }
@@ -109,7 +111,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   }
 
   private boolean isTokenExpired(Instant createdAt) {
-    Duration difference = Duration.between(Instant.now(), createdAt);
-    return difference.toMinutes() < expiresAt;
+    Duration difference = Duration.between(createdAt, Instant.now());
+    return difference.toMinutes() > expiresAt;
   }
 }

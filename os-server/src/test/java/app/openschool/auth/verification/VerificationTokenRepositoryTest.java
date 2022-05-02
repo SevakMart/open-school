@@ -7,6 +7,7 @@ import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.role.Role;
 import java.time.Instant;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -28,8 +29,9 @@ class VerificationTokenRepositoryTest {
     userRepository.save(user);
     verificationTokenRepository.save(new VerificationToken(token, Instant.now(), user));
 
-    assertThat(verificationTokenRepository.findVerificationTokenByToken(token).getToken())
-        .isEqualTo(token);
+    Optional<VerificationToken> verificationToken =
+        verificationTokenRepository.findVerificationTokenByToken(token);
+    verificationToken.ifPresent(value -> assertThat(value.getToken()).isEqualTo(token));
   }
 
   @Test

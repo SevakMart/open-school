@@ -18,6 +18,7 @@ import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.api.exception.UserNotFoundException;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -87,7 +88,8 @@ public class AuthServiceImplTest {
   void verifyAccountWithWrongToken() {
     VerificationToken verificationToken = new VerificationToken();
     verificationToken.setToken("testToken");
-    given(verificationTokenRepository.findVerificationTokenByToken(any())).willReturn(null);
+    given(verificationTokenRepository.findVerificationTokenByToken(any()))
+        .willReturn(Optional.empty());
 
     assertThatThrownBy(() -> authService.verifyAccount(verificationToken))
         .isInstanceOf(UserNotVerifiedException.class);
