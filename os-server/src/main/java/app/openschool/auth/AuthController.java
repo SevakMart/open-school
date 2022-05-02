@@ -8,6 +8,7 @@ import app.openschool.auth.dto.UserLoginDto;
 import app.openschool.auth.dto.UserLoginRequest;
 import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.auth.dto.UserRegistrationHttpResponse;
+import app.openschool.common.response.ResponseMessage;
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
@@ -91,19 +92,23 @@ public class AuthController {
 
   @PostMapping("/password/forgot")
   @Operation(summary = "send token to given email")
-  public ResponseEntity<String> forgotPassword(@RequestBody String email, Locale locale)
+  public ResponseEntity<ResponseMessage> forgotPassword(@RequestBody String email, Locale locale)
       throws MessagingException, UnsupportedEncodingException {
     authService.updateResetPasswordToken(email);
     return ResponseEntity.status(OK)
-        .body(messageSource.getMessage("password.sending.success.message", null, locale));
+        .body(
+            new ResponseMessage(
+                messageSource.getMessage("password.sending.success.message", null, locale)));
   }
 
   @PostMapping("/password/reset")
   @Operation(summary = "reset password")
-  public ResponseEntity<String> resetPassword(
+  public ResponseEntity<ResponseMessage> resetPassword(
       @Valid @RequestBody ResetPasswordRequest request, Locale locale) {
     authService.resetPassword(request);
     return ResponseEntity.status(OK)
-        .body(messageSource.getMessage("password.reset.success.message", null, locale));
+        .body(
+            new ResponseMessage(
+                messageSource.getMessage("password.reset.success.message", null, locale)));
   }
 }

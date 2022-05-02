@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import app.openschool.auth.dto.UserLoginExceptionResponse;
 import app.openschool.auth.dto.UserRegistrationHttpResponse;
+import app.openschool.common.response.ResponseMessage;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -58,29 +59,37 @@ public class UserExceptionHandling implements ErrorController {
   }
 
   @ExceptionHandler(NotMatchingPasswordsException.class)
-  public ResponseEntity<String> notMatchingPasswordException(Locale locale) {
+  public ResponseEntity<ResponseMessage> notMatchingPasswordException(Locale locale) {
     return ResponseEntity.badRequest()
-        .body(messageSource.getMessage("exception.not.matching.passwords", null, locale));
+        .body(
+            new ResponseMessage(
+                messageSource.getMessage("exception.not.matching.passwords", null, locale)));
   }
 
   @ExceptionHandler(ResetPasswordTokenNotFoundException.class)
-  public ResponseEntity<String> resetPasswordTokenNotFoundException(Locale locale) {
+  public ResponseEntity<ResponseMessage> resetPasswordTokenNotFoundException(Locale locale) {
     return ResponseEntity.badRequest()
-        .body(messageSource.getMessage("exception.not.valid.token", null, locale));
+        .body(
+            new ResponseMessage(
+                messageSource.getMessage("exception.not.valid.token", null, locale)));
   }
 
   @ExceptionHandler(ResetPasswordTokenExpiredException.class)
-  public ResponseEntity<String> resetPasswordTokenExpiredException(Locale locale) {
+  public ResponseEntity<ResponseMessage> resetPasswordTokenExpiredException(Locale locale) {
     return ResponseEntity.badRequest()
-        .body(messageSource.getMessage("exception.expired.token", null, locale));
+        .body(
+            new ResponseMessage(messageSource.getMessage("exception.expired.token", null, locale)));
   }
 
   @ExceptionHandler(EmailNotExistsException.class)
-  public ResponseEntity<String> emailNotExistsException(
+  public ResponseEntity<ResponseMessage> emailNotExistsException(
       EmailNotExistsException exception, Locale locale) {
     String[] args = {exception.getMessage()};
     return ResponseEntity.badRequest()
-        .body(messageSource.getMessage("exception.nonexistent.user.email.message", args, locale));
+        .body(
+            new ResponseMessage(
+                messageSource.getMessage(
+                    "exception.nonexistent.user.email.message", args, locale)));
   }
 
   private Map<String, String> getValidationErrors(
