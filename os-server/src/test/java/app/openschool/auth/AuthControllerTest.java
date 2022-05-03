@@ -97,4 +97,25 @@ public class AuthControllerTest {
         .perform(post("/api/v1/auth/login").contentType(APPLICATION_JSON).content(requestBody))
         .andExpect(status().isOk());
   }
+
+  @Test
+  void forgotPassword() throws Exception {
+    mockMvc
+        .perform(
+            post("/api/v1/auth/password/forgot")
+                .contentType(APPLICATION_JSON)
+                .content("test@gmail.com"))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void resetPassword() throws Exception {
+    String requestBody =
+        "{ \"token\": \"7478\",\"newPassword\": \"Test7777$\","
+            + "\"confirmedPassword\": \"Test7777$\" }";
+    mockMvc
+        .perform(
+            post("/api/v1/auth/password/reset").contentType(APPLICATION_JSON).content(requestBody))
+        .andExpect(status().isOk());
+  }
 }

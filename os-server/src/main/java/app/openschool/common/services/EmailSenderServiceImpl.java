@@ -1,5 +1,6 @@
 package app.openschool.common.services;
 
+import java.io.UnsupportedEncodingException;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
@@ -13,26 +14,30 @@ import org.springframework.stereotype.Service;
 public class EmailSenderServiceImpl implements EmailSenderService {
 
   private final JavaMailSender mailSender;
-  private final String email;
   private final Logger logger = LoggerFactory.getLogger("EmailSenderService");
+  private final String email;
+  private final String personalEmailName;
 
   public EmailSenderServiceImpl(
-      JavaMailSender mailSender, @Value("${email.username}") String email) {
+      JavaMailSender mailSender,
+      @Value("${spring.mail.username}") String email,
+      @Value("${spring.mail.personal}") String personalEmailName) {
     this.mailSender = mailSender;
     this.email = email;
+    this.personalEmailName = personalEmailName;
   }
 
   @Override
   public void sendEmail(String toEmail, String emailContent, String subject) {
     MimeMessage message = mailSender.createMimeMessage();
-    MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+    MimeMessageHelper helper = new MimeMessageHelper(message);
     try {
       helper.setSubject(subject);
       helper.setText(emailContent, true);
-      helper.setFrom(email);
       helper.setTo(toEmail);
+      helper.setFrom(email, personalEmailName);
       mailSender.send(message);
-    } catch (MessagingException e) {
+    } catch (MessagingException | UnsupportedEncodingException e) {
       logger.error("Sending mail to {} failed", toEmail);
     }
   }

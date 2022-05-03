@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@Profile({"local", "test"})
+@Profile("!openapi")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private static final String[] PUBLIC_URLS = {
@@ -29,6 +29,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/api/v1/auth/account/verification",
     "/api/v1/auth/{userId}/account/verification",
     "/api/v1/auth/login",
+    "/api/v1/auth/password/forgot",
+    "/api/v1/auth/password/reset",
+    "/api/v1//public/categories",
+    "/api/v1/public/users/mentors",
     "/h2/**",
     "/open-school-api",
     "/swagger-ui/**",

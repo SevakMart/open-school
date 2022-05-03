@@ -17,6 +17,7 @@ public class EmailService implements CommunicationService {
 
   private final EmailSenderService emailSender;
   private final ITemplateEngine templateEngine;
+  private final String resetPasswordEmailSubject;
   private final VerificationTokenRepository verificationTokenRepository;
   private final long expirationDuration;
   private final String verificationEndpoint;
@@ -25,6 +26,23 @@ public class EmailService implements CommunicationService {
   public EmailService(
       EmailSenderService emailSender,
       ITemplateEngine templateEngine,
+      @Value("${verification.reset.password.email.subject}") String resetPasswordEmailSubject) {
+    this.emailSender = emailSender;
+    this.templateEngine = templateEngine;
+    this.resetPasswordEmailSubject = resetPasswordEmailSubject;
+  }
+
+  @Override
+  @Async
+  public void sendResetPasswordEmail(String email, String resetPasswordToken) {
+    emailSender.sendEmail(
+        email, createResetPasswordEmailContent(resetPasswordToken), resetPasswordEmailSubject);
+  }
+
+  private String createResetPasswordEmailContent(String resetPasswordToken) {
+    Context context = new Context();
+    context.setVariable("resetPasswordToken", resetPasswordToken);
+    return templateEngine.process("resetPassword", context);
       VerificationTokenRepository verificationTokenRepository,
       @Value("${verification.duration}") long expirationDuration,
       @Value("${verification.endpoint}") String verificationEndpoint,

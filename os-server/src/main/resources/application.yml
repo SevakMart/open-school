@@ -25,6 +25,7 @@ spring:
     password: gaqbkpxlbmgjztwm
     port: 587
     host: smtp.gmail.com
+    personal: Open school support
     properties:
       mail:
         smtp:
@@ -33,6 +34,19 @@ spring:
             enable: true
     protocol: smtp
     default-encoding: UTF-8
+
+verification:
+  reset:
+    password:
+      email:
+        subject: Verification code to reset your password
+
+token:
+  expiration: 30
+
+logging:
+  file:
+    name: open-school-logs.log
 
 springdoc:
   swagger-ui:

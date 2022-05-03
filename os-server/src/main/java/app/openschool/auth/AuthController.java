@@ -2,12 +2,14 @@ package app.openschool.auth;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
+import app.openschool.auth.dto.ResetPasswordRequest;
 import app.openschool.auth.dto.UserLoginDto;
 import app.openschool.auth.dto.UserLoginRequest;
 import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.auth.dto.UserRegistrationHttpResponse;
 import app.openschool.auth.mapper.UserLoginMapper;
 import app.openschool.auth.verification.VerificationToken;
+import app.openschool.common.response.ResponseMessage;
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
@@ -102,5 +104,26 @@ public class AuthController {
     HttpHeaders headers = new HttpHeaders();
     headers.add(JWT_TOKEN_HEADER, TOKEN_PREFIX + jwtTokenProvider.generateJwtToken(userPrincipal));
     return headers;
+  }
+
+  @PostMapping("/password/forgot")
+  @Operation(summary = "send token to given email")
+  public ResponseEntity<ResponseMessage> forgotPassword(@RequestBody String email, Locale locale) {
+    authService.updateResetPasswordToken(email);
+    return ResponseEntity.status(OK)
+        .body(
+            new ResponseMessage(
+                messageSource.getMessage("password.sending.success.message", null, locale)));
+  }
+
+  @PostMapping("/password/reset")
+  @Operation(summary = "reset password")
+  public ResponseEntity<ResponseMessage> resetPassword(
+      @Valid @RequestBody ResetPasswordRequest request, Locale locale) {
+    authService.resetPassword(request);
+    return ResponseEntity.status(OK)
+        .body(
+            new ResponseMessage(
+                messageSource.getMessage("password.reset.success.message", null, locale)));
   }
 }

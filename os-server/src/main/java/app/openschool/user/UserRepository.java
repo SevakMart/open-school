@@ -1,5 +1,6 @@
 package app.openschool.user;
 
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
   User findUserByEmail(String email);
 
   User findUserById(Long id);
+
+  Optional<User> findByEmail(String email);
 
   @Query(
       value =
