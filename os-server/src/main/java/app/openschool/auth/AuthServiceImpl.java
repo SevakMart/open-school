@@ -7,15 +7,15 @@ import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.auth.exception.EmailAlreadyExistException;
 import app.openschool.auth.exception.EmailNotExistsException;
 import app.openschool.auth.exception.EmailNotFoundException;
-import app.openschool.auth.exception.UserNotVerifiedException;
 import app.openschool.auth.exception.NotMatchingPasswordsException;
 import app.openschool.auth.exception.ResetPasswordTokenExpiredException;
 import app.openschool.auth.exception.ResetPasswordTokenNotFoundException;
+import app.openschool.auth.exception.UserNotVerifiedException;
 import app.openschool.auth.mapper.UserLoginMapper;
 import app.openschool.auth.mapper.UserRegistrationMapper;
+import app.openschool.auth.repository.ResetPasswordTokenRepository;
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
-import app.openschool.auth.repository.ResetPasswordTokenRepository;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
@@ -24,7 +24,6 @@ import app.openschool.user.api.exception.UserNotFoundException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -41,7 +40,6 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   private final CommunicationService communicationService;
   private final VerificationTokenRepository verificationTokenRepository;
   private final long expiresAt;
-  private final CommunicationService communicationService;
   private final Integer tokenExpirationAfterMinutes;
 
   public AuthServiceImpl(
@@ -49,20 +47,17 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
       ResetPasswordTokenRepository resetPasswordTokenRepository,
       BCryptPasswordEncoder passwordEncoder,
       CommunicationService communicationService,
-      @Value("${token.expiration}") Integer tokenExpirationAfterMinutes) {
-  public AuthServiceImpl(
-      UserRepository userRepository,
-      BCryptPasswordEncoder passwordEncoder,
-      CommunicationService communicationService,
       VerificationTokenRepository verificationTokenRepository,
-      @Value("${verification.duration}") long expiresAt) {
+      @Value("${verification.duration}") long expiresAt,
+      @Value("${token.expiration}") Integer tokenExpirationAfterMinutes) {
     this.userRepository = userRepository;
     this.resetPasswordTokenRepository = resetPasswordTokenRepository;
+
     this.passwordEncoder = passwordEncoder;
-    this.communicationService = communicationService;
     this.verificationTokenRepository = verificationTokenRepository;
     this.expiresAt = expiresAt;
     this.communicationService = communicationService;
+
     this.tokenExpirationAfterMinutes = tokenExpirationAfterMinutes;
   }
 

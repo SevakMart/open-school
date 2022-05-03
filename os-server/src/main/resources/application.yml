@@ -5,10 +5,6 @@ jwt:
   token-exp-time: 432_000_000 # 5 days
   secret: 'ksfhlksjlkesjl;jksl;kfldskdl;ksfl;ks65456s465f4ds68f4dsf46ds4f5snkldj+dlksfnklslsjdkfljsdk'
 
-verification:
-  duration: 30 # minutes
-  subject: 'Verify your account'
-
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -36,6 +32,8 @@ spring:
     default-encoding: UTF-8
 
 verification:
+  duration: 30 # minutes
+  subject: 'Verify your account'
   reset:
     password:
       email:
@@ -52,10 +50,3 @@ springdoc:
   swagger-ui:
     path: /open-school-api
     operationsSorter: method
-
-logging:
-  file:
-    name: open-school-logs.log
-
-email:
-  username: 'epam.open.school@gmail.com'

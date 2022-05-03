@@ -18,17 +18,13 @@ import app.openschool.auth.exception.EmailNotExistsException;
 import app.openschool.auth.exception.EmailNotFoundException;
 import app.openschool.auth.exception.NotMatchingPasswordsException;
 import app.openschool.auth.exception.ResetPasswordTokenNotFoundException;
-import app.openschool.auth.repository.ResetPasswordTokenRepository;
-import app.openschool.common.services.CommunicationService;
 import app.openschool.auth.exception.UserNotVerifiedException;
+import app.openschool.auth.repository.ResetPasswordTokenRepository;
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
 import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
-import java.io.UnsupportedEncodingException;
-import java.util.Optional;
-import javax.mail.MessagingException;
 import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,16 +43,14 @@ public class AuthServiceImplTest {
 
   @Mock ResetPasswordTokenRepository resetPasswordTokenRepository;
 
-  @Mock private BCryptPasswordEncoder passwordEncoder;
-
-  @Mock private CommunicationService communicationService;
-
-  @Value("${token.expiration}")
-  private int tokenExpirationAfterMinutes;
-
   @Mock private VerificationTokenRepository verificationTokenRepository;
 
   @Mock CommunicationService communicationService;
+
+  @Mock private BCryptPasswordEncoder passwordEncoder;
+
+  @Value("${token.expiration}")
+  private int tokenExpirationAfterMinutes;
 
   private AuthService authService;
 
@@ -68,10 +62,9 @@ public class AuthServiceImplTest {
             resetPasswordTokenRepository,
             passwordEncoder,
             communicationService,
+            verificationTokenRepository,
+            0L,
             tokenExpirationAfterMinutes);
-    authService =
-        new AuthServiceImpl(
-            userRepository, passwordEncoder, communicationService, verificationTokenRepository, 0L);
   }
 
   @Test
@@ -104,13 +97,13 @@ public class AuthServiceImplTest {
   @Test
   void loadNonexistentUserByUsername() {
     AuthServiceImpl authService =
-        new AuthServiceImpl(userRepository, passwordEncoder, null, null, 0L);
-    AuthServiceImpl authService =
         new AuthServiceImpl(
             userRepository,
             resetPasswordTokenRepository,
             passwordEncoder,
-            communicationService,
+            null,
+            null,
+            0L,
             tokenExpirationAfterMinutes);
 
     given(userRepository.findUserByEmail(any())).willReturn(null);
@@ -137,5 +130,51 @@ public class AuthServiceImplTest {
 
     assertThatThrownBy(() -> authService.sendVerificationEmail(userId))
         .isInstanceOf(UserNotFoundException.class);
+  }
+
+  @Test
+  void updateResetPasswordTokenUserWithGivenEmailNotFound() {
+    when(userRepository.findByEmail("test@gmail.com")).thenReturn(Optional.empty());
+    assertThatThrownBy(() -> authService.updateResetPasswordToken("test@gmail.com"))
+        .isInstanceOf(EmailNotExistsException.class);
+    verify(userRepository, Mockito.times(1)).findByEmail("test@gmail.com");
+  }
+
+  @Test
+  void updateResetPasswordToken() {
+    User user = new User();
+    when(userRepository.findByEmail("test@gmail.com")).thenReturn(Optional.of(user));
+    authService.updateResetPasswordToken("test@gmail.com");
+    verify(userRepository, Mockito.times(1)).findByEmail("test@gmail.com");
+    assertNotNull(userRepository.findByEmail("test@gmail.com"));
+  }
+
+  @Test
+  void restPasswordTokenFails() {
+
+    assertThatThrownBy(
+            () ->
+                authService.resetPassword(
+                    new ResetPasswordRequest("5597", "test@gmail.com", "t@gmail.com")))
+        .isInstanceOf(NotMatchingPasswordsException.class);
+    assertThatThrownBy(
+            () ->
+                authService.resetPassword(
+                    new ResetPasswordRequest("5597", "test@gmail.com", "test@gmail.com")))
+        .isInstanceOf(ResetPasswordTokenNotFoundException.class);
+    verify(resetPasswordTokenRepository, Mockito.times(1)).findByToken("5597");
+  }
+
+  @Test
+  void restPasswordToken() {
+    User user = new User();
+    ResetPasswordToken resetPasswordToken = ResetPasswordToken.generate(user);
+    when(resetPasswordTokenRepository.findByToken(resetPasswordToken.getToken()))
+        .thenReturn(Optional.of(resetPasswordToken));
+    authService.resetPassword(
+        new ResetPasswordRequest(
+            resetPasswordToken.getToken(), "test@gmail.com", "test@gmail.com"));
+    verify(resetPasswordTokenRepository, Mockito.times(1)).delete(resetPasswordToken);
+    verify(userRepository, Mockito.times(1)).save(user);
   }
 }

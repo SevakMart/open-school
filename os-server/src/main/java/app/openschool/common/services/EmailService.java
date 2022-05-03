@@ -26,10 +26,18 @@ public class EmailService implements CommunicationService {
   public EmailService(
       EmailSenderService emailSender,
       ITemplateEngine templateEngine,
-      @Value("${verification.reset.password.email.subject}") String resetPasswordEmailSubject) {
+      @Value("${verification.reset.password.email.subject}") String resetPasswordEmailSubject,
+      VerificationTokenRepository verificationTokenRepository,
+      @Value("${verification.duration}") long expirationDuration,
+      @Value("${verification.endpoint}") String verificationEndpoint,
+      @Value("${verification.subject}") String emailSubject) {
     this.emailSender = emailSender;
     this.templateEngine = templateEngine;
     this.resetPasswordEmailSubject = resetPasswordEmailSubject;
+    this.verificationTokenRepository = verificationTokenRepository;
+    this.expirationDuration = expirationDuration;
+    this.verificationEndpoint = verificationEndpoint;
+    this.emailSubject = emailSubject;
   }
 
   @Override
@@ -43,16 +51,6 @@ public class EmailService implements CommunicationService {
     Context context = new Context();
     context.setVariable("resetPasswordToken", resetPasswordToken);
     return templateEngine.process("resetPassword", context);
-      VerificationTokenRepository verificationTokenRepository,
-      @Value("${verification.duration}") long expirationDuration,
-      @Value("${verification.endpoint}") String verificationEndpoint,
-      @Value("${verification.subject}") String emailSubject) {
-    this.emailSender = emailSender;
-    this.templateEngine = templateEngine;
-    this.verificationTokenRepository = verificationTokenRepository;
-    this.expirationDuration = expirationDuration;
-    this.verificationEndpoint = verificationEndpoint;
-    this.emailSubject = emailSubject;
   }
 
   @Override
