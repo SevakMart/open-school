@@ -12,6 +12,7 @@ node_modules
 /build
 /dist
 # misc
+.env-cmdrc.json
 .DS_Store
 .env.local
 .env.development.local
