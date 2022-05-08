@@ -7,7 +7,7 @@ import SignInDefault from '../Default';
 import { INVALID_EMAIL_ERROR_MESSAGE, EMAIL_REQUIRED, PASSWORD_REQUIRED } from '../../../../constants/Strings';
 
 describe('Create tests for sign in default form component', () => {
-  test('Create a snapshot test', () => {
+  /* test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
         <SignInDefault handleSignIn={() => null} />
@@ -139,5 +139,5 @@ describe('Create tests for sign in default form component', () => {
 
     expect(emailErrorMessage).not.toBeInTheDocument();
     expect(passwordErrorMessage).not.toBeInTheDocument();
-  });
+  }); */
 });
