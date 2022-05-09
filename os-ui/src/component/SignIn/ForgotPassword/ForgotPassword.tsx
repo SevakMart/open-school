@@ -3,7 +3,8 @@ import { sendForgotPasswordRequest } from '../../../services/sendForgotPasswordR
 import { validateEmail } from '../../../helpers/EmailValidate';
 import ResetPassword from '../ResetPassword/ResetPassword';
 import {
-  EMAIL, FORGOT_PASSWORD, ENTER_EMAIL_FOR_VERIFICATION, SEND_CODE_NOTIFICATION, CONTINUE,
+  EMAIL, FORGOT_PASSWORD, ENTER_EMAIL_FOR_VERIFICATION, SEND_CODE_NOTIFICATION,
+  CONTINUE, FORGOT_PASSWORD_URL,
 } from '../../../constants/Strings';
 import CloseIcon from '../../../icons/Close';
 import styles from './ForgotPassword.module.scss';
@@ -13,7 +14,7 @@ const ForgotPassword = (
 ) => {
   const [email, setEmail] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [failedMessage, setFailedMessage] = useState('');
+  // const [failedMessage, setFailedMessage] = useState('');
   const [emailError, setEmailError] = useState('');
   const [resetPassword, setResetPassword] = useState(false);
   const { mainContainer, errorMessage, successedMessage } = styles;
@@ -26,12 +27,12 @@ const ForgotPassword = (
     const emailError = (validateEmail(email));
     if (!emailError) {
       setEmailError('');
-      sendForgotPasswordRequest('http://localhost:5000/api/v1/auth/password/forgot', email)
+      sendForgotPasswordRequest(`${FORGOT_PASSWORD_URL}`, email)
         .then((response) => {
           if (response.status === 200) {
             setSuccessMessage(response.data.message);
           } else if (response.status === 400) {
-            setFailedMessage(response.data.message);
+            setEmailError(response.data.message);
           }
         });
     } else setEmailError(emailError);
@@ -78,11 +79,7 @@ const ForgotPassword = (
                           required
                         />
                       </div>
-                      {emailError || failedMessage ? (
-                        <h4 className={errorMessage}>
-                          {emailError || failedMessage}
-                        </h4>
-                      ) : null}
+                      {emailError ? (<h4 className={errorMessage}>{emailError}</h4>) : null}
                       <button type="button" onClick={sendForgotPassword}>{CONTINUE}</button>
                     </div>
                   </>
