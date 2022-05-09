@@ -13,3 +13,6 @@ spring:
 
 verification:
   endpoint: 'http://localhost:5000/api/v1/auth/account/verification'
+
+host:
+  url: "http://localhost:5000/"

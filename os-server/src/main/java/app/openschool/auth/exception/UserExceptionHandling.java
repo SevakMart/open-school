@@ -18,14 +18,18 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.context.Context;
 
 @RestControllerAdvice
 public class UserExceptionHandling implements ErrorController {
 
   private final MessageSource messageSource;
+  private final ITemplateEngine templateEngine;
 
-  public UserExceptionHandling(MessageSource messageSource) {
+  public UserExceptionHandling(MessageSource messageSource, ITemplateEngine templateEngine) {
     this.messageSource = messageSource;
+    this.templateEngine = templateEngine;
   }
 
   @ExceptionHandler(EmailAlreadyExistException.class)
@@ -93,9 +97,11 @@ public class UserExceptionHandling implements ErrorController {
   }
 
   @ExceptionHandler(UserNotVerifiedException.class)
-  public ResponseEntity<UserLoginExceptionResponse> userNotVerifiedException(Locale locale) {
+  public String userNotVerifiedException(Locale locale) {
     String message = messageSource.getMessage("exception.unverified.user.message", null, locale);
-    return new ResponseEntity<>(new UserLoginExceptionResponse(message), UNAUTHORIZED);
+    Context context = new Context();
+    context.setVariable("message", message);
+    return templateEngine.process("verification-exception", context);
   }
 
   private Map<String, String> getValidationErrors(

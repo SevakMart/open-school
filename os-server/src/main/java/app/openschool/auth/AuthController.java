@@ -8,15 +8,18 @@ import app.openschool.auth.dto.UserLoginDto;
 import app.openschool.auth.dto.UserLoginRequest;
 import app.openschool.auth.dto.UserRegistrationDto;
 import app.openschool.auth.dto.UserRegistrationHttpResponse;
-import app.openschool.auth.mapper.UserLoginMapper;
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.common.response.ResponseMessage;
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import io.swagger.v3.oas.annotations.Operation;
+import java.io.IOException;
 import java.util.Locale;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -36,22 +39,28 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
   private static final String TOKEN_PREFIX = "Bearer ";
-  public static final String JWT_TOKEN_HEADER = "Authorization";
+  private static final String JWT_TOKEN_HEADER = "Authorization";
 
   private final JwtTokenProvider jwtTokenProvider;
   private final AuthenticationManager authenticationManager;
   private final MessageSource messageSource;
   private final AuthService authService;
+  private final String hostUrl;
+  private final String authCookieMaxAge;
 
   public AuthController(
       JwtTokenProvider jwtTokenProvider,
       AuthenticationManager authenticationManager,
       MessageSource messageSource,
-      AuthService authService) {
+      AuthService authService,
+      @Value("${host.url}") String hostUrl,
+      @Value("${cookie.authorization.max-age}") String authCookieMaxAge) {
     this.jwtTokenProvider = jwtTokenProvider;
     this.authenticationManager = authenticationManager;
     this.messageSource = messageSource;
     this.authService = authService;
+    this.hostUrl = hostUrl;
+    this.authCookieMaxAge = authCookieMaxAge;
   }
 
   @PostMapping("/register")
@@ -83,12 +92,16 @@ public class AuthController {
   }
 
   @PostMapping("/account/verification")
-  public ResponseEntity<UserLoginDto> verifyAccount(
-      @ModelAttribute VerificationToken verificationToken) {
+  public void verifyAccount(
+      @ModelAttribute VerificationToken verificationToken, HttpServletResponse response)
+      throws IOException {
     User user = authService.verifyAccount(verificationToken);
     UserPrincipal userPrincipal = new UserPrincipal(user);
-    HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
-    return ResponseEntity.ok().headers(jwtHeader).body(UserLoginMapper.toUserLoginDto(user));
+    Cookie cookie = new Cookie(JWT_TOKEN_HEADER, jwtTokenProvider.generateJwtToken(userPrincipal));
+    cookie.setPath("/");
+    cookie.setMaxAge(Integer.parseInt(authCookieMaxAge));
+    response.addCookie(cookie);
+    response.sendRedirect(hostUrl);
   }
 
   @GetMapping("/{userId}/account/verification")

@@ -50,3 +50,7 @@ springdoc:
   swagger-ui:
     path: /open-school-api
     operationsSorter: method
+
+cookie:
+  authorization:
+    max-age: 180 #3 minutes
