@@ -56,7 +56,7 @@ const ForgotPassword = (
           : (
             <>
               {
-              successMessage ? <h3 className={successedMessage}>{successMessage}</h3>
+              successMessage ? <h3 data-testid="forgotPasswordSuccessMessage" className={successedMessage}>{successMessage}</h3>
                 : (
                   <>
                     <CloseIcon handleClosing={() => returnToSignInForm()} />
