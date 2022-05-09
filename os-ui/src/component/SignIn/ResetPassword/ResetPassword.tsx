@@ -92,9 +92,9 @@ const ResetPassword = ({ returnToSignInForm, email }:
   return (
     <div className={mainContainer}>
       {successResetPasswordMessage
-        ? <h3 className={successedResetPasswordMessage}>{successResetPasswordMessage}</h3>
+        ? <h3 data-testid="successResetPasswordMessage" className={successedResetPasswordMessage}>{successResetPasswordMessage}</h3>
         : successForgotPasswordMessage
-          ? <h3 className={successedResendEmailMessage}>{successForgotPasswordMessage}</h3> : (
+          ? <h3 data-testid="successForgotPasswordMessage" className={successedResendEmailMessage}>{successForgotPasswordMessage}</h3> : (
             <>
               <CloseIcon handleClosing={() => returnToSignInForm()} />
               <h2>{RESET_PASSWORD}</h2>
@@ -113,10 +113,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   required
                 />
                 {errorFormValue.tokenError
-                  ? (
-                    <h4 className={errorMessage}>
-                      {errorFormValue.tokenError}
-                    </h4>
+                  ? (<h4 data-testid="tokenErrorMessage" className={errorMessage}>{errorFormValue.tokenError}</h4>
                   ) : null}
               </div>
               <div>
@@ -135,7 +132,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   required
                 />
                 {errorFormValue.newPasswordError
-                  ? <h4 className={errorMessage}>{errorFormValue.newPasswordError}</h4> : null}
+                  ? <h4 data-testid="newPasswordErrorMessage" className={errorMessage}>{errorFormValue.newPasswordError}</h4> : null}
                 {isNewPasswordVisible
                   ? <VisibileIcon makeInvisible={handleNewPasswordVisibility} />
                   : <HiddenIcon makeVisible={handleNewPasswordVisibility} />}
@@ -151,22 +148,19 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   name="confirmedPassword"
                   ref={confirmPasswordRef}
                   value={formValues.confirmedPassword}
-                  placeholder="Confirm the password"
+                  placeholder="Confirm password"
                   onChange={handleOnChange}
                   required
                 />
                 {errorFormValue.confirmedPasswordError
-                  ? (
-                    <h4 className={errorMessage}>
-                      {errorFormValue.confirmedPasswordError}
-                    </h4>
+                  ? (<h4 data-testid="confirmedPasswordErrorMessage" className={errorMessage}>{errorFormValue.confirmedPasswordError}</h4>
                   ) : null}
                 {isConfirmPasswordVisible
                   ? <VisibileIcon makeInvisible={handleConfirmPasswordVisibility} />
                   : <HiddenIcon makeVisible={handleConfirmPasswordVisibility} />}
               </div>
-              <button className={resetPasswordButton} type="button" onClick={sendResetPassword}>{RESET_PASSWORD}</button>
-              <button className={resendEmailButton} type="button" onClick={resendEmail}>{RESEND_EMAIL}</button>
+              <button data-testid="resetPasswordButton" className={resetPasswordButton} type="button" onClick={sendResetPassword}>{RESET_PASSWORD}</button>
+              <button data-testid="resendEmailButton" className={resendEmailButton} type="button" onClick={resendEmail}>{RESEND_EMAIL}</button>
             </>
           )}
     </div>

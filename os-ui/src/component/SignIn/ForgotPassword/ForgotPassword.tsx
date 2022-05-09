@@ -70,6 +70,7 @@ const ForgotPassword = (
                           <span style={{ color: 'red' }}> *</span>
                         </label>
                         <input
+                          data-testid="forgotPasswordEmailInput"
                           id="email"
                           type="email"
                           name="email"
@@ -78,8 +79,8 @@ const ForgotPassword = (
                           required
                         />
                       </div>
-                      {emailError ? (<h4 className={errorMessage}>{emailError}</h4>) : null}
-                      <button type="button" onClick={sendForgotPassword}>{CONTINUE}</button>
+                      {emailError ? (<h4 data-testid="emailErrorForgotPassword" className={errorMessage}>{emailError}</h4>) : null}
+                      <button data-testid="continueButton" type="button" onClick={sendForgotPassword}>{CONTINUE}</button>
                     </div>
                   </>
                 )
