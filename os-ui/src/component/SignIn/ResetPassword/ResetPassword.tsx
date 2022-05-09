@@ -2,6 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import { sendResetPasswordRequest } from '../../../services/sendResetPasswordRequest';
 import { sendForgotPasswordRequest } from '../../../services/sendForgotPasswordRequest';
 import { validateResetPasswordForm } from '../../../helpers/ResetPasswordFormValidate';
+import {
+  RESET_PASSWORD_URL, FORGOT_PASSWORD_URL, RESET_PASSWORD, VERIFICATION_CODE,
+  NEW_PASSWORD, CONFIRM_PASSWORD, RESEND_EMAIL,
+} from '../../../constants/Strings';
 import VisibileIcon from '../../../icons/Visibility';
 import HiddenIcon from '../../../icons/Hidden';
 import CloseIcon from '../../../icons/Close';
@@ -46,10 +50,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
     } = validateResetPasswordForm(formValues);
     if (!tokenError && !newPasswordError && !confirmedPasswordError) {
       setErrorFormValue({ tokenError: '', newPasswordError: '', confirmedPasswordError: '' });
-      sendResetPasswordRequest(
-        'http://localhost:5000/api/v1/auth/password/reset',
-        { token, newPassword, confirmedPassword },
-      ).then((response) => {
+      sendResetPasswordRequest(`${RESET_PASSWORD_URL}`, { token, newPassword, confirmedPassword }).then((response) => {
         if (response.status === 200) {
           setSuccessResetPasswordMessage(response.data.message);
         } else if (response.status === 400) {
@@ -60,7 +61,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
   };
 
   const resendEmail = () => {
-    sendForgotPasswordRequest('http://localhost:5000/api/v1/auth/password/forgot', email)
+    sendForgotPasswordRequest(`${FORGOT_PASSWORD_URL}`, email)
       .then((response) => {
         setSuccessForgotPasswordMessage(response.data.message);
       });
@@ -102,10 +103,10 @@ const ResetPassword = ({ returnToSignInForm, email }:
           ? <h3 className={successedResendEmailMessage}>{successForgotPasswordMessage}</h3> : (
             <>
               <CloseIcon handleClosing={() => returnToSignInForm()} />
-              <h2>Reset password</h2>
+              <h2>{RESET_PASSWORD}</h2>
               <div>
                 <label htmlFor="token">
-                  Verification code
+                  {VERIFICATION_CODE}
                   <span style={{ color: 'red' }}> *</span>
                 </label>
                 <input
@@ -126,7 +127,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
               </div>
               <div>
                 <label htmlFor="newPassword">
-                  New password
+                  {NEW_PASSWORD}
                   <span style={{ color: 'red' }}> *</span>
                 </label>
                 <input
@@ -147,7 +148,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
               </div>
               <div>
                 <label htmlFor="confirmedPassword">
-                  Confirm password
+                  {CONFIRM_PASSWORD}
                   <span style={{ color: 'red' }}> *</span>
                 </label>
                 <input
@@ -170,8 +171,8 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   ? <VisibileIcon makeInvisible={handleConfirmPasswordVisibility} />
                   : <HiddenIcon makeVisible={handleConfirmPasswordVisibility} />}
               </div>
-              <button className={resetPasswordButton} type="button" onClick={sendResetPassword}>Reset password</button>
-              <button className={resendEmailButton} type="button" onClick={resendEmail}>Send email again</button>
+              <button className={resetPasswordButton} type="button" onClick={sendResetPassword}>{RESET_PASSWORD}</button>
+              <button className={resendEmailButton} type="button" onClick={resendEmail}>{RESEND_EMAIL}</button>
             </>
           )}
     </div>

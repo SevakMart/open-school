@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { sendForgotPasswordRequest } from '../../../services/sendForgotPasswordRequest';
 import { validateEmail } from '../../../helpers/EmailValidate';
 import ResetPassword from '../ResetPassword/ResetPassword';
+import {
+  EMAIL, FORGOT_PASSWORD, ENTER_EMAIL_FOR_VERIFICATION, SEND_CODE_NOTIFICATION, CONTINUE,
+} from '../../../constants/Strings';
 import CloseIcon from '../../../icons/Close';
 import styles from './ForgotPassword.module.scss';
 
@@ -58,14 +61,12 @@ const ForgotPassword = (
                   <>
                     <CloseIcon handleClosing={() => returnToSignInForm()} />
                     <div className={mainContainer}>
-                      <h2>Forgot password</h2>
-                      <p>
-                        Enter your email for the verification process.
-                      </p>
-                      <p>We will send 4 digits code to your email.</p>
+                      <h2>{FORGOT_PASSWORD}</h2>
+                      <p>{ENTER_EMAIL_FOR_VERIFICATION}</p>
+                      <p>{SEND_CODE_NOTIFICATION}</p>
                       <div>
                         <label htmlFor="email">
-                          Email
+                          {EMAIL}
                           <span style={{ color: 'red' }}> *</span>
                         </label>
                         <input
@@ -82,7 +83,7 @@ const ForgotPassword = (
                           {emailError || failedMessage}
                         </h4>
                       ) : null}
-                      <button type="button" onClick={sendForgotPassword}>Continue</button>
+                      <button type="button" onClick={sendForgotPassword}>{CONTINUE}</button>
                     </div>
                   </>
                 )

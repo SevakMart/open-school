@@ -23,6 +23,8 @@ export const GET_MAIN_CATEGORIES_URL = 'http://localhost:5000/api/v1/categories?
 export const GET_CATEGORY_SUBCATEGORY_SEARCH_URL = 'http://localhost:5000/api/v1/categories/subcategories?title=';
 export const SIGNIN_URL = 'http://localhost:5000/api/v1/auth/login';
 export const SAVE_PREFERRED_CATEGORIES = 'http://localhost:5000/api/v1/users';
+export const FORGOT_PASSWORD_URL = 'http://localhost:5000/api/v1/auth/password/forgot';
+export const RESET_PASSWORD_URL = 'http://localhost:5000/api/v1/auth/password/reset';
 
 // Error Message
 export const ERROR_MESSAGE = 'Something went wrong please refresh the page :(';
@@ -51,3 +53,15 @@ export const PASSWORD_REQUIRED = 'Password is required';
 export const EMAIL_REQUIRED = 'Email is required';
 export const TOKEN_REQUIRED = 'Verification code is required';
 export const PASSWORDS_MISMATCH = 'Passwords do not match';
+
+// Other non-specific strings
+export const FORGOT_PASSWORD = 'Forgot password';
+export const ENTER_EMAIL_FOR_VERIFICATION = 'Enter your email for the verification process.';
+export const SEND_CODE_NOTIFICATION = 'We will send 4 digits code to your email.';
+export const EMAIL = 'Email';
+export const CONTINUE = 'Continue';
+export const RESET_PASSWORD = 'Reset password';
+export const VERIFICATION_CODE = 'Verification code';
+export const NEW_PASSWORD = 'New Password';
+export const CONFIRM_PASSWORD = 'Confirm Password';
+export const RESEND_EMAIL = 'Resend Email';
