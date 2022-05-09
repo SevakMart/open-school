@@ -15,13 +15,12 @@ const ResetPassword = ({ returnToSignInForm, email }:
   {returnToSignInForm: ()=> void, email:string}) => {
   const [successForgotPasswordMessage, setSuccessForgotPasswordMessage] = useState('');
   const [successResetPasswordMessage, setSuccessResetPasswordMessage] = useState('');
-  const [failedMessage, setFailedMessage] = useState('');
   const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
-  const newPasswordRef = useRef<null|HTMLInputElement>(null);
-  const confirmPasswordRef = useRef<null|HTMLInputElement>(null);
   const [formValues, setFormValues] = useState({ token: '', newPassword: '', confirmedPassword: '' });
   const [errorFormValue, setErrorFormValue] = useState({ tokenError: '', newPasswordError: '', confirmedPasswordError: '' });
+  const newPasswordRef = useRef<null|HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<null|HTMLInputElement>(null);
   const {
     mainContainer, errorMessage, successedResetPasswordMessage, successedResendEmailMessage,
     resetPasswordButton, resendEmailButton,
@@ -49,12 +48,12 @@ const ResetPassword = ({ returnToSignInForm, email }:
       confirmedPasswordError,
     } = validateResetPasswordForm(formValues);
     if (!tokenError && !newPasswordError && !confirmedPasswordError) {
-      setErrorFormValue({ tokenError: '', newPasswordError: '', confirmedPasswordError: '' });
       sendResetPasswordRequest(`${RESET_PASSWORD_URL}`, { token, newPassword, confirmedPassword }).then((response) => {
         if (response.status === 200) {
+          setErrorFormValue({ tokenError: '', newPasswordError: '', confirmedPasswordError: '' });
           setSuccessResetPasswordMessage(response.data.message);
         } else if (response.status === 400) {
-          if (response.data.message === ('Invalid token' || 'Token is expired')) { setFailedMessage(response.data.message); }
+          setErrorFormValue({ tokenError: response.data.message, newPasswordError: '', confirmedPasswordError: '' });
         }
       });
     } else setErrorFormValue(validateResetPasswordForm(formValues));
@@ -63,6 +62,8 @@ const ResetPassword = ({ returnToSignInForm, email }:
   const resendEmail = () => {
     sendForgotPasswordRequest(`${FORGOT_PASSWORD_URL}`, email)
       .then((response) => {
+        setErrorFormValue({ tokenError: '', newPasswordError: '', confirmedPasswordError: '' });
+        setFormValues({ token: '', newPassword: '', confirmedPassword: '' });
         setSuccessForgotPasswordMessage(response.data.message);
       });
   };
@@ -71,29 +72,22 @@ const ResetPassword = ({ returnToSignInForm, email }:
     if (isNewPasswordVisible) {
       (newPasswordRef.current as HTMLInputElement).type = 'text';
     } else (newPasswordRef.current as HTMLInputElement).type = 'password';
-  }, [isNewPasswordVisible]);
 
-  useEffect(() => {
     if (isConfirmPasswordVisible) {
       (confirmPasswordRef.current as HTMLInputElement).type = 'text';
     } else (confirmPasswordRef.current as HTMLInputElement).type = 'password';
-  }, [isConfirmPasswordVisible]);
+  }, [isNewPasswordVisible, isConfirmPasswordVisible]);
 
   useEffect(() => {
     let timer:any;
     if (successResetPasswordMessage) {
       timer = setTimeout(() => returnToSignInForm(), 3500);
     }
-    return () => clearTimeout(timer);
-  }, [successResetPasswordMessage]);
-
-  useEffect(() => {
-    let timer:any;
     if (successForgotPasswordMessage) {
       timer = setTimeout(() => setSuccessForgotPasswordMessage(''), 3500);
     }
     return () => clearTimeout(timer);
-  }, [successForgotPasswordMessage]);
+  }, [successResetPasswordMessage, successForgotPasswordMessage]);
 
   return (
     <div className={mainContainer}>
@@ -118,10 +112,10 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   onChange={handleOnChange}
                   required
                 />
-                {errorFormValue.tokenError || failedMessage
+                {errorFormValue.tokenError
                   ? (
                     <h4 className={errorMessage}>
-                      {errorFormValue.tokenError || failedMessage}
+                      {errorFormValue.tokenError}
                     </h4>
                   ) : null}
               </div>

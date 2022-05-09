@@ -14,7 +14,6 @@ const ForgotPassword = (
 ) => {
   const [email, setEmail] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  // const [failedMessage, setFailedMessage] = useState('');
   const [emailError, setEmailError] = useState('');
   const [resetPassword, setResetPassword] = useState(false);
   const { mainContainer, errorMessage, successedMessage } = styles;
@@ -26,11 +25,11 @@ const ForgotPassword = (
   const sendForgotPassword = () => {
     const emailError = (validateEmail(email));
     if (!emailError) {
-      setEmailError('');
       sendForgotPasswordRequest(`${FORGOT_PASSWORD_URL}`, email)
         .then((response) => {
           if (response.status === 200) {
             setSuccessMessage(response.data.message);
+            setEmailError('');
           } else if (response.status === 400) {
             setEmailError(response.data.message);
           }
