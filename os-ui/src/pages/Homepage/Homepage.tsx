@@ -10,8 +10,8 @@ import styles from './Homepage.module.scss';
 import { MentorType } from '../../types/MentorType';
 import { CategoryType } from '../../types/CategoryType';
 import { getMentors } from '../../services/getMentors';
-import { getCategories } from '../../services/getCategories';
-import { GET_REAL_MENTORS_URL, GET_MAIN_CATEGORIES_URL } from '../../constants/Strings';
+import categoriesService from '../../services/categoriesService';
+import { GET_REAL_MENTORS_URL } from '../../constants/Strings';
 import SignUp from '../../component/SignUp/SignUp';
 import SignIn from '../../component/SignIn/SignIn';
 
@@ -27,10 +27,14 @@ const Homepage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [clickedButtonType, setClickedButtonType] = useState('');
   const {
-    mainContainer, buttonContainer, mentorMainContainer, mentorListContainer,
-    categoriesMainContainer, categoriesListContainer,
+    mainContainer,
+    buttonContainer,
+    mentorMainContainer,
+    mentorListContainer,
+    categoriesMainContainer,
+    categoriesListContainer,
   } = styles;
-  const handleButtonClick = (buttonType:string) => {
+  const handleButtonClick = (buttonType: string) => {
     switch (buttonType) {
       case 'signUp':
         setIsOpen(true);
@@ -57,8 +61,12 @@ const Homepage = () => {
             setMaxPage(data.totalPages - 1);
           } else if (data.errorMessage) setErrorMessage(data.errorMessage);
         });
-    } if (listType === 'Category' || listType === '') {
-      getCategories(`${GET_MAIN_CATEGORIES_URL}page=${categoryPage}&size=6`)
+    }
+    if (listType === 'Category' || listType === '') {
+      categoriesService.getCategories({
+        page: categoryPage,
+        size: 6,
+      })
         .then((data) => {
           if (cancel) return;
           if (!data.errorMessage && data.content.length > 0) {
@@ -68,7 +76,9 @@ const Homepage = () => {
         });
     }
     // The return is to prevent memory leackage
-    return () => { cancel = true; };
+    return () => {
+      cancel = true;
+    };
   }, [page, categoryPage]);
 
   return (
@@ -115,7 +125,7 @@ const Homepage = () => {
       <div className={mentorMainContainer}>
         <h2>Our Mentors</h2>
         <div className={mentorListContainer}>
-          { page > 0 ? (
+          {page > 0 ? (
             <LeftArrowIcon
               testId="mentorLeftArrow"
               handleArrowClick={() => {

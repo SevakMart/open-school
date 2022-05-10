@@ -1,7 +1,7 @@
 // This service is susceptible of changes until the api is ready.
-import { fetchData } from './fetchData';
+import { fetchDataGet } from './fetchData';
 
 export const getMentors = async (url:string) => {
-  const data = await fetchData(url);
+  const data = await fetchDataGet(url);
   return data;
 };

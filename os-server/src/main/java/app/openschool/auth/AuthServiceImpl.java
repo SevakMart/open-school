@@ -85,8 +85,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     User user =
         userRepository.findByEmail(email).orElseThrow(() -> new EmailNotExistsException(email));
     if (resetPasswordTokenRepository.findByUser(user.getId()).isPresent()) {
-      ResetPasswordToken currentToken = resetPasswordTokenRepository.findByUser(user.getId()).get();
-      resetPasswordTokenRepository.delete(currentToken);
+      resetPasswordTokenRepository.findByUser(user.getId()).ifPresent(resetPasswordTokenRepository::delete);
     }
     ResetPasswordToken resetPasswordToken = ResetPasswordToken.generate(user);
     resetPasswordTokenRepository.save(resetPasswordToken);
