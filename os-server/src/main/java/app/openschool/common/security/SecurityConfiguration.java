@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@Profile("!openapi")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private static final String[] PUBLIC_URLS = {
