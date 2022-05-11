@@ -10,8 +10,8 @@ import {
   MY_LEARNING_PATHS, ALL, IN_PROGRESS, COMPLETED, USER_URL,
   SUGGESTED_LEARNING_PATHS, EXPLORE_COURSES,
 } from '../../constants/Strings';
-import { getUserCourses } from '../../services/getUserCourses';
-import { getSuggestedCourses } from '../../services/getSuggestedCourses';
+/* import { getUserCourses } from '../../services/getUserCourses';
+import { getSuggestedCourses } from '../../services/getSuggestedCourses'; */
 import { UserCourseType } from '../../types/UserCourseType';
 import { SuggestedCourseType } from '../../types/SuggestedCourseType';
 import styles from './MyLearningPathPage.module.scss';
@@ -36,7 +36,7 @@ const MyLearningPathPage = () => {
     setActiveNavType((e.target as HTMLParagraphElement).dataset.testid as any);
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     let cancel = false;
     if (!suggestedCourses.length) {
       getSuggestedCourses(`${USER_URL}/${(userInfo as any).id}/courses/suggested`)
@@ -77,7 +77,7 @@ const MyLearningPathPage = () => {
         break;
     }
     return () => { cancel = true; };
-  }, [activeNavType]);
+  }, [activeNavType]); */
   return (
     <>
       <NavbarOnSignIn />

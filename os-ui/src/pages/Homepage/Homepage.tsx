@@ -9,9 +9,7 @@ import CategoryCard from '../../component/CategoryProfile/CategoryProfile';
 import styles from './Homepage.module.scss';
 import { MentorType } from '../../types/MentorType';
 import { CategoryType } from '../../types/CategoryType';
-import { getMentors } from '../../services/getMentors';
-import { getCategories } from '../../services/getCategories';
-import { GET_REAL_MENTORS_URL, GET_MAIN_CATEGORIES_URL } from '../../constants/Strings';
+import publicServices from '../../services/publicService';
 import SignUp from '../../component/SignUp/SignUp';
 import SignIn from '../../component/SignIn/SignIn';
 
@@ -49,7 +47,7 @@ const Homepage = () => {
   useEffect(() => {
     let cancel = false;
     if (listType === 'Mentor' || listType === '') {
-      getMentors(`${GET_REAL_MENTORS_URL}page=${page}&size=4`)
+      publicServices.getPublicMentors({ page, size: 4 })
         .then((data) => {
           if (cancel) return;
           if (!data.errorMessage && data.content.length > 0) {
@@ -58,7 +56,7 @@ const Homepage = () => {
           } else if (data.errorMessage) setErrorMessage(data.errorMessage);
         });
     } if (listType === 'Category' || listType === '') {
-      getCategories(`${GET_MAIN_CATEGORIES_URL}page=${categoryPage}&size=6`)
+      publicServices.getPublicCategories({ page: categoryPage, size: 6 })
         .then((data) => {
           if (cancel) return;
           if (!data.errorMessage && data.content.length > 0) {

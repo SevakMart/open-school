@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Homepage from '../Homepage';
-import * as fetchCategory from '../../../services/getCategories';
+/* import * as fetchCategory from '../../../services/getCategories';
 import * as fetchMentor from '../../../services/getMentors';
 
 const categoryData1 = {
@@ -115,3 +115,4 @@ describe('Create several unit tests for Homepage Component', () => {
     expect(emptyMentorHeading).toBeInTheDocument();
   });
 });
+*/

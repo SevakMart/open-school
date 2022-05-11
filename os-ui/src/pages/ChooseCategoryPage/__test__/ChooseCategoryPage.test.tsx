@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import ChooseCategoryPage from '../ChooseCategoryPage';
 import { EMPTY_DATA_ERROR_MESSAGE } from '../../../constants/Strings';
 import { store } from '../../../redux/Store';
-import * as fetchSubcategories from '../../../services/getSearchedCategories';
+// import * as fetchSubcategories from '../../../services/getSearchedCategories';
 
 const mockUseNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -42,7 +42,7 @@ const data = {
   ],
 };
 
-describe('Create test case to ChooSecategoryPage', () => {
+/* describe('Create test case to ChooSecategoryPage', () => {
   test('Create a snapshot test', async () => {
     const { asFragment } = render(
       <Provider store={store}>
@@ -85,4 +85,4 @@ describe('Create test case to ChooSecategoryPage', () => {
     expect(errorMessageHeader).toBeInTheDocument();
     expect(errorMessageHeader).toHaveTextContent(EMPTY_DATA_ERROR_MESSAGE);
   });
-});
+}); */

@@ -5,7 +5,7 @@ import { RootState } from '../../redux/Store';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
 import Search from '../../component/Search/Search';
 import Loader from '../../component/Loader/Loader';
-import { getSearchedCategories } from '../../services/getSearchedCategories';
+import categoriesService from '../../services/categoriesService';
 import { savePreferredCategories } from '../../services/savePreferredCategories';
 import {
   CHOOSE_CATEGORIES_HEADER,
@@ -39,8 +39,8 @@ const ChooseCategoryPage = () => {
   };
   useEffect(() => {
     let cancel = false;
-    if (!title) navigate(`/categories/subcategories/userId=${(userInfo as any).id}?searchCategories=all`, { replace: true });
-    getSearchedCategories(`${GET_CATEGORY_SUBCATEGORY_SEARCH_URL}${title}`)
+    // if (!title) navigate(`/categories/subcategories/userId=${(userInfo as any).id}?searchCategories=all`, { replace: true });
+    categoriesService.getSearchedCategories({ title })
       .then((data) => {
         if (cancel) return;
         if (!Object.entries(data).length) {
@@ -61,7 +61,7 @@ const ChooseCategoryPage = () => {
     <>
       <NavbarOnSignIn />
       <h1 className={mainHeader}>{CHOOSE_CATEGORIES_HEADER}</h1>
-      <Search pathname={`/choose_categories/userId=${(userInfo as any).id}`} searchKeyName="searchCategories" changeUrlQueries={handleChangeUrlTitleParam} />
+      <Search changeUrlQueries={handleChangeUrlTitleParam} />
       <div className={categoriesList}>
         {
           isLoading ? <Loader />
