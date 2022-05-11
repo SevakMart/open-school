@@ -31,8 +31,5 @@ node_modules
 # Ignore Gradle build output directory
 build
 
-# Ignore Gradle out output directory
-out
-
 # Ignore data directory (data volume for mysql docker container)
 data
