@@ -6,11 +6,12 @@ const handleError = () => new Response(JSON.stringify({
 
 const getQueryParams = (url: string, params: object) => {
   const searchParams = new URLSearchParams();
-  (Object.keys(params) as (keyof typeof params)[]).forEach((key) => searchParams.append(key, params[key]));
-  return url + searchParams.toString();
+  (Object.keys(params) as (keyof typeof params)[])
+    .forEach((key) => searchParams.append(key, params[key]));
+  return `${url}?${searchParams.toString()}`;
 };
 
-const request = async (url: string, method: string, body: unknown = null, params: object = {}, token = '') => {
+const request = async (url: string, method: string, params: object = {}, token = '', body: unknown = null) => {
   const urlWithParams = getQueryParams(url, params);
 
   const response = await (fetch(urlWithParams.toString(), {
@@ -20,11 +21,12 @@ const request = async (url: string, method: string, body: unknown = null, params
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: body === null ? null : JSON.stringify(body),
+    // body: body === null ? null : JSON.stringify(body),
+    body: body ? JSON.stringify(body) : null,
   })
     .catch(handleError));
   return response.json();
 };
 
-export const fetchDataGet = async (url: string, params: object = {}, token = '') => request(url, 'GET', null, params, token);
-export const fetchDataPost = async (url: string, body: unknown, params: object, token = '') => request(url, 'POST', body, params, token);
+export const fetchDataGet = async (url: string, params: object = {}, token = '') => request(url, 'GET', params, token);
+export const fetchDataPost = async (url: string, body: unknown, params: object, token = '') => request(url, 'POST', params, token, body);

@@ -12,7 +12,7 @@ const AppRoutes = () => {
       <Route path="/homepage" element={<Homepage />} />
       <Route path="/" element={<Navigate replace to="/homepage" />} />
       <Route
-        path="/categories/subcategories/userId=:id"
+        path="/categories/subcategories"
         element={(
           <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
             <ChooseCategoryPage />

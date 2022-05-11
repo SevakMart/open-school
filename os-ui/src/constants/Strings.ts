@@ -18,11 +18,11 @@ export const CHOOSE_CATEGORIES_HEADER = 'Choose Categories You Are Interested In
 export const GET_MENTORS_URL = '../../mentorData.json';
 export const GET_CATEGORIES_URL = '../../categorieData.json';
 export const GET_REAL_MENTORS_URL = '/api/v1/users/mentors?';
-export const REGISTRATION_URL = '/api/v1/auth/register';
+export const REGISTRATION_URL = 'http://localhost:5000/api/v1/auth/register';
 export const GET_MAIN_CATEGORIES_URL = '/api/v1/categories?';
-export const GET_CATEGORY_SUBCATEGORY_SEARCH_URL = '/api/v1/categories/subcategories?title=';
-export const SIGNIN_URL = '/api/v1/auth/login';
-export const SAVE_PREFERRED_CATEGORIES = '/api/v1/users';
+export const GET_CATEGORY_SUBCATEGORY_SEARCH_URL = '/api/v1/categories/subcategories';
+export const SIGNIN_URL = 'http://localhost:5000/api/v1/auth/login';
+export const SAVE_PREFERRED_CATEGORIES = 'http://localhost:5000/api/v1/users';
 
 // Error Message
 export const ERROR_MESSAGE = 'Something went wrong please refresh the page :(';

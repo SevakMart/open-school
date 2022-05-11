@@ -4,11 +4,18 @@ class CategoriesService {
   readonly baseUrl: string;
 
   constructor() {
-    this.baseUrl = '/api/v1/categories';
+    this.baseUrl = 'http://localhost:5000/api/v1/categories';
   }
 
-  getCategories(params: object = {}) {
-    return fetchDataGet(this.baseUrl, params);
+  async getCategories(params: object = {}) {
+    const data = await fetchDataGet(this.baseUrl, params);
+    return data;
+  }
+
+  async getSearchedCategories(params:object = {}) {
+    const data = await fetchDataGet(`${this.baseUrl}/subcategories`, params);
+    console.log(data);
+    return data;
   }
 }
 
