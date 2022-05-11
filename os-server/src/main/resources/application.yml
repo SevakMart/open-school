@@ -8,13 +8,41 @@ jwt:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://database-1.cbeyaci1cgqp.eu-central-1.rds.amazonaws.com:3306/open_school_db?useSSL=false
-    username: dev_user
+    url: jdbc:mysql://awseb-e-ifh3vhuuyk-stack-awsebrdsdatabase-ihwfox4tu4ds.cbeyaci1cgqp.eu-central-1.rds.amazonaws.com:3306/open_school_db?useSSL=false
+    username: admin
     password: Password1!
 
   flyway:
     locations: "classpath:db/migration/{vendor}"
     clean-on-validation-error: true
+
+  mail:
+    username: epam.open.school@gmail.com
+    password: gaqbkpxlbmgjztwm
+    port: 587
+    host: smtp.gmail.com
+    personal: Open school support
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    default-encoding: UTF-8
+
+verification:
+  reset:
+    password:
+      email:
+        subject: Verification code to reset your password
+
+token:
+  expiration: 30
+
+logging:
+  file:
+    name: open-school-logs.log
 
 springdoc:
   swagger-ui:

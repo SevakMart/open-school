@@ -25,8 +25,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_BT_SECRET_ID }}
           aws_secret_key: ${{ secrets.AWS_BT_ACCESS_KEY }}
-          application_name: open-school-dev
-          environment_name: Openschooldev-env
+          application_name: open-school
+          environment_name: openschool-devenv
           version_label: ${{ github.event.inputs.artifact-version }}
           deployment_package: ./data/os-server-${{ github.event.inputs.artifact-version }}.jar
           region: eu-central-1

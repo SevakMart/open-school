@@ -9,7 +9,8 @@ import { RegistrationFormType } from '../../../types/RegistartionFormType';
 import { SIGN_IN, SIGNIN_URL, SUCCESSFUL_SIGNIN_MESSAGE } from '../../../constants/Strings';
 import styles from './Default.module.scss';
 
-const SignInDefault = ({ handleSignIn }:{handleSignIn:(message:string)=>void}) => {
+const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
+  {handleSignIn:(message:string)=>void, forgotPasswordFunc:()=>void}) => {
   const dispatch = useDispatch();
   const [formValues, setFormValues] = useState<RegistrationFormType>({ firstName: '', email: '', password: '' });
   const [errorFormValue, setErrorFormValue] = useState({ fullNameError: '', emailError: '', passwordError: '' });
@@ -27,6 +28,8 @@ const SignInDefault = ({ handleSignIn }:{handleSignIn:(message:string)=>void}) =
       [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value,
     });
   };
+
+  const handleForgotPassword = () => forgotPasswordFunc();
 
   const handleSignInForm = () => {
     const { fullNameError, emailError, passwordError } = validateSignInForm(formValues);
@@ -92,7 +95,7 @@ const SignInDefault = ({ handleSignIn }:{handleSignIn:(message:string)=>void}) =
           : <HiddenIcon makeVisible={handlePasswordVisibility} />}
       </div>
       {signInErrorMessage ? <h4 data-testid="signInErrorMessage" className={errorField}>{signInErrorMessage}</h4> : null}
-      <p>Forgot Password?</p>
+      <p onClick={handleForgotPassword}>Forgot Password?</p>
       <button type="button" data-testid="signInButton" onClick={handleSignInForm}>{SIGN_IN}</button>
     </form>
   );
