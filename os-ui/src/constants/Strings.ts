@@ -79,4 +79,3 @@ export const VERIFICATION_CODE = 'Verification code';
 export const NEW_PASSWORD = 'New Password';
 export const CONFIRM_PASSWORD = 'Confirm Password';
 export const RESEND_EMAIL = 'Resend Email';
-
