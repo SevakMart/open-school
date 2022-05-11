@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/open_school_db?useSSL=false
+    username: open-school-user
+    password: open-school-password
+  jpa:
+    show-sql: true
+
+verification:
+  endpoint: 'http://localhost:5000/api/v1/auth/account/verification'
+
+host:
+  url: "http://localhost:5000/"
+
