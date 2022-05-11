@@ -6,6 +6,9 @@ export const BECOME_A_MENTOR = 'Become a mentor';
 export const SIGN_IN = 'Sign In';
 export const ALL_LEARNING_PATHS = 'All Learning Paths';
 export const MY_LEARNING_PATHS = 'My Learning Paths';
+export const ALL = 'All';
+export const IN_PROGRESS = 'InProgress';
+export const COMPLETED = 'Completed';
 
 // Header strings
 export const FREE_EDUCATIONAL_PLATFORM = 'Educational Platform';
@@ -23,6 +26,7 @@ export const GET_MAIN_CATEGORIES_URL = 'http://localhost:5000/api/v1/categories?
 export const GET_CATEGORY_SUBCATEGORY_SEARCH_URL = 'http://localhost:5000/api/v1/categories/subcategories?title=';
 export const SIGNIN_URL = 'http://localhost:5000/api/v1/auth/login';
 export const SAVE_PREFERRED_CATEGORIES = 'http://localhost:5000/api/v1/users';
+export const USER_URL = 'http://localhost:5000/api/v1/users';
 export const FORGOT_PASSWORD_URL = 'http://localhost:5000/api/v1/auth/password/forgot';
 export const RESET_PASSWORD_URL = 'http://localhost:5000/api/v1/auth/password/reset';
 
@@ -55,6 +59,16 @@ export const TOKEN_REQUIRED = 'Verification code is required';
 export const PASSWORDS_MISMATCH = 'Passwords do not match';
 
 // Other non-specific strings
+export const NO_COURSES_YET = 'No Courses Yet';
+export const EXPLORE_COURSES = 'Explore Courses';
+export const SUGGESTED_LEARNING_PATHS = 'Suggested Learning Paths';
+export const OVERALL_PROGRESS = 'Overall Progress';
+export const REMAINING_TIME = 'Remaining Time';
+export const STATUS = 'Status';
+export const DUE_DATE = 'Due Date';
+export const RESUME_COURSE = 'Resume Course';
+export const GRADE = 'Grade';
+export const RATE_COURSE = 'Rate Course';
 export const FORGOT_PASSWORD = 'Forgot password';
 export const ENTER_EMAIL_FOR_VERIFICATION = 'Enter your email for the verification process.';
 export const SEND_CODE_NOTIFICATION = 'We will send 4 digits code to your email.';
