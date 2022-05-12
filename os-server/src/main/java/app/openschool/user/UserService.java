@@ -2,6 +2,7 @@ package app.openschool.user;
 
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.course.api.dto.CourseDto;
+import app.openschool.course.api.dto.MentorCourseDto;
 import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.user.api.dto.MentorDto;
 import java.util.List;
@@ -18,4 +19,6 @@ public interface UserService {
   Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds);
 
   List<UserCourseDto> findUserCourses(Long userId, Long courseStatusId);
+
+  Page<MentorCourseDto> findCoursesByMentorId(Long mentorId, Pageable page);
 }

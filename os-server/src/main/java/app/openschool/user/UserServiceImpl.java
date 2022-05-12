@@ -8,8 +8,10 @@ import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.api.dto.CourseDto;
+import app.openschool.course.api.dto.MentorCourseDto;
 import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.api.mapper.MentorCourseMapper;
 import app.openschool.course.api.mapper.UserCourseMapper;
 import app.openschool.user.api.dto.MentorDto;
 import app.openschool.user.api.exception.UserNotFoundException;
@@ -21,6 +23,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -103,4 +106,10 @@ public class UserServiceImpl implements UserService {
     return UserCourseMapper.toUserCourseDtoList(
         courseRepository.findUserCoursesByStatus(userId, courseStatusId));
   }
+
+  @Override
+  public Page<MentorCourseDto> findCoursesByMentorId(Long mentorId, Pageable page) {
+    return MentorCourseMapper.toMentorDtoPage(courseRepository.findCoursesByMentorId(mentorId, page));
+  }
+
 }

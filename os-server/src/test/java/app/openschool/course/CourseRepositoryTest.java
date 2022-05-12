@@ -32,6 +32,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 
 @DataJpaTest
@@ -211,5 +213,12 @@ public class CourseRepositoryTest {
     for (CourseStatus status : statusListCompleted) {
       assertTrue("COURSE STATUS ISN'T COMPLETED", !status.isInProgress());
     }
+  }
+
+  @Test
+  public void findCoursesByMentorId() {
+    Page<Course> coursePage = courseRepository.findCoursesByMentorId(
+            1L, PageRequest.of(0, 6));
+    assertEquals(6, coursePage.getSize());
   }
 }

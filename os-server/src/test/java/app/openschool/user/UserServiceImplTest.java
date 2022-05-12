@@ -11,6 +11,8 @@ import app.openschool.category.api.CategoryGenerator;
 import app.openschool.category.api.exception.CategoryNotFoundException;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
+import app.openschool.course.api.dto.MentorCourseDto;
+import app.openschool.course.api.mapper.MentorCourseMapper;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.language.Language;
@@ -242,5 +244,37 @@ class UserServiceImplTest {
     when(courseRepository.findUserCoursesByStatus(1L, 1L)).thenReturn(List.of(course));
     userService.findUserCourses(1L, 1L);
     verify(courseRepository, Mockito.times(1)).findUserCoursesByStatus(1L, 1L);
+  }
+
+  @Test
+  void findCoursesByMentorId() {
+    List<Course> courseList = new ArrayList<>();
+    Set<Keyword> keywordSet = new HashSet<>();
+
+    keywordSet.add(new Keyword("softwareEngineer"));
+
+    Difficulty difficulty = new Difficulty("medium");
+
+    Language language = new Language("language");
+    Category category = CategoryGenerator.generateCategory();
+    for (long i = 0; i < 5L; i++) {
+
+      Course course = new Course();
+      course.setId(i);
+      course.setTitle("title");
+      course.setDescription("description");
+      course.setRating(5.5);
+      course.setDueDate(LocalDate.of(2002, 2, 2));
+      course.setKeywords(keywordSet);
+      course.setCategory(category);
+      course.setDifficulty(difficulty);
+      course.setLanguage(language);
+
+      courseList.add(course);
+    }
+
+    Page<Course> coursePage = new PageImpl<>(courseList);
+    when(courseRepository.findCoursesByMentorId(1L, PageRequest.of(0, 6))).thenReturn(coursePage);
+    Assertions.assertEquals(5, userService.findCoursesByMentorId(1L, PageRequest.of(0, 6)).getTotalElements());
   }
 }
