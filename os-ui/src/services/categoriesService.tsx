@@ -8,12 +8,12 @@ class CategoriesService {
   }
 
   async getCategories(params: object = {}) {
-    const data = await fetchDataGet(this.baseUrl, params);
+    const data = await (await fetchDataGet(this.baseUrl, params)).json();
     return data;
   }
 
   async getSearchedCategories(params:object = {}) {
-    const data = await fetchDataGet(`${this.baseUrl}/subcategories`, params);
+    const data = await (await fetchDataGet(`${this.baseUrl}/subcategories`, params)).json();
     return data;
   }
 }

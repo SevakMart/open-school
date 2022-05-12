@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { sendForgotPasswordRequest } from '../../../services/sendForgotPasswordRequest';
 import { validateEmail } from '../../../helpers/EmailValidate';
+import authService from '../../../services/authService';
 import ResetPassword from '../ResetPassword/ResetPassword';
 import {
   EMAIL, FORGOT_PASSWORD, ENTER_EMAIL_FOR_VERIFICATION, SEND_CODE_NOTIFICATION,
@@ -25,7 +26,7 @@ const ForgotPassword = (
   const sendForgotPassword = () => {
     const emailError = (validateEmail(email));
     if (!emailError) {
-      sendForgotPasswordRequest(`${FORGOT_PASSWORD_URL}`, email)
+      authService.sendForgotPasswordRequest(email)
         .then((response) => {
           if (response.status === 200) {
             setSuccessMessage(response.data.message);

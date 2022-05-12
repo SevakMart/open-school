@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { sendResetPasswordRequest } from '../../../services/sendResetPasswordRequest';
 import { sendForgotPasswordRequest } from '../../../services/sendForgotPasswordRequest';
 import { validateResetPasswordForm } from '../../../helpers/ResetPasswordFormValidate';
+import authService from '../../../services/authService';
 import {
   RESET_PASSWORD_URL, FORGOT_PASSWORD_URL, RESET_PASSWORD, VERIFICATION_CODE,
   NEW_PASSWORD, CONFIRM_PASSWORD, RESEND_EMAIL,
@@ -48,19 +49,20 @@ const ResetPassword = ({ returnToSignInForm, email }:
       confirmedPasswordError,
     } = validateResetPasswordForm(formValues);
     if (!tokenError && !newPasswordError && !confirmedPasswordError) {
-      sendResetPasswordRequest(`${RESET_PASSWORD_URL}`, { token, newPassword, confirmedPassword }).then((response) => {
-        if (response.status === 200) {
-          setErrorFormValue({ tokenError: '', newPasswordError: '', confirmedPasswordError: '' });
-          setSuccessResetPasswordMessage(response.data.message);
-        } else if (response.status === 400) {
-          setErrorFormValue({ tokenError: response.data.message, newPasswordError: '', confirmedPasswordError: '' });
-        }
-      });
+      authService.sendResetPasswordRequest({ token, newPassword, confirmedPassword })
+        .then((response) => {
+          if (response.status === 200) {
+            setErrorFormValue({ tokenError: '', newPasswordError: '', confirmedPasswordError: '' });
+            setSuccessResetPasswordMessage(response.data.message);
+          } else if (response.status === 400) {
+            setErrorFormValue({ tokenError: response.data.message, newPasswordError: '', confirmedPasswordError: '' });
+          }
+        });
     } else setErrorFormValue(validateResetPasswordForm(formValues));
   };
 
   const resendEmail = () => {
-    sendForgotPasswordRequest(`${FORGOT_PASSWORD_URL}`, email)
+    authService.sendForgotPasswordRequest(email)
       .then((response) => {
         setErrorFormValue({ tokenError: '', newPasswordError: '', confirmedPasswordError: '' });
         setFormValues({ token: '', newPassword: '', confirmedPassword: '' });

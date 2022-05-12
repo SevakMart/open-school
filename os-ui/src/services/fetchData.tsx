@@ -6,9 +6,12 @@ const handleError = () => new Response(JSON.stringify({
 
 const getQueryParams = (url: string, params: object) => {
   const searchParams = new URLSearchParams();
-  (Object.keys(params) as (keyof typeof params)[])
-    .forEach((key) => searchParams.append(key, params[key]));
-  return `${url}?${searchParams.toString()}`;
+  if ((Object.keys(params) as (keyof typeof params)[]).length) {
+    (Object.keys(params) as (keyof typeof params)[])
+      .forEach((key) => searchParams.append(key, params[key]));
+    return `${url}?${searchParams.toString()}`;
+  }
+  return url;
 };
 
 const request = async (url: string, method: string, params: object = {}, token = '', body: unknown = null) => {
@@ -24,7 +27,7 @@ const request = async (url: string, method: string, params: object = {}, token =
     body: body ? JSON.stringify(body) : null,
   })
     .catch(handleError));
-  return response.json();
+  return response;
 };
 
 export const fetchDataGet = async (url: string, params: object = {}, token = '') => request(url, 'GET', params, token);

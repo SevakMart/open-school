@@ -8,12 +8,12 @@ class PublicService {
   }
 
   async getPublicCategories(params: object = {}) {
-    const data = await fetchDataGet(`${this.baseUrl}/categories`, params);
+    const data = await (await fetchDataGet(`${this.baseUrl}/categories`, params)).json();
     return data;
   }
 
   async getPublicMentors(params:object = {}) {
-    const data = await fetchDataGet(`${this.baseUrl}/users/mentors`, params);
+    const data = await (await fetchDataGet(`${this.baseUrl}/users/mentors`, params)).json();
     return data;
   }
 }
