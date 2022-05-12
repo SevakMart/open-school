@@ -6,6 +6,9 @@ export const BECOME_A_MENTOR = 'Become a mentor';
 export const SIGN_IN = 'Sign In';
 export const ALL_LEARNING_PATHS = 'All Learning Paths';
 export const MY_LEARNING_PATHS = 'My Learning Paths';
+export const ALL = 'All';
+export const IN_PROGRESS = 'InProgress';
+export const COMPLETED = 'Completed';
 
 // Header strings
 export const FREE_EDUCATIONAL_PLATFORM = 'Educational Platform';
@@ -23,6 +26,9 @@ export const GET_MAIN_CATEGORIES_URL = 'http://localhost:5000/api/v1/categories?
 export const GET_CATEGORY_SUBCATEGORY_SEARCH_URL = 'http://localhost:5000/api/v1/categories/subcategories?title=';
 export const SIGNIN_URL = 'http://localhost:5000/api/v1/auth/login';
 export const SAVE_PREFERRED_CATEGORIES = 'http://localhost:5000/api/v1/users';
+export const USER_URL = 'http://localhost:5000/api/v1/users';
+export const FORGOT_PASSWORD_URL = 'http://localhost:5000/api/v1/auth/password/forgot';
+export const RESET_PASSWORD_URL = 'http://localhost:5000/api/v1/auth/password/reset';
 
 // Error Message
 export const ERROR_MESSAGE = 'Something went wrong please refresh the page :(';
@@ -35,15 +41,41 @@ export const SUCCESSFUL_SIGNIN_MESSAGE = 'You have Successfully signed in!';
 export const fullNameRegex = /^[A-Z\s]*$/i;
 export const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+export const tokenRegex = /^[0-9]{4}$/;
 /* User’s Password should have at least 8 characters,
 including upper and lower case letters, numbers and signs (required) */
 
 // Form Validation error message
 export const INVALID_FULL_NAME_ERROR_MESSAGE = 'Invalid name or surname';
 export const INVALID_EMAIL_ERROR_MESSAGE = 'Invalid email address';
-export const INVALID_PASSWORD_ERROR_MESSAGE = 'Password should be at least 8 characters and contain at least one uppercase,lowercase,number and special character';
-export const FULL_NAME_TOO_SHORT = 'full name is too short';
-export const EMAIL_TOO_SHORT = 'email is too short';
-export const PASSWORD_TOO_SHORT = 'password is too short';
-export const PASSWORD_REQUIRED = 'password is required';
-export const EMAIL_REQUIRED = 'email is required';
+export const INVALID_PASSWORD_ERROR_MESSAGE = 'Password should be at least 8 characters and contain at least one uppercase, lowercase, number and special character';
+export const INVALID_TOKEN = 'Invalid verification code';
+export const FULL_NAME_TOO_SHORT = 'Full name is too short';
+export const EMAIL_TOO_SHORT = 'Email is too short';
+export const PASSWORD_TOO_SHORT = 'Password is too short';
+export const PASSWORD_REQUIRED = 'Password is required';
+export const EMAIL_REQUIRED = 'Email is required';
+export const TOKEN_REQUIRED = 'Verification code is required';
+export const PASSWORDS_MISMATCH = 'Passwords do not match';
+
+// Other non-specific strings
+export const NO_COURSES_YET = 'No Courses Yet';
+export const EXPLORE_COURSES = 'Explore Courses';
+export const SUGGESTED_LEARNING_PATHS = 'Suggested Learning Paths';
+export const OVERALL_PROGRESS = 'Overall Progress';
+export const REMAINING_TIME = 'Remaining Time';
+export const STATUS = 'Status';
+export const DUE_DATE = 'Due Date';
+export const RESUME_COURSE = 'Resume Course';
+export const GRADE = 'Grade';
+export const RATE_COURSE = 'Rate Course';
+export const FORGOT_PASSWORD = 'Forgot password';
+export const ENTER_EMAIL_FOR_VERIFICATION = 'Enter your email for the verification process.';
+export const SEND_CODE_NOTIFICATION = 'We will send 4 digits code to your email.';
+export const EMAIL = 'Email';
+export const CONTINUE = 'Continue';
+export const RESET_PASSWORD = 'Reset password';
+export const VERIFICATION_CODE = 'Verification code';
+export const NEW_PASSWORD = 'New Password';
+export const CONFIRM_PASSWORD = 'Confirm Password';
+export const RESEND_EMAIL = 'Resend Email';

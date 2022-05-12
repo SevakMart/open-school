@@ -1,0 +1,10 @@
+@import "../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+
+.mainContainer{
+    @include flexStyle(column,center, space-between);
+    p{
+        @include fontStyle('Montserrat',normal,500,1rem,1.5rem);
+        color:#5E617B;
+    }
+}

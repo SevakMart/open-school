@@ -4,6 +4,7 @@ import { RootState } from '../../redux/Store';
 import ProtectedRoute from './ProtectedRoute';
 import Homepage from '../../pages/Homepage/Homepage';
 import ChooseCategoryPage from '../../pages/ChooseCategoryPage/ChooseCategoryPage';
+import MyLearningPathPage from '../../pages/MyLearningPathPage/MyLearningPathPage';
 
 const AppRoutes = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
@@ -18,6 +19,14 @@ const AppRoutes = () => {
             <ChooseCategoryPage />
           </ProtectedRoute>
      )}
+      />
+      <Route
+        path="/myLearningPath"
+        element={(
+          <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
+            <MyLearningPathPage />
+          </ProtectedRoute>
+   )}
       />
     </Routes>
   );
