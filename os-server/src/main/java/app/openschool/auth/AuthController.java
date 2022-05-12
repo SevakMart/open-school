@@ -14,12 +14,8 @@ import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import io.swagger.v3.oas.annotations.Operation;
-import java.io.IOException;
 import java.util.Locale;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.context.Context;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -45,22 +43,19 @@ public class AuthController {
   private final AuthenticationManager authenticationManager;
   private final MessageSource messageSource;
   private final AuthService authService;
-  private final String hostUrl;
-  private final String authCookieMaxAge;
+  private final ITemplateEngine templateEngine;
 
   public AuthController(
       JwtTokenProvider jwtTokenProvider,
       AuthenticationManager authenticationManager,
       MessageSource messageSource,
       AuthService authService,
-      @Value("${host.url}") String hostUrl,
-      @Value("${cookie.authorization.max-age}") String authCookieMaxAge) {
+      ITemplateEngine templateEngine) {
     this.jwtTokenProvider = jwtTokenProvider;
     this.authenticationManager = authenticationManager;
     this.messageSource = messageSource;
     this.authService = authService;
-    this.hostUrl = hostUrl;
-    this.authCookieMaxAge = authCookieMaxAge;
+    this.templateEngine = templateEngine;
   }
 
   @PostMapping("/register")
@@ -91,17 +86,14 @@ public class AuthController {
     return ResponseEntity.ok().headers(jwtHeader).body(userLoginDto);
   }
 
-  @PostMapping("/account/verification")
-  public void verifyAccount(
-      @ModelAttribute VerificationToken verificationToken, HttpServletResponse response)
-      throws IOException {
+  @GetMapping("/account/verification")
+  public String verifyAccount(@ModelAttribute VerificationToken verificationToken, Locale locale) {
     User user = authService.verifyAccount(verificationToken);
-    UserPrincipal userPrincipal = new UserPrincipal(user);
-    Cookie cookie = new Cookie(JWT_TOKEN_HEADER, jwtTokenProvider.generateJwtToken(userPrincipal));
-    cookie.setPath("/");
-    cookie.setMaxAge(Integer.parseInt(authCookieMaxAge));
-    response.addCookie(cookie);
-    response.sendRedirect(hostUrl);
+    String[] args = {user.getName()};
+    String message = messageSource.getMessage("verification.success.message", args, locale);
+    Context context = new Context();
+    context.setVariable("message", message);
+    return templateEngine.process("verification-response", context);
   }
 
   @GetMapping("/{userId}/account/verification")

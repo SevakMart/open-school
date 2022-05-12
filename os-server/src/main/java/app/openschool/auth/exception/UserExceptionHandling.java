@@ -101,7 +101,7 @@ public class UserExceptionHandling implements ErrorController {
     String message = messageSource.getMessage("exception.unverified.user.message", null, locale);
     Context context = new Context();
     context.setVariable("message", message);
-    return templateEngine.process("verification-exception", context);
+    return templateEngine.process("verification-response", context);
   }
 
   private Map<String, String> getValidationErrors(
