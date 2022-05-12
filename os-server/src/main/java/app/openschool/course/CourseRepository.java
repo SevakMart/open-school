@@ -50,8 +50,10 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
       @Param(value = "userId") Long userId, @Param(value = "courseStatusId") Long courseStatusId);
 
   @Query(
-          value =
-                  "SELECT * FROM learning_path lp JOIN learning_path_mentor lpm "
-                          + "ON lp.id = lpm.learning_path_id WHERE lpm.user_id = :mentorId", nativeQuery = true)
+      value =
+          "SELECT * FROM learning_path lp JOIN learning_path_mentor lpm "
+              + "ON lp.id = lpm.learning_path_id "
+              + "WHERE lpm.user_id = :mentorId",
+      nativeQuery = true)
   Page<Course> findCoursesByMentorId(@Param(value = "mentorId") Long mentorId, Pageable page);
 }

@@ -16,22 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/mentors")
 public class MentorController {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    public MentorController(UserService userService) {
-        this.userService = userService;
-    }
+  public MentorController(UserService userService) {
+    this.userService = userService;
+  }
 
-    @GetMapping("/{mentorId}/courses")
-    @Operation(summary = "find courses by mentorID", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<Page<MentorCourseDto>> findCoursesByMentorId(Pageable pageable, @PathVariable Long mentorId) {
-        return ResponseEntity.ok(userService.findCoursesByMentorId(mentorId, pageable));
-    }
+  @GetMapping("/{mentorId}/courses")
+  @Operation(
+      summary = "find courses by mentorID",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<Page<MentorCourseDto>> findCoursesByMentorId(
+      Pageable pageable, @PathVariable Long mentorId) {
+    return ResponseEntity.ok(userService.findCoursesByMentorId(mentorId, pageable));
+  }
 
-    @GetMapping("/")
-    @Operation(summary = "find all mentors", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<Page<MentorDto>> getAllMentors(Pageable pageable) {
-        return ResponseEntity.ok(this.userService.findAllMentors(pageable));
-    }
-
+  @GetMapping("/")
+  @Operation(summary = "find all mentors", security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<Page<MentorDto>> getAllMentors(Pageable pageable) {
+    return ResponseEntity.ok(this.userService.findAllMentors(pageable));
+  }
 }

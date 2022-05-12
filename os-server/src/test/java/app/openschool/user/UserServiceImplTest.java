@@ -275,6 +275,7 @@ class UserServiceImplTest {
 
     Page<Course> coursePage = new PageImpl<>(courseList);
     when(courseRepository.findCoursesByMentorId(1L, PageRequest.of(0, 6))).thenReturn(coursePage);
-    Assertions.assertEquals(5, userService.findCoursesByMentorId(1L, PageRequest.of(0, 6)).getTotalElements());
+    Assertions.assertEquals(
+        5, userService.findCoursesByMentorId(1L, PageRequest.of(0, 6)).getTotalElements());
   }
 }

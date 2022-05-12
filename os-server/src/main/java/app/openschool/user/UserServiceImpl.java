@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Page<MentorCourseDto> findCoursesByMentorId(Long mentorId, Pageable page) {
-    return MentorCourseMapper.toMentorDtoPage(courseRepository.findCoursesByMentorId(mentorId, page));
+    return MentorCourseMapper.toMentorDtoPage(
+        courseRepository.findCoursesByMentorId(mentorId, page));
   }
-
 }
