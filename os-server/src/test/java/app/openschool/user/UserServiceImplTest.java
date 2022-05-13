@@ -248,6 +248,7 @@ class UserServiceImplTest {
 
   @Test
   void findCoursesByMentorId() {
+    final User user = UserGenerator.generateUser();
     List<Course> courseList = new ArrayList<>();
     Set<Keyword> keywordSet = new HashSet<>();
 
@@ -274,7 +275,15 @@ class UserServiceImplTest {
     }
 
     Page<Course> coursePage = new PageImpl<>(courseList);
-    when(courseRepository.findCoursesByMentorId(1L, PageRequest.of(0, 6))).thenReturn(coursePage);
+    Pageable pageable = PageRequest.of(0, 6);
+
+    when(courseRepository.findCoursesByMentorId(user.getId(), pageable)).thenReturn(coursePage);
+
+    assertThatThrownBy(() -> userService.findCoursesByMentorId(user.getId(), pageable))
+        .isInstanceOf(UserNotFoundException.class)
+        .hasMessageContaining(String.valueOf(user.getId()));
+
+    when(userRepository.findUserById(1L)).thenReturn(user);
     Assertions.assertEquals(
         5, userService.findCoursesByMentorId(1L, PageRequest.of(0, 6)).getTotalElements());
   }
