@@ -109,6 +109,11 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Page<MentorCourseDto> findCoursesByMentorId(Long mentorId, Pageable page) {
+
+    User user = userRepository.findUserById(mentorId);
+    if (user == null) {
+      throw new UserNotFoundException(String.valueOf(mentorId));
+    }
     return MentorCourseMapper.toMentorDtoPage(
         courseRepository.findCoursesByMentorId(mentorId, page));
   }
