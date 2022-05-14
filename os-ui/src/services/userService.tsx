@@ -18,7 +18,7 @@ class UserService {
   }
 
   async getMentors(params:object = {}) {
-    const data = await (await fetchDataGet(`${this.baseUrl}/users/mentors`, params)).json();
+    const data = await (await fetchDataGet(`${this.baseUrl}/mentors`, params)).json();
     return data;
   }
 

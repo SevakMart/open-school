@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/Store';
 import HomepageHeader from '../../component/HomepageHeader/HomepageHeader';
 import Footer from '../../component/Footer/Footer';
 import Button from '../../component/Button/Button';
@@ -10,10 +12,13 @@ import styles from './Homepage.module.scss';
 import { MentorType } from '../../types/MentorType';
 import { CategoryType } from '../../types/CategoryType';
 import publicServices from '../../services/publicService';
+import userService from '../../services/userService';
+import categoriesService from '../../services/categoriesService';
 import SignUp from '../../component/SignUp/SignUp';
 import SignIn from '../../component/SignIn/SignIn';
 
 const Homepage = () => {
+  const userInfo = useSelector<RootState>((state) => state.userInfo);
   const [mentors, setMentors] = useState<MentorType[]>([]);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [page, setPage] = useState(0);
@@ -47,23 +52,33 @@ const Homepage = () => {
   useEffect(() => {
     let cancel = false;
     if (listType === 'Mentor' || listType === '') {
-      publicServices.getPublicMentors({ page, size: 4 })
-        .then((data) => {
-          if (cancel) return;
-          if (!data.errorMessage && data.content.length > 0) {
-            setMentors(data.content);
-            setMaxPage(data.totalPages - 1);
-          } else if (data.errorMessage) setErrorMessage(data.errorMessage);
-        });
-    } if (listType === 'Category' || listType === '') {
-      publicServices.getPublicCategories({ page: categoryPage, size: 6 })
-        .then((data) => {
-          if (cancel) return;
-          if (!data.errorMessage && data.content.length > 0) {
-            setCategories(data.content);
-            setMaxCategoryPage(data.totalPages - 1);
-          } else if (data.errorMessage) setErrorMessage(data.errorMessage);
-        });
+      let mentorPromise;
+
+      if ((userInfo as any).token)mentorPromise = userService.getMentors({ page, size: 4 });
+      else mentorPromise = publicServices.getPublicMentors({ page, size: 4 });
+
+      mentorPromise.then((data) => {
+        if (cancel) return;
+        if (!data.errorMessage && data.content.length > 0) {
+          setMentors(data.content);
+          setMaxPage(data.totalPages - 1);
+        } else if (data.errorMessage) setErrorMessage(data.errorMessage);
+      });
+    }
+    if (listType === 'Category' || listType === '') {
+      let categoryPromise;
+
+      if ((userInfo as any).token) {
+        categoryPromise = categoriesService.getCategories({ page: categoryPage, size: 6 });
+      } else categoryPromise = publicServices.getPublicCategories({ page: categoryPage, size: 6 });
+
+      categoryPromise.then((data) => {
+        if (cancel) return;
+        if (!data.errorMessage && data.content.length > 0) {
+          setCategories(data.content);
+          setMaxCategoryPage(data.totalPages - 1);
+        } else if (data.errorMessage) setErrorMessage(data.errorMessage);
+      });
     }
     // The return is to prevent memory leackage
     return () => { cancel = true; };

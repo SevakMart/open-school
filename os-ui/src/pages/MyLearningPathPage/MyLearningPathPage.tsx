@@ -48,7 +48,6 @@ const MyLearningPathPage = () => {
     }
     switch (activeNavType) {
       case LearningPathNav.All:
-        console.log(userInfo);
         userService.getUserCourses((userInfo as any).id, (userInfo as any).token)
           .then((data) => {
             if (cancel) return;
