@@ -1,11 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { sendResetPasswordRequest } from '../../../services/sendResetPasswordRequest';
-import { sendForgotPasswordRequest } from '../../../services/sendForgotPasswordRequest';
 import { validateResetPasswordForm } from '../../../helpers/ResetPasswordFormValidate';
 import authService from '../../../services/authService';
 import {
-  RESET_PASSWORD_URL, FORGOT_PASSWORD_URL, RESET_PASSWORD, VERIFICATION_CODE,
-  NEW_PASSWORD, CONFIRM_PASSWORD, RESEND_EMAIL,
+  RESET_PASSWORD, VERIFICATION_CODE, NEW_PASSWORD, CONFIRM_PASSWORD, RESEND_EMAIL,
 } from '../../../constants/Strings';
 import VisibileIcon from '../../../icons/Visibility';
 import HiddenIcon from '../../../icons/Hidden';

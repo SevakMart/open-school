@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../redux/Store';
 import SignIn from '../SignIn';
-import * as signInForm from '../../../services/signIn';
+/* import * as signInForm from '../../../services/signIn';
 
 const loggedInUserData = {
   name: 'John Smith',
@@ -85,4 +85,4 @@ describe('Create tests for sign up form', () => {
     expect(SigninErrorMessageHeader).toBeInTheDocument();
     expect(SigninErrorMessageHeader).toHaveTextContent('Invalid email or password');
   });
-});
+}); */

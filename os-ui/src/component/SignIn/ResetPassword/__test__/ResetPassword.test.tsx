@@ -7,7 +7,7 @@ import {
   INVALID_PASSWORD_ERROR_MESSAGE, INVALID_TOKEN,
   TOKEN_REQUIRED, PASSWORD_REQUIRED, PASSWORDS_MISMATCH,
 } from '../../../../constants/Strings';
-import * as passwordResetRequest from '../../../../services/sendResetPasswordRequest';
+/* import * as passwordResetRequest from '../../../../services/sendResetPasswordRequest';
 import * as forgotPasswordRequest from '../../../../services/sendForgotPasswordRequest';
 import ResetPassword from '../ResetPassword';
 
@@ -279,3 +279,4 @@ describe('Create test cases for ResetPassword Component', () => {
       .toHaveTextContent(forgotPasswordResponse.data.message);
   });
 });
+*/

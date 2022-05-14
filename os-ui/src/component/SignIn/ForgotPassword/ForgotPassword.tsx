@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { sendForgotPasswordRequest } from '../../../services/sendForgotPasswordRequest';
 import { validateEmail } from '../../../helpers/EmailValidate';
 import authService from '../../../services/authService';
 import ResetPassword from '../ResetPassword/ResetPassword';
 import {
   EMAIL, FORGOT_PASSWORD, ENTER_EMAIL_FOR_VERIFICATION, SEND_CODE_NOTIFICATION,
-  CONTINUE, FORGOT_PASSWORD_URL,
+  CONTINUE,
 } from '../../../constants/Strings';
 import CloseIcon from '../../../icons/Close';
 import styles from './ForgotPassword.module.scss';

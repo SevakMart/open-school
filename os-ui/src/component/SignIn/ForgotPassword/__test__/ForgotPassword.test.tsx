@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../../redux/Store';
 import { EMAIL_REQUIRED, INVALID_EMAIL_ERROR_MESSAGE } from '../../../../constants/Strings';
-import * as forgotPasswordRequest from '../../../../services/sendForgotPasswordRequest';
+/* import * as forgotPasswordRequest from '../../../../services/sendForgotPasswordRequest';
 import ForgotPassword from '../ForgotPassword';
 
 const successData = {
@@ -105,3 +105,4 @@ describe('Create test cases for ForgotPassword component', () => {
     expect(emailErrorForgotPasswordElement).toHaveTextContent(failedData.data.message);
   });
 });
+*/

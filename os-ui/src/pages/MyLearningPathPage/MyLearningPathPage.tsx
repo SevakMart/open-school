@@ -7,11 +7,10 @@ import InProgressCourse from './Subcomponents/InProgressCourse/InProgressCourse'
 import CompletedCourse from './Subcomponents/CompletedCourse/CompledtedCourse';
 import LearningPath from '../../component/LearningPath/LearningPath';
 import {
-  MY_LEARNING_PATHS, ALL, IN_PROGRESS, COMPLETED, USER_URL,
+  MY_LEARNING_PATHS, ALL, IN_PROGRESS, COMPLETED,
   SUGGESTED_LEARNING_PATHS, EXPLORE_COURSES,
 } from '../../constants/Strings';
-/* import { getUserCourses } from '../../services/getUserCourses';
-import { getSuggestedCourses } from '../../services/getSuggestedCourses'; */
+import userService from '../../services/userService';
 import { UserCourseType } from '../../types/UserCourseType';
 import { SuggestedCourseType } from '../../types/SuggestedCourseType';
 import styles from './MyLearningPathPage.module.scss';
@@ -36,10 +35,10 @@ const MyLearningPathPage = () => {
     setActiveNavType((e.target as HTMLParagraphElement).dataset.testid as any);
   };
 
-  /* useEffect(() => {
+  useEffect(() => {
     let cancel = false;
     if (!suggestedCourses.length) {
-      getSuggestedCourses(`${USER_URL}/${(userInfo as any).id}/courses/suggested`)
+      userService.getSuggestedCourses((userInfo as any).id, (userInfo as any).token)
         .then((data) => {
           if (cancel) return;
           if (!data.errorMessage) {
@@ -49,7 +48,8 @@ const MyLearningPathPage = () => {
     }
     switch (activeNavType) {
       case LearningPathNav.All:
-        getUserCourses(`${USER_URL}/${(userInfo as any).id}/courses`)
+        console.log(userInfo);
+        userService.getUserCourses((userInfo as any).id, (userInfo as any).token)
           .then((data) => {
             if (cancel) return;
             if (!data.errorMessage) {
@@ -58,7 +58,11 @@ const MyLearningPathPage = () => {
           });
         break;
       case LearningPathNav.InProgress:
-        getUserCourses(`${USER_URL}/${(userInfo as any).id}/courses?courseStatusId=1`)
+        userService.getUserCourses(
+          (userInfo as any).id,
+          (userInfo as any).token,
+          { courseStatusId: 1 },
+        )
           .then((data) => {
             if (cancel) return;
             if (!data.errorMessage) {
@@ -67,7 +71,11 @@ const MyLearningPathPage = () => {
           });
         break;
       case LearningPathNav.Completed:
-        getUserCourses(`${USER_URL}/${(userInfo as any).id}/courses?courseStatusId=2`)
+        userService.getUserCourses(
+          (userInfo as any).id,
+          (userInfo as any).token,
+          { courseStatusId: 2 },
+        )
           .then((data) => {
             if (cancel) return;
             if (!data.errorMessage) {
@@ -77,7 +85,7 @@ const MyLearningPathPage = () => {
         break;
     }
     return () => { cancel = true; };
-  }, [activeNavType]); */
+  }, [activeNavType]);
   return (
     <>
       <NavbarOnSignIn />
