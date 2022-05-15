@@ -1,19 +1,19 @@
-import { fetchDataGet } from './fetchData';
+import fetchService from './fetchData';
 
 class CategoriesService {
-  readonly baseUrl: string;
+  readonly basePath: string;
 
   constructor() {
-    this.baseUrl = '/api/v1/categories';
+    this.basePath = '/categories';
   }
 
   async getCategories(params: object = {}) {
-    const data = await (await fetchDataGet(this.baseUrl, params)).json();
+    const data = await (await fetchService.get(this.basePath, params)).json();
     return data;
   }
 
   async getSearchedCategories(params:object = {}) {
-    const data = await (await fetchDataGet(`${this.baseUrl}/subcategories`, params)).json();
+    const data = await (await fetchService.get(`${this.basePath}/subcategories`, params)).json();
     return data;
   }
 }

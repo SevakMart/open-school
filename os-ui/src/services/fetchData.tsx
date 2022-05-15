@@ -1,34 +1,18 @@
-import { ERROR_MESSAGE } from '../constants/Strings';
+import { request } from './requestService';
 
-const handleError = () => new Response(JSON.stringify({
-  errorMessage: ERROR_MESSAGE,
-}));
+class FetchService {
+  readonly baseUrl: string;
 
-const getQueryParams = (url: string, params: object) => {
-  const searchParams = new URLSearchParams();
-  if ((Object.keys(params) as (keyof typeof params)[]).length) {
-    (Object.keys(params) as (keyof typeof params)[])
-      .forEach((key) => searchParams.append(key, params[key]));
-    return `${url}?${searchParams.toString()}`;
+  constructor() {
+    this.baseUrl = '/api/v1';
   }
-  return url;
-};
 
-const request = async (url: string, method: string, params: object = {}, token = '', body: unknown = null) => {
-  const urlWithParams = getQueryParams(url, params);
+  async get(path: string, params: object = {}, token = '') {
+    return request(`${this.baseUrl}/${path}`, 'GET', params, token);
+  }
 
-  const response = await (fetch(urlWithParams.toString(), {
-    method,
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: body ? JSON.stringify(body) : null,
-  })
-    .catch(handleError));
-  return response;
-};
-
-export const fetchDataGet = async (url: string, params: object = {}, token = '') => request(url, 'GET', params, token);
-export const fetchDataPost = async (url: string, body: unknown, params: object, token = '') => request(url, 'POST', params, token, body);
+  async post(path: string, body: unknown, params: object, token = '') {
+    return request(`${this.baseUrl}/${path}`, 'POST', params, token, body);
+  }
+}
+export default new FetchService();

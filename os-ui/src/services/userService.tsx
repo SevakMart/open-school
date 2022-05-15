@@ -1,29 +1,29 @@
-import { fetchDataPost, fetchDataGet } from './fetchData';
+import fetchService from './fetchData';
 
 class UserService {
-  readonly baseUrl: string;
+  readonly basePath: string;
 
   constructor() {
-    this.baseUrl = '/api/v1/users';
+    this.basePath = '/users';
   }
 
   async getUserCourses(userId:number, userToken:string, params = {}) {
-    const data = await (await fetchDataGet(`${this.baseUrl}/${userId}/courses`, params, userToken)).json();
+    const data = await (await fetchService.get(`${this.basePath}/${userId}/courses`, params, userToken)).json();
     return data;
   }
 
   async getSuggestedCourses(userId:number, userToken:string) {
-    const data = await (await fetchDataGet(`${this.baseUrl}/${userId}/courses/suggested`, {}, userToken)).json();
+    const data = await (await fetchService.get(`${this.basePath}/${userId}/courses/suggested`, {}, userToken)).json();
     return data;
   }
 
   async getMentors(params:object = {}) {
-    const data = await (await fetchDataGet(`${this.baseUrl}/mentors`, params)).json();
+    const data = await (await fetchService.get(`${this.basePath}/mentors`, params)).json();
     return data;
   }
 
   async savePreferredCategories(userId:number, userToken:string, content:Array<number>) {
-    const data = await (await fetchDataPost(`${this.baseUrl}/${userId}/categories`, content, {}, userToken)).json();
+    const data = await (await fetchService.post(`${this.basePath}/${userId}/categories`, content, {}, userToken)).json();
     return data;
   }
 }

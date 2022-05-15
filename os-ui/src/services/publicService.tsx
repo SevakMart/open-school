@@ -1,19 +1,19 @@
-import { fetchDataGet } from './fetchData';
+import fetchService from './fetchData';
 
 class PublicService {
-  readonly baseUrl: string;
+  readonly basePath: string;
 
   constructor() {
-    this.baseUrl = '/api/v1/public';
+    this.basePath = '/public';
   }
 
   async getPublicCategories(params: object = {}) {
-    const data = await (await fetchDataGet(`${this.baseUrl}/categories`, params)).json();
+    const data = await (await fetchService.get(`${this.basePath}/categories`, params)).json();
     return data;
   }
 
   async getPublicMentors(params:object = {}) {
-    const data = await (await fetchDataGet(`${this.baseUrl}/users/mentors`, params)).json();
+    const data = await (await fetchService.get(`${this.basePath}/users/mentors`, params)).json();
     return data;
   }
 }

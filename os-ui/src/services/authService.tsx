@@ -1,21 +1,21 @@
-import { fetchDataPost } from './fetchData';
+import fetchService from './fetchData';
 import { RegistrationFormType } from '../types/RegistartionFormType';
 import { ResetPasswordType } from '../types/ResetPasswordType';
 
 class AuthService {
-  readonly baseUrl: string;
+  readonly basePath: string;
 
   constructor() {
-    this.baseUrl = '/api/v1/auth';
+    this.basePath = '/auth';
   }
 
   async register(content:RegistrationFormType) {
-    const data = await (await fetchDataPost(`${this.baseUrl}/register`, content, {})).json();
+    const data = await (await fetchService.post(`${this.basePath}/register`, content, {})).json();
     return data;
   }
 
   async signIn(content:Omit<RegistrationFormType, 'firstName'>) {
-    const response = await fetchDataPost(`${this.baseUrl}/login`, content, {});
+    const response = await fetchService.post(`${this.basePath}/login`, content, {});
     const { status, headers } = response;
     const data = await response.json();
     const FullTokenResponse = headers.get('Authorization');
@@ -26,14 +26,14 @@ class AuthService {
   }
 
   async sendForgotPasswordRequest(content:string) {
-    const response = await fetchDataPost(`${this.baseUrl}/password/forgot`, content, {});
+    const response = await fetchService.post(`${this.basePath}/password/forgot`, content, {});
     const { status } = response;
     const data = await response.json();
     return { data, status };
   }
 
   async sendResetPasswordRequest(content:ResetPasswordType) {
-    const response = await fetchDataPost(`${this.baseUrl}/password/reset`, content, {});
+    const response = await fetchService.post(`${this.basePath}/password/reset`, content, {});
     const { status } = response;
     const data = await response.json();
     return { data, status };
