@@ -3,23 +3,28 @@ package app.openschool.auth;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
-import app.openschool.auth.dto.ResetPasswordRequest;
-import app.openschool.auth.dto.UserLoginDto;
-import app.openschool.auth.dto.UserLoginRequest;
-import app.openschool.auth.dto.UserRegistrationDto;
-import app.openschool.auth.dto.UserRegistrationHttpResponse;
+import app.openschool.auth.api.dto.ResetPasswordRequest;
+import app.openschool.auth.api.dto.UserLoginDto;
+import app.openschool.auth.api.dto.UserLoginRequest;
+import app.openschool.auth.api.dto.UserRegistrationDto;
+import app.openschool.auth.api.dto.UserRegistrationHttpResponse;
+import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.common.response.ResponseMessage;
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.Locale;
+import java.util.Optional;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,16 +42,19 @@ public class AuthController {
   private final AuthenticationManager authenticationManager;
   private final MessageSource messageSource;
   private final AuthService authService;
+  private final Integer tokenExpirationAfterMinutes;
 
   public AuthController(
       JwtTokenProvider jwtTokenProvider,
       AuthenticationManager authenticationManager,
       MessageSource messageSource,
-      AuthService authService) {
+      AuthService authService,
+      @Value("${token.expiration}") Integer tokenExpirationAfterMinutes) {
     this.jwtTokenProvider = jwtTokenProvider;
     this.authenticationManager = authenticationManager;
     this.messageSource = messageSource;
     this.authService = authService;
+    this.tokenExpirationAfterMinutes = tokenExpirationAfterMinutes;
   }
 
   @PostMapping("/register")
@@ -91,7 +99,16 @@ public class AuthController {
   @PostMapping("/password/forgot")
   @Operation(summary = "send token to given email")
   public ResponseEntity<ResponseMessage> forgotPassword(@RequestBody String email, Locale locale) {
-    authService.updateResetPasswordToken(email);
+    Optional<User> optionalUser = authService.findByEmail(email);
+    if (optionalUser.isEmpty()) {
+      String[] args = {email};
+      return ResponseEntity.badRequest()
+          .body(
+              new ResponseMessage(
+                  messageSource.getMessage(
+                      "exception.nonexistent.user.email.message", args, locale)));
+    }
+    authService.updateResetPasswordToken(email, optionalUser.get());
     return ResponseEntity.status(OK)
         .body(
             new ResponseMessage(
@@ -100,9 +117,28 @@ public class AuthController {
 
   @PostMapping("/password/reset")
   @Operation(summary = "reset password")
-  public ResponseEntity<ResponseMessage> resetPassword(
-      @Valid @RequestBody ResetPasswordRequest request, Locale locale) {
-    authService.resetPassword(request);
+  public ResponseEntity<?> resetPassword(
+      @Valid @RequestBody ResetPasswordRequest request,
+      BindingResult bindingResult,
+      Locale locale) {
+    if (bindingResult.hasErrors()) {
+      return ResponseEntity.badRequest()
+          .body(
+              bindingResult.getAllErrors().stream()
+                  .map(DefaultMessageSourceResolvable::getDefaultMessage));
+    }
+    Optional<ResetPasswordToken> optionalResetPasswordToken =
+        authService.findByToken(request.getToken());
+    if (optionalResetPasswordToken.isEmpty()) {
+      return ResponseEntity.badRequest()
+          .body(new ResponseMessage(messageSource.getMessage("token.not.valid", null, locale)));
+    }
+    ResetPasswordToken resetPasswordToken = optionalResetPasswordToken.get();
+    if (resetPasswordToken.isExpired(tokenExpirationAfterMinutes)) {
+      return ResponseEntity.badRequest()
+          .body(new ResponseMessage(messageSource.getMessage("token.expired", null, locale)));
+    }
+    authService.resetPassword(request, resetPasswordToken);
     return ResponseEntity.status(OK)
         .body(
             new ResponseMessage(

@@ -1,4 +1,4 @@
-package app.openschool.auth.exception;
+package app.openschool.auth.api.exception;
 
 import org.springframework.security.authentication.BadCredentialsException;
 

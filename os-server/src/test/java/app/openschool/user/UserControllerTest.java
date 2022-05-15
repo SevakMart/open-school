@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import app.openschool.course.api.dto.CourseDto;
-import app.openschool.course.api.dto.UserCourseDto;
+import app.openschool.course.api.dto.UserEnrolledCourseDto;
 import app.openschool.user.api.UserGenerator;
 import app.openschool.user.api.dto.MentorDto;
 import app.openschool.user.api.mapper.MentorMapper;
@@ -65,11 +65,11 @@ class UserControllerTest {
   }
 
   @Test
-  void findUserCourses() throws Exception {
-    List<UserCourseDto> userCourseDtoList = new ArrayList<>();
-    when(userService.findUserCourses(1L, null)).thenReturn(userCourseDtoList);
+  void findEnrolledUserCourses() throws Exception {
+    List<UserEnrolledCourseDto> userEnrolledCourseDtoList = new ArrayList<>();
+    when(userService.findUserEnrolledCourses(1L, null)).thenReturn(userEnrolledCourseDtoList);
     mockMvc
-        .perform(get("/users/1/courses").contentType(APPLICATION_JSON))
+        .perform(get("/users/1/courses/enrolled").contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
   }
 

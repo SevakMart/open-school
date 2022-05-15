@@ -1,4 +1,4 @@
-package app.openschool.auth.dto;
+package app.openschool.auth.api.dto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

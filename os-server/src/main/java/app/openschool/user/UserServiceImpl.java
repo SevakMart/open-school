@@ -7,10 +7,11 @@ import app.openschool.category.api.exception.CategoryNotFoundException;
 import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
+import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.api.dto.CourseDto;
-import app.openschool.course.api.dto.UserCourseDto;
+import app.openschool.course.api.dto.UserEnrolledCourseDto;
 import app.openschool.course.api.mapper.CourseMapper;
-import app.openschool.course.api.mapper.UserCourseMapper;
+import app.openschool.course.api.mapper.UserEnrolledCourseMapper;
 import app.openschool.user.api.dto.MentorDto;
 import app.openschool.user.api.exception.UserNotFoundException;
 import app.openschool.user.api.mapper.MentorMapper;
@@ -30,14 +31,17 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final CategoryRepository categoryRepository;
   private final CourseRepository courseRepository;
+  private final EnrolledCourseRepository enrolledCourseRepository;
 
   public UserServiceImpl(
       UserRepository userRepository,
       CategoryRepository categoryRepository,
-      CourseRepository courseRepository) {
+      CourseRepository courseRepository,
+      EnrolledCourseRepository enrolledCourseRepository) {
     this.userRepository = userRepository;
     this.categoryRepository = categoryRepository;
     this.courseRepository = courseRepository;
+    this.enrolledCourseRepository = enrolledCourseRepository;
   }
 
   @Override
@@ -96,11 +100,12 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<UserCourseDto> findUserCourses(Long userId, Long courseStatusId) {
+  public List<UserEnrolledCourseDto> findUserEnrolledCourses(Long userId, Long courseStatusId) {
     if (courseStatusId == null) {
-      return UserCourseMapper.toUserCourseDtoList(courseRepository.findAllUserCourses(userId));
+      return UserEnrolledCourseMapper.toUserEnrolledCourseDtoList(
+          enrolledCourseRepository.findAllUserEnrolledCourses(userId));
     }
-    return UserCourseMapper.toUserCourseDtoList(
-        courseRepository.findUserCoursesByStatus(userId, courseStatusId));
+    return UserEnrolledCourseMapper.toUserEnrolledCourseDtoList(
+        enrolledCourseRepository.findUserEnrolledCoursesByStatus(userId, courseStatusId));
   }
 }

@@ -1,6 +1,6 @@
 package app.openschool.course.status;
 
-import app.openschool.course.Course;
+import app.openschool.course.EnrolledCourse;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +22,7 @@ public class CourseStatus {
   private String type;
 
   @OneToMany(mappedBy = "courseStatus")
-  private Set<Course> courses;
+  private Set<EnrolledCourse> enrolledCourses;
 
   public CourseStatus() {}
 
@@ -30,11 +30,10 @@ public class CourseStatus {
     this.type = type;
   }
 
-  public CourseStatus(
-      Long id, String type, Set<Course> courses) {
+  public CourseStatus(Long id, String type, Set<EnrolledCourse> enrolledCourses) {
     this.id = id;
     this.type = type;
-    this.courses = courses;
+    this.enrolledCourses = enrolledCourses;
   }
 
   public boolean isInProgress() {
@@ -57,11 +56,11 @@ public class CourseStatus {
     this.type = type;
   }
 
-  public Set<Course> getCourses() {
-    return courses;
+  public Set<EnrolledCourse> getEnrolledCourses() {
+    return enrolledCourses;
   }
 
-  public void setCourses(Set<Course> courses) {
-    this.courses = courses;
+  public void setEnrolledCourses(Set<EnrolledCourse> enrolledCourses) {
+    this.enrolledCourses = enrolledCourses;
   }
 }
