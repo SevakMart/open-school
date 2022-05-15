@@ -3,8 +3,8 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../redux/Store';
+import authService from '../../../services/authService';
 import SignUp from '../SignUp';
-/* import * as submitForm from '../../../services/register';
 
 describe('Create tests for sign up form', () => {
   test('Create a snapshot test', () => {
@@ -28,7 +28,7 @@ describe('Create tests for sign up form', () => {
   });
   test('Test if successful sign up message appear after clicking sign up button', async () => {
     expect.hasAssertions();
-    jest.spyOn(submitForm, 'register').mockResolvedValue({ message: 'You have successfully signed up!' });
+    jest.spyOn(authService, 'register').mockResolvedValue({ message: 'You have successfully signed up!' });
     render(
       <Provider store={store}>
         <SignUp handleSignUpClicks={() => null} />
@@ -53,4 +53,3 @@ describe('Create tests for sign up form', () => {
     expect(signUpButton).not.toBeInTheDocument();
   });
 });
-*/

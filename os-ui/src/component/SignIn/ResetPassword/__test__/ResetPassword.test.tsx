@@ -7,9 +7,8 @@ import {
   INVALID_PASSWORD_ERROR_MESSAGE, INVALID_TOKEN,
   TOKEN_REQUIRED, PASSWORD_REQUIRED, PASSWORDS_MISMATCH,
 } from '../../../../constants/Strings';
-/* import * as passwordResetRequest from '../../../../services/sendResetPasswordRequest';
-import * as forgotPasswordRequest from '../../../../services/sendForgotPasswordRequest';
 import ResetPassword from '../ResetPassword';
+import authService from '../../../../services/authService';
 
 const successData = {
   data: {
@@ -204,7 +203,7 @@ describe('Create test cases for ResetPassword Component', () => {
   });
   test('Create a test case that shows a successful password reset', async () => {
     expect.hasAssertions();
-    jest.spyOn(passwordResetRequest, 'sendResetPasswordRequest').mockResolvedValue(successData);
+    jest.spyOn(authService, 'sendResetPasswordRequest').mockResolvedValue(successData);
 
     render(
       <Provider store={store}>
@@ -233,7 +232,7 @@ describe('Create test cases for ResetPassword Component', () => {
 
   test('Create a test case that shows a failed password reset', async () => {
     expect.hasAssertions();
-    jest.spyOn(passwordResetRequest, 'sendResetPasswordRequest').mockResolvedValue(failedData);
+    jest.spyOn(authService, 'sendResetPasswordRequest').mockResolvedValue(failedData);
 
     render(
       <Provider store={store}>
@@ -260,7 +259,7 @@ describe('Create test cases for ResetPassword Component', () => {
   });
   test('Show a message after clicking on resend email', async () => {
     expect.hasAssertions();
-    jest.spyOn(forgotPasswordRequest, 'sendForgotPasswordRequest').mockResolvedValue(forgotPasswordResponse);
+    jest.spyOn(authService, 'sendForgotPasswordRequest').mockResolvedValue(forgotPasswordResponse);
     render(
       <Provider store={store}>
         <ResetPassword
@@ -279,4 +278,3 @@ describe('Create test cases for ResetPassword Component', () => {
       .toHaveTextContent(forgotPasswordResponse.data.message);
   });
 });
-*/

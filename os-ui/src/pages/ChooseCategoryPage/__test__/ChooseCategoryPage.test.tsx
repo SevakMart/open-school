@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import ChooseCategoryPage from '../ChooseCategoryPage';
 import { EMPTY_DATA_ERROR_MESSAGE } from '../../../constants/Strings';
 import { store } from '../../../redux/Store';
-// import * as fetchSubcategories from '../../../services/getSearchedCategories';
+import categoriesService from '../../../services/categoriesService';
 
 const mockUseNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -42,7 +42,7 @@ const data = {
   ],
 };
 
-/* describe('Create test case to ChooSecategoryPage', () => {
+describe('Create test case to ChooSecategoryPage', () => {
   test('Create a snapshot test', async () => {
     const { asFragment } = render(
       <Provider store={store}>
@@ -52,7 +52,7 @@ const data = {
     expect(asFragment).toMatchSnapshot();
   });
   test('Check the content of the component', async () => {
-    jest.spyOn(fetchSubcategories, 'getSearchedCategories').mockResolvedValue(data);
+    jest.spyOn(categoriesService, 'getSearchedCategories').mockResolvedValue(data);
     expect.hasAssertions();
     render(
       <Provider store={store}>
@@ -74,7 +74,7 @@ const data = {
     expect(labelElement2).toHaveTextContent('Python Functions');
   });
   test('Test the output of page when the searched data is not found', async () => {
-    jest.spyOn(fetchSubcategories, 'getSearchedCategories').mockResolvedValue({});
+    jest.spyOn(categoriesService, 'getSearchedCategories').mockResolvedValue({});
     expect.hasAssertions();
     render(
       <Provider store={store}>
@@ -85,4 +85,4 @@ const data = {
     expect(errorMessageHeader).toBeInTheDocument();
     expect(errorMessageHeader).toHaveTextContent(EMPTY_DATA_ERROR_MESSAGE);
   });
-}); */
+});

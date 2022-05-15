@@ -2,8 +2,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { store } from '../../../redux/Store';
-/* import * as fetchUserCourses from '../../../services/getUserCourses';
-import * as suggestedCourses from '../../../services/getSuggestedCourses';
+import userService from '../../../services/userService';
 import MyLearningPathPage from '../MyLearningPathPage';
 
 const userAllCourseData = [
@@ -54,8 +53,8 @@ describe('Create test case for Learning path component', () => {
   });
   test('Check if the content is displayed as expected', async () => {
     expect.hasAssertions();
-    jest.spyOn(fetchUserCourses, 'getUserCourses').mockResolvedValue(userAllCourseData);
-    jest.spyOn(suggestedCourses, 'getSuggestedCourses').mockResolvedValue(suggestedCourse);
+    jest.spyOn(userService, 'getUserCourses').mockResolvedValue(userAllCourseData);
+    jest.spyOn(userService, 'getSuggestedCourses').mockResolvedValue(suggestedCourse);
     render(<Provider store={store}><MyLearningPathPage /></Provider>);
 
     const courseTitleElement1 = await screen.findByTestId('React js');
@@ -80,8 +79,8 @@ describe('Create test case for Learning path component', () => {
   });
   test('Check if the no course component is displayed when the yser does not have courses yet', async () => {
     expect.hasAssertions();
-    jest.spyOn(fetchUserCourses, 'getUserCourses').mockResolvedValue([]);
-    jest.spyOn(suggestedCourses, 'getSuggestedCourses').mockResolvedValue(suggestedCourse);
+    jest.spyOn(userService, 'getUserCourses').mockResolvedValue([]);
+    jest.spyOn(userService, 'getSuggestedCourses').mockResolvedValue(suggestedCourse);
     render(<Provider store={store}><MyLearningPathPage /></Provider>);
 
     const noCourseParagraphElement = await screen.findByTestId('No courses yet');
@@ -90,4 +89,3 @@ describe('Create test case for Learning path component', () => {
     expect(noCourseParagraphElement).toHaveTextContent('No Courses Yet');
   });
 });
-*/

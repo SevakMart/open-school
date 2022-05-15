@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../../redux/Store';
 import Homepage from '../Homepage';
-/* import * as fetchCategory from '../../../services/getCategories';
-import * as fetchMentor from '../../../services/getMentors';
+import publicService from '../../../services/publicService';
 
 const categoryData1 = {
   content: [
@@ -82,37 +83,56 @@ const mentorData1 = {
 
 describe('Create several unit tests for Homepage Component', () => {
   test('Create a Snapshot test', () => {
-    const { asFragment } = render(<Homepage />);
+    const { asFragment } = render(
+      <Provider store={store}>
+        <Homepage />
+      </Provider>,
+    );
     expect(asFragment()).toMatchSnapshot();
   });
-  test('Test Fetching Categories list from database', async () => {
-    jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue(mentorData1);
-    jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue(categoryData1);
-    render(<Homepage />);
+  test('Test Fetching Categories list from database when not signed in', async () => {
+    jest.spyOn(publicService, 'getPublicMentors').mockResolvedValue(mentorData1);
+    jest.spyOn(publicService, 'getPublicCategories').mockResolvedValue(categoryData1);
+    render(
+      <Provider store={store}>
+        <Homepage />
+      </Provider>,
+    );
     const categoryTitle = await screen.findByTestId('JavaScript');
     expect(categoryTitle).toBeInTheDocument();
   });
   test('Test fetching empty Categories list', async () => {
-    jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue(mentorData1);
-    jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue({ content: [], totalPages: 0 });
-    render(<Homepage />);
+    jest.spyOn(publicService, 'getPublicMentors').mockResolvedValue(mentorData1);
+    jest.spyOn(publicService, 'getPublicCategories').mockResolvedValue({ content: [], totalPages: 0 });
+    render(
+      <Provider store={store}>
+        <Homepage />
+      </Provider>,
+    );
     const emptyCategoryHeading = await screen.findByTestId('emptyCategoryMessage');
     expect(emptyCategoryHeading).toBeInTheDocument();
   });
 
   test('Test Fetching Mentors list from database', async () => {
-    jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue(mentorData1);
-    jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue(categoryData1);
-    render(<Homepage />);
+    jest.spyOn(publicService, 'getPublicMentors').mockResolvedValue(mentorData1);
+    jest.spyOn(publicService, 'getPublicCategories').mockResolvedValue(categoryData1);
+    render(
+      <Provider store={store}>
+        <Homepage />
+      </Provider>,
+    );
     const mentorName = await screen.findByTestId('John Smith');
     expect(mentorName).toBeInTheDocument();
   });
   test('Test fetching empty mentors list', async () => {
-    jest.spyOn(fetchMentor, 'getMentors').mockResolvedValue({ content: [], totalPages: 0 });
-    jest.spyOn(fetchCategory, 'getCategories').mockResolvedValue(categoryData1);
-    render(<Homepage />);
+    jest.spyOn(publicService, 'getPublicMentors').mockResolvedValue({ content: [], totalPages: 0 });
+    jest.spyOn(publicService, 'getPublicCategories').mockResolvedValue(categoryData1);
+    render(
+      <Provider store={store}>
+        <Homepage />
+      </Provider>,
+    );
     const emptyMentorHeading = await screen.findByTestId('emptyMentorMessage');
     expect(emptyMentorHeading).toBeInTheDocument();
   });
 });
-*/

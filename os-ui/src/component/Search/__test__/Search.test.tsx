@@ -10,13 +10,11 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockUseNavigate,
 }));
 
-/* describe('Create test case to Search component', () => {
+describe('Create test case to Search component', () => {
   test('Create a Snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
         <Search
-          pathname="/choose_categories"
-          searchKeyName="searchCategories"
           changeUrlQueries={() => null}
         />
       </Provider>,
@@ -27,8 +25,6 @@ jest.mock('react-router-dom', () => ({
     render(
       <Provider store={store}>
         <Search
-          pathname="/choose_categories"
-          searchKeyName="searchCategories"
           changeUrlQueries={() => null}
         />
       </Provider>,
@@ -37,4 +33,4 @@ jest.mock('react-router-dom', () => ({
     userEvent.type(inputField, 'java');
     expect(inputField).toHaveValue('java');
   });
-}); */
+});

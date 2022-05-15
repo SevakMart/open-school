@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../../redux/Store';
 import { EMAIL_REQUIRED, INVALID_EMAIL_ERROR_MESSAGE } from '../../../../constants/Strings';
-/* import * as forgotPasswordRequest from '../../../../services/sendForgotPasswordRequest';
 import ForgotPassword from '../ForgotPassword';
+import authService from '../../../../services/authService';
 
 const successData = {
   data: {
@@ -65,7 +65,7 @@ describe('Create test cases for ForgotPassword component', () => {
   });
   test('Create a successful mail sending', async () => {
     expect.hasAssertions();
-    jest.spyOn(forgotPasswordRequest, 'sendForgotPasswordRequest').mockResolvedValue(successData);
+    jest.spyOn(authService, 'sendForgotPasswordRequest').mockResolvedValue(successData);
 
     render(
       <Provider store={store}>
@@ -86,7 +86,7 @@ describe('Create test cases for ForgotPassword component', () => {
 
   test('Create a successful mail sending', async () => {
     expect.hasAssertions();
-    jest.spyOn(forgotPasswordRequest, 'sendForgotPasswordRequest').mockResolvedValue(failedData);
+    jest.spyOn(authService, 'sendForgotPasswordRequest').mockResolvedValue(failedData);
 
     render(
       <Provider store={store}>
@@ -105,4 +105,3 @@ describe('Create test cases for ForgotPassword component', () => {
     expect(emailErrorForgotPasswordElement).toHaveTextContent(failedData.data.message);
   });
 });
-*/
