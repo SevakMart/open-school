@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for the Completed course component Create a snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="mainContainer"
+  >
+    <div
+      class="container"
+    >
+      <p
+        class="courseTitle"
+        data-testid="React js"
+      >
+        React js
+      </p>
+    </div>
+    <div
+      class="separator"
+    />
+    <div
+      class="container"
+    >
+      <p
+        class="containerTitle"
+      >
+        Status
+      </p>
+      <p
+        class="statusContent"
+        data-testid="COMPLETED"
+      >
+        COMPLETED
+      </p>
+    </div>
+    <div
+      class="separator"
+    />
+    <div
+      class="container"
+    >
+      <p
+        class="containerTitle"
+      >
+        Grade
+      </p>
+      <p
+        class="gradeContent"
+        data-testid="90"
+      >
+        90/100
+      </p>
+    </div>
+    <div
+      class="separator"
+    />
+    <div
+      class="buttonContainer"
+    >
+      <button
+        type="button"
+      >
+        Rate Course
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;

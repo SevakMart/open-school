@@ -10,7 +10,10 @@ describe('Create tests for sign in default form component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <SignInDefault handleSignIn={() => null} />
+        <SignInDefault
+          forgotPasswordFunc={() => null}
+          handleSignIn={() => null}
+        />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();
@@ -19,7 +22,10 @@ describe('Create tests for sign in default form component', () => {
     expect.hasAssertions();
     render(
       <Provider store={store}>
-        <SignInDefault handleSignIn={() => null} />
+        <SignInDefault
+          forgotPasswordFunc={() => null}
+          handleSignIn={() => null}
+        />
       </Provider>,
     );
     const fullNameInputField = screen.queryByPlaceholderText('Fill in first name');
@@ -29,7 +35,10 @@ describe('Create tests for sign in default form component', () => {
     expect.hasAssertions();
     render(
       <Provider store={store}>
-        <SignInDefault handleSignIn={() => null} />
+        <SignInDefault
+          forgotPasswordFunc={() => null}
+          handleSignIn={() => null}
+        />
       </Provider>,
     );
     const passwordInputField = screen.queryByPlaceholderText('Enter your password');
@@ -46,7 +55,10 @@ describe('Create tests for sign in default form component', () => {
     expect.hasAssertions();
     render(
       <Provider store={store}>
-        <SignInDefault handleSignIn={() => null} />
+        <SignInDefault
+          forgotPasswordFunc={() => null}
+          handleSignIn={() => null}
+        />
       </Provider>,
     );
     const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
@@ -63,7 +75,10 @@ describe('Create tests for sign in default form component', () => {
     expect.hasAssertions();
     render(
       <Provider store={store}>
-        <SignInDefault handleSignIn={() => null} />
+        <SignInDefault
+          forgotPasswordFunc={() => null}
+          handleSignIn={() => null}
+        />
       </Provider>,
     );
     const signInButton = screen.queryByTestId('signInButton');
@@ -82,7 +97,10 @@ describe('Create tests for sign in default form component', () => {
     expect.hasAssertions();
     render(
       <Provider store={store}>
-        <SignInDefault handleSignIn={() => null} />
+        <SignInDefault
+          forgotPasswordFunc={() => null}
+          handleSignIn={() => null}
+        />
       </Provider>,
     );
     const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
@@ -101,7 +119,10 @@ describe('Create tests for sign in default form component', () => {
     expect.hasAssertions();
     render(
       <Provider store={store}>
-        <SignInDefault handleSignIn={() => null} />
+        <SignInDefault
+          forgotPasswordFunc={() => null}
+          handleSignIn={() => null}
+        />
       </Provider>,
     );
     const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
@@ -123,7 +144,10 @@ describe('Create tests for sign in default form component', () => {
     expect.hasAssertions();
     render(
       <Provider store={store}>
-        <SignInDefault handleSignIn={() => null} />
+        <SignInDefault
+          forgotPasswordFunc={() => null}
+          handleSignIn={() => null}
+        />
       </Provider>,
     );
     const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
