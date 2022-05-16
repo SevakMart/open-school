@@ -57,7 +57,6 @@ const Homepage = () => {
       <HomepageHeader
         handleFormVisibility={handleButtonClick}
       />
-      <button type="button" onClick={() => { dispatch(removeLoggedInUser()); setIsLoggedIn(false); }}>Log out</button>
       <HomepageCategories isLoggedIn={isLoggedIn} />
       <HomepageMentors isLoggedIn={isLoggedIn} />
       <div className={mainContainer}>
