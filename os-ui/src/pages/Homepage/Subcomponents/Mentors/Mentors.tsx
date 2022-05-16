@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import RightArrowIcon from '../../../../icons/RightArrow';
+import Button from '../../../../component/Button/Button';
 import LeftArrowIcon from '../../../../icons/LeftArrow';
 import MentorCard from '../../../../component/MentorProfile/MentorProfile';
 import { MentorType } from '../../../../types/MentorType';
@@ -7,7 +8,8 @@ import publicService from '../../../../services/publicService';
 import userService from '../../../../services/userService';
 import styles from './Mentors.module.scss';
 
-const HomepageMentors = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
+const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
+  handleButtonClick:(buttonType:string)=>void}) => {
   const [mentors, setMentors] = useState<MentorType[]>([]);
   const [page, setPage] = useState(0);
   const [maxPage, setMaxPage] = useState(10);
@@ -68,7 +70,7 @@ const HomepageMentors = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
           />
         ) : null}
       </div>
-      {/* <Button buttonType="signUp" buttonClick={handleButtonClick}>Register as a mentor</Button> */}
+      <Button buttonType="signUp" buttonClick={() => handleButtonClick('signUp')}>Register as a mentor</Button>
     </div>
   );
 };

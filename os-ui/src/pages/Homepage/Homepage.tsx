@@ -58,7 +58,7 @@ const Homepage = () => {
         handleFormVisibility={handleButtonClick}
       />
       <HomepageCategories isLoggedIn={isLoggedIn} />
-      <HomepageMentors isLoggedIn={isLoggedIn} />
+      <HomepageMentors isLoggedIn={isLoggedIn} handleButtonClick={handleButtonClick} />
       <div className={mainContainer}>
         <h2>Start Your Journey Now!</h2>
         <div className={buttonContainer}>

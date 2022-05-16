@@ -66,7 +66,7 @@ describe('Create test cases for homepage mentors list', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <HomepageMentors isLoggedIn />
+        <HomepageMentors isLoggedIn handleButtonClick={() => null} />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();
@@ -76,7 +76,7 @@ describe('Create test cases for homepage mentors list', () => {
     jest.spyOn(publicService, 'getPublicMentors').mockResolvedValue(notSignInData);
     render(
       <Provider store={store}>
-        <HomepageMentors isLoggedIn={false} />
+        <HomepageMentors isLoggedIn={false} handleButtonClick={() => null} />
       </Provider>,
     );
     const mentorName = await screen.findByTestId('John Smith');
@@ -87,7 +87,7 @@ describe('Create test cases for homepage mentors list', () => {
     jest.spyOn(userService, 'getMentors').mockResolvedValue(signInData);
     render(
       <Provider store={store}>
-        <HomepageMentors isLoggedIn />
+        <HomepageMentors isLoggedIn handleButtonClick={() => null} />
       </Provider>,
     );
     const mentorName = await screen.findByTestId('Mark Smith');
@@ -98,7 +98,7 @@ describe('Create test cases for homepage mentors list', () => {
     jest.spyOn(publicService, 'getPublicMentors').mockResolvedValue({ data: { content: [], totalPages: 0 }, status: 200 });
     render(
       <Provider store={store}>
-        <HomepageMentors isLoggedIn={false} />
+        <HomepageMentors isLoggedIn={false} handleButtonClick={() => null} />
       </Provider>,
     );
     const emptyCategoryHeading = await screen.findByTestId('emptyMentorMessage');
