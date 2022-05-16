@@ -18,8 +18,10 @@ class UserService {
   }
 
   async getMentors(params:object = {}) {
-    const data = await (await fetchService.get(`${this.basePath}/mentors`, params)).json();
-    return data;
+    const response = await fetchService.get(`${this.basePath}/mentors`, params);
+    const { status } = response;
+    const data = await response.json();
+    return { data, status };
   }
 
   async savePreferredCategories(userId:number, userToken:string, content:Array<number>) {

@@ -8,8 +8,10 @@ class CategoriesService {
   }
 
   async getCategories(params: object = {}) {
-    const data = await (await fetchService.get(this.basePath, params)).json();
-    return data;
+    const response = await fetchService.get(this.basePath, params);
+    const { status } = response;
+    const data = await response.json();
+    return { data, status };
   }
 
   async getSearchedCategories(params:object = {}) {

@@ -2,7 +2,7 @@
 @import "../../styles/Mixins/FlexMixins.scss";
 @import "../../styles/Mixins/FontMixin.scss";
 
-.categoriesMainContainer {
+/*.categoriesMainContainer {
   background-color: #e5e5e5 !important;
   .categoriesListContainer {
     flex-wrap: wrap;
@@ -39,7 +39,7 @@
     width: 90%;
     @include flexStyle(row, center, space-between);
   }
-}
+}*/
 
 .mainContainer {
   @include flexStyle(row, none, space-between);
