@@ -4,7 +4,7 @@ class CategoriesService {
   readonly basePath: string;
 
   constructor() {
-    this.basePath = '/categories';
+    this.basePath = 'categories';
   }
 
   async getCategories(params: object = {}) {

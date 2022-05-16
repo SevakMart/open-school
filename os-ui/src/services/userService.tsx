@@ -4,7 +4,7 @@ class UserService {
   readonly basePath: string;
 
   constructor() {
-    this.basePath = '/users';
+    this.basePath = 'users';
   }
 
   async getUserCourses(userId:number, userToken:string, params = {}) {

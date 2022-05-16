@@ -4,7 +4,7 @@ class PublicService {
   readonly basePath: string;
 
   constructor() {
-    this.basePath = '/public';
+    this.basePath = 'public';
   }
 
   async getPublicCategories(params: object = {}) {

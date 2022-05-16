@@ -6,7 +6,7 @@ class AuthService {
   readonly basePath: string;
 
   constructor() {
-    this.basePath = '/auth';
+    this.basePath = 'auth';
   }
 
   async register(content:RegistrationFormType) {
