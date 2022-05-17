@@ -1,6 +1,7 @@
 package app.openschool.auth.verification;
 
 import app.openschool.user.User;
+import java.time.Duration;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,6 +37,11 @@ public class VerificationToken {
     this.token = token;
     this.createdAt = createdAt;
     this.user = user;
+  }
+
+  public boolean isTokenExpired(Instant createdAt, long expiresAt) {
+    Duration difference = Duration.between(createdAt, Instant.now());
+    return difference.toMinutes() > expiresAt;
   }
 
   public Instant getCreatedAt() {

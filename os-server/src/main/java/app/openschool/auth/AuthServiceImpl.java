@@ -21,8 +21,6 @@ import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.api.exception.UserNotFoundException;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -95,7 +93,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
         verificationTokenRepository.findVerificationTokenByToken(verificationToken.getToken());
 
     if (fetchedToken.isPresent()) {
-      if (!isTokenExpired(fetchedToken.get().getCreatedAt())) {
+      if (!verificationToken.isTokenExpired(fetchedToken.get().getCreatedAt(), expiresAt)) {
         User user = fetchedToken.get().getUser();
         user.setEnabled(true);
         return userRepository.save(user);
@@ -158,10 +156,5 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     user.setPassword(encodedPassword);
     resetPasswordTokenRepository.delete(resetPasswordToken);
     userRepository.save(user);
-  }
-
-  private boolean isTokenExpired(Instant createdAt) {
-    Duration difference = Duration.between(createdAt, Instant.now());
-    return difference.toMinutes() > expiresAt;
   }
 }

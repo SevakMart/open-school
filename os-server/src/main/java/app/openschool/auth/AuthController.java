@@ -97,7 +97,7 @@ public class AuthController {
   }
 
   @GetMapping("/{userId}/account/verification")
-  public ResponseEntity<Void> sendVerificationEmail(@PathVariable Long userId) {
+  public ResponseEntity<Void> resendVerificationEmail(@PathVariable Long userId) {
     authService.sendVerificationEmail(userId);
     return ResponseEntity.ok().build();
   }
