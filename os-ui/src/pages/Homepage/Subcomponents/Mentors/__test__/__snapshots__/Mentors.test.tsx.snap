@@ -35,6 +35,12 @@ exports[`Create test cases for homepage mentors list Create a snapshot test 1`] 
         </svg>
       </i>
     </div>
+    <button
+      name="signUp"
+      type="button"
+    >
+      Register as a mentor
+    </button>
   </div>
 </DocumentFragment>
 `;

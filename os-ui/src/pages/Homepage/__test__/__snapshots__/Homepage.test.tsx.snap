@@ -79,11 +79,6 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
       </div>
     </div>
   </div>
-  <button
-    type="button"
-  >
-    Log out
-  </button>
   <div
     class="categoriesMainContainer"
   >
@@ -156,6 +151,12 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
         </svg>
       </i>
     </div>
+    <button
+      name="signUp"
+      type="button"
+    >
+      Register as a mentor
+    </button>
   </div>
   <div
     class="mainContainer"

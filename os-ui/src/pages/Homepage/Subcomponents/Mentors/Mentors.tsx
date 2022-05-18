@@ -47,17 +47,7 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
         ) : null}
         {
         mentors.length > 0 && !errorMessage ? mentors.map((mentor, index) => (
-          <MentorCard
-            key={index}
-            name={mentor.name}
-            surname={mentor.surname}
-            professionName={mentor.professionName}
-            companyName={mentor.companyName}
-            courseCount={mentor.courseCount}
-            userImgPath={mentor.userImgPath}
-            emailPath={mentor.emailPath}
-            linkedinPath={mentor.linkedinPath}
-          />
+          <MentorCard key={index} mentor={{ ...mentor }} />
         )) : errorMessage ? <h2 data-testid="mentorsErrorMessage">{errorMessage}</h2>
           : <h2 data-testid="emptyMentorMessage">We do not have mentors yet</h2>
       }
