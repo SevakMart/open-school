@@ -47,12 +47,6 @@ public class EmailService implements CommunicationService {
         email, createResetPasswordEmailContent(resetPasswordToken), resetPasswordEmailSubject);
   }
 
-  private String createResetPasswordEmailContent(String resetPasswordToken) {
-    Context context = new Context();
-    context.setVariable("resetPasswordToken", resetPasswordToken);
-    return templateEngine.process("resetPassword", context);
-  }
-
   @Override
   @Transactional
   @Async
@@ -75,6 +69,12 @@ public class EmailService implements CommunicationService {
             verificationEndpoint,
             verificationToken),
         emailSubject);
+  }
+
+  private String createResetPasswordEmailContent(String resetPasswordToken) {
+    Context context = new Context();
+    context.setVariable("resetPasswordToken", resetPasswordToken);
+    return templateEngine.process("resetPassword", context);
   }
 
   private String createEmailContent(

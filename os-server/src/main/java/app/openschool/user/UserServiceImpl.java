@@ -17,6 +17,7 @@ import app.openschool.user.api.mapper.MentorMapper;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
@@ -71,12 +72,10 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds) {
 
-    User user = userRepository.findUserById(userId);
+    Optional<User> user = userRepository.findUserById(userId);
     Set<PreferredCategoryDto> userCategories = new HashSet<>();
 
-    if (user == null) {
-      throw new UserNotFoundException(String.valueOf(userId));
-    }
+    user.orElseThrow(() -> new UserNotFoundException(String.valueOf(userId)));
 
     Set<Category> categories = CategoryMapper.categoryIdSetToCategorySet(categoryIds);
 
@@ -90,8 +89,7 @@ public class UserServiceImpl implements UserService {
           }
         }));
 
-    user.setCategories(categories);
-
+    user.get().setCategories(categories);
     return userCategories;
   }
 

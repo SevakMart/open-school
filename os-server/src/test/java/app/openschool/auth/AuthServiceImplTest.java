@@ -68,7 +68,7 @@ public class AuthServiceImplTest {
   }
 
   @Test
-  void registerUserWithNotUniqEmail() {
+  void registerUserWithNotUniqueEmail() {
 
     given(userRepository.findUserByEmail(any())).willReturn(new User());
 
@@ -79,7 +79,7 @@ public class AuthServiceImplTest {
   }
 
   @Test
-  void registerUserWithUniqEmail() {
+  void registerUserWithUniqueEmail() {
     given(userRepository.findUserByEmail(any())).willReturn(null);
     doReturn(new User("John", "testPass")).when(userRepository).save(any());
 
@@ -126,7 +126,7 @@ public class AuthServiceImplTest {
   @Test
   void sendVerificationEmailWithWrongUserId() {
     long userId = 1L;
-    given(userRepository.findUserById(userId)).willReturn(null);
+    given(userRepository.findUserById(userId)).willReturn(Optional.empty());
 
     assertThatThrownBy(() -> authService.sendVerificationEmail(userId))
         .isInstanceOf(UserNotFoundException.class);

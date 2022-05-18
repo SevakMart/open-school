@@ -34,6 +34,7 @@ spring:
 verification:
   duration: 30 # minutes
   subject: 'Verify your account'
+  endpoint: 'http://open-school-dev.eu-central-1.elasticbeanstalk.com/api/v1/auth/account/verification'
   reset:
     password:
       email:

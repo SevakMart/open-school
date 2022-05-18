@@ -107,11 +107,9 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
   @Override
   public void sendVerificationEmail(Long userId) {
-    User user = userRepository.findUserById(userId);
-    if (user == null) {
-      throw new UserNotFoundException(String.valueOf(userId));
-    }
-    communicationService.sendEmailToVerifyUserAccount(user);
+    Optional<User> user = userRepository.findUserById(userId);
+    user.orElseThrow(() -> new UserNotFoundException(String.valueOf(userId)));
+    communicationService.sendEmailToVerifyUserAccount(user.get());
   }
 
   @Override
