@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import HomepageHeader from '../../component/HomepageHeader/HomepageHeader';
 import Footer from '../../component/Footer/Footer';
 import Button from '../../component/Button/Button';
@@ -30,6 +31,7 @@ const Homepage = () => {
     mainContainer, buttonContainer, mentorMainContainer, mentorListContainer,
     categoriesMainContainer, categoriesListContainer,
   } = styles;
+  const { t, i18n } = useTranslation('common');
   const handleButtonClick = (buttonType:string) => {
     switch (buttonType) {
       case 'signUp':
@@ -78,7 +80,7 @@ const Homepage = () => {
       />
       {/* This section below is dedicated to implement the category list */}
       <div className={categoriesMainContainer}>
-        <h2>Explore Categories You Are Interested In</h2>
+        <h2>{t('welcome.title')}</h2>
         <div className={categoriesListContainer}>
           {categoryPage > 0 ? (
             <LeftArrowIcon

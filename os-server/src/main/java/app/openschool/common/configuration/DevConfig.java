@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
 @Configuration
 @Profile("openapi")
 public class DevConfig implements WebMvcConfigurer {
