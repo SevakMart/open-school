@@ -3,6 +3,7 @@ package app.openschool.auth;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+import app.openschool.auth.api.dto.ForgotPasswordRequest;
 import app.openschool.auth.api.dto.ResetPasswordRequest;
 import app.openschool.auth.api.dto.UserLoginDto;
 import app.openschool.auth.api.dto.UserLoginRequest;
@@ -98,7 +99,17 @@ public class AuthController {
 
   @PostMapping("/password/forgot")
   @Operation(summary = "send token to given email")
-  public ResponseEntity<ResponseMessage> forgotPassword(@RequestBody String email, Locale locale) {
+  public ResponseEntity<?> forgotPassword(
+      @Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest,
+      BindingResult bindingResult,
+      Locale locale) {
+    if (bindingResult.hasErrors()) {
+      return ResponseEntity.badRequest()
+          .body(
+              bindingResult.getAllErrors().stream()
+                  .map(DefaultMessageSourceResolvable::getDefaultMessage));
+    }
+    String email = forgotPasswordRequest.getEmail();
     Optional<User> optionalUser = authService.findByEmail(email);
     if (optionalUser.isEmpty()) {
       String[] args = {email};

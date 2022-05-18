@@ -2,7 +2,7 @@ package app.openschool.course.api.dto;
 
 import java.time.LocalDate;
 
-public class UserEnrolledCourseDto {
+public class UserCourseDto {
 
   private String title;
 
@@ -16,20 +16,16 @@ public class UserEnrolledCourseDto {
 
   private LocalDate dueDate;
 
-  public UserEnrolledCourseDto() {}
+  public UserCourseDto() {}
 
-  public UserEnrolledCourseDto(String title, String courseStatus, Integer grade) {
+  public UserCourseDto(String title, String courseStatus, Integer grade) {
     this.title = title;
     this.courseStatus = courseStatus;
     this.grade = grade;
   }
 
-  public UserEnrolledCourseDto(
-      String title,
-      String courseStatus,
-      long percentage,
-      long remainingTime,
-      LocalDate dueDate) {
+  public UserCourseDto(
+      String title, String courseStatus, long percentage, long remainingTime, LocalDate dueDate) {
     this.title = title;
     this.courseStatus = courseStatus;
     this.percentage = percentage;
@@ -37,7 +33,7 @@ public class UserEnrolledCourseDto {
     this.dueDate = dueDate;
   }
 
-  public UserEnrolledCourseDto(
+  public UserCourseDto(
       String title,
       String courseStatus,
       long percentage,

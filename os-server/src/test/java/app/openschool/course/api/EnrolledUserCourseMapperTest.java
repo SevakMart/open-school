@@ -6,8 +6,8 @@ import app.openschool.category.Category;
 import app.openschool.category.api.CategoryGenerator;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
-import app.openschool.course.api.dto.UserEnrolledCourseDto;
-import app.openschool.course.api.mapper.UserEnrolledCourseMapper;
+import app.openschool.course.api.dto.UserCourseDto;
+import app.openschool.course.api.mapper.UserCourseMapper;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.language.Language;
 import app.openschool.course.module.EnrolledModule;
@@ -171,7 +171,7 @@ public class EnrolledUserCourseMapperTest {
     enrolledModuleItemsModule3.add(enrolledModuleItem);
     enrolledModule3.setEnrolledModuleItems(enrolledModuleItemsModule3);
 
-    UserEnrolledCourseDto actual = UserEnrolledCourseMapper.toUserEnrolledCourseDto(enrolledCourse);
+    UserCourseDto actual = UserCourseMapper.toUserCourseDto(enrolledCourse);
     assertEquals(95, actual.getRemainingTime());
     assertEquals(37, actual.getPercentage());
     assertEquals(LocalDate.of(2022, 10, 7), actual.getDueDate());

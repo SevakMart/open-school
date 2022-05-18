@@ -2,7 +2,7 @@ package app.openschool.course.api.mapper;
 
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
-import app.openschool.course.api.dto.UserEnrolledCourseDto;
+import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.course.module.EnrolledModule;
 import app.openschool.course.module.Module;
 import app.openschool.course.module.item.ModuleItem;
@@ -10,26 +10,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class UserEnrolledCourseMapper {
+public class UserCourseMapper {
 
-  public static List<UserEnrolledCourseDto> toUserEnrolledCourseDtoList(
-      List<EnrolledCourse> enrolledCourseList) {
-    List<UserEnrolledCourseDto> userEnrolledCourseDtoList = new ArrayList<>();
+  public static List<UserCourseDto> toUserCourseDtoList(List<EnrolledCourse> enrolledCourseList) {
+    List<UserCourseDto> userEnrolledCourseDtoList = new ArrayList<>();
     for (EnrolledCourse enrolledCourse : enrolledCourseList) {
-      userEnrolledCourseDtoList.add(toUserEnrolledCourseDto(enrolledCourse));
+      userEnrolledCourseDtoList.add(toUserCourseDto(enrolledCourse));
     }
     return userEnrolledCourseDtoList;
   }
 
-  public static UserEnrolledCourseDto toUserEnrolledCourseDto(EnrolledCourse enrolledCourse) {
+  public static UserCourseDto toUserCourseDto(EnrolledCourse enrolledCourse) {
     if (!enrolledCourse.getCourseStatus().isInProgress()) {
-      return new UserEnrolledCourseDto(
+      return new UserCourseDto(
           enrolledCourse.getCourse().getTitle(), enrolledCourse.getCourseStatus().getType(), 100);
     }
     long courseRemainingTime = getCourseReamingTime(enrolledCourse);
     long courseTotalEstimatedTime = getCourseTotalEstimatedTime(enrolledCourse.getCourse());
     long percentage = 100L - ((courseRemainingTime * 100L) / courseTotalEstimatedTime);
-    return new UserEnrolledCourseDto(
+    return new UserCourseDto(
         enrolledCourse.getCourse().getTitle(),
         enrolledCourse.getCourseStatus().getType(),
         percentage,

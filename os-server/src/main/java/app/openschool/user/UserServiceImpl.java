@@ -9,9 +9,9 @@ import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.api.dto.CourseDto;
-import app.openschool.course.api.dto.UserEnrolledCourseDto;
+import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.course.api.mapper.CourseMapper;
-import app.openschool.course.api.mapper.UserEnrolledCourseMapper;
+import app.openschool.course.api.mapper.UserCourseMapper;
 import app.openschool.user.api.dto.MentorDto;
 import app.openschool.user.api.exception.UserNotFoundException;
 import app.openschool.user.api.mapper.MentorMapper;
@@ -100,12 +100,12 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<UserEnrolledCourseDto> findUserEnrolledCourses(Long userId, Long courseStatusId) {
+  public List<UserCourseDto> findUserEnrolledCourses(Long userId, Long courseStatusId) {
     if (courseStatusId == null) {
-      return UserEnrolledCourseMapper.toUserEnrolledCourseDtoList(
+      return UserCourseMapper.toUserCourseDtoList(
           enrolledCourseRepository.findAllUserEnrolledCourses(userId));
     }
-    return UserEnrolledCourseMapper.toUserEnrolledCourseDtoList(
+    return UserCourseMapper.toUserCourseDtoList(
         enrolledCourseRepository.findUserEnrolledCoursesByStatus(userId, courseStatusId));
   }
 }

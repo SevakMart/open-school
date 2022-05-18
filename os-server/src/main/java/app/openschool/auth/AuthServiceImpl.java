@@ -75,9 +75,9 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
   @Override
   public void updateResetPasswordToken(String email, User user) {
-    Optional<ResetPasswordToken> currentToken =
-        resetPasswordTokenRepository.findByUser(user.getId());
-    currentToken.ifPresent(resetPasswordTokenRepository::delete);
+    resetPasswordTokenRepository
+        .findByUser(user.getId())
+        .ifPresent(resetPasswordTokenRepository::delete);
     ResetPasswordToken resetPasswordToken = ResetPasswordToken.generate(user);
     resetPasswordTokenRepository.save(resetPasswordToken);
     communicationService.sendResetPasswordEmail(email, resetPasswordToken.getToken());

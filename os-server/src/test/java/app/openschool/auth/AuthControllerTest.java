@@ -108,7 +108,7 @@ public class AuthControllerTest {
         .perform(
             post("/api/v1/auth/password/forgot")
                 .contentType(APPLICATION_JSON)
-                .content("test@gmail.com"))
+                .content("{ \"email\": \"test@gmail.com\"}"))
         .andExpect(status().isOk());
   }
 
