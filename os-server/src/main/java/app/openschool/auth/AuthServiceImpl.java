@@ -9,11 +9,12 @@ import app.openschool.auth.api.mapper.UserLoginMapper;
 import app.openschool.auth.api.mapper.UserRegistrationMapper;
 import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.auth.repository.ResetPasswordTokenRepository;
+import app.openschool.common.event.SendResetPasswordEmailEvent;
 import app.openschool.common.security.UserPrincipal;
-import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.util.Optional;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,17 +27,17 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   private final UserRepository userRepository;
   private final ResetPasswordTokenRepository resetPasswordTokenRepository;
   private final BCryptPasswordEncoder passwordEncoder;
-  private final CommunicationService communicationService;
+  private final ApplicationEventPublisher applicationEventPublisher;
 
   public AuthServiceImpl(
       UserRepository userRepository,
       ResetPasswordTokenRepository resetPasswordTokenRepository,
       BCryptPasswordEncoder passwordEncoder,
-      CommunicationService communicationService) {
+      ApplicationEventPublisher applicationEventPublisher) {
     this.userRepository = userRepository;
     this.resetPasswordTokenRepository = resetPasswordTokenRepository;
     this.passwordEncoder = passwordEncoder;
-    this.communicationService = communicationService;
+    this.applicationEventPublisher = applicationEventPublisher;
   }
 
   @Override
@@ -80,7 +81,8 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
         .ifPresent(resetPasswordTokenRepository::delete);
     ResetPasswordToken resetPasswordToken = ResetPasswordToken.generate(user);
     resetPasswordTokenRepository.save(resetPasswordToken);
-    communicationService.sendResetPasswordEmail(email, resetPasswordToken.getToken());
+    applicationEventPublisher.publishEvent(
+        new SendResetPasswordEmailEvent(this, email, resetPasswordToken.getToken()));
   }
 
   @Override

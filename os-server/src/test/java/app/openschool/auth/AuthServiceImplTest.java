@@ -15,7 +15,6 @@ import app.openschool.auth.api.exception.EmailAlreadyExistException;
 import app.openschool.auth.api.exception.EmailNotFoundException;
 import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.auth.repository.ResetPasswordTokenRepository;
-import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.util.Optional;
@@ -25,6 +24,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +36,7 @@ public class AuthServiceImplTest {
 
   @Mock private BCryptPasswordEncoder passwordEncoder;
 
-  @Mock private CommunicationService communicationService;
+  @Mock private ApplicationEventPublisher applicationEventPublisher;
 
   private AuthService authService;
 
@@ -44,7 +44,10 @@ public class AuthServiceImplTest {
   void setUp() {
     authService =
         new AuthServiceImpl(
-            userRepository, resetPasswordTokenRepository, passwordEncoder, communicationService);
+            userRepository,
+            resetPasswordTokenRepository,
+            passwordEncoder,
+            applicationEventPublisher);
   }
 
   @Test
@@ -77,7 +80,10 @@ public class AuthServiceImplTest {
   void loadNonexistentUserByUsername() {
     AuthServiceImpl authService =
         new AuthServiceImpl(
-            userRepository, resetPasswordTokenRepository, passwordEncoder, communicationService);
+            userRepository,
+            resetPasswordTokenRepository,
+            passwordEncoder,
+            applicationEventPublisher);
 
     given(userRepository.findUserByEmail(any())).willReturn(null);
 
