@@ -1,10 +1,10 @@
 package app.openschool.auth.api.dto;
 
-import app.openschool.auth.api.annotation.PasswordsMatch;
+import app.openschool.auth.api.annotation.SameValues;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-@PasswordsMatch
+@SameValues(sameFields = {"newPassword", "confirmedPassword"})
 public class ResetPasswordRequest {
 
   private static final String PASSWORD_PATTERN =
