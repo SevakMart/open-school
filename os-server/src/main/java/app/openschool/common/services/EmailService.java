@@ -2,10 +2,11 @@ package app.openschool.common.services;
 
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
+import app.openschool.common.event.SendVerificationEmailEvent;
 import app.openschool.user.User;
-import java.time.Instant;
-import java.util.UUID;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,17 +51,13 @@ public class EmailService implements CommunicationService {
   @Override
   @Transactional
   @Async
-  public void sendEmailToVerifyUserAccount(User user) {
-    String token = UUID.randomUUID().toString() + user.getId();
-    Instant createdAt = Instant.now();
-    VerificationToken verificationToken = new VerificationToken(token, createdAt, user);
+  @EventListener(SendVerificationEmailEvent.class)
+  public void sendEmailToVerifyUserAccount(SendVerificationEmailEvent event) {
+    User user = event.getUser();
+    VerificationToken verificationToken = VerificationToken.generateVerificationToken(user);
 
-    VerificationToken alreadyExistingToken =
-        verificationTokenRepository.findVerificationTokenByUser(user);
-    if (alreadyExistingToken != null) {
-      verificationToken.setId(alreadyExistingToken.getId());
-    }
-    verificationTokenRepository.save(verificationToken);
+    overwriteVerificationTokenIfAlreadyExist(user, verificationToken);
+
     emailSender.sendEmail(
         user.getEmail(),
         createEmailContent(
@@ -75,6 +72,14 @@ public class EmailService implements CommunicationService {
     Context context = new Context();
     context.setVariable("resetPasswordToken", resetPasswordToken);
     return templateEngine.process("resetPassword", context);
+  }
+
+  private void overwriteVerificationTokenIfAlreadyExist(
+      User user, VerificationToken verificationToken) {
+    Optional<VerificationToken> alreadyExistingToken =
+        verificationTokenRepository.findVerificationTokenByUser(user);
+    alreadyExistingToken.ifPresent(token -> verificationToken.setId(token.getId()));
+    verificationTokenRepository.save(verificationToken);
   }
 
   private String createEmailContent(

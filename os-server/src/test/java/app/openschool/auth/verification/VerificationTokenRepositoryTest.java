@@ -41,7 +41,7 @@ class VerificationTokenRepositoryTest {
     userRepository.save(user);
     verificationTokenRepository.save(new VerificationToken(token, Instant.now(), user));
 
-    assertThat(verificationTokenRepository.findVerificationTokenByUser(user).getToken())
+    assertThat(verificationTokenRepository.findVerificationTokenByUser(user).get().getToken())
         .isEqualTo(token);
   }
 }

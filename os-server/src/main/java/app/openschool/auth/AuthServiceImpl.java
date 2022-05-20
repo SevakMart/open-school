@@ -16,13 +16,14 @@ import app.openschool.auth.mapper.UserRegistrationMapper;
 import app.openschool.auth.repository.ResetPasswordTokenRepository;
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
+import app.openschool.common.event.SendVerificationEmailEvent;
 import app.openschool.common.security.UserPrincipal;
-import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,7 +36,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   private final UserRepository userRepository;
   private final ResetPasswordTokenRepository resetPasswordTokenRepository;
   private final BCryptPasswordEncoder passwordEncoder;
-  private final CommunicationService communicationService;
+  private final ApplicationEventPublisher applicationEventPublisher;
   private final VerificationTokenRepository verificationTokenRepository;
   private final long expiresAt;
   private final Integer tokenExpirationAfterMinutes;
@@ -44,17 +45,16 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
       UserRepository userRepository,
       ResetPasswordTokenRepository resetPasswordTokenRepository,
       BCryptPasswordEncoder passwordEncoder,
-      CommunicationService communicationService,
+      ApplicationEventPublisher applicationEventPublisher,
       VerificationTokenRepository verificationTokenRepository,
       @Value("${verification.duration}") long expiresAt,
       @Value("${token.expiration}") Integer tokenExpirationAfterMinutes) {
     this.userRepository = userRepository;
     this.resetPasswordTokenRepository = resetPasswordTokenRepository;
-
     this.passwordEncoder = passwordEncoder;
+    this.applicationEventPublisher = applicationEventPublisher;
     this.verificationTokenRepository = verificationTokenRepository;
     this.expiresAt = expiresAt;
-    this.communicationService = communicationService;
 
     this.tokenExpirationAfterMinutes = tokenExpirationAfterMinutes;
   }
@@ -69,17 +69,13 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     User user =
         userRepository.save(
             UserRegistrationMapper.userRegistrationDtoToUser(userDto, passwordEncoder));
-    communicationService.sendEmailToVerifyUserAccount(user);
+    applicationEventPublisher.publishEvent(new SendVerificationEmailEvent(this, user));
     return user;
   }
 
   @Override
   public User findUserByEmail(String email) {
     return userRepository.findUserByEmail(email);
-  }
-
-  private boolean emailAlreadyExist(String email) {
-    return findUserByEmail(email) != null;
   }
 
   @Override
@@ -98,7 +94,8 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
         user.setEnabled(true);
         return userRepository.save(user);
       } else {
-        communicationService.sendEmailToVerifyUserAccount(fetchedToken.get().getUser());
+        applicationEventPublisher.publishEvent(
+            new SendVerificationEmailEvent(this, fetchedToken.get().getUser()));
         throw new UserNotVerifiedException();
       }
     }
@@ -109,7 +106,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   public void sendVerificationEmail(Long userId) {
     Optional<User> user = userRepository.findUserById(userId);
     user.orElseThrow(() -> new UserNotFoundException(String.valueOf(userId)));
-    communicationService.sendEmailToVerifyUserAccount(user.get());
+    applicationEventPublisher.publishEvent(new SendVerificationEmailEvent(this, user.get()));
   }
 
   @Override
@@ -131,7 +128,6 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     }
     ResetPasswordToken resetPasswordToken = ResetPasswordToken.generate(user);
     resetPasswordTokenRepository.save(resetPasswordToken);
-    communicationService.sendResetPasswordEmail(email, resetPasswordToken.getToken());
   }
 
   @Override
@@ -154,5 +150,9 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     user.setPassword(encodedPassword);
     resetPasswordTokenRepository.delete(resetPasswordToken);
     userRepository.save(user);
+  }
+
+  private boolean emailAlreadyExist(String email) {
+    return findUserByEmail(email) != null;
   }
 }

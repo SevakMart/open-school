@@ -5,6 +5,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import app.openschool.auth.verification.VerificationTokenRepository;
+import app.openschool.common.event.SendVerificationEmailEvent;
 import app.openschool.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,8 @@ class EmailServiceTest {
 
   @Test
   void sendEmailToVerifyUserAccount() {
-    communicationService.sendEmailToVerifyUserAccount(new User());
+    communicationService.sendEmailToVerifyUserAccount(
+        new SendVerificationEmailEvent(this, new User()));
     verify(emailSenderService, times(1)).sendEmail(any(), any(), any());
   }
 }

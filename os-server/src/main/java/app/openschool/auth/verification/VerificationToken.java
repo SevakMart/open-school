@@ -3,6 +3,7 @@ package app.openschool.auth.verification;
 import app.openschool.user.User;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,6 +38,12 @@ public class VerificationToken {
     this.token = token;
     this.createdAt = createdAt;
     this.user = user;
+  }
+
+  public static VerificationToken generateVerificationToken(User user) {
+    String token = UUID.randomUUID().toString() + user.getId();
+    Instant createdAt = Instant.now();
+    return new VerificationToken(token, createdAt, user);
   }
 
   public boolean isTokenExpired(Instant createdAt, long expiresAt) {

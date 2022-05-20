@@ -34,6 +34,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,6 +50,8 @@ public class AuthServiceImplTest {
 
   @Mock private BCryptPasswordEncoder passwordEncoder;
 
+  @Mock private ApplicationEventPublisher applicationEventPublisher;
+
   @Value("${token.expiration}")
   private int tokenExpirationAfterMinutes;
 
@@ -61,7 +64,7 @@ public class AuthServiceImplTest {
             userRepository,
             resetPasswordTokenRepository,
             passwordEncoder,
-            communicationService,
+            applicationEventPublisher,
             verificationTokenRepository,
             0L,
             tokenExpirationAfterMinutes);
@@ -101,7 +104,7 @@ public class AuthServiceImplTest {
             userRepository,
             resetPasswordTokenRepository,
             passwordEncoder,
-            null,
+            applicationEventPublisher,
             null,
             0L,
             tokenExpirationAfterMinutes);
