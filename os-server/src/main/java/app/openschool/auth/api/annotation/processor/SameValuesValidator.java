@@ -1,6 +1,7 @@
 package app.openschool.auth.api.annotation.processor;
 
 import app.openschool.auth.api.annotation.SameValues;
+import app.openschool.auth.api.exception.NotPresentFieldException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -20,20 +21,7 @@ public class SameValuesValidator implements ConstraintValidator<SameValues, Obje
 
   @Override
   public boolean isValid(Object targetObject, ConstraintValidatorContext ctx) {
-    Set<Object> uniqueFieldValues =
-        fieldNames.stream()
-            .map(
-                fieldName -> {
-                  try {
-                    Field declaredField = targetObject.getClass().getDeclaredField(fieldName);
-                    declaredField.setAccessible(true);
-                    return declaredField.get(targetObject);
-                  } catch (NoSuchFieldException | IllegalAccessException e) {
-                    throw new RuntimeException("Specified fields are not present");
-                  }
-                })
-            .collect(Collectors.toSet());
-    if (uniqueFieldValues.size() > 1) {
+    if (getUniqueFieldValues(targetObject).size() > 1) {
       ctx.disableDefaultConstraintViolation();
       ctx.buildConstraintViolationWithTemplate("{passwords.mismatch}")
           .addPropertyNode("confirmedPassword")
@@ -41,5 +29,20 @@ public class SameValuesValidator implements ConstraintValidator<SameValues, Obje
       return false;
     }
     return true;
+  }
+
+  private Set<Object> getUniqueFieldValues(Object targetObject) {
+    return fieldNames.stream()
+        .map(
+            fieldName -> {
+              try {
+                Field declaredField = targetObject.getClass().getDeclaredField(fieldName);
+                declaredField.setAccessible(true);
+                return declaredField.get(targetObject);
+              } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new NotPresentFieldException("Specified fields are not present");
+              }
+            })
+        .collect(Collectors.toSet());
   }
 }
