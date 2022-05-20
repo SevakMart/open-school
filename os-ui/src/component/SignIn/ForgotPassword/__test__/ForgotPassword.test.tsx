@@ -84,7 +84,7 @@ describe('Create test cases for ForgotPassword component', () => {
     expect(forgotPasswordSuccessMessageElement).toHaveTextContent(successData.data.message);
   });
 
-  test('Create a successful mail sending', async () => {
+  test('Create a failed mail sending', async () => {
     expect.hasAssertions();
     jest.spyOn(authService, 'sendForgotPasswordRequest').mockResolvedValue(failedData);
 

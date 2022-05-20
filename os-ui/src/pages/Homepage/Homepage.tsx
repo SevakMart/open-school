@@ -39,7 +39,7 @@ const Homepage = () => {
   useEffect(() => {
     let cancel = false;
     if ((userInfo as any).token) {
-      categoriesService.getCategories({ page: 0, size: 6 }).then((res) => {
+      categoriesService.getCategories({ page: 0, size: 6 }, (userInfo as any).token).then((res) => {
         const { status } = res;
         if (cancel) return;
         if (status === 401) {

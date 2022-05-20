@@ -8,7 +8,7 @@ class UserService {
   }
 
   async getUserCourses(userId:number, userToken:string, params = {}) {
-    const data = await (await fetchService.get(`${this.basePath}/${userId}/courses`, params, userToken)).json();
+    const data = await (await fetchService.get(`${this.basePath}/${userId}/courses/enrolled`, params, userToken)).json();
     return data;
   }
 
@@ -17,8 +17,8 @@ class UserService {
     return data;
   }
 
-  async getMentors(params:object = {}) {
-    const response = await fetchService.get(`${this.basePath}/mentors`, params);
+  async getMentors(params:object = {}, token:string) {
+    const response = await fetchService.get(`${this.basePath}/mentors`, params, token);
     const { status } = response;
     const data = await response.json();
     return { data, status };

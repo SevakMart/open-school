@@ -25,7 +25,7 @@ const ForgotPassword = (
   const sendForgotPassword = () => {
     const emailError = (validateEmail(email));
     if (!emailError) {
-      authService.sendForgotPasswordRequest(email)
+      authService.sendForgotPasswordRequest({ email })
         .then((response) => {
           if (response.status === 200) {
             setSuccessMessage(response.data.message);

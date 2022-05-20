@@ -25,7 +25,7 @@ class AuthService {
     return { ...data, status, token };
   }
 
-  async sendForgotPasswordRequest(content:string) {
+  async sendForgotPasswordRequest(content:object) {
     const response = await fetchService.post(`${this.basePath}/password/forgot`, content, {});
     const { status } = response;
     const data = await response.json();

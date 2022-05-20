@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../redux/Store';
 import RightArrowIcon from '../../../../icons/RightArrow';
 import LeftArrowIcon from '../../../../icons/LeftArrow';
 import CategoryCard from '../../../../component/CategoryProfile/CategoryProfile';
@@ -8,6 +10,7 @@ import categoriesService from '../../../../services/categoriesService';
 import styles from './Categories.module.scss';
 
 const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
+  const userInfo = useSelector<RootState>((state) => state.userInfo);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [categoryPage, setCategoryPage] = useState(0);
@@ -18,7 +21,10 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
     let cancel = false;
     let categoryPromise;
     if (isLoggedIn) {
-      categoryPromise = categoriesService.getCategories({ page: categoryPage, size: 6 });
+      categoryPromise = categoriesService.getCategories(
+        { page: categoryPage, size: 6 },
+        (userInfo as any).token,
+      );
     } else {
       categoryPromise = publicService.getPublicCategories({ page: categoryPage, size: 6 });
     }

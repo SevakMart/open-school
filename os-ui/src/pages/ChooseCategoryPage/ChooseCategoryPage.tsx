@@ -34,7 +34,7 @@ const ChooseCategoryPage = () => {
   };
   useEffect(() => {
     let cancel = false;
-    categoriesService.getSearchedCategories({ title })
+    categoriesService.getSearchedCategories({ title }, (userInfo as any).token)
       .then((data) => {
         if (cancel) return;
         if (!Object.entries(data).length) {

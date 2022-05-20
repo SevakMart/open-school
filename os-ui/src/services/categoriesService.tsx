@@ -7,15 +7,15 @@ class CategoriesService {
     this.basePath = 'categories';
   }
 
-  async getCategories(params: object = {}) {
-    const response = await fetchService.get(this.basePath, params);
+  async getCategories(params: object = {}, token:string) {
+    const response = await fetchService.get(this.basePath, params, token);
     const { status } = response;
     const data = await response.json();
     return { data, status };
   }
 
-  async getSearchedCategories(params:object = {}) {
-    const data = await (await fetchService.get(`${this.basePath}/subcategories`, params)).json();
+  async getSearchedCategories(params: object = {}, token:string) {
+    const data = await (await fetchService.get(`${this.basePath}/subcategories`, params, token)).json();
     return data;
   }
 }

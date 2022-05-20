@@ -59,7 +59,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
   };
 
   const resendEmail = () => {
-    authService.sendForgotPasswordRequest(email)
+    authService.sendForgotPasswordRequest({ email })
       .then((response) => {
         setErrorFormValue({ tokenError: '', newPasswordError: '', confirmedPasswordError: '' });
         setFormValues({ token: '', newPassword: '', confirmedPassword: '' });

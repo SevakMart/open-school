@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../redux/Store';
 import RightArrowIcon from '../../../../icons/RightArrow';
 import Button from '../../../../component/Button/Button';
 import LeftArrowIcon from '../../../../icons/LeftArrow';
@@ -10,6 +12,7 @@ import styles from './Mentors.module.scss';
 
 const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
   handleButtonClick:(buttonType:string)=>void}) => {
+  const userInfo = useSelector<RootState>((state) => state.userInfo);
   const [mentors, setMentors] = useState<MentorType[]>([]);
   const [page, setPage] = useState(0);
   const [maxPage, setMaxPage] = useState(10);
@@ -20,8 +23,12 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
     const cancel = false;
     let mentorPromise;
 
-    if (isLoggedIn)mentorPromise = userService.getMentors({ page, size: 4 });
-    else mentorPromise = publicService.getPublicMentors({ page, size: 4 });
+    if (isLoggedIn) {
+      mentorPromise = userService.getMentors(
+        { page, size: 4 },
+        (userInfo as any).token,
+      );
+    } else mentorPromise = publicService.getPublicMentors({ page, size: 4 });
 
     mentorPromise.then((res) => {
       if (cancel) return;
