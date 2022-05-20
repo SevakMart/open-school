@@ -17,5 +17,5 @@ public interface UserService {
 
   Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds);
 
-  List<UserCourseDto> findUserCourses(Long userId, Long courseStatusId);
+  List<UserCourseDto> findUserEnrolledCourses(Long userId, Long courseStatusId);
 }

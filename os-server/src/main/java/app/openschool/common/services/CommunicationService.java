@@ -1,6 +1,8 @@
 package app.openschool.common.services;
 
+import app.openschool.common.event.SendResetPasswordEmailEvent;
+
 public interface CommunicationService {
 
-  void sendResetPasswordEmail(String recipientEmail, String token);
+  void sendResetPasswordEmail(SendResetPasswordEmailEvent event);
 }

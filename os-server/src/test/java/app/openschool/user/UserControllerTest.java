@@ -65,11 +65,11 @@ class UserControllerTest {
   }
 
   @Test
-  void findUserCourses() throws Exception {
-    List<UserCourseDto> userCourseDtoList = new ArrayList<>();
-    when(userService.findUserCourses(1L, null)).thenReturn(userCourseDtoList);
+  void findEnrolledUserCourses() throws Exception {
+    List<UserCourseDto> userEnrolledCourseDtoList = new ArrayList<>();
+    when(userService.findUserEnrolledCourses(1L, null)).thenReturn(userEnrolledCourseDtoList);
     mockMvc
-        .perform(get("/users/1/courses").contentType(APPLICATION_JSON))
+        .perform(get("/users/1/courses/enrolled").contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
   }
 

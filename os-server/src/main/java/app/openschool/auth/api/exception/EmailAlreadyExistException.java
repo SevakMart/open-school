@@ -1,4 +1,4 @@
-package app.openschool.auth.exception;
+package app.openschool.auth.api.exception;
 
 public class EmailAlreadyExistException extends RuntimeException {
 

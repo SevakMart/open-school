@@ -1,6 +1,6 @@
-package app.openschool.auth.mapper;
+package app.openschool.auth.api.mapper;
 
-import app.openschool.auth.dto.UserLoginDto;
+import app.openschool.auth.api.dto.UserLoginDto;
 import app.openschool.user.User;
 
 public class UserLoginMapper {

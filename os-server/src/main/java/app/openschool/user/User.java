@@ -3,6 +3,7 @@ package app.openschool.user;
 import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.category.Category;
 import app.openschool.course.Course;
+import app.openschool.course.EnrolledCourse;
 import app.openschool.user.company.Company;
 import app.openschool.user.role.Role;
 import java.util.Set;
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -71,12 +73,11 @@ public class User {
       inverseJoinColumns = {@JoinColumn(name = "category_id")})
   private Set<Category> categories;
 
-  @ManyToMany
-  @JoinTable(
-      name = "learning_path_student",
-      joinColumns = {@JoinColumn(name = "user_id")},
-      inverseJoinColumns = {@JoinColumn(name = "learning_path_id")})
+  @OneToMany(mappedBy = "mentor")
   private Set<Course> courses;
+
+  @OneToMany(mappedBy = "user")
+  private Set<EnrolledCourse> enrolledCourses;
 
   @OneToOne(mappedBy = "user")
   private ResetPasswordToken resetPasswordToken;
@@ -244,5 +245,13 @@ public class User {
 
   public void setResetPasswordToken(ResetPasswordToken resetPasswordToken) {
     this.resetPasswordToken = resetPasswordToken;
+  }
+
+  public Set<EnrolledCourse> getEnrolledCourses() {
+    return enrolledCourses;
+  }
+
+  public void setEnrolledCourses(Set<EnrolledCourse> enrolledCourses) {
+    this.enrolledCourses = enrolledCourses;
   }
 }
