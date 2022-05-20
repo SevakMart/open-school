@@ -16,7 +16,6 @@ import org.thymeleaf.context.Context;
 
 @Service
 public class EmailService implements CommunicationService {
-
   private final EmailSenderService emailSender;
   private final ITemplateEngine templateEngine;
   private final String resetPasswordEmailSubject;
