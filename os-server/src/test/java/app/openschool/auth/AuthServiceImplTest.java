@@ -15,11 +15,6 @@ import app.openschool.auth.api.dto.UserRegistrationDto;
 import app.openschool.auth.api.exception.EmailAlreadyExistException;
 import app.openschool.auth.api.exception.EmailNotFoundException;
 import app.openschool.auth.entity.ResetPasswordToken;
-import app.openschool.auth.exception.EmailAlreadyExistException;
-import app.openschool.auth.exception.EmailNotExistsException;
-import app.openschool.auth.exception.EmailNotFoundException;
-import app.openschool.auth.exception.NotMatchingPasswordsException;
-import app.openschool.auth.exception.ResetPasswordTokenNotFoundException;
 import app.openschool.auth.exception.UserNotVerifiedException;
 import app.openschool.auth.repository.ResetPasswordTokenRepository;
 import app.openschool.auth.verification.VerificationToken;
@@ -35,8 +30,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
@@ -51,10 +44,6 @@ public class AuthServiceImplTest {
   @Mock private BCryptPasswordEncoder passwordEncoder;
 
   @Mock private ApplicationEventPublisher applicationEventPublisher;
-  @Mock private ApplicationEventPublisher applicationEventPublisher;
-
-  @Value("${token.expiration}")
-  private int tokenExpirationAfterMinutes;
 
   private AuthService authService;
 
@@ -64,8 +53,10 @@ public class AuthServiceImplTest {
         new AuthServiceImpl(
             userRepository,
             resetPasswordTokenRepository,
+            verificationTokenRepository,
             passwordEncoder,
-            applicationEventPublisher);
+            applicationEventPublisher,
+            0L);
   }
 
   @Test
@@ -101,12 +92,10 @@ public class AuthServiceImplTest {
         new AuthServiceImpl(
             userRepository,
             resetPasswordTokenRepository,
+            verificationTokenRepository,
             passwordEncoder,
-            applicationEventPublisher);
             applicationEventPublisher,
-            null,
-            0L,
-            tokenExpirationAfterMinutes);
+            0L);
 
     given(userRepository.findUserByEmail(any())).willReturn(null);
 

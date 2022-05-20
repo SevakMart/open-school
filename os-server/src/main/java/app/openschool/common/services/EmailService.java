@@ -2,10 +2,10 @@ package app.openschool.common.services;
 
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
+import app.openschool.common.event.SendResetPasswordEmailEvent;
 import app.openschool.common.event.SendVerificationEmailEvent;
 import app.openschool.user.User;
 import java.util.Optional;
-import app.openschool.common.event.SendResetPasswordEmailEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;

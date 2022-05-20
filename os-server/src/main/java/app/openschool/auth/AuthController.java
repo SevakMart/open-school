@@ -3,12 +3,6 @@ package app.openschool.auth;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
-import app.openschool.auth.dto.ResetPasswordRequest;
-import app.openschool.auth.dto.UserLoginDto;
-import app.openschool.auth.dto.UserLoginRequest;
-import app.openschool.auth.dto.UserRegistrationDto;
-import app.openschool.auth.dto.UserRegistrationHttpResponse;
-import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.api.dto.ForgotPasswordRequest;
 import app.openschool.auth.api.dto.ResetPasswordRequest;
 import app.openschool.auth.api.dto.UserLoginDto;
@@ -16,6 +10,7 @@ import app.openschool.auth.api.dto.UserLoginRequest;
 import app.openschool.auth.api.dto.UserRegistrationDto;
 import app.openschool.auth.api.dto.UserRegistrationHttpResponse;
 import app.openschool.auth.entity.ResetPasswordToken;
+import app.openschool.auth.verification.VerificationToken;
 import app.openschool.common.response.ResponseMessage;
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
@@ -31,10 +26,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,15 +57,14 @@ public class AuthController {
       AuthenticationManager authenticationManager,
       MessageSource messageSource,
       AuthService authService,
+      @Value("${token.expiration}") Integer tokenExpirationAfterMinutes,
       ITemplateEngine templateEngine) {
-      AuthService authService,
-      @Value("${token.expiration}") Integer tokenExpirationAfterMinutes) {
     this.jwtTokenProvider = jwtTokenProvider;
     this.authenticationManager = authenticationManager;
     this.messageSource = messageSource;
     this.authService = authService;
-    this.templateEngine = templateEngine;
     this.tokenExpirationAfterMinutes = tokenExpirationAfterMinutes;
+    this.templateEngine = templateEngine;
   }
 
   @PostMapping("/register")
@@ -115,16 +109,6 @@ public class AuthController {
   public ResponseEntity<Void> resendVerificationEmail(@PathVariable Long userId) {
     authService.sendVerificationEmail(userId);
     return ResponseEntity.ok().build();
-  }
-
-  private void authenticate(String username, String password) {
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-  }
-
-  private HttpHeaders getJwtHeader(UserPrincipal userPrincipal) {
-    HttpHeaders headers = new HttpHeaders();
-    headers.add(JWT_TOKEN_HEADER, TOKEN_PREFIX + jwtTokenProvider.generateJwtToken(userPrincipal));
-    return headers;
   }
 
   @PostMapping("/password/forgot")
@@ -184,5 +168,15 @@ public class AuthController {
         .body(
             new ResponseMessage(
                 messageSource.getMessage("password.reset.success.message", null, locale)));
+  }
+
+  private void authenticate(String username, String password) {
+    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+  }
+
+  private HttpHeaders getJwtHeader(UserPrincipal userPrincipal) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.add(JWT_TOKEN_HEADER, TOKEN_PREFIX + jwtTokenProvider.generateJwtToken(userPrincipal));
+    return headers;
   }
 }

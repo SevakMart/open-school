@@ -1,8 +1,12 @@
+-- -----------------------------------------------------
+-- user
+-- -----------------------------------------------------
+
 ALTER TABLE user
 ADD COLUMN enabled BOOLEAN;
 
 -- -----------------------------------------------------
--- verification_token
+-- reset_password_token
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS reset_password_token (
  id BIGINT NOT NULL AUTO_INCREMENT,
@@ -16,6 +20,9 @@ CREATE TABLE IF NOT EXISTS reset_password_token (
  ON UPDATE CASCADE
  ON DELETE CASCADE);
 
+-- -----------------------------------------------------
+-- verification_token
+-- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS verification_token (
  id BIGINT NOT NULL AUTO_INCREMENT,
