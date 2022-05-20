@@ -1,8 +1,12 @@
 package app.openschool.auth;
 
-import app.openschool.auth.dto.ResetPasswordRequest;
-import app.openschool.auth.dto.UserLoginDto;
-import app.openschool.auth.dto.UserRegistrationDto;
+import app.openschool.auth.api.dto.ResetPasswordRequest;
+import app.openschool.auth.api.dto.UserLoginDto;
+import app.openschool.auth.api.dto.UserRegistrationDto;
+import app.openschool.auth.api.exception.EmailAlreadyExistException;
+import app.openschool.auth.api.exception.EmailNotFoundException;
+import app.openschool.auth.api.mapper.UserLoginMapper;
+import app.openschool.auth.api.mapper.UserRegistrationMapper;
 import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.auth.exception.EmailAlreadyExistException;
 import app.openschool.auth.exception.EmailNotExistsException;
@@ -17,9 +21,12 @@ import app.openschool.auth.repository.ResetPasswordTokenRepository;
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
 import app.openschool.common.event.SendVerificationEmailEvent;
+import app.openschool.common.event.SendResetPasswordEmailEvent;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
+import java.util.Optional;
+import org.springframework.context.ApplicationEventPublisher;
 import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +44,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   private final ResetPasswordTokenRepository resetPasswordTokenRepository;
   private final BCryptPasswordEncoder passwordEncoder;
   private final ApplicationEventPublisher applicationEventPublisher;
+  private final ApplicationEventPublisher applicationEventPublisher;
   private final VerificationTokenRepository verificationTokenRepository;
   private final long expiresAt;
   private final Integer tokenExpirationAfterMinutes;
@@ -49,9 +57,11 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
       VerificationTokenRepository verificationTokenRepository,
       @Value("${verification.duration}") long expiresAt,
       @Value("${token.expiration}") Integer tokenExpirationAfterMinutes) {
+      ApplicationEventPublisher applicationEventPublisher) {
     this.userRepository = userRepository;
     this.resetPasswordTokenRepository = resetPasswordTokenRepository;
     this.passwordEncoder = passwordEncoder;
+    this.applicationEventPublisher = applicationEventPublisher;
     this.applicationEventPublisher = applicationEventPublisher;
     this.verificationTokenRepository = verificationTokenRepository;
     this.expiresAt = expiresAt;
@@ -119,37 +129,33 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   }
 
   @Override
-  public void updateResetPasswordToken(String email) {
-    User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new EmailNotExistsException(email));
-    if (resetPasswordTokenRepository.findByUser(user.getId()).isPresent()) {
-      ResetPasswordToken currentToken = resetPasswordTokenRepository.findByUser(user.getId()).get();
-      resetPasswordTokenRepository.delete(currentToken);
-    }
+  public void updateResetPasswordToken(String email, User user) {
+    resetPasswordTokenRepository
+        .findByUser(user.getId())
+        .ifPresent(resetPasswordTokenRepository::delete);
     ResetPasswordToken resetPasswordToken = ResetPasswordToken.generate(user);
     resetPasswordTokenRepository.save(resetPasswordToken);
+    applicationEventPublisher.publishEvent(
+        new SendResetPasswordEmailEvent(this, email, resetPasswordToken.getToken()));
   }
 
   @Override
-  public void resetPassword(ResetPasswordRequest request) {
-    if (!request.getNewPassword().equals(request.getConfirmedPassword())) {
-      throw new NotMatchingPasswordsException();
-    }
-    ResetPasswordToken resetPasswordToken =
-        resetPasswordTokenRepository
-            .findByToken(request.getToken())
-            .orElseThrow(ResetPasswordTokenNotFoundException::new);
-    if (resetPasswordToken.isExpired(tokenExpirationAfterMinutes)) {
-      throw new ResetPasswordTokenExpiredException();
-    }
+  public void resetPassword(ResetPasswordRequest request, ResetPasswordToken resetPasswordToken) {
     User user = resetPasswordToken.getUser();
-    if (user == null) {
-      throw new ResetPasswordTokenNotFoundException();
-    }
     String encodedPassword = passwordEncoder.encode(request.getNewPassword());
     user.setPassword(encodedPassword);
     resetPasswordTokenRepository.delete(resetPasswordToken);
     userRepository.save(user);
+  }
+
+  @Override
+  public Optional<User> findByEmail(String email) {
+    return userRepository.findByEmail(email);
+  }
+
+  @Override
+  public Optional<ResetPasswordToken> findByToken(String token) {
+    return resetPasswordTokenRepository.findByToken(token);
   }
 
   private boolean emailAlreadyExist(String email) {

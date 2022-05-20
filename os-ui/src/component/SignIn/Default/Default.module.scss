@@ -43,7 +43,7 @@
       box-sizing: border-box;
     }
   }
-  .errorField {
+.errorField {
     @include fontStyle("Montserrat", normal, 800, 0.875rem, 1rem);
     color: #ff0000;
-  }
+}

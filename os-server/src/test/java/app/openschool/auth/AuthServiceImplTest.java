@@ -10,8 +10,10 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import app.openschool.auth.dto.ResetPasswordRequest;
-import app.openschool.auth.dto.UserRegistrationDto;
+import app.openschool.auth.api.dto.ResetPasswordRequest;
+import app.openschool.auth.api.dto.UserRegistrationDto;
+import app.openschool.auth.api.exception.EmailAlreadyExistException;
+import app.openschool.auth.api.exception.EmailNotFoundException;
 import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.auth.exception.EmailAlreadyExistException;
 import app.openschool.auth.exception.EmailNotExistsException;
@@ -32,6 +34,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -48,6 +51,7 @@ public class AuthServiceImplTest {
   @Mock private BCryptPasswordEncoder passwordEncoder;
 
   @Mock private ApplicationEventPublisher applicationEventPublisher;
+  @Mock private ApplicationEventPublisher applicationEventPublisher;
 
   @Value("${token.expiration}")
   private int tokenExpirationAfterMinutes;
@@ -61,10 +65,7 @@ public class AuthServiceImplTest {
             userRepository,
             resetPasswordTokenRepository,
             passwordEncoder,
-            applicationEventPublisher,
-            verificationTokenRepository,
-            0L,
-            tokenExpirationAfterMinutes);
+            applicationEventPublisher);
   }
 
   @Test
@@ -101,6 +102,7 @@ public class AuthServiceImplTest {
             userRepository,
             resetPasswordTokenRepository,
             passwordEncoder,
+            applicationEventPublisher);
             applicationEventPublisher,
             null,
             0L,
@@ -133,47 +135,20 @@ public class AuthServiceImplTest {
   }
 
   @Test
-  void updateResetPasswordTokenUserWithGivenEmailNotFound() {
-    when(userRepository.findByEmail("test@gmail.com")).thenReturn(Optional.empty());
-    assertThatThrownBy(() -> authService.updateResetPasswordToken("test@gmail.com"))
-        .isInstanceOf(EmailNotExistsException.class);
-    verify(userRepository, Mockito.times(1)).findByEmail("test@gmail.com");
-  }
-
-  @Test
   void updateResetPasswordToken() {
     User user = new User();
     when(userRepository.findByEmail("test@gmail.com")).thenReturn(Optional.of(user));
-    authService.updateResetPasswordToken("test@gmail.com");
-    verify(userRepository, Mockito.times(1)).findByEmail("test@gmail.com");
+    authService.updateResetPasswordToken("test@gmail.com", user);
     assertNotNull(userRepository.findByEmail("test@gmail.com"));
-  }
-
-  @Test
-  void restPasswordTokenFails() {
-
-    assertThatThrownBy(
-            () ->
-                authService.resetPassword(
-                    new ResetPasswordRequest("5597", "test@gmail.com", "t@gmail.com")))
-        .isInstanceOf(NotMatchingPasswordsException.class);
-    assertThatThrownBy(
-            () ->
-                authService.resetPassword(
-                    new ResetPasswordRequest("5597", "test@gmail.com", "test@gmail.com")))
-        .isInstanceOf(ResetPasswordTokenNotFoundException.class);
-    verify(resetPasswordTokenRepository, Mockito.times(1)).findByToken("5597");
   }
 
   @Test
   void restPasswordToken() {
     User user = new User();
     ResetPasswordToken resetPasswordToken = ResetPasswordToken.generate(user);
-    when(resetPasswordTokenRepository.findByToken(resetPasswordToken.getToken()))
-        .thenReturn(Optional.of(resetPasswordToken));
     authService.resetPassword(
-        new ResetPasswordRequest(
-            resetPasswordToken.getToken(), "test@gmail.com", "test@gmail.com"));
+        new ResetPasswordRequest(resetPasswordToken.getToken(), "test@gmail.com", "test@gmail.com"),
+        resetPasswordToken);
     verify(resetPasswordTokenRepository, Mockito.times(1)).delete(resetPasswordToken);
     verify(userRepository, Mockito.times(1)).save(user);
   }

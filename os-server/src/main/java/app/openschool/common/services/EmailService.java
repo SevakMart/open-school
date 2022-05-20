@@ -5,6 +5,7 @@ import app.openschool.auth.verification.VerificationTokenRepository;
 import app.openschool.common.event.SendVerificationEmailEvent;
 import app.openschool.user.User;
 import java.util.Optional;
+import app.openschool.common.event.SendResetPasswordEmailEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -43,9 +44,12 @@ public class EmailService implements CommunicationService {
 
   @Override
   @Async
-  public void sendResetPasswordEmail(String email, String resetPasswordToken) {
+  @EventListener(classes = {SendResetPasswordEmailEvent.class})
+  public void sendResetPasswordEmail(SendResetPasswordEmailEvent event) {
     emailSender.sendEmail(
-        email, createResetPasswordEmailContent(resetPasswordToken), resetPasswordEmailSubject);
+        event.getEmail(),
+        createResetPasswordEmailContent(event.getToken()),
+        resetPasswordEmailSubject);
   }
 
   @Override

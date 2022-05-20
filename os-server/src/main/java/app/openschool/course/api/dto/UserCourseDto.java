@@ -25,11 +25,7 @@ public class UserCourseDto {
   }
 
   public UserCourseDto(
-      String title,
-      String courseStatus,
-      long percentage,
-      long remainingTime,
-      LocalDate dueDate) {
+      String title, String courseStatus, long percentage, long remainingTime, LocalDate dueDate) {
     this.title = title;
     this.courseStatus = courseStatus;
     this.percentage = percentage;
