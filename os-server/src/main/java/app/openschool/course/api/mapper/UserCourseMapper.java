@@ -1,7 +1,9 @@
 package app.openschool.course.api.mapper;
 
 import app.openschool.course.Course;
+import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.dto.UserCourseDto;
+import app.openschool.course.module.EnrolledModule;
 import app.openschool.course.module.Module;
 import app.openschool.course.module.item.ModuleItem;
 import java.util.ArrayList;
@@ -10,36 +12,37 @@ import java.util.List;
 
 public class UserCourseMapper {
 
-  public static List<UserCourseDto> toUserCourseDtoList(List<Course> courseList) {
-    List<UserCourseDto> userCourseDtoList = new ArrayList<>();
-    for (Course course : courseList) {
-      userCourseDtoList.add(toUserCourseDto(course));
+  public static List<UserCourseDto> toUserCourseDtoList(List<EnrolledCourse> enrolledCourseList) {
+    List<UserCourseDto> userEnrolledCourseDtoList = new ArrayList<>();
+    for (EnrolledCourse enrolledCourse : enrolledCourseList) {
+      userEnrolledCourseDtoList.add(toUserCourseDto(enrolledCourse));
     }
-    return userCourseDtoList;
+    return userEnrolledCourseDtoList;
   }
 
-  public static UserCourseDto toUserCourseDto(Course course) {
-    if (!course.getCourseStatus().isInProgress()) {
-      return new UserCourseDto(course.getTitle(), course.getCourseStatus().getType(), 100);
+  public static UserCourseDto toUserCourseDto(EnrolledCourse enrolledCourse) {
+    if (!enrolledCourse.getCourseStatus().isInProgress()) {
+      return new UserCourseDto(
+          enrolledCourse.getCourse().getTitle(), enrolledCourse.getCourseStatus().getType(), 100);
     }
-    long courseRemainingTime = getCourseReamingTime(course);
-    long courseTotalEstimatedTime = getCourseTotalEstimatedTime(course);
+    long courseRemainingTime = getCourseReamingTime(enrolledCourse);
+    long courseTotalEstimatedTime = getCourseTotalEstimatedTime(enrolledCourse.getCourse());
     long percentage = 100L - ((courseRemainingTime * 100L) / courseTotalEstimatedTime);
     return new UserCourseDto(
-        course.getTitle(),
-        course.getCourseStatus().getType(),
+        enrolledCourse.getCourse().getTitle(),
+        enrolledCourse.getCourseStatus().getType(),
         percentage,
         courseRemainingTime,
-        course.getDueDate());
+        enrolledCourse.getDueDate());
   }
 
-  private static long getCourseReamingTime(Course course) {
-    return course.getModules().stream()
-        .filter(module -> module.getModuleStatus().isInProgress())
-        .map(Module::getModuleItems)
+  private static long getCourseReamingTime(EnrolledCourse enrolledCourse) {
+    return enrolledCourse.getEnrolledModules().stream()
+        .filter(enrolledModule -> enrolledModule.getModuleStatus().isInProgress())
+        .map(EnrolledModule::getEnrolledModuleItems)
         .flatMap(Collection::stream)
-        .filter(moduleItem -> moduleItem.getModuleItemStatus().isInProgress())
-        .mapToLong(ModuleItem::getEstimatedTime)
+        .filter(enrolledModuleItem -> enrolledModuleItem.getModuleItemStatus().isInProgress())
+        .mapToLong(enrolledModuleItem -> enrolledModuleItem.getModuleItem().getEstimatedTime())
         .sum();
   }
 

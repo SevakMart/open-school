@@ -1,6 +1,6 @@
-package app.openschool.auth.mapper;
+package app.openschool.auth.api.mapper;
 
-import app.openschool.auth.dto.UserRegistrationDto;
+import app.openschool.auth.api.dto.UserRegistrationDto;
 import app.openschool.user.User;
 import app.openschool.user.role.Role;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

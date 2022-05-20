@@ -2,7 +2,6 @@ package app.openschool.course.module;
 
 import app.openschool.course.Course;
 import app.openschool.course.module.item.ModuleItem;
-import app.openschool.course.module.status.ModuleStatus;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,25 +26,19 @@ public class Module {
   @JoinColumn(name = "learning_path_id")
   private Course course;
 
-  @ManyToOne
-  @JoinColumn(name = "module_status_id")
-  private ModuleStatus moduleStatus;
-
   @OneToMany(mappedBy = "module")
   private Set<ModuleItem> moduleItems;
 
   public Module() {}
 
-  public Module(Course course, ModuleStatus moduleStatus) {
+  public Module(Course course) {
     this.course = course;
-    this.moduleStatus = moduleStatus;
   }
 
-  public Module(Long id, Course course, Set<ModuleItem> moduleItems, ModuleStatus moduleStatus) {
+  public Module(Long id, Course course, Set<ModuleItem> moduleItems) {
     this.id = id;
     this.course = course;
     this.moduleItems = moduleItems;
-    this.moduleStatus = moduleStatus;
   }
 
   public Long getId() {
@@ -70,13 +63,5 @@ public class Module {
 
   public void setModuleItems(Set<ModuleItem> moduleItems) {
     this.moduleItems = moduleItems;
-  }
-
-  public ModuleStatus getModuleStatus() {
-    return moduleStatus;
-  }
-
-  public void setModuleStatus(ModuleStatus moduleStatus) {
-    this.moduleStatus = moduleStatus;
   }
 }

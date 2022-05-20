@@ -1,5 +1,6 @@
 package app.openschool.course.module.item.status;
 
+import app.openschool.course.module.item.EnrolledModuleItem;
 import app.openschool.course.module.item.ModuleItem;
 import java.util.Set;
 import javax.persistence.Column;
@@ -22,7 +23,7 @@ public class ModuleItemStatus {
   private String type;
 
   @OneToMany(mappedBy = "moduleItemStatus")
-  private Set<ModuleItem> moduleItems;
+  private Set<EnrolledModuleItem> enrolledModuleItems;
 
   public ModuleItemStatus() {}
 
@@ -30,10 +31,10 @@ public class ModuleItemStatus {
     this.type = type;
   }
 
-  public ModuleItemStatus(Long id, String type, Set<ModuleItem> moduleItems) {
+  public ModuleItemStatus(Long id, String type, Set<EnrolledModuleItem> enrolledModuleItems) {
     this.id = id;
     this.type = type;
-    this.moduleItems = moduleItems;
+    this.enrolledModuleItems = enrolledModuleItems;
   }
 
   public boolean isInProgress() {
@@ -52,15 +53,15 @@ public class ModuleItemStatus {
     return type;
   }
 
+  public Set<EnrolledModuleItem> getEnrolledModuleItems() {
+    return enrolledModuleItems;
+  }
+
+  public void setEnrolledModuleItems(Set<EnrolledModuleItem> enrolledModuleItems) {
+    this.enrolledModuleItems = enrolledModuleItems;
+  }
+
   public void setType(String type) {
     this.type = type;
-  }
-
-  public Set<ModuleItem> getModuleItems() {
-    return moduleItems;
-  }
-
-  public void setModuleItems(Set<ModuleItem> moduleItems) {
-    this.moduleItems = moduleItems;
   }
 }

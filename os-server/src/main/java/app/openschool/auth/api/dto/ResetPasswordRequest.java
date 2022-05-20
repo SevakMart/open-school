@@ -1,17 +1,23 @@
-package app.openschool.auth.dto;
+package app.openschool.auth.api.dto;
 
+import app.openschool.auth.api.annotation.SameValues;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+@SameValues(sameFields = {"newPassword", "confirmedPassword"})
 public class ResetPasswordRequest {
 
   private static final String PASSWORD_PATTERN =
       "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*()_{}]).{8,20})";
 
+  @NotBlank(message = "{token.blank}")
   private String token;
 
+  @NotBlank(message = "{password.blank}")
   @Pattern(regexp = PASSWORD_PATTERN, message = "{validation.password.error.message}")
   private String newPassword;
 
+  @NotBlank(message = "{confirm.password.blank}")
   private String confirmedPassword;
 
   public ResetPasswordRequest() {}

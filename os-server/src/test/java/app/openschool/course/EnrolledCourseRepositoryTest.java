@@ -2,6 +2,7 @@ package app.openschool.course;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import app.openschool.category.Category;
 import app.openschool.category.CategoryRepository;
@@ -9,18 +10,19 @@ import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.difficulty.DifficultyRepository;
 import app.openschool.course.language.Language;
 import app.openschool.course.language.LanguageRepository;
-import app.openschool.course.module.Module;
-import app.openschool.course.module.ModuleRepository;
-import app.openschool.course.module.item.ModuleItem;
-import app.openschool.course.module.item.ModuleItemRepository;
+import app.openschool.course.status.CourseStatus;
+import app.openschool.course.status.CourseStatusRepository;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.company.Company;
 import app.openschool.user.company.CompanyRepository;
 import app.openschool.user.role.RoleRepository;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +31,17 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @DataJpaTest
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
-public class CourseRepositoryTest {
+public class EnrolledCourseRepositoryTest {
+
   @Autowired CategoryRepository categoryRepository;
   @Autowired DifficultyRepository difficultyRepository;
   @Autowired LanguageRepository languageRepository;
-  @Autowired ModuleRepository moduleRepository;
-  @Autowired ModuleItemRepository moduleItemRepository;
   @Autowired CourseRepository courseRepository;
+  @Autowired EnrolledCourseRepository enrolledCourseRepository;
   @Autowired CompanyRepository companyRepository;
   @Autowired RoleRepository roleRepository;
   @Autowired UserRepository userRepository;
+  @Autowired CourseStatusRepository courseStatusRepository;
 
   @BeforeEach
   public void setup() {
@@ -64,6 +67,7 @@ public class CourseRepositoryTest {
     mentor.setCompany(companyRepository.getById(1));
     userRepository.save(mentor);
 
+    List<Course> courseList = new ArrayList<>();
     for (long i = 1L; i < 7L; i++) {
       Course course = new Course();
       course.setId(i);
@@ -73,56 +77,9 @@ public class CourseRepositoryTest {
       course.setDifficulty(difficultyRepository.getById(1));
       course.setLanguage(languageRepository.getById(1));
       course.setMentor(mentor);
+      courseList.add(course);
       courseRepository.save(course);
     }
-
-    Set<Module> moduleSet = new HashSet<>();
-    for (long i = 1L; i < 5L; i++) {
-      Module module = new Module();
-      module.setId(i);
-      module.setCourse(courseRepository.getById(1L));
-      moduleSet.add(module);
-      moduleRepository.save(module);
-    }
-    courseRepository.getById(1L).setModules(moduleSet);
-
-    Set<ModuleItem> moduleItemsModule1 = new HashSet<>();
-    for (long i = 1L; i < 3L; i++) {
-      ModuleItem moduleItem = new ModuleItem();
-      moduleItem.setId(i);
-      moduleItem.setModuleItemType("video");
-      moduleItem.setEstimatedTime(35L);
-      moduleItem.setModule(moduleRepository.getById(1L));
-      moduleItemsModule1.add(moduleItem);
-      moduleItemRepository.save(moduleItem);
-    }
-
-    Module module1 =
-        courseRepository.getById(1L).getModules().stream()
-            .filter(module -> module.getId().equals(1L))
-            .findFirst()
-            .get();
-    module1.setModuleItems(moduleItemsModule1);
-    moduleRepository.save(module1);
-
-    Set<ModuleItem> moduleItemsModule2 = new HashSet<>();
-    for (long i = 1L; i < 3L; i++) {
-      ModuleItem moduleItem = new ModuleItem();
-      moduleItem.setId(i + 2);
-      moduleItem.setModuleItemType("reading");
-      moduleItem.setEstimatedTime(25L);
-      moduleItem.setModule(moduleRepository.getById(2L));
-      moduleItemsModule2.add(moduleItem);
-      moduleItemRepository.save(moduleItem);
-    }
-
-    Module module2 =
-        courseRepository.getById(1L).getModules().stream()
-            .filter(module -> module.getId().equals(2L))
-            .findFirst()
-            .get();
-    module2.setModuleItems(moduleItemsModule2);
-    moduleRepository.save(module2);
 
     User user = new User();
     user.setId(2L);
@@ -135,25 +92,55 @@ public class CourseRepositoryTest {
     company.setCompanyName("AAA");
     companyRepository.save(company);
     user.setCompany(companyRepository.getById(1));
-    Set<Category> categorySet = new HashSet<>();
-    categorySet.add(categoryRepository.getById(1L));
-    user.setCategories(categorySet);
+
     userRepository.save(user);
+
+    Set<EnrolledCourse> enrolledCourses = new HashSet<>();
+    for (long i = 1L; i < 7L; i++) {
+      EnrolledCourse enrolledCourse = new EnrolledCourse();
+      enrolledCourse.setId(i);
+      enrolledCourse.setCourse(courseList.get((int) i - 1));
+      enrolledCourse.setCourseStatus(
+          i < 4 ? courseStatusRepository.getById(1L) : courseStatusRepository.getById(2L));
+      enrolledCourse.setDueDate(LocalDate.of(2022, 10, 7));
+      enrolledCourse.setUser(user);
+      enrolledCourses.add(enrolledCourse);
+      enrolledCourseRepository.save(enrolledCourse);
+    }
+    user.setEnrolledCourses(enrolledCourses);
   }
 
   @Test
-  public void getSuggestedCourses() {
-    User user = userRepository.getById(2L);
-    List<Course> courseList = courseRepository.getSuggestedCourses(user.getId());
-    assertEquals(
-        user.getCategories().stream().findFirst().get().getTitle(),
-        courseList.get(0).getCategory().getTitle());
-    assertEquals(4, courseList.size());
+  public void findAllUserEnrolledCourses() {
+    List<EnrolledCourse> allUserEnrolledCourses =
+        enrolledCourseRepository.findAllUserEnrolledCourses(2L);
+    assertEquals(6, allUserEnrolledCourses.size());
   }
 
   @Test
-  public void getRandomSuggestedCourses() {
-    List<Course> courseList = courseRepository.getRandomSuggestedCourses(4);
-    assertEquals(4, courseList.size());
+  public void findUserEnrolledCoursesByStatus() {
+    List<EnrolledCourse> coursesInProgress =
+        enrolledCourseRepository.findUserEnrolledCoursesByStatus(
+            2L, courseStatusRepository.getById(1L).getId());
+
+    assertEquals(3, coursesInProgress.size());
+    List<CourseStatus> statusList =
+        coursesInProgress.stream()
+            .map(EnrolledCourse::getCourseStatus)
+            .collect(Collectors.toList());
+    for (CourseStatus status : statusList) {
+      assertTrue("COURSE STATUS ISN'T IN PROGRESS", status.isInProgress());
+    }
+
+    List<EnrolledCourse> coursesCompleted =
+        enrolledCourseRepository.findUserEnrolledCoursesByStatus(
+            2L, courseStatusRepository.getById(2L).getId());
+
+    assertEquals(3, coursesCompleted.size());
+    List<CourseStatus> statusListCompleted =
+        coursesCompleted.stream().map(EnrolledCourse::getCourseStatus).collect(Collectors.toList());
+    for (CourseStatus status : statusListCompleted) {
+      assertTrue("COURSE STATUS ISN'T COMPLETED", !status.isInProgress());
+    }
   }
 }
