@@ -22,7 +22,6 @@ import app.openschool.auth.exception.UserNotVerifiedException;
 import app.openschool.auth.repository.ResetPasswordTokenRepository;
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
-import app.openschool.common.services.CommunicationService;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.api.exception.UserNotFoundException;
@@ -45,8 +44,6 @@ public class AuthServiceImplTest {
   @Mock ResetPasswordTokenRepository resetPasswordTokenRepository;
 
   @Mock private VerificationTokenRepository verificationTokenRepository;
-
-  @Mock CommunicationService communicationService;
 
   @Mock private BCryptPasswordEncoder passwordEncoder;
 
