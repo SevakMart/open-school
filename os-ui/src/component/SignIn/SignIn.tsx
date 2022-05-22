@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from '../../redux/Store';
 import SignInForm from './SignInForm';
 import styles from './SignIn.module.scss';
 import CloseIcon from '../../icons/Close';
@@ -14,7 +12,6 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
   const {
     mainContainer, formContainer, headerContent, iconContent, alreadyHaveAccount,
   } = styles;
-  const userInfo = useSelector<RootState>((state) => state.userInfo);
   const navigate = useNavigate();
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [forgotPasswordIsSet, setForgotPasswordIsSet] = useState(false);
@@ -37,7 +34,7 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
   useEffect(() => {
     let timer:any;
     if (isSignedIn) {
-      timer = setTimeout(() => navigate(`/categories/subcategories/userId=${(userInfo as any).id}`), 3000);
+      timer = setTimeout(() => navigate('/categories/subcategories'), 3000);
     }
     return () => clearTimeout(timer);
   }, [isSignedIn]);

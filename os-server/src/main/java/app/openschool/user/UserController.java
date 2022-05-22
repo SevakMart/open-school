@@ -47,10 +47,10 @@ public class UserController {
     return ResponseEntity.ok(userService.savePreferredCategories(userId, categoryIds));
   }
 
-  @GetMapping("/{userId}/courses")
+  @GetMapping("/{userId}/courses/enrolled")
   @Operation(summary = "find user's courses by course status")
-  public ResponseEntity<List<UserCourseDto>> findUserCourses(
+  public ResponseEntity<List<UserCourseDto>> findUserEnrolledCourses(
       @PathVariable Long userId, @RequestParam(required = false) Long courseStatusId) {
-    return ResponseEntity.ok(this.userService.findUserCourses(userId, courseStatusId));
+    return ResponseEntity.ok(this.userService.findUserEnrolledCourses(userId, courseStatusId));
   }
 }

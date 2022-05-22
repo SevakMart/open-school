@@ -2,7 +2,6 @@ package app.openschool.course;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
-import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import app.openschool.category.Category;
 import app.openschool.category.CategoryRepository;
@@ -14,20 +13,14 @@ import app.openschool.course.module.Module;
 import app.openschool.course.module.ModuleRepository;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.ModuleItemRepository;
-import app.openschool.course.module.item.status.ModuleItemStatusRepository;
-import app.openschool.course.module.status.ModuleStatusRepository;
-import app.openschool.course.status.CourseStatus;
-import app.openschool.course.status.CourseStatusRepository;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.company.Company;
 import app.openschool.user.company.CompanyRepository;
 import app.openschool.user.role.RoleRepository;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +35,6 @@ public class CourseRepositoryTest {
   @Autowired CategoryRepository categoryRepository;
   @Autowired DifficultyRepository difficultyRepository;
   @Autowired LanguageRepository languageRepository;
-  @Autowired CourseStatusRepository courseStatusRepository;
-  @Autowired ModuleStatusRepository moduleStatusRepository;
-  @Autowired ModuleItemStatusRepository moduleItemStatusRepository;
   @Autowired ModuleRepository moduleRepository;
   @Autowired ModuleItemRepository moduleItemRepository;
   @Autowired CourseRepository courseRepository;
@@ -63,6 +53,18 @@ public class CourseRepositoryTest {
     Category category = new Category();
     category.setTitle("Java");
     categoryRepository.save(category);
+    User mentor = new User();
+    mentor.setId(1L);
+    mentor.setName("John");
+    mentor.setSurname("Smith");
+    mentor.setEmail("mmm@gmail.com");
+    mentor.setPassword("pass");
+    mentor.setRole(roleRepository.getById(2));
+    Company company1 = new Company();
+    company1.setCompanyName("BBB");
+    companyRepository.save(company1);
+    mentor.setCompany(companyRepository.getById(1));
+    userRepository.save(mentor);
 
     for (long i = 1L; i < 7L; i++) {
       Course course = new Course();
@@ -72,8 +74,7 @@ public class CourseRepositoryTest {
       course.setCategory(categoryRepository.getById(1L));
       course.setDifficulty(difficultyRepository.getById(1));
       course.setLanguage(languageRepository.getById(1));
-      course.setCourseStatus(
-          i < 3 ? courseStatusRepository.getById(i) : courseStatusRepository.getById(1L));
+      course.setMentor(mentor);
       courseRepository.save(course);
     }
 
@@ -81,8 +82,6 @@ public class CourseRepositoryTest {
     for (long i = 1L; i < 5L; i++) {
       Module module = new Module();
       module.setId(i);
-      module.setModuleStatus(
-          i < 3 ? moduleStatusRepository.getById(i) : moduleStatusRepository.getById(1L));
       module.setCourse(courseRepository.getById(1L));
       moduleSet.add(module);
       moduleRepository.save(module);
@@ -95,8 +94,6 @@ public class CourseRepositoryTest {
       moduleItem.setId(i);
       moduleItem.setModuleItemType("video");
       moduleItem.setEstimatedTime(35L);
-      moduleItem.setGrade(100);
-      moduleItem.setModuleItemStatus(moduleItemStatusRepository.getById(1L));
       moduleItem.setModule(moduleRepository.getById(1L));
       moduleItemsModule1.add(moduleItem);
       moduleItemRepository.save(moduleItem);
@@ -116,8 +113,6 @@ public class CourseRepositoryTest {
       moduleItem.setId(i + 2);
       moduleItem.setModuleItemType("reading");
       moduleItem.setEstimatedTime(25L);
-      moduleItem.setModuleItemStatus(
-          i < 2 ? moduleItemStatusRepository.getById(i) : moduleItemStatusRepository.getById(2L));
       moduleItem.setModule(moduleRepository.getById(2L));
       moduleItemsModule2.add(moduleItem);
       moduleItemRepository.save(moduleItem);
@@ -132,7 +127,7 @@ public class CourseRepositoryTest {
     moduleRepository.save(module2);
 
     User user = new User();
-    user.setId(1L);
+    user.setId(2L);
     user.setName("John");
     user.setSurname("Smith");
     user.setEmail("aaa@gmail.com");
@@ -145,13 +140,12 @@ public class CourseRepositoryTest {
     Set<Category> categorySet = new HashSet<>();
     categorySet.add(categoryRepository.getById(1L));
     user.setCategories(categorySet);
-    user.setCourses(new HashSet<>(courseRepository.findAll()));
     userRepository.save(user);
   }
 
   @Test
   public void getSuggestedCourses() {
-    User user = userRepository.getById(1L);
+    User user = userRepository.getById(2L);
     List<Course> courseList = courseRepository.getSuggestedCourses(user.getId());
     assertEquals(
         user.getCategories().stream().findFirst().get().getTitle(),

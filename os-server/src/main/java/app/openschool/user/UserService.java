@@ -21,4 +21,5 @@ public interface UserService {
   List<UserCourseDto> findUserCourses(Long userId, Long courseStatusId);
 
   Page<MentorCourseDto> findCoursesByMentorId(Long mentorId, Pageable page);
+  List<UserCourseDto> findUserEnrolledCourses(Long userId, Long courseStatusId);
 }

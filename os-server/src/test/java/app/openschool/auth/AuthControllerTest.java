@@ -6,10 +6,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import app.openschool.auth.dto.UserRegistrationDto;
+import app.openschool.auth.api.dto.UserRegistrationDto;
+import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import app.openschool.user.role.Role;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,16 +102,20 @@ public class AuthControllerTest {
 
   @Test
   void forgotPassword() throws Exception {
+    User user = new User();
+    when(authService.findByEmail("test@gmail.com")).thenReturn(Optional.of(user));
     mockMvc
         .perform(
             post("/api/v1/auth/password/forgot")
                 .contentType(APPLICATION_JSON)
-                .content("test@gmail.com"))
+                .content("{ \"email\": \"test@gmail.com\"}"))
         .andExpect(status().isOk());
   }
 
   @Test
   void resetPassword() throws Exception {
+    ResetPasswordToken resetPasswordToken = ResetPasswordToken.generate(new User());
+    when(authService.findByToken("7478")).thenReturn(Optional.of(resetPasswordToken));
     String requestBody =
         "{ \"token\": \"7478\",\"newPassword\": \"Test7777$\","
             + "\"confirmedPassword\": \"Test7777$\" }";
