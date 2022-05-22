@@ -40,10 +40,6 @@ verification:
 token:
   expiration: 30
 
-logging:
-  file:
-    name: open-school-logs.log
-
 springdoc:
   swagger-ui:
     path: /open-school-api
