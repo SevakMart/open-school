@@ -28,6 +28,9 @@ public class User {
   @Column(name = "id", nullable = false)
   private Long id;
 
+  @Column(name = "enabled", nullable = false)
+  private Boolean enabled;
+
   @Column(name = "first_name", nullable = false)
   private String name;
 
@@ -84,6 +87,10 @@ public class User {
 
   public User() {}
 
+  public User(Long id) {
+    this.id = id;
+  }
+
   public User(
       String firstName, String email, String password, Set<Category> categories, Role role) {
     this.name = firstName;
@@ -98,6 +105,7 @@ public class User {
     this.email = email;
     this.password = password;
     this.role = role;
+    this.enabled = false;
   }
 
   public User(String email, String password) {
@@ -245,6 +253,14 @@ public class User {
 
   public void setResetPasswordToken(ResetPasswordToken resetPasswordToken) {
     this.resetPasswordToken = resetPasswordToken;
+  }
+
+  public Boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(Boolean enabled) {
+    this.enabled = enabled;
   }
 
   public Set<EnrolledCourse> getEnrolledCourses() {

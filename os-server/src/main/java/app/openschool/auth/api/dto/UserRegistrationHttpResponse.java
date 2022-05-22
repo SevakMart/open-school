@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class UserRegistrationHttpResponse {
 
+  private Long userId;
   private String timeStamp;
   private String message;
   private Map<String, String> validationErrors;
@@ -21,6 +22,12 @@ public class UserRegistrationHttpResponse {
     this.timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
     this.message = message;
     this.validationErrors = validationErrors;
+  }
+
+  public UserRegistrationHttpResponse(Long userId, String message) {
+    this.userId = userId;
+    this.timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+    this.message = message;
   }
 
   public Map<String, String> getValidationErrors() {
@@ -45,5 +52,13 @@ public class UserRegistrationHttpResponse {
 
   public void setMessage(String message) {
     this.message = message;
+  }
+
+  public Long getUserId() {
+    return userId;
+  }
+
+  public void setUserId(Long userId) {
+    this.userId = userId;
   }
 }

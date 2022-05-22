@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import app.openschool.auth.api.dto.UserLoginExceptionResponse;
 import app.openschool.auth.api.dto.UserRegistrationHttpResponse;
+import app.openschool.auth.exception.UserNotVerifiedException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,14 +18,18 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.context.Context;
 
 @RestControllerAdvice
 public class UserExceptionHandling implements ErrorController {
 
   private final MessageSource messageSource;
+  private final ITemplateEngine templateEngine;
 
-  public UserExceptionHandling(MessageSource messageSource) {
+  public UserExceptionHandling(MessageSource messageSource, ITemplateEngine templateEngine) {
     this.messageSource = messageSource;
+    this.templateEngine = templateEngine;
   }
 
   @ExceptionHandler(EmailAlreadyExistException.class)
@@ -55,6 +60,14 @@ public class UserExceptionHandling implements ErrorController {
   public ResponseEntity<UserLoginExceptionResponse> badCredentialsException(Locale locale) {
     String message = messageSource.getMessage("exception.bad.credentials.message", null, locale);
     return new ResponseEntity<>(new UserLoginExceptionResponse(message), UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(UserNotVerifiedException.class)
+  public String userNotVerifiedException(Locale locale) {
+    String message = messageSource.getMessage("exception.unverified.user.message", null, locale);
+    Context context = new Context();
+    context.setVariable("message", message);
+    return templateEngine.process("verification-response", context);
   }
 
   private Map<String, String> getValidationErrors(

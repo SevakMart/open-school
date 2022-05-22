@@ -31,6 +31,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -131,7 +132,7 @@ class UserServiceImplTest {
   void savePreferredCategoriesWithWrongUserId() {
     Long userId = 1L;
     Set<Long> categoryIdSet = new HashSet<>();
-    when(userRepository.findUserById(userId)).thenReturn(null);
+    when(userRepository.findUserById(userId)).thenReturn(Optional.empty());
 
     assertThatThrownBy(() -> userService.savePreferredCategories(userId, categoryIdSet))
         .isInstanceOf(UserNotFoundException.class)
@@ -144,7 +145,7 @@ class UserServiceImplTest {
     Set<Long> categoryIdSet = new HashSet<>();
     categoryIdSet.add(categoryId);
 
-    when(userRepository.findUserById(any())).thenReturn(new User());
+    when(userRepository.findUserById(any())).thenReturn(Optional.of(new User()));
     when(categoryRepository.findCategoryById(categoryId)).thenReturn(null);
 
     assertThatThrownBy(() -> userService.savePreferredCategories(1L, categoryIdSet))

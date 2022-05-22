@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -14,9 +15,13 @@ import app.openschool.auth.api.dto.UserRegistrationDto;
 import app.openschool.auth.api.exception.EmailAlreadyExistException;
 import app.openschool.auth.api.exception.EmailNotFoundException;
 import app.openschool.auth.entity.ResetPasswordToken;
+import app.openschool.auth.exception.UserNotVerifiedException;
 import app.openschool.auth.repository.ResetPasswordTokenRepository;
+import app.openschool.auth.verification.VerificationToken;
+import app.openschool.auth.verification.VerificationTokenRepository;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
+import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +39,8 @@ public class AuthServiceImplTest {
 
   @Mock ResetPasswordTokenRepository resetPasswordTokenRepository;
 
+  @Mock private VerificationTokenRepository verificationTokenRepository;
+
   @Mock private BCryptPasswordEncoder passwordEncoder;
 
   @Mock private ApplicationEventPublisher applicationEventPublisher;
@@ -46,12 +53,14 @@ public class AuthServiceImplTest {
         new AuthServiceImpl(
             userRepository,
             resetPasswordTokenRepository,
+            verificationTokenRepository,
             passwordEncoder,
-            applicationEventPublisher);
+            applicationEventPublisher,
+            0L);
   }
 
   @Test
-  void registerUserWithNotUniqEmail() {
+  void registerUserWithNotUniqueEmail() {
 
     given(userRepository.findUserByEmail(any())).willReturn(new User());
 
@@ -62,8 +71,9 @@ public class AuthServiceImplTest {
   }
 
   @Test
-  void registerUserWithUniqEmail() {
+  void registerUserWithUniqueEmail() {
     given(userRepository.findUserByEmail(any())).willReturn(null);
+    doReturn(new User("John", "testPass")).when(userRepository).save(any());
 
     authService.register(new UserRegistrationDto());
 
@@ -82,13 +92,35 @@ public class AuthServiceImplTest {
         new AuthServiceImpl(
             userRepository,
             resetPasswordTokenRepository,
+            verificationTokenRepository,
             passwordEncoder,
-            applicationEventPublisher);
+            applicationEventPublisher,
+            0L);
 
     given(userRepository.findUserByEmail(any())).willReturn(null);
 
     assertThatThrownBy(() -> authService.loadUserByUsername("testEmail"))
         .isInstanceOf(EmailNotFoundException.class);
+  }
+
+  @Test
+  void verifyAccountWithWrongToken() {
+    VerificationToken verificationToken = new VerificationToken();
+    verificationToken.setToken("testToken");
+    given(verificationTokenRepository.findVerificationTokenByToken(any()))
+        .willReturn(Optional.empty());
+
+    assertThatThrownBy(() -> authService.verifyAccount(verificationToken))
+        .isInstanceOf(UserNotVerifiedException.class);
+  }
+
+  @Test
+  void sendVerificationEmailWithWrongUserId() {
+    long userId = 1L;
+    given(userRepository.findUserById(userId)).willReturn(Optional.empty());
+
+    assertThatThrownBy(() -> authService.sendVerificationEmail(userId))
+        .isInstanceOf(UserNotFoundException.class);
   }
 
   @Test
