@@ -15,8 +15,6 @@ describe('Create test case to Search component', () => {
     const { asFragment } = render(
       <Provider store={store}>
         <Search
-          pathname="/choose_categories"
-          searchKeyName="searchCategories"
           changeUrlQueries={() => null}
         />
       </Provider>,
@@ -27,8 +25,6 @@ describe('Create test case to Search component', () => {
     render(
       <Provider store={store}>
         <Search
-          pathname="/choose_categories"
-          searchKeyName="searchCategories"
           changeUrlQueries={() => null}
         />
       </Provider>,

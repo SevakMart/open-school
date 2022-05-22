@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../../../redux/Store';
 import SignIn from '../SignIn';
-import * as signInForm from '../../../services/signIn';
+import authServices from '../../../services/authService';
 
 const loggedInUserData = {
   name: 'John Smith',
@@ -44,7 +44,7 @@ describe('Create tests for sign up form', () => {
   });
   test('Test if successful signIn message appear after clicking sign in button', async () => {
     expect.hasAssertions();
-    jest.spyOn(signInForm, 'signIn').mockResolvedValue(loggedInUserData);
+    jest.spyOn(authServices, 'signIn').mockResolvedValue(loggedInUserData);
     render(
       <Provider store={store}>
         <SignIn handleSignInClicks={() => null} />
@@ -66,7 +66,7 @@ describe('Create tests for sign up form', () => {
   });
   test('Test a failed tentative of signing in', async () => {
     expect.hasAssertions();
-    jest.spyOn(signInForm, 'signIn').mockResolvedValue(failedLoginUser);
+    jest.spyOn(authServices, 'signIn').mockResolvedValue(failedLoginUser);
     render(
       <Provider store={store}>
         <SignIn handleSignInClicks={() => null} />

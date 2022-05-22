@@ -1,6 +1,8 @@
 @import "../../styles/Mixins/FontMixin.scss";
+@import "../../styles/Mixins/FlexMixins.scss";
 
 .inputContent {
+    @include flexStyle(row,center,none);
     padding-left:6%;
     padding-right:6%;
     height:3.5rem;

@@ -1,21 +1,18 @@
-import { ERROR_MESSAGE } from '../constants/Strings';
+import { request } from './requestService';
 
-const handleError = () => {
-  const fetchedResponse = new Response(JSON.stringify({
-    errorMessage: ERROR_MESSAGE,
+class FetchService {
+  readonly baseUrl: string;
 
-  }));
-  return fetchedResponse;
-};
+  constructor() {
+    this.baseUrl = '/api/v1';
+  }
 
-export const fetchData = async (url:string) => {
-  const response = await (fetch(url, {
-    method: 'GET',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).catch(handleError));
-  const data = await response.json();
-  return data;
-};
+  async get(path: string, params: object = {}, token = '') {
+    return request(`${this.baseUrl}/${path}`, 'GET', params, token);
+  }
+
+  async post(path: string, body:object, params: object, token = '') {
+    return request(`${this.baseUrl}/${path}`, 'POST', params, token, body);
+  }
+}
+export default new FetchService();

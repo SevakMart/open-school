@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { validateSignInForm } from '../../../helpers/SignInFormValidate';
-import { signIn } from '../../../services/signIn';
+import authService from '../../../services/authService';
 import { addLoggedInUser } from '../../../redux/Slices/loginUserSlice';
 import VisibileIcon from '../../../icons/Visibility';
 import HiddenIcon from '../../../icons/Hidden';
 import { RegistrationFormType } from '../../../types/RegistartionFormType';
-import { SIGN_IN, SIGNIN_URL, SUCCESSFUL_SIGNIN_MESSAGE } from '../../../constants/Strings';
+import { SIGN_IN, SUCCESSFUL_SIGNIN_MESSAGE } from '../../../constants/Strings';
 import styles from './Default.module.scss';
 
 const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
@@ -35,7 +35,7 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
     const { fullNameError, emailError, passwordError } = validateSignInForm(formValues);
     const { email, password } = formValues;
     if (!fullNameError && !emailError && !passwordError) {
-      signIn(SIGNIN_URL, { email, password }).then((response) => {
+      authService.signIn({ email, password }).then((response) => {
         if (response.status === 401) {
           setSignInErrorMessage(response.message);
         } else if (response.status === 200) {
