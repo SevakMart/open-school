@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { validateSignUpForm } from '../../../helpers/SignUpFormValidate';
-import { register } from '../../../services/register';
 import { RegistrationFormType } from '../../../types/RegistartionFormType';
+import authService from '../../../services/authService';
 import VisibileIcon from '../../../icons/Visibility';
 import HiddenIcon from '../../../icons/Hidden';
-import { SIGN_UP, REGISTRATION_URL } from '../../../constants/Strings';
+import { SIGN_UP } from '../../../constants/Strings';
 import styles from './Default.module.scss';
 
 const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:string)=>void}) => {
@@ -26,7 +26,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
   const handleSubmitForm = () => {
     const { fullNameError, emailError, passwordError } = validateSignUpForm(formValues);
     if (!fullNameError && !emailError && !passwordError) {
-      register(REGISTRATION_URL, formValues).then((response) => {
+      authService.register(formValues).then((response) => {
         setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
         setFormValues({ firstName: '', email: '', password: '' });
         switchToSignInForm!(response.message);

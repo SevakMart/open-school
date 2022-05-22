@@ -24,6 +24,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/index.html",
     "/",
     "/api/v1/auth/register",
+    "/api/v1/auth/account/verification",
+    "/api/v1/auth/{userId}/account/verification",
     "/api/v1/auth/login",
     "/api/v1/auth/password/forgot",
     "/api/v1/auth/password/reset",

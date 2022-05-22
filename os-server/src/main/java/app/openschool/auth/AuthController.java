@@ -10,6 +10,7 @@ import app.openschool.auth.api.dto.UserLoginRequest;
 import app.openschool.auth.api.dto.UserRegistrationDto;
 import app.openschool.auth.api.dto.UserRegistrationHttpResponse;
 import app.openschool.auth.entity.ResetPasswordToken;
+import app.openschool.auth.verification.VerificationToken;
 import app.openschool.common.response.ResponseMessage;
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
@@ -26,36 +27,44 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.context.Context;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
   private static final String TOKEN_PREFIX = "Bearer ";
-  public static final String JWT_TOKEN_HEADER = "Authorization";
+  private static final String JWT_TOKEN_HEADER = "Authorization";
 
   private final JwtTokenProvider jwtTokenProvider;
   private final AuthenticationManager authenticationManager;
   private final MessageSource messageSource;
   private final AuthService authService;
   private final Integer tokenExpirationAfterMinutes;
+  private final ITemplateEngine templateEngine;
 
   public AuthController(
       JwtTokenProvider jwtTokenProvider,
       AuthenticationManager authenticationManager,
       MessageSource messageSource,
       AuthService authService,
-      @Value("${token.expiration}") Integer tokenExpirationAfterMinutes) {
+      @Value("${token.expiration}") Integer tokenExpirationAfterMinutes,
+      ITemplateEngine templateEngine) {
     this.jwtTokenProvider = jwtTokenProvider;
     this.authenticationManager = authenticationManager;
     this.messageSource = messageSource;
     this.authService = authService;
     this.tokenExpirationAfterMinutes = tokenExpirationAfterMinutes;
+    this.templateEngine = templateEngine;
   }
 
   @PostMapping("/register")
@@ -69,9 +78,8 @@ public class AuthController {
             + " "
             + messageSource.getMessage("response.register.successful.message", null, locale);
     UserRegistrationHttpResponse httpResponse =
-        new UserRegistrationHttpResponse(message.toUpperCase(Locale.ROOT));
-
-    return new ResponseEntity<>(httpResponse, CREATED);
+        new UserRegistrationHttpResponse(user.getId(), message.toUpperCase(Locale.ROOT));
+    return ResponseEntity.status(CREATED).body(httpResponse);
   }
 
   @PostMapping("/login")
@@ -84,17 +92,23 @@ public class AuthController {
     User loggedUser = authService.findUserByEmail(userLoginRequest.getEmail());
     UserPrincipal userPrincipal = new UserPrincipal(loggedUser);
     HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
-    return new ResponseEntity<>(userLoginDto, jwtHeader, OK);
+    return ResponseEntity.ok().headers(jwtHeader).body(userLoginDto);
   }
 
-  private void authenticate(String username, String password) {
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+  @GetMapping("/account/verification")
+  public String verifyAccount(@ModelAttribute VerificationToken verificationToken, Locale locale) {
+    User user = authService.verifyAccount(verificationToken);
+    String[] args = {user.getName()};
+    String message = messageSource.getMessage("verification.success.message", args, locale);
+    Context context = new Context();
+    context.setVariable("message", message);
+    return templateEngine.process("verification-response", context);
   }
 
-  private HttpHeaders getJwtHeader(UserPrincipal userPrincipal) {
-    HttpHeaders headers = new HttpHeaders();
-    headers.add(JWT_TOKEN_HEADER, TOKEN_PREFIX + jwtTokenProvider.generateJwtToken(userPrincipal));
-    return headers;
+  @GetMapping("/{userId}/account/verification")
+  public ResponseEntity<Void> resendVerificationEmail(@PathVariable Long userId) {
+    authService.sendVerificationEmail(userId);
+    return ResponseEntity.ok().build();
   }
 
   @PostMapping("/password/forgot")
@@ -154,5 +168,15 @@ public class AuthController {
         .body(
             new ResponseMessage(
                 messageSource.getMessage("password.reset.success.message", null, locale)));
+  }
+
+  private void authenticate(String username, String password) {
+    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+  }
+
+  private HttpHeaders getJwtHeader(UserPrincipal userPrincipal) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.add(JWT_TOKEN_HEADER, TOKEN_PREFIX + jwtTokenProvider.generateJwtToken(userPrincipal));
+    return headers;
   }
 }

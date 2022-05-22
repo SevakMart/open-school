@@ -14,33 +14,11 @@ const MentorProfile = {
 
 describe('Make unit tests on Mentor Profile', () => {
   test('Make a snapshot test', () => {
-    const { asFragment } = render(
-      <MentorCard
-        name={MentorProfile.name}
-        surname={MentorProfile.surname}
-        professionName={MentorProfile.professionName}
-        companyName={MentorProfile.companyName}
-        courseCount={MentorProfile.courseCount}
-        userImgPath={MentorProfile.userImgPath}
-        emailPath={MentorProfile.emailPath}
-        linkedinPath={MentorProfile.linkedinPath}
-      />,
-    );
+    const { asFragment } = render(<MentorCard mentor={{ ...MentorProfile }} />);
     expect(asFragment()).toMatchSnapshot();
   });
   test('Verify if Mentor info is contained in the component', () => {
-    render(
-      <MentorCard
-        name={MentorProfile.name}
-        surname={MentorProfile.surname}
-        professionName={MentorProfile.professionName}
-        companyName={MentorProfile.companyName}
-        courseCount={MentorProfile.courseCount}
-        userImgPath={MentorProfile.userImgPath}
-        emailPath={MentorProfile.emailPath}
-        linkedinPath={MentorProfile.linkedinPath}
-      />,
-    );
+    render(<MentorCard mentor={{ ...MentorProfile }} />);
     const fullname = screen.queryByTestId('John Smith');
     const professionNameElem = screen.queryByTestId('JS Developer');
     const companyNameElem = screen.queryByTestId('Google');

@@ -9,6 +9,7 @@ import app.openschool.category.Category;
 import app.openschool.user.role.Role;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +62,8 @@ class UserRepositoryTest {
   void findUserById() {
     User user = new User("Test", "testEmail", "testPass", new Role(1, "STUDENT"));
     userRepository.save(user);
-    User fetchedUser = userRepository.findUserById(1L);
+    Optional<User> fetchedUser = userRepository.findUserById(1L);
 
-    assertThat(user).isEqualTo(fetchedUser);
+    assertThat(user).isEqualTo(fetchedUser.get());
   }
 }

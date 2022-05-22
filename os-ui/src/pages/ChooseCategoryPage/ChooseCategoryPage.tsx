@@ -5,14 +5,9 @@ import { RootState } from '../../redux/Store';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
 import Search from '../../component/Search/Search';
 import Loader from '../../component/Loader/Loader';
-import { getSearchedCategories } from '../../services/getSearchedCategories';
-import { savePreferredCategories } from '../../services/savePreferredCategories';
-import {
-  CHOOSE_CATEGORIES_HEADER,
-  GET_CATEGORY_SUBCATEGORY_SEARCH_URL,
-  SAVE_PREFERRED_CATEGORIES,
-  EMPTY_DATA_ERROR_MESSAGE,
-} from '../../constants/Strings';
+import userService from '../../services/userService';
+import categoriesService from '../../services/categoriesService';
+import { CHOOSE_CATEGORIES_HEADER, EMPTY_DATA_ERROR_MESSAGE } from '../../constants/Strings';
 import { SearchedCategoryType } from '../../types/SearchedCategoryType';
 import CategoryWithSubcategoriesProfile from '../../component/CategoryWithSubcategoriesProfile/CategoryWithSubcategoriesProfile';
 import styles from './ChooseCategoryPage.module.scss';
@@ -31,16 +26,15 @@ const ChooseCategoryPage = () => {
     setTitle(titleParam);
   };
   const handleSavingCategories = () => {
-    savePreferredCategories(
-      `${SAVE_PREFERRED_CATEGORIES}/${(userInfo as any).id}/categories`,
+    userService.savePreferredCategories(
+      (userInfo as any).id,
       (userInfo as any).token,
       subcategoryIdArray as Array<number>,
     ).then(() => navigate('/myLearningPath'));
   };
   useEffect(() => {
     let cancel = false;
-    if (!title) navigate(`/categories/subcategories/userId=${(userInfo as any).id}?searchCategories=all`, { replace: true });
-    getSearchedCategories(`${GET_CATEGORY_SUBCATEGORY_SEARCH_URL}${title}`)
+    categoriesService.getSearchedCategories({ title }, (userInfo as any).token)
       .then((data) => {
         if (cancel) return;
         if (!Object.entries(data).length) {
@@ -61,7 +55,7 @@ const ChooseCategoryPage = () => {
     <>
       <NavbarOnSignIn />
       <h1 className={mainHeader}>{CHOOSE_CATEGORIES_HEADER}</h1>
-      <Search pathname={`/choose_categories/userId=${(userInfo as any).id}`} searchKeyName="searchCategories" changeUrlQueries={handleChangeUrlTitleParam} />
+      <Search changeUrlQueries={handleChangeUrlTitleParam} />
       <div className={categoriesList}>
         {
           isLoading ? <Loader />
