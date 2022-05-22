@@ -33,3 +33,6 @@ build
 
 # Ignore data directory (data volume for mysql docker container)
 data
+
+# Ignore logs directory
+logs
