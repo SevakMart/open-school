@@ -160,56 +160,6 @@ public class CourseRepositoryTest {
   }
 
   @Test
-  public void findAllUserCourses() {
-    List<Course> allUserCourses = courseRepository.findAllUserCourses(1L);
-
-    assertEquals(6, allUserCourses.size());
-    assertEquals(
-        5,
-        allUserCourses.stream().filter(course -> course.getCourseStatus().isInProgress()).count());
-    assertEquals(
-        4,
-        allUserCourses.stream()
-            .filter(course -> course.getId().equals(1L))
-            .map(Course::getModules)
-            .mapToLong(Collection::size)
-            .sum());
-    assertEquals(
-        4,
-        allUserCourses.stream()
-            .filter(course -> course.getId().equals(1L))
-            .map(Course::getModules)
-            .flatMap(Collection::stream)
-            .filter(module -> module.getId().equals(1L) || module.getId().equals(2L))
-            .map(Module::getModuleItems)
-            .mapToLong(Collection::size)
-            .sum());
-  }
-
-  @Test
-  public void findUserCoursesByStatus() {
-    List<Course> coursesInProgress =
-        courseRepository.findUserCoursesByStatus(1L, courseStatusRepository.getById(1L).getId());
-
-    assertEquals(5, coursesInProgress.size());
-    List<CourseStatus> statusList =
-        coursesInProgress.stream().map(Course::getCourseStatus).collect(Collectors.toList());
-    for (CourseStatus status : statusList) {
-      assertTrue("COURSE STATUS ISN'T IN PROGRESS", status.isInProgress());
-    }
-
-    List<Course> coursesCompeted =
-        courseRepository.findUserCoursesByStatus(1L, courseStatusRepository.getById(2L).getId());
-
-    assertEquals(1, coursesCompeted.size());
-    List<CourseStatus> statusListCompleted =
-        coursesCompeted.stream().map(Course::getCourseStatus).collect(Collectors.toList());
-    for (CourseStatus status : statusListCompleted) {
-      assertTrue("COURSE STATUS ISN'T COMPLETED", !status.isInProgress());
-    }
-  }
-
-  @Test
   public void findCoursesByMentorId() {
     Page<Course> coursePage = courseRepository.findCoursesByMentorId(
             1L, PageRequest.of(0, 6));

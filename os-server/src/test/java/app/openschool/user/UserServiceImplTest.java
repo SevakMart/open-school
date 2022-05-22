@@ -13,8 +13,6 @@ import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
-import app.openschool.course.api.dto.MentorCourseDto;
-import app.openschool.course.api.mapper.MentorCourseMapper;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.language.Language;
@@ -328,7 +326,6 @@ class UserServiceImplTest {
       course.setTitle("title");
       course.setDescription("description");
       course.setRating(5.5);
-      course.setDueDate(LocalDate.of(2002, 2, 2));
       course.setKeywords(keywordSet);
       course.setCategory(category);
       course.setDifficulty(difficulty);
@@ -346,7 +343,7 @@ class UserServiceImplTest {
         .isInstanceOf(UserNotFoundException.class)
         .hasMessageContaining(String.valueOf(user.getId()));
 
-    when(userRepository.findUserById(1L)).thenReturn(user);
+    when(userRepository.findUserById(1L)).thenReturn(Optional.of(user));
     Assertions.assertEquals(
         5, userService.findCoursesByMentorId(1L, PageRequest.of(0, 6)).getTotalElements());
   }
