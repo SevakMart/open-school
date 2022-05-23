@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
 @Configuration
 @Profile("openapi")
 public class DevConfig implements WebMvcConfigurer {
@@ -14,7 +13,7 @@ public class DevConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry
         .addMapping("/**")
-        .allowedOrigins("http://localhost:3001", "http://localhost:3000", "http://localhost:8080")
+        .allowedOrigins("http://localhost:3000")
         .exposedHeaders("Authorization");
   }
 }
