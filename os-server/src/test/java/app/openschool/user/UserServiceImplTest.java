@@ -1,5 +1,6 @@
 package app.openschool.user;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -308,7 +309,7 @@ class UserServiceImplTest {
   }
 
   @Test
-  void findCoursesByMentorId() {
+  void findMentorCourses() {
     final User user = UserGenerator.generateUser();
     List<Course> courseList = new ArrayList<>();
     Set<Keyword> keywordSet = new HashSet<>();
@@ -338,13 +339,8 @@ class UserServiceImplTest {
     Pageable pageable = PageRequest.of(0, 6);
 
     when(courseRepository.findCoursesByMentorId(user.getId(), pageable)).thenReturn(coursePage);
-
-    assertThatThrownBy(() -> userService.findCoursesByMentorId(user.getId(), pageable))
-        .isInstanceOf(UserNotFoundException.class)
-        .hasMessageContaining(String.valueOf(user.getId()));
-
-    when(userRepository.findUserById(1L)).thenReturn(Optional.of(user));
     Assertions.assertEquals(
-        5, userService.findCoursesByMentorId(1L, PageRequest.of(0, 6)).getTotalElements());
+        5, userService.findMentorCourses(user.getId(), PageRequest.of(0, 6)).getTotalElements());
   }
+
 }

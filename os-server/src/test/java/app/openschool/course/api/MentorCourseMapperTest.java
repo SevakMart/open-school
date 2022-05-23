@@ -55,9 +55,9 @@ public class MentorCourseMapperTest {
             "title",
             "description",
             "rating",
-            "categoryTitle",
-            "difficultyTitle",
-            "languageTitle",
+            "category",
+            "difficulty",
+            "language",
             "keywords");
   }
 }

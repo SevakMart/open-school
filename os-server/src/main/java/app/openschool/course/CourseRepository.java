@@ -32,8 +32,5 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
       @Param(value = "limit") int limit,
       @Param(value = "existingCoursesIds") List<Long> existingCoursesIds);
 
-  @Query(
-          value = "SELECT * FROM learning_path lp  WHERE lp.mentor_id = :mentorId",
-      nativeQuery = true)
   Page<Course> findCoursesByMentorId(@Param(value = "mentorId") Long mentorId, Pageable page);
 }

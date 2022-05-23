@@ -10,11 +10,11 @@ public class MentorCourseDto {
 
   private Double rating;
 
-  private String categoryTitle;
+  private String category;
 
-  private String difficultyTitle;
+  private String difficulty;
 
-  private String languageTitle;
+  private String language;
 
   private Set<String> keywords;
 
@@ -29,9 +29,9 @@ public class MentorCourseDto {
     this.title = title;
     this.description = description;
     this.rating = rating;
-    this.categoryTitle = category;
-    this.difficultyTitle = difficulty;
-    this.languageTitle = language;
+    this.category = category;
+    this.difficulty = difficulty;
+    this.language = language;
     this.keywords = keywords;
   }
 
@@ -59,28 +59,28 @@ public class MentorCourseDto {
     this.rating = rating;
   }
 
-  public String getCategoryTitle() {
-    return categoryTitle;
+  public String getCategory() {
+    return category;
   }
 
-  public void setCategoryTitle(String categoryTitle) {
-    this.categoryTitle = categoryTitle;
+  public void setCategory(String category) {
+    this.category = category;
   }
 
-  public String getDifficultyTitle() {
-    return difficultyTitle;
+  public String getDifficulty() {
+    return difficulty;
   }
 
-  public void setDifficultyTitle(String difficultyTitle) {
-    this.difficultyTitle = difficultyTitle;
+  public void setDifficulty(String difficulty) {
+    this.difficulty = difficulty;
   }
 
-  public String getLanguageTitle() {
-    return languageTitle;
+  public String getLanguage() {
+    return language;
   }
 
-  public void setLanguageTitle(String languageTitle) {
-    this.languageTitle = languageTitle;
+  public void setLanguage(String language) {
+    this.language = language;
   }
 
   public Set<String> getKeywords() {

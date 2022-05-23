@@ -52,10 +52,10 @@ public class MentorControllerTest {
   }
 
   @Test
-  void findCoursesByMentorId() throws Exception {
+  void findMentorCourses() throws Exception {
     List<MentorCourseDto> mentorCourseDtoList = new ArrayList<>();
     Page<MentorCourseDto> mentorCourseDtoPage = new PageImpl<>(mentorCourseDtoList);
-    when(userService.findCoursesByMentorId(1L, null)).thenReturn(mentorCourseDtoPage);
+    when(userService.findMentorCourses(1L, null)).thenReturn(mentorCourseDtoPage);
     mockMvc
         .perform(get("/mentors/1/courses").contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());

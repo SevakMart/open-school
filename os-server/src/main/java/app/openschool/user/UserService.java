@@ -6,6 +6,7 @@ import app.openschool.course.api.dto.MentorCourseDto;
 import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.user.api.dto.MentorDto;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,9 @@ public interface UserService {
 
   Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds);
 
-  Page<MentorCourseDto> findCoursesByMentorId(Long mentorId, Pageable page);
+  Page<MentorCourseDto> findMentorCourses(Long mentorId, Pageable page);
 
   List<UserCourseDto> findUserEnrolledCourses(Long userId, Long courseStatusId);
+
+  Optional<User> findMentorById(Long mentorId);
 }
