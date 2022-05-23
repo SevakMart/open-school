@@ -1,9 +1,12 @@
 package app.openschool.auth;
 
-import app.openschool.auth.dto.ResetPasswordRequest;
-import app.openschool.auth.dto.UserLoginDto;
-import app.openschool.auth.dto.UserRegistrationDto;
+import app.openschool.auth.api.dto.ResetPasswordRequest;
+import app.openschool.auth.api.dto.UserLoginDto;
+import app.openschool.auth.api.dto.UserRegistrationDto;
+import app.openschool.auth.entity.ResetPasswordToken;
+import app.openschool.auth.verification.VerificationToken;
 import app.openschool.user.User;
+import java.util.Optional;
 
 public interface AuthService {
 
@@ -13,7 +16,15 @@ public interface AuthService {
 
   UserLoginDto login(String userEmail);
 
-  void updateResetPasswordToken(String email);
+  User verifyAccount(VerificationToken verificationToken);
 
-  void resetPassword(ResetPasswordRequest request);
+  void sendVerificationEmail(Long userId);
+
+  void updateResetPasswordToken(String email, User user);
+
+  void resetPassword(ResetPasswordRequest request, ResetPasswordToken resetPasswordToken);
+
+  Optional<User> findByEmail(String email);
+
+  Optional<ResetPasswordToken> findByToken(String token);
 }

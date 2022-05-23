@@ -8,8 +8,8 @@ jwt:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://awseb-e-ifh3vhuuyk-stack-awsebrdsdatabase-ihwfox4tu4ds.cbeyaci1cgqp.eu-central-1.rds.amazonaws.com:3306/open_school_db?useSSL=false
-    username: admin
+    url: jdbc:mysql://database-1.cbeyaci1cgqp.eu-central-1.rds.amazonaws.com:3306/open_school_db?useSSL=false
+    username: dev_user
     password: Password1!
 
   flyway:
@@ -32,6 +32,9 @@ spring:
     default-encoding: UTF-8
 
 verification:
+  duration: 30 # minutes
+  subject: 'Verify your account'
+  endpoint: 'http://open-school-dev.eu-central-1.elasticbeanstalk.com/api/v1/auth/account/verification'
   reset:
     password:
       email:
@@ -39,10 +42,6 @@ verification:
 
 token:
   expiration: 30
-
-logging:
-  file:
-    name: open-school-logs.log
 
 springdoc:
   swagger-ui:

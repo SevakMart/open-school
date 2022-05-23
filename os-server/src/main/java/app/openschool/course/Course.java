@@ -5,9 +5,7 @@ import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.language.Language;
 import app.openschool.course.module.Module;
-import app.openschool.course.status.CourseStatus;
 import app.openschool.user.User;
-import java.time.LocalDate;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,6 +49,10 @@ public class Course {
   @JoinColumn(name = "language_id")
   private Language language;
 
+  @ManyToOne
+  @JoinColumn(name = "mentor_id")
+  private User mentor;
+
   @ManyToMany
   @JoinTable(
       name = "keyword_learning_path",
@@ -58,22 +60,11 @@ public class Course {
       inverseJoinColumns = {@JoinColumn(name = "keyword_id")})
   private Set<Keyword> keywords;
 
-  @ManyToOne
-  @JoinColumn(name = "learning_path_status_id")
-  private CourseStatus courseStatus;
-
   @OneToMany(mappedBy = "course")
   private Set<Module> modules;
 
-  @ManyToMany
-  @JoinTable(
-      name = "learning_path_student",
-      joinColumns = {@JoinColumn(name = "learning_path_id")},
-      inverseJoinColumns = {@JoinColumn(name = "user_id")})
-  private Set<User> users;
-
-  @Column(name = "due_date")
-  private LocalDate dueDate;
+  @OneToMany(mappedBy = "course")
+  private Set<EnrolledCourse> enrolledCourses;
 
   public Course() {}
 
@@ -147,14 +138,6 @@ public class Course {
     this.id = id;
   }
 
-  public CourseStatus getCourseStatus() {
-    return courseStatus;
-  }
-
-  public void setCourseStatus(CourseStatus courseStatus) {
-    this.courseStatus = courseStatus;
-  }
-
   public Set<Module> getModules() {
     return modules;
   }
@@ -163,19 +146,19 @@ public class Course {
     this.modules = modules;
   }
 
-  public Set<User> getUsers() {
-    return users;
+  public Set<EnrolledCourse> getEnrolledCourses() {
+    return enrolledCourses;
   }
 
-  public void setUsers(Set<User> users) {
-    this.users = users;
+  public void setEnrolledCourses(Set<EnrolledCourse> enrolledCourses) {
+    this.enrolledCourses = enrolledCourses;
   }
 
-  public LocalDate getDueDate() {
-    return dueDate;
+  public User getMentor() {
+    return mentor;
   }
 
-  public void setDueDate(LocalDate dueDate) {
-    this.dueDate = dueDate;
+  public void setMentor(User mentor) {
+    this.mentor = mentor;
   }
 }

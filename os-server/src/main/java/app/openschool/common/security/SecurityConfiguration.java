@@ -6,7 +6,6 @@ import app.openschool.common.security.filters.JwtAuthenticationEntryPoint;
 import app.openschool.common.security.filters.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,7 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@Profile("!openapi")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private static final String[] PUBLIC_URLS = {
@@ -26,6 +24,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/index.html",
     "/",
     "/api/v1/auth/register",
+    "/api/v1/auth/account/verification",
+    "/api/v1/auth/{userId}/account/verification",
     "/api/v1/auth/login",
     "/api/v1/auth/password/forgot",
     "/api/v1/auth/password/reset",

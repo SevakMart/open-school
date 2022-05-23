@@ -3,6 +3,7 @@ package app.openschool.user;
 import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.category.Category;
 import app.openschool.course.Course;
+import app.openschool.course.EnrolledCourse;
 import app.openschool.user.company.Company;
 import app.openschool.user.role.Role;
 import java.util.Set;
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,6 +27,9 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Long id;
+
+  @Column(name = "enabled", nullable = false)
+  private Boolean enabled;
 
   @Column(name = "first_name", nullable = false)
   private String name;
@@ -71,17 +76,20 @@ public class User {
       inverseJoinColumns = {@JoinColumn(name = "category_id")})
   private Set<Category> categories;
 
-  @ManyToMany
-  @JoinTable(
-      name = "learning_path_student",
-      joinColumns = {@JoinColumn(name = "user_id")},
-      inverseJoinColumns = {@JoinColumn(name = "learning_path_id")})
+  @OneToMany(mappedBy = "mentor")
   private Set<Course> courses;
+
+  @OneToMany(mappedBy = "user")
+  private Set<EnrolledCourse> enrolledCourses;
 
   @OneToOne(mappedBy = "user")
   private ResetPasswordToken resetPasswordToken;
 
   public User() {}
+
+  public User(Long id) {
+    this.id = id;
+  }
 
   public User(
       String firstName, String email, String password, Set<Category> categories, Role role) {
@@ -97,6 +105,7 @@ public class User {
     this.email = email;
     this.password = password;
     this.role = role;
+    this.enabled = false;
   }
 
   public User(String email, String password) {
@@ -244,5 +253,21 @@ public class User {
 
   public void setResetPasswordToken(ResetPasswordToken resetPasswordToken) {
     this.resetPasswordToken = resetPasswordToken;
+  }
+
+  public Boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(Boolean enabled) {
+    this.enabled = enabled;
+  }
+
+  public Set<EnrolledCourse> getEnrolledCourses() {
+    return enrolledCourses;
+  }
+
+  public void setEnrolledCourses(Set<EnrolledCourse> enrolledCourses) {
+    this.enrolledCourses = enrolledCourses;
   }
 }
