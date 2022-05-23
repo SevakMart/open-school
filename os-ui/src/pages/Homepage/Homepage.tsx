@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import { RootState } from '../../redux/Store';
 import HomepageHeader from '../../component/HomepageHeader/HomepageHeader';
 import Footer from '../../component/Footer/Footer';
@@ -20,7 +19,7 @@ const Homepage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [clickedButtonType, setClickedButtonType] = useState('');
   const { mainContainer, buttonContainer } = styles;
-  const { t, i18n } = useTranslation('common');
+
   const handleButtonClick = (buttonType:string) => {
     switch (buttonType) {
       case 'signUp':
