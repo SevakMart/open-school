@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
-    <springProfile name="test, local">
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
-    <layout class="ch.qos.logback.classic.PatternLayout">
-        <Pattern>%d{dd-MM-yyyy HH:mm:ss} %highlight(%-5level) [%magenta(%t)] %green(%logger{36}) - %msg%n</Pattern>
-    </layout>
-</appender>
-    </springProfile>
-<appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-        <FileNamePattern>logs/Open-school.%d{dd-MM-yyyy}.%i.log</FileNamePattern>
-        <maxHistory>10</maxHistory>
-        <timeBasedFileNamingAndTriggeringPolicy
-                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-            <maxFileSize>100MB</maxFileSize>
-        </timeBasedFileNamingAndTriggeringPolicy>
-    </rollingPolicy>
-    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-        <Pattern>%d{dd-MM-yyyy HH:mm:ss} %-5level [%t] %logger{36} - %msg%n</Pattern>
-    </encoder>
-</appender>
-<root>
-    <level value="INFO" />
-    <appender-ref ref="consoleAppender"/>
-    <appender-ref ref="dailyRollingFileAppender"/>
-</root>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{dd-MM-yyyy HH:mm:ss} %highlight(%-5level) [%magenta(%t)] %green(%logger{36}) - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+    <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/Open-school.%d{dd-MM-yyyy}.%i.log</FileNamePattern>
+            <maxHistory>10</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d{dd-MM-yyyy HH:mm:ss} %-5level [%t] %logger{36} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="dailyRollingFileAppender"/>
+    </root>
 </configuration>
