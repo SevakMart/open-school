@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
@@ -22,6 +23,7 @@ enum LearningPathNav {
 }
 
 const MyLearningPathPage = () => {
+  const navigate = useNavigate();
   const userInfo = useSelector<RootState>((state) => state.userInfo);
   const [userCourses, setUserCourses] = useState<UserCourseType[]>([]);
   const [suggestedCourses, setSuggestedCourses] = useState<SuggestedCourseType[]>([]);
@@ -33,6 +35,10 @@ const MyLearningPathPage = () => {
 
   const handleNavigation = (e:React.SyntheticEvent) => {
     setActiveNavType((e.target as HTMLParagraphElement).dataset.testid as any);
+  };
+
+  const exploreLearningPaths = () => {
+    navigate('/exploreLearningPaths');
   };
 
   useEffect(() => {
@@ -120,7 +126,7 @@ const MyLearningPathPage = () => {
               );
             })
         }
-        <button type="button" className={exploreCourseButton}>{EXPLORE_COURSES}</button>
+        <button type="button" className={exploreCourseButton} onClick={exploreLearningPaths}>{EXPLORE_COURSES}</button>
       </div>
       <p className={suggestedCoursesTitle}>{SUGGESTED_LEARNING_PATHS}</p>
       <div className={suggestedCoursesContainer}>

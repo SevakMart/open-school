@@ -5,6 +5,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Homepage from '../../pages/Homepage/Homepage';
 import ChooseCategoryPage from '../../pages/ChooseCategoryPage/ChooseCategoryPage';
 import MyLearningPathPage from '../../pages/MyLearningPathPage/MyLearningPathPage';
+import AllLearningPathPage from '../../pages/AllLearningPathPage/AllLearningPathPage';
 
 const AppRoutes = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
@@ -27,6 +28,10 @@ const AppRoutes = () => {
             <MyLearningPathPage />
           </ProtectedRoute>
    )}
+      />
+      <Route
+        path="/exploreLearningPaths"
+        element={<AllLearningPathPage />}
       />
     </Routes>
   );

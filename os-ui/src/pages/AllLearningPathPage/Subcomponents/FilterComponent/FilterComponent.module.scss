@@ -1,0 +1,22 @@
+@import "../../../../styles/Mixins/FlexMixins.scss";
+
+.filterMainContent .filteringContent .filteringSubContent{
+    @include flexStyle(column,center,space-evenly);
+}
+.mainContainer,.hiddenContainer{
+    @include flexStyle(row,center,space-between);
+    background-color: black;
+    color:white;
+    width:15%;
+    padding-left:2rem;
+    transition-duration: 2s;
+    .filterMainContent{
+        background-color: red;
+        width:100%;
+    }
+
+}
+.hiddenContainer{
+    transform:translateX(-92%);
+    transition-duration: 2s;
+}

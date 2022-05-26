@@ -1,0 +1,9 @@
+@import "../../styles/Mixins/FlexMixins.scss";
+
+.mainContainer{
+    @include flexStyle(row,center,space-between);
+    margin-top:3rem;
+    .learningPathsMainContainer{
+        border:2px solid red;
+    }
+}
