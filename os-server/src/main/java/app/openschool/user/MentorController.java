@@ -1,10 +1,11 @@
 package app.openschool.user;
 
-import app.openschool.course.api.dto.MentorCourseDto;
+import app.openschool.common.response.ResponseMessage;
 import app.openschool.user.api.dto.MentorDto;
-import app.openschool.user.api.exception.UserNotFoundException;
+import java.util.Locale;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,19 +19,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class MentorController {
 
   private final UserService userService;
+  private final MessageSource messageSource;
 
-  public MentorController(UserService userService) {
+  public MentorController(UserService userService, MessageSource messageSource) {
     this.userService = userService;
+    this.messageSource = messageSource;
   }
 
   @GetMapping("/{mentorId}/courses")
   @Operation(
       summary = "find courses by mentorID",
       security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<Page<MentorCourseDto>> findMentorCourses(
-      Pageable pageable, @PathVariable Long mentorId) {
+  public ResponseEntity<?> findMentorCourses(
+      Pageable pageable, @PathVariable Long mentorId, Locale locale) {
     if (userService.findMentorById(mentorId).isEmpty()) {
-      throw new UserNotFoundException(String.valueOf(mentorId));
+      return ResponseEntity.badRequest()
+          .body(
+              new ResponseMessage(
+                  messageSource.getMessage("exception.nonexistent.mentor.message", null, locale)));
     }
     return ResponseEntity.ok(userService.findMentorCourses(mentorId, pageable));
   }
