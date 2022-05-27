@@ -1,3 +1,8 @@
 package app.openschool.course;
 
-public interface CourseService {}
+import app.openschool.course.api.dto.CourseInfoDto;
+import java.util.Optional;
+
+public interface CourseService {
+  Optional<CourseInfoDto> findCourseById(Long id);
+}

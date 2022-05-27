@@ -31,6 +31,10 @@ public class ModuleItemStatus {
     this.type = type;
   }
 
+  public ModuleItemStatus(Long id) {
+    this.id = id;
+  }
+
   public ModuleItemStatus(Long id, String type, Set<EnrolledModuleItem> enrolledModuleItems) {
     this.id = id;
     this.type = type;

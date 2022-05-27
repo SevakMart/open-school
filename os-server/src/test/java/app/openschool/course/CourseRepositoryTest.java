@@ -156,4 +156,11 @@ public class CourseRepositoryTest {
     List<Course> courseList = courseRepository.getRandomSuggestedCourses(4);
     assertEquals(4, courseList.size());
   }
+
+  @Test
+  public void findById() {
+    String title = "theCourse";
+    courseRepository.save(new Course(1L, title));
+    assertEquals(title, courseRepository.findById(1L).get().getTitle());
+  }
 }

@@ -6,6 +6,7 @@ import app.openschool.course.keyword.Keyword;
 import app.openschool.course.language.Language;
 import app.openschool.course.module.Module;
 import app.openschool.user.User;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,6 +35,9 @@ public class Course {
   @Column(name = "description")
   private String description;
 
+  @Column(name = "goal")
+  private String goal;
+
   @Column(name = "rating")
   private Double rating;
 
@@ -58,7 +62,7 @@ public class Course {
       name = "keyword_learning_path",
       joinColumns = {@JoinColumn(name = "learning_path_id")},
       inverseJoinColumns = {@JoinColumn(name = "keyword_id")})
-  private Set<Keyword> keywords;
+  private Set<Keyword> keywords = new HashSet<>();
 
   @OneToMany(mappedBy = "course")
   private Set<Module> modules;
@@ -67,6 +71,11 @@ public class Course {
   private Set<EnrolledCourse> enrolledCourses;
 
   public Course() {}
+
+  public Course(Long id, String title) {
+    this.id = id;
+    this.title = title;
+  }
 
   public Course(String title, String description, Category category) {
     this.title = title;
@@ -160,5 +169,13 @@ public class Course {
 
   public void setMentor(User mentor) {
     this.mentor = mentor;
+  }
+
+  public String getGoal() {
+    return goal;
+  }
+
+  public void setGoal(String goal) {
+    this.goal = goal;
   }
 }

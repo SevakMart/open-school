@@ -6,7 +6,9 @@ import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.user.company.Company;
 import app.openschool.user.role.Role;
+import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -79,8 +81,8 @@ public class User {
   @OneToMany(mappedBy = "mentor")
   private Set<Course> courses;
 
-  @OneToMany(mappedBy = "user")
-  private Set<EnrolledCourse> enrolledCourses;
+  @OneToMany(cascade = CascadeType.MERGE, mappedBy = "user")
+  private Set<EnrolledCourse> enrolledCourses = new HashSet<>();
 
   @OneToOne(mappedBy = "user")
   private ResetPasswordToken resetPasswordToken;

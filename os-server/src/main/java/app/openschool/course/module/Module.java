@@ -22,6 +22,9 @@ public class Module {
   @Column(nullable = false)
   private Long id;
 
+  @Column(name = "title")
+  private String title;
+
   @ManyToOne
   @JoinColumn(name = "learning_path_id")
   private Course course;
@@ -63,5 +66,13 @@ public class Module {
 
   public void setModuleItems(Set<ModuleItem> moduleItems) {
     this.moduleItems = moduleItems;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 }

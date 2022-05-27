@@ -81,4 +81,11 @@ class UserControllerTest {
             post("/api/v1/users/1/categories").content(requestBody).contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
   }
+
+  @Test
+  void enrollCourse() throws Exception {
+    mockMvc
+        .perform(post("/api/v1/users/courses/1").contentType(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
+  }
 }

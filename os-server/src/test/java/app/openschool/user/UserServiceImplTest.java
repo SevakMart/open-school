@@ -2,6 +2,7 @@ package app.openschool.user;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -13,6 +14,7 @@ import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
+import app.openschool.course.api.CourseGenerator;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.language.Language;
@@ -305,5 +307,18 @@ class UserServiceImplTest {
         .thenReturn(List.of(enrolledCourse));
     userService.findUserEnrolledCourses(1L, 1L);
     verify(enrolledcourseRepository, Mockito.times(1)).findUserEnrolledCoursesByStatus(1L, 1L);
+  }
+
+  @Test
+  void enrollCourse() {
+    String username = "user";
+    long coresId = 1L;
+
+    when(userRepository.findByEmail(username)).thenReturn(Optional.of(new User(1L)));
+    when(courseRepository.findById(coresId))
+        .thenReturn(Optional.of(CourseGenerator.generateCourse()));
+
+    userService.enrollCourse(username, coresId);
+    verify(userRepository, times(1)).save(any());
   }
 }

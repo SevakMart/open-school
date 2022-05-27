@@ -26,6 +26,10 @@ public class CourseStatus {
 
   public CourseStatus() {}
 
+  public CourseStatus(Long id) {
+    this.id = id;
+  }
+
   public CourseStatus(String type) {
     this.type = type;
   }

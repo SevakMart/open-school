@@ -27,6 +27,10 @@ public class ModuleStatus {
 
   public ModuleStatus() {}
 
+  public ModuleStatus(Long id) {
+    this.id = id;
+  }
+
   public ModuleStatus(String type) {
     this.type = type;
   }

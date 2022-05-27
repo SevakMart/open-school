@@ -106,4 +106,19 @@ public class UserServiceImpl implements UserService {
     return UserCourseMapper.toUserCourseDtoList(
         enrolledCourseRepository.findUserEnrolledCoursesByStatus(userId, courseStatusId));
   }
+
+  @Override
+  @Transactional
+  public Optional<CourseDto> enrollCourse(String username, long courseId) {
+    Optional<User> optionalUser = userRepository.findByEmail(username);
+    Optional<Course> optionalCourse = courseRepository.findById(courseId);
+    if (optionalUser.isPresent() && optionalCourse.isPresent()) {
+      User user = optionalUser.get();
+      Course course = optionalCourse.get();
+      user.getEnrolledCourses().add(CourseMapper.toEnrolledCourse(course, user));
+      userRepository.save(user);
+      return Optional.of(CourseMapper.toCourseDto(course));
+    }
+    return Optional.empty();
+  }
 }
