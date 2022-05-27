@@ -19,17 +19,14 @@ public class ModuleMapper {
             .collect(Collectors.toSet());
 
     return enrolledModules.stream()
-        .map(
-            enrolledModule -> {
-              enrolledModule.setEnrolledModuleItems(
-                  enrolledModule.getModule().getModuleItems().stream()
-                      .map(
-                          moduleItem ->
-                              new EnrolledModuleItem(
-                                  moduleItem, enrolledModule, new ModuleItemStatus(1L)))
-                      .collect(Collectors.toSet()));
-              return enrolledModule;
-            })
+        .peek(
+            enrolledModule -> enrolledModule.setEnrolledModuleItems(
+                enrolledModule.getModule().getModuleItems().stream()
+                    .map(
+                        moduleItem ->
+                            new EnrolledModuleItem(
+                                moduleItem, enrolledModule, new ModuleItemStatus(1L)))
+                    .collect(Collectors.toSet())))
         .collect(Collectors.toSet());
   }
 }
