@@ -41,6 +41,10 @@ public class ModuleStatus {
     this.enrolledModules = modules;
   }
 
+  public static ModuleStatus inProgress() {
+    return new ModuleStatus(1L);
+  }
+
   public boolean isInProgress() {
     return this.type.equals("IN_PROGRESS");
   }

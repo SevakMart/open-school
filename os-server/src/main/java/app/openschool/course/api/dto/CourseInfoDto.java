@@ -53,79 +53,39 @@ public class CourseInfoDto {
     return title;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
   public String getDescription() {
     return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
   }
 
   public String getGoal() {
     return goal;
   }
 
-  public void setGoal(String goal) {
-    this.goal = goal;
-  }
-
   public Set<CourseInfoModuleDto> getModules() {
     return modules;
-  }
-
-  public void setModules(Set<CourseInfoModuleDto> modules) {
-    this.modules = modules;
   }
 
   public CourseInfoMentorDto getMentorDto() {
     return mentorDto;
   }
 
-  public void setMentorDto(CourseInfoMentorDto mentorDto) {
-    this.mentorDto = mentorDto;
-  }
-
   public double getRating() {
     return rating;
-  }
-
-  public void setRating(double rating) {
-    this.rating = rating;
   }
 
   public int getEnrolled() {
     return enrolled;
   }
 
-  public void setEnrolled(int enrolled) {
-    this.enrolled = enrolled;
-  }
-
   public String getLevel() {
     return level;
-  }
-
-  public void setLevel(String level) {
-    this.level = level;
   }
 
   public String getLanguage() {
     return language;
   }
 
-  public void setLanguage(String language) {
-    this.language = language;
-  }
-
   public double getDuration() {
     return duration;
-  }
-
-  public void setDuration(double duration) {
-    this.duration = duration;
   }
 }

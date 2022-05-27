@@ -11,22 +11,27 @@ import java.util.stream.Collectors;
 
 public class ModuleMapper {
 
-  public static Set<EnrolledModule> toEnrolledModuleSet(
+  public static Set<EnrolledModule> toEnrolledModules(
       Course course, EnrolledCourse enrolledCourse) {
     Set<EnrolledModule> enrolledModules =
         course.getModules().stream()
-            .map(module -> new EnrolledModule(module, new ModuleStatus(1L), enrolledCourse))
+            .map(module -> new EnrolledModule(module, ModuleStatus.inProgress(), enrolledCourse))
             .collect(Collectors.toSet());
 
     return enrolledModules.stream()
-        .peek(
-            enrolledModule -> enrolledModule.setEnrolledModuleItems(
-                enrolledModule.getModule().getModuleItems().stream()
-                    .map(
-                        moduleItem ->
-                            new EnrolledModuleItem(
-                                moduleItem, enrolledModule, new ModuleItemStatus(1L)))
-                    .collect(Collectors.toSet())))
+        .map(
+            enrolledModule -> {
+              enrolledModule.setEnrolledModuleItems(getEnrolledModuleItems(enrolledModule));
+              return enrolledModule;
+            })
+        .collect(Collectors.toSet());
+  }
+
+  private static Set<EnrolledModuleItem> getEnrolledModuleItems(EnrolledModule enrolledModule) {
+    return enrolledModule.getModule().getModuleItems().stream()
+        .map(
+            moduleItem ->
+                new EnrolledModuleItem(moduleItem, enrolledModule, ModuleItemStatus.inProgress()))
         .collect(Collectors.toSet());
   }
 }

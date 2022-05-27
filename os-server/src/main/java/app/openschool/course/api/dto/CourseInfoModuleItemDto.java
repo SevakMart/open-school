@@ -14,15 +14,7 @@ public class CourseInfoModuleItemDto {
     return moduleItemType;
   }
 
-  public void setModuleItemType(String moduleItemType) {
-    this.moduleItemType = moduleItemType;
-  }
-
   public String getLink() {
     return link;
-  }
-
-  public void setLink(String link) {
-    this.link = link;
   }
 }

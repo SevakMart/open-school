@@ -16,7 +16,7 @@ class ModuleMapperTest {
   @Test
   void toEnrolledModuleSet() {
     Course course = CourseGenerator.generateCourseWithEnrolledCourses();
-    Set<EnrolledModule> actual = ModuleMapper.toEnrolledModuleSet(course, new EnrolledCourse(1L));
+    Set<EnrolledModule> actual = ModuleMapper.toEnrolledModules(course, new EnrolledCourse(1L));
 
     assertEquals(1, actual.size());
   }

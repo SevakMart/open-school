@@ -1,6 +1,7 @@
 package app.openschool.course;
 
 import app.openschool.course.api.dto.CourseInfoDto;
+import app.openschool.course.api.mapper.CourseMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class CourseController {
   public ResponseEntity<CourseInfoDto> getCourseInfo(@PathVariable Long id) {
     return courseService
         .findCourseById(id)
-        .map(ResponseEntity::ok)
+        .map(course -> ResponseEntity.ok(CourseMapper.toCourseInfoDto(course)))
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 }

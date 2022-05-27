@@ -9,6 +9,7 @@ import app.openschool.course.api.dto.CourseInfoModuleDto;
 import app.openschool.course.api.dto.CourseInfoModuleItemDto;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.module.EnrolledModule;
+import app.openschool.course.module.Module;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.status.CourseStatus;
 import app.openschool.user.User;
@@ -40,38 +41,51 @@ public class CourseMapper {
         course.getTitle(),
         course.getDescription(),
         course.getGoal(),
-        course.getModules().stream()
-            .map(
-                (module ->
-                    new CourseInfoModuleDto(
-                        module.getTitle(),
-                        module.getModuleItems().stream()
-                            .map(
-                                moduleItem ->
-                                    new CourseInfoModuleItemDto(
-                                        moduleItem.getModuleItemType(), moduleItem.getLink()))
-                            .collect(Collectors.toSet()))))
-            .collect(Collectors.toSet()),
-        new CourseInfoMentorDto(
-            course.getMentor().getName(),
-            course.getMentor().getSurname(),
-            course.getMentor().getUserImgPath(),
-            course.getMentor().getLinkedinPath()),
+        getCourseInfoModuleDtoSet(course),
+        getCourseInfoMentorDto(course),
         course.getRating(),
         course.getEnrolledCourses().size(),
         course.getDifficulty().getTitle(),
         course.getLanguage().getTitle(),
-        course.getModules().stream()
-            .flatMapToLong(
-                module -> module.getModuleItems().stream().mapToLong(ModuleItem::getEstimatedTime))
-            .sum());
+        getCourseDuration(course));
+  }
+
+  private static long getCourseDuration(Course course) {
+    return course.getModules().stream()
+        .flatMapToLong(
+            module -> module.getModuleItems().stream().mapToLong(ModuleItem::getEstimatedTime))
+        .sum();
+  }
+
+  private static CourseInfoMentorDto getCourseInfoMentorDto(Course course) {
+    return new CourseInfoMentorDto(
+        course.getMentor().getName(),
+        course.getMentor().getSurname(),
+        course.getMentor().getUserImgPath(),
+        course.getMentor().getLinkedinPath());
+  }
+
+  private static Set<CourseInfoModuleDto> getCourseInfoModuleDtoSet(Course course) {
+    return course.getModules().stream()
+        .map(
+            (module ->
+                new CourseInfoModuleDto(module.getTitle(), getCourseInfoModuleItemDtoSet(module))))
+        .collect(Collectors.toSet());
+  }
+
+  private static Set<CourseInfoModuleItemDto> getCourseInfoModuleItemDtoSet(Module module) {
+    return module.getModuleItems().stream()
+        .map(
+            moduleItem ->
+                new CourseInfoModuleItemDto(moduleItem.getModuleItemType(), moduleItem.getLink()))
+        .collect(Collectors.toSet());
   }
 
   public static EnrolledCourse toEnrolledCourse(Course course, User user) {
 
     EnrolledCourse enrolledCourse =
-        new EnrolledCourse(LocalDate.now(), course, user, new CourseStatus(1L));
-    Set<EnrolledModule> enrolledModules = ModuleMapper.toEnrolledModuleSet(course, enrolledCourse);
+        new EnrolledCourse(LocalDate.now(), course, user, CourseStatus.inProgress());
+    Set<EnrolledModule> enrolledModules = ModuleMapper.toEnrolledModules(course, enrolledCourse);
     enrolledCourse.setEnrolledModules(enrolledModules);
     return enrolledCourse;
   }

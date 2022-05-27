@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public Optional<CourseDto> enrollCourse(String username, long courseId) {
+  public Optional<Course> enrollCourse(String username, long courseId) {
     Optional<User> optionalUser = userRepository.findByEmail(username);
     Optional<Course> optionalCourse = courseRepository.findById(courseId);
     if (optionalUser.isPresent() && optionalCourse.isPresent()) {
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
       Course course = optionalCourse.get();
       user.getEnrolledCourses().add(CourseMapper.toEnrolledCourse(course, user));
       userRepository.save(user);
-      return Optional.of(CourseMapper.toCourseDto(course));
+      return Optional.of(course);
     }
     return Optional.empty();
   }

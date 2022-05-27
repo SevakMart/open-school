@@ -1,6 +1,7 @@
 package app.openschool.user;
 
 import app.openschool.category.api.dto.PreferredCategoryDto;
+import app.openschool.course.Course;
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.user.api.dto.MentorDto;
@@ -20,5 +21,5 @@ public interface UserService {
 
   List<UserCourseDto> findUserEnrolledCourses(Long userId, Long courseStatusId);
 
-  Optional<CourseDto> enrollCourse(String username, long courseId);
+  Optional<Course> enrollCourse(String username, long courseId);
 }

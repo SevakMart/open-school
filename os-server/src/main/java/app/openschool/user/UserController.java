@@ -3,11 +3,11 @@ package app.openschool.user;
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.UserCourseDto;
+import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.user.api.dto.MentorDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -71,8 +71,8 @@ public class UserController {
     return userService
         .enrollCourse(username, courseId)
         .map(
-            withEnrolledCoursesDto ->
-                ResponseEntity.status(HttpStatus.CREATED).body(withEnrolledCoursesDto))
+            course ->
+                ResponseEntity.status(HttpStatus.CREATED).body(CourseMapper.toCourseDto(course)))
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 }

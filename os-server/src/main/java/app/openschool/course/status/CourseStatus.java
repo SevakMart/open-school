@@ -40,6 +40,10 @@ public class CourseStatus {
     this.enrolledCourses = enrolledCourses;
   }
 
+  public static CourseStatus inProgress() {
+    return new CourseStatus(1L);
+  }
+
   public boolean isInProgress() {
     return this.type.equals("IN_PROGRESS");
   }

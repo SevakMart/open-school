@@ -5,6 +5,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import app.openschool.common.security.JwtTokenProvider;
+import app.openschool.common.security.UserPrincipal;
+import app.openschool.course.api.CourseGenerator;
+import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.user.User;
+import app.openschool.user.role.Role;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,15 +28,39 @@ class CourseControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
+  @Autowired private JwtTokenProvider jwtTokenProvider;
+
   @MockBean private CourseService courseService;
 
   @Test
-  void getCourseInfo() throws Exception {
-
-    when(courseService.findCourseById(1L)).thenReturn(Optional.empty());
-
+  void getCourseInfoUnauthorized() throws Exception {
     mockMvc
         .perform(get("/api/v1/courses/1").contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void getCourseWithWrongCourseId() throws Exception {
+    when(courseService.findCourseById(1L)).thenReturn(Optional.empty());
+    User user = new User("Test", "pass");
+    user.setRole(new Role("STUDENT"));
+    String jwt = "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
+    mockMvc
+        .perform(
+            get("/api/v1/courses/1").contentType(APPLICATION_JSON).header("Authorization", jwt))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void getCourseWithRightCourseId() throws Exception {
+    when(courseService.findCourseById(1L))
+        .thenReturn(Optional.of(CourseGenerator.generateCourseWithEnrolledCourses()));
+    User user = new User("Test", "pass");
+    user.setRole(new Role("STUDENT"));
+    String jwt = "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
+    mockMvc
+        .perform(
+            get("/api/v1/courses/1").contentType(APPLICATION_JSON).header("Authorization", jwt))
+        .andExpect(status().isOk());
   }
 }
