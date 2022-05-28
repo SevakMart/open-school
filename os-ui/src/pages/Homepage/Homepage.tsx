@@ -10,7 +10,7 @@ import categoriesService from '../../services/categoriesService';
 import HomepageCategories from './Subcomponents/Categories/Categories';
 import HomepageMentors from './Subcomponents/Mentors/Mentors';
 import SignUp from '../../component/SignUp/SignUp';
-import SignIn from '../../component/SignIn/SignIn';
+import VerifyMessage from '../VerifyMessage/VerifyMessage';
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -27,6 +27,10 @@ const Homepage = () => {
         setClickedButtonType(buttonType);
         break;
       case 'signIn':
+        setIsOpen(true);
+        setClickedButtonType(buttonType);
+        break;
+      case 'verify':
         setIsOpen(true);
         setClickedButtonType(buttonType);
         break;
@@ -67,10 +71,8 @@ const Homepage = () => {
         </div>
       </div>
       <Footer />
-      {isOpen && clickedButtonType === 'signUp'
-        ? <SignUp handleSignUpClicks={handleButtonClick} />
-        : isOpen && clickedButtonType === 'signIn'
-          ? <SignIn handleSignInClicks={handleButtonClick} />
+      {isOpen && clickedButtonType === 'signUp' ? <SignUp handleSignUpClicks={handleButtonClick} />
+        : isOpen && clickedButtonType === 'signIn' ? <VerifyMessage handleSignInClicks={handleButtonClick} />
           : null}
     </>
   );
