@@ -10,7 +10,9 @@ import categoriesService from '../../services/categoriesService';
 import HomepageCategories from './Subcomponents/Categories/Categories';
 import HomepageMentors from './Subcomponents/Mentors/Mentors';
 import SignUp from '../../component/SignUp/SignUp';
+import SignIn from '../../component/SignIn/SignIn';
 import VerifyMessage from '../VerifyMessage/VerifyMessage';
+import { Types } from '../../types/types';
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -20,24 +22,15 @@ const Homepage = () => {
   const [clickedButtonType, setClickedButtonType] = useState('');
   const { mainContainer, buttonContainer } = styles;
 
+  const manipulateByButtonType = (buttonType: string) => {
+    setIsOpen(true);
+    setClickedButtonType(buttonType);
+  };
+
   const handleButtonClick = (buttonType:string) => {
-    switch (buttonType) {
-      case 'signUp':
-        setIsOpen(true);
-        setClickedButtonType(buttonType);
-        break;
-      case 'signIn':
-        setIsOpen(true);
-        setClickedButtonType(buttonType);
-        break;
-      case 'verify':
-        setIsOpen(true);
-        setClickedButtonType(buttonType);
-        break;
-      case 'closeButton':
-        setIsOpen(false);
-        break;
-    }
+    const isTrue = (buttonType === Types.Button.SIGN_IN || Types.Button.SIGN_UP || Types.Button.VERIFY);
+    // eslint-disable-next-line no-unused-expressions
+    isTrue ? manipulateByButtonType(buttonType) : setIsOpen(false);
   };
 
   useEffect(() => {
@@ -72,8 +65,9 @@ const Homepage = () => {
       </div>
       <Footer />
       {isOpen && clickedButtonType === 'signUp' ? <SignUp handleSignUpClicks={handleButtonClick} />
-        : isOpen && clickedButtonType === 'signIn' ? <VerifyMessage handleSignInClicks={handleButtonClick} />
-          : null}
+        : isOpen && clickedButtonType === 'verify' ? <VerifyMessage handleSignInClicks={handleButtonClick} />
+          : isOpen && clickedButtonType === 'signIn' ? <SignIn handleSignInClicks={handleButtonClick} />
+            : null}
     </>
   );
 };
