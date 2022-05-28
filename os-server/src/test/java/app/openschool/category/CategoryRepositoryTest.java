@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.util.AssertionErrors.assertNull;
 
-import app.openschool.category.Category;
-import app.openschool.category.CategoryRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +63,18 @@ class CategoryRepositoryTest {
   void findAllCategoriesCheckIsParentCategory() {
     List<Category> categoryList =
         categoryRepository.findAllCategories(PageRequest.of(0, 10)).toList();
+    for (Category category : categoryList) {
+      assertNull(category.getTitle() + "isn't parent category", category.getParentCategoryId());
+    }
+  }
+
+  @Test
+  void findAllParentCategories() {
+    Category category1 = new Category("JAVA", 1L);
+    categoryRepository.save(category1);
+    Category category2 = new Category("JS", null);
+    categoryRepository.save(category2);
+    List<Category> categoryList = categoryRepository.findAllParentCategories();
     for (Category category : categoryList) {
       assertNull(category.getTitle() + "isn't parent category", category.getParentCategoryId());
     }
