@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/Store';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
 import FilterComponent from './Subcomponents/FilterComponent/FilterComponent';
 import {
@@ -7,6 +9,8 @@ import {
 import styles from './AllLearningPathPage.module.scss';
 
 const AllLearningPathPage = () => {
+  const userInfo = useSelector<RootState>((state) => state.userInfo);
+  const { token } = userInfo as any;
   const [isVisible, setIsVisible] = useState(true);
   const {
     mainContainer, learningPathsMainContainer,
@@ -21,7 +25,7 @@ const AllLearningPathPage = () => {
     <>
       <NavbarOnSignIn />
       <div className={mainContainer}>
-        <FilterComponent changeVisibility={changeVisibility} />
+        <FilterComponent changeVisibility={changeVisibility} token={token} />
         <div className={learningPathsMainContainer} style={isVisible ? { width: '75%', transitionDuration: '2s' } : { width: '98%', transitionDuration: '2s' }}>
           <div className={learningPathsHeader}>
             <nav>

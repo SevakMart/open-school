@@ -1,22 +1,23 @@
 @import "../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
 
-.filterMainContent .filteringContent .filteringSubContent{
-    @include flexStyle(column,center,space-evenly);
-}
 .mainContainer,.hiddenContainer{
     @include flexStyle(row,center,space-between);
-    background-color: black;
-    color:white;
     width:15%;
-    padding-left:2rem;
     transition-duration: 2s;
     .filterMainContent{
-        background-color: red;
+        background-color:#FFFFFF;
+        border-radius:1.125rem;
+        padding-left:0.5rem;
         width:100%;
+        .mainTitle{
+            @include fontStyle('Montserrat',normal,600,1.25rem,1.5rem);
+            color:#222427;
+        }
     }
 
 }
 .hiddenContainer{
-    transform:translateX(-92%);
+    transform:translateX(-90%);
     transition-duration: 2s;
 }

@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import {
-  CATEGORY, COURSE_LEVEL, ENGINEERING, FILTER, LANGUAGE, TECHNICAL,
-} from '../../../../constants/Strings';
+import { useState, useEffect } from 'react';
+import courseService from '../../../../services/courseService';
+import FilteringContent from '../FilteringContent/FilteringContent';
+import { FilteringFeatureType } from '../../../../types/FilteringFeaturesType';
+import { FILTER } from '../../../../constants/Strings';
 import styles from './FilterComponent.module.scss';
 
 enum VisibleFilterTab {
@@ -9,11 +10,11 @@ enum VisibleFilterTab {
     isHidden='hidden'
 }
 
-const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
+const FilterComponent = ({ changeVisibility, token }:{changeVisibility:()=>void, token:string}) => {
   const [visibleFilterTab, setVisibleFilterTab] = useState(VisibleFilterTab.isVisible);
+  const [filterFeatures, setFilterFeatures] = useState<FilteringFeatureType>({});
   const {
-    mainContainer, hiddenContainer, filterMainContent,
-    filteringContent, filteringSubContent, checkedContent,
+    mainContainer, hiddenContainer, filterMainContent, mainTitle, visibilityButton,
   } = styles;
 
   const toggleFilterTabVisibility = () => {
@@ -26,67 +27,31 @@ const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
     }
   };
 
+  useEffect(() => {
+    courseService.getFilterFeatures({}, token).then((data) => {
+      setFilterFeatures(data);
+    });
+  }, []);
+
   return (
     <div className={visibleFilterTab === 'visible' ? mainContainer : hiddenContainer}>
       <div className={filterMainContent}>
-        <p>{FILTER}</p>
-        <div className={filteringContent}>
-          <p>{CATEGORY}</p>
-          <div className={filteringSubContent}>
-            <p>{TECHNICAL}</p>
-            {/* This part is going to be replace by the content coming from the backend */}
-            <div className={checkedContent}>
-              <input type="checkbox" name="checkbox" id="advancedEngineering" />
-              <label htmlFor="advancedEngineering">Advanced Engineering</label>
-            </div>
-            <div className={checkedContent}>
-              <input type="checkbox" name="checkbox" id="applicationsAndTools" />
-              <label htmlFor="applicationsAndTools">Advanced Engineering</label>
-            </div>
-          </div>
-          <div className={filteringSubContent}>
-            <p>{ENGINEERING}</p>
-            {/* This part is going to be replace by the content coming from the backend */}
-            <div className={checkedContent}>
-              <input type="checkbox" name="checkbox" id="advancedEngineering" />
-              <label htmlFor="advancedEngineering">Advanced Engineering</label>
-            </div>
-            <div className={checkedContent}>
-              <input type="checkbox" name="checkbox" id="applicationsAndTools" />
-              <label htmlFor="applicationsAndTools">Advanced Engineering</label>
-            </div>
-          </div>
-        </div>
-        <div className={filteringContent}>
-          <p>{LANGUAGE}</p>
-          {/* This part is going to be replace by the content coming from the backend */}
-          <div className={checkedContent}>
-            <input type="checkbox" name="checkbox" id="English" />
-            <label htmlFor="English">English</label>
-          </div>
-          <div className={checkedContent}>
-            <input type="checkbox" name="checkbox" id="Russian" />
-            <label htmlFor="Russian">Russian</label>
-          </div>
-        </div>
-        <div className={filteringContent}>
-          <p>{COURSE_LEVEL}</p>
-          {/* This part is going to be replace by the content coming from the backend */}
-          <div className={checkedContent}>
-            <input type="checkbox" name="checkbox" id="Basic" />
-            <label htmlFor="Basic">Basic</label>
-          </div>
-          <div className={checkedContent}>
-            <input type="checkbox" name="checkbox" id="Intermediate" />
-            <label htmlFor="Intermediate">Intermediate</label>
-          </div>
-          <div className={checkedContent}>
-            <input type="checkbox" name="checkbox" id="Advanced" />
-            <label htmlFor="Advanced">Advanced</label>
-          </div>
-        </div>
+        <p className={mainTitle}>{FILTER}</p>
+        {
+          Object.entries(filterFeatures).length
+            ? Object.entries(filterFeatures).map((feature, index) => {
+              const title:string = feature[0] === 'parentAndRelevantChildCategories' ? 'Category' : feature[0] === 'allLanguages' ? 'Language' : 'Course Level';
+              return (
+                <FilteringContent
+                  title={title}
+                  key={index}
+                  content={feature[1]}
+                />
+              );
+            }) : null
+        }
       </div>
-      <button type="button" onClick={toggleFilterTabVisibility}>{'<'}</button>
+      <button className={visibilityButton} type="button" onClick={toggleFilterTabVisibility}>{'<'}</button>
     </div>
   );
 };
