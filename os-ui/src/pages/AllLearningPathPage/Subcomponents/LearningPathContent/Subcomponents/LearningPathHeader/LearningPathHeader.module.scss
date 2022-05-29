@@ -1,0 +1,33 @@
+@import "../../../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../../../styles/Mixins/FontMixin.scss";
+
+.learningPathsHeader{
+    @include flexStyle(row,center,space-between);
+    width:100%;
+    nav {
+        @include flexStyle(row,center,space-between);
+        width:30%;
+        .activeNav{
+            @include fontStyle('Montserrat',normal,600,1.25rem,1.5rem);
+            color:#222427;
+            border-bottom: 4px solid #848A9D;
+            cursor:pointer;
+        }
+        .nonActiveNav{
+            @include fontStyle('Montserrat',normal,600,1rem,1.5rem);
+            color:#5E617B;
+            cursor:pointer;
+        }
+    }
+    .sortingContainer{
+        @include fontStyle('Montserrat',normal,400,0.875rem,1.063rem);
+        label {
+            color:#848A9D;
+        };
+        select {
+            background: none;
+            outline: none;
+            border:0px;
+        }
+    }
+}
