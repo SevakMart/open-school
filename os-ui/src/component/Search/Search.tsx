@@ -3,7 +3,9 @@ import styles from './Search.module.scss';
 import SearchIcon from '../../icons/Search';
 import { SearchProps } from '../../types/SearchType';
 
-const Search = ({ changeUrlQueries }:SearchProps) => {
+const Search = ({
+  changeUrlQueries, paddingLeft, leftPosition, rightPosition,
+}:SearchProps) => {
   const { inputContent } = styles;
   const inputRef = useRef<HTMLInputElement>(null);
   const handleSearch = (e:React.KeyboardEvent) => {
@@ -14,14 +16,14 @@ const Search = ({ changeUrlQueries }:SearchProps) => {
     }
   };
   return (
-    <div className={inputContent}>
+    <div className={inputContent} style={{ paddingLeft: `${paddingLeft}` }}>
       <input
         ref={inputRef}
         type="text"
         placeholder="Search name"
         onKeyPress={handleSearch}
       />
-      <SearchIcon />
+      <SearchIcon leftPosition={leftPosition} rightPosition={rightPosition} />
     </div>
   );
 };

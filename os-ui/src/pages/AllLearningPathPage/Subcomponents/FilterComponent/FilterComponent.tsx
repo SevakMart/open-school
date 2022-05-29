@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { tokenContext } from '../../../../contexts/Contexts';
 import courseService from '../../../../services/courseService';
 import FilteringContent from '../FilteringContent/FilteringContent';
 import { FilteringFeatureType } from '../../../../types/FilteringFeaturesType';
@@ -10,9 +11,10 @@ enum VisibleFilterTab {
     isHidden='hidden'
 }
 
-const FilterComponent = ({ changeVisibility, token }:{changeVisibility:()=>void, token:string}) => {
+const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
   const [visibleFilterTab, setVisibleFilterTab] = useState(VisibleFilterTab.isVisible);
   const [filterFeatures, setFilterFeatures] = useState<FilteringFeatureType>({});
+  const token = useContext(tokenContext);
   const {
     mainContainer, hiddenContainer, filterMainContent, mainTitle, visibilityButton,
   } = styles;

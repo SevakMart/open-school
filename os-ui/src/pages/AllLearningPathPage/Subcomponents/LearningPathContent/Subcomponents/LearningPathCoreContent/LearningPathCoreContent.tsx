@@ -1,9 +1,34 @@
+import { useState, useEffect, useContext } from 'react';
+import { tokenContext } from '../../../../../../contexts/Contexts';
+import LearningPath from '../../../../../../component/LearningPath/LearningPath';
+import courseService from '../../../../../../services/courseService';
+import { SuggestedCourseType } from '../../../../../../types/SuggestedCourseType';
+import { EMPTY_DATA_ERROR_MESSAGE } from '../../../../../../constants/Strings';
 import styles from './LearningPathCoreContent.module.scss';
 
 const LearningPathCoreContent = () => {
-  const a = 1;
+  const token = useContext(tokenContext);
+  const [courseList, setCourseList] = useState<SuggestedCourseType[]>([]);
+  const { mainCoreContainer, courseContainer } = styles;
+
+  useEffect(() => {
+    courseService.getSearchedCourses({ page: 0, size: 100 }, token)
+      .then((data) => setCourseList([...data.content]));
+  }, []);
+
   return (
-    <h1>Hello world</h1>
+    <div className={mainCoreContainer}>
+      {courseList.length ? courseList.map((course, index) => (
+        <div className={courseContainer} key={index}>
+          <LearningPath
+            title={course.title}
+            rating={course.rating}
+            difficulty={course.difficulty}
+            keywords={course.keywords}
+          />
+        </div>
+      )) : <h2>{EMPTY_DATA_ERROR_MESSAGE}</h2>}
+    </div>
   );
 };
 export default LearningPathCoreContent;

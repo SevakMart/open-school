@@ -16,6 +16,8 @@ describe('Create test case to Search component', () => {
       <Provider store={store}>
         <Search
           changeUrlQueries={() => null}
+          paddingLeft="6%"
+          leftPosition="7%"
         />
       </Provider>,
     );
@@ -26,6 +28,8 @@ describe('Create test case to Search component', () => {
       <Provider store={store}>
         <Search
           changeUrlQueries={() => null}
+          paddingLeft="6%"
+          leftPosition="7%"
         />
       </Provider>,
     );

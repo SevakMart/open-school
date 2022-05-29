@@ -4,6 +4,7 @@
 .learningPathsHeader{
     @include flexStyle(row,center,space-between);
     width:100%;
+    margin-bottom:1.5rem;
     nav {
         @include flexStyle(row,center,space-between);
         width:30%;

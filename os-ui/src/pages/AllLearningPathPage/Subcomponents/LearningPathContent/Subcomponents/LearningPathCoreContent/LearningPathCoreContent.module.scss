@@ -1,0 +1,10 @@
+@import "../../../../../../styles/Mixins/FlexMixins.scss";
+
+.mainCoreContainer {
+    @include flexStyle(row,center,flex-start);
+    flex-wrap:wrap;
+    margin-top:2rem;
+    .courseContainer {
+        margin-right: 5rem;
+    }
+}

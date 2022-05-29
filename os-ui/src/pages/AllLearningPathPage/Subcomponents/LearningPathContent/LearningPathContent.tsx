@@ -9,7 +9,7 @@ const LearningPathContent = ({ filterTabIsVisible }:{filterTabIsVisible:boolean}
   return (
     <div className={learningPathsMainContainer} style={filterTabIsVisible ? { width: '75%', transitionDuration: '2s' } : { width: '98%', transitionDuration: '2s' }}>
       <LearningPathHeader />
-      {/* <Search /> */}
+      <Search changeUrlQueries={() => null} paddingLeft="0" leftPosition="20%" />
       <LearningPathCoreContent />
     </div>
   );

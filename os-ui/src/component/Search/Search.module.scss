@@ -3,9 +3,9 @@
 
 .inputContent {
     @include flexStyle(row,center,none);
-    padding-left:6%;
     padding-right:6%;
     height:3.5rem;
+    width:100%;
     input {
         border: 1px solid #D9DBE9;
         border-radius: 0.75rem;
