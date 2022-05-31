@@ -60,6 +60,13 @@ public class Course {
       inverseJoinColumns = {@JoinColumn(name = "keyword_id")})
   private Set<Keyword> keywords;
 
+  @ManyToMany
+  @JoinTable(
+          name = "user_saved_learning_pats",
+          joinColumns = {@JoinColumn(name = "learning_path_id")},
+          inverseJoinColumns = {@JoinColumn(name = "user_id")})
+  private Set<User> users;
+
   @OneToMany(mappedBy = "course")
   private Set<Module> modules;
 
@@ -160,5 +167,13 @@ public class Course {
 
   public void setMentor(User mentor) {
     this.mentor = mentor;
+  }
+
+  public Set<User> getUsers() {
+    return users;
+  }
+
+  public void setUsers(Set<User> users) {
+    this.users = users;
   }
 }

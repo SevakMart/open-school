@@ -2,6 +2,8 @@ package app.openschool.course;
 
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.CourseSearchingFeaturesDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,11 +24,17 @@ public class CourseController {
   }
 
   @GetMapping("/features")
+  @Operation(
+      summary = "get course features for searching",
+      security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<CourseSearchingFeaturesDto> getCourseSearchingFeatures() {
     return ResponseEntity.ok(this.courseService.getCourseSearchingFeatures());
   }
 
   @GetMapping("/searched")
+  @Operation(
+      summary = "searching courses by filtering",
+      security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<Page<CourseDto>> searchCourses(
       Pageable pageable,
       @RequestParam(required = false) String courseTitle,

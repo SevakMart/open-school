@@ -12,6 +12,7 @@ import app.openschool.course.language.LanguageRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,6 +64,11 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.searchCourses(
             pageable, courseTitle, subCategoryIds, languageIds, difficultyIds);
     return CourseMapper.toCourseDtoPage(courses);
+  }
+
+  @Override
+  public Optional<Course> findById(Long courseId) {
+    return courseRepository.findById(courseId);
   }
 
   private Map<String, Map<Long, String>> getParentAndRelevantChildCategories() {
