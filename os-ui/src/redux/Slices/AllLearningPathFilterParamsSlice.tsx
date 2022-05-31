@@ -1,13 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface AllLearningPathFilterParamsType{
-    [index:string]:Array<string>
+    [index:string]:Array<string>|string
 }
 
 const initialState:AllLearningPathFilterParamsType = {
   subCategoryIds: [],
   languageIds: [],
   difficultyIds: [],
+  courseTitle: '',
 };
 
 const allLearningPathFilterParamsSlice = createSlice({
@@ -15,14 +16,18 @@ const allLearningPathFilterParamsSlice = createSlice({
   initialState,
   reducers: {
     addFilterParams(state, action) {
-      console.log(action.payload);
-      state[Object.keys(action.payload)[0]].push(Object.values(action.payload)[0] as string);
+      if (Array.isArray(state[Object.keys(action.payload)[0]])) {
+        (state[Object.keys(action.payload)[0]] as string[])
+          .push(Object.values(action.payload)[0] as string);
+      } else state[Object.keys(action.payload)[0]] = (Object.values(action.payload)[0] as string);
     },
     removeFilterParams(state, action) {
-      const index = state[Object.keys(action.payload)[0]].findIndex(
-        (id) => id === Object.values(action.payload)[0] as string,
-      );
-      state[Object.keys(action.payload)[0]].splice(index, 1);
+      if (Array.isArray(state[Object.keys(action.payload)[0]])) {
+        const index = (state[Object.keys(action.payload)[0]] as string[]).findIndex(
+          (id:string) => id === Object.values(action.payload)[0] as string,
+        );
+        (state[Object.keys(action.payload)[0]] as string[]).splice(index, 1);
+      } else state[Object.keys(action.payload)[0]] = '';
     },
   },
 });

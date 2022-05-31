@@ -18,7 +18,6 @@ const CheckedContent = ({ id, checkedContent, filterFeature }:
   };
   useEffect(() => {
     if (params.has(checkedContent)) setIsChecked(true);
-    /* dispatch(addFilterParams({ [filterFeature]: id })); */
   }, []);
 
   useEffect(() => {
