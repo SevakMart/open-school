@@ -2,7 +2,8 @@ import styles from './FilteringContent.module.scss';
 import CheckedContent from '../CheckedContent/CheckedContent';
 import { Subtype } from '../../../../types/FilteringFeaturesType';
 
-const FilteringContent = ({ title, content }:{title:string, content:Subtype}) => {
+const FilteringContent = ({ title, content, filterFeature }:
+  {title:string, content:Subtype, filterFeature:string}) => {
   const {
     filteringContent, filteringSubContent,
     mainFilteringContentTitle, filteringSubContentTitle,
@@ -19,14 +20,24 @@ const FilteringContent = ({ title, content }:{title:string, content:Subtype}) =>
                   {
                     Object.entries(innerContent[1]).length
                     && Object.entries(innerContent[1]).map((subcontent, i) => (
-                      <CheckedContent key={i} id={subcontent[0]} checkedContent={subcontent[1]} />
+                      <CheckedContent
+                        key={i}
+                        filterFeature={filterFeature}
+                        id={subcontent[0]}
+                        checkedContent={subcontent[1]}
+                      />
                     ))
                   }
                 </div>
               );
             }
             return (
-              <CheckedContent key={index} id={innerContent[0]} checkedContent={innerContent[1]} />
+              <CheckedContent
+                key={index}
+                filterFeature={filterFeature}
+                id={innerContent[0]}
+                checkedContent={innerContent[1]}
+              />
             );
           })
       }

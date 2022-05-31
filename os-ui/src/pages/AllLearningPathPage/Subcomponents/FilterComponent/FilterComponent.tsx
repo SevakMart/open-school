@@ -48,6 +48,7 @@ const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
                   title={title}
                   key={index}
                   content={feature[1]}
+                  filterFeature={title === 'Category' ? 'subCategoryIds' : title === 'Language' ? 'languageIds' : 'difficultyIds'}
                 />
               );
             }) : null
