@@ -22,7 +22,7 @@ const LearningPathContent = ({ filterTabIsVisible }:{filterTabIsVisible:boolean}
   useEffect(() => {
     if (searchTitle) {
       dispatch(addFilterParams({ courseTitle: searchTitle }));
-      params.append('courseTitle', searchTitle);
+      params.set('courseTitle', searchTitle);
       navigate(`/exploreLearningPaths?${params}`);
     } else {
       params.delete('courseTitle');
