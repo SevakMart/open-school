@@ -77,3 +77,5 @@ export const SHOW_ALL = 'Show All';
 export const LANGUAGE = 'Language';
 export const COURSE_LEVEL = 'Course Level';
 export const CATEGORY = 'Category';
+export const TITLE = 'Title';
+export const DIFFICULTY = 'Difficulty';

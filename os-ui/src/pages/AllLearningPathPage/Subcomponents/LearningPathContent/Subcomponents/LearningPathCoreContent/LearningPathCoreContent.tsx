@@ -5,7 +5,7 @@ import { tokenContext } from '../../../../../../contexts/Contexts';
 import LearningPath from '../../../../../../component/LearningPath/LearningPath';
 import courseService from '../../../../../../services/courseService';
 import { SuggestedCourseType } from '../../../../../../types/SuggestedCourseType';
-import { EMPTY_DATA_ERROR_MESSAGE } from '../../../../../../constants/Strings';
+import { EMPTY_DATA_ERROR_MESSAGE, RATING } from '../../../../../../constants/Strings';
 import styles from './LearningPathCoreContent.module.scss';
 
 const LearningPathCoreContent = () => {
@@ -15,7 +15,12 @@ const LearningPathCoreContent = () => {
   const { mainCoreContainer, courseContainer } = styles;
 
   useEffect(() => {
-    courseService.getSearchedCourses({ ...(sendingParams as object), page: 0, size: 100 }, token)
+    courseService.getSearchedCourses({
+      page: 0,
+      size: 100,
+      sort: RATING,
+      ...(sendingParams as object),
+    }, token)
       .then((data) => setCourseList([...data.content]));
   }, [sendingParams]);
 

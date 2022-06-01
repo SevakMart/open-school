@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { RATING } from '../../constants/Strings';
 
 interface AllLearningPathFilterParamsType{
     [index:string]:Array<string>|string
@@ -9,6 +10,7 @@ const initialState:AllLearningPathFilterParamsType = {
   languageIds: [],
   difficultyIds: [],
   courseTitle: '',
+  sort: RATING,
 };
 
 const allLearningPathFilterParamsSlice = createSlice({
