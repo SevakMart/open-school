@@ -45,9 +45,9 @@ const LearningPathHeader = () => {
       <div className={sortingContainer}>
         <label htmlFor="sorting">{SORT_BY}</label>
         <select ref={selectionRef} value={sortingFeature} name="sorting" id="sorting" onChange={switchSortingFeatures}>
-          <option value="Rating">{RATING}</option>
-          <option value="Difficulty">{DIFFICULTY}</option>
-          <option value="Title">{TITLE}</option>
+          <option value={RATING}>{RATING}</option>
+          <option value={DIFFICULTY}>{DIFFICULTY}</option>
+          <option value={TITLE}>{TITLE}</option>
         </select>
       </div>
     </div>

@@ -18,7 +18,6 @@ const LearningPathCoreContent = () => {
     courseService.getSearchedCourses({
       page: 0,
       size: 100,
-      sort: RATING,
       ...(sendingParams as object),
     }, token)
       .then((data) => setCourseList([...data.content]));
