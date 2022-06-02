@@ -29,8 +29,11 @@ const Homepage = () => {
 
   const handleButtonClick = (buttonType:string) => {
     const isTrue = (buttonType === Types.Button.SIGN_IN || Types.Button.SIGN_UP || Types.Button.VERIFY);
-    // eslint-disable-next-line no-unused-expressions
-    isTrue ? manipulateByButtonType(buttonType) : setIsOpen(false);
+    if (isTrue) {
+      manipulateByButtonType(buttonType);
+    } else {
+      setIsOpen(false);
+    }
   };
 
   useEffect(() => {

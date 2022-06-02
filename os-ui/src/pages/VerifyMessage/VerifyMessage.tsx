@@ -7,7 +7,7 @@ const VerifyMessage = ({ handleSignInClicks }:{handleSignInClicks(arg:string):vo
   } = styles;
 
   const reSend = () => {
-    // TO DO
+    // To Do
   };
 
   return (
