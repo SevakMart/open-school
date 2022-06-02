@@ -24,7 +24,11 @@ public class CourseMapper {
     Set<String> keywords =
         course.getKeywords().stream().map(Keyword::getTitle).collect(Collectors.toSet());
     return new CourseDto(
-        course.getTitle(), course.getRating(), course.getDifficulty().getTitle(), keywords);
+        course.getId(),
+        course.getTitle(),
+        course.getRating(),
+        course.getDifficulty().getTitle(),
+        keywords);
   }
 
   public static Page<CourseDto> toCourseDtoPage(Page<Course> coursePage) {

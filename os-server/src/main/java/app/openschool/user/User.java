@@ -76,6 +76,13 @@ public class User {
       inverseJoinColumns = {@JoinColumn(name = "category_id")})
   private Set<Category> categories;
 
+  @ManyToMany
+  @JoinTable(
+          name = "user_saved_learning_pats",
+          joinColumns = {@JoinColumn(name = "user_id")},
+          inverseJoinColumns = {@JoinColumn(name = "learning_path_id")})
+  private Set<Course> savedCourses;
+
   @OneToMany(mappedBy = "mentor")
   private Set<Course> courses;
 
@@ -269,5 +276,13 @@ public class User {
 
   public void setEnrolledCourses(Set<EnrolledCourse> enrolledCourses) {
     this.enrolledCourses = enrolledCourses;
+  }
+
+  public Set<Course> getSavedCourses() {
+    return savedCourses;
+  }
+
+  public void setSavedCourses(Set<Course> savedCourses) {
+    this.savedCourses = savedCourses;
   }
 }

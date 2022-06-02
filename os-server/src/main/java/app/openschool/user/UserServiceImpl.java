@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
         suggestedCourses.stream().map(Course::getId).collect(Collectors.toList());
     List<Course> randomSuggestedCourses =
         courseRepository.getRandomSuggestedCoursesIgnoredExistingCourses(
-            sizeOfRandomSuggestedCourses, existingCoursesIds);
+            existingCoursesIds, sizeOfRandomSuggestedCourses);
     courseList.addAll(suggestedCourses);
     courseList.addAll(randomSuggestedCourses);
     return CourseMapper.toCourseDtoList(courseList);
@@ -105,5 +105,20 @@ public class UserServiceImpl implements UserService {
     }
     return UserCourseMapper.toUserCourseDtoList(
         enrolledCourseRepository.findUserEnrolledCoursesByStatus(userId, courseStatusId));
+  }
+
+  @Override
+  public Page<CourseDto> findUserSavedCourses(Pageable pageable, Long userId) {
+    return CourseMapper.toCourseDtoPage(courseRepository.findUserSavedCourses(pageable, userId));
+  }
+
+  @Override
+  public void saveCourse(Long userId, Long courseId) {
+    courseRepository.saveCourse(userId, courseId);
+  }
+
+  @Override
+  public Optional<User> findById(Long userid) {
+    return userRepository.findUserById(userid);
   }
 }
