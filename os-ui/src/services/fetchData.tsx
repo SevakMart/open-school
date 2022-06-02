@@ -11,7 +11,7 @@ class FetchService {
     return request(`${this.baseUrl}/${path}`, 'GET', params, token);
   }
 
-  async post(path: string, body:object, params: object, token = '') {
+  async post(path: string, body:object|null, params: object, token = '') {
     return request(`${this.baseUrl}/${path}`, 'POST', params, token, body);
   }
 }
