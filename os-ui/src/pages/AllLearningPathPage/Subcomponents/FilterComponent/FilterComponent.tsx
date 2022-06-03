@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
-import { tokenContext } from '../../../../contexts/Contexts';
+import { tokenContext, courseContentContext } from '../../../../contexts/Contexts';
 import courseService from '../../../../services/courseService';
 import FilteringContent from '../FilteringContent/FilteringContent';
 import { FilteringFeatureType } from '../../../../types/FilteringFeaturesType';
 import { FILTER } from '../../../../constants/Strings';
+import { CourseContent } from '../../../../types/CourseContent';
 import styles from './FilterComponent.module.scss';
 
 enum VisibleFilterTab {
@@ -15,6 +16,7 @@ const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
   const [visibleFilterTab, setVisibleFilterTab] = useState(VisibleFilterTab.isVisible);
   const [filterFeatures, setFilterFeatures] = useState<FilteringFeatureType>({});
   const token = useContext(tokenContext);
+  const contentType = useContext(courseContentContext);
   const {
     mainContainer, hiddenContainer, filterMainContent, mainTitle, visibilityButton,
   } = styles;
@@ -36,7 +38,11 @@ const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
   }, []);
 
   return (
-    <div className={visibleFilterTab === 'visible' ? mainContainer : hiddenContainer}>
+    <div
+      className={visibleFilterTab === 'visible' ? mainContainer
+        : hiddenContainer}
+      style={contentType === CourseContent.SAVEDCOURSES ? { display: 'none' } : { display: 'flex' }}
+    >
       <div className={filterMainContent}>
         <p className={mainTitle}>{FILTER}</p>
         {

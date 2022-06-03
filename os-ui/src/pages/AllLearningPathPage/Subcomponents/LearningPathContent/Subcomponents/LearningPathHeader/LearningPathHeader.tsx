@@ -5,15 +5,12 @@ import { addFilterParams } from '../../../../../../redux/Slices/AllLearningPathF
 import {
   ALL_LEARNING_PATHS, SAVED_LEARNING_PATHS, SORT_BY, DIFFICULTY, TITLE, RATING,
 } from '../../../../../../constants/Strings';
+import { CourseContent } from '../../../../../../types/CourseContent';
 import styles from './LearningPathHeader.module.scss';
 
 enum LearningPathNav {
   AllLearningPath='AllLearningPath',
   SavedLearningPath='SavedLearningPath'
-}
-enum CourseContent {
-  ALLCOURSES='All Courses',
-  SAVEDCOURSES='Saved Courses',
 }
 
 const LearningPathHeader = ({ setContentType }:

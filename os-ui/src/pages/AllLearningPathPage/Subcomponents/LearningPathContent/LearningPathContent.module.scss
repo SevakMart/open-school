@@ -3,7 +3,6 @@
 
 .learningPathsMainContainer{
     @include flexStyle(column,flex-start,space-between);
-    border:2px solid red;
     align-self:flex-start;
     padding-right:6%;
 }

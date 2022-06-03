@@ -20,6 +20,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['warn'],
     '@typescript-eslint/no-var-requires': 'off',
     'consistent-return': 'off',
+    camelcase: 'off',
     'jsx-a11y/label-has-associated-control': 'off',
     'default-param-last': 'off',
     'no-useless-escape': 'off',
