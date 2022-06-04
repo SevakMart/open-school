@@ -4,7 +4,7 @@ import { SuggestedCourseType } from '../../types/SuggestedCourseType';
 import styles from './LearningPath.module.scss';
 
 const LearningPath = ({
-  title, rating, difficulty, keywords,
+  title, rating, difficulty, keywords, isBookMarked,
 }:SuggestedCourseType) => {
   const {
     mainContainer, header, mainBody, ratingContent, courseTitle, keywordsContent, difficultyContent,
@@ -14,7 +14,7 @@ const LearningPath = ({
     <div className={mainContainer}>
       <div className={header}>
         <p data-testid={difficulty} className={difficultyContent}>{difficulty}</p>
-        <p><BookmarkIcon iconSize="1rem" /></p>
+        <p><BookmarkIcon iconSize="1rem" isBookmarked={isBookMarked} /></p>
       </div>
       <div className={mainBody}>
         <div className={ratingContent}>

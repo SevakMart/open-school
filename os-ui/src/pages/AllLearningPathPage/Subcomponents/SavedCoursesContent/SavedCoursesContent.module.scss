@@ -1,0 +1,11 @@
+@import "../../../../styles/Mixins/FlexMixins.scss";
+
+
+.coreContent{
+    @include flexStyle(column,none,space-between);
+    padding-left:6%;
+.mainContainer {
+    @include flexStyle(row,center,space-between);
+    flex-wrap: wrap;
+}
+}

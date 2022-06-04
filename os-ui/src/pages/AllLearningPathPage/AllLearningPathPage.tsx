@@ -10,33 +10,36 @@ import styles from './AllLearningPathPage.module.scss';
 
 const AllLearningPathPage = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
-  const userTokenAndId = useMemo(
-    () => ({ token: (userInfo as any).token, userId: (userInfo as any).id }),
+  // const { token, id }:any = useMemo(() => useSelector<RootState>((state) => state.userInfo), []);
+  const tokenAndId = useMemo(
+    () => ({ token: (userInfo as any).token, id: (userInfo as any).id }),
     [userInfo],
   );
   const [isVisible, setIsVisible] = useState(true);
-  const [contentType, setContentType] = useState(CourseContent.ALLCOURSES);
+  // const [contentType, setContentType] = useState(CourseContent.ALLCOURSES);
   const { mainContainer } = styles;
 
   const changeVisibility = () => {
     setIsVisible((prevState) => !prevState);
   };
-  const changeContentType = (contentType:CourseContent) => {
+  /* const changeContentType = (contentType:CourseContent) => {
     setContentType(contentType);
-  };
+  }; */
+  console.log(tokenAndId);
+  console.log(userInfo);
+
   return (
     <>
       <NavbarOnSignIn />
-      <userContext.Provider value={userTokenAndId}>
-        <courseContentContext.Provider value={contentType}>
-          <div className={mainContainer}>
-            <FilterComponent changeVisibility={changeVisibility} />
-            <LearningPathContent
-              filterTabIsVisible={isVisible}
-              changeContentType={changeContentType}
-            />
-          </div>
-        </courseContentContext.Provider>
+      <userContext.Provider value={tokenAndId}>
+        {/* <courseContentContext.Provider value={contentType}> */}
+        <div className={mainContainer}>
+          <FilterComponent changeVisibility={changeVisibility} />
+          <LearningPathContent
+            filterTabIsVisible={isVisible}
+          />
+        </div>
+        {/* </courseContentContext.Provider> */}
       </userContext.Provider>
     </>
   );

@@ -13,18 +13,15 @@ enum LearningPathNav {
   SavedLearningPath='SavedLearningPath'
 }
 
-const LearningPathHeader = ({ setContentType }:
-  {setContentType:(contentType:CourseContent)=>void}) => {
+const LearningPathHeader = ({ activeNavigator }:
+  {activeNavigator:CourseContent}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const params = new URLSearchParams(location.search);
   const selectionRef = useRef<HTMLSelectElement>(null);
   const [sortingFeature, setSortingFeature] = useState(RATING);
-  const [activeNavType, setActiveNavType] = useState<string|undefined>(
-    LearningPathNav.AllLearningPath,
-  );
-  const [isSavedCourseContent, setIsSavedCourseContent] = useState(false);
+
   const {
     learningPathsHeader, sortingContainer, activeNav, nonActiveNav,
   } = styles;
@@ -38,25 +35,41 @@ const LearningPathHeader = ({ setContentType }:
   }, []);
 
   useEffect(() => {
-    if (isSavedCourseContent) setContentType(CourseContent.SAVEDCOURSES);
-    else setContentType(CourseContent.ALLCOURSES);
-    params.set('sort', sortingFeature);
-    dispatch(addFilterParams({ sort: sortingFeature }));
-    navigate(`/exploreLearningPaths?${params}`);
-  }, [sortingFeature, isSavedCourseContent]);
+    if (activeNavigator === CourseContent.ALLCOURSES) {
+      params.set('sort', sortingFeature);
+      dispatch(addFilterParams({ sort: sortingFeature }));
+      navigate(`/exploreLearningPaths?${params}`);
+    }
+  }, [sortingFeature]);
 
-  const changeNavigation = (e:React.SyntheticEvent) => {
-    setActiveNavType((e.target as HTMLParagraphElement).dataset.testid);
-    setIsSavedCourseContent((prevState) => !prevState);
+  const goToAllCourses = () => {
+    navigate(-1);
+  };
+  const goToUserSavedCourses = () => {
+    navigate('/exploreLearningPaths/savedCourses');
   };
 
   return (
     <div className={learningPathsHeader}>
       <nav>
-        <p className={activeNavType === 'AllLearningPath' ? activeNav : nonActiveNav} data-testid={LearningPathNav.AllLearningPath} onClick={changeNavigation}>{ALL_LEARNING_PATHS}</p>
-        <p className={activeNavType === 'SavedLearningPath' ? activeNav : nonActiveNav} data-testid={LearningPathNav.SavedLearningPath} onClick={changeNavigation}>{SAVED_LEARNING_PATHS}</p>
+        <p
+          className={activeNavigator === CourseContent.ALLCOURSES ? activeNav : nonActiveNav}
+          data-testid={LearningPathNav.AllLearningPath}
+          onClick={goToAllCourses}
+        >
+          {ALL_LEARNING_PATHS}
+
+        </p>
+        <p
+          className={activeNavigator === CourseContent.SAVEDCOURSES ? activeNav : nonActiveNav}
+          data-testid={LearningPathNav.SavedLearningPath}
+          onClick={goToUserSavedCourses}
+        >
+          {SAVED_LEARNING_PATHS}
+
+        </p>
       </nav>
-      {!isSavedCourseContent
+      {activeNavigator === CourseContent.ALLCOURSES
       && (
       <div className={sortingContainer}>
         <label htmlFor="sorting">{SORT_BY}</label>

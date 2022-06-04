@@ -18,7 +18,7 @@ const MentorCard = ({ mentor }:{mentor:MentorType}) => {
           <p>|</p>
           <p onClick={() => { window.location.href = mentor.linkedinPath; }}><LinkedinIcon /></p>
         </div>
-        <p><BookmarkIcon iconSize="1rem" /></p>
+        <p><BookmarkIcon iconSize="1rem" isBookmarked={false} /></p>
       </div>
       <div className={bodyContainer}>
         <div className={mentorInfoContainer}>

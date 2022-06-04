@@ -6,6 +6,7 @@ import Homepage from '../../pages/Homepage/Homepage';
 import ChooseCategoryPage from '../../pages/ChooseCategoryPage/ChooseCategoryPage';
 import MyLearningPathPage from '../../pages/MyLearningPathPage/MyLearningPathPage';
 import AllLearningPathPage from '../../pages/AllLearningPathPage/AllLearningPathPage';
+import SavedCoursesContent from '../../pages/AllLearningPathPage/Subcomponents/SavedCoursesContent/SavedCoursesContent';
 
 const AppRoutes = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
@@ -29,9 +30,14 @@ const AppRoutes = () => {
           </ProtectedRoute>
    )}
       />
+      {/* change below two routes to protected after finish developing the filtering task */}
       <Route
         path="/exploreLearningPaths"
         element={<AllLearningPathPage />}
+      />
+      <Route
+        path="/exploreLearningPaths/savedCourses"
+        element={<SavedCoursesContent />}
       />
     </Routes>
   );

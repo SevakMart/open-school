@@ -5,6 +5,7 @@
     @include flexStyle(row,center,space-between);
     width:15%;
     transition-duration: 2s;
+    align-self:flex-start;
     .filterMainContent{
         background-color:#FFFFFF;
         border-radius:1.125rem;

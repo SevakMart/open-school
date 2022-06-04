@@ -3,4 +3,5 @@ export interface SuggestedCourseType{
     rating:number
     difficulty:string
     keywords:string[]
+    isBookMarked?:boolean
 }
