@@ -34,8 +34,8 @@ const CheckedContent = ({ id, checkedContent, filterFeature }:
 
   return (
     <div className={checkedContentClass}>
-      <input type="checkbox" name="checkbox" checked={!!params.has(checkedContent)} onChange={handleChange} id={id} />
-      <label htmlFor={id}>{checkedContent}</label>
+      <input data-testid={checkedContent} type="checkbox" name="checkbox" checked={!!params.has(checkedContent)} onChange={handleChange} id={id} />
+      <label data-testid={`label of ${checkedContent}`} htmlFor={id}>{checkedContent}</label>
     </div>
   );
 };

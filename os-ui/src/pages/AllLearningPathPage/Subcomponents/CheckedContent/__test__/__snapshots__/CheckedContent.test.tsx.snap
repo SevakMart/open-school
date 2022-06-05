@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for CheckedContent component Create a snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="checkedContentClass"
+  >
+    <input
+      data-testid="React"
+      id="1"
+      name="checkbox"
+      type="checkbox"
+    />
+    <label
+      data-testid="label of React"
+      for="1"
+    >
+      React
+    </label>
+  </div>
+</DocumentFragment>
+`;
