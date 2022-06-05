@@ -4,6 +4,8 @@
 .coreContent{
     @include flexStyle(column,none,space-between);
     padding-left:6%;
+    padding-right:6%;
+    margin-top:3rem;
 .mainContainer {
     @include flexStyle(row,center,space-between);
     flex-wrap: wrap;

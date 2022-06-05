@@ -17,13 +17,12 @@ const persistConfig = {
 };
 
 const persistedLoggedInUserReducer = persistReducer(loggedInUserPersistConfig, userInfoReducer);
-const persistChooseSubCategoryReducer = persistReducer(persistConfig, chooseSubcategoryReducer);
 
 const rootReducer = combineReducers({
-  chooseSubcategories: persistChooseSubCategoryReducer,
+  chooseSubcategories: chooseSubcategoryReducer,
   userInfo: persistedLoggedInUserReducer,
   filterParams: allLearningPathFilterParamsReducer,
 });
 
-// const persistedRootReducer = persistReducer(persistConfig, rootReducer);
-export default rootReducer;
+const persistedRootReducer = persistReducer(persistConfig, rootReducer);
+export default persistedRootReducer;

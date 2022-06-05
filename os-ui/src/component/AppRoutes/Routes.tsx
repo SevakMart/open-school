@@ -30,14 +30,21 @@ const AppRoutes = () => {
           </ProtectedRoute>
    )}
       />
-      {/* change below two routes to protected after finish developing the filtering task */}
       <Route
         path="/exploreLearningPaths"
-        element={<AllLearningPathPage />}
+        element={(
+          <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
+            <AllLearningPathPage />
+          </ProtectedRoute>
+        )}
       />
       <Route
         path="/exploreLearningPaths/savedCourses"
-        element={<SavedCoursesContent />}
+        element={(
+          <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
+            <SavedCoursesContent />
+          </ProtectedRoute>
+        )}
       />
     </Routes>
   );
