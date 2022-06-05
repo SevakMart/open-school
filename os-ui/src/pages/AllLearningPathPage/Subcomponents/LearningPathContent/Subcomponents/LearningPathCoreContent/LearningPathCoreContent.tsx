@@ -55,7 +55,7 @@ const LearningPathCoreContent = () => {
             />
           </courseBookmarkContext.Provider>
         </div>
-      )) : <h2>{EMPTY_DATA_ERROR_MESSAGE}</h2>}
+      )) : <h2 data-testid="Error Message">{EMPTY_DATA_ERROR_MESSAGE}</h2>}
     </div>
   );
 };
