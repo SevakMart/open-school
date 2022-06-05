@@ -1,15 +1,15 @@
 -- -----------------------------------------------------
--- user
+-- Table user - adding column "enabled" in the table, which shows the user's account is verified or not
 -- -----------------------------------------------------
 
 ALTER TABLE `open_school_db`.`user`
 ADD COLUMN enabled BOOLEAN;
 
--- -----------------------------------------------------
--- reset_password_token
--- -----------------------------------------------------
+-- -----------------------------------------------------------------------------------
+-- Table reset_password_token - creating table for token which is being sent to user for resetting the forgotten password
+-- -----------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `reset_password_token` (
+CREATE TABLE IF NOT EXISTS `open_school_db`.`reset_password_token` (
  `id` BIGINT NOT NULL AUTO_INCREMENT,
  `token` VARCHAR(30) NOT NULL,
  `user_id` BIGINT NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `reset_password_token` (
     ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- verification_token
+-- Table verification_token - creating table for token which is being sent to user for verifying the account
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `open_school_db`.`verification_token` (
  `id` BIGINT NOT NULL AUTO_INCREMENT,

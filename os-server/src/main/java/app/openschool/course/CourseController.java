@@ -1,7 +1,6 @@
 package app.openschool.course;
 
 import app.openschool.course.api.dto.CourseDto;
-import app.openschool.course.api.dto.CourseSearchingFeaturesDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
@@ -23,26 +22,16 @@ public class CourseController {
     this.courseService = courseService;
   }
 
-  @GetMapping("/features")
-  @Operation(
-      summary = "get course features for searching",
-      security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<CourseSearchingFeaturesDto> getCourseSearchingFeatures() {
-    return ResponseEntity.ok(this.courseService.getCourseSearchingFeatures());
-  }
-
-  @GetMapping("/searched")
-  @Operation(
-      summary = "searching courses by filtering",
-      security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<Page<CourseDto>> searchCourses(
-      Pageable pageable,
+  @GetMapping
+  @Operation(summary = "find all courses", security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<Page<CourseDto>> findAll(
       @RequestParam(required = false) String courseTitle,
       @RequestParam(required = false) List<Long> subCategoryIds,
       @RequestParam(required = false) List<Long> languageIds,
-      @RequestParam(required = false) List<Long> difficultyIds) {
+      @RequestParam(required = false) List<Long> difficultyIds,
+      Pageable pageable) {
     return ResponseEntity.ok(
-        this.courseService.searchCourses(
-            pageable, courseTitle, subCategoryIds, languageIds, difficultyIds));
+        this.courseService.findAll(
+            courseTitle, subCategoryIds, languageIds, difficultyIds, pageable));
   }
 }

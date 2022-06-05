@@ -2,16 +2,19 @@ package app.openschool.category;
 
 import app.openschool.course.Course;
 import app.openschool.user.User;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,7 +30,7 @@ public class Category {
   @Column(nullable = false)
   private String title;
 
-  @Column(name = "parent_category_id")
+  @Column(name = "parent_category_id", insertable = false, updatable = false)
   private Long parentCategoryId;
 
   @Column(name = "logo_path")
@@ -38,6 +41,13 @@ public class Category {
 
   @OneToMany(mappedBy = "category")
   private List<Course> courses;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "parent_category_id")
+  private Category parentCategory;
+
+  @OneToMany(mappedBy = "parentCategory")
+  private Set<Category> subCategories = new HashSet<>();
 
   @ManyToMany
   @JoinTable(
@@ -111,5 +121,21 @@ public class Category {
 
   public Set<User> getUsers() {
     return users;
+  }
+
+  public Category getParentCategory() {
+    return parentCategory;
+  }
+
+  public void setParentCategory(Category parentCategory) {
+    this.parentCategory = parentCategory;
+  }
+
+  public Set<Category> getSubCategories() {
+    return subCategories;
+  }
+
+  public void setSubCategories(Set<Category> subCategories) {
+    this.subCategories = subCategories;
   }
 }

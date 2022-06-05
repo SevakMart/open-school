@@ -18,11 +18,11 @@ public interface UserService {
 
   Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds);
 
-  List<UserCourseDto> findUserEnrolledCourses(Long userId, Long courseStatusId);
+  List<UserCourseDto> findEnrolledCourses(Long courseStatusId);
 
-  Page<CourseDto> findUserSavedCourses(Pageable pageable, Long userId);
+  Page<CourseDto> findSavedCourses(Pageable pageable);
 
-  void saveCourse(Long userId, Long courseId);
+  Optional<Long> saveCourse(Long courseId);
 
-  Optional<User> findById(Long userid);
+  Optional<Long> deleteCourse(Long courseId);
 }
