@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for learningPathHeader Component Create a snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="learningPathsHeader"
+  >
+    <nav>
+      <p
+        class="activeNav"
+        data-testid="AllLearningPath"
+      >
+        All Learning Paths
+      </p>
+      <p
+        class="nonActiveNav"
+        data-testid="SavedLearningPath"
+      >
+        Saved Learning paths
+      </p>
+    </nav>
+    <div
+      class="sortingContainer"
+    >
+      <label
+        data-testid="sorting"
+        for="sorting"
+      >
+        Sort by
+      </label>
+      <select
+        id="sorting"
+        name="sorting"
+      >
+        <option
+          value="Rating"
+        >
+          Rating
+        </option>
+        <option
+          value="difficulty_id"
+        >
+          difficulty_id
+        </option>
+        <option
+          value="Title"
+        >
+          Title
+        </option>
+      </select>
+    </div>
+  </div>
+</DocumentFragment>
+`;

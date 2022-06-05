@@ -72,7 +72,7 @@ const LearningPathHeader = ({ activeNavigator }:
       {activeNavigator === CourseContent.ALLCOURSES
       && (
       <div className={sortingContainer}>
-        <label htmlFor="sorting">{SORT_BY}</label>
+        <label data-testid="sorting" htmlFor="sorting">{SORT_BY}</label>
         <select ref={selectionRef} value={sortingFeature} name="sorting" id="sorting" onChange={switchSortingFeatures}>
           <option value={RATING}>{RATING}</option>
           <option value={DIFFICULTY}>{DIFFICULTY}</option>
