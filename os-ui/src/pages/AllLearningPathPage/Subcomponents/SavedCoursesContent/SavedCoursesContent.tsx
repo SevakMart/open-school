@@ -8,6 +8,7 @@ import { CourseContent } from '../../../../types/CourseContent';
 import NavbarOnSignIn from '../../../../component/NavbarOnSignIn/NavbarOnSignIn';
 import LearningPath from '../../../../component/LearningPath/LearningPath';
 import LearningPathHeader from '../LearningPathContent/Subcomponents/LearningPathHeader/LearningPathHeader';
+import { EMPTY_DATA_ERROR_MESSAGE } from '../../../../constants/Strings';
 import styles from './SavedCoursesContent.module.scss';
 
 type CourseListType=SuggestedCourseType & {id:number}
@@ -41,7 +42,7 @@ const SavedCoursesContent = () => {
                 />
               </courseBookmarkContext.Provider>
             </React.Fragment>
-          )) : <h2>No data to display</h2>}
+          )) : <h2 data-testid="Empty data Message">{EMPTY_DATA_ERROR_MESSAGE}</h2>}
         </div>
       </div>
     </>
