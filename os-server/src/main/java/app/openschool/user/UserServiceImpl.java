@@ -52,7 +52,11 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<CourseDto> getSuggestedCourses(Long userId) {
+  public List<CourseDto> getSuggestedCourses() {
+    Long userId =
+        userRepository
+            .findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+            .getId();
     if (userRepository.getById(userId).getCategories().isEmpty()) {
       return CourseMapper.toCourseDtoList(courseRepository.getRandomSuggestedCourses(4));
     }

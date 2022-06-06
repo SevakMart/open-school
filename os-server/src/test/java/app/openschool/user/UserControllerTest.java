@@ -55,10 +55,8 @@ class UserControllerTest {
 
   @Test
   void getSuggestedCourses() throws Exception {
-
     List<CourseDto> courseDtoList = new ArrayList<>();
-
-    when(userService.getSuggestedCourses(1L)).thenReturn(courseDtoList);
+    when(userService.getSuggestedCourses()).thenReturn(courseDtoList);
     mockMvc
         .perform(get("/api/v1/users/1/courses/suggested").contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());

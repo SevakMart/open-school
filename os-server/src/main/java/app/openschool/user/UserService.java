@@ -14,7 +14,7 @@ public interface UserService {
 
   Page<MentorDto> findAllMentors(Pageable pageable);
 
-  List<CourseDto> getSuggestedCourses(Long userId);
+  List<CourseDto> getSuggestedCourses();
 
   Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds);
 

@@ -46,8 +46,8 @@ public class UserController {
   @Operation(
       summary = "find suggested courses",
       security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<List<CourseDto>> getSuggestedCourses(@PathVariable Long userId) {
-    return ResponseEntity.ok(this.userService.getSuggestedCourses(userId));
+  public ResponseEntity<List<CourseDto>> getSuggestedCourses() {
+    return ResponseEntity.ok(this.userService.getSuggestedCourses());
   }
 
   @PostMapping("/{userId}/categories")

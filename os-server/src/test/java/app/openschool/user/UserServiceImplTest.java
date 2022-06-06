@@ -126,9 +126,13 @@ class UserServiceImplTest {
       course.setKeywords(keywordSet);
       courseList.add(course);
     }
+    SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
+    SecurityContextHolder.getContext()
+        .setAuthentication(new TestingAuthenticationToken(user, null));
+    given(userRepository.findUserByEmail(anyString())).willReturn(user);
     when(userRepository.getById(1L)).thenReturn(user);
     when(courseRepository.getSuggestedCourses(1L)).thenReturn(courseList);
-    Assertions.assertEquals(4, userService.getSuggestedCourses(1L).size());
+    Assertions.assertEquals(4, userService.getSuggestedCourses().size());
     Mockito.verify(courseRepository, Mockito.times(1)).getSuggestedCourses(1L);
   }
 
