@@ -48,7 +48,7 @@ const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
         {
           Object.entries(filterFeatures).length
             ? Object.entries(filterFeatures).map((feature, index) => {
-              const title:string = feature[0] === 'parentAndRelevantChildCategories' ? 'Category' : feature[0] === 'allLanguages' ? 'Language' : 'Course Level';
+              const title:string = feature[0] === 'parentAndSubcategories' ? 'Category' : feature[0] === 'allLanguages' ? 'Language' : 'Course Level';
               return (
                 <FilteringContent
                   title={title}
