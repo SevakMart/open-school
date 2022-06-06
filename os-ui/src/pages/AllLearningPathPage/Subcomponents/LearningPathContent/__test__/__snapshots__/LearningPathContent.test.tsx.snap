@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for LearningPathContent component Create a snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="learningPathsMainContainer"
+    style="transition-duration: 0.5s; width: 75%;"
+  >
+    <div
+      class="learningPathsHeader"
+    >
+      <nav>
+        <p
+          class="activeNav"
+          data-testid="AllLearningPath"
+        >
+          All Learning Paths
+        </p>
+        <p
+          class="nonActiveNav"
+          data-testid="SavedLearningPath"
+        >
+          Saved Learning paths
+        </p>
+      </nav>
+      <div
+        class="sortingContainer"
+      >
+        <label
+          data-testid="sorting"
+          for="sorting"
+        >
+          Sort by
+        </label>
+        <select
+          id="sorting"
+          name="sorting"
+        >
+          <option
+            value="Rating"
+          >
+            Rating
+          </option>
+          <option
+            value="difficulty_id"
+          >
+            difficulty_id
+          </option>
+          <option
+            value="Title"
+          >
+            Title
+          </option>
+        </select>
+      </div>
+    </div>
+    <div
+      class="inputContent"
+      style="padding-left: 0px;"
+    >
+      <input
+        placeholder="Search name"
+        type="text"
+      />
+      <div
+        style="position: absolute; z-index: 1; color: rgb(132, 138, 157); left: 20%;"
+      >
+        <svg
+          fill="currentColor"
+          height="1em"
+          stroke="currentColor"
+          stroke-width="0"
+          viewBox="0 0 16 16"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      class="mainCoreContainer"
+    >
+      <h2
+        data-testid="Error Message"
+      >
+        No data to display :(
+      </h2>
+    </div>
+  </div>
+</DocumentFragment>
+`;
