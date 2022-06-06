@@ -69,4 +69,19 @@ class CategoryRepositoryTest {
       assertNull(category.getTitle() + "isn't parent category", category.getParentCategoryId());
     }
   }
+
+  @Test
+  @Transactional
+  void findCategoriesByParentCategoryId() {
+    Category parentCategory = new Category();
+    parentCategory.setTitle("Java");
+    categoryRepository.save(parentCategory);
+    Category subCategory = new Category();
+    subCategory.setId(2L);
+    subCategory.setTitle("JS-React");
+    subCategory.setParentCategory(parentCategory);
+    categoryRepository.save(subCategory);
+    List<Category> subcategories = categoryRepository.findCategoriesByParentCategoryId(1L);
+    assertEquals(parentCategory.getId(), subcategories.get(0).getParentCategory().getId());
+  }
 }
