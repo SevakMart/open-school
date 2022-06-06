@@ -13,14 +13,14 @@ type CourseListType=SuggestedCourseType & {id:number, bookmarked?:boolean}
 
 const LearningPathCoreContent = () => {
   const sendingParams = useSelector<RootState>((state) => state.filterParams);
-  const { token, id } = useContext(userContext);
+  const token = useContext(userContext);
   const [courseList, setCourseList] = useState<CourseListType[]>([]);
   const { mainCoreContainer, courseContainer } = styles;
 
   useEffect(() => {
     Promise.all([
-      userService.getUserSavedCourses(id, token, { page: 0, size: 100 }),
-      courseService.getSearchedCourses({ page: 0, size: 100, ...(sendingParams as object) }, token),
+      userService.getUserSavedCourses(token, { page: 0, size: 100 }),
+      courseService.getSearchedCourses({ ...(sendingParams as object), page: 0, size: 100 }, token),
     ]).then((combinedData) => {
       const userSavedCourseContent = combinedData[0].content;
       const searchedCourseContent = combinedData[1].content;

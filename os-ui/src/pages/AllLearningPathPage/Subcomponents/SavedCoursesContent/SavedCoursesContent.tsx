@@ -15,15 +15,15 @@ type CourseListType=SuggestedCourseType & {id:number}
 
 const SavedCoursesContent = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
-  const { token, id } = userInfo as any;
+  const { token } = userInfo as any;
   const [savedCourseList, setSavedCourseList] = useState<CourseListType[]>([]);
   const { mainContainer, coreContent } = styles;
 
   useEffect(() => {
-    userService.getUserSavedCourses(id, token, { page: 0, size: 100 })
+    userService.getUserSavedCourses(token, { page: 0, size: 100 })
       .then((data) => setSavedCourseList([...data.content]));
   }, []);
-
+  console.log(savedCourseList);
   return (
     <>
       <NavbarOnSignIn />

@@ -7,13 +7,8 @@ class CourseService {
     this.basePath = 'courses';
   }
 
-  async getFilterFeatures(params:object = {}, token:string) {
-    const data = await (await fetchService.get(`${this.basePath}/features`, params, token)).json();
-    return data;
-  }
-
   async getSearchedCourses(params:object = {}, token:string) {
-    const data = await (await fetchService.get(`${this.basePath}/searched`, params, token)).json();
+    const data = await (await fetchService.get(`${this.basePath}`, params, token)).json();
     return data;
   }
 }

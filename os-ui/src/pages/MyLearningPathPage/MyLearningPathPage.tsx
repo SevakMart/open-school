@@ -54,7 +54,7 @@ const MyLearningPathPage = () => {
     }
     switch (activeNavType) {
       case LearningPathNav.All:
-        userService.getUserCourses((userInfo as any).id, (userInfo as any).token)
+        userService.getUserCourses((userInfo as any).token)
           .then((data) => {
             if (cancel) return;
             if (!data.errorMessage) {
@@ -64,7 +64,6 @@ const MyLearningPathPage = () => {
         break;
       case LearningPathNav.InProgress:
         userService.getUserCourses(
-          (userInfo as any).id,
           (userInfo as any).token,
           { courseStatusId: 1 },
         )
@@ -77,7 +76,6 @@ const MyLearningPathPage = () => {
         break;
       case LearningPathNav.Completed:
         userService.getUserCourses(
-          (userInfo as any).id,
           (userInfo as any).token,
           { courseStatusId: 2 },
         )

@@ -7,8 +7,8 @@ class UserService {
     this.basePath = 'users';
   }
 
-  async getUserCourses(userId:number, userToken:string, params = {}) {
-    const data = await (await fetchService.get(`${this.basePath}/${userId}/courses/enrolled`, params, userToken)).json();
+  async getUserCourses(userToken:string, params = {}) {
+    const data = await (await fetchService.get(`${this.basePath}/{userId}/courses/enrolled`, params, userToken)).json();
     return data;
   }
 
@@ -29,13 +29,18 @@ class UserService {
     return data;
   }
 
-  async saveUserPreferredCourses(userId:number, courseId:number, userToken:string) {
-    const data = await (await fetchService.post(`${this.basePath}/${userId}/courses/${courseId}/saved`, null, {}, userToken)).json();
+  async saveUserPreferredCourses(courseId:number, userToken:string) {
+    const data = await (await fetchService.post(`${this.basePath}/{userId}/courses/saved`, { courseId }, {}, userToken)).json();
     return data;
   }
 
-  async getUserSavedCourses(userId:number, userToken:string, params = {}) {
-    const data = await (await fetchService.get(`${this.basePath}/${userId}/courses/saved`, params, userToken)).json();
+  async getUserSavedCourses(userToken:string, params = {}) {
+    const data = await (await fetchService.get(`${this.basePath}/{userId}/courses/saved`, params, userToken)).json();
+    return data;
+  }
+
+  async deleteUserSavedCourses(courseId:number, userToken:string, params = {}) {
+    const data = await (await fetchService.delete(`${this.basePath}/{userId}/courses/${courseId}/saved`, params, userToken)).json();
     return data;
   }
 }

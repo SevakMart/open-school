@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
 import { userContext } from '../../contexts/Contexts';
@@ -9,10 +9,7 @@ import styles from './AllLearningPathPage.module.scss';
 
 const AllLearningPathPage = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
-  const tokenAndId = useMemo(
-    () => ({ token: (userInfo as any).token, id: (userInfo as any).id }),
-    [userInfo],
-  );
+  const { token } = userInfo as any;
   const [isVisible, setIsVisible] = useState(true);
   const { mainContainer } = styles;
 
@@ -23,7 +20,7 @@ const AllLearningPathPage = () => {
   return (
     <>
       <NavbarOnSignIn />
-      <userContext.Provider value={tokenAndId}>
+      <userContext.Provider value={token}>
         <div className={mainContainer}>
           <FilterComponent changeVisibility={changeVisibility} />
           <LearningPathContent
