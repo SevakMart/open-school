@@ -67,7 +67,7 @@ class UserControllerTest {
   @Test
   void findEnrolledUserCourses() throws Exception {
     List<UserCourseDto> userEnrolledCourseDtoList = new ArrayList<>();
-    when(userService.findUserEnrolledCourses(1L, null)).thenReturn(userEnrolledCourseDtoList);
+    when(userService.findEnrolledCourses(null)).thenReturn(userEnrolledCourseDtoList);
     mockMvc
         .perform(get("/users/1/courses/enrolled").contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());

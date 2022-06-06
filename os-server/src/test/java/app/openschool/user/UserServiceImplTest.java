@@ -2,6 +2,8 @@ package app.openschool.user;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -44,6 +46,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -154,7 +158,7 @@ class UserServiceImplTest {
   }
 
   @Test
-  void findUserEnrolledCourses() {
+  void findEnrolledCourses() {
     Difficulty difficulty = new Difficulty();
     difficulty.setTitle("Medium");
     Language language = new Language();
@@ -296,14 +300,34 @@ class UserServiceImplTest {
     Set<EnrolledModuleItem> enrolledModuleItemsModule3 = new HashSet<>();
     enrolledModuleItemsModule3.add(enrolledModuleItem);
     enrolledModule3.setEnrolledModuleItems(enrolledModuleItemsModule3);
-
+    final User user = new User();
+    user.setName("John");
+    user.setSurname("Smith");
+    user.setProfessionName("developer");
+    user.setCourseCount(3);
+    user.setUserImgPath("aaa");
+    user.setLinkedinPath("kkk");
+    user.setEmailPath("lll");
+    user.setEmail("aaa@gmail.com");
+    user.setPassword("pass");
+    user.setId(1L);
+    Role role = new Role(1, "MENTOR");
+    user.setRole(role);
+    Company company = new Company();
+    company.setCompanyName("AAA");
+    company.setId(1);
+    user.setCompany(company);
+    SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
+    SecurityContextHolder.getContext()
+        .setAuthentication(new TestingAuthenticationToken(user, null));
+    given(userRepository.findUserByEmail(anyString())).willReturn(new User(1L));
     when(enrolledcourseRepository.findAllUserEnrolledCourses(1L))
         .thenReturn(List.of(enrolledCourse));
-    userService.findUserEnrolledCourses(1L, null);
+    userService.findEnrolledCourses(null);
     verify(enrolledcourseRepository, Mockito.times(1)).findAllUserEnrolledCourses(1L);
     when(enrolledcourseRepository.findUserEnrolledCoursesByStatus(1L, 1L))
         .thenReturn(List.of(enrolledCourse));
-    userService.findUserEnrolledCourses(1L, 1L);
+    userService.findEnrolledCourses(1L);
     verify(enrolledcourseRepository, Mockito.times(1)).findUserEnrolledCoursesByStatus(1L, 1L);
   }
 }

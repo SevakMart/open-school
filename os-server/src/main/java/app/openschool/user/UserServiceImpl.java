@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -98,7 +99,11 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<UserCourseDto> findUserEnrolledCourses(Long userId, Long courseStatusId) {
+  public List<UserCourseDto> findEnrolledCourses(Long courseStatusId) {
+    Long userId =
+        userRepository
+            .findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+            .getId();
     if (courseStatusId == null) {
       return UserCourseMapper.toUserCourseDtoList(
           enrolledCourseRepository.findAllUserEnrolledCourses(userId));
@@ -108,17 +113,45 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Page<CourseDto> findUserSavedCourses(Pageable pageable, Long userId) {
-    return CourseMapper.toCourseDtoPage(courseRepository.findUserSavedCourses(pageable, userId));
+  public Page<CourseDto> findSavedCourses(Pageable pageable) {
+    return CourseMapper.toCourseDtoPage(
+        courseRepository.findSavedCourses(
+            userRepository
+                .findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                .getId(),
+            pageable));
   }
 
   @Override
-  public void saveCourse(Long userId, Long courseId) {
-    courseRepository.saveCourse(userId, courseId);
+  public Optional<Long> saveCourse(Long courseId) {
+    return courseRepository
+        .findById(courseId)
+        .map(
+            course -> {
+              courseRepository.saveCourse(
+                  userRepository
+                      .findUserByEmail(
+                          SecurityContextHolder.getContext().getAuthentication().getName())
+                      .getId(),
+                  courseId);
+              return courseId;
+            })
+        .or(Optional::empty);
   }
 
   @Override
-  public Optional<User> findById(Long userid) {
-    return userRepository.findUserById(userid);
+  public Optional<Long> deleteCourse(Long courseId) {
+    Long userId =
+        userRepository
+            .findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+            .getId();
+    return courseRepository
+        .findSavedCourse(userId, courseId)
+        .map(
+            course -> {
+              courseRepository.deleteCourse(userId, courseId);
+              return courseId;
+            })
+        .or(Optional::empty);
   }
 }

@@ -1,5 +1,5 @@
 -- -----------------------------------------------------
--- Table user_saved_learning_paths
+-- Table user_saved_learning_paths - Creating table for courses which user has saved
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS user_saved_learning_paths
 (

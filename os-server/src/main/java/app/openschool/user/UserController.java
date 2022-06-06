@@ -2,9 +2,9 @@ package app.openschool.user;
 
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.common.response.ResponseMessage;
-import app.openschool.course.CourseService;
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.UserCourseDto;
+import app.openschool.course.api.dto.UserSavedCourseRequest;
 import app.openschool.user.api.dto.MentorDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -15,6 +15,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,13 +29,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   private final UserService userService;
-  private final CourseService courseService;
   private final MessageSource messageSource;
 
-  public UserController(
-      UserService userService, CourseService courseService, MessageSource messageSource) {
+  public UserController(UserService userService, MessageSource messageSource) {
     this.userService = userService;
-    this.courseService = courseService;
     this.messageSource = messageSource;
   }
 
@@ -63,41 +61,47 @@ public class UserController {
 
   @GetMapping("/{userId}/courses/enrolled")
   @Operation(
-      summary = "find user's courses by course status",
+      summary = "find user's enrolled courses by course status",
       security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<List<UserCourseDto>> findEnrolledCourses(
-      @PathVariable Long userId, @RequestParam(required = false) Long courseStatusId) {
-    return ResponseEntity.ok(this.userService.findUserEnrolledCourses(userId, courseStatusId));
+      @RequestParam(required = false) Long courseStatusId) {
+    return ResponseEntity.ok(this.userService.findEnrolledCourses(courseStatusId));
   }
 
   @GetMapping("/{userId}/courses/saved")
   @Operation(
       summary = "find user's saved courses",
       security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<?> findSavedCourses(
-      Pageable pageable, @PathVariable Long userId, Locale locale) {
-    if (userService.findById(userId).isEmpty()) {
-      return ResponseEntity.badRequest()
-          .body(new ResponseMessage(messageSource.getMessage("user.not.exists", null, locale)));
-    }
-    return ResponseEntity.ok(this.userService.findUserSavedCourses(pageable, userId));
+  public ResponseEntity<Page<CourseDto>> findSavedCourses(Pageable pageable) {
+    return ResponseEntity.ok(this.userService.findSavedCourses(pageable));
   }
 
-  @PostMapping("/{userId}/courses/{courseId}/saved")
+  @PostMapping("/{userId}/courses/saved")
   @Operation(summary = "save course", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<ResponseMessage> saveCourse(
-      @PathVariable Long userId, @PathVariable Long courseId, Locale locale) {
-    if (userService.findById(userId).isEmpty()) {
-      return ResponseEntity.badRequest()
-          .body(new ResponseMessage(messageSource.getMessage("user.not.exists", null, locale)));
-    }
-    if (courseService.findById(courseId).isEmpty()) {
-      return ResponseEntity.badRequest()
-          .body(new ResponseMessage(messageSource.getMessage("course.not.exists", null, locale)));
-    }
-    this.userService.saveCourse(userId, courseId);
-    return ResponseEntity.ok(
-        new ResponseMessage(
-            messageSource.getMessage("course.successfully.saved.message", null, locale)));
+      @RequestBody UserSavedCourseRequest userSavedCourseRequest, Locale locale) {
+    return userService
+        .saveCourse(userSavedCourseRequest.getCourseId())
+        .map(savedCourseId -> ResponseEntity.ok(new ResponseMessage(savedCourseId.toString())))
+        .orElse(
+            ResponseEntity.badRequest()
+                .body(
+                    new ResponseMessage(
+                        messageSource.getMessage("course.not.exists", null, locale))));
+  }
+
+  @DeleteMapping("/{userId}/courses/{courseId}/saved")
+  @Operation(
+      summary = "delete course from saved courses",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<ResponseMessage> deleteCourse(@PathVariable Long courseId, Locale locale) {
+    return userService
+        .deleteCourse(courseId)
+        .map(deletedCourseId -> ResponseEntity.ok(new ResponseMessage(deletedCourseId.toString())))
+        .orElse(
+            ResponseEntity.badRequest()
+                .body(
+                    new ResponseMessage(
+                        messageSource.getMessage("course.not.exists", null, locale))));
   }
 }

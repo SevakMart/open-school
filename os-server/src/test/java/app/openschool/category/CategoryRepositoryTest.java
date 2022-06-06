@@ -21,18 +21,6 @@ class CategoryRepositoryTest {
 
   @Test
   @Transactional
-  void findCategoriesByParentCategoryId() {
-    Category category = new Category("JS", null);
-    Category savedCategory = categoryRepository.save(category);
-    categoryRepository.save(new Category("JS-React", 1L));
-
-    List<Category> subcategories = categoryRepository.findCategoriesByParentCategoryId(1L);
-
-    assertThat(savedCategory.getId()).isEqualTo(subcategories.get(0).getParentCategoryId());
-  }
-
-  @Test
-  @Transactional
   void findByTitleStartingWith() {
     Category category1 = new Category("JAVA", null);
     Category category2 = new Category("JAVA-JDK", null);
@@ -70,13 +58,30 @@ class CategoryRepositoryTest {
 
   @Test
   void findAllParentCategories() {
-    Category category1 = new Category("JAVA", 1L);
+    Category category1 = new Category();
+    category1.setTitle("Java");
     categoryRepository.save(category1);
-    Category category2 = new Category("JS", null);
+    Category category2 = new Category();
+    category2.setTitle("Js");
     categoryRepository.save(category2);
-    List<Category> categoryList = categoryRepository.findAllParentCategories();
+    List<Category> categoryList = categoryRepository.findByParentCategoryIsNull();
     for (Category category : categoryList) {
       assertNull(category.getTitle() + "isn't parent category", category.getParentCategoryId());
     }
+  }
+
+  @Test
+  @Transactional
+  void findCategoriesByParentCategoryId() {
+    Category parentCategory = new Category();
+    parentCategory.setTitle("Java");
+    categoryRepository.save(parentCategory);
+    Category subCategory = new Category();
+    subCategory.setId(2L);
+    subCategory.setTitle("JS-React");
+    subCategory.setParentCategory(parentCategory);
+    categoryRepository.save(subCategory);
+    List<Category> subcategories = categoryRepository.findCategoriesByParentCategoryId(1L);
+    assertEquals(parentCategory.getId(), subcategories.get(0).getParentCategory().getId());
   }
 }

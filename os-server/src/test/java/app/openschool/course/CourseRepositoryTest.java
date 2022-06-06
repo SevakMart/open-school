@@ -163,7 +163,7 @@ public class CourseRepositoryTest {
   public void searchCourses() {
     List<Course> searchedCourses =
         courseRepository
-            .searchCourses(PageRequest.of(0, 2), "str", List.of(1L), List.of(1L), List.of(1L))
+            .findAll("str", List.of(1L), List.of(1L), List.of(1L), PageRequest.of(0, 2))
             .toList();
     for (Course searchedCourse : searchedCourses) {
       assertTrue((searchedCourse.getTitle().toLowerCase()).contains("str"));
