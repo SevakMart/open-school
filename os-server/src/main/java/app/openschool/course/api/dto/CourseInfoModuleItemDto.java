@@ -2,8 +2,8 @@ package app.openschool.course.api.dto;
 
 public class CourseInfoModuleItemDto {
 
-  private String moduleItemType;
-  private String link;
+  private final String moduleItemType;
+  private final String link;
 
   public CourseInfoModuleItemDto(String moduleItemType, String link) {
     this.moduleItemType = moduleItemType;

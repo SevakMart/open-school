@@ -50,19 +50,12 @@ public class CourseMapper {
         getCourseDuration(course));
   }
 
-  private static long getCourseDuration(Course course) {
-    return course.getModules().stream()
-        .flatMapToLong(
-            module -> module.getModuleItems().stream().mapToLong(ModuleItem::getEstimatedTime))
-        .sum();
-  }
-
-  private static CourseInfoMentorDto getCourseInfoMentorDto(Course course) {
-    return new CourseInfoMentorDto(
-        course.getMentor().getName(),
-        course.getMentor().getSurname(),
-        course.getMentor().getUserImgPath(),
-        course.getMentor().getLinkedinPath());
+  public static EnrolledCourse toEnrolledCourse(Course course, User user) {
+    EnrolledCourse enrolledCourse =
+        new EnrolledCourse(LocalDate.now(), course, user, CourseStatus.inProgress());
+    Set<EnrolledModule> enrolledModules = ModuleMapper.toEnrolledModules(course, enrolledCourse);
+    enrolledCourse.setEnrolledModules(enrolledModules);
+    return enrolledCourse;
   }
 
   private static Set<CourseInfoModuleDto> getCourseInfoModuleDtoSet(Course course) {
@@ -73,20 +66,26 @@ public class CourseMapper {
         .collect(Collectors.toSet());
   }
 
+  private static CourseInfoMentorDto getCourseInfoMentorDto(Course course) {
+    return new CourseInfoMentorDto(
+        course.getMentor().getName(),
+        course.getMentor().getSurname(),
+        course.getMentor().getUserImgPath(),
+        course.getMentor().getLinkedinPath());
+  }
+
+  private static long getCourseDuration(Course course) {
+    return course.getModules().stream()
+        .flatMapToLong(
+            module -> module.getModuleItems().stream().mapToLong(ModuleItem::getEstimatedTime))
+        .sum();
+  }
+
   private static Set<CourseInfoModuleItemDto> getCourseInfoModuleItemDtoSet(Module module) {
     return module.getModuleItems().stream()
         .map(
             moduleItem ->
                 new CourseInfoModuleItemDto(moduleItem.getModuleItemType(), moduleItem.getLink()))
         .collect(Collectors.toSet());
-  }
-
-  public static EnrolledCourse toEnrolledCourse(Course course, User user) {
-
-    EnrolledCourse enrolledCourse =
-        new EnrolledCourse(LocalDate.now(), course, user, CourseStatus.inProgress());
-    Set<EnrolledModule> enrolledModules = ModuleMapper.toEnrolledModules(course, enrolledCourse);
-    enrolledCourse.setEnrolledModules(enrolledModules);
-    return enrolledCourse;
   }
 }
