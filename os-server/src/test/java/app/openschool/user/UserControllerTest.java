@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import app.openschool.course.Course;
+import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.user.api.UserGenerator;
@@ -55,8 +57,8 @@ class UserControllerTest {
 
   @Test
   void getSuggestedCourses() throws Exception {
-    List<CourseDto> courseDtoList = new ArrayList<>();
-    when(userService.getSuggestedCourses()).thenReturn(courseDtoList);
+    List<Course> courseList = new ArrayList<>();
+    when(userService.getSuggestedCourses(1L)).thenReturn(courseList);
     mockMvc
         .perform(get("/api/v1/users/1/courses/suggested").contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
@@ -64,8 +66,8 @@ class UserControllerTest {
 
   @Test
   void findEnrolledUserCourses() throws Exception {
-    List<UserCourseDto> userEnrolledCourseDtoList = new ArrayList<>();
-    when(userService.findEnrolledCourses(null)).thenReturn(userEnrolledCourseDtoList);
+    List<EnrolledCourse> userEnrolledCourseList = new ArrayList<>();
+    when(userService.findEnrolledCourses(1L, null)).thenReturn(userEnrolledCourseList);
     mockMvc
         .perform(get("/users/1/courses/enrolled").contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());

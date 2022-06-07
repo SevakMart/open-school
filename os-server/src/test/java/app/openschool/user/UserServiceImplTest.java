@@ -2,8 +2,6 @@ package app.openschool.user;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -14,7 +12,6 @@ import app.openschool.category.api.exception.CategoryNotFoundException;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
-import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.language.Language;
@@ -46,8 +43,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -55,15 +50,12 @@ class UserServiceImplTest {
   @Mock private UserRepository userRepository;
   @Mock private CategoryRepository categoryRepository;
   @Mock private CourseRepository courseRepository;
-  @Mock private EnrolledCourseRepository enrolledcourseRepository;
 
   private UserService userService;
 
   @BeforeEach
   void setUp() {
-    userService =
-        new UserServiceImpl(
-            userRepository, categoryRepository, courseRepository, enrolledcourseRepository);
+    userService = new UserServiceImpl(userRepository, categoryRepository, courseRepository);
   }
 
   @Test
@@ -126,13 +118,9 @@ class UserServiceImplTest {
       course.setKeywords(keywordSet);
       courseList.add(course);
     }
-    SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
-    SecurityContextHolder.getContext()
-        .setAuthentication(new TestingAuthenticationToken(user, null));
-    given(userRepository.findUserByEmail(anyString())).willReturn(user);
-    when(userRepository.getById(1L)).thenReturn(user);
+    when(userRepository.findById(1L)).thenReturn(Optional.of(user));
     when(courseRepository.getSuggestedCourses(1L)).thenReturn(courseList);
-    Assertions.assertEquals(4, userService.getSuggestedCourses().size());
+    Assertions.assertEquals(4, userService.getSuggestedCourses(1L).size());
     Mockito.verify(courseRepository, Mockito.times(1)).getSuggestedCourses(1L);
   }
 
@@ -321,17 +309,15 @@ class UserServiceImplTest {
     company.setCompanyName("AAA");
     company.setId(1);
     user.setCompany(company);
-    SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
-    SecurityContextHolder.getContext()
-        .setAuthentication(new TestingAuthenticationToken(user, null));
-    given(userRepository.findUserByEmail(anyString())).willReturn(new User(1L));
-    when(enrolledcourseRepository.findAllUserEnrolledCourses(1L))
-        .thenReturn(List.of(enrolledCourse));
-    userService.findEnrolledCourses(null);
-    verify(enrolledcourseRepository, Mockito.times(1)).findAllUserEnrolledCourses(1L);
-    when(enrolledcourseRepository.findUserEnrolledCoursesByStatus(1L, 1L))
-        .thenReturn(List.of(enrolledCourse));
-    userService.findEnrolledCourses(1L);
-    verify(enrolledcourseRepository, Mockito.times(1)).findUserEnrolledCoursesByStatus(1L, 1L);
+    Set<Category> categorySet = new HashSet<>();
+    categorySet.add(CategoryGenerator.generateCategory());
+    user.setCategories(categorySet);
+    Set<EnrolledCourse> enrolledCourses = new HashSet<>();
+    enrolledCourses.add(enrolledCourse);
+    user.setEnrolledCourses(enrolledCourses);
+    when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+    Assertions.assertEquals(1, userService.findEnrolledCourses(1L, null).size());
+    userService.findEnrolledCourses(1L, 1L);
+    Assertions.assertEquals(1, userService.findEnrolledCourses(1L, 1L).size());
   }
 }

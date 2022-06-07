@@ -7,12 +7,9 @@ import app.openschool.category.api.exception.CategoryNotFoundException;
 import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
-import app.openschool.course.EnrolledCourseRepository;
-import app.openschool.course.api.dto.CourseDto;
-import app.openschool.course.api.dto.UserCourseDto;
-import app.openschool.course.api.mapper.CourseMapper;
-import app.openschool.course.api.mapper.UserCourseMapper;
+import app.openschool.course.EnrolledCourse;
 import app.openschool.user.api.dto.MentorDto;
+import app.openschool.user.api.exception.IncorrectArgumentException;
 import app.openschool.user.api.exception.UserNotFoundException;
 import app.openschool.user.api.mapper.MentorMapper;
 import java.util.ArrayList;
@@ -23,7 +20,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,17 +29,14 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final CategoryRepository categoryRepository;
   private final CourseRepository courseRepository;
-  private final EnrolledCourseRepository enrolledCourseRepository;
 
   public UserServiceImpl(
       UserRepository userRepository,
       CategoryRepository categoryRepository,
-      CourseRepository courseRepository,
-      EnrolledCourseRepository enrolledCourseRepository) {
+      CourseRepository courseRepository) {
     this.userRepository = userRepository;
     this.categoryRepository = categoryRepository;
     this.courseRepository = courseRepository;
-    this.enrolledCourseRepository = enrolledCourseRepository;
   }
 
   @Override
@@ -52,18 +45,15 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<CourseDto> getSuggestedCourses() {
-    Long userId =
-        userRepository
-            .findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
-            .getId();
-    if (userRepository.getById(userId).getCategories().isEmpty()) {
-      return CourseMapper.toCourseDtoList(courseRepository.getRandomSuggestedCourses(4));
+  public List<Course> getSuggestedCourses(Long userId) {
+    User user = userRepository.findById(userId).orElseThrow(IncorrectArgumentException::new);
+    if (user.getCategories().isEmpty()) {
+      return courseRepository.getRandomSuggestedCourses(4);
     }
     List<Course> suggestedCourses = courseRepository.getSuggestedCourses(userId);
     int sizeOfSuggestedCourses = suggestedCourses.size();
     if (sizeOfSuggestedCourses >= 4) {
-      return CourseMapper.toCourseDtoList(suggestedCourses);
+      return suggestedCourses;
     }
     List<Course> courseList = new ArrayList<>();
     int sizeOfRandomSuggestedCourses = 4 - sizeOfSuggestedCourses;
@@ -74,7 +64,7 @@ public class UserServiceImpl implements UserService {
             existingCoursesIds, sizeOfRandomSuggestedCourses);
     courseList.addAll(suggestedCourses);
     courseList.addAll(randomSuggestedCourses);
-    return CourseMapper.toCourseDtoList(courseList);
+    return courseList;
   }
 
   @Override
@@ -103,59 +93,46 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<UserCourseDto> findEnrolledCourses(Long courseStatusId) {
-    Long userId =
-        userRepository
-            .findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
-            .getId();
+  public List<EnrolledCourse> findEnrolledCourses(Long userId, Long courseStatusId) {
+    User user = userRepository.findById(userId).orElseThrow(IncorrectArgumentException::new);
+    Set<EnrolledCourse> allEnrolledCourses = user.getEnrolledCourses();
     if (courseStatusId == null) {
-      return UserCourseMapper.toUserCourseDtoList(
-          enrolledCourseRepository.findAllUserEnrolledCourses(userId));
+      return new ArrayList<>(allEnrolledCourses);
+    } else {
+      return allEnrolledCourses.stream()
+          .filter(enrolledCourse -> enrolledCourse.getCourseStatus().getId().equals(courseStatusId))
+          .collect(Collectors.toList());
     }
-    return UserCourseMapper.toUserCourseDtoList(
-        enrolledCourseRepository.findUserEnrolledCoursesByStatus(userId, courseStatusId));
   }
 
   @Override
-  public Page<CourseDto> findSavedCourses(Pageable pageable) {
-    return CourseMapper.toCourseDtoPage(
-        courseRepository.findSavedCourses(
-            userRepository
-                .findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
-                .getId(),
-            pageable));
+  public Page<Course> findSavedCourses(Long userId, Pageable pageable) {
+    userRepository.findById(userId).orElseThrow(IncorrectArgumentException::new);
+    return courseRepository.findSavedCourses(userId, pageable);
   }
 
   @Override
-  public Optional<Long> saveCourse(Long courseId) {
-    return courseRepository
-        .findById(courseId)
-        .map(
-            course -> {
-              courseRepository.saveCourse(
-                  userRepository
-                      .findUserByEmail(
-                          SecurityContextHolder.getContext().getAuthentication().getName())
-                      .getId(),
-                  courseId);
-              return courseId;
-            })
-        .or(Optional::empty);
+  public Course saveCourse(Long userId, Long courseId) {
+    User user = userRepository.findUserById(userId).orElseThrow(IncorrectArgumentException::new);
+    Course course =
+        courseRepository.findById(courseId).orElseThrow(IncorrectArgumentException::new);
+    user.getSavedCourses().add(course);
+    userRepository.save(user);
+    return course;
   }
 
   @Override
-  public Optional<Long> deleteCourse(Long courseId) {
-    Long userId =
-        userRepository
-            .findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
-            .getId();
-    return courseRepository
-        .findSavedCourse(userId, courseId)
-        .map(
-            course -> {
-              courseRepository.deleteCourse(userId, courseId);
-              return courseId;
-            })
-        .or(Optional::empty);
+  public Course deleteCourse(Long userId, Long courseId) {
+    User user = userRepository.findUserById(userId).orElseThrow(IncorrectArgumentException::new);
+    Course course =
+        courseRepository.findById(courseId).orElseThrow(IncorrectArgumentException::new);
+    Set<Course> savedCourses = user.getSavedCourses();
+    if (savedCourses.contains(course)) {
+      savedCourses.remove(course);
+      userRepository.save(user);
+    } else {
+      throw new IncorrectArgumentException();
+    }
+    return course;
   }
 }
