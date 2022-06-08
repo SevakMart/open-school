@@ -9,7 +9,6 @@ import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.user.api.dto.MentorDto;
-import app.openschool.user.api.exception.IncorrectArgumentException;
 import app.openschool.user.api.exception.UserNotFoundException;
 import app.openschool.user.api.mapper.MentorMapper;
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<Course> getSuggestedCourses(Long userId) {
-    User user = userRepository.findById(userId).orElseThrow(IncorrectArgumentException::new);
+    User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     if (user.getCategories().isEmpty()) {
       return courseRepository.getRandomSuggestedCourses(4);
     }
@@ -94,7 +93,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<EnrolledCourse> findEnrolledCourses(Long userId, Long courseStatusId) {
-    User user = userRepository.findById(userId).orElseThrow(IncorrectArgumentException::new);
+    User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     Set<EnrolledCourse> allEnrolledCourses = user.getEnrolledCourses();
     if (courseStatusId == null) {
       return new ArrayList<>(allEnrolledCourses);
@@ -107,15 +106,14 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Page<Course> findSavedCourses(Long userId, Pageable pageable) {
-    userRepository.findById(userId).orElseThrow(IncorrectArgumentException::new);
+    userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     return courseRepository.findSavedCourses(userId, pageable);
   }
 
   @Override
   public Course saveCourse(Long userId, Long courseId) {
-    User user = userRepository.findUserById(userId).orElseThrow(IncorrectArgumentException::new);
-    Course course =
-        courseRepository.findById(courseId).orElseThrow(IncorrectArgumentException::new);
+    User user = userRepository.findUserById(userId).orElseThrow(IllegalArgumentException::new);
+    Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
     user.getSavedCourses().add(course);
     userRepository.save(user);
     return course;
@@ -123,15 +121,14 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Course deleteCourse(Long userId, Long courseId) {
-    User user = userRepository.findUserById(userId).orElseThrow(IncorrectArgumentException::new);
-    Course course =
-        courseRepository.findById(courseId).orElseThrow(IncorrectArgumentException::new);
+    User user = userRepository.findUserById(userId).orElseThrow(IllegalArgumentException::new);
+    Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
     Set<Course> savedCourses = user.getSavedCourses();
     if (savedCourses.contains(course)) {
       savedCourses.remove(course);
       userRepository.save(user);
     } else {
-      throw new IncorrectArgumentException();
+      throw new IllegalArgumentException();
     }
     return course;
   }

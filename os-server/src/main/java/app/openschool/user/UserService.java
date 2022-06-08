@@ -3,8 +3,6 @@ package app.openschool.user;
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
-import app.openschool.course.api.dto.CourseDto;
-import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.user.api.dto.MentorDto;
 import java.util.List;
 import java.util.Set;
