@@ -1,6 +1,5 @@
 package app.openschool.user;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -313,15 +312,11 @@ class UserServiceImplTest {
     final User user = UserGenerator.generateUser();
     List<Course> courseList = new ArrayList<>();
     Set<Keyword> keywordSet = new HashSet<>();
-
     keywordSet.add(new Keyword("softwareEngineer"));
-
     Difficulty difficulty = new Difficulty("medium");
-
     Language language = new Language("language");
     Category category = CategoryGenerator.generateCategory();
     for (long i = 0; i < 5L; i++) {
-
       Course course = new Course();
       course.setId(i);
       course.setTitle("title");
@@ -331,16 +326,14 @@ class UserServiceImplTest {
       course.setCategory(category);
       course.setDifficulty(difficulty);
       course.setLanguage(language);
-
       courseList.add(course);
     }
 
     Page<Course> coursePage = new PageImpl<>(courseList);
     Pageable pageable = PageRequest.of(0, 6);
-
+    when(userRepository.findById(any())).thenReturn(Optional.of(user));
     when(courseRepository.findCoursesByMentorId(user.getId(), pageable)).thenReturn(coursePage);
     Assertions.assertEquals(
         5, userService.findMentorCourses(user.getId(), PageRequest.of(0, 6)).getTotalElements());
   }
-
 }

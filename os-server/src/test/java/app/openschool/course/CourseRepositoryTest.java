@@ -161,8 +161,7 @@ public class CourseRepositoryTest {
 
   @Test
   public void findCoursesByMentorId() {
-    Page<Course> coursePage = courseRepository.findCoursesByMentorId(
-            1L, PageRequest.of(0, 6));
-    assertEquals(6, coursePage.getSize());
+    Page<Course> coursePage = courseRepository.findCoursesByMentorId(1L, PageRequest.of(0, 3));
+    assertEquals(3, coursePage.getSize());
   }
 }

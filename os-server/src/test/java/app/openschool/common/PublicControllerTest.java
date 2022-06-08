@@ -9,10 +9,9 @@ import app.openschool.category.CategoryServiceImpl;
 import app.openschool.category.api.CategoryGenerator;
 import app.openschool.category.api.dto.CategoryDto;
 import app.openschool.category.api.mapper.CategoryMapper;
+import app.openschool.user.User;
 import app.openschool.user.UserService;
 import app.openschool.user.api.UserGenerator;
-import app.openschool.user.api.dto.MentorDto;
-import app.openschool.user.api.mapper.MentorMapper;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -59,17 +58,17 @@ public class PublicControllerTest {
 
   @Test
   void findAllMentors() throws Exception {
-    List<MentorDto> mentorDtoList = new ArrayList<>();
+    List<User> mentorList = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      mentorDtoList.add(MentorMapper.toMentorDto(UserGenerator.generateUser()));
+      mentorList.add(UserGenerator.generateUser());
     }
     Pageable pageable = PageRequest.of(0, 2);
-    Page<MentorDto> mentorPage = new PageImpl<>(mentorDtoList, pageable, 5);
+    Page<User> mentorPage = new PageImpl<>(mentorList, pageable, 5);
     when(userService.findAllMentors(pageable)).thenReturn(mentorPage);
     mockMvc
         .perform(
             get("/api/v1/public/users/mentors")
-                .queryParam("page", "1")
+                .queryParam("page", "0")
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isOk());
