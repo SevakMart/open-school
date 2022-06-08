@@ -1,8 +1,9 @@
 package app.openschool.user;
 
-import app.openschool.course.api.dto.MentorCourseDto;
+import app.openschool.course.api.dto.CourseDto;
+import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.user.api.dto.MentorDto;
-import app.openschool.user.api.exception.UserNotFoundException;
+import app.openschool.user.api.mapper.MentorMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
@@ -25,19 +26,17 @@ public class MentorController {
 
   @GetMapping("/{mentorId}/courses")
   @Operation(
-      summary = "find courses by mentorID",
+      summary = "find mentor's courses",
       security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<Page<MentorCourseDto>> findMentorCourses(
-      Pageable pageable, @PathVariable Long mentorId) {
-    if (userService.findMentorById(mentorId).isEmpty()) {
-      throw new UserNotFoundException(String.valueOf(mentorId));
-    }
-    return ResponseEntity.ok(userService.findMentorCourses(mentorId, pageable));
+  public ResponseEntity<Page<CourseDto>> findMentorCourses(
+      @PathVariable Long mentorId, Pageable pageable) {
+    return ResponseEntity.ok(
+        CourseMapper.toCourseDtoPage(userService.findMentorCourses(mentorId, pageable)));
   }
 
   @GetMapping
   @Operation(summary = "find all mentors", security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<Page<MentorDto>> getAllMentors(Pageable pageable) {
-    return ResponseEntity.ok(this.userService.findAllMentors(pageable));
+  public ResponseEntity<Page<MentorDto>> findAllMentors(Pageable pageable) {
+    return ResponseEntity.ok(MentorMapper.toMentorDtoPage(userService.findAllMentors(pageable)));
   }
 }

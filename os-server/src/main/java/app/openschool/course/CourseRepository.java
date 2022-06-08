@@ -32,5 +32,5 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
       @Param(value = "limit") int limit,
       @Param(value = "existingCoursesIds") List<Long> existingCoursesIds);
 
-  Page<Course> findCoursesByMentorId(@Param(value = "mentorId") Long mentorId, Pageable page);
+  Page<Course> findCoursesByMentorId(Long mentorId, Pageable page);
 }

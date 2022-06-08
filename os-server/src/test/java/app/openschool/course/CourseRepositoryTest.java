@@ -18,6 +18,7 @@ import app.openschool.user.UserRepository;
 import app.openschool.user.company.Company;
 import app.openschool.user.company.CompanyRepository;
 import app.openschool.user.role.RoleRepository;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -160,9 +161,8 @@ public class CourseRepositoryTest {
   }
 
   @Test
-  public void findCoursesByMentorId() {
-    Page<Course> coursePage = courseRepository.findCoursesByMentorId(
-            1L, PageRequest.of(0, 6));
-    assertEquals(6, coursePage.getSize());
+  public void findCoursesByMentor() {
+    Page<Course> coursePage = courseRepository.findCoursesByMentorId(1L, PageRequest.of(0, 3));
+    assertEquals(3, coursePage.getSize());
   }
 }

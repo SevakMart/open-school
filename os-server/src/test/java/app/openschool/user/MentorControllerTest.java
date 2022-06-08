@@ -5,10 +5,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import app.openschool.course.api.dto.MentorCourseDto;
+import app.openschool.course.Course;
 import app.openschool.user.api.UserGenerator;
-import app.openschool.user.api.dto.MentorDto;
-import app.openschool.user.api.mapper.MentorMapper;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -34,13 +32,13 @@ public class MentorControllerTest {
   @MockBean private UserServiceImpl userService;
 
   @Test
-  void getAllMentors() throws Exception {
-    List<MentorDto> mentorDtoList = new ArrayList<>();
+  void findAllMentors() throws Exception {
+    List<User> mentorList = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      mentorDtoList.add(MentorMapper.toMentorDto(UserGenerator.generateUser()));
+      mentorList.add(UserGenerator.generateUser());
     }
     Pageable pageable = PageRequest.of(0, 2);
-    Page<MentorDto> mentorPage = new PageImpl<>(mentorDtoList, pageable, 5);
+    Page<User> mentorPage = new PageImpl<>(mentorList, pageable, 5);
     when(userService.findAllMentors(pageable)).thenReturn(mentorPage);
     mockMvc
         .perform(
@@ -53,8 +51,8 @@ public class MentorControllerTest {
 
   @Test
   void findMentorCourses() throws Exception {
-    List<MentorCourseDto> mentorCourseDtoList = new ArrayList<>();
-    Page<MentorCourseDto> mentorCourseDtoPage = new PageImpl<>(mentorCourseDtoList);
+    List<Course> mentorCourseList = new ArrayList<>();
+    Page<Course> mentorCourseDtoPage = new PageImpl<>(mentorCourseList);
     when(userService.findMentorCourses(1L, null)).thenReturn(mentorCourseDtoPage);
     mockMvc
         .perform(get("/mentors/1/courses").contentType(APPLICATION_JSON))

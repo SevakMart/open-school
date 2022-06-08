@@ -9,14 +9,10 @@ import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.api.dto.CourseDto;
-import app.openschool.course.api.dto.MentorCourseDto;
 import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.course.api.mapper.CourseMapper;
-import app.openschool.course.api.mapper.MentorCourseMapper;
 import app.openschool.course.api.mapper.UserCourseMapper;
-import app.openschool.user.api.dto.MentorDto;
 import app.openschool.user.api.exception.UserNotFoundException;
-import app.openschool.user.api.mapper.MentorMapper;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +21,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,8 +44,8 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Page<MentorDto> findAllMentors(Pageable pageable) {
-    return MentorMapper.toMentorDtoPage(userRepository.findAllMentors(pageable));
+  public Page<User> findAllMentors(Pageable pageable) {
+    return userRepository.findAllMentors(pageable);
   }
 
   @Override
@@ -111,13 +106,8 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Optional<User> findMentorById(Long mentorId) {
-    return userRepository.findMentorById(mentorId);
-  }
-
-  @Override
-  public Page<MentorCourseDto> findMentorCourses(Long mentorId, Pageable page) {
-    return MentorCourseMapper.toMentorDtoPage(
-        courseRepository.findCoursesByMentorId(mentorId, page));
+  public Page<Course> findMentorCourses(Long mentorId, Pageable page) {
+    userRepository.findById(mentorId).orElseThrow(IllegalArgumentException::new);
+    return courseRepository.findCoursesByMentorId(mentorId, page);
   }
 }

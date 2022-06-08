@@ -4,6 +4,7 @@ import app.openschool.category.CategoryService;
 import app.openschool.category.api.dto.CategoryDto;
 import app.openschool.user.UserService;
 import app.openschool.user.api.dto.MentorDto;
+import app.openschool.user.api.mapper.MentorMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +28,7 @@ public class PublicController {
   @GetMapping("/users/mentors")
   @Operation(summary = "find all mentors")
   public ResponseEntity<Page<MentorDto>> findAllMentors(Pageable pageable) {
-    return ResponseEntity.ok(this.userService.findAllMentors(pageable));
+    return ResponseEntity.ok(MentorMapper.toMentorDtoPage(userService.findAllMentors(pageable)));
   }
 
   @GetMapping("/categories")
