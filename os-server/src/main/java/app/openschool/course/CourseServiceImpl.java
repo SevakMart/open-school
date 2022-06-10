@@ -1,7 +1,5 @@
 package app.openschool.course;
 
-import app.openschool.course.api.dto.CourseDto;
-import app.openschool.course.api.mapper.CourseMapper;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,14 +15,13 @@ public class CourseServiceImpl implements CourseService {
   }
 
   @Override
-  public Page<CourseDto> findAll(
+  public Page<Course> findAll(
       String courseTitle,
       List<Long> subCategoryIds,
       List<Long> languageIds,
       List<Long> difficultyIds,
       Pageable pageable) {
-    return CourseMapper.toCourseDtoPage(
-        courseRepository.findAll(
-            courseTitle, subCategoryIds, languageIds, difficultyIds, pageable));
+    return courseRepository.findAll(
+        courseTitle, subCategoryIds, languageIds, difficultyIds, pageable);
   }
 }

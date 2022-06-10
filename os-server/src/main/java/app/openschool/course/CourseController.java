@@ -1,6 +1,7 @@
 package app.openschool.course;
 
 import app.openschool.course.api.dto.CourseDto;
+import app.openschool.course.api.mapper.CourseMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
@@ -31,7 +32,8 @@ public class CourseController {
       @RequestParam(required = false) List<Long> difficultyIds,
       Pageable pageable) {
     return ResponseEntity.ok(
-        this.courseService.findAll(
-            courseTitle, subCategoryIds, languageIds, difficultyIds, pageable));
+        CourseMapper.toCourseDtoPage(
+            courseService.findAll(
+                courseTitle, subCategoryIds, languageIds, difficultyIds, pageable)));
   }
 }
