@@ -13,8 +13,10 @@ type CourseListType=SuggestedCourseType & {id:number, bookmarked?:boolean}
 
 const LearningPathCoreContent = () => {
   const sendingParams = useSelector<RootState>((state) => state.filterParams);
-  const token = useContext(userContext);
+  const { token, id } = useContext(userContext);
   const [courseList, setCourseList] = useState<CourseListType[]>([]);
+  const [savedNewCourse, setSavedNewCourse] = useState(0);
+  const [deletespecifiedCourse, setDeleteSpecifiedCourse] = useState(0);
   const { mainCoreContainer, courseContainer } = styles;
 
   useEffect(() => {
@@ -40,20 +42,27 @@ const LearningPathCoreContent = () => {
       } else setCourseList([...searchedCourseContent]);
     });
   }, [sendingParams]);
+  useEffect(() => {
+    savedNewCourse && userService.saveUserPreferredCourses(savedNewCourse, token);
+  }, [savedNewCourse]);
+  useEffect(() => {
+    deletespecifiedCourse && userService.deleteUserSavedCourses(deletespecifiedCourse, token);
+  }, [deletespecifiedCourse]);
 
   return (
     <div className={mainCoreContainer}>
       {courseList.length ? courseList.map((course, index) => (
         <div className={courseContainer} key={index}>
-          <courseBookmarkContext.Provider value={course.id}>
-            <LearningPath
-              title={course.title}
-              rating={course.rating}
-              difficulty={course.difficulty}
-              keywords={course.keywords}
-              isBookMarked={course.bookmarked}
-            />
-          </courseBookmarkContext.Provider>
+          <LearningPath
+            title={course.title}
+            rating={course.rating}
+            difficulty={course.difficulty}
+            keywords={course.keywords}
+            isBookMarked={course.bookmarked}
+            courseId={course.id}
+            saveCourse={(courseId:number) => setSavedNewCourse(courseId)}
+            deleteCourse={(courseId:number) => setDeleteSpecifiedCourse(courseId)}
+          />
         </div>
       )) : <h2 data-testid="Error Message">{EMPTY_DATA_ERROR_MESSAGE}</h2>}
     </div>

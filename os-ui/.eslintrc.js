@@ -23,6 +23,7 @@ module.exports = {
     camelcase: 'off',
     'jsx-a11y/label-has-associated-control': 'off',
     'default-param-last': 'off',
+    'no-unused-expressions': 'off',
     'no-useless-escape': 'off',
     'no-param-reassign': 0,
     'no-use-before-define': 'off',

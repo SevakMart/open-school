@@ -41,6 +41,7 @@ class UserService {
 
   async deleteUserSavedCourses(courseId:number, userToken:string, params = {}) {
     const data = await (await fetchService.delete(`${this.basePath}/{userId}/courses/${courseId}/saved`, params, userToken)).json();
+    console.log(data);
     return data;
   }
 }

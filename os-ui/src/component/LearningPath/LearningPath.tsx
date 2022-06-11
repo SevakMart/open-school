@@ -4,17 +4,26 @@ import { SuggestedCourseType } from '../../types/SuggestedCourseType';
 import styles from './LearningPath.module.scss';
 
 const LearningPath = ({
-  title, rating, difficulty, keywords, isBookMarked,
+  title, rating, difficulty, keywords, isBookMarked, courseId, saveCourse, deleteCourse,
 }:SuggestedCourseType) => {
   const {
     mainContainer, header, mainBody, ratingContent, courseTitle, keywordsContent, difficultyContent,
     ratingValue, keyword,
   } = styles;
+  /* const handleBookMarkModification = (courseId?:number) => {
+    handleModification && handleModification(courseId);
+  }; */
+  const handleSaveCourse = (courseId:number) => {
+    saveCourse && saveCourse(courseId);
+  };
+  const handleDeleteCourse = (courseId:number) => {
+    deleteCourse && deleteCourse(courseId);
+  };
   return (
     <div className={mainContainer}>
       <div className={header}>
         <p data-testid={difficulty} className={difficultyContent}>{difficulty}</p>
-        <p><BookmarkIcon iconSize="1rem" isBookmarked={isBookMarked} /></p>
+        <p><BookmarkIcon iconSize="1rem" isBookmarked={isBookMarked} courseId={courseId} saveCourse={handleSaveCourse} deleteCourse={handleDeleteCourse} /></p>
       </div>
       <div className={mainBody}>
         <div className={ratingContent}>

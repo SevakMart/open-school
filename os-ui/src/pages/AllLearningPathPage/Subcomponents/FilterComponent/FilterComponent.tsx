@@ -15,7 +15,7 @@ enum VisibleFilterTab {
 const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
   const [visibleFilterTab, setVisibleFilterTab] = useState(VisibleFilterTab.isVisible);
   const [filterFeatures, setFilterFeatures] = useState<FilteringFeatureType>({});
-  const token = useContext(userContext);
+  const { token } = useContext(userContext);
   const contentType = useContext(courseContentContext);
   const {
     mainContainer, hiddenContainer, filterMainContent, mainTitle, visibilityButton,
