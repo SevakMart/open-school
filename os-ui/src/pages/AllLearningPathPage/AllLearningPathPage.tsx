@@ -13,7 +13,6 @@ const AllLearningPathPage = () => {
     token: (userInfo as any).token,
     id: (userInfo as any).id,
   }), []);
-  const { token } = userInfo as any;
   const [isVisible, setIsVisible] = useState(true);
   const { mainContainer } = styles;
 

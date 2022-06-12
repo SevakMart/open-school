@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/Store';
-import { userContext, courseBookmarkContext } from '../../../../../../contexts/Contexts';
+import { userContext } from '../../../../../../contexts/Contexts';
 import LearningPath from '../../../../../../component/LearningPath/LearningPath';
 import courseService from '../../../../../../services/courseService';
 import userService from '../../../../../../services/userService';
@@ -13,10 +13,8 @@ type CourseListType=SuggestedCourseType & {id:number, bookmarked?:boolean}
 
 const LearningPathCoreContent = () => {
   const sendingParams = useSelector<RootState>((state) => state.filterParams);
-  const { token, id } = useContext(userContext);
+  const { token } = useContext(userContext);
   const [courseList, setCourseList] = useState<CourseListType[]>([]);
-  const [savedNewCourse, setSavedNewCourse] = useState(0);
-  const [deletespecifiedCourse, setDeleteSpecifiedCourse] = useState(0);
   const { mainCoreContainer, courseContainer } = styles;
 
   useEffect(() => {
@@ -42,12 +40,6 @@ const LearningPathCoreContent = () => {
       } else setCourseList([...searchedCourseContent]);
     });
   }, [sendingParams]);
-  useEffect(() => {
-    savedNewCourse && userService.saveUserPreferredCourses(savedNewCourse, token);
-  }, [savedNewCourse]);
-  useEffect(() => {
-    deletespecifiedCourse && userService.deleteUserSavedCourses(deletespecifiedCourse, token);
-  }, [deletespecifiedCourse]);
 
   return (
     <div className={mainCoreContainer}>
@@ -60,8 +52,8 @@ const LearningPathCoreContent = () => {
             keywords={course.keywords}
             isBookMarked={course.bookmarked}
             courseId={course.id}
-            saveCourse={(courseId:number) => setSavedNewCourse(courseId)}
-            deleteCourse={(courseId:number) => setDeleteSpecifiedCourse(courseId)}
+            saveCourse={(courseId:number) => userService.saveUserPreferredCourses(courseId, token)}
+            deleteCourse={(courseId:number) => userService.deleteUserSavedCourses(courseId, token)}
           />
         </div>
       )) : <h2 data-testid="Error Message">{EMPTY_DATA_ERROR_MESSAGE}</h2>}

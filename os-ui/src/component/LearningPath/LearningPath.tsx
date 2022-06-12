@@ -10,9 +10,6 @@ const LearningPath = ({
     mainContainer, header, mainBody, ratingContent, courseTitle, keywordsContent, difficultyContent,
     ratingValue, keyword,
   } = styles;
-  /* const handleBookMarkModification = (courseId?:number) => {
-    handleModification && handleModification(courseId);
-  }; */
   const handleSaveCourse = (courseId:number) => {
     saveCourse && saveCourse(courseId);
   };
