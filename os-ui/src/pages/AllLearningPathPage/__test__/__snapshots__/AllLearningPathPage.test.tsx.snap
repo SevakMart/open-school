@@ -27,7 +27,7 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
         stroke-linecap="round"
         stroke-linejoin="round"
         stroke-width="2"
-        style="color: rgb(94, 97, 123); font-size: 1.5rem; cursor: pointer; fill: transparent;"
+        style="color: rgb(94, 97, 123); font-size: 1.5rem; cursor: pointer; fill: none;"
         viewBox="0 0 24 24"
         width="1em"
         xmlns="http://www.w3.org/2000/svg"
