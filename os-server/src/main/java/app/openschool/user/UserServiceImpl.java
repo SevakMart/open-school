@@ -12,9 +12,7 @@ import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.course.api.mapper.UserCourseMapper;
-import app.openschool.user.api.dto.MentorDto;
 import app.openschool.user.api.exception.UserNotFoundException;
-import app.openschool.user.api.mapper.MentorMapper;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -46,8 +44,8 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Page<MentorDto> findAllMentors(Pageable pageable) {
-    return MentorMapper.toMentorDtoPage(userRepository.findAllMentors(pageable));
+  public Page<User> findAllMentors(Pageable pageable) {
+    return userRepository.findAllMentors(pageable);
   }
 
   @Override
@@ -105,5 +103,11 @@ public class UserServiceImpl implements UserService {
     }
     return UserCourseMapper.toUserCourseDtoList(
         enrolledCourseRepository.findUserEnrolledCoursesByStatus(userId, courseStatusId));
+  }
+
+  @Override
+  public Page<Course> findMentorCourses(Long mentorId, Pageable page) {
+    userRepository.findById(mentorId).orElseThrow(IllegalArgumentException::new);
+    return courseRepository.findCoursesByMentorId(mentorId, page);
   }
 }

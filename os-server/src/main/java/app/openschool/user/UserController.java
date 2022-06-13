@@ -29,11 +29,6 @@ public class UserController {
     this.userService = userService;
   }
 
-  @GetMapping("/mentors")
-  @Operation(summary = "find all mentors", security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<Page<MentorDto>> getAllMentors(Pageable pageable) {
-    return ResponseEntity.ok(this.userService.findAllMentors(pageable));
-  }
 
   @GetMapping("/{userId}/courses/suggested")
   @Operation(

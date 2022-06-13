@@ -306,4 +306,34 @@ class UserServiceImplTest {
     userService.findUserEnrolledCourses(1L, 1L);
     verify(enrolledcourseRepository, Mockito.times(1)).findUserEnrolledCoursesByStatus(1L, 1L);
   }
+
+  @Test
+  void findMentorCourses() {
+    final User user = UserGenerator.generateUser();
+    List<Course> courseList = new ArrayList<>();
+    Set<Keyword> keywordSet = new HashSet<>();
+    keywordSet.add(new Keyword("softwareEngineer"));
+    Difficulty difficulty = new Difficulty("medium");
+    Language language = new Language("language");
+    Category category = CategoryGenerator.generateCategory();
+    for (long i = 0; i < 5L; i++) {
+      Course course = new Course();
+      course.setId(i);
+      course.setTitle("title");
+      course.setDescription("description");
+      course.setRating(5.5);
+      course.setKeywords(keywordSet);
+      course.setCategory(category);
+      course.setDifficulty(difficulty);
+      course.setLanguage(language);
+      courseList.add(course);
+    }
+
+    Page<Course> coursePage = new PageImpl<>(courseList);
+    Pageable pageable = PageRequest.of(0, 6);
+    when(userRepository.findById(any())).thenReturn(Optional.of(user));
+    when(courseRepository.findCoursesByMentorId(user.getId(), pageable)).thenReturn(coursePage);
+    Assertions.assertEquals(
+        5, userService.findMentorCourses(user.getId(), PageRequest.of(0, 6)).getTotalElements());
+  }
 }

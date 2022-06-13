@@ -1,6 +1,8 @@
 package app.openschool.course;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,4 +31,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
   List<Course> getRandomSuggestedCoursesIgnoredExistingCourses(
       @Param(value = "limit") int limit,
       @Param(value = "existingCoursesIds") List<Long> existingCoursesIds);
+
+  Page<Course> findCoursesByMentorId(Long mentorId, Pageable page);
 }
