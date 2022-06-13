@@ -158,14 +158,9 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
       </div>
       <div
         class="inputContent"
-        style="padding-left: 0px;"
       >
-        <input
-          placeholder="Search name"
-          type="text"
-        />
         <div
-          style="position: absolute; z-index: 1; color: rgb(132, 138, 157); left: 20%;"
+          style="z-index: 1; color: rgb(132, 138, 157);"
         >
           <svg
             fill="currentColor"
@@ -181,6 +176,10 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
             />
           </svg>
         </div>
+        <input
+          placeholder="Search name"
+          type="text"
+        />
       </div>
       <div
         class="mainCoreContainer"

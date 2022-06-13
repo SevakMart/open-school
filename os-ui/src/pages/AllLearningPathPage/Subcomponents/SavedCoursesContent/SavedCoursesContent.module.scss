@@ -7,7 +7,8 @@
     padding-right:6%;
     margin-top:3rem;
 .mainContainer {
-    @include flexStyle(row,center,space-between);
-    flex-wrap: wrap;
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    gap:1.25rem;
 }
 }
