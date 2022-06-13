@@ -1,6 +1,5 @@
 package app.openschool.category;
 
-import app.openschool.category.Category;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +12,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
   @Query(value = "SELECT * FROM category WHERE parent_category_id IS NULL", nativeQuery = true)
   Page<Category> findAllCategories(Pageable pageable);
+
+  List<Category> findByParentCategoryIsNull();
 
   List<Category> findCategoriesByParentCategoryId(Long id);
 

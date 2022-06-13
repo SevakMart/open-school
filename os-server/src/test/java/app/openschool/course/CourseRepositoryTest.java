@@ -1,6 +1,7 @@
 package app.openschool.course;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 import app.openschool.category.Category;
@@ -157,6 +158,19 @@ public class CourseRepositoryTest {
   public void getRandomSuggestedCourses() {
     List<Course> courseList = courseRepository.getRandomSuggestedCourses(4);
     assertEquals(4, courseList.size());
+  }
+
+  @Test
+  public void searchCourses() {
+    List<Course> searchedCourses =
+        courseRepository
+            .findAll("str", List.of(1L), List.of(1L), List.of(1L), PageRequest.of(0, 2))
+            .toList();
+    for (Course searchedCourse : searchedCourses) {
+      assertTrue((searchedCourse.getTitle().toLowerCase()).contains("str"));
+      assertEquals(1, searchedCourse.getLanguage().getId());
+      assertEquals(1, searchedCourse.getDifficulty().getId());
+    }
   }
 
   @Test

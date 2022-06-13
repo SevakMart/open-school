@@ -1,12 +1,12 @@
 -- -----------------------------------------------------
--- user
+-- Table user - adding column "enabled" in the table, which shows the user's account is verified or not
 -- -----------------------------------------------------
 
 ALTER TABLE user
 ADD COLUMN enabled BOOLEAN;
 
 -- -----------------------------------------------------
--- reset_password_token
+-- Table reset_password_token - creating table for token which is being sent to user for resetting the forgotten password
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS reset_password_token (
  id BIGINT NOT NULL AUTO_INCREMENT,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS reset_password_token (
  ON DELETE CASCADE);
 
 -- -----------------------------------------------------
--- verification_token
+-- Table verification_token - creating table for token which is being sent to user for verifying the account
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS verification_token (
