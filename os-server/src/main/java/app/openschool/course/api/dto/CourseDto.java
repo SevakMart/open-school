@@ -4,6 +4,8 @@ import java.util.Set;
 
 public class CourseDto {
 
+  private Long id;
+
   private String title;
 
   private Double rating;
@@ -14,11 +16,20 @@ public class CourseDto {
 
   public CourseDto() {}
 
-  public CourseDto(String title, Double rating, String difficulty, Set<String> keywords) {
+  public CourseDto(Long id, String title, Double rating, String difficulty, Set<String> keywords) {
+    this.id = id;
     this.title = title;
     this.rating = rating;
     this.difficulty = difficulty;
     this.keywords = keywords;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getTitle() {

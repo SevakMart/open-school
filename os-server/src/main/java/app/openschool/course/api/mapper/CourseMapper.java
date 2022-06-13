@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 public class CourseMapper {
 
@@ -22,6 +24,19 @@ public class CourseMapper {
     Set<String> keywords =
         course.getKeywords().stream().map(Keyword::getTitle).collect(Collectors.toSet());
     return new CourseDto(
-        course.getTitle(), course.getRating(), course.getDifficulty().getTitle(), keywords);
+        course.getId(),
+        course.getTitle(),
+        course.getRating(),
+        course.getDifficulty().getTitle(),
+        keywords);
+  }
+
+  public static Page<CourseDto> toCourseDtoPage(Page<Course> coursePage) {
+    List<Course> courseList = coursePage.toList();
+    List<CourseDto> courseDtoList = new ArrayList<>();
+    for (Course course : courseList) {
+      courseDtoList.add(toCourseDto(course));
+    }
+    return new PageImpl<>(courseDtoList, coursePage.getPageable(), coursePage.getTotalElements());
   }
 }

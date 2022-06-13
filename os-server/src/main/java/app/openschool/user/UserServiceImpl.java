@@ -14,8 +14,8 @@ import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.course.api.mapper.UserCourseMapper;
 import app.openschool.user.api.dto.MentorDto;
+import app.openschool.course.EnrolledCourse;
 import app.openschool.user.api.exception.UserNotFoundException;
-import app.openschool.user.api.mapper.MentorMapper;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -33,33 +33,31 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final CategoryRepository categoryRepository;
   private final CourseRepository courseRepository;
-  private final EnrolledCourseRepository enrolledCourseRepository;
 
   public UserServiceImpl(
       UserRepository userRepository,
       CategoryRepository categoryRepository,
-      CourseRepository courseRepository,
-      EnrolledCourseRepository enrolledCourseRepository) {
+      CourseRepository courseRepository) {
     this.userRepository = userRepository;
     this.categoryRepository = categoryRepository;
     this.courseRepository = courseRepository;
-    this.enrolledCourseRepository = enrolledCourseRepository;
   }
 
   @Override
-  public Page<MentorDto> findAllMentors(Pageable pageable) {
-    return MentorMapper.toMentorDtoPage(userRepository.findAllMentors(pageable));
+  public Page<User> findAllMentors(Pageable pageable) {
+    return userRepository.findAllMentors(pageable);
   }
 
   @Override
-  public List<CourseDto> getSuggestedCourses(Long userId) {
-    if (userRepository.getById(userId).getCategories().isEmpty()) {
-      return CourseMapper.toCourseDtoList(courseRepository.getRandomSuggestedCourses(4));
+  public List<Course> getSuggestedCourses(Long userId) {
+    User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
+    if (user.getCategories().isEmpty()) {
+      return courseRepository.getRandomSuggestedCourses(4);
     }
     List<Course> suggestedCourses = courseRepository.getSuggestedCourses(userId);
     int sizeOfSuggestedCourses = suggestedCourses.size();
     if (sizeOfSuggestedCourses >= 4) {
-      return CourseMapper.toCourseDtoList(suggestedCourses);
+      return suggestedCourses;
     }
     List<Course> courseList = new ArrayList<>();
     int sizeOfRandomSuggestedCourses = 4 - sizeOfSuggestedCourses;
@@ -67,10 +65,10 @@ public class UserServiceImpl implements UserService {
         suggestedCourses.stream().map(Course::getId).collect(Collectors.toList());
     List<Course> randomSuggestedCourses =
         courseRepository.getRandomSuggestedCoursesIgnoredExistingCourses(
-            sizeOfRandomSuggestedCourses, existingCoursesIds);
+            existingCoursesIds, sizeOfRandomSuggestedCourses);
     courseList.addAll(suggestedCourses);
     courseList.addAll(randomSuggestedCourses);
-    return CourseMapper.toCourseDtoList(courseList);
+    return courseList;
   }
 
   @Override
@@ -99,13 +97,51 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<UserCourseDto> findUserEnrolledCourses(Long userId, Long courseStatusId) {
+  public List<EnrolledCourse> findEnrolledCourses(Long userId, Long courseStatusId) {
+    User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
+    Set<EnrolledCourse> allEnrolledCourses = user.getEnrolledCourses();
     if (courseStatusId == null) {
-      return UserCourseMapper.toUserCourseDtoList(
-          enrolledCourseRepository.findAllUserEnrolledCourses(userId));
+      return new ArrayList<>(allEnrolledCourses);
+    } else {
+      return allEnrolledCourses.stream()
+          .filter(enrolledCourse -> enrolledCourse.getCourseStatus().getId().equals(courseStatusId))
+          .collect(Collectors.toList());
     }
-    return UserCourseMapper.toUserCourseDtoList(
-        enrolledCourseRepository.findUserEnrolledCoursesByStatus(userId, courseStatusId));
+  }
+
+  @Override
+  public Page<Course> findMentorCourses(Long mentorId, Pageable page) {
+    userRepository.findById(mentorId).orElseThrow(IllegalArgumentException::new);
+    return courseRepository.findCoursesByMentorId(mentorId, page);
+  }
+
+  @Override
+  public Page<Course> findSavedCourses(Long userId, Pageable pageable) {
+    userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
+    return courseRepository.findSavedCourses(userId, pageable);
+  }
+
+  @Override
+  public Course saveCourse(Long userId, Long courseId) {
+    User user = userRepository.findUserById(userId).orElseThrow(IllegalArgumentException::new);
+    Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
+    user.getSavedCourses().add(course);
+    userRepository.save(user);
+    return course;
+  }
+
+  @Override
+  public Course deleteCourse(Long userId, Long courseId) {
+    User user = userRepository.findUserById(userId).orElseThrow(IllegalArgumentException::new);
+    Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
+    Set<Course> savedCourses = user.getSavedCourses();
+    if (savedCourses.contains(course)) {
+      savedCourses.remove(course);
+      userRepository.save(user);
+    } else {
+      throw new IllegalArgumentException();
+    }
+    return course;
   }
 
   @Override
