@@ -184,6 +184,7 @@ public class Course {
 
   public void setGoal(String goal) {
     this.goal = goal;
+  }
 
   public Set<User> getUsers() {
     return users;

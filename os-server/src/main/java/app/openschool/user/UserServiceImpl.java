@@ -8,6 +8,7 @@ import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
+import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;

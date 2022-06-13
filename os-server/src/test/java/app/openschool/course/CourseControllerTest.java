@@ -4,13 +4,14 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.course.api.CourseGenerator;
 import app.openschool.user.User;
 import app.openschool.user.role.Role;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,6 @@ class CourseControllerTest {
 
   @Autowired private JwtTokenProvider jwtTokenProvider;
 
-  @MockBean private CourseService courseService;
-  
   @MockBean private CourseServiceImpl courseService;
 
   @Test
@@ -65,6 +64,7 @@ class CourseControllerTest {
         .perform(
             get("/api/v1/courses/1").contentType(APPLICATION_JSON).header("Authorization", jwt))
         .andExpect(status().isOk());
+  }
 
   @Test
   void searchCourses() throws Exception {
@@ -77,5 +77,5 @@ class CourseControllerTest {
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
-   }
+  }
 }

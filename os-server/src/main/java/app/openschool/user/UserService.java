@@ -2,9 +2,6 @@ package app.openschool.user;
 
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.course.Course;
-import app.openschool.course.api.dto.CourseDto;
-import app.openschool.course.api.dto.UserCourseDto;
-import app.openschool.user.api.dto.MentorDto;
 import app.openschool.course.EnrolledCourse;
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +17,6 @@ public interface UserService {
 
   Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds);
 
-
-  List<UserCourseDto> findUserEnrolledCourses(Long userId, Long courseStatusId);
-
   Optional<Course> enrollCourse(String username, long courseId);
 
   List<EnrolledCourse> findEnrolledCourses(Long userId, Long courseStatusId);
@@ -34,5 +28,4 @@ public interface UserService {
   Course deleteCourse(Long userId, Long courseId);
 
   Page<Course> findMentorCourses(Long mentorId, Pageable page);
-
 }

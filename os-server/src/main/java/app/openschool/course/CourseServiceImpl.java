@@ -1,7 +1,7 @@
 package app.openschool.course;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,9 @@ public class CourseServiceImpl implements CourseService {
   @Override
   public Optional<Course> findCourseById(Long id) {
     return courseRepository.findById(id);
+  }
 
+  @Override
   public Page<Course> findAll(
       String courseTitle,
       List<Long> subCategoryIds,
@@ -27,5 +29,5 @@ public class CourseServiceImpl implements CourseService {
       Pageable pageable) {
     return courseRepository.findAll(
         courseTitle, subCategoryIds, languageIds, difficultyIds, pageable);
-   }
+  }
 }

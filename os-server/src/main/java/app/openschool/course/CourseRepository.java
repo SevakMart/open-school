@@ -1,4 +1,5 @@
 package app.openschool.course;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -34,13 +35,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
               + "AND ((?3) IS NULL OR language_id IN (?3)) "
               + "AND ((?4) IS NULL OR difficulty_id IN (?4))",
       nativeQuery = true)
-
-  List<Course> getRandomSuggestedCoursesIgnoredExistingCourses(
-      @Param(value = "limit") int limit,
-      @Param(value = "existingCoursesIds") List<Long> existingCoursesIds);
-
-  Optional<Course> findById(Long id);
-
   Page<Course> findAll(
       String courseTitle,
       List<Long> subCategoryIds,
@@ -57,4 +51,5 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
   Page<Course> findCoursesByMentorId(Long mentorId, Pageable page);
 
+  Optional<Course> findById(Long id);
 }
