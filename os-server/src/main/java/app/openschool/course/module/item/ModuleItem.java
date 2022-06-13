@@ -22,6 +22,9 @@ public class ModuleItem {
   @Column(name = "module_item_type", nullable = false)
   private String moduleItemType;
 
+  @Column(name = "link")
+  private String link;
+
   @Column(name = "estimated_time")
   private Long estimatedTime;
 
@@ -68,5 +71,13 @@ public class ModuleItem {
 
   public void setModule(Module module) {
     this.module = module;
+  }
+
+  public String getLink() {
+    return link;
+  }
+
+  public void setLink(String link) {
+    this.link = link;
   }
 }

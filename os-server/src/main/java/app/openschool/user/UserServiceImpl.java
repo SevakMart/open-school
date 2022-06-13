@@ -9,6 +9,7 @@ import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
+import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -139,6 +140,21 @@ public class UserServiceImpl implements UserService {
       throw new IllegalArgumentException();
     }
     return course;
+  }
+
+  @Override
+  @Transactional
+  public Optional<Course> enrollCourse(String username, long courseId) {
+    Optional<User> optionalUser = userRepository.findByEmail(username);
+    Optional<Course> optionalCourse = courseRepository.findById(courseId);
+    if (optionalUser.isPresent() && optionalCourse.isPresent()) {
+      User user = optionalUser.get();
+      Course course = optionalCourse.get();
+      user.getEnrolledCourses().add(CourseMapper.toEnrolledCourse(course, user));
+      userRepository.save(user);
+      return Optional.of(course);
+    }
+    return Optional.empty();
   }
 
   @Override

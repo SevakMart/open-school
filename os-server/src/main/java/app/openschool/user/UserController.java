@@ -17,7 +17,9 @@ import javax.validation.Valid;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,6 +102,20 @@ public class UserController {
       @PathVariable Long userId, @PathVariable Long courseId) {
     Course deletedCourse = userService.deleteCourse(userId, courseId);
     return ResponseEntity.ok(CourseMapper.toCourseDto(deletedCourse));
+  }
+
+  @PostMapping("/courses/{courseId}")
+  @Operation(summary = "enroll course")
+  public ResponseEntity<CourseDto> enrollCourse(@PathVariable long courseId) {
+    String username =
+        (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    return userService
+        .enrollCourse(username, courseId)
+        .map(
+            course ->
+                ResponseEntity.status(HttpStatus.CREATED).body(CourseMapper.toCourseDto(course)))
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @GetMapping("/{userId}/courses/enrolled/{enrolledCourseId}")
