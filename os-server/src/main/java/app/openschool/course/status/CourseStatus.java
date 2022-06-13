@@ -26,6 +26,10 @@ public class CourseStatus {
 
   public CourseStatus() {}
 
+  public CourseStatus(Long id) {
+    this.id = id;
+  }
+
   public CourseStatus(String type) {
     this.type = type;
   }
@@ -34,6 +38,10 @@ public class CourseStatus {
     this.id = id;
     this.type = type;
     this.enrolledCourses = enrolledCourses;
+  }
+
+  public static CourseStatus inProgress() {
+    return new CourseStatus(1L);
   }
 
   public boolean isInProgress() {

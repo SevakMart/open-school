@@ -5,6 +5,7 @@ import app.openschool.course.status.CourseStatus;
 import app.openschool.user.User;
 import java.time.LocalDate;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,10 +39,21 @@ public class EnrolledCourse {
   @JoinColumn(name = "learning_path_status_id")
   private CourseStatus courseStatus;
 
-  @OneToMany(mappedBy = "enrolledCourse")
+  @OneToMany(cascade = CascadeType.MERGE, mappedBy = "enrolledCourse")
   private Set<EnrolledModule> enrolledModules;
 
+  public EnrolledCourse(LocalDate dueDate, Course course, User user, CourseStatus courseStatus) {
+    this.dueDate = dueDate;
+    this.course = course;
+    this.user = user;
+    this.courseStatus = courseStatus;
+  }
+
   public EnrolledCourse() {}
+
+  public EnrolledCourse(Long id) {
+    this.id = id;
+  }
 
   public EnrolledCourse(
       Long id,
