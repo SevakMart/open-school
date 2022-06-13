@@ -1,6 +1,7 @@
 package app.openschool.course;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 import app.openschool.category.Category;
@@ -25,6 +26,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 
 @DataJpaTest
@@ -162,5 +165,22 @@ public class CourseRepositoryTest {
     String title = "theCourse";
     courseRepository.save(new Course(1L, title));
     assertEquals(title, courseRepository.findById(1L).get().getTitle());
+
+  public void searchCourses() {
+    List<Course> searchedCourses =
+        courseRepository
+            .findAll("str", List.of(1L), List.of(1L), List.of(1L), PageRequest.of(0, 2))
+            .toList();
+    for (Course searchedCourse : searchedCourses) {
+      assertTrue((searchedCourse.getTitle().toLowerCase()).contains("str"));
+      assertEquals(1, searchedCourse.getLanguage().getId());
+      assertEquals(1, searchedCourse.getDifficulty().getId());
+    }
+  }
+
+  @Test
+  public void findCoursesByMentorId() {
+    Page<Course> coursePage = courseRepository.findCoursesByMentorId(1L, PageRequest.of(0, 3));
+    assertEquals(3, coursePage.getSize());
   }
 }
