@@ -1,16 +1,11 @@
-package app.openschool.common;
+package app.openschool.user;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import app.openschool.category.CategoryServiceImpl;
-import app.openschool.category.api.CategoryGenerator;
-import app.openschool.category.api.dto.CategoryDto;
-import app.openschool.category.api.mapper.CategoryMapper;
-import app.openschool.user.User;
-import app.openschool.user.UserService;
+import app.openschool.course.Course;
 import app.openschool.user.api.UserGenerator;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,31 +25,11 @@ import org.springframework.test.web.servlet.MockMvc;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PublicControllerTest {
+public class MentorControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
-  @MockBean private CategoryServiceImpl categoryService;
-
-  @MockBean private UserService userService;
-
-  @Test
-  void findAllCategories() throws Exception {
-    List<CategoryDto> categoryDtoList = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
-      categoryDtoList.add(CategoryMapper.toCategoryDto(CategoryGenerator.generateCategory()));
-    }
-    Pageable pageable = PageRequest.of(0, 2);
-    Page<CategoryDto> categoryDtoPage = new PageImpl<>(categoryDtoList, pageable, 5);
-    when(categoryService.findAllCategories(pageable)).thenReturn(categoryDtoPage);
-    mockMvc
-        .perform(
-            get("/api/v1/public/categories")
-                .queryParam("page", "1")
-                .queryParam("size", "2")
-                .contentType(APPLICATION_JSON))
-        .andExpect(status().isOk());
-  }
+  @MockBean private UserServiceImpl userService;
 
   @Test
   void findAllMentors() throws Exception {
@@ -67,10 +42,20 @@ public class PublicControllerTest {
     when(userService.findAllMentors(pageable)).thenReturn(mentorPage);
     mockMvc
         .perform(
-            get("/api/v1/public/users/mentors")
+            get("/api/v1/mentors")
                 .queryParam("page", "0")
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
-        .andExpect(status().isOk());
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void findMentorCourses() throws Exception {
+    List<Course> mentorCourseList = new ArrayList<>();
+    Page<Course> mentorCourseDtoPage = new PageImpl<>(mentorCourseList);
+    when(userService.findMentorCourses(1L, null)).thenReturn(mentorCourseDtoPage);
+    mockMvc
+        .perform(get("/mentors/1/courses").contentType(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
   }
 }

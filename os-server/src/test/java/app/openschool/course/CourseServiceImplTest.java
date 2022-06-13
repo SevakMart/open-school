@@ -2,10 +2,10 @@ package app.openschool.course;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,10 +17,14 @@ class CourseServiceImplTest {
 
   private CourseService courseService;
 
+  private CourseServiceImpl courseService;
+
+
   @BeforeEach
   void setUp() {
     courseService = new CourseServiceImpl(courseRepository);
   }
+
 
   @Test
   public void findCourseByNonexistentId() {
@@ -28,4 +32,5 @@ class CourseServiceImplTest {
     when(courseRepository.findById(wrongId)).thenReturn(Optional.empty());
     assertEquals(Optional.empty(), courseService.findCourseById(wrongId));
   }
+
 }

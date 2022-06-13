@@ -64,11 +64,18 @@ public class Course {
       inverseJoinColumns = {@JoinColumn(name = "keyword_id")})
   private Set<Keyword> keywords = new HashSet<>();
 
+  @ManyToMany
+  @JoinTable(
+      name = "user_saved_learning_paths",
+      joinColumns = {@JoinColumn(name = "learning_path_id")},
+      inverseJoinColumns = {@JoinColumn(name = "user_id")})
+  private Set<User> users = new HashSet<>();
+
   @OneToMany(mappedBy = "course")
   private Set<Module> modules;
 
   @OneToMany(mappedBy = "course")
-  private Set<EnrolledCourse> enrolledCourses;
+  private Set<EnrolledCourse> enrolledCourses = new HashSet<>();
 
   public Course() {}
 
@@ -177,5 +184,12 @@ public class Course {
 
   public void setGoal(String goal) {
     this.goal = goal;
+
+  public Set<User> getUsers() {
+    return users;
+  }
+
+  public void setUsers(Set<User> users) {
+    this.users = users;
   }
 }
