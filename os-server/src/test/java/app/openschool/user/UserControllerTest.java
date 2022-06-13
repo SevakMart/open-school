@@ -38,24 +38,6 @@ class UserControllerTest {
   @MockBean private UserServiceImpl userService;
 
   @Test
-  void getAllMentors() throws Exception {
-    List<MentorDto> mentorDtoList = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
-      mentorDtoList.add(MentorMapper.toMentorDto(UserGenerator.generateUser()));
-    }
-    Pageable pageable = PageRequest.of(0, 2);
-    Page<MentorDto> mentorPage = new PageImpl<>(mentorDtoList, pageable, 5);
-    when(userService.findAllMentors(pageable)).thenReturn(mentorPage);
-    mockMvc
-        .perform(
-            get("/api/v1/users/mentors")
-                .queryParam("page", "1")
-                .queryParam("size", "2")
-                .contentType(APPLICATION_JSON))
-        .andExpect(status().isUnauthorized());
-  }
-
-  @Test
   void getSuggestedCourses() throws Exception {
     List<Course> courseList = new ArrayList<>();
     when(userService.getSuggestedCourses(1L)).thenReturn(courseList);

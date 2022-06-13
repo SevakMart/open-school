@@ -39,4 +39,13 @@ public class CourseMapper {
     }
     return new PageImpl<>(courseDtoList, coursePage.getPageable(), coursePage.getTotalElements());
   }
+
+  public static Page<CourseDto> toCourseDtoPage(Page<Course> coursePage) {
+    List<Course> courseList = coursePage.toList();
+    List<CourseDto> courseDtoList = new ArrayList<>();
+    for (Course course : courseList) {
+      courseDtoList.add(toCourseDto(course));
+    }
+    return new PageImpl<>(courseDtoList, coursePage.getPageable(), coursePage.getTotalElements());
+  }
 }

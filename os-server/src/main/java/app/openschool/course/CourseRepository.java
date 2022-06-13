@@ -47,4 +47,9 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
               + "ON lp.id = ulp.learning_path_id WHERE ulp.user_id = ?1",
       nativeQuery = true)
   Page<Course> findSavedCourses(Long userId, Pageable pageable);
+  List<Course> getRandomSuggestedCoursesIgnoredExistingCourses(
+      @Param(value = "limit") int limit,
+      @Param(value = "existingCoursesIds") List<Long> existingCoursesIds);
+
+  Page<Course> findCoursesByMentorId(Long mentorId, Pageable page);
 }
