@@ -1,6 +1,6 @@
 package app.openschool.course.api.dto;
 
-import app.openschool.course.module.api.EnrolledModuleDto;
+import app.openschool.course.module.api.EnrolledModuleOverviewDto;
 import java.util.List;
 
 public class EnrolledCourseOverviewDto {
@@ -13,14 +13,14 @@ public class EnrolledCourseOverviewDto {
 
   private final long courseEstimatedTime;
 
-  private final List<EnrolledModuleDto> enrolledModules;
+  private final List<EnrolledModuleOverviewDto> enrolledModules;
 
   public EnrolledCourseOverviewDto(
       String courseTitle,
       String courseStatus,
       int grade,
       long courseEstimatedTime,
-      List<EnrolledModuleDto> enrolledModules) {
+      List<EnrolledModuleOverviewDto> enrolledModules) {
     this.courseTitle = courseTitle;
     this.courseStatus = courseStatus;
     this.grade = grade;
@@ -44,7 +44,7 @@ public class EnrolledCourseOverviewDto {
     return courseEstimatedTime;
   }
 
-  public List<EnrolledModuleDto> getEnrolledModules() {
+  public List<EnrolledModuleOverviewDto> getEnrolledModules() {
     return enrolledModules;
   }
 }

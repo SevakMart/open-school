@@ -9,12 +9,6 @@ import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
-import app.openschool.course.api.dto.CourseDto;
-import app.openschool.course.api.dto.UserCourseDto;
-import app.openschool.course.api.mapper.CourseMapper;
-import app.openschool.course.api.mapper.UserCourseMapper;
-import app.openschool.user.api.dto.MentorDto;
-import app.openschool.course.EnrolledCourse;
 import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,14 +27,17 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final CategoryRepository categoryRepository;
   private final CourseRepository courseRepository;
+  private final EnrolledCourseRepository enrolledCourseRepository;
 
   public UserServiceImpl(
       UserRepository userRepository,
       CategoryRepository categoryRepository,
-      CourseRepository courseRepository) {
+      CourseRepository courseRepository,
+      EnrolledCourseRepository enrolledCourseRepository) {
     this.userRepository = userRepository;
     this.categoryRepository = categoryRepository;
     this.courseRepository = courseRepository;
+    this.enrolledCourseRepository = enrolledCourseRepository;
   }
 
   @Override

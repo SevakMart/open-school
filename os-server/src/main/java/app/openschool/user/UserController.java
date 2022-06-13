@@ -5,11 +5,10 @@ import app.openschool.course.Course;
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.EnrolledCourseOverviewDto;
 import app.openschool.course.api.dto.UserCourseDto;
-import app.openschool.course.api.mapper.EnrolledCourseMapper;
 import app.openschool.course.api.dto.UserSavedCourseRequest;
 import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.api.mapper.EnrolledCourseMapper;
 import app.openschool.course.api.mapper.UserCourseMapper;
-import app.openschool.user.api.dto.MentorDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
@@ -38,7 +37,6 @@ public class UserController {
   public UserController(UserService userService) {
     this.userService = userService;
   }
-
 
   @GetMapping("/{userId}/courses/suggested")
   @Operation(
