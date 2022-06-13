@@ -2,7 +2,9 @@ package app.openschool.user;
 
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.course.api.dto.CourseDto;
+import app.openschool.course.api.dto.EnrolledCourseOverviewDto;
 import app.openschool.course.api.dto.UserCourseDto;
+import app.openschool.course.api.mapper.EnrolledCourseMapper;
 import app.openschool.user.api.dto.MentorDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -57,5 +59,14 @@ public class UserController {
   public ResponseEntity<List<UserCourseDto>> findUserEnrolledCourses(
       @PathVariable Long userId, @RequestParam(required = false) Long courseStatusId) {
     return ResponseEntity.ok(this.userService.findUserEnrolledCourses(userId, courseStatusId));
+  }
+
+  @GetMapping("/{userId}/courses/enrolled/{enrolledCourseId}")
+  @Operation(summary = "find user's enrolled course overview")
+  public ResponseEntity<EnrolledCourseOverviewDto> findEnrolledCoursesOverview(
+      @PathVariable Long enrolledCourseId) {
+    return ResponseEntity.ok(
+        EnrolledCourseMapper.toEnrolledCourseOverviewDto(
+            userService.findEnrolledCourseOverview(enrolledCourseId)));
   }
 }

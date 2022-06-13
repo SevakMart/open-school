@@ -7,6 +7,7 @@ import app.openschool.category.api.exception.CategoryNotFoundException;
 import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
+import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.UserCourseDto;
@@ -105,5 +106,12 @@ public class UserServiceImpl implements UserService {
     }
     return UserCourseMapper.toUserCourseDtoList(
         enrolledCourseRepository.findUserEnrolledCoursesByStatus(userId, courseStatusId));
+  }
+
+  @Override
+  public EnrolledCourse findEnrolledCourseOverview(Long enrolledCourseId) {
+    return enrolledCourseRepository
+        .findById(enrolledCourseId)
+        .orElseThrow(IllegalArgumentException::new);
   }
 }
