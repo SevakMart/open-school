@@ -38,7 +38,7 @@ const LearningPathContent = ({ filterTabIsVisible }:{filterTabIsVisible:boolean}
   return (
     <div ref={mainContentRef} className={learningPathsMainContainer} style={{ transitionDuration: '0.5s', width: filterTabIsVisible ? '75%' : '98%' }}>
       <LearningPathHeader activeNavigator={CourseContent.ALLCOURSES} />
-      <Search changeUrlQueries={(title:string) => setSearchTitle(title)} paddingLeft="0" leftPosition={filterTabIsVisible ? '20%' : '15%'} />
+      <Search changeUrlQueries={(title:string) => setSearchTitle(title)} />
       <LearningPathCoreContent />
     </div>
   );
