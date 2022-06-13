@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.course.api.CourseGenerator;
-import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.user.User;
 import app.openschool.user.role.Role;
 import java.util.Optional;
