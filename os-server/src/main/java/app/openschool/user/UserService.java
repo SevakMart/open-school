@@ -28,4 +28,6 @@ public interface UserService {
   Course deleteCourse(Long userId, Long courseId);
 
   Page<Course> findMentorCourses(Long mentorId, Pageable page);
+
+  Page<User> findMentorsByName(String name, Pageable pageable);
 }

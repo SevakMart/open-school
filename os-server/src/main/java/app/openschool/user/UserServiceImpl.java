@@ -110,6 +110,11 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public Page<User> findMentorsByName(String name, Pageable pageable) {
+    return userRepository.findMentorsByName(name, pageable);
+  }
+
+  @Override
   public Page<Course> findSavedCourses(Long userId, Pageable pageable) {
     userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     return courseRepository.findSavedCourses(userId, pageable);

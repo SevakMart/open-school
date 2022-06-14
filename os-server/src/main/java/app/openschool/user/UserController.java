@@ -38,7 +38,6 @@ public class UserController {
     this.userService = userService;
   }
 
-
   @GetMapping("/{userId}/courses/suggested")
   @Operation(
       summary = "find suggested courses",
@@ -104,7 +103,7 @@ public class UserController {
   }
 
   @PostMapping("/courses/{courseId}")
-  @Operation(summary = "enroll course")
+  @Operation(summary = "enroll a course", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<CourseDto> enrollCourse(@PathVariable long courseId) {
     String username =
         (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

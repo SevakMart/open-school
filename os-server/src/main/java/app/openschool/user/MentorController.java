@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,5 +39,13 @@ public class MentorController {
   @Operation(summary = "find all mentors", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<Page<MentorDto>> findAllMentors(Pageable pageable) {
     return ResponseEntity.ok(MentorMapper.toMentorDtoPage(userService.findAllMentors(pageable)));
+  }
+
+  @GetMapping("/searched")
+  @Operation(summary = "find mentors by name", security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<Page<MentorDto>> findMentorsByName(
+      @RequestParam(required = false) String name, Pageable pageable) {
+    return ResponseEntity.ok(
+        MentorMapper.toMentorDtoPage(userService.findMentorsByName(name, pageable)));
   }
 }
