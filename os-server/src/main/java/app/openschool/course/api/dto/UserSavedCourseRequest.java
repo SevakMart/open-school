@@ -1,7 +1,10 @@
 package app.openschool.course.api.dto;
 
+import javax.validation.constraints.NotNull;
+
 public class UserSavedCourseRequest {
 
+  @NotNull(message = "{incorrect.argument}")
   private Long courseId;
 
   public UserSavedCourseRequest() {}

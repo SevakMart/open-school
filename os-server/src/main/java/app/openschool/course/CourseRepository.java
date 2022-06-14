@@ -1,14 +1,11 @@
 package app.openschool.course;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
@@ -51,23 +48,5 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
       nativeQuery = true)
   Page<Course> findSavedCourses(Long userId, Pageable pageable);
 
-  @Query(
-      value =
-          "SELECT * FROM learning_path lp JOIN user_saved_learning_paths ulp "
-              + "ON lp.id = ulp.learning_path_id "
-              + "WHERE ulp.user_id = ?1 AND ulp.learning_path_id = ?2",
-      nativeQuery = true)
-  Optional<Course> findSavedCourse(Long userId, Long courseId);
-
-  @Transactional
-  @Modifying
-  @Query(value = "INSERT INTO user_saved_learning_paths VALUES (?1, ?2)", nativeQuery = true)
-  void saveCourse(Long userId, Long courseId);
-
-  @Transactional
-  @Modifying
-  @Query(
-      value = "DELETE FROM user_saved_learning_paths WHERE user_id=?1 AND learning_path_id=?2",
-      nativeQuery = true)
-  void deleteCourse(Long userId, Long courseId);
+  Page<Course> findCoursesByMentorId(Long mentorId, Pageable page);
 }

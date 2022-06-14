@@ -6,6 +6,7 @@ import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.user.company.Company;
 import app.openschool.user.role.Role;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -78,10 +79,10 @@ public class User {
 
   @ManyToMany
   @JoinTable(
-          name = "user_saved_learning_pats",
-          joinColumns = {@JoinColumn(name = "user_id")},
-          inverseJoinColumns = {@JoinColumn(name = "learning_path_id")})
-  private Set<Course> savedCourses;
+      name = "user_saved_learning_paths",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "learning_path_id")})
+  private Set<Course> savedCourses = new HashSet<>();
 
   @OneToMany(mappedBy = "mentor")
   private Set<Course> courses;

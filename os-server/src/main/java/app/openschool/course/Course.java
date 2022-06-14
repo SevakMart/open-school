@@ -6,6 +6,7 @@ import app.openschool.course.keyword.Keyword;
 import app.openschool.course.language.Language;
 import app.openschool.course.module.Module;
 import app.openschool.user.User;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,16 +63,16 @@ public class Course {
 
   @ManyToMany
   @JoinTable(
-          name = "user_saved_learning_pats",
-          joinColumns = {@JoinColumn(name = "learning_path_id")},
-          inverseJoinColumns = {@JoinColumn(name = "user_id")})
-  private Set<User> users;
+      name = "user_saved_learning_paths",
+      joinColumns = {@JoinColumn(name = "learning_path_id")},
+      inverseJoinColumns = {@JoinColumn(name = "user_id")})
+  private Set<User> users = new HashSet<>();
 
   @OneToMany(mappedBy = "course")
   private Set<Module> modules;
 
   @OneToMany(mappedBy = "course")
-  private Set<EnrolledCourse> enrolledCourses;
+  private Set<EnrolledCourse> enrolledCourses = new HashSet<>();
 
   public Course() {}
 

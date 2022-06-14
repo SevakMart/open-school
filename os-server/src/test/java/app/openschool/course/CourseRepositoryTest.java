@@ -26,6 +26,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 
@@ -170,5 +171,11 @@ public class CourseRepositoryTest {
       assertEquals(1, searchedCourse.getLanguage().getId());
       assertEquals(1, searchedCourse.getDifficulty().getId());
     }
+  }
+
+  @Test
+  public void findCoursesByMentorId() {
+    Page<Course> coursePage = courseRepository.findCoursesByMentorId(1L, PageRequest.of(0, 3));
+    assertEquals(3, coursePage.getSize());
   }
 }

@@ -1,28 +1,28 @@
 package app.openschool.user;
 
 import app.openschool.category.api.dto.PreferredCategoryDto;
-import app.openschool.course.api.dto.CourseDto;
-import app.openschool.course.api.dto.UserCourseDto;
-import app.openschool.user.api.dto.MentorDto;
+import app.openschool.course.Course;
+import app.openschool.course.EnrolledCourse;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface UserService {
 
-  Page<MentorDto> findAllMentors(Pageable pageable);
+  Page<User> findAllMentors(Pageable pageable);
 
-  List<CourseDto> getSuggestedCourses(Long userId);
+  List<Course> getSuggestedCourses(Long userId);
 
   Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds);
 
-  List<UserCourseDto> findEnrolledCourses(Long courseStatusId);
+  List<EnrolledCourse> findEnrolledCourses(Long userId, Long courseStatusId);
 
-  Page<CourseDto> findSavedCourses(Pageable pageable);
+  Page<Course> findSavedCourses(Long userId, Pageable pageable);
 
-  Optional<Long> saveCourse(Long courseId);
+  Course saveCourse(Long userId, Long courseId);
 
-  Optional<Long> deleteCourse(Long courseId);
+  Course deleteCourse(Long userId, Long courseId);
+
+  Page<Course> findMentorCourses(Long mentorId, Pageable page);
 }
