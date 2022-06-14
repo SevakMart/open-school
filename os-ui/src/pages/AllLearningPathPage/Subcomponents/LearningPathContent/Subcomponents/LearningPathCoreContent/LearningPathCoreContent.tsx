@@ -13,13 +13,13 @@ type CourseListType=SuggestedCourseType & {id:number, bookmarked?:boolean}
 
 const LearningPathCoreContent = () => {
   const sendingParams = useSelector<RootState>((state) => state.filterParams);
-  const { token } = useContext(userContext);
+  const { token, id } = useContext(userContext);
   const [courseList, setCourseList] = useState<CourseListType[]>([]);
   const { mainCoreContainer, courseContainer } = styles;
 
   useEffect(() => {
     Promise.all([
-      userService.getUserSavedCourses(token, { page: 0, size: 100 }),
+      userService.getUserSavedCourses(id, token, { page: 0, size: 100 }),
       courseService.getSearchedCourses({ ...(sendingParams as object), page: 0, size: 100 }, token),
     ]).then((combinedData) => {
       const userSavedCourseContent = combinedData[0].content;
@@ -52,8 +52,12 @@ const LearningPathCoreContent = () => {
             keywords={course.keywords}
             isBookMarked={course.bookmarked}
             courseId={course.id}
-            saveCourse={(courseId:number) => userService.saveUserPreferredCourses(courseId, token)}
-            deleteCourse={(courseId:number) => userService.deleteUserSavedCourses(courseId, token)}
+            saveCourse={
+              (courseId:number) => userService.saveUserPreferredCourses(id, courseId, token)
+            }
+            deleteCourse={
+              (courseId:number) => userService.deleteUserSavedCourses(id, courseId, token)
+            }
           />
         </div>
       )) : <h2 data-testid="Error Message">{EMPTY_DATA_ERROR_MESSAGE}</h2>}

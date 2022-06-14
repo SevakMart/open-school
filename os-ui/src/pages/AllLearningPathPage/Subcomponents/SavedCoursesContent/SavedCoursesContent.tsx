@@ -14,12 +14,12 @@ type CourseListType=SuggestedCourseType & {id:number, bookmarked?:boolean}
 
 const SavedCoursesContent = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
-  const { token } = userInfo as any;
+  const { token, id } = userInfo as any;
   const [savedCourseList, setSavedCourseList] = useState<CourseListType[]>([]);
   const { mainContainer, coreContent } = styles;
 
   const handleCourseDeletion = (courseId:number) => {
-    userService.deleteUserSavedCourses(courseId, token);
+    userService.deleteUserSavedCourses(id, courseId, token);
     const index = savedCourseList.findIndex((course) => course.id === courseId);
     const savedCourses = savedCourseList;
     savedCourses.splice(index, 1);
@@ -30,7 +30,7 @@ const SavedCoursesContent = () => {
   };
 
   useEffect(() => {
-    userService.getUserSavedCourses(token, { page: 0, size: 100 })
+    userService.getUserSavedCourses(id, token, { page: 0, size: 100 })
       .then((data) => setSavedCourseList([...data.content.map((
         course:CourseListType,
       ) => ({ ...course, bookmarked: true }))]));
@@ -53,7 +53,7 @@ const SavedCoursesContent = () => {
                 isBookMarked={course.bookmarked}
                 courseId={course.id}
                 saveCourse={(courseId:number) => {
-                  userService.saveUserPreferredCourses(courseId, token);
+                  userService.saveUserPreferredCourses(id, courseId, token);
                 }}
                 deleteCourse={handleCourseDeletion}
               />

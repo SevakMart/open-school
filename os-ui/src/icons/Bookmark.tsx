@@ -17,7 +17,7 @@ const BookmarkIcon = (
   useEffect(() => {
     if (isClicked) {
       saveCourse && saveCourse(courseId!);
-    } else if (!isClicked) {
+    } else if (!isClicked && isBookmarked) {
       deleteCourse && deleteCourse(courseId!);
     }
   }, [isClicked]);
