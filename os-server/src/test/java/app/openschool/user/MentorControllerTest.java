@@ -5,8 +5,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import app.openschool.common.security.JwtTokenProvider;
+import app.openschool.common.security.UserPrincipal;
 import app.openschool.course.Course;
 import app.openschool.user.api.UserGenerator;
+import app.openschool.user.role.Role;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -28,6 +31,8 @@ import org.springframework.test.web.servlet.MockMvc;
 public class MentorControllerTest {
 
   @Autowired private MockMvc mockMvc;
+
+  @Autowired private JwtTokenProvider jwtTokenProvider;
 
   @MockBean private UserServiceImpl userService;
 
@@ -57,5 +62,30 @@ public class MentorControllerTest {
     mockMvc
         .perform(get("/mentors/1/courses").contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void findMentorsByName() throws Exception {
+    List<User> mentorList = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      mentorList.add(UserGenerator.generateUser());
+    }
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<User> mentorPage = new PageImpl<>(mentorList, pageable, 5);
+    when(userService.findMentorsByName("testName", pageable)).thenReturn(mentorPage);
+
+    User user = new User("Test", "pass");
+    user.setRole(new Role("STUDENT"));
+    String jwt = "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
+
+    mockMvc
+        .perform(
+            get("/api/v1/mentors/searched")
+                .queryParam("name", "testName")
+                .queryParam("page", "0")
+                .queryParam("size", "2")
+                .header("Authorization", jwt)
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk());
   }
 }

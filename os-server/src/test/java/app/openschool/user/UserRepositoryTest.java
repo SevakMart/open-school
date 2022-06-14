@@ -66,4 +66,19 @@ class UserRepositoryTest {
 
     assertThat(user).isEqualTo(fetchedUser.get());
   }
+
+  @Test
+  @Transactional
+  void findMentorsByName() {
+    userRepository.save(new User("John", "Doe", "testEmail", "testPass", new Role(3, "MENTOR")));
+    userRepository.save(new User("Doe", "John", "testEmail2", "testPass", new Role(3, "MENTOR")));
+    userRepository.save(new User("Doe", "John", "testEmail3", "testPass", new Role(1, "STUDENT")));
+    List<User> mentorsList = userRepository.findMentorsByName("jo", PageRequest.of(0, 5)).toList();
+
+    assertEquals(2, mentorsList.size());
+
+    for (User mentor : mentorsList) {
+      assertEquals("MENTOR", mentor.getRole().getType());
+    }
+  }
 }

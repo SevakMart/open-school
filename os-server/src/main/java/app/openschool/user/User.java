@@ -117,6 +117,14 @@ public class User {
     this.enabled = false;
   }
 
+  public User(String name, String surname, String email, String password, Role role) {
+    this.name = name;
+    this.surname = surname;
+    this.email = email;
+    this.password = password;
+    this.role = role;
+  }
+
   public User(String email, String password) {
     this.email = email;
     this.password = password;

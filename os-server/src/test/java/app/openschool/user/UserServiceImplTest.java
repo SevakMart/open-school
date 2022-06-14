@@ -13,7 +13,6 @@ import app.openschool.category.api.exception.CategoryNotFoundException;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
-import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.api.CourseGenerator;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
@@ -365,5 +364,21 @@ class UserServiceImplTest {
 
     userService.enrollCourse(username, coresId);
     verify(userRepository, times(1)).save(any());
+  }
+
+  @Test
+  void findMentorsByName() {
+    String testName = "testName";
+    List<User> userList = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      userList.add(UserGenerator.generateUser());
+    }
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<User> userPage = new PageImpl<>(userList, pageable, 5);
+    when(userRepository.findMentorsByName(testName, pageable)).thenReturn(userPage);
+    Assertions.assertEquals(3, userService.findMentorsByName(testName, pageable).getTotalPages());
+    Assertions.assertEquals(
+        5, userService.findMentorsByName(testName, pageable).getTotalElements());
+    verify(userRepository, Mockito.times(2)).findMentorsByName(testName, pageable);
   }
 }
