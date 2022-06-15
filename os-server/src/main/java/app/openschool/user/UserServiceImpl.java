@@ -115,6 +115,22 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
+  public User saveMentor(Long userId, Long mentorId, String username) {
+    User user = userRepository.findUserByEmail(username);
+    if (user.getId().equals(userId)) {
+      userRepository
+          .findUserById(mentorId)
+          .filter(mentor -> mentor.getRole().getType().equals("MENTOR"))
+          .map(mentor -> user.getMentors().add(mentor))
+          .orElseThrow(IllegalArgumentException::new);
+      return userRepository.save(user);
+    } else {
+      throw new IllegalArgumentException();
+    }
+  }
+
+  @Override
   public Page<Course> findSavedCourses(Long userId, Pageable pageable) {
     userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     return courseRepository.findSavedCourses(userId, pageable);

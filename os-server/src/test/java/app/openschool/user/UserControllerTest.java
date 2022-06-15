@@ -99,4 +99,33 @@ class UserControllerTest {
                 .header("Authorization", jwt))
         .andExpect(status().isCreated());
   }
+
+  @Test
+  void saveMentor() throws Exception {
+    User user = new User("Test", "pass");
+    user.setRole(new Role("STUDENT"));
+    String jwt = "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
+    when(userService.saveMentor(anyLong(), anyLong(), anyString())).thenReturn(user);
+    mockMvc
+        .perform(
+            post("/api/v1/users/1/mentors/2")
+                .contentType(APPLICATION_JSON)
+                .header("Authorization", jwt))
+        .andExpect(status().isCreated());
+  }
+
+  @Test
+  void saveMentorWithIncorrectCredentials() throws Exception {
+    User user = new User("Test", "pass");
+    user.setRole(new Role("STUDENT"));
+    String jwt = "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
+    when(userService.saveMentor(anyLong(), anyLong(), anyString()))
+        .thenThrow(IllegalArgumentException.class);
+    mockMvc
+        .perform(
+            post("/api/v1/users/1/mentors/2")
+                .contentType(APPLICATION_JSON)
+                .header("Authorization", jwt))
+        .andExpect(status().isBadRequest());
+  }
 }

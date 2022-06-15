@@ -7,6 +7,8 @@ import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.course.api.dto.UserSavedCourseRequest;
 import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.course.api.mapper.UserCourseMapper;
+import app.openschool.user.api.dto.UserWithSavedMentorsDto;
+import app.openschool.user.api.mapper.UserMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
@@ -105,14 +107,25 @@ public class UserController {
   @PostMapping("/courses/{courseId}")
   @Operation(summary = "enroll a course", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<CourseDto> enrollCourse(@PathVariable long courseId) {
-    String username =
-        (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
     return userService
         .enrollCourse(username, courseId)
         .map(
             course ->
                 ResponseEntity.status(HttpStatus.CREATED).body(CourseMapper.toCourseDto(course)))
         .orElseGet(() -> ResponseEntity.notFound().build());
+  }
+
+  @PostMapping("/{userId}/mentors/{mentorId}")
+  @Operation(summary = "save mentor", security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<UserWithSavedMentorsDto> saveMentor(
+      @PathVariable Long userId, @PathVariable Long mentorId) {
+
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(
+            UserMapper.userToUserWithSavedMentorsDto(
+                userService.saveMentor(userId, mentorId, username)));
   }
 }

@@ -94,6 +94,13 @@ public class User {
   @OneToOne(mappedBy = "user")
   private ResetPasswordToken resetPasswordToken;
 
+  @ManyToMany
+  @JoinTable(
+      name = "user_has_mentor",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "mentor_id"))
+  private Set<User> mentors = new HashSet<>();
+
   public User() {}
 
   public User(Long id) {
@@ -294,5 +301,17 @@ public class User {
 
   public void setSavedCourses(Set<Course> savedCourses) {
     this.savedCourses = savedCourses;
+  }
+
+  public Boolean getEnabled() {
+    return enabled;
+  }
+
+  public Set<User> getMentors() {
+    return mentors;
+  }
+
+  public void setMentors(Set<User> mentors) {
+    this.mentors = mentors;
   }
 }

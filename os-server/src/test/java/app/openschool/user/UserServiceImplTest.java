@@ -381,4 +381,41 @@ class UserServiceImplTest {
         5, userService.findMentorsByName(testName, pageable).getTotalElements());
     verify(userRepository, Mockito.times(2)).findMentorsByName(testName, pageable);
   }
+
+  @Test
+  void saveMentor() {
+    String email = "testEmail";
+    User mentor = new User();
+    User student = new User(1L);
+    mentor.setRole(new Role("MENTOR"));
+    when(userRepository.findUserByEmail(email)).thenReturn(student);
+    when(userRepository.findUserById(2L)).thenReturn(Optional.of(mentor));
+
+    userService.saveMentor(1L, 2L, email);
+
+    verify(userRepository, Mockito.times(1)).save(student);
+    verify(userRepository, Mockito.times(1)).findUserByEmail(email);
+    verify(userRepository, Mockito.times(1)).findUserById(2L);
+  }
+
+  @Test
+  void saveMentorWithWrongUserId() {
+    String email = "testEmail";
+    User student = new User(1L);
+    when(userRepository.findUserByEmail(email)).thenReturn(student);
+    assertThatThrownBy(() -> userService.saveMentor(2L, 3L, email))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void saveMentorWithWrongMentorId() {
+    String email = "testEmail";
+    User student = new User(1L);
+    User student2 = new User(2L);
+    student2.setRole(new Role("STUDENT"));
+    when(userRepository.findUserByEmail(email)).thenReturn(student);
+    when(userRepository.findUserById(2L)).thenReturn(Optional.of(student2));
+    assertThatThrownBy(() -> userService.saveMentor(1L, 2L, email))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
 }
