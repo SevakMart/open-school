@@ -119,7 +119,9 @@ public class UserController {
   }
 
   @GetMapping("/{userId}/courses/enrolled/{enrolledCourseId}")
-  @Operation(summary = "find user's enrolled course overview")
+  @Operation(
+      summary = "find user's enrolled course overview",
+      security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<EnrolledCourseOverviewDto> findEnrolledCoursesOverview(
       @PathVariable Long enrolledCourseId) {
     return ResponseEntity.ok(

@@ -5,10 +5,10 @@ import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.dto.EnrolledCourseOverviewDto;
 import app.openschool.course.module.EnrolledModule;
 import app.openschool.course.module.Module;
+import app.openschool.course.module.api.EnrolledModuleMapper;
 import app.openschool.course.module.item.EnrolledModuleItem;
 import app.openschool.course.module.item.ModuleItem;
 import java.util.Collection;
-import java.util.List;
 
 public class EnrolledCourseMapper {
   public static EnrolledCourseOverviewDto toEnrolledCourseOverviewDto(
@@ -19,7 +19,7 @@ public class EnrolledCourseMapper {
         enrolledCourse.getCourseStatus().getType(),
         getCourseGrade(enrolledCourse),
         getCourseEstimatedTime(enrolledCourse.getCourse()),
-        List.of());
+        EnrolledModuleMapper.toEnrolledModuleOverviewDtoList(enrolledCourse.getEnrolledModules()));
   }
 
   private static int getCourseGrade(EnrolledCourse enrolledCourse) {

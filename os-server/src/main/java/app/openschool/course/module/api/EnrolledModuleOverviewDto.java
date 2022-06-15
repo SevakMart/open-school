@@ -1,42 +1,42 @@
 package app.openschool.course.module.api;
 
 import app.openschool.course.module.item.api.EnrolledModuleItemOverviewDto;
-import java.util.List;
+import java.util.Set;
 
 public class EnrolledModuleOverviewDto {
 
-  private final String moduleTitle;
+  private final String title;
 
-  private final String moduleStatus;
+  private final String status;
 
-  private final long moduleEstimatedTime;
+  private final long estimatedTime;
 
-  private final List<EnrolledModuleItemOverviewDto> enrolledModules;
+  private final Set<EnrolledModuleItemOverviewDto> enrolledModulesItems;
 
   public EnrolledModuleOverviewDto(
-      String moduleTitle,
-      String moduleStatus,
-      long moduleEstimatedTime,
-      List<EnrolledModuleItemOverviewDto> enrolledModules) {
-    this.moduleTitle = moduleTitle;
-    this.moduleStatus = moduleStatus;
-    this.moduleEstimatedTime = moduleEstimatedTime;
-    this.enrolledModules = enrolledModules;
+      String title,
+      String status,
+      long estimatedTime,
+      Set<EnrolledModuleItemOverviewDto> enrolledModulesItems) {
+    this.title = title;
+    this.status = status;
+    this.estimatedTime = estimatedTime;
+    this.enrolledModulesItems = enrolledModulesItems;
   }
 
-  public String getModuleTitle() {
-    return moduleTitle;
+  public String getTitle() {
+    return title;
   }
 
-  public String getModuleStatus() {
-    return moduleStatus;
+  public String getStatus() {
+    return status;
   }
 
-  public long getModuleEstimatedTime() {
-    return moduleEstimatedTime;
+  public long getEstimatedTime() {
+    return estimatedTime;
   }
 
-  public List<EnrolledModuleItemOverviewDto> getEnrolledModules() {
-    return enrolledModules;
+  public Set<EnrolledModuleItemOverviewDto> getEnrolledModulesItems() {
+    return enrolledModulesItems;
   }
 }
