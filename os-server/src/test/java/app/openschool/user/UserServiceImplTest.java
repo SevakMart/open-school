@@ -1,6 +1,7 @@
 package app.openschool.user;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -34,7 +35,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -69,8 +69,8 @@ class UserServiceImplTest {
     Pageable pageable = PageRequest.of(0, 2);
     Page<User> userPage = new PageImpl<>(userList, pageable, 5);
     when(userRepository.findAllMentors(pageable)).thenReturn(userPage);
-    Assertions.assertEquals(3, userService.findAllMentors(pageable).getTotalPages());
-    Assertions.assertEquals(5, userService.findAllMentors(pageable).getTotalElements());
+    assertEquals(3, userService.findAllMentors(pageable).getTotalPages());
+    assertEquals(5, userService.findAllMentors(pageable).getTotalElements());
     verify(userRepository, Mockito.times(2)).findAllMentors(pageable);
   }
 
@@ -122,7 +122,7 @@ class UserServiceImplTest {
     }
     when(userRepository.findById(1L)).thenReturn(Optional.of(user));
     when(courseRepository.getSuggestedCourses(1L)).thenReturn(courseList);
-    Assertions.assertEquals(4, userService.getSuggestedCourses(1L).size());
+    assertEquals(4, userService.getSuggestedCourses(1L).size());
     Mockito.verify(courseRepository, Mockito.times(1)).getSuggestedCourses(1L);
   }
 
@@ -318,9 +318,9 @@ class UserServiceImplTest {
     enrolledCourses.add(enrolledCourse);
     user.setEnrolledCourses(enrolledCourses);
     when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-    Assertions.assertEquals(1, userService.findEnrolledCourses(1L, null).size());
+    assertEquals(1, userService.findEnrolledCourses(1L, null).size());
     userService.findEnrolledCourses(1L, 1L);
-    Assertions.assertEquals(1, userService.findEnrolledCourses(1L, 1L).size());
+    assertEquals(1, userService.findEnrolledCourses(1L, 1L).size());
   }
 
   @Test
@@ -349,7 +349,7 @@ class UserServiceImplTest {
     Pageable pageable = PageRequest.of(0, 6);
     when(userRepository.findById(any())).thenReturn(Optional.of(user));
     when(courseRepository.findCoursesByMentorId(user.getId(), pageable)).thenReturn(coursePage);
-    Assertions.assertEquals(
+    assertEquals(
         5, userService.findMentorCourses(user.getId(), PageRequest.of(0, 6)).getTotalElements());
   }
 
@@ -376,9 +376,8 @@ class UserServiceImplTest {
     Pageable pageable = PageRequest.of(0, 2);
     Page<User> userPage = new PageImpl<>(userList, pageable, 5);
     when(userRepository.findMentorsByName(testName, pageable)).thenReturn(userPage);
-    Assertions.assertEquals(3, userService.findMentorsByName(testName, pageable).getTotalPages());
-    Assertions.assertEquals(
-        5, userService.findMentorsByName(testName, pageable).getTotalElements());
+    assertEquals(3, userService.findMentorsByName(testName, pageable).getTotalPages());
+    assertEquals(5, userService.findMentorsByName(testName, pageable).getTotalElements());
     verify(userRepository, Mockito.times(2)).findMentorsByName(testName, pageable);
   }
 
@@ -416,6 +415,39 @@ class UserServiceImplTest {
     when(userRepository.findUserByEmail(email)).thenReturn(student);
     when(userRepository.findUserById(2L)).thenReturn(Optional.of(student2));
     assertThatThrownBy(() -> userService.saveMentor(1L, 2L, email))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void findSavedMentors() {
+    final String testName = "testName";
+    User user = new User();
+    Set<User> mentors = new HashSet<>();
+    for (int i = 0; i < 5; i++) {
+      mentors.add(UserGenerator.generateUser());
+    }
+    user.setId(1L);
+    user.setMentors(mentors);
+    Pageable pageable = PageRequest.of(0, 2);
+    when(userRepository.findUserByEmail(testName)).thenReturn(user);
+
+    Page<User> savedMentors = userService.findSavedMentors(1L, testName, pageable);
+
+    assertEquals(5, savedMentors.getTotalElements());
+    assertEquals(2, savedMentors.getPageable().getPageSize());
+
+    verify(userRepository, Mockito.times(1)).findUserByEmail(testName);
+  }
+
+  @Test
+  void findSavedMentorsWithIncorrectUserId() {
+    String testName = "testName";
+    User user = new User();
+    user.setId(2L);
+    Pageable pageable = PageRequest.of(0, 2);
+    when(userRepository.findUserByEmail(testName)).thenReturn(user);
+
+    assertThatThrownBy(() -> userService.findSavedMentors(1L, testName, pageable))
         .isInstanceOf(IllegalArgumentException.class);
   }
 }

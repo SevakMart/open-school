@@ -32,4 +32,6 @@ public interface UserService {
   Page<User> findMentorsByName(String name, Pageable pageable);
 
   User saveMentor(Long userId, Long mentorId, String username);
+
+  Page<User> findSavedMentors(Long userId, String username, Pageable pageable);
 }
