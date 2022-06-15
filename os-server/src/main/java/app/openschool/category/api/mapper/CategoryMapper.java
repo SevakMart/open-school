@@ -3,14 +3,20 @@ package app.openschool.category.api.mapper;
 import app.openschool.category.Category;
 import app.openschool.category.api.dto.CategoryDto;
 import app.openschool.category.api.dto.PreferredCategoryDto;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public class CategoryMapper {
+
+  private CategoryMapper() {
+    throw new IllegalStateException("Can not instantiate utility class");
+  }
 
   public static Page<CategoryDto> toCategoryDtoPage(Page<Category> categoryPage) {
     List<Category> categoryList = categoryPage.toList();
@@ -29,6 +35,13 @@ public class CategoryMapper {
 
   public static PreferredCategoryDto toPreferredCategoryDto(Category category) {
     return new PreferredCategoryDto(category.getId(), category.getTitle());
+  }
+
+  public static List<PreferredCategoryDto> toPreferredCategoryDtos(
+      Collection<Category> categories) {
+    return categories.stream()
+        .map(CategoryMapper::toPreferredCategoryDto)
+        .collect(Collectors.toList());
   }
 
   public static Set<Category> categoryIdSetToCategorySet(Set<Long> categoryIdSet) {
