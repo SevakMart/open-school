@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -117,15 +118,14 @@ public class UserController {
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  @PostMapping("/{userId}/mentors/{mentorId}")
+  @PutMapping("/{userId}/mentors/{mentorId}")
   @Operation(summary = "save mentor", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<UserWithSavedMentorsDto> saveMentor(
       @PathVariable Long userId, @PathVariable Long mentorId) {
 
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
-    return ResponseEntity.status(HttpStatus.CREATED)
-        .body(
-            UserMapper.userToUserWithSavedMentorsDto(
-                userService.saveMentor(userId, mentorId, username)));
+    return ResponseEntity.ok(
+        UserMapper.userToUserWithSavedMentorsDto(
+            userService.saveMentor(userId, mentorId, username)));
   }
 }

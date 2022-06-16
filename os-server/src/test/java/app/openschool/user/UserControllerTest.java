@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import app.openschool.common.security.JwtTokenProvider;
@@ -101,16 +102,16 @@ class UserControllerTest {
   }
 
   @Test
-  void saveMentor_WithCorrectCredentials_isCreated() throws Exception {
+  void saveMentor_WithCorrectCredentials_isOk() throws Exception {
     when(userService.saveMentor(anyLong(), anyLong(), anyString())).thenReturn(new User());
 
     String jwt = generateJwtToken();
     mockMvc
         .perform(
-            post("/api/v1/users/1/mentors/2")
+            put("/api/v1/users/1/mentors/2")
                 .contentType(APPLICATION_JSON)
                 .header("Authorization", jwt))
-        .andExpect(status().isCreated());
+        .andExpect(status().isOk());
   }
 
   @Test
@@ -121,7 +122,7 @@ class UserControllerTest {
     String jwt = generateJwtToken();
     mockMvc
         .perform(
-            post("/api/v1/users/1/mentors/2")
+            put("/api/v1/users/1/mentors/2")
                 .contentType(APPLICATION_JSON)
                 .header("Authorization", jwt))
         .andExpect(status().isBadRequest());

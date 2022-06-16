@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 public class UserMapper {
 
+  private UserMapper() {}
+
   public static UserWithSavedMentorsDto userToUserWithSavedMentorsDto(User user) {
     return new UserWithSavedMentorsDto(
         user.getId(),

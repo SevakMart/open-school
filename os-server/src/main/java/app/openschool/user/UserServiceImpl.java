@@ -120,11 +120,16 @@ public class UserServiceImpl implements UserService {
   public User saveMentor(Long userId, Long mentorId, String username) {
     User user = userRepository.findUserByEmail(username);
     if (user.getId().equals(userId)) {
-      userRepository
+      return userRepository
           .findUserById(mentorId)
           .filter(mentor -> mentor.getRole().getType().equals("MENTOR"))
-          .map(mentor -> user.getMentors().add(mentor));
-      return userRepository.save(user);
+          .map(
+              mentor -> {
+                user.getMentors().add(mentor);
+                return userRepository.save(user);
+              })
+          .orElse(user);
+
     } else {
       throw new IllegalArgumentException();
     }
