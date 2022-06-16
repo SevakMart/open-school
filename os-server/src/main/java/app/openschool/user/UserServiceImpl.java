@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -124,8 +123,7 @@ public class UserServiceImpl implements UserService {
       userRepository
           .findUserById(mentorId)
           .filter(mentor -> mentor.getRole().getType().equals("MENTOR"))
-          .map(mentor -> user.getMentors().add(mentor))
-          .orElseThrow(IllegalArgumentException::new);
+          .map(mentor -> user.getMentors().add(mentor));
       return userRepository.save(user);
     } else {
       throw new IllegalArgumentException();

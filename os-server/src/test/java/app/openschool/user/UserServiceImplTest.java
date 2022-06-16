@@ -407,19 +407,6 @@ class UserServiceImplTest {
   }
 
   @Test
-  void saveMentor_withWrongMentorId_throwIllegalArgumentException() {
-    String email = "testEmail";
-    User student = new User(1L);
-    User student2 = new User(2L);
-    student2.setRole(new Role("STUDENT"));
-    when(userRepository.findUserByEmail(email)).thenReturn(student);
-    when(userRepository.findUserById(2L)).thenReturn(Optional.of(student2));
-
-    assertThatThrownBy(() -> userService.saveMentor(1L, 2L, email))
-        .isInstanceOf(IllegalArgumentException.class);
-  }
-
-  @Test
   void findSavedMentors_withCorrectUserId_returnSavedMentors() {
     final String username = "username";
     User user = generateUserWithSavedMentors();
