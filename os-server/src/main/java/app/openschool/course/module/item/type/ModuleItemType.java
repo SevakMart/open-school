@@ -19,7 +19,7 @@ public class ModuleItemType {
   @Column(nullable = false)
   private Long id;
 
-  @Column(name = "status_type", nullable = false)
+  @Column(name = "type", nullable = false)
   private String type;
 
   @OneToMany(mappedBy = "moduleItemType")

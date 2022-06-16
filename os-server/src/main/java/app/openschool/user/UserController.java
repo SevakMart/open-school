@@ -105,7 +105,7 @@ public class UserController {
   }
 
   @PostMapping("/courses/{courseId}")
-  @Operation(summary = "enroll course")
+  @Operation(summary = "enroll course", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<CourseDto> enrollCourse(@PathVariable long courseId) {
     String username =
         (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -126,6 +126,6 @@ public class UserController {
       @PathVariable Long enrolledCourseId) {
     return ResponseEntity.ok(
         EnrolledCourseMapper.toEnrolledCourseOverviewDto(
-            userService.findEnrolledCourseOverview(enrolledCourseId)));
+            userService.findEnrolledCourseById(enrolledCourseId)));
   }
 }

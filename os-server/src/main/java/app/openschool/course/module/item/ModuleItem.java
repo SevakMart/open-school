@@ -24,7 +24,7 @@ public class ModuleItem {
   private String title;
 
   @ManyToOne
-  @JoinColumn(name = "module_item_type_id", nullable = false)
+  @JoinColumn(name = "module_item_type_id")
   private ModuleItemType moduleItemType;
 
   @Column(name = "link")

@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public EnrolledCourse findEnrolledCourseOverview(Long enrolledCourseId) {
+  public EnrolledCourse findEnrolledCourseById(Long enrolledCourseId) {
     return enrolledCourseRepository
         .findById(enrolledCourseId)
         .orElseThrow(IllegalArgumentException::new);

@@ -6,15 +6,9 @@ CREATE TABLE IF NOT EXISTS module_item_type
 );
 
 ALTER TABLE module_item
-ADD COLUMN title VARCHAR(45) NOT NULL AFTER module_id;
-
-ALTER TABLE module_item
-DROP COLUMN module_item_type;
-
-ALTER TABLE module_item
-ADD COLUMN module_item_type_id BIGINT AFTER module_id;
-
-ALTER TABLE module_item
+DROP COLUMN module_item_type,
+ADD COLUMN title VARCHAR(45) NOT NULL AFTER module_id,
+ADD COLUMN module_item_type_id BIGINT AFTER module_id,
 ADD CONSTRAINT fk_module_item_type
    FOREIGN KEY (module_item_type_id)
    REFERENCES module_item_type (id)
