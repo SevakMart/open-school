@@ -46,8 +46,8 @@ public class MentorController {
   @Operation(summary = "find saved mentors", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<Page<MentorDto>> findSavedMentors(
       @PathVariable Long userId, Pageable pageable) {
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
     return ResponseEntity.ok(
         MentorMapper.toMentorDtoPage(userService.findSavedMentors(userId, username, pageable)));
   }
@@ -58,5 +58,18 @@ public class MentorController {
       @RequestParam(required = false) String name, Pageable pageable) {
     return ResponseEntity.ok(
         MentorMapper.toMentorDtoPage(userService.findMentorsByName(name, pageable)));
+  }
+
+  @GetMapping("/searched/{userId}")
+  @Operation(
+      summary = "find saved mentors by name",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<Page<MentorDto>> findSavedMentorsByName(
+      @PathVariable Long userId, @RequestParam(required = false) String name, Pageable pageable) {
+
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    return ResponseEntity.ok(
+        MentorMapper.toMentorDtoPage(
+            userService.findSavedMentorsByName(userId, username, name, pageable)));
   }
 }

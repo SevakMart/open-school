@@ -303,10 +303,6 @@ public class User {
     this.savedCourses = savedCourses;
   }
 
-  public Boolean getEnabled() {
-    return enabled;
-  }
-
   public Set<User> getMentors() {
     return mentors;
   }

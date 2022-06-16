@@ -368,17 +368,17 @@ class UserServiceImplTest {
 
   @Test
   void findMentorsByName() {
-    String testName = "testName";
+    String username = "username";
     List<User> userList = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       userList.add(UserGenerator.generateUser());
     }
     Pageable pageable = PageRequest.of(0, 2);
     Page<User> userPage = new PageImpl<>(userList, pageable, 5);
-    when(userRepository.findMentorsByName(testName, pageable)).thenReturn(userPage);
-    assertEquals(3, userService.findMentorsByName(testName, pageable).getTotalPages());
-    assertEquals(5, userService.findMentorsByName(testName, pageable).getTotalElements());
-    verify(userRepository, Mockito.times(2)).findMentorsByName(testName, pageable);
+    when(userRepository.findMentorsByName(username, pageable)).thenReturn(userPage);
+    assertEquals(3, userService.findMentorsByName(username, pageable).getTotalPages());
+    assertEquals(5, userService.findMentorsByName(username, pageable).getTotalElements());
+    verify(userRepository, Mockito.times(2)).findMentorsByName(username, pageable);
   }
 
   @Test
@@ -420,7 +420,7 @@ class UserServiceImplTest {
 
   @Test
   void findSavedMentors() {
-    final String testName = "testName";
+    final String username = "username";
     User user = new User();
     Set<User> mentors = new HashSet<>();
     for (int i = 0; i < 5; i++) {
@@ -429,25 +429,26 @@ class UserServiceImplTest {
     user.setId(1L);
     user.setMentors(mentors);
     Pageable pageable = PageRequest.of(0, 2);
-    when(userRepository.findUserByEmail(testName)).thenReturn(user);
 
-    Page<User> savedMentors = userService.findSavedMentors(1L, testName, pageable);
+    when(userRepository.findUserByEmail(username)).thenReturn(user);
+
+    Page<User> savedMentors = userService.findSavedMentors(1L, username, pageable);
 
     assertEquals(5, savedMentors.getTotalElements());
     assertEquals(2, savedMentors.getPageable().getPageSize());
 
-    verify(userRepository, Mockito.times(1)).findUserByEmail(testName);
+    verify(userRepository, Mockito.times(1)).findUserByEmail(username);
   }
 
   @Test
   void findSavedMentorsWithIncorrectUserId() {
-    String testName = "testName";
+    String username = "username";
     User user = new User();
     user.setId(2L);
     Pageable pageable = PageRequest.of(0, 2);
-    when(userRepository.findUserByEmail(testName)).thenReturn(user);
+    when(userRepository.findUserByEmail(username)).thenReturn(user);
 
-    assertThatThrownBy(() -> userService.findSavedMentors(1L, testName, pageable))
+    assertThatThrownBy(() -> userService.findSavedMentors(1L, username, pageable))
         .isInstanceOf(IllegalArgumentException.class);
   }
 }

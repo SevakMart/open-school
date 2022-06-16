@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -137,6 +138,19 @@ public class UserServiceImpl implements UserService {
     if (user.getId().equals(userId)) {
       List<User> mentors = new ArrayList<>(user.getMentors());
       return new PageImpl<>(mentors, pageable, mentors.size());
+    } else {
+      throw new IllegalArgumentException();
+    }
+  }
+
+  @Override
+  @Transactional
+  public Page<User> findSavedMentorsByName(
+      Long userId, String username, String name, Pageable pageable) {
+
+    User user = userRepository.findUserByEmail(username);
+    if (user.getId().equals(userId)) {
+      return userRepository.findSavedMentorsByName(userId, name, pageable);
     } else {
       throw new IllegalArgumentException();
     }

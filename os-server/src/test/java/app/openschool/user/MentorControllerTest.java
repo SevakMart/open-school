@@ -91,15 +91,16 @@ public class MentorControllerTest {
 
   @Test
   void findSavedMentors() throws Exception {
+    String username = "testName";
     List<User> mentorList = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       mentorList.add(UserGenerator.generateUser());
     }
     Pageable pageable = PageRequest.of(0, 2);
     Page<User> mentorPage = new PageImpl<>(mentorList, pageable, 5);
-    when(userService.findSavedMentors(1L, "testName", pageable)).thenReturn(mentorPage);
+    when(userService.findSavedMentors(1L, username, pageable)).thenReturn(mentorPage);
 
-    User user = new User("testName", "pass");
+    User user = new User(username, "pass");
     user.setRole(new Role("STUDENT"));
     String jwt = "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
 
@@ -115,12 +116,12 @@ public class MentorControllerTest {
 
   @Test
   void findSavedMentorsWithIncorrectCredentials() throws Exception {
-
+    String username = "testName";
     Pageable pageable = PageRequest.of(0, 2);
-    when(userService.findSavedMentors(1L, "testName", pageable))
+    when(userService.findSavedMentors(1L, username, pageable))
         .thenThrow(IllegalArgumentException.class);
 
-    User user = new User("testName", "pass");
+    User user = new User(username, "pass");
     user.setRole(new Role("STUDENT"));
     String jwt = "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
 
