@@ -37,14 +37,7 @@ public class MentorControllerTest {
   @MockBean private UserServiceImpl userService;
 
   @Test
-  void findAllMentors() throws Exception {
-    List<User> mentorList = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
-      mentorList.add(UserGenerator.generateUser());
-    }
-    Pageable pageable = PageRequest.of(0, 2);
-    Page<User> mentorPage = new PageImpl<>(mentorList, pageable, 5);
-    when(userService.findAllMentors(pageable)).thenReturn(mentorPage);
+  void findAllMentors_withUnauthenticatedUser_isUnauthorized() throws Exception {
     mockMvc
         .perform(
             get("/api/v1/mentors")
@@ -52,6 +45,23 @@ public class MentorControllerTest {
                 .queryParam("size", "2")
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void findAllMentors_withLoggedUser_isOk() throws Exception {
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<User> mentorPage = generateMentorPage(pageable);
+    when(userService.findAllMentors(pageable)).thenReturn(mentorPage);
+
+    String jwt = generateJwtToken();
+    mockMvc
+        .perform(
+            get("/api/v1/mentors")
+                .queryParam("page", "0")
+                .queryParam("size", "2")
+                .header("Authorization", jwt)
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk());
   }
 
   @Test
@@ -65,23 +75,17 @@ public class MentorControllerTest {
   }
 
   @Test
-  void findMentorsByName() throws Exception {
-    List<User> mentorList = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
-      mentorList.add(UserGenerator.generateUser());
-    }
+  void findMentorsByName_withLoggedUser_isOk() throws Exception {
+    String mentorName = "mentor";
     Pageable pageable = PageRequest.of(0, 2);
-    Page<User> mentorPage = new PageImpl<>(mentorList, pageable, 5);
-    when(userService.findMentorsByName("testName", pageable)).thenReturn(mentorPage);
+    PageImpl<User> mentorPage = generateMentorPage(pageable);
+    when(userService.findMentorsByName(mentorName, pageable)).thenReturn(mentorPage);
 
-    User user = new User("Test", "pass");
-    user.setRole(new Role("STUDENT"));
-    String jwt = "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
-
+    String jwt = generateJwtToken();
     mockMvc
         .perform(
             get("/api/v1/mentors/searched")
-                .queryParam("name", "testName")
+                .queryParam("name", mentorName)
                 .queryParam("page", "0")
                 .queryParam("size", "2")
                 .header("Authorization", jwt)
@@ -90,20 +94,25 @@ public class MentorControllerTest {
   }
 
   @Test
-  void findSavedMentors() throws Exception {
-    String username = "testName";
-    List<User> mentorList = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
-      mentorList.add(UserGenerator.generateUser());
-    }
+  void findMentorsByName_withUnauthenticatedUser_isUnauthorized() throws Exception {
+    mockMvc
+        .perform(
+            get("/api/v1/mentors/searched")
+                .queryParam("name", "mentor")
+                .queryParam("page", "0")
+                .queryParam("size", "2")
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void findSavedMentors_withCorrectCredentials_isOk() throws Exception {
+    String username = "Test";
     Pageable pageable = PageRequest.of(0, 2);
-    Page<User> mentorPage = new PageImpl<>(mentorList, pageable, 5);
+    Page<User> mentorPage = generateMentorPage(pageable);
     when(userService.findSavedMentors(1L, username, pageable)).thenReturn(mentorPage);
 
-    User user = new User(username, "pass");
-    user.setRole(new Role("STUDENT"));
-    String jwt = "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
-
+    String jwt = generateJwtToken();
     mockMvc
         .perform(
             get("/api/v1/mentors/1")
@@ -115,16 +124,13 @@ public class MentorControllerTest {
   }
 
   @Test
-  void findSavedMentorsWithIncorrectCredentials() throws Exception {
-    String username = "testName";
+  void findSavedMentors_withIncorrectCredentials_isBadRequest() throws Exception {
+    String username = "Test";
     Pageable pageable = PageRequest.of(0, 2);
     when(userService.findSavedMentors(1L, username, pageable))
         .thenThrow(IllegalArgumentException.class);
 
-    User user = new User(username, "pass");
-    user.setRole(new Role("STUDENT"));
-    String jwt = "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
-
+    String jwt = generateJwtToken();
     mockMvc
         .perform(
             get("/api/v1/mentors/1")
@@ -133,5 +139,60 @@ public class MentorControllerTest {
                 .header("Authorization", jwt)
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void findSavedMentorsByName_withCorrectCredentials_isOk() throws Exception {
+    String username = "Test";
+    String mentorName = "Mentor";
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<User> mentorPage = generateMentorPage(pageable);
+    when(userService.findSavedMentorsByName(1L, username, mentorName, pageable))
+        .thenReturn(mentorPage);
+
+    String jwt = generateJwtToken();
+    mockMvc
+        .perform(
+            get("/api/v1/mentors/searched/1")
+                .queryParam("page", "0")
+                .queryParam("size", "2")
+                .queryParam("name", mentorName)
+                .header("Authorization", jwt)
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void findSavedMentorsByName_withIncorrectCredentials_isBadRequest() throws Exception {
+    String username = "Test";
+    String mentorName = "Mentor";
+    Pageable pageable = PageRequest.of(0, 2);
+    when(userService.findSavedMentorsByName(1L, username, mentorName, pageable))
+        .thenThrow(IllegalArgumentException.class);
+
+    String jwt = generateJwtToken();
+    mockMvc
+        .perform(
+            get("/api/v1/mentors/searched/1")
+                .queryParam("page", "0")
+                .queryParam("size", "2")
+                .queryParam("name", mentorName)
+                .header("Authorization", jwt)
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isBadRequest());
+  }
+
+  private PageImpl<User> generateMentorPage(Pageable pageable) {
+    List<User> mentorList = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      mentorList.add(UserGenerator.generateUser());
+    }
+    return new PageImpl<>(mentorList, pageable, 5);
+  }
+
+  private String generateJwtToken() {
+    User user = new User("Test", "pass");
+    user.setRole(new Role("STUDENT"));
+    return "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
   }
 }
