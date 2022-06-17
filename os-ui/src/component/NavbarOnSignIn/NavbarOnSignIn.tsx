@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styles from './NavbarOnSignIn.module.scss';
 import {
   APP_LOGO, ALL_LEARNING_PATHS, MY_LEARNING_PATHS, MENTORS,
@@ -7,6 +8,7 @@ import Notification from '../../icons/Notification';
 import DownArrowIcon from '../../icons/DownArrow';
 
 const NavbarOnSignIn = () => {
+  const navigate = useNavigate();
   const { mainContent, navMainContent, userInfoContent } = styles;
   return (
     <nav className={mainContent}>
@@ -14,7 +16,7 @@ const NavbarOnSignIn = () => {
       <div className={navMainContent}>
         <p>{ALL_LEARNING_PATHS}</p>
         <p>{MY_LEARNING_PATHS}</p>
-        <p>{MENTORS}</p>
+        <p onClick={() => navigate('/mentors')}>{MENTORS}</p>
         <BookmarkIcon iconSize="1.5rem" isBookmarked={false} />
         <Notification />
         <div className={userInfoContent}>

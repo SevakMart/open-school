@@ -1,0 +1,6 @@
+@import "../../../../styles/Mixins/FlexMixins.scss";
+
+.mainContent {
+    @include flexStyle(row,center,space-between);
+    flex-wrap:wrap;
+}

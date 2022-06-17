@@ -7,6 +7,7 @@ import ChooseCategoryPage from '../../pages/ChooseCategoryPage/ChooseCategoryPag
 import MyLearningPathPage from '../../pages/MyLearningPathPage/MyLearningPathPage';
 import AllLearningPathPage from '../../pages/AllLearningPathPage/AllLearningPathPage';
 import SavedCoursesContent from '../../pages/AllLearningPathPage/Subcomponents/SavedCoursesContent/SavedCoursesContent';
+import AllMentorsPage from '../../pages/AllMentorsPage/AllMentorsPage';
 
 const AppRoutes = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
@@ -43,6 +44,14 @@ const AppRoutes = () => {
         element={(
           <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
             <SavedCoursesContent />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/mentors"
+        element={(
+          <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
+            <AllMentorsPage />
           </ProtectedRoute>
         )}
       />

@@ -43,5 +43,10 @@ class UserService {
     const data = await (await fetchService.delete(`${this.basePath}/${userId}/courses/${courseId}/saved`, params, userToken)).json();
     return data;
   }
+
+  async saveUserMentor(userId:number, mentorId:number, userToken:string, params = {}) {
+    const data = await (await fetchService.put(`${this.basePath}/${userId}/mentors/${mentorId}`, params, userToken)).json();
+    return data;
+  }
 }
 export default new UserService();
