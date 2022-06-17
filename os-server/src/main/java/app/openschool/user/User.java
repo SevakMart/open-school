@@ -8,6 +8,7 @@ import app.openschool.user.company.Company;
 import app.openschool.user.role.Role;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -87,11 +88,18 @@ public class User {
   @OneToMany(mappedBy = "mentor")
   private Set<Course> courses;
 
-  @OneToMany(mappedBy = "user")
-  private Set<EnrolledCourse> enrolledCourses;
+  @OneToMany(cascade = CascadeType.MERGE, mappedBy = "user")
+  private Set<EnrolledCourse> enrolledCourses = new HashSet<>();
 
   @OneToOne(mappedBy = "user")
   private ResetPasswordToken resetPasswordToken;
+
+  @ManyToMany
+  @JoinTable(
+      name = "user_has_mentor",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "mentor_id"))
+  private Set<User> mentors = new HashSet<>();
 
   public User() {}
 
@@ -114,6 +122,14 @@ public class User {
     this.password = password;
     this.role = role;
     this.enabled = false;
+  }
+
+  public User(String name, String surname, String email, String password, Role role) {
+    this.name = name;
+    this.surname = surname;
+    this.email = email;
+    this.password = password;
+    this.role = role;
   }
 
   public User(String email, String password) {
@@ -285,5 +301,13 @@ public class User {
 
   public void setSavedCourses(Set<Course> savedCourses) {
     this.savedCourses = savedCourses;
+  }
+
+  public Set<User> getMentors() {
+    return mentors;
+  }
+
+  public void setMentors(Set<User> mentors) {
+    this.mentors = mentors;
   }
 }

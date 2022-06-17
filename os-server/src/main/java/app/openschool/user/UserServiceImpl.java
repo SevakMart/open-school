@@ -8,6 +8,7 @@ import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
+import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,6 +111,55 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public Page<User> findMentorsByName(String name, Pageable pageable) {
+    return userRepository.findMentorsByName(name, pageable);
+  }
+
+  @Override
+  @Transactional
+  public User saveMentor(Long userId, Long mentorId, String username) {
+    User user = userRepository.findUserByEmail(username);
+    if (user.getId().equals(userId)) {
+      return userRepository
+          .findUserById(mentorId)
+          .filter(mentor -> mentor.getRole().getType().equals("MENTOR"))
+          .map(
+              mentor -> {
+                user.getMentors().add(mentor);
+                return userRepository.save(user);
+              })
+          .orElse(user);
+
+    } else {
+      throw new IllegalArgumentException();
+    }
+  }
+
+  @Override
+  public Page<User> findSavedMentors(Long userId, String username, Pageable pageable) {
+    User user = userRepository.findUserByEmail(username);
+    if (user.getId().equals(userId)) {
+      List<User> mentors = new ArrayList<>(user.getMentors());
+      return new PageImpl<>(mentors, pageable, mentors.size());
+    } else {
+      throw new IllegalArgumentException();
+    }
+  }
+
+  @Override
+  @Transactional
+  public Page<User> findSavedMentorsByName(
+      Long userId, String username, String name, Pageable pageable) {
+
+    User user = userRepository.findUserByEmail(username);
+    if (user.getId().equals(userId)) {
+      return userRepository.findSavedMentorsByName(userId, name, pageable);
+    } else {
+      throw new IllegalArgumentException();
+    }
+  }
+
+  @Override
   public Page<Course> findSavedCourses(Long userId, Pageable pageable) {
     userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     return courseRepository.findSavedCourses(userId, pageable);
@@ -135,5 +186,20 @@ public class UserServiceImpl implements UserService {
       throw new IllegalArgumentException();
     }
     return course;
+  }
+
+  @Override
+  @Transactional
+  public Optional<Course> enrollCourse(String username, long courseId) {
+    Optional<User> optionalUser = userRepository.findByEmail(username);
+    Optional<Course> optionalCourse = courseRepository.findById(courseId);
+    if (optionalUser.isPresent() && optionalCourse.isPresent()) {
+      User user = optionalUser.get();
+      Course course = optionalCourse.get();
+      user.getEnrolledCourses().add(CourseMapper.toEnrolledCourse(course, user));
+      userRepository.save(user);
+      return Optional.of(course);
+    }
+    return Optional.empty();
   }
 }

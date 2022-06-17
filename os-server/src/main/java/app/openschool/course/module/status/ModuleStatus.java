@@ -27,6 +27,10 @@ public class ModuleStatus {
 
   public ModuleStatus() {}
 
+  public ModuleStatus(Long id) {
+    this.id = id;
+  }
+
   public ModuleStatus(String type) {
     this.type = type;
   }
@@ -35,6 +39,10 @@ public class ModuleStatus {
     this.id = id;
     this.type = type;
     this.enrolledModules = modules;
+  }
+
+  public static ModuleStatus inProgress() {
+    return new ModuleStatus(1L);
   }
 
   public boolean isInProgress() {

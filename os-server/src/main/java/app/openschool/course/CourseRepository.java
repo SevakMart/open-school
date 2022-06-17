@@ -1,6 +1,7 @@
 package app.openschool.course;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -49,4 +50,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
   Page<Course> findSavedCourses(Long userId, Pageable pageable);
 
   Page<Course> findCoursesByMentorId(Long mentorId, Pageable page);
+
+  Optional<Course> findById(Long id);
 }

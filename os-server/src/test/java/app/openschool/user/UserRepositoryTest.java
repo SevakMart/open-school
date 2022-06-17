@@ -66,4 +66,38 @@ class UserRepositoryTest {
 
     assertThat(user).isEqualTo(fetchedUser.get());
   }
+
+  @Test
+  void findMentorsByName() {
+    String roleMentor = "MENTOR";
+    String roleStudent = "STUDENT";
+    userRepository.save(new User("John", "Doe", "testEmail", "testPass", new Role(3, roleMentor)));
+    userRepository.save(new User("Doe", "John", "testEmail2", "testPass", new Role(3, roleMentor)));
+    userRepository.save(
+        new User("Doe", "John", "testEmail3", "testPass", new Role(1, roleStudent)));
+
+    List<User> mentorsList = userRepository.findMentorsByName("jo", PageRequest.of(0, 5)).toList();
+
+    assertEquals(2, mentorsList.size());
+    mentorsList.forEach(mentor -> assertEquals(roleMentor, mentor.getRole().getType()));
+  }
+
+  @Test
+  void findSavedMentorsByName() {
+    String roleMentor = "MENTOR";
+    String roleStudent = "STUDENT";
+    User mentor1 = new User("John", "Doe", "testEmail", "testPass", new Role(3, roleMentor));
+    User mentor2 = new User("Doe", "John", "testEmail2", "testPass", new Role(3, roleMentor));
+    User student = new User("Doe", "John", "testEmail3", "testPass", new Role(1, roleStudent));
+    student.setMentors(Set.of(mentor1, mentor2));
+    userRepository.save(mentor1);
+    userRepository.save(mentor2);
+    userRepository.save(student);
+
+    List<User> mentorsList =
+        userRepository.findSavedMentorsByName(3L, "jo", PageRequest.of(0, 5)).toList();
+
+    assertEquals(2, mentorsList.size());
+    mentorsList.forEach(mentor -> assertEquals(roleMentor, mentor.getRole().getType()));
+  }
 }

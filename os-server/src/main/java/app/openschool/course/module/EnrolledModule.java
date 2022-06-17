@@ -4,6 +4,7 @@ import app.openschool.course.EnrolledCourse;
 import app.openschool.course.module.item.EnrolledModuleItem;
 import app.openschool.course.module.status.ModuleStatus;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,10 +36,16 @@ public class EnrolledModule {
   @JoinColumn(name = "module_status_id")
   private ModuleStatus moduleStatus;
 
-  @OneToMany(mappedBy = "enrolledModule")
+  @OneToMany(cascade = CascadeType.MERGE, mappedBy = "enrolledModule")
   private Set<EnrolledModuleItem> enrolledModuleItems;
 
   public EnrolledModule() {}
+
+  public EnrolledModule(Module module, ModuleStatus moduleStatus, EnrolledCourse enrolledCourse) {
+    this.module = module;
+    this.moduleStatus = moduleStatus;
+    this.enrolledCourse = enrolledCourse;
+  }
 
   public EnrolledModule(
       Long id,

@@ -9,9 +9,11 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,5 +40,36 @@ public class MentorController {
   @Operation(summary = "find all mentors", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<Page<MentorDto>> findAllMentors(Pageable pageable) {
     return ResponseEntity.ok(MentorMapper.toMentorDtoPage(userService.findAllMentors(pageable)));
+  }
+
+  @GetMapping("/{userId}")
+  @Operation(summary = "find saved mentors", security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<Page<MentorDto>> findSavedMentors(
+      @PathVariable Long userId, Pageable pageable) {
+
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    return ResponseEntity.ok(
+        MentorMapper.toMentorDtoPage(userService.findSavedMentors(userId, username, pageable)));
+  }
+
+  @GetMapping("/searched")
+  @Operation(summary = "find mentors by name", security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<Page<MentorDto>> findMentorsByName(
+      @RequestParam(required = false) String name, Pageable pageable) {
+    return ResponseEntity.ok(
+        MentorMapper.toMentorDtoPage(userService.findMentorsByName(name, pageable)));
+  }
+
+  @GetMapping("/searched/{userId}")
+  @Operation(
+      summary = "find saved mentors by name",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<Page<MentorDto>> findSavedMentorsByName(
+      @PathVariable Long userId, @RequestParam(required = false) String name, Pageable pageable) {
+
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    return ResponseEntity.ok(
+        MentorMapper.toMentorDtoPage(
+            userService.findSavedMentorsByName(userId, username, name, pageable)));
   }
 }

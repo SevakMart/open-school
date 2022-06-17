@@ -7,7 +7,8 @@ import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.course.api.dto.UserSavedCourseRequest;
 import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.course.api.mapper.UserCourseMapper;
-import app.openschool.user.api.dto.MentorDto;
+import app.openschool.user.api.dto.UserWithSavedMentorsDto;
+import app.openschool.user.api.mapper.UserMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
@@ -16,12 +17,15 @@ import javax.validation.Valid;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +40,6 @@ public class UserController {
   public UserController(UserService userService) {
     this.userService = userService;
   }
-
 
   @GetMapping("/{userId}/courses/suggested")
   @Operation(
@@ -100,5 +103,29 @@ public class UserController {
       @PathVariable Long userId, @PathVariable Long courseId) {
     Course deletedCourse = userService.deleteCourse(userId, courseId);
     return ResponseEntity.ok(CourseMapper.toCourseDto(deletedCourse));
+  }
+
+  @PostMapping("/courses/{courseId}")
+  @Operation(summary = "enroll a course", security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<CourseDto> enrollCourse(@PathVariable long courseId) {
+
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    return userService
+        .enrollCourse(username, courseId)
+        .map(
+            course ->
+                ResponseEntity.status(HttpStatus.CREATED).body(CourseMapper.toCourseDto(course)))
+        .orElseGet(() -> ResponseEntity.notFound().build());
+  }
+
+  @PutMapping("/{userId}/mentors/{mentorId}")
+  @Operation(summary = "save mentor", security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<UserWithSavedMentorsDto> saveMentor(
+      @PathVariable Long userId, @PathVariable Long mentorId) {
+
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    return ResponseEntity.ok(
+        UserMapper.userToUserWithSavedMentorsDto(
+            userService.saveMentor(userId, mentorId, username)));
   }
 }

@@ -161,6 +161,12 @@ public class CourseRepositoryTest {
   }
 
   @Test
+  public void findById() {
+    String title = "theCourse";
+    courseRepository.save(new Course(1L, title));
+    assertEquals(title, courseRepository.findById(1L).get().getTitle());
+  }
+
   public void searchCourses() {
     List<Course> searchedCourses =
         courseRepository
