@@ -7,16 +7,19 @@ enum MentorsNav {
     SAVED_MENTORS_NAV='Saved Mentors Nav'
 }
 
-const AllMentorsPageHeader = ({ activeNavigator }:{activeNavigator:string}) => {
+const AllMentorsPageHeader = ({ activeNavigator, changeHeaderFocus }:
+  {activeNavigator:string, changeHeaderFocus:(headerNav:string)=>void}) => {
   const { mentorHeader, activeNav, nonActiveNav } = styles;
 
   return (
     <div className={mentorHeader}>
       <nav>
-        <p className={activeNavigator === MentorsNav.ALL_MENTORS_NAV ? activeNav : nonActiveNav}>
+        {/* eslint-disable-next-line max-len */}
+        <p className={activeNavigator === ALL_MENTORS ? activeNav : nonActiveNav} onClick={() => changeHeaderFocus(ALL_MENTORS)}>
           {ALL_MENTORS}
         </p>
-        <p className={activeNavigator === MentorsNav.SAVED_MENTORS_NAV ? activeNav : nonActiveNav}>
+        {/* eslint-disable-next-line max-len */}
+        <p className={activeNavigator === SAVED_MENTORS ? activeNav : nonActiveNav} onClick={() => changeHeaderFocus(SAVED_MENTORS)}>
           {SAVED_MENTORS}
         </p>
       </nav>
