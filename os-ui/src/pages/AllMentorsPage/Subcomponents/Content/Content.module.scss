@@ -1,6 +1,10 @@
 @import "../../../../styles/Mixins/FlexMixins.scss";
 
 .mainContent {
-    @include flexStyle(row,center,space-between);
-    flex-wrap:wrap;
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    gap:1.25rem;
+    margin-top:6%;
+    margin-bottom:6%;
+    
 }

@@ -3,7 +3,7 @@
 @import "../../styles/Mixins/FontMixin.scss";
 
 .mainContainer {
-  width: 20%;
+  /*width: 20%;*/
   margin: 2%;
   .headerContainer {
     @include flexStyle(row, center, space-between);

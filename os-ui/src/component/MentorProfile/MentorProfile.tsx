@@ -5,7 +5,10 @@ import BookmarkIcon from '../../icons/Bookmark';
 import BookIcon from '../../icons/Book';
 import styles from './MentorProfile.module.scss';
 
-const MentorCard = ({ mentor }:{mentor:MentorType}) => {
+const MentorCard = ({
+  mentor, id, saveMentor, isBookMarked,
+}:
+  {mentor:MentorType, id?:number, saveMentor?:(mentorid:number)=>void, isBookMarked?:boolean}) => {
   const {
     mainContainer, headerContainer, MailLinkedinIconsContainer, bodyContainer, mentorInfo,
     mentorAvatar, mentorInfoContainer, mentorExtraInfo,
@@ -18,7 +21,7 @@ const MentorCard = ({ mentor }:{mentor:MentorType}) => {
           <p>|</p>
           <p onClick={() => { window.location.href = mentor.linkedinPath; }}><LinkedinIcon /></p>
         </div>
-        <p><BookmarkIcon iconSize="1rem" isBookmarked={false} /></p>
+        <p><BookmarkIcon iconSize="1rem" isBookmarked={isBookMarked} mentorId={id} saveMentor={(mentorId) => saveMentor && saveMentor(mentorId)} /></p>
       </div>
       <div className={bodyContainer}>
         <div className={mentorInfoContainer}>

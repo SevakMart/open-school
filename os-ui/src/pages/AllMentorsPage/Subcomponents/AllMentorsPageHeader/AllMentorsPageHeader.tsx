@@ -8,10 +8,10 @@ enum MentorsNav {
 }
 
 const AllMentorsPageHeader = ({ activeNavigator }:{activeNavigator:string}) => {
-  const { activeNav, nonActiveNav } = styles;
+  const { mentorHeader, activeNav, nonActiveNav } = styles;
 
   return (
-    <div>
+    <div className={mentorHeader}>
       <nav>
         <p className={activeNavigator === MentorsNav.ALL_MENTORS_NAV ? activeNav : nonActiveNav}>
           {ALL_MENTORS}

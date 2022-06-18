@@ -3,11 +3,14 @@ import { FiBookmark } from 'react-icons/fi';
 
 const BookmarkIcon = (
   {
-    iconSize, isBookmarked, courseId, saveCourse, deleteCourse,
+    iconSize, isBookmarked, courseId, saveCourse, deleteCourse, mentorId, saveMentor, deleteMentor,
   }:
-  {iconSize:string, isBookmarked?:boolean, courseId?:number,
+  {iconSize:string, isBookmarked?:boolean, courseId?:number, mentorId?:number
   saveCourse?:(courseId:number)=>void,
-  deleteCourse?:(courseId:number)=>void},
+  deleteCourse?:(courseId:number)=>void,
+  saveMentor?:(mentorId:number)=>void,
+  deleteMentor?:(mentorId:number)=>void
+  },
 ) => {
   const [isClicked, setIsClicked] = useState(isBookmarked);
 
@@ -17,6 +20,7 @@ const BookmarkIcon = (
   useEffect(() => {
     if (isClicked) {
       saveCourse && saveCourse(courseId!);
+      saveMentor && saveMentor(mentorId!);
     } else if (!isClicked && isBookmarked) {
       deleteCourse && deleteCourse(courseId!);
     }
