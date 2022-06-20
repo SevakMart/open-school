@@ -20,6 +20,7 @@ public class MentorMapper {
 
   public static MentorDto toMentorDto(User user) {
     return new MentorDto(
+        user.getId(),
         user.getName(),
         user.getSurname(),
         user.getProfessionName(),

@@ -2,8 +2,11 @@ package app.openschool.user;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -126,6 +129,36 @@ class UserControllerTest {
                 .contentType(APPLICATION_JSON)
                 .header("Authorization", jwt))
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void deleteMentor_withIncorrectCredentials_isBadRequest() throws Exception {
+
+    doThrow(new IllegalArgumentException())
+        .when(userService)
+        .deleteMentor(anyLong(), anyString(), anyLong());
+
+    String jwt = generateJwtToken();
+    mockMvc
+        .perform(
+            delete("/api/v1/users/1/mentors/2/saved")
+                .contentType(APPLICATION_JSON)
+                .header("Authorization", jwt))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void deleteMentor_withCorrectCredentials_isOk() throws Exception {
+
+    doNothing().when(userService).deleteMentor(anyLong(), anyString(), anyLong());
+
+    String jwt = generateJwtToken();
+    mockMvc
+        .perform(
+            delete("/api/v1/users/1/mentors/2/saved")
+                .contentType(APPLICATION_JSON)
+                .header("Authorization", jwt))
+        .andExpect(status().isOk());
   }
 
   private String generateJwtToken() {

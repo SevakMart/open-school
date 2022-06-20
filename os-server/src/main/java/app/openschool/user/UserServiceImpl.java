@@ -160,6 +160,23 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public void deleteMentor(Long userId, String username, Long mentorId) {
+
+    User user = userRepository.findUserByEmail(username);
+    if (user.getId().equals(userId)) {
+      User mentor =
+          userRepository.findUserById(mentorId).orElseThrow(IllegalArgumentException::new);
+      Set<User> savedMentors = user.getMentors();
+      if (savedMentors.contains(mentor)) {
+        user.getMentors().remove(mentor);
+        userRepository.save(user);
+      }
+    } else {
+      throw new IllegalArgumentException();
+    }
+  }
+
+  @Override
   public Page<Course> findSavedCourses(Long userId, Pageable pageable) {
     userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     return courseRepository.findSavedCourses(userId, pageable);

@@ -128,4 +128,15 @@ public class UserController {
         UserMapper.userToUserWithSavedMentorsDto(
             userService.saveMentor(userId, mentorId, username)));
   }
+
+  @DeleteMapping("/{userId}/mentors/{mentorId}/saved")
+  @Operation(summary = "delete saved mentor", security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<Void> deleteMentor(@PathVariable Long userId, @PathVariable Long mentorId) {
+
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    userService.deleteMentor(userId, username, mentorId);
+
+    return ResponseEntity.ok().build();
+  }
 }

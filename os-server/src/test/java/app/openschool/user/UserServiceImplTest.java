@@ -2,6 +2,7 @@ package app.openschool.user;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -453,6 +454,42 @@ class UserServiceImplTest {
     when(userRepository.findUserByEmail(username)).thenThrow(IllegalArgumentException.class);
 
     assertThatThrownBy(() -> userService.findSavedMentorsByName(1L, username, "Mentor", pageable))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void deleteMentor_withCorrectUserIdAndMentorId_deleteSavedMentorIfExist() {
+    String email = "testEmail";
+    User mentor = new User(2L);
+    mentor.setRole(new Role("MENTOR"));
+    User student = new User(1L);
+    student.getMentors().add(mentor);
+
+    when(userRepository.findUserByEmail(email)).thenReturn(student);
+    when(userRepository.findUserById(2L)).thenReturn(Optional.of(mentor));
+
+    userService.deleteMentor(1L, email, 2L);
+
+    assertTrue(student.getMentors().isEmpty());
+    verify(userRepository, times(1)).save(student);
+  }
+
+  @Test
+  void deleteMentor_withIncorrectUserId_throwsIllegalArgumentException() {
+    String username = "User";
+    when(userRepository.findUserByEmail(username)).thenThrow(IllegalArgumentException.class);
+
+    assertThatThrownBy(() -> userService.deleteMentor(1L, username, 2L))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void deleteMentor_withIncorrectMentorId_throwsIllegalArgumentException() {
+    String username = "User";
+    when(userRepository.findUserByEmail(username)).thenReturn(new User(1L));
+    when(userRepository.findUserById(2L)).thenThrow(IllegalArgumentException.class);
+
+    assertThatThrownBy(() -> userService.deleteMentor(1L, username, 2L))
         .isInstanceOf(IllegalArgumentException.class);
   }
 

@@ -36,4 +36,6 @@ public interface UserService {
   Page<User> findSavedMentors(Long userId, String username, Pageable pageable);
 
   Page<User> findSavedMentorsByName(Long userId, String username, String name, Pageable pageable);
+
+  void deleteMentor(Long userId, String username, Long mentorId);
 }
