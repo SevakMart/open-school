@@ -1,7 +1,8 @@
 import Button from '../../../component/Button/Button';
 import styles from '../VerifyMessage.module.scss';
 
-const Message = ({ goToLogin, reSend, isVerify }:{goToLogin(arg:string):void, reSend(arg:string):void, isVerify: boolean }) => {
+const Message = ({ goToLogin, reSend, isVerify }:
+  {goToLogin(arg:string):void, reSend(arg:string):void, isVerify: boolean }) => {
   const messageBeforeVerify = 'Go to in your registered email and verify';
 
   const { mainContainer, buttonContainer } = styles;

@@ -28,7 +28,8 @@ const Homepage = () => {
   };
 
   const handleButtonClick = (buttonType:string) => {
-    const isTrue = (buttonType === Types.Button.SIGN_IN || Types.Button.SIGN_UP || Types.Button.VERIFY);
+    const isTrue = (buttonType === Types.Button.SIGN_IN
+      || Types.Button.SIGN_UP || Types.Button.VERIFY);
     if (isTrue) {
       manipulateByButtonType(buttonType);
     } else {
