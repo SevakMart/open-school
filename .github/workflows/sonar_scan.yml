@@ -34,5 +34,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: SPRING_PROFILES_ACTIVE=test ./gradlew build sonarqube --info
-      -name: Code coverage verification
-       run: ./gradlew jacocoTestCoverageVerification
+      - name: Code coverage verification
+        run: ./gradlew jacocoTestCoverageVerification
