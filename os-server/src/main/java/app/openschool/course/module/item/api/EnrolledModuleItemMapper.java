@@ -9,9 +9,10 @@ public class EnrolledModuleItemMapper {
   public static Set<EnrolledModuleItemOverviewDto> toEnrolledModuleItemOverviewDtoList(
       Set<EnrolledModuleItem> enrolledModuleItemSet) {
     Set<EnrolledModuleItemOverviewDto> enrolledModuleItemOverviewDtoSet = new HashSet<>();
-    for (EnrolledModuleItem enrolledModuleItem : enrolledModuleItemSet) {
-      enrolledModuleItemOverviewDtoSet.add(toEnrolledModuleItemOverviewDto(enrolledModuleItem));
-    }
+    enrolledModuleItemSet.forEach(
+        enrolledModuleItem ->
+            enrolledModuleItemOverviewDtoSet.add(
+                toEnrolledModuleItemOverviewDto(enrolledModuleItem)));
     return enrolledModuleItemOverviewDtoSet;
   }
 

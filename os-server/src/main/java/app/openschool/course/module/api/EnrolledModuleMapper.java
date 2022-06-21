@@ -12,9 +12,9 @@ public class EnrolledModuleMapper {
   public static Set<EnrolledModuleOverviewDto> toEnrolledModuleOverviewDtoList(
       Set<EnrolledModule> enrolledModuleSet) {
     Set<EnrolledModuleOverviewDto> enrolledModuleOverviewDtoSet = new HashSet<>();
-    for (EnrolledModule enrolledModule : enrolledModuleSet) {
-      enrolledModuleOverviewDtoSet.add(toEnrolledModuleOverviewDto(enrolledModule));
-    }
+    enrolledModuleSet.forEach(
+        enrolledModule ->
+            enrolledModuleOverviewDtoSet.add(toEnrolledModuleOverviewDto(enrolledModule)));
     return enrolledModuleOverviewDtoSet;
   }
 
