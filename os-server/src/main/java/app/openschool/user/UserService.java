@@ -17,6 +17,8 @@ public interface UserService {
 
   Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds);
 
+  EnrolledCourse findEnrolledCourseById(Long enrolledCourseId);
+
   Optional<Course> enrollCourse(String username, long courseId);
 
   List<EnrolledCourse> findEnrolledCourses(Long userId, Long courseStatusId);

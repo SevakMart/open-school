@@ -3,9 +3,11 @@ package app.openschool.user;
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.course.Course;
 import app.openschool.course.api.dto.CourseDto;
+import app.openschool.course.api.dto.EnrolledCourseOverviewDto;
 import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.course.api.dto.UserSavedCourseRequest;
 import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.api.mapper.EnrolledCourseMapper;
 import app.openschool.course.api.mapper.UserCourseMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -37,7 +39,6 @@ public class UserController {
   public UserController(UserService userService) {
     this.userService = userService;
   }
-
 
   @GetMapping("/{userId}/courses/suggested")
   @Operation(
@@ -104,7 +105,7 @@ public class UserController {
   }
 
   @PostMapping("/courses/{courseId}")
-  @Operation(summary = "enroll course")
+  @Operation(summary = "enroll course", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<CourseDto> enrollCourse(@PathVariable long courseId) {
     String username =
         (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -115,5 +116,16 @@ public class UserController {
             course ->
                 ResponseEntity.status(HttpStatus.CREATED).body(CourseMapper.toCourseDto(course)))
         .orElseGet(() -> ResponseEntity.notFound().build());
+  }
+
+  @GetMapping("/{userId}/courses/enrolled/{enrolledCourseId}")
+  @Operation(
+      summary = "find user's enrolled course overview",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<EnrolledCourseOverviewDto> findEnrolledCoursesOverview(
+      @PathVariable Long enrolledCourseId) {
+    return ResponseEntity.ok(
+        EnrolledCourseMapper.toEnrolledCourseOverviewDto(
+            userService.findEnrolledCourseById(enrolledCourseId)));
   }
 }

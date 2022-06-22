@@ -8,6 +8,7 @@ import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
+import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.ArrayList;
@@ -27,14 +28,17 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final CategoryRepository categoryRepository;
   private final CourseRepository courseRepository;
+  private final EnrolledCourseRepository enrolledCourseRepository;
 
   public UserServiceImpl(
       UserRepository userRepository,
       CategoryRepository categoryRepository,
-      CourseRepository courseRepository) {
+      CourseRepository courseRepository,
+      EnrolledCourseRepository enrolledCourseRepository) {
     this.userRepository = userRepository;
     this.categoryRepository = categoryRepository;
     this.courseRepository = courseRepository;
+    this.enrolledCourseRepository = enrolledCourseRepository;
   }
 
   @Override
@@ -151,5 +155,12 @@ public class UserServiceImpl implements UserService {
       return Optional.of(course);
     }
     return Optional.empty();
+  }
+
+  @Override
+  public EnrolledCourse findEnrolledCourseById(Long enrolledCourseId) {
+    return enrolledCourseRepository
+        .findById(enrolledCourseId)
+        .orElseThrow(IllegalArgumentException::new);
   }
 }

@@ -28,6 +28,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.mockito:mockito-inline:4.6.1'
 
     //open api
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
@@ -58,6 +59,10 @@ checkstyle {
     toolVersion '8.40'
     maxWarnings = 0
     ignoreFailures false
+}
+
+repositories {
+    mavenCentral()
 }
 
 tasks.withType(Checkstyle) {
