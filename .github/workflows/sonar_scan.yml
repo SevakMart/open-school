@@ -1,40 +1,38 @@
-name: sonar analyzes
-on:
-
-  pull_request:
-    branches: [main]
-jobs:
-  bulid:
-
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache Gradle packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-      - name: Build and analyze
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: SPRING_PROFILES_ACTIVE=test ./gradlew build sonarqube --info
-      - name: Code coverage verification
-        run: ./gradlew jacocoTestCoverageVerification
-      - name: Code coverage report
-        run: ./gradlew jacocoTestReport
+#name: sonar analyzes
+#on:
+#
+#  pull_request:
+#    branches: [main]
+#jobs:
+#  bulid:
+#
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#        with:
+#          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+#      - name: Set up JDK 11
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: 11
+#      - name: Cache SonarCloud packages
+#        uses: actions/cache@v1
+#        with:
+#          path: ~/.sonar/cache
+#          key: ${{ runner.os }}-sonar
+#          restore-keys: ${{ runner.os }}-sonar
+#      - name: Cache Gradle packages
+#        uses: actions/cache@v1
+#        with:
+#          path: ~/.gradle/caches
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+#          restore-keys: ${{ runner.os }}-gradle
+#      - name: Grant execute permission for gradlew
+#        run: chmod +x gradlew
+#      - name: Build and analyze
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#        run: SPRING_PROFILES_ACTIVE=test ./gradlew build sonarqube --info
+#      - name: Code coverage verification
+#        run: ./gradlew jacocoTestCoverageVerification
