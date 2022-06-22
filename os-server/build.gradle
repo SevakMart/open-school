@@ -61,16 +61,16 @@ jacocoTestReport {
     }
 }
 
-jacocoTestCoverageVerification {
-    dependsOn sonarqube
-    violationRules {
-        rule {
-            limit {
-                minimum = 0.3
-            }
-        }
-    }
-}
+//jacocoTestCoverageVerification {
+//    dependsOn sonarqube
+//    violationRules {
+//        rule {
+//            limit {
+//                minimum = 0.3
+//            }
+//        }
+//    }
+//}
 
 jar {
     enabled = false
