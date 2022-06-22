@@ -36,3 +36,5 @@ jobs:
         run: SPRING_PROFILES_ACTIVE=test ./gradlew build sonarqube --info
       - name: Code coverage verification
         run: ./gradlew jacocoTestCoverageVerification
+      - name: Code coverage report
+        run: ./gradlew jacocoTestReport
