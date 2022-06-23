@@ -22,13 +22,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -110,17 +108,14 @@ public class UserController {
     return ResponseEntity.ok(CourseMapper.toCourseDto(deletedCourse));
   }
 
-  @PostMapping("/courses/{courseId}")
+  @PostMapping("/{userId}/courses/{courseId}")
   @Operation(summary = "enroll course", security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<CourseDto> enrollCourse(@PathVariable long courseId) {
+  public ResponseEntity<CourseDto> enrollCourse(
+      @PathVariable long userId, @PathVariable long courseId) {
 
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-    return userService
-        .enrollCourse(username, courseId)
-        .map(
-            course ->
-                ResponseEntity.status(HttpStatus.CREATED).body(CourseMapper.toCourseDto(course)))
-        .orElseGet(() -> ResponseEntity.notFound().build());
+    User user = authService.validateUserRequestAndReturnUser(userId);
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(CourseMapper.toCourseDto(userService.enrollCourse(user, courseId)));
   }
 
   @GetMapping("/{userId}/courses/enrolled/{enrolledCourseId}")
@@ -134,14 +129,14 @@ public class UserController {
             userService.findEnrolledCourseById(enrolledCourseId)));
   }
 
-  @PutMapping("/{userId}/mentors/{mentorId}")
+  @PostMapping("/{userId}/mentors/{mentorId}")
   @Operation(summary = "save mentor", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<UserWithSavedMentorsDto> saveMentor(
       @PathVariable Long userId, @PathVariable Long mentorId) {
 
     User user = authService.validateUserRequestAndReturnUser(userId);
-    return ResponseEntity.ok(
-        UserMapper.userToUserWithSavedMentorsDto(userService.saveMentor(user, mentorId)));
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(UserMapper.userToUserWithSavedMentorsDto(userService.saveMentor(user, mentorId)));
   }
 
   @DeleteMapping("/{userId}/mentors/{mentorId}/saved")

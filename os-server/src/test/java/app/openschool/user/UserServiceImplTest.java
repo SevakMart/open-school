@@ -2,12 +2,11 @@ package app.openschool.user;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -20,6 +19,7 @@ import app.openschool.category.api.exception.CategoryNotFoundException;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
+import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.api.CourseGenerator;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
@@ -370,16 +370,23 @@ class UserServiceImplTest {
   }
 
   @Test
-  void enrollCourse() {
-    String username = "user";
-    long coresId = 1L;
-
-    when(userRepository.findByEmail(username)).thenReturn(Optional.of(new User(1L)));
-    when(courseRepository.findById(coresId))
+  void enrollCourse_WithCorrectCourseId_returnCourse() {
+    when(courseRepository.findById(anyLong()))
         .thenReturn(Optional.of(CourseGenerator.generateCourse()));
 
-    userService.enrollCourse(username, coresId);
+    userService.enrollCourse(new User(), 1L);
+
     verify(userRepository, times(1)).save(any());
+  }
+
+  @Test
+  void enrollCourse_WithIncorrectCourseId_throwsIllegalArgumentException() {
+    when(courseRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> userService.enrollCourse(new User(), 1L))
+        .isInstanceOf(IllegalArgumentException.class);
+
+    verifyNoInteractions(userRepository);
   }
 
   @Test
@@ -428,7 +435,8 @@ class UserServiceImplTest {
     User student = new User(1L);
     when(userRepository.findUserById(2L)).thenReturn(Optional.empty());
 
-    userService.saveMentor(student, 2L);
+    assertThatThrownBy(() -> userService.saveMentor(student, 2L))
+        .isInstanceOf(IllegalArgumentException.class);
 
     verify(userRepository, Mockito.times(0)).save(student);
     verify(userRepository, Mockito.times(1)).findUserById(anyLong());
@@ -441,7 +449,8 @@ class UserServiceImplTest {
     fakeMentor.setRole(new Role("STUDENT"));
     when(userRepository.findUserById(2L)).thenReturn(Optional.of(fakeMentor));
 
-    userService.saveMentor(student, 2L);
+    assertThatThrownBy(() -> userService.saveMentor(student, 2L))
+        .isInstanceOf(IllegalArgumentException.class);
 
     verify(userRepository, Mockito.times(0)).save(student);
     verify(userRepository, Mockito.times(1)).findUserById(anyLong());

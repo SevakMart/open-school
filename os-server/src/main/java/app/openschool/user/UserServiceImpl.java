@@ -122,15 +122,13 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public User saveMentor(User user, Long mentorId) {
-    return userRepository
-        .findUserById(mentorId)
-        .filter(mentor -> mentor.getRole().getType().equals("MENTOR"))
-        .map(
-            mentor -> {
-              user.getMentors().add(mentor);
-              return userRepository.save(user);
-            })
-        .orElse(user);
+    User mentor = userRepository.findUserById(mentorId).orElseThrow(IllegalArgumentException::new);
+    if (mentor.getRole().getType().equals("MENTOR")) {
+      user.getMentors().add(mentor);
+      return userRepository.save(user);
+    } else {
+      throw new IllegalArgumentException();
+    }
   }
 
   @Override
@@ -187,17 +185,11 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public Optional<Course> enrollCourse(String username, long courseId) {
-    Optional<User> optionalUser = userRepository.findByEmail(username);
-    Optional<Course> optionalCourse = courseRepository.findById(courseId);
-    if (optionalUser.isPresent() && optionalCourse.isPresent()) {
-      User user = optionalUser.get();
-      Course course = optionalCourse.get();
-      user.getEnrolledCourses().add(CourseMapper.toEnrolledCourse(course, user));
-      userRepository.save(user);
-      return Optional.of(course);
-    }
-    return Optional.empty();
+  public Course enrollCourse(User user, long courseId) {
+    Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
+    user.getEnrolledCourses().add(CourseMapper.toEnrolledCourse(course, user));
+    userRepository.save(user);
+    return course;
   }
 
   @Override
