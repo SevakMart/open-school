@@ -23,12 +23,16 @@ public class UserCourseMapper {
   public static UserCourseDto toUserCourseDto(EnrolledCourse enrolledCourse) {
     if (!enrolledCourse.getCourseStatus().isInProgress()) {
       return new UserCourseDto(
-          enrolledCourse.getCourse().getTitle(), enrolledCourse.getCourseStatus().getType(), 100);
+          enrolledCourse.getId(),
+          enrolledCourse.getCourse().getTitle(),
+          enrolledCourse.getCourseStatus().getType(),
+          100);
     }
     long courseRemainingTime = getCourseReamingTime(enrolledCourse);
     long courseTotalEstimatedTime = getCourseTotalEstimatedTime(enrolledCourse.getCourse());
     long percentage = 100L - ((courseRemainingTime * 100L) / courseTotalEstimatedTime);
     return new UserCourseDto(
+        enrolledCourse.getId(),
         enrolledCourse.getCourse().getTitle(),
         enrolledCourse.getCourseStatus().getType(),
         percentage,

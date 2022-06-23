@@ -21,7 +21,7 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
   useEffect(() => {
     let timer:any;
     if (isSignUp) {
-      timer = setTimeout(() => handleSignUpClicks('signIn'), 3000);
+      timer = setTimeout(() => handleSignUpClicks('verify'), 3000);
     }
     return () => clearTimeout(timer);
   }, [isSignUp]);
@@ -46,7 +46,7 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
               />
               <p className={alreadyHaveAccount}>
                 Have An Account?
-                <span><button type="button" onClick={() => handleSignUpClicks('signIn')}>{SIGN_IN}</button></span>
+                <span><button type="button" onClick={() => handleSignUpClicks('verify')}>{SIGN_IN}</button></span>
               </p>
             </>
           )}

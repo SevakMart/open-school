@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -19,6 +20,8 @@ import app.openschool.common.security.UserPrincipal;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.CourseGenerator;
+import app.openschool.course.api.dto.EnrolledCourseOverviewDto;
+import app.openschool.course.api.mapper.EnrolledCourseMapper;
 import app.openschool.user.role.Role;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +109,31 @@ class UserControllerTest {
                 .contentType(APPLICATION_JSON)
                 .header("Authorization", jwt))
         .andExpect(status().isCreated());
+  }
+
+  @Test
+  void findEnrolledCoursesOverview_userIsAuthenticated_expectStatusOk() throws Exception {
+    mockStatic(EnrolledCourseMapper.class);
+    when(EnrolledCourseMapper.toEnrolledCourseOverviewDto(any()))
+        .thenReturn(new EnrolledCourseOverviewDto());
+    when(userService.findEnrolledCourseById(any())).thenReturn(new EnrolledCourse());
+    User user = new User("Test", "pass");
+    user.setRole(new Role("STUDENT"));
+    String jwt = "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
+    mockMvc
+        .perform(
+            get("/api/v1/users/1/courses/enrolled/1")
+                .contentType(APPLICATION_JSON)
+                .header("Authorization", jwt))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void findEnrolledCoursesOverview_userIsNotAuthenticated_expectStatusUnauthorized()
+      throws Exception {
+    mockMvc
+        .perform(get("/api/v1/users/1/courses/enrolled/1").contentType(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
   }
 
   @Test

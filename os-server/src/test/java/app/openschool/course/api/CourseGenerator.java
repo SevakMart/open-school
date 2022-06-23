@@ -6,6 +6,7 @@ import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.language.Language;
 import app.openschool.course.module.Module;
 import app.openschool.course.module.item.ModuleItem;
+import app.openschool.course.module.item.type.ModuleItemType;
 import app.openschool.user.User;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +18,9 @@ public class CourseGenerator {
     Set<Module> modules = new HashSet<>();
     Set<ModuleItem> moduleItems = new HashSet<>();
     Module module = new Module(1L, course, moduleItems);
-    ModuleItem moduleItem = new ModuleItem(1L, "TheType", 100L, module);
+    ModuleItemType moduleItemType = new ModuleItemType();
+    moduleItemType.setType("TheType");
+    ModuleItem moduleItem = new ModuleItem(1L, "String", moduleItemType, "kkk", 100L, module);
     moduleItems.add(moduleItem);
     modules.add(module);
     Set<EnrolledCourse> enrolledCourses = new HashSet<>();
@@ -42,7 +45,9 @@ public class CourseGenerator {
     Set<Module> modules = new HashSet<>();
     Set<ModuleItem> moduleItems = new HashSet<>();
     Module module = new Module(1L, course, moduleItems);
-    ModuleItem moduleItem = new ModuleItem(1L, "TheType", 100L, module);
+    ModuleItemType moduleItemType = new ModuleItemType();
+    moduleItemType.setType("TheType");
+    ModuleItem moduleItem = new ModuleItem(1L, "String", moduleItemType, "kkk", 100L, module);
     moduleItems.add(moduleItem);
     modules.add(module);
 

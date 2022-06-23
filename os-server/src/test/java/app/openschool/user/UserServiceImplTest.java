@@ -3,9 +3,11 @@ package app.openschool.user;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -27,6 +29,7 @@ import app.openschool.course.module.Module;
 import app.openschool.course.module.item.EnrolledModuleItem;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.status.ModuleItemStatus;
+import app.openschool.course.module.item.type.ModuleItemType;
 import app.openschool.course.module.status.ModuleStatus;
 import app.openschool.course.status.CourseStatus;
 import app.openschool.user.api.UserGenerator;
@@ -56,12 +59,15 @@ class UserServiceImplTest {
   @Mock private UserRepository userRepository;
   @Mock private CategoryRepository categoryRepository;
   @Mock private CourseRepository courseRepository;
+  @Mock private EnrolledCourseRepository enrolledCourseRepository;
 
   private UserService userService;
 
   @BeforeEach
   void setUp() {
-    userService = new UserServiceImpl(userRepository, categoryRepository, courseRepository);
+    userService =
+        new UserServiceImpl(
+            userRepository, categoryRepository, courseRepository, enrolledCourseRepository);
   }
 
   @Test
@@ -217,7 +223,9 @@ class UserServiceImplTest {
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
       moduleItem.setId(i);
-      moduleItem.setModuleItemType("video");
+      ModuleItemType moduleItemType = new ModuleItemType();
+      moduleItemType.setType("reading");
+      moduleItem.setModuleItemType(moduleItemType);
       moduleItem.setEstimatedTime(35L);
       moduleItem.setModule(module1);
       moduleItemsModule1.add(moduleItem);
@@ -230,7 +238,9 @@ class UserServiceImplTest {
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
       moduleItem.setId(i + 2);
-      moduleItem.setModuleItemType("reading");
+      ModuleItemType moduleItemType = new ModuleItemType();
+      moduleItemType.setType("reading");
+      moduleItem.setModuleItemType(moduleItemType);
       moduleItem.setEstimatedTime(25L);
       moduleItem.setModule(module2);
       moduleItemsModule2.add(moduleItem);
@@ -240,10 +250,12 @@ class UserServiceImplTest {
     Module module3 =
         moduleSet.stream().filter(module -> module.getId().equals(3L)).findFirst().get();
     ModuleItem moduleItem = new ModuleItem();
-    moduleItem.setId(5L);
-    moduleItem.setModuleItemType("reading");
-    moduleItem.setEstimatedTime(30L);
     moduleItem.setModule(module3);
+    moduleItem.setId(5L);
+    ModuleItemType moduleItemType = new ModuleItemType();
+    moduleItemType.setType("reading");
+    moduleItem.setModuleItemType(moduleItemType);
+    moduleItem.setEstimatedTime(30L);
     Set<ModuleItem> moduleItemsModule3 = new HashSet<>();
     moduleItemsModule3.add(moduleItem);
     module3.setModuleItems(moduleItemsModule3);
@@ -368,6 +380,22 @@ class UserServiceImplTest {
 
     userService.enrollCourse(username, coresId);
     verify(userRepository, times(1)).save(any());
+  }
+
+  @Test
+  void findEnrolledCourseById_courseIsPresent_returnsEnrolledCourse() {
+    when(enrolledCourseRepository.findById(anyLong()))
+        .thenReturn(Optional.of(new EnrolledCourse()));
+    EnrolledCourse enrolledCourse = userService.findEnrolledCourseById(1L);
+    assertNotNull(enrolledCourse);
+    verify(enrolledCourseRepository, times(1)).findById(anyLong());
+  }
+
+  @Test
+  void findEnrolledCourseById_courseIsNotPresent_throwsException() {
+    when(enrolledCourseRepository.findById(anyLong())).thenReturn(Optional.empty());
+    assertThatThrownBy(() -> userService.findEnrolledCourseById(1L))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
