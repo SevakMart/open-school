@@ -27,4 +27,6 @@ public interface AuthService {
   Optional<User> findByEmail(String email);
 
   Optional<ResetPasswordToken> findByToken(String token);
+
+  User validateUserRequestAndReturnUser(Long userId);
 }

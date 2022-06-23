@@ -1,5 +1,6 @@
 package app.openschool.user;
 
+import app.openschool.auth.AuthService;
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.course.Course;
 import app.openschool.course.api.dto.CourseDto;
@@ -36,9 +37,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   private final UserService userService;
+  private final AuthService authService;
 
-  public UserController(UserService userService) {
+  public UserController(UserService userService, AuthService authService) {
     this.userService = userService;
+    this.authService = authService;
   }
 
   @GetMapping("/{userId}/courses/suggested")
@@ -123,20 +126,17 @@ public class UserController {
   public ResponseEntity<UserWithSavedMentorsDto> saveMentor(
       @PathVariable Long userId, @PathVariable Long mentorId) {
 
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    User user = authService.validateUserRequestAndReturnUser(userId);
     return ResponseEntity.ok(
-        UserMapper.userToUserWithSavedMentorsDto(
-            userService.saveMentor(userId, mentorId, username)));
+        UserMapper.userToUserWithSavedMentorsDto(userService.saveMentor(user, mentorId)));
   }
 
   @DeleteMapping("/{userId}/mentors/{mentorId}/saved")
   @Operation(summary = "delete saved mentor", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<Void> deleteMentor(@PathVariable Long userId, @PathVariable Long mentorId) {
 
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-    userService.deleteMentor(userId, username, mentorId);
-
+    User user = authService.validateUserRequestAndReturnUser(userId);
+    userService.deleteMentor(user, mentorId);
     return ResponseEntity.ok().build();
   }
 }

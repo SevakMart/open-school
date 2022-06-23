@@ -1,10 +1,15 @@
 package app.openschool.user;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import app.openschool.auth.AuthServiceImpl;
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.course.Course;
@@ -35,6 +40,8 @@ public class MentorControllerTest {
   @Autowired private JwtTokenProvider jwtTokenProvider;
 
   @MockBean private UserServiceImpl userService;
+
+  @MockBean private AuthServiceImpl authService;
 
   @Test
   void findAllMentors_withUnauthenticatedUser_isUnauthorized() throws Exception {
@@ -106,11 +113,11 @@ public class MentorControllerTest {
   }
 
   @Test
-  void findSavedMentors_withCorrectCredentials_isOk() throws Exception {
-    String username = "Test";
+  void findSavedMentors_withCorrectUserId_isOk() throws Exception {
     Pageable pageable = PageRequest.of(0, 2);
     Page<User> mentorPage = generateMentorPage(pageable);
-    when(userService.findSavedMentors(1L, username, pageable)).thenReturn(mentorPage);
+    when(authService.validateUserRequestAndReturnUser(anyLong())).thenReturn(new User());
+    when(userService.findSavedMentors(any(), any())).thenReturn(mentorPage);
 
     String jwt = generateJwtToken();
     mockMvc
@@ -124,10 +131,8 @@ public class MentorControllerTest {
   }
 
   @Test
-  void findSavedMentors_withIncorrectCredentials_isBadRequest() throws Exception {
-    String username = "Test";
-    Pageable pageable = PageRequest.of(0, 2);
-    when(userService.findSavedMentors(1L, username, pageable))
+  void findSavedMentors_withIncorrectUserId_isBadRequest() throws Exception {
+    when(authService.validateUserRequestAndReturnUser(anyLong()))
         .thenThrow(IllegalArgumentException.class);
 
     String jwt = generateJwtToken();
@@ -142,13 +147,11 @@ public class MentorControllerTest {
   }
 
   @Test
-  void findSavedMentorsByName_withCorrectCredentials_isOk() throws Exception {
-    String username = "Test";
-    String mentorName = "Mentor";
+  void findSavedMentorsByName_withCorrectUserId_isOk() throws Exception {
     Pageable pageable = PageRequest.of(0, 2);
     Page<User> mentorPage = generateMentorPage(pageable);
-    when(userService.findSavedMentorsByName(1L, username, mentorName, pageable))
-        .thenReturn(mentorPage);
+    when(authService.validateUserRequestAndReturnUser(anyLong())).thenReturn(new User());
+    when(userService.findSavedMentorsByName(anyLong(), anyString(), any())).thenReturn(mentorPage);
 
     String jwt = generateJwtToken();
     mockMvc
@@ -156,18 +159,15 @@ public class MentorControllerTest {
             get("/api/v1/mentors/searched/1")
                 .queryParam("page", "0")
                 .queryParam("size", "2")
-                .queryParam("name", mentorName)
+                .queryParam("name", "Mentor")
                 .header("Authorization", jwt)
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isOk());
   }
 
   @Test
-  void findSavedMentorsByName_withIncorrectCredentials_isBadRequest() throws Exception {
-    String username = "Test";
-    String mentorName = "Mentor";
-    Pageable pageable = PageRequest.of(0, 2);
-    when(userService.findSavedMentorsByName(1L, username, mentorName, pageable))
+  void findSavedMentorsByName_withIncorrectUserId_isBadRequest() throws Exception {
+    when(authService.validateUserRequestAndReturnUser(anyLong()))
         .thenThrow(IllegalArgumentException.class);
 
     String jwt = generateJwtToken();
@@ -176,7 +176,7 @@ public class MentorControllerTest {
             get("/api/v1/mentors/searched/1")
                 .queryParam("page", "0")
                 .queryParam("size", "2")
-                .queryParam("name", mentorName)
+                .queryParam("name", "Mentor")
                 .header("Authorization", jwt)
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isBadRequest());

@@ -117,63 +117,39 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public User saveMentor(Long userId, Long mentorId, String username) {
-    User user = userRepository.findUserByEmail(username);
-    if (user.getId().equals(userId)) {
-      return userRepository
-          .findUserById(mentorId)
-          .filter(mentor -> mentor.getRole().getType().equals("MENTOR"))
-          .map(
-              mentor -> {
-                user.getMentors().add(mentor);
-                return userRepository.save(user);
-              })
-          .orElse(user);
-
-    } else {
-      throw new IllegalArgumentException();
-    }
+  public User saveMentor(User user, Long mentorId) {
+    return userRepository
+        .findUserById(mentorId)
+        .filter(mentor -> mentor.getRole().getType().equals("MENTOR"))
+        .map(
+            mentor -> {
+              user.getMentors().add(mentor);
+              return userRepository.save(user);
+            })
+        .orElse(user);
   }
 
   @Override
-  public Page<User> findSavedMentors(Long userId, String username, Pageable pageable) {
-    User user = userRepository.findUserByEmail(username);
-    if (user.getId().equals(userId)) {
-      List<User> mentors = new ArrayList<>(user.getMentors());
-      return new PageImpl<>(mentors, pageable, mentors.size());
-    } else {
-      throw new IllegalArgumentException();
-    }
+  public Page<User> findSavedMentors(User user, Pageable pageable) {
+    List<User> mentors = new ArrayList<>(user.getMentors());
+    return new PageImpl<>(mentors, pageable, mentors.size());
   }
 
   @Override
   @Transactional
-  public Page<User> findSavedMentorsByName(
-      Long userId, String username, String name, Pageable pageable) {
-
-    User user = userRepository.findUserByEmail(username);
-    if (user.getId().equals(userId)) {
-      return userRepository.findSavedMentorsByName(userId, name, pageable);
-    } else {
-      throw new IllegalArgumentException();
-    }
+  public Page<User> findSavedMentorsByName(Long userId, String name, Pageable pageable) {
+    return userRepository.findSavedMentorsByName(userId, name, pageable);
   }
 
   @Override
-  public void deleteMentor(Long userId, String username, Long mentorId) {
-
-    User user = userRepository.findUserByEmail(username);
-    if (user.getId().equals(userId)) {
-      User mentor =
-          userRepository.findUserById(mentorId).orElseThrow(IllegalArgumentException::new);
-      Set<User> savedMentors = user.getMentors();
-      if (savedMentors.contains(mentor)) {
-        user.getMentors().remove(mentor);
-        userRepository.save(user);
-      }
-    } else {
-      throw new IllegalArgumentException();
-    }
+  public void deleteMentor(User user, Long mentorId) {
+    userRepository
+        .findUserById(mentorId)
+        .map(
+            mentor -> {
+              user.getMentors().remove(mentor);
+              return userRepository.save(user);
+            });
   }
 
   @Override

@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import app.openschool.category.Category;
@@ -382,115 +383,108 @@ class UserServiceImplTest {
   }
 
   @Test
-  void saveMentor_withCorrectUserIdAndMentorId_returnUser() {
-    String email = "testEmail";
-    User mentor = new User();
+  void saveMentor_withCorrectMentorId_returnUser() {
+    User mentor = new User(2L);
     User student = new User(1L);
     mentor.setRole(new Role("MENTOR"));
-    when(userRepository.findUserByEmail(email)).thenReturn(student);
     when(userRepository.findUserById(2L)).thenReturn(Optional.of(mentor));
 
-    userService.saveMentor(1L, 2L, email);
+    userService.saveMentor(student, 2L);
 
     verify(userRepository, Mockito.times(1)).save(student);
-    verify(userRepository, Mockito.times(1)).findUserByEmail(email);
-    verify(userRepository, Mockito.times(1)).findUserById(2L);
+    verify(userRepository, Mockito.times(1)).findUserById(anyLong());
   }
 
   @Test
-  void saveMentor_withWrongUserId_throwIllegalArgumentException() {
-    String email = "testEmail";
+  void saveMentor_withIncorrectMentorId_returnUser() {
     User student = new User(1L);
-    when(userRepository.findUserByEmail(email)).thenReturn(student);
+    when(userRepository.findUserById(2L)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> userService.saveMentor(2L, 3L, email))
-        .isInstanceOf(IllegalArgumentException.class);
+    userService.saveMentor(student, 2L);
+
+    verify(userRepository, Mockito.times(0)).save(student);
+    verify(userRepository, Mockito.times(1)).findUserById(anyLong());
   }
 
   @Test
-  void findSavedMentors_withCorrectUserId_returnSavedMentors() {
-    final String username = "username";
+  void saveMentor_withFakeMentor_returnUser() {
+    User fakeMentor = new User(2L);
+    User student = new User(1L);
+    fakeMentor.setRole(new Role("STUDENT"));
+    when(userRepository.findUserById(2L)).thenReturn(Optional.of(fakeMentor));
+
+    userService.saveMentor(student, 2L);
+
+    verify(userRepository, Mockito.times(0)).save(student);
+    verify(userRepository, Mockito.times(1)).findUserById(anyLong());
+  }
+
+  @Test
+  void findSavedMentors_returnSavedMentors() {
     User user = generateUserWithSavedMentors();
-    when(userRepository.findUserByEmail(username)).thenReturn(user);
 
     Pageable pageable = PageRequest.of(0, 2);
-    Page<User> savedMentors = userService.findSavedMentors(1L, username, pageable);
+    Page<User> savedMentors = userService.findSavedMentors(user, pageable);
 
     assertEquals(5, savedMentors.getTotalElements());
     assertEquals(2, savedMentors.getPageable().getPageSize());
-    verify(userRepository, Mockito.times(1)).findUserByEmail(username);
+    verifyNoInteractions(userRepository);
   }
 
   @Test
-  void findSavedMentors_withIncorrectUserId_throwIllegalArgumentException() {
-    String username = "username";
-    User user = new User(2L);
-    when(userRepository.findUserByEmail(username)).thenReturn(user);
-
+  void findSavedMentorsByName_returnSavedMentors() {
     Pageable pageable = PageRequest.of(0, 2);
-    assertThatThrownBy(() -> userService.findSavedMentors(1L, username, pageable))
-        .isInstanceOf(IllegalArgumentException.class);
-  }
-
-  @Test
-  void findSavedMentorsByName_withCorrectUserId_returnSavedMentors() {
-    String username = "User";
-    Pageable pageable = PageRequest.of(0, 2);
-    when(userRepository.findUserByEmail(username)).thenReturn(new User(1L));
     when(userRepository.findSavedMentorsByName(anyLong(), anyString(), any()))
         .thenReturn(generateUserPage(pageable));
 
-    Page<User> savedMentors = userService.findSavedMentorsByName(1L, username, "Mentor", pageable);
+    Page<User> savedMentors = userService.findSavedMentorsByName(1L, "Mentor", pageable);
 
     assertEquals(5, savedMentors.getTotalElements());
     assertEquals(2, savedMentors.getPageable().getPageSize());
-    verify(userRepository, Mockito.times(1)).findUserByEmail(username);
+    verify(userRepository, times(1)).findSavedMentorsByName(anyLong(), anyString(), any());
   }
 
   @Test
-  void findSavedMentorsByName_withIncorrectUserId_throwsIllegalArgumentException() {
-    String username = "User";
-    Pageable pageable = PageRequest.of(0, 2);
-    when(userRepository.findUserByEmail(username)).thenThrow(IllegalArgumentException.class);
-
-    assertThatThrownBy(() -> userService.findSavedMentorsByName(1L, username, "Mentor", pageable))
-        .isInstanceOf(IllegalArgumentException.class);
-  }
-
-  @Test
-  void deleteMentor_withCorrectUserIdAndMentorId_deleteSavedMentorIfExist() {
-    String email = "testEmail";
+  void deleteMentor_withExistingMentorAndContainingInUserSavedMentorsList_deleteSavedMentor() {
     User mentor = new User(2L);
     mentor.setRole(new Role("MENTOR"));
     User student = new User(1L);
     student.getMentors().add(mentor);
 
-    when(userRepository.findUserByEmail(email)).thenReturn(student);
     when(userRepository.findUserById(2L)).thenReturn(Optional.of(mentor));
 
-    userService.deleteMentor(1L, email, 2L);
+    userService.deleteMentor(student, 2L);
 
     assertTrue(student.getMentors().isEmpty());
     verify(userRepository, times(1)).save(student);
+    verify(userRepository, times(1)).findUserById(anyLong());
   }
 
   @Test
-  void deleteMentor_withIncorrectUserId_throwsIllegalArgumentException() {
-    String username = "User";
-    when(userRepository.findUserByEmail(username)).thenThrow(IllegalArgumentException.class);
+  void deleteMentor_withNonexistentMentor_doNothing() {
+    User student = new User(1L);
+    when(userRepository.findUserById(2L)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> userService.deleteMentor(1L, username, 2L))
-        .isInstanceOf(IllegalArgumentException.class);
+    userService.deleteMentor(student, 2L);
+
+    verify(userRepository, times(0)).save(student);
+    verify(userRepository, times(1)).findUserById(anyLong());
   }
 
   @Test
-  void deleteMentor_withIncorrectMentorId_throwsIllegalArgumentException() {
-    String username = "User";
-    when(userRepository.findUserByEmail(username)).thenReturn(new User(1L));
-    when(userRepository.findUserById(2L)).thenThrow(IllegalArgumentException.class);
+  void deleteMentor_withExistingMentorButMissingFromUserSavedMentorsList_noUpdate() {
+    User mentor = new User(2L);
+    mentor.setRole(new Role("MENTOR"));
+    User student = new User(1L);
+    student.getMentors().add(new User(3L));
 
-    assertThatThrownBy(() -> userService.deleteMentor(1L, username, 2L))
-        .isInstanceOf(IllegalArgumentException.class);
+    when(userRepository.findUserById(2L)).thenReturn(Optional.of(mentor));
+
+    userService.deleteMentor(student, 2L);
+
+    assertEquals(1, student.getMentors().size());
+    verify(userRepository, times(1)).save(student);
+    verify(userRepository, times(1)).findUserById(anyLong());
   }
 
   private Page<User> generateUserPage(Pageable pageable) {

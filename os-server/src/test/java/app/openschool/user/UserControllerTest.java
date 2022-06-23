@@ -1,5 +1,6 @@
 package app.openschool.user;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -12,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import app.openschool.auth.AuthServiceImpl;
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.course.Course;
@@ -40,6 +42,8 @@ class UserControllerTest {
   @Autowired private JwtTokenProvider jwtTokenProvider;
 
   @MockBean private UserServiceImpl userService;
+
+  @MockBean private AuthServiceImpl authService;
 
   @Test
   void getSuggestedCourses() throws Exception {
@@ -106,7 +110,8 @@ class UserControllerTest {
 
   @Test
   void saveMentor_WithCorrectCredentials_isOk() throws Exception {
-    when(userService.saveMentor(anyLong(), anyLong(), anyString())).thenReturn(new User());
+    when(authService.validateUserRequestAndReturnUser(anyLong())).thenReturn(new User());
+    when(userService.saveMentor(any(), anyLong())).thenReturn(new User());
 
     String jwt = generateJwtToken();
     mockMvc
@@ -119,7 +124,7 @@ class UserControllerTest {
 
   @Test
   void saveMentor_withIncorrectCredentials_isBadRequest() throws Exception {
-    when(userService.saveMentor(anyLong(), anyLong(), anyString()))
+    when(authService.validateUserRequestAndReturnUser(anyLong()))
         .thenThrow(IllegalArgumentException.class);
 
     String jwt = generateJwtToken();
@@ -132,11 +137,9 @@ class UserControllerTest {
   }
 
   @Test
-  void deleteMentor_withIncorrectCredentials_isBadRequest() throws Exception {
-
-    doThrow(new IllegalArgumentException())
-        .when(userService)
-        .deleteMentor(anyLong(), anyString(), anyLong());
+  void deleteMentor_withIncorrectUserId_isBadRequest() throws Exception {
+    when(authService.validateUserRequestAndReturnUser(anyLong()))
+        .thenThrow(IllegalArgumentException.class);
 
     String jwt = generateJwtToken();
     mockMvc
@@ -149,8 +152,8 @@ class UserControllerTest {
 
   @Test
   void deleteMentor_withCorrectCredentials_isOk() throws Exception {
-
-    doNothing().when(userService).deleteMentor(anyLong(), anyString(), anyLong());
+    when(authService.validateUserRequestAndReturnUser(anyLong())).thenReturn(new User());
+    doNothing().when(userService).deleteMentor(any(), anyLong());
 
     String jwt = generateJwtToken();
     mockMvc
