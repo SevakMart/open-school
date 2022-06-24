@@ -12,6 +12,7 @@ public class MentorMapperTest {
     MentorDto expected = MentorMapper.toMentorDto(UserGenerator.generateUser());
     assertThat(expected)
         .hasOnlyFields(
+            "id",
             "name",
             "surname",
             "professionName",

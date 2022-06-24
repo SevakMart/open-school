@@ -2,6 +2,8 @@ package app.openschool.user.api.dto;
 
 public class MentorDto {
 
+  private Long id;
+
   private String name;
 
   private String surname;
@@ -21,6 +23,7 @@ public class MentorDto {
   public MentorDto() {}
 
   public MentorDto(
+      Long id,
       String name,
       String surname,
       String professionName,
@@ -37,6 +40,11 @@ public class MentorDto {
     this.userImgPath = userImgPath;
     this.emailPath = emailPath;
     this.linkedinPath = linkedinPath;
+    this.id = id;
+  }
+
+  public Long getId() {
+    return id;
   }
 
   public String getName() {
