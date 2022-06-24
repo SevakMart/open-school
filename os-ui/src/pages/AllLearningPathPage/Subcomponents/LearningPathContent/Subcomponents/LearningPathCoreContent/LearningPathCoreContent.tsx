@@ -19,7 +19,7 @@ const LearningPathCoreContent = () => {
 
   useEffect(() => {
     Promise.all([
-      userService.getUserSavedCourses(id, token, { page: 0, size: 100 }),
+      userService.getUserSavedCourses(6, token, { page: 0, size: 100 }),
       courseService.getSearchedCourses({ ...(sendingParams as object), page: 0, size: 100 }, token),
     ]).then((combinedData) => {
       const userSavedCourseContent = combinedData[0].content;

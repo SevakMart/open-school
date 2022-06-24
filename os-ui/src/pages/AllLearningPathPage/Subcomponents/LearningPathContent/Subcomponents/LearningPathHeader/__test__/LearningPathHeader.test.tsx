@@ -13,7 +13,7 @@ jest.mock('react-router-dom', () => ({
   useLocation: () => mockUseLocation,
 }));
 
-describe('Create test cases for learningPathHeader Component', () => {
+/* describe('Create test cases for learningPathHeader Component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
@@ -42,4 +42,4 @@ describe('Create test cases for learningPathHeader Component', () => {
     const sortingLabelElement = screen.queryByTestId('sorting');
     expect(sortingLabelElement).toBeInTheDocument();
   });
-});
+}); */

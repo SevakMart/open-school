@@ -3,10 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/Store';
 import userService from '../../../../services/userService';
 import { SuggestedCourseType } from '../../../../types/SuggestedCourseType';
-import { CourseContent } from '../../../../types/CourseContent';
-import NavbarOnSignIn from '../../../../component/NavbarOnSignIn/NavbarOnSignIn';
 import LearningPath from '../../../../component/LearningPath/LearningPath';
-import LearningPathHeader from '../LearningPathContent/Subcomponents/LearningPathHeader/LearningPathHeader';
 import { EMPTY_DATA_ERROR_MESSAGE } from '../../../../constants/Strings';
 import styles from './SavedCoursesContent.module.scss';
 
@@ -19,7 +16,7 @@ const SavedCoursesContent = () => {
   const { mainContainer, coreContent } = styles;
 
   const handleCourseDeletion = (courseId:number) => {
-    userService.deleteUserSavedCourses(id, courseId, token);
+    userService.deleteUserSavedCourses(6, courseId, token);
     const index = savedCourseList.findIndex((course) => course.id === courseId);
     const savedCourses = savedCourseList;
     savedCourses.splice(index, 1);
@@ -30,7 +27,7 @@ const SavedCoursesContent = () => {
   };
 
   useEffect(() => {
-    userService.getUserSavedCourses(id, token, { page: 0, size: 100 })
+    userService.getUserSavedCourses(6, token, { page: 0, size: 100 })
       .then((data) => setSavedCourseList([...data.content.map((
         course:CourseListType,
       ) => ({ ...course, bookmarked: true }))]));
@@ -38,9 +35,7 @@ const SavedCoursesContent = () => {
 
   return (
     <>
-      <NavbarOnSignIn />
       <div className={coreContent}>
-        <LearningPathHeader activeNavigator={CourseContent.SAVEDCOURSES} />
         <div className={mainContainer}>
           {savedCourseList.length ? savedCourseList.map((course) => (
             <React.Fragment key={course.title}>
@@ -53,7 +48,7 @@ const SavedCoursesContent = () => {
                 isBookMarked={course.bookmarked}
                 courseId={course.id}
                 saveCourse={(courseId:number) => {
-                  userService.saveUserPreferredCourses(id, courseId, token);
+                  userService.saveUserPreferredCourses(6, courseId, token);
                 }}
                 deleteCourse={handleCourseDeletion}
               />
