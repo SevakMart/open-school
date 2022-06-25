@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -114,6 +115,46 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public Page<User> findMentorsByName(String name, Pageable pageable) {
+    return userRepository.findMentorsByName(name, pageable);
+  }
+
+  @Override
+  @Transactional
+  public User saveMentor(User user, Long mentorId) {
+    User mentor = userRepository.findUserById(mentorId).orElseThrow(IllegalArgumentException::new);
+    if (mentor.getRole().getType().equals("MENTOR")) {
+      user.getMentors().add(mentor);
+      return userRepository.save(user);
+    } else {
+      throw new IllegalArgumentException();
+    }
+  }
+
+  @Override
+  public Page<User> findSavedMentors(User user, Pageable pageable) {
+    List<User> mentors = new ArrayList<>(user.getMentors());
+    return new PageImpl<>(mentors, pageable, mentors.size());
+  }
+
+  @Override
+  @Transactional
+  public Page<User> findSavedMentorsByName(Long userId, String name, Pageable pageable) {
+    return userRepository.findSavedMentorsByName(userId, name, pageable);
+  }
+
+  @Override
+  public void deleteMentor(User user, Long mentorId) {
+    userRepository
+        .findUserById(mentorId)
+        .map(
+            mentor -> {
+              user.getMentors().remove(mentor);
+              return userRepository.save(user);
+            });
+  }
+
+  @Override
   public Page<Course> findSavedCourses(Long userId, Pageable pageable) {
     userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     return courseRepository.findSavedCourses(userId, pageable);
@@ -144,17 +185,11 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public Optional<Course> enrollCourse(String username, long courseId) {
-    Optional<User> optionalUser = userRepository.findByEmail(username);
-    Optional<Course> optionalCourse = courseRepository.findById(courseId);
-    if (optionalUser.isPresent() && optionalCourse.isPresent()) {
-      User user = optionalUser.get();
-      Course course = optionalCourse.get();
-      user.getEnrolledCourses().add(CourseMapper.toEnrolledCourse(course, user));
-      userRepository.save(user);
-      return Optional.of(course);
-    }
-    return Optional.empty();
+  public Course enrollCourse(User user, long courseId) {
+    Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
+    user.getEnrolledCourses().add(CourseMapper.toEnrolledCourse(course, user));
+    userRepository.save(user);
+    return course;
   }
 
   @Override

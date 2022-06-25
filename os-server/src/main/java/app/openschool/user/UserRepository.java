@@ -20,4 +20,23 @@ public interface UserRepository extends JpaRepository<User, Long> {
               + "ON u.company_id = c.id WHERE r.role_type = 'MENTOR'",
       nativeQuery = true)
   Page<User> findAllMentors(Pageable page);
+
+  @Query(
+      value =
+          "SELECT * FROM user WHERE "
+              + "(role_id = 3) AND "
+              + "(?1 IS NULL OR LOWER(CONCAT(first_name,' ',last_name)) "
+              + "LIKE LOWER(CONCAT('%', ?1, '%')))",
+      nativeQuery = true)
+  Page<User> findMentorsByName(String name, Pageable pageable);
+
+  @Query(
+      value =
+          "SELECT * FROM user u WHERE (u.id IN "
+              + "(SELECT mentor_id FROM user_has_mentor "
+              + "WHERE user_id = ?1)) AND "
+              + "(?2 IS NULL OR LOWER(CONCAT(first_name,' ',last_name)) "
+              + "LIKE LOWER(CONCAT('%', ?2, '%')))",
+      nativeQuery = true)
+  Page<User> findSavedMentorsByName(Long userId, String name, Pageable pageable);
 }
