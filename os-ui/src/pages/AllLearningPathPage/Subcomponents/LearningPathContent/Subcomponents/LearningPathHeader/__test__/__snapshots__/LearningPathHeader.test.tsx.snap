@@ -4,17 +4,18 @@ exports[`Create test cases for learningPathHeader Component Create a snapshot te
 <DocumentFragment>
   <div
     class="learningPathsHeader"
+    style="padding-left: 20%;"
   >
     <nav>
       <p
         class="activeNav"
-        data-testid="AllLearningPath"
+        data-testid="All Learning Paths"
       >
         All Learning Paths
       </p>
       <p
         class="nonActiveNav"
-        data-testid="SavedLearningPath"
+        data-testid="Saved Learning paths"
       >
         Saved Learning paths
       </p>

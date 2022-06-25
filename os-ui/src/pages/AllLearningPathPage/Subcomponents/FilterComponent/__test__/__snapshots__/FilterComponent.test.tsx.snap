@@ -15,12 +15,6 @@ exports[`Create test cases for FilterComponent component Create a snapshot tets 
         Filter
       </p>
     </div>
-    <button
-      class="visibilityButton"
-      type="button"
-    >
-      &lt;
-    </button>
   </div>
 </DocumentFragment>
 `;

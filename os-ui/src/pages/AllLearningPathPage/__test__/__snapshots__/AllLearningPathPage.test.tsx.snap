@@ -82,6 +82,55 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
     </div>
   </nav>
   <div
+    class="learningPathsHeader"
+    style="padding-left: 20%;"
+  >
+    <nav>
+      <p
+        class="activeNav"
+        data-testid="All Learning Paths"
+      >
+        All Learning Paths
+      </p>
+      <p
+        class="nonActiveNav"
+        data-testid="Saved Learning paths"
+      >
+        Saved Learning paths
+      </p>
+    </nav>
+    <div
+      class="sortingContainer"
+    >
+      <label
+        data-testid="sorting"
+        for="sorting"
+      >
+        Sort by
+      </label>
+      <select
+        id="sorting"
+        name="sorting"
+      >
+        <option
+          value="Rating"
+        >
+          Rating
+        </option>
+        <option
+          value="difficulty_id"
+        >
+          difficulty_id
+        </option>
+        <option
+          value="Title"
+        >
+          Title
+        </option>
+      </select>
+    </div>
+  </div>
+  <div
     class="mainContainer"
   >
     <div
@@ -97,65 +146,10 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
           Filter
         </p>
       </div>
-      <button
-        class="visibilityButton"
-        type="button"
-      >
-        &lt;
-      </button>
     </div>
     <div
       class="learningPathsMainContainer"
-      style="transition-duration: 0.5s; width: 75%;"
     >
-      <div
-        class="learningPathsHeader"
-      >
-        <nav>
-          <p
-            class="activeNav"
-            data-testid="AllLearningPath"
-          >
-            All Learning Paths
-          </p>
-          <p
-            class="nonActiveNav"
-            data-testid="SavedLearningPath"
-          >
-            Saved Learning paths
-          </p>
-        </nav>
-        <div
-          class="sortingContainer"
-        >
-          <label
-            data-testid="sorting"
-            for="sorting"
-          >
-            Sort by
-          </label>
-          <select
-            id="sorting"
-            name="sorting"
-          >
-            <option
-              value="Rating"
-            >
-              Rating
-            </option>
-            <option
-              value="difficulty_id"
-            >
-              difficulty_id
-            </option>
-            <option
-              value="Title"
-            >
-              Title
-            </option>
-          </select>
-        </div>
-      </div>
       <div
         class="inputContent"
       >

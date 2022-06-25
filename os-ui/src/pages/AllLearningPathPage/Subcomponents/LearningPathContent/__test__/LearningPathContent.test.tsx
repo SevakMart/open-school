@@ -12,13 +12,13 @@ jest.mock('react-router-dom', () => ({
   useLocation: () => mockUseLocation,
 }));
 
-/* describe('Create test cases for LearningPathContent component', () => {
+describe('Create test cases for LearningPathContent component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <LearningPathContent filterTabIsVisible />
+        <LearningPathContent />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
-}); */
+});
