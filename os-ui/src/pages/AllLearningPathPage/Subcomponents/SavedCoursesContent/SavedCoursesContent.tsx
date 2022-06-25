@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/Store';
+import React, { useEffect, useState, useContext } from 'react';
 import userService from '../../../../services/userService';
 import { SuggestedCourseType } from '../../../../types/SuggestedCourseType';
 import LearningPath from '../../../../component/LearningPath/LearningPath';
 import { EMPTY_DATA_ERROR_MESSAGE } from '../../../../constants/Strings';
+import { userContext } from '../../../../contexts/Contexts';
 import styles from './SavedCoursesContent.module.scss';
 
 type CourseListType=SuggestedCourseType & {id:number, bookmarked?:boolean}
 
 const SavedCoursesContent = () => {
-  const userInfo = useSelector<RootState>((state) => state.userInfo);
-  const { token, id } = userInfo as any;
+  const { token, id } = useContext(userContext);
   const [savedCourseList, setSavedCourseList] = useState<CourseListType[]>([]);
   const { mainContainer, coreContent } = styles;
 
   const handleCourseDeletion = (courseId:number) => {
-    userService.deleteUserSavedCourses(6, courseId, token);
+    userService.deleteUserSavedCourses(id, courseId, token);
     const index = savedCourseList.findIndex((course) => course.id === courseId);
     const savedCourses = savedCourseList;
     savedCourses.splice(index, 1);
@@ -41,14 +39,9 @@ const SavedCoursesContent = () => {
             <React.Fragment key={course.title}>
 
               <LearningPath
-                title={course.title}
-                rating={course.rating}
-                difficulty={course.difficulty}
-                keywords={course.keywords}
-                isBookMarked={course.bookmarked}
-                courseId={course.id}
+                courseInfo={course}
                 saveCourse={(courseId:number) => {
-                  userService.saveUserPreferredCourses(6, courseId, token);
+                  userService.saveUserPreferredCourses(id, courseId, token);
                 }}
                 deleteCourse={handleCourseDeletion}
               />

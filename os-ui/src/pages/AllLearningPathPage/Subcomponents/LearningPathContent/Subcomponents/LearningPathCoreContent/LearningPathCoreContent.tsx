@@ -19,7 +19,7 @@ const LearningPathCoreContent = () => {
 
   useEffect(() => {
     Promise.all([
-      userService.getUserSavedCourses(6, token, { page: 0, size: 100 }),
+      userService.getUserSavedCourses(id, token, { page: 0, size: 100 }),
       courseService.getSearchedCourses({ ...(sendingParams as object), page: 0, size: 100 }, token),
     ]).then((combinedData) => {
       const userSavedCourseContent = combinedData[0].content;
@@ -43,15 +43,10 @@ const LearningPathCoreContent = () => {
 
   return (
     <div className={mainCoreContainer}>
-      {courseList.length ? courseList.map((course, index) => (
-        <div className={courseContainer} key={index}>
+      {courseList.length ? courseList.map((course) => (
+        <div className={courseContainer} key={course.title}>
           <LearningPath
-            title={course.title}
-            rating={course.rating}
-            difficulty={course.difficulty}
-            keywords={course.keywords}
-            isBookMarked={course.bookmarked}
-            courseId={course.id}
+            courseInfo={course}
             saveCourse={
               (courseId:number) => userService.saveUserPreferredCourses(id, courseId, token)
             }

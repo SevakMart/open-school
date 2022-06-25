@@ -5,6 +5,4 @@ export interface SuggestedCourseType{
     keywords:string[]
     isBookMarked?:boolean
     courseId?:number
-    saveCourse?(id:number):void
-    deleteCourse?(id:number):void
 }

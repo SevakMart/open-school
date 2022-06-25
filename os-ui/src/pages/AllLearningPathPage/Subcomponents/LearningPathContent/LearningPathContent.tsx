@@ -8,7 +8,7 @@ import LearningPathCoreContent from './Subcomponents/LearningPathCoreContent/Lea
 import { addFilterParams, removeFilterParams } from '../../../../redux/Slices/AllLearningPathFilterParamsSlice';
 import styles from './LearningPathContent.module.scss';
 /* eslint-disable-next-line max-len */
-const LearningPathContent = ({ filterTabIsVisible }:{filterTabIsVisible:boolean}) => {
+const LearningPathContent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,7 +34,7 @@ const LearningPathContent = ({ filterTabIsVisible }:{filterTabIsVisible:boolean}
   }, [searchTitle]);
 
   return (
-    <div ref={mainContentRef} className={learningPathsMainContainer} style={{ transitionDuration: '0.5s', width: filterTabIsVisible ? '75%' : '98%' }}>
+    <div ref={mainContentRef} className={learningPathsMainContainer}>
       <Search changeUrlQueries={(title:string) => setSearchTitle(title)} />
       <LearningPathCoreContent />
     </div>

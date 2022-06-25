@@ -7,29 +7,11 @@ import { FILTER } from '../../../../constants/Strings';
 import { CourseContent } from '../../../../types/CourseContent';
 import styles from './FilterComponent.module.scss';
 
-enum VisibleFilterTab {
-    isVisible='visible',
-    isHidden='hidden'
-}
-
-const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
-  const [visibleFilterTab, setVisibleFilterTab] = useState(VisibleFilterTab.isVisible);
+const FilterComponent = () => {
   const [filterFeatures, setFilterFeatures] = useState<FilteringFeatureType>({});
   const { token } = useContext(userContext);
   const contentType = useContext(courseContentContext);
-  const {
-    mainContainer, hiddenContainer, filterMainContent, mainTitle, visibilityButton,
-  } = styles;
-
-  const toggleFilterTabVisibility = () => {
-    if (visibleFilterTab === VisibleFilterTab.isVisible) {
-      setVisibleFilterTab(VisibleFilterTab.isHidden);
-      changeVisibility();
-    } else {
-      setVisibleFilterTab(VisibleFilterTab.isVisible);
-      changeVisibility();
-    }
-  };
+  const { mainContainer, filterMainContent, mainTitle } = styles;
 
   useEffect(() => {
     featureService.getFilterFeatures({}, token).then((data) => {
@@ -39,8 +21,7 @@ const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
 
   return (
     <div
-      className={visibleFilterTab === 'visible' ? mainContainer
-        : hiddenContainer}
+      className={mainContainer}
       style={contentType === CourseContent.SAVEDCOURSES ? { display: 'none' } : { display: 'flex' }}
     >
       <div className={filterMainContent}>
@@ -60,7 +41,6 @@ const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
             }) : null
         }
       </div>
-      <button className={visibilityButton} type="button" onClick={toggleFilterTabVisibility}>{'<'}</button>
     </div>
   );
 };

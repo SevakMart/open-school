@@ -19,13 +19,9 @@ const AllLearningPathPage = () => {
     token: (userInfo as any).token,
     id: (userInfo as any).id,
   }), []);
-  const [isVisible, setIsVisible] = useState(true);
   const [changeHeaderFocus, setChangeHeaderFocus] = useState(ALL_LEARNING_PATHS);
   const { mainContainer } = styles;
 
-  const changeVisibility = () => {
-    setIsVisible((prevState) => !prevState);
-  };
   const changeNavTitleFocus = (title:string) => {
     if (title === ALL_LEARNING_PATHS) {
       setChangeHeaderFocus(SAVED_LEARNING_PATHS);
@@ -40,12 +36,13 @@ const AllLearningPathPage = () => {
       <NavbarOnSignIn />
       <userContext.Provider value={idAndToken}>
         <headerTitleContext.Provider value={changeHeaderFocus}>
+          { /* eslint-disable-next-line max-len */ }
           <LearningPathHeader handleChangeHeader={changeNavTitleFocus} />
           {changeHeaderFocus === ALL_LEARNING_PATHS
             ? (
               <div className={mainContainer}>
-                <FilterComponent changeVisibility={changeVisibility} />
-                <LearningPathContent filterTabIsVisible={isVisible} />
+                <FilterComponent />
+                <LearningPathContent />
               </div>
             ) : <SavedCoursesContent />}
         </headerTitleContext.Provider>
