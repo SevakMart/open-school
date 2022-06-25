@@ -1,21 +1,31 @@
 package app.openschool.course.api.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 
 public class UserCourseDto {
 
+  @Schema(description = "Course Id", example = "1")
   private Long id;
 
+  @Schema(description = "Course title", example = "Java")
   private String title;
 
+  @Schema(description = "Current state of course", example = "In progress")
   private String courseStatus;
 
+  @Schema(description = "Progress of course in percent", example = "75")
   private long percentage;
 
+  @Schema(description = "Time remained to complete course", example = "15")
   private long remainingTime;
 
+  @Schema(description = "Grade of course", example = "100")
   private Integer grade;
 
+  @Schema(
+      description = "By the specified date the course must be completed",
+      example = "2022-07-11")
   private LocalDate dueDate;
 
   public UserCourseDto() {}

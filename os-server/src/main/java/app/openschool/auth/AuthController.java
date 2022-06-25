@@ -16,8 +16,14 @@ import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Stream;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -111,11 +117,32 @@ public class AuthController {
     return ResponseEntity.ok().build();
   }
 
-  @PostMapping("/password/forgot")
   @Operation(summary = "send token to given email")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "When token have been send to provided email address",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "400",
+            description =
+                "If provided email is null, blank, doesn't match to email pattern or user not found by provided email",
+            content = @Content(schema = @Schema(oneOf = {ResponseMessage.class, Stream.class})))
+      })
+  @PostMapping("/password/forgot")
   public ResponseEntity<?> forgotPassword(
-      @Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest,
-      BindingResult bindingResult,
+      @Parameter(
+              description =
+                  "Request object which contains provided email address where will be sent token")
+          @Valid
+          @RequestBody
+          ForgotPasswordRequest forgotPasswordRequest,
+      @Parameter(
+              description =
+                  "Object which may contain errors depending on passed null value, only whitespace "
+                      + "or invalid email to the email field of forgotPasswordRequest")
+          BindingResult bindingResult,
       Locale locale) {
     if (bindingResult.hasErrors()) {
       return ResponseEntity.badRequest()
@@ -140,11 +167,33 @@ public class AuthController {
                 messageSource.getMessage("password.sending.success.message", null, locale)));
   }
 
-  @PostMapping("/password/reset")
   @Operation(summary = "reset password")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "When password has been changed",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "400",
+            description =
+                "If provided token isn't valid, is expired, provided password doesn't match to password pattern, "
+                    + "or password and confirmed password doesn't match",
+            content = @Content(schema = @Schema(oneOf = {ResponseMessage.class, Stream.class})))
+      })
+  @PostMapping("/password/reset")
   public ResponseEntity<?> resetPassword(
-      @Valid @RequestBody ResetPasswordRequest request,
-      BindingResult bindingResult,
+      @Parameter(
+              description =
+                  "Request object which contains token, new password and confirmed password")
+          @Valid
+          @RequestBody
+          ResetPasswordRequest request,
+      @Parameter(
+              description =
+                  "Object which may contain errors depending on passed null value, only whitespace "
+                      + "or invalid values to the fields of request")
+          BindingResult bindingResult,
       Locale locale) {
     if (bindingResult.hasErrors()) {
       return ResponseEntity.badRequest()

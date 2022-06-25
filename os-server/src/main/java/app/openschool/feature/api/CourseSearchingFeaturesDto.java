@@ -1,13 +1,17 @@
 package app.openschool.feature.api;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Map;
 
 public class CourseSearchingFeaturesDto {
 
+  @Schema(description = "Parent categories and relevant subcategories")
   private final Map<String, Map<Long, String>> parentAndSubcategories;
 
+  @Schema(description = "Languages")
   private final Map<Integer, String> allLanguages;
 
+  @Schema(description = "Difficulty levels")
   private final Map<Integer, String> allDifficultyLevels;
 
   public CourseSearchingFeaturesDto(
