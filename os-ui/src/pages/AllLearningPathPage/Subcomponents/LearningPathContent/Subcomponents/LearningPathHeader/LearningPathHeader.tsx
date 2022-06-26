@@ -3,9 +3,10 @@ import React, {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { addFilterParams } from '../../../../../../redux/Slices/AllLearningPathFilterParamsSlice';
 import {
-  ALL_LEARNING_PATHS, SAVED_LEARNING_PATHS, SORT_BY, DIFFICULTY, TITLE, RATING,
+  ALL_LEARNING_PATHS, SAVED_LEARNING_PATHS, DIFFICULTY, TITLE, RATING,
 } from '../../../../../../constants/Strings';
 import { headerTitleContext } from '../../../../../../contexts/Contexts';
 import styles from './LearningPathHeader.module.scss';
@@ -15,6 +16,7 @@ const LearningPathHeader = ({ handleChangeHeader }:
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const focusedHeader = useContext(headerTitleContext);
   const params = new URLSearchParams(location.search);
   const selectionRef = useRef<HTMLSelectElement>(null);
@@ -48,7 +50,7 @@ const LearningPathHeader = ({ handleChangeHeader }:
           data-testid={ALL_LEARNING_PATHS}
           onClick={() => handleChangeHeader(SAVED_LEARNING_PATHS)}
         >
-          {ALL_LEARNING_PATHS}
+          {t('All Learning Paths')}
 
         </p>
         <p
@@ -56,18 +58,18 @@ const LearningPathHeader = ({ handleChangeHeader }:
           data-testid={SAVED_LEARNING_PATHS}
           onClick={() => handleChangeHeader(ALL_LEARNING_PATHS)}
         >
-          {SAVED_LEARNING_PATHS}
+          {t('Saved Learning Paths')}
 
         </p>
       </nav>
       {focusedHeader === ALL_LEARNING_PATHS
       && (
       <div className={sortingContainer}>
-        <label data-testid="sorting" htmlFor="sorting">{SORT_BY}</label>
+        <label data-testid="sorting" htmlFor="sorting">{t('Sort By')}</label>
         <select ref={selectionRef} value={sortingFeature} name="sorting" id="sorting" onChange={switchSortingFeatures}>
-          <option value={RATING}>{RATING}</option>
-          <option value={DIFFICULTY}>{DIFFICULTY}</option>
-          <option value={TITLE}>{TITLE}</option>
+          <option value={RATING}>{t('Rating')}</option>
+          <option value={DIFFICULTY}>{t('difficulty_id')}</option>
+          <option value={TITLE}>{(t('Title'))}</option>
         </select>
       </div>
       )}

@@ -4,8 +4,13 @@ import { Provider } from 'react-redux';
 import { store } from '../../../../../../../redux/Store';
 import courseService from '../../../../../../../services/courseService';
 import userService from '../../../../../../../services/userService';
-import { EMPTY_DATA_ERROR_MESSAGE } from '../../../../../../../constants/Strings';
 import LearningPathCoreContent from '../LearningPathCoreContent';
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: () => 'No data to display',
+  }),
+}));
 
 const data = {
   content: [
@@ -55,7 +60,7 @@ describe('Create test cases for learningPathCoreComponent component', () => {
     );
     const ErrorMessageHeaderElement = await screen.findByTestId('Error Message');
     expect(ErrorMessageHeaderElement).toBeInTheDocument();
-    expect(ErrorMessageHeaderElement).toHaveTextContent(EMPTY_DATA_ERROR_MESSAGE);
+    expect(ErrorMessageHeaderElement).toHaveTextContent('No data to display');
   });
   test('Test component when we have a non empty data result', async () => {
     expect.hasAssertions();

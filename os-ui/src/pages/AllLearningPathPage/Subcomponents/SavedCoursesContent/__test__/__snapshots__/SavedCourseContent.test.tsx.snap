@@ -11,7 +11,7 @@ exports[`Create test cases for SavedCourseContent component Create a snapshot te
       <h2
         data-testid="Empty data Message"
       >
-        No data to display :(
+        No data to display
       </h2>
     </div>
   </div>

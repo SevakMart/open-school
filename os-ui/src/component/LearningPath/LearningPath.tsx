@@ -22,7 +22,7 @@ const LearningPath = ({
       <div className={header}>
         {/* eslint-disable-next-line max-len */}
         <p data-testid={courseInfo.difficulty} className={difficultyContent}>{courseInfo.difficulty}</p>
-        <p><BookmarkIcon iconSize="1rem" isBookmarked={courseInfo.isBookMarked} courseId={courseInfo.courseId} saveCourse={handleSaveCourse} deleteCourse={handleDeleteCourse} /></p>
+        <p><BookmarkIcon iconSize="1rem" isBookmarked={courseInfo.isBookMarked} courseId={courseInfo.id} saveCourse={handleSaveCourse} deleteCourse={handleDeleteCourse} /></p>
       </div>
       <div className={mainBody}>
         <div className={ratingContent}>

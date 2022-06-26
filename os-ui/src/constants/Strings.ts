@@ -20,8 +20,8 @@ export const EDUCATION_PLATFORM_IMAGE = 'https://image.shutterstock.com/image-ve
 export const CHOOSE_CATEGORIES_HEADER = 'Choose Categories You Are Interested In';
 
 // Error Message
-export const ERROR_MESSAGE = 'Something went wrong please refresh the page :(';
-export const EMPTY_DATA_ERROR_MESSAGE = 'No data to display :(';
+export const ERROR_MESSAGE = 'Something went wrong please refresh the page';
+export const EMPTY_DATA_ERROR_MESSAGE = 'No data to display';
 
 // Successful Sign in message
 export const SUCCESSFUL_SIGNIN_MESSAGE = 'You have Successfully signed in!';

@@ -96,7 +96,7 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
         class="nonActiveNav"
         data-testid="Saved Learning paths"
       >
-        Saved Learning paths
+        Saved Learning Paths
       </p>
     </nav>
     <div
@@ -106,7 +106,7 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
         data-testid="sorting"
         for="sorting"
       >
-        Sort by
+        Sort By
       </label>
       <select
         id="sorting"
@@ -181,7 +181,7 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
         <h2
           data-testid="Error Message"
         >
-          No data to display :(
+          Empty Data Error Message
         </h2>
       </div>
     </div>

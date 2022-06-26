@@ -2,9 +2,14 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { store } from '../../../../../redux/Store';
-import { EMPTY_DATA_ERROR_MESSAGE } from '../../../../../constants/Strings';
 import SavedCoursesContent from '../SavedCoursesContent';
 import userService from '../../../../../services/userService';
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: () => 'No data to display',
+  }),
+}));
 
 const data = {
   content: [
@@ -50,7 +55,7 @@ describe('Create test cases for SavedCourseContent component', () => {
     );
     const emptyDataheaderElement = await screen.findByTestId('Empty data Message');
     expect(emptyDataheaderElement).toBeInTheDocument();
-    expect(emptyDataheaderElement).toHaveTextContent(EMPTY_DATA_ERROR_MESSAGE);
+    expect(emptyDataheaderElement).toHaveTextContent('No data to display');
   });
   test('Test if component renders as expected when we have saved courses', async () => {
     expect.hasAssertions();

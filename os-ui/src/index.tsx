@@ -4,24 +4,28 @@ import './index.scss';
 import { Provider } from 'react-redux';
 import persistStore from 'redux-persist/es/persistStore';
 import { PersistGate } from 'redux-persist/integration/react';
-import { I18nextProvider } from 'react-i18next';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
 import i18next from 'i18next';
+import I18NextHttpBackend from 'i18next-http-backend';
+import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
 import { store } from './redux/Store';
 import App from './App';
-import commonEn from './translation/en/common.json';
 
 const persistor = persistStore(store);
 
-i18next.init({
-  interpolation: { escapeValue: false },
-  lng: 'en',
-  resources: {
-    en: {
-      common: commonEn,
-    },
+i18next
+  .use(I18NextHttpBackend)
+  .use(I18nextBrowserLanguageDetector)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: 'en',
+    debug: true,
 
-  },
-});
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+
 ReactDOM.render(
   <React.StrictMode>
     <I18nextProvider i18n={i18next}>

@@ -1,20 +1,21 @@
 import { useState, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../../../../redux/Store';
 import { userContext } from '../../../../../../contexts/Contexts';
 import LearningPath from '../../../../../../component/LearningPath/LearningPath';
 import courseService from '../../../../../../services/courseService';
 import userService from '../../../../../../services/userService';
 import { SuggestedCourseType } from '../../../../../../types/SuggestedCourseType';
-import { EMPTY_DATA_ERROR_MESSAGE } from '../../../../../../constants/Strings';
 import styles from './LearningPathCoreContent.module.scss';
 
-type CourseListType=SuggestedCourseType & {id:number, bookmarked?:boolean}
+type CourseListType=SuggestedCourseType & {id:number, isBookMarked?:boolean}
 
 const LearningPathCoreContent = () => {
   const sendingParams = useSelector<RootState>((state) => state.filterParams);
   const { token, id } = useContext(userContext);
   const [courseList, setCourseList] = useState<CourseListType[]>([]);
+  const { t } = useTranslation();
   const { mainCoreContainer, courseContainer } = styles;
 
   useEffect(() => {
@@ -30,17 +31,16 @@ const LearningPathCoreContent = () => {
           const index = userSavedCourseContent
             .findIndex((savedCourse:CourseListType) => savedCourse.id === searchedCourse.id);
           if (index !== -1) {
-            userSavedCourseContent[index].bookmarked = true;
+            userSavedCourseContent[index].isBookMarked = true;
             list.push(userSavedCourseContent[index]);
           } else {
-            searchedCourse.bookmarked = false; list.push(searchedCourse);
+            searchedCourse.isBookMarked = false; list.push(searchedCourse);
           }
         }
         setCourseList([...list]);
       } else setCourseList([...searchedCourseContent]);
     });
   }, [sendingParams]);
-
   return (
     <div className={mainCoreContainer}>
       {courseList.length ? courseList.map((course) => (
@@ -55,7 +55,7 @@ const LearningPathCoreContent = () => {
             }
           />
         </div>
-      )) : <h2 data-testid="Error Message">{EMPTY_DATA_ERROR_MESSAGE}</h2>}
+      )) : <h2 data-testid="Error Message">{t('Empty Data Error Message')}</h2>}
     </div>
   );
 };

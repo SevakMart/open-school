@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
@@ -8,6 +8,7 @@ import FilterComponent from './Subcomponents/FilterComponent/FilterComponent';
 import LearningPathContent from './Subcomponents/LearningPathContent/LearningPathContent';
 import LearningPathHeader from './Subcomponents/LearningPathContent/Subcomponents/LearningPathHeader/LearningPathHeader';
 import SavedCoursesContent from './Subcomponents/SavedCoursesContent/SavedCoursesContent';
+import Loader from '../../component/Loader/Loader';
 import { ALL_LEARNING_PATHS, SAVED_LEARNING_PATHS } from '../../constants/Strings';
 
 import styles from './AllLearningPathPage.module.scss';
@@ -35,17 +36,18 @@ const AllLearningPathPage = () => {
     <>
       <NavbarOnSignIn />
       <userContext.Provider value={idAndToken}>
-        <headerTitleContext.Provider value={changeHeaderFocus}>
-          { /* eslint-disable-next-line max-len */ }
-          <LearningPathHeader handleChangeHeader={changeNavTitleFocus} />
-          {changeHeaderFocus === ALL_LEARNING_PATHS
-            ? (
-              <div className={mainContainer}>
-                <FilterComponent />
-                <LearningPathContent />
-              </div>
-            ) : <SavedCoursesContent />}
-        </headerTitleContext.Provider>
+        <Suspense fallback={<Loader />}>
+          <headerTitleContext.Provider value={changeHeaderFocus}>
+            <LearningPathHeader handleChangeHeader={changeNavTitleFocus} />
+            {changeHeaderFocus === ALL_LEARNING_PATHS
+              ? (
+                <div className={mainContainer}>
+                  <FilterComponent />
+                  <LearningPathContent />
+                </div>
+              ) : <SavedCoursesContent />}
+          </headerTitleContext.Provider>
+        </Suspense>
       </userContext.Provider>
     </>
   );

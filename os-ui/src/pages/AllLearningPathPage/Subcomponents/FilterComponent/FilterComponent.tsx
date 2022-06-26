@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { userContext, courseContentContext } from '../../../../contexts/Contexts';
 import featureService from '../../../../services/featureService';
 import FilteringContent from '../FilteringContent/FilteringContent';
@@ -9,6 +10,7 @@ import styles from './FilterComponent.module.scss';
 
 const FilterComponent = () => {
   const [filterFeatures, setFilterFeatures] = useState<FilteringFeatureType>({});
+  const { t } = useTranslation();
   const { token } = useContext(userContext);
   const contentType = useContext(courseContentContext);
   const { mainContainer, filterMainContent, mainTitle } = styles;
@@ -29,13 +31,13 @@ const FilterComponent = () => {
         {
           Object.entries(filterFeatures).length
             ? Object.entries(filterFeatures).map((feature, index) => {
-              const title:string = feature[0] === 'parentAndSubcategories' ? 'Category' : feature[0] === 'allLanguages' ? 'Language' : 'Course Level';
+              const title:string = feature[0] === 'parentAndSubcategories' ? t('Category') : feature[0] === 'allLanguages' ? t('Language') : t('Course Level');
               return (
                 <FilteringContent
                   title={title}
                   key={index}
                   content={feature[1]}
-                  filterFeature={title === 'Category' ? 'subCategoryIds' : title === 'Language' ? 'languageIds' : 'difficultyIds'}
+                  filterFeature={title === t('Category') ? 'subCategoryIds' : title === t('Language') ? 'languageIds' : 'difficultyIds'}
                 />
               );
             }) : null

@@ -36,7 +36,7 @@ exports[`Create test cases for LearningPathContent component Create a snapshot t
       <h2
         data-testid="Error Message"
       >
-        No data to display :(
+        Empty Data Error Message
       </h2>
     </div>
   </div>
