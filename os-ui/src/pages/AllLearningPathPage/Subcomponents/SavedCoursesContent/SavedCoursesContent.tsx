@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/Store';
+import React, { useEffect, useState, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import userService from '../../../../services/userService';
 import { SuggestedCourseType } from '../../../../types/SuggestedCourseType';
-import { CourseContent } from '../../../../types/CourseContent';
-import NavbarOnSignIn from '../../../../component/NavbarOnSignIn/NavbarOnSignIn';
 import LearningPath from '../../../../component/LearningPath/LearningPath';
-import LearningPathHeader from '../LearningPathContent/Subcomponents/LearningPathHeader/LearningPathHeader';
-import { EMPTY_DATA_ERROR_MESSAGE } from '../../../../constants/Strings';
+import { userContext } from '../../../../contexts/Contexts';
 import styles from './SavedCoursesContent.module.scss';
 
-type CourseListType=SuggestedCourseType & {id:number, bookmarked?:boolean}
+type CourseListType=SuggestedCourseType & {id:number, isBookMarked?:boolean}
 
 const SavedCoursesContent = () => {
-  const userInfo = useSelector<RootState>((state) => state.userInfo);
-  const { token, id } = userInfo as any;
+  const { token, id } = useContext(userContext);
   const [savedCourseList, setSavedCourseList] = useState<CourseListType[]>([]);
+  const { t } = useTranslation();
   const { mainContainer, coreContent } = styles;
 
   const handleCourseDeletion = (courseId:number) => {
@@ -24,7 +20,7 @@ const SavedCoursesContent = () => {
     const savedCourses = savedCourseList;
     savedCourses.splice(index, 1);
     const bookmarkedCourses = savedCourses.map(
-      (course:CourseListType) => ({ ...course, bookmarked: true }),
+      (course:CourseListType) => ({ ...course, isBookMarked: true }),
     );
     setSavedCourseList([...bookmarkedCourses]);
   };
@@ -33,25 +29,18 @@ const SavedCoursesContent = () => {
     userService.getUserSavedCourses(id, token, { page: 0, size: 100 })
       .then((data) => setSavedCourseList([...data.content.map((
         course:CourseListType,
-      ) => ({ ...course, bookmarked: true }))]));
+      ) => ({ ...course, isBookMarked: true }))]));
   }, []);
 
   return (
     <>
-      <NavbarOnSignIn />
       <div className={coreContent}>
-        <LearningPathHeader activeNavigator={CourseContent.SAVEDCOURSES} />
         <div className={mainContainer}>
           {savedCourseList.length ? savedCourseList.map((course) => (
             <React.Fragment key={course.title}>
 
               <LearningPath
-                title={course.title}
-                rating={course.rating}
-                difficulty={course.difficulty}
-                keywords={course.keywords}
-                isBookMarked={course.bookmarked}
-                courseId={course.id}
+                courseInfo={course}
                 saveCourse={(courseId:number) => {
                   userService.saveUserPreferredCourses(id, courseId, token);
                 }}
@@ -59,7 +48,7 @@ const SavedCoursesContent = () => {
               />
 
             </React.Fragment>
-          )) : <h2 data-testid="Empty data Message">{EMPTY_DATA_ERROR_MESSAGE}</h2>}
+          )) : <h2 data-testid="Empty data Message">{t('Empty Data Error Message')}</h2>}
         </div>
       </div>
     </>

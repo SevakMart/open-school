@@ -13,10 +13,7 @@ describe('Create test cases to learning path component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <LearningPath
-        title={props.title}
-        rating={props.rating}
-        difficulty={props.difficulty}
-        keywords={props.keywords}
+        courseInfo={props}
       />,
     );
     expect(asFragment()).toMatchSnapshot();
@@ -24,10 +21,7 @@ describe('Create test cases to learning path component', () => {
   test('Check if the content is as expected', () => {
     render(
       <LearningPath
-        title={props.title}
-        rating={props.rating}
-        difficulty={props.difficulty}
-        keywords={props.keywords}
+        courseInfo={props}
       />,
     );
     const difficultyContentElement = screen.queryByTestId('Medium');
@@ -44,10 +38,7 @@ describe('Create test cases to learning path component', () => {
   test('Check if no keyword number is shown if the number of keywords were less than 3', () => {
     render(
       <LearningPath
-        title={props.title}
-        rating={props.rating}
-        difficulty={props.difficulty}
-        keywords={['Testing', 'database']}
+        courseInfo={props}
       />,
     );
     const remainingKeywordNumberElement = screen.queryByTestId('remainingKeywordNumber');

@@ -1,35 +1,53 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
-import { userContext } from '../../contexts/Contexts';
+import { userContext, headerTitleContext } from '../../contexts/Contexts';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
 import FilterComponent from './Subcomponents/FilterComponent/FilterComponent';
 import LearningPathContent from './Subcomponents/LearningPathContent/LearningPathContent';
+import LearningPathHeader from './Subcomponents/LearningPathContent/Subcomponents/LearningPathHeader/LearningPathHeader';
+import SavedCoursesContent from './Subcomponents/SavedCoursesContent/SavedCoursesContent';
+import Loader from '../../component/Loader/Loader';
+import { ALL_LEARNING_PATHS, SAVED_LEARNING_PATHS } from '../../constants/Strings';
+
 import styles from './AllLearningPathPage.module.scss';
 
 const AllLearningPathPage = () => {
+  const navigate = useNavigate();
   const userInfo = useSelector<RootState>((state) => state.userInfo);
   const idAndToken = useMemo(() => ({
     token: (userInfo as any).token,
     id: (userInfo as any).id,
   }), []);
-  const [isVisible, setIsVisible] = useState(true);
+  const [changeHeaderFocus, setChangeHeaderFocus] = useState(ALL_LEARNING_PATHS);
   const { mainContainer } = styles;
 
-  const changeVisibility = () => {
-    setIsVisible((prevState) => !prevState);
+  const changeNavTitleFocus = (title:string) => {
+    if (title === ALL_LEARNING_PATHS) {
+      setChangeHeaderFocus(SAVED_LEARNING_PATHS);
+      navigate('/exploreLearningPaths');
+    } else {
+      setChangeHeaderFocus(ALL_LEARNING_PATHS);
+      navigate(-1);
+    }
   };
-
   return (
     <>
       <NavbarOnSignIn />
       <userContext.Provider value={idAndToken}>
-        <div className={mainContainer}>
-          <FilterComponent changeVisibility={changeVisibility} />
-          <LearningPathContent
-            filterTabIsVisible={isVisible}
-          />
-        </div>
+        <Suspense fallback={<Loader />}>
+          <headerTitleContext.Provider value={changeHeaderFocus}>
+            <LearningPathHeader handleChangeHeader={changeNavTitleFocus} />
+            {changeHeaderFocus === ALL_LEARNING_PATHS
+              ? (
+                <div className={mainContainer}>
+                  <FilterComponent />
+                  <LearningPathContent />
+                </div>
+              ) : <SavedCoursesContent />}
+          </headerTitleContext.Provider>
+        </Suspense>
       </userContext.Provider>
     </>
   );

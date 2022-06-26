@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { userContext, courseContentContext } from '../../../../contexts/Contexts';
 import featureService from '../../../../services/featureService';
 import FilteringContent from '../FilteringContent/FilteringContent';
@@ -7,29 +8,12 @@ import { FILTER } from '../../../../constants/Strings';
 import { CourseContent } from '../../../../types/CourseContent';
 import styles from './FilterComponent.module.scss';
 
-enum VisibleFilterTab {
-    isVisible='visible',
-    isHidden='hidden'
-}
-
-const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
-  const [visibleFilterTab, setVisibleFilterTab] = useState(VisibleFilterTab.isVisible);
+const FilterComponent = () => {
   const [filterFeatures, setFilterFeatures] = useState<FilteringFeatureType>({});
+  const { t } = useTranslation();
   const { token } = useContext(userContext);
   const contentType = useContext(courseContentContext);
-  const {
-    mainContainer, hiddenContainer, filterMainContent, mainTitle, visibilityButton,
-  } = styles;
-
-  const toggleFilterTabVisibility = () => {
-    if (visibleFilterTab === VisibleFilterTab.isVisible) {
-      setVisibleFilterTab(VisibleFilterTab.isHidden);
-      changeVisibility();
-    } else {
-      setVisibleFilterTab(VisibleFilterTab.isVisible);
-      changeVisibility();
-    }
-  };
+  const { mainContainer, filterMainContent, mainTitle } = styles;
 
   useEffect(() => {
     featureService.getFilterFeatures({}, token).then((data) => {
@@ -39,8 +23,7 @@ const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
 
   return (
     <div
-      className={visibleFilterTab === 'visible' ? mainContainer
-        : hiddenContainer}
+      className={mainContainer}
       style={contentType === CourseContent.SAVEDCOURSES ? { display: 'none' } : { display: 'flex' }}
     >
       <div className={filterMainContent}>
@@ -48,19 +31,18 @@ const FilterComponent = ({ changeVisibility }:{changeVisibility:()=>void}) => {
         {
           Object.entries(filterFeatures).length
             ? Object.entries(filterFeatures).map((feature, index) => {
-              const title:string = feature[0] === 'parentAndSubcategories' ? 'Category' : feature[0] === 'allLanguages' ? 'Language' : 'Course Level';
+              const title:string = feature[0] === 'parentAndSubcategories' ? t('Category') : feature[0] === 'allLanguages' ? t('Language') : t('Course Level');
               return (
                 <FilteringContent
                   title={title}
                   key={index}
                   content={feature[1]}
-                  filterFeature={title === 'Category' ? 'subCategoryIds' : title === 'Language' ? 'languageIds' : 'difficultyIds'}
+                  filterFeature={title === t('Category') ? 'subCategoryIds' : title === t('Language') ? 'languageIds' : 'difficultyIds'}
                 />
               );
             }) : null
         }
       </div>
-      <button className={visibilityButton} type="button" onClick={toggleFilterTabVisibility}>{'<'}</button>
     </div>
   );
 };

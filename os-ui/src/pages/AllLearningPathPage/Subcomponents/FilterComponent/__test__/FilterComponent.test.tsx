@@ -8,7 +8,7 @@ describe('Create test cases for FilterComponent component', () => {
   test('Create a snapshot tets', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <FilterComponent changeVisibility={() => null} />
+        <FilterComponent />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();

@@ -134,10 +134,7 @@ const MyLearningPathPage = () => {
           suggestedCourses.length ? suggestedCourses.map((suggestedCourse, index) => (
             <LearningPath
               key={index}
-              title={suggestedCourse.title}
-              rating={suggestedCourse.rating}
-              difficulty={suggestedCourse.difficulty}
-              keywords={suggestedCourse.keywords}
+              courseInfo={suggestedCourse}
             />
           )) : <h2>There are no suggested courses yet</h2>
         }

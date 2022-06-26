@@ -3,14 +3,12 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import LearningPathHeader from './Subcomponents/LearningPathHeader/LearningPathHeader';
 import Search from '../../../../component/Search/Search';
 import LearningPathCoreContent from './Subcomponents/LearningPathCoreContent/LearningPathCoreContent';
 import { addFilterParams, removeFilterParams } from '../../../../redux/Slices/AllLearningPathFilterParamsSlice';
-import { CourseContent } from '../../../../types/CourseContent';
 import styles from './LearningPathContent.module.scss';
-
-const LearningPathContent = ({ filterTabIsVisible }:{filterTabIsVisible:boolean}) => {
+/* eslint-disable-next-line max-len */
+const LearningPathContent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,8 +34,7 @@ const LearningPathContent = ({ filterTabIsVisible }:{filterTabIsVisible:boolean}
   }, [searchTitle]);
 
   return (
-    <div ref={mainContentRef} className={learningPathsMainContainer} style={{ transitionDuration: '0.5s', width: filterTabIsVisible ? '75%' : '98%' }}>
-      <LearningPathHeader activeNavigator={CourseContent.ALLCOURSES} />
+    <div ref={mainContentRef} className={learningPathsMainContainer}>
       <Search changeUrlQueries={(title:string) => setSearchTitle(title)} />
       <LearningPathCoreContent />
     </div>
