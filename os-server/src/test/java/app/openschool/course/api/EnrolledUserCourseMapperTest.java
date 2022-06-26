@@ -15,6 +15,7 @@ import app.openschool.course.module.Module;
 import app.openschool.course.module.item.EnrolledModuleItem;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.status.ModuleItemStatus;
+import app.openschool.course.module.item.type.ModuleItemType;
 import app.openschool.course.module.status.ModuleStatus;
 import app.openschool.course.status.CourseStatus;
 import java.time.LocalDate;
@@ -89,7 +90,9 @@ public class EnrolledUserCourseMapperTest {
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
       moduleItem.setId(i);
-      moduleItem.setModuleItemType("video");
+      ModuleItemType moduleItemType = new ModuleItemType();
+      moduleItemType.setType("video");
+      moduleItem.setModuleItemType(moduleItemType);
       moduleItem.setEstimatedTime(35L);
       moduleItem.setModule(module1);
       moduleItemsModule1.add(moduleItem);
@@ -102,7 +105,9 @@ public class EnrolledUserCourseMapperTest {
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
       moduleItem.setId(i + 2);
-      moduleItem.setModuleItemType("reading");
+      ModuleItemType moduleItemType = new ModuleItemType();
+      moduleItemType.setType("reading");
+      moduleItem.setModuleItemType(moduleItemType);
       moduleItem.setEstimatedTime(25L);
       moduleItem.setModule(module2);
       moduleItemsModule2.add(moduleItem);
@@ -112,10 +117,12 @@ public class EnrolledUserCourseMapperTest {
     Module module3 =
         moduleSet.stream().filter(module -> module.getId().equals(3L)).findFirst().get();
     ModuleItem moduleItem = new ModuleItem();
-    moduleItem.setId(5L);
-    moduleItem.setModuleItemType("reading");
-    moduleItem.setEstimatedTime(30L);
     moduleItem.setModule(module3);
+    moduleItem.setId(5L);
+    ModuleItemType moduleItemType = new ModuleItemType();
+    moduleItemType.setType("reading");
+    moduleItem.setModuleItemType(moduleItemType);
+    moduleItem.setEstimatedTime(30L);
     Set<ModuleItem> moduleItemsModule3 = new HashSet<>();
     moduleItemsModule3.add(moduleItem);
     module3.setModuleItems(moduleItemsModule3);

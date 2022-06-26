@@ -1,11 +1,14 @@
 package app.openschool.user;
 
+import app.openschool.auth.AuthService;
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.course.Course;
 import app.openschool.course.api.dto.CourseDto;
+import app.openschool.course.api.dto.EnrolledCourseOverviewDto;
 import app.openschool.course.api.dto.UserCourseDto;
 import app.openschool.course.api.dto.UserSavedCourseRequest;
 import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.api.mapper.EnrolledCourseMapper;
 import app.openschool.course.api.mapper.UserCourseMapper;
 import app.openschool.user.api.dto.UserWithSavedMentorsDto;
 import app.openschool.user.api.mapper.UserMapper;
@@ -19,13 +22,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,9 +37,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   private final UserService userService;
+  private final AuthService authService;
 
-  public UserController(UserService userService) {
+  public UserController(UserService userService, AuthService authService) {
     this.userService = userService;
+    this.authService = authService;
   }
 
   @GetMapping("/{userId}/courses/suggested")
@@ -105,27 +108,43 @@ public class UserController {
     return ResponseEntity.ok(CourseMapper.toCourseDto(deletedCourse));
   }
 
-  @PostMapping("/courses/{courseId}")
-  @Operation(summary = "enroll a course", security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<CourseDto> enrollCourse(@PathVariable long courseId) {
+  @PostMapping("/{userId}/courses/{courseId}")
+  @Operation(summary = "enroll course", security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<CourseDto> enrollCourse(
+      @PathVariable long userId, @PathVariable long courseId) {
 
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-    return userService
-        .enrollCourse(username, courseId)
-        .map(
-            course ->
-                ResponseEntity.status(HttpStatus.CREATED).body(CourseMapper.toCourseDto(course)))
-        .orElseGet(() -> ResponseEntity.notFound().build());
+    User user = authService.validateUserRequestAndReturnUser(userId);
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(CourseMapper.toCourseDto(userService.enrollCourse(user, courseId)));
   }
 
-  @PutMapping("/{userId}/mentors/{mentorId}")
+  @GetMapping("/{userId}/courses/enrolled/{enrolledCourseId}")
+  @Operation(
+      summary = "find user's enrolled course overview",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<EnrolledCourseOverviewDto> findEnrolledCoursesOverview(
+      @PathVariable Long enrolledCourseId) {
+    return ResponseEntity.ok(
+        EnrolledCourseMapper.toEnrolledCourseOverviewDto(
+            userService.findEnrolledCourseById(enrolledCourseId)));
+  }
+
+  @PostMapping("/{userId}/mentors/{mentorId}")
   @Operation(summary = "save mentor", security = @SecurityRequirement(name = "bearerAuth"))
   public ResponseEntity<UserWithSavedMentorsDto> saveMentor(
       @PathVariable Long userId, @PathVariable Long mentorId) {
 
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-    return ResponseEntity.ok(
-        UserMapper.userToUserWithSavedMentorsDto(
-            userService.saveMentor(userId, mentorId, username)));
+    User user = authService.validateUserRequestAndReturnUser(userId);
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(UserMapper.userToUserWithSavedMentorsDto(userService.saveMentor(user, mentorId)));
+  }
+
+  @DeleteMapping("/{userId}/mentors/{mentorId}/saved")
+  @Operation(summary = "delete saved mentor", security = @SecurityRequirement(name = "bearerAuth"))
+  public ResponseEntity<Void> deleteMentor(@PathVariable Long userId, @PathVariable Long mentorId) {
+
+    User user = authService.validateUserRequestAndReturnUser(userId);
+    userService.deleteMentor(user, mentorId);
+    return ResponseEntity.ok().build();
   }
 }

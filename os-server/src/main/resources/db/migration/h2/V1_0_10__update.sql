@@ -1,28 +1,27 @@
--- -----------------------------------------------------
--- TRIGGER on_insert_to_learning_path - AFTER INSERT ON learning_path
--- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS module_item_type
+(
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    type VARCHAR(45) NOT NULL,
+    PRIMARY KEY (id)
+);
 
-CREATE TRIGGER on_insert_to_learning_path
-AFTER INSERT ON learning_path
-FOR EACH ROW CAll "app.openschool.common.dbsupport.UpdateUserCourseCountTrigger";
+ALTER TABLE module_item
+ADD COLUMN title VARCHAR(45) NOT NULL AFTER module_id;
 
--- -----------------------------------------------------
--- Table user_has_mentor
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS user_has_mentor (
-  user_id BIGINT(20) NOT NULL,
-  mentor_id BIGINT(20) NOT NULL,
-  PRIMARY KEY (user_id, mentor_id),
-  CONSTRAINT fk_user_has_user_user1
-    FOREIGN KEY (user_id)
-    REFERENCES user (id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT fk_user_has_user_user2
-    FOREIGN KEY (mentor_id)
-    REFERENCES user (id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
+ALTER TABLE module_item
+DROP COLUMN module_item_type;
 
-CREATE INDEX fk_user_has_user_user2_idx ON user_has_mentor (mentor_id ASC);
-CREATE INDEX fk_user_has_user_user1_idx ON user_has_mentor (user_id ASC);
+ALTER TABLE module_item
+ADD COLUMN module_item_type_id BIGINT AFTER module_id;
+
+ALTER TABLE module_item
+ADD CONSTRAINT fk_module_item_type
+   FOREIGN KEY (module_item_type_id)
+   REFERENCES module_item_type (id)
+   ON DELETE CASCADE
+   ON UPDATE CASCADE;
+
+CREATE INDEX module_item_type_idx ON module_item (module_item_type_id ASC);
+
+INSERT INTO module_item_type (type)
+VALUES ('VIDEO'), ('READING'), ('PRACTICE EXERCISES'), ('OTHER');

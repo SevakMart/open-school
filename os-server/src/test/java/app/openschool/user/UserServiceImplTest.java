@@ -2,11 +2,14 @@ package app.openschool.user;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import app.openschool.category.Category;
@@ -16,6 +19,7 @@ import app.openschool.category.api.exception.CategoryNotFoundException;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
+import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.api.CourseGenerator;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
@@ -25,6 +29,7 @@ import app.openschool.course.module.Module;
 import app.openschool.course.module.item.EnrolledModuleItem;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.status.ModuleItemStatus;
+import app.openschool.course.module.item.type.ModuleItemType;
 import app.openschool.course.module.status.ModuleStatus;
 import app.openschool.course.status.CourseStatus;
 import app.openschool.user.api.UserGenerator;
@@ -54,12 +59,15 @@ class UserServiceImplTest {
   @Mock private UserRepository userRepository;
   @Mock private CategoryRepository categoryRepository;
   @Mock private CourseRepository courseRepository;
+  @Mock private EnrolledCourseRepository enrolledCourseRepository;
 
   private UserService userService;
 
   @BeforeEach
   void setUp() {
-    userService = new UserServiceImpl(userRepository, categoryRepository, courseRepository);
+    userService =
+        new UserServiceImpl(
+            userRepository, categoryRepository, courseRepository, enrolledCourseRepository);
   }
 
   @Test
@@ -215,7 +223,9 @@ class UserServiceImplTest {
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
       moduleItem.setId(i);
-      moduleItem.setModuleItemType("video");
+      ModuleItemType moduleItemType = new ModuleItemType();
+      moduleItemType.setType("reading");
+      moduleItem.setModuleItemType(moduleItemType);
       moduleItem.setEstimatedTime(35L);
       moduleItem.setModule(module1);
       moduleItemsModule1.add(moduleItem);
@@ -228,7 +238,9 @@ class UserServiceImplTest {
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
       moduleItem.setId(i + 2);
-      moduleItem.setModuleItemType("reading");
+      ModuleItemType moduleItemType = new ModuleItemType();
+      moduleItemType.setType("reading");
+      moduleItem.setModuleItemType(moduleItemType);
       moduleItem.setEstimatedTime(25L);
       moduleItem.setModule(module2);
       moduleItemsModule2.add(moduleItem);
@@ -238,10 +250,12 @@ class UserServiceImplTest {
     Module module3 =
         moduleSet.stream().filter(module -> module.getId().equals(3L)).findFirst().get();
     ModuleItem moduleItem = new ModuleItem();
-    moduleItem.setId(5L);
-    moduleItem.setModuleItemType("reading");
-    moduleItem.setEstimatedTime(30L);
     moduleItem.setModule(module3);
+    moduleItem.setId(5L);
+    ModuleItemType moduleItemType = new ModuleItemType();
+    moduleItemType.setType("reading");
+    moduleItem.setModuleItemType(moduleItemType);
+    moduleItem.setEstimatedTime(30L);
     Set<ModuleItem> moduleItemsModule3 = new HashSet<>();
     moduleItemsModule3.add(moduleItem);
     module3.setModuleItems(moduleItemsModule3);
@@ -356,16 +370,39 @@ class UserServiceImplTest {
   }
 
   @Test
-  void enrollCourse() {
-    String username = "user";
-    long coresId = 1L;
-
-    when(userRepository.findByEmail(username)).thenReturn(Optional.of(new User(1L)));
-    when(courseRepository.findById(coresId))
+  void enrollCourse_WithCorrectCourseId_returnCourse() {
+    when(courseRepository.findById(anyLong()))
         .thenReturn(Optional.of(CourseGenerator.generateCourse()));
 
-    userService.enrollCourse(username, coresId);
+    userService.enrollCourse(new User(), 1L);
+
     verify(userRepository, times(1)).save(any());
+  }
+
+  @Test
+  void enrollCourse_WithIncorrectCourseId_throwsIllegalArgumentException() {
+    when(courseRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> userService.enrollCourse(new User(), 1L))
+        .isInstanceOf(IllegalArgumentException.class);
+
+    verifyNoInteractions(userRepository);
+  }
+
+  @Test
+  void findEnrolledCourseById_courseIsPresent_returnsEnrolledCourse() {
+    when(enrolledCourseRepository.findById(anyLong()))
+        .thenReturn(Optional.of(new EnrolledCourse()));
+    EnrolledCourse enrolledCourse = userService.findEnrolledCourseById(1L);
+    assertNotNull(enrolledCourse);
+    verify(enrolledCourseRepository, times(1)).findById(anyLong());
+  }
+
+  @Test
+  void findEnrolledCourseById_courseIsNotPresent_throwsException() {
+    when(enrolledCourseRepository.findById(anyLong())).thenReturn(Optional.empty());
+    assertThatThrownBy(() -> userService.findEnrolledCourseById(1L))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
@@ -381,79 +418,110 @@ class UserServiceImplTest {
   }
 
   @Test
-  void saveMentor_withCorrectUserIdAndMentorId_returnUser() {
-    String email = "testEmail";
-    User mentor = new User();
+  void saveMentor_withCorrectMentorId_returnUser() {
+    User mentor = new User(2L);
     User student = new User(1L);
     mentor.setRole(new Role("MENTOR"));
-    when(userRepository.findUserByEmail(email)).thenReturn(student);
     when(userRepository.findUserById(2L)).thenReturn(Optional.of(mentor));
 
-    userService.saveMentor(1L, 2L, email);
+    userService.saveMentor(student, 2L);
 
     verify(userRepository, Mockito.times(1)).save(student);
-    verify(userRepository, Mockito.times(1)).findUserByEmail(email);
-    verify(userRepository, Mockito.times(1)).findUserById(2L);
+    verify(userRepository, Mockito.times(1)).findUserById(anyLong());
   }
 
   @Test
-  void saveMentor_withWrongUserId_throwIllegalArgumentException() {
-    String email = "testEmail";
+  void saveMentor_withIncorrectMentorId_returnUser() {
     User student = new User(1L);
-    when(userRepository.findUserByEmail(email)).thenReturn(student);
+    when(userRepository.findUserById(2L)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> userService.saveMentor(2L, 3L, email))
+    assertThatThrownBy(() -> userService.saveMentor(student, 2L))
         .isInstanceOf(IllegalArgumentException.class);
+
+    verify(userRepository, Mockito.times(0)).save(student);
+    verify(userRepository, Mockito.times(1)).findUserById(anyLong());
   }
 
   @Test
-  void findSavedMentors_withCorrectUserId_returnSavedMentors() {
-    final String username = "username";
+  void saveMentor_withFakeMentor_returnUser() {
+    User fakeMentor = new User(2L);
+    User student = new User(1L);
+    fakeMentor.setRole(new Role("STUDENT"));
+    when(userRepository.findUserById(2L)).thenReturn(Optional.of(fakeMentor));
+
+    assertThatThrownBy(() -> userService.saveMentor(student, 2L))
+        .isInstanceOf(IllegalArgumentException.class);
+
+    verify(userRepository, Mockito.times(0)).save(student);
+    verify(userRepository, Mockito.times(1)).findUserById(anyLong());
+  }
+
+  @Test
+  void findSavedMentors_returnSavedMentors() {
     User user = generateUserWithSavedMentors();
-    when(userRepository.findUserByEmail(username)).thenReturn(user);
 
     Pageable pageable = PageRequest.of(0, 2);
-    Page<User> savedMentors = userService.findSavedMentors(1L, username, pageable);
+    Page<User> savedMentors = userService.findSavedMentors(user, pageable);
 
     assertEquals(5, savedMentors.getTotalElements());
     assertEquals(2, savedMentors.getPageable().getPageSize());
-    verify(userRepository, Mockito.times(1)).findUserByEmail(username);
+    verifyNoInteractions(userRepository);
   }
 
   @Test
-  void findSavedMentors_withIncorrectUserId_throwIllegalArgumentException() {
-    String username = "username";
-    User user = new User(2L);
-    when(userRepository.findUserByEmail(username)).thenReturn(user);
-
+  void findSavedMentorsByName_returnSavedMentors() {
     Pageable pageable = PageRequest.of(0, 2);
-    assertThatThrownBy(() -> userService.findSavedMentors(1L, username, pageable))
-        .isInstanceOf(IllegalArgumentException.class);
-  }
-
-  @Test
-  void findSavedMentorsByName_withCorrectUserId_returnSavedMentors() {
-    String username = "User";
-    Pageable pageable = PageRequest.of(0, 2);
-    when(userRepository.findUserByEmail(username)).thenReturn(new User(1L));
     when(userRepository.findSavedMentorsByName(anyLong(), anyString(), any()))
         .thenReturn(generateUserPage(pageable));
 
-    Page<User> savedMentors = userService.findSavedMentorsByName(1L, username, "Mentor", pageable);
+    Page<User> savedMentors = userService.findSavedMentorsByName(1L, "Mentor", pageable);
 
     assertEquals(5, savedMentors.getTotalElements());
     assertEquals(2, savedMentors.getPageable().getPageSize());
-    verify(userRepository, Mockito.times(1)).findUserByEmail(username);
+    verify(userRepository, times(1)).findSavedMentorsByName(anyLong(), anyString(), any());
   }
 
   @Test
-  void findSavedMentorsByName_withIncorrectUserId_throwsIllegalArgumentException() {
-    String username = "User";
-    Pageable pageable = PageRequest.of(0, 2);
-    when(userRepository.findUserByEmail(username)).thenThrow(IllegalArgumentException.class);
+  void deleteMentor_withExistingMentorAndContainingInUserSavedMentorsList_deleteSavedMentor() {
+    User mentor = new User(2L);
+    mentor.setRole(new Role("MENTOR"));
+    User student = new User(1L);
+    student.getMentors().add(mentor);
 
-    assertThatThrownBy(() -> userService.findSavedMentorsByName(1L, username, "Mentor", pageable))
-        .isInstanceOf(IllegalArgumentException.class);
+    when(userRepository.findUserById(2L)).thenReturn(Optional.of(mentor));
+
+    userService.deleteMentor(student, 2L);
+
+    assertTrue(student.getMentors().isEmpty());
+    verify(userRepository, times(1)).save(student);
+    verify(userRepository, times(1)).findUserById(anyLong());
+  }
+
+  @Test
+  void deleteMentor_withNonexistentMentor_doNothing() {
+    User student = new User(1L);
+    when(userRepository.findUserById(2L)).thenReturn(Optional.empty());
+
+    userService.deleteMentor(student, 2L);
+
+    verify(userRepository, times(0)).save(student);
+    verify(userRepository, times(1)).findUserById(anyLong());
+  }
+
+  @Test
+  void deleteMentor_withExistingMentorButMissingFromUserSavedMentorsList_noUpdate() {
+    User mentor = new User(2L);
+    mentor.setRole(new Role("MENTOR"));
+    User student = new User(1L);
+    student.getMentors().add(new User(3L));
+
+    when(userRepository.findUserById(2L)).thenReturn(Optional.of(mentor));
+
+    userService.deleteMentor(student, 2L);
+
+    assertEquals(1, student.getMentors().size());
+    verify(userRepository, times(1)).save(student);
+    verify(userRepository, times(1)).findUserById(anyLong());
   }
 
   private Page<User> generateUserPage(Pageable pageable) {

@@ -8,6 +8,7 @@ import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
+import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.ArrayList;
@@ -28,14 +29,17 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final CategoryRepository categoryRepository;
   private final CourseRepository courseRepository;
+  private final EnrolledCourseRepository enrolledCourseRepository;
 
   public UserServiceImpl(
       UserRepository userRepository,
       CategoryRepository categoryRepository,
-      CourseRepository courseRepository) {
+      CourseRepository courseRepository,
+      EnrolledCourseRepository enrolledCourseRepository) {
     this.userRepository = userRepository;
     this.categoryRepository = categoryRepository;
     this.courseRepository = courseRepository;
+    this.enrolledCourseRepository = enrolledCourseRepository;
   }
 
   @Override
@@ -117,46 +121,37 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public User saveMentor(Long userId, Long mentorId, String username) {
-    User user = userRepository.findUserByEmail(username);
-    if (user.getId().equals(userId)) {
-      return userRepository
-          .findUserById(mentorId)
-          .filter(mentor -> mentor.getRole().getType().equals("MENTOR"))
-          .map(
-              mentor -> {
-                user.getMentors().add(mentor);
-                return userRepository.save(user);
-              })
-          .orElse(user);
-
+  public User saveMentor(User user, Long mentorId) {
+    User mentor = userRepository.findUserById(mentorId).orElseThrow(IllegalArgumentException::new);
+    if (mentor.getRole().getType().equals("MENTOR")) {
+      user.getMentors().add(mentor);
+      return userRepository.save(user);
     } else {
       throw new IllegalArgumentException();
     }
   }
 
   @Override
-  public Page<User> findSavedMentors(Long userId, String username, Pageable pageable) {
-    User user = userRepository.findUserByEmail(username);
-    if (user.getId().equals(userId)) {
-      List<User> mentors = new ArrayList<>(user.getMentors());
-      return new PageImpl<>(mentors, pageable, mentors.size());
-    } else {
-      throw new IllegalArgumentException();
-    }
+  public Page<User> findSavedMentors(User user, Pageable pageable) {
+    List<User> mentors = new ArrayList<>(user.getMentors());
+    return new PageImpl<>(mentors, pageable, mentors.size());
   }
 
   @Override
   @Transactional
-  public Page<User> findSavedMentorsByName(
-      Long userId, String username, String name, Pageable pageable) {
+  public Page<User> findSavedMentorsByName(Long userId, String name, Pageable pageable) {
+    return userRepository.findSavedMentorsByName(userId, name, pageable);
+  }
 
-    User user = userRepository.findUserByEmail(username);
-    if (user.getId().equals(userId)) {
-      return userRepository.findSavedMentorsByName(userId, name, pageable);
-    } else {
-      throw new IllegalArgumentException();
-    }
+  @Override
+  public void deleteMentor(User user, Long mentorId) {
+    userRepository
+        .findUserById(mentorId)
+        .map(
+            mentor -> {
+              user.getMentors().remove(mentor);
+              return userRepository.save(user);
+            });
   }
 
   @Override
@@ -190,16 +185,17 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public Optional<Course> enrollCourse(String username, long courseId) {
-    Optional<User> optionalUser = userRepository.findByEmail(username);
-    Optional<Course> optionalCourse = courseRepository.findById(courseId);
-    if (optionalUser.isPresent() && optionalCourse.isPresent()) {
-      User user = optionalUser.get();
-      Course course = optionalCourse.get();
-      user.getEnrolledCourses().add(CourseMapper.toEnrolledCourse(course, user));
-      userRepository.save(user);
-      return Optional.of(course);
-    }
-    return Optional.empty();
+  public Course enrollCourse(User user, long courseId) {
+    Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
+    user.getEnrolledCourses().add(CourseMapper.toEnrolledCourse(course, user));
+    userRepository.save(user);
+    return course;
+  }
+
+  @Override
+  public EnrolledCourse findEnrolledCourseById(Long enrolledCourseId) {
+    return enrolledCourseRepository
+        .findById(enrolledCourseId)
+        .orElseThrow(IllegalArgumentException::new);
   }
 }

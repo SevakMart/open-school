@@ -1,5 +1,6 @@
 package app.openschool.user;
 
+import app.openschool.auth.AuthService;
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.user.api.dto.MentorDto;
@@ -9,7 +10,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class MentorController {
 
   private final UserService userService;
+  private final AuthService authService;
 
-  public MentorController(UserService userService) {
+  public MentorController(UserService userService, AuthService authService) {
     this.userService = userService;
+    this.authService = authService;
   }
 
   @GetMapping("/{mentorId}/courses")
@@ -47,9 +49,9 @@ public class MentorController {
   public ResponseEntity<Page<MentorDto>> findSavedMentors(
       @PathVariable Long userId, Pageable pageable) {
 
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    User user = authService.validateUserRequestAndReturnUser(userId);
     return ResponseEntity.ok(
-        MentorMapper.toMentorDtoPage(userService.findSavedMentors(userId, username, pageable)));
+        MentorMapper.toMentorDtoPage(userService.findSavedMentors(user, pageable)));
   }
 
   @GetMapping("/searched")
@@ -67,9 +69,8 @@ public class MentorController {
   public ResponseEntity<Page<MentorDto>> findSavedMentorsByName(
       @PathVariable Long userId, @RequestParam(required = false) String name, Pageable pageable) {
 
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    authService.validateUserRequestAndReturnUser(userId);
     return ResponseEntity.ok(
-        MentorMapper.toMentorDtoPage(
-            userService.findSavedMentorsByName(userId, username, name, pageable)));
+        MentorMapper.toMentorDtoPage(userService.findSavedMentorsByName(userId, name, pageable)));
   }
 }
