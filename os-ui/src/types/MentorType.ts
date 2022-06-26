@@ -7,4 +7,6 @@ export interface MentorType{
     userImgPath:string;
     emailPath:string;
     linkedinPath:string;
+    id?:number;
+    isBookMarked?:boolean;
 }

@@ -45,7 +45,12 @@ class UserService {
   }
 
   async saveUserMentor(userId:number, mentorId:number, userToken:string, params = {}) {
-    const data = await (await fetchService.put(`${this.basePath}/${userId}/mentors/${mentorId}`, params, userToken)).json();
+    const data = await (await fetchService.post(`${this.basePath}/${userId}/mentors/${mentorId}`, null, params, userToken)).json();
+    return data;
+  }
+
+  async deleteUserSavedMentor(userId:number, mentorId:number, userToken:string, params = {}) {
+    const data = await (await fetchService.delete(`${this.basePath}/${userId}/mentors/${mentorId}/saved`, params, userToken)).json();
     return data;
   }
 }

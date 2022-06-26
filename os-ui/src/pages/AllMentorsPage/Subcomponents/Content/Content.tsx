@@ -7,13 +7,13 @@ import MentorCard from '../../../../component/MentorProfile/MentorProfile';
 import { MentorType } from '../../../../types/MentorType';
 import styles from './Content.module.scss';
 
-type MentorListType=MentorType & {isBookmarked:boolean}
+// type MentorListType=MentorType & {isBookmarked:boolean}
 
 const Content = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
-  const [mentorList, setMentorList] = useState<MentorListType[]>([]);
+  const [mentorList, setMentorList] = useState<MentorType[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
   const { token, id } = useContext(userContext);
   const { mainContent } = styles;
@@ -31,42 +31,42 @@ const Content = () => {
       .then((combinedData) => {
         const requestedMentorsList = combinedData[0].content;
         const userSavedMentorList = combinedData[1].content;
+        console.log(userSavedMentorList);
+        console.log(requestedMentorsList);
         if (userSavedMentorList.length) {
         /* eslint-disable-next-line max-len */
-          const finalMentorList = requestedMentorsList.reduce((acc:MentorListType[], savedMentor:MentorType) => {
+          const finalMentorList = requestedMentorsList.reduce((acc:MentorType[], savedMentor:MentorType) => {
             const index = userSavedMentorList.findIndex(
               /* eslint-disable-next-line max-len */
               (mentor:MentorType) => mentor.name === savedMentor.name && mentor.surname === savedMentor.surname,
             );
             if (index !== -1) {
-              acc.push({ ...savedMentor, isBookmarked: true });
+              acc.push({ ...savedMentor, isBookMarked: true });
               return acc;
             }
 
-            acc.push({ ...savedMentor, isBookmarked: false });
+            acc.push({ ...savedMentor, isBookMarked: false });
             return acc;
           }, []);
           setMentorList([...finalMentorList]);
         } else {
           setMentorList(
             /* eslint-disable-next-line max-len */
-            [...requestedMentorsList.map((mentor:MentorType) => ({ ...mentor, isBookmarked: false }))],
+            [...requestedMentorsList.map((mentor:MentorType) => ({ ...mentor, isBookMarked: false }))],
           );
         }
       }).catch(() => setErrorMessage('For some reason the data could not be loaded, please try refreshing the page'));
   }, [params.get('searchedMentor')]);
-  // For temporary solution I will add index as mentor id.
-  // mentorId+1 is temporary because it is using the index of map to show the mentor id
+
   return (
     <div className={mainContent}>
       { errorMessage ? <h2>{errorMessage}</h2>
-        : mentorList.length ? mentorList.map((mentor, index) => (
+        : mentorList.length ? mentorList.map((mentor) => (
           <MentorCard
-            key={index}
+            key={mentor.id}
             mentor={mentor}
-            id={index}
-            isBookMarked={mentor.isBookmarked}
-            saveMentor={(mentorId) => userService.saveUserMentor(id, mentorId + 1, token)}
+            saveMentor={(mentorId) => userService.saveUserMentor(id, mentorId, token)}
+            deleteMentor={(mentorId) => userService.deleteUserSavedMentor(id, mentorId, token)}
           />
         )) : <h2>No data to display</h2>}
     </div>

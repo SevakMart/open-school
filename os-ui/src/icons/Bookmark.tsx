@@ -23,6 +23,7 @@ const BookmarkIcon = (
       saveMentor && saveMentor(mentorId!);
     } else if (!isClicked && isBookmarked) {
       deleteCourse && deleteCourse(courseId!);
+      deleteMentor && deleteMentor(mentorId!);
     }
   }, [isClicked]);
 
