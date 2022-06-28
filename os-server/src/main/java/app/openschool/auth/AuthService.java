@@ -29,4 +29,6 @@ public interface AuthService {
   Optional<ResetPasswordToken> findByToken(String token);
 
   User validateUserRequestAndReturnUser(Long userId);
+
+  public boolean emailAlreadyExist(String email);
 }

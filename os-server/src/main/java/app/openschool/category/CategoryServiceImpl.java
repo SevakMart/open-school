@@ -83,8 +83,7 @@ public class CategoryServiceImpl implements CategoryService {
     categories.forEach(
         (category -> {
           String parentCategoryTitle =
-              categoryRepository.findCategoryById(category.getParentCategoryId()).getTitle();
-
+              categoryRepository.getById(category.getParentCategoryId()).getTitle();
           if (categoryMap.containsKey(parentCategoryTitle)) {
             categoryMap
                 .get(parentCategoryTitle)

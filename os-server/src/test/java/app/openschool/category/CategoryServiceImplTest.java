@@ -76,7 +76,7 @@ public class CategoryServiceImplTest {
         .willReturn(categoriesSearchedByJs);
     given(categoryRepository.findByTitleIgnoreCaseStartingWith("ang"))
         .willReturn(categoriesSearchedByAng);
-    given(categoryRepository.findCategoryById(2L)).willReturn(parentCategory2);
+    given(categoryRepository.getById(2L)).willReturn(parentCategory2);
     given(categoryRepository.findCategoriesByParentCategoryId(1L)).willReturn(subcategories1);
     given(categoryRepository.findCategoriesByParentCategoryId(2L)).willReturn(subcategories2);
 

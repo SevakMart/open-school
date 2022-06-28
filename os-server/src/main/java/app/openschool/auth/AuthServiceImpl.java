@@ -3,7 +3,6 @@ package app.openschool.auth;
 import app.openschool.auth.api.dto.ResetPasswordRequest;
 import app.openschool.auth.api.dto.UserLoginDto;
 import app.openschool.auth.api.dto.UserRegistrationDto;
-import app.openschool.auth.api.exception.EmailAlreadyExistException;
 import app.openschool.auth.api.exception.EmailNotFoundException;
 import app.openschool.auth.api.mapper.UserLoginMapper;
 import app.openschool.auth.api.mapper.UserRegistrationMapper;
@@ -17,7 +16,6 @@ import app.openschool.common.event.SendVerificationEmailEvent;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
-import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -55,11 +53,6 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
   @Override
   public User register(UserRegistrationDto userDto) {
-
-    if (emailAlreadyExist(userDto.getEmail())) {
-      throw new EmailAlreadyExistException();
-    }
-
     User user =
         userRepository.save(
             UserRegistrationMapper.userRegistrationDtoToUser(userDto, passwordEncoder));
@@ -98,9 +91,8 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
   @Override
   public void sendVerificationEmail(Long userId) {
-    Optional<User> user = userRepository.findUserById(userId);
-    user.orElseThrow(() -> new UserNotFoundException(String.valueOf(userId)));
-    applicationEventPublisher.publishEvent(new SendVerificationEmailEvent(this, user.get()));
+    User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
+    applicationEventPublisher.publishEvent(new SendVerificationEmailEvent(this, user));
   }
 
   @Override
@@ -152,7 +144,8 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     return user;
   }
 
-  private boolean emailAlreadyExist(String email) {
-    return findUserByEmail(email) != null;
+  @Override
+  public boolean emailAlreadyExist(String email) {
+    return findByEmail(email).isPresent();
   }
 }

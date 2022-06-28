@@ -37,8 +37,10 @@ public class PublicController {
       @Parameter(
               description =
                   "Includes parameters page, size, and sort which is not required. "
-                      + "Page results page you want to retrieve (0..N). Size is count of records per page(1..N). "
-                      + "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. "
+                      + "Page results page you want to retrieve (0..N). "
+                      + "Size is count of records per page(1..N). "
+                      + "Sorting criteria in the format: property(,asc|desc). "
+                      + "Default sort order is ascending. "
                       + "Multiple sort criteria are supported.")
           Pageable pageable) {
     return ResponseEntity.ok(
@@ -49,14 +51,17 @@ public class PublicController {
   @ApiResponse(
       responseCode = "200",
       description =
-          "Will return paginated list of parent categories or empty list if no category have been found")
+          "Will return paginated list of parent categories or "
+              + "empty list if no category have been found")
   @GetMapping("/categories")
   public ResponseEntity<Page<CategoryDto>> findAllCategories(
       @Parameter(
               description =
                   "Includes parameters page, size, and sort which is not required. "
-                      + "Page results page you want to retrieve (0..N). Size is count of records per page(1..N). "
-                      + "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. "
+                      + "Page results page you want to retrieve (0..N). "
+                      + "Size is count of records per page(1..N). "
+                      + "Sorting criteria in the format: property(,asc|desc). "
+                      + "Default sort order is ascending. "
                       + "Multiple sort criteria are supported.")
           Pageable pageable) {
     return ResponseEntity.ok(this.categoryService.findAllCategories(pageable));

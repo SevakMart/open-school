@@ -29,25 +29,31 @@ public class CategoryController {
   @ApiResponse(
       responseCode = "200",
       description =
-          "Will return paginated list of parent categories or empty list if no category have been found")
+          "Will return paginated list of parent categories or "
+              + "empty list if no category have been found")
   @GetMapping("/categories")
   public ResponseEntity<Page<CategoryDto>> getAllCategories(
       @Parameter(
               description =
                   "Includes parameters page, size, and sort which is not required. "
-                      + "Page results page you want to retrieve (0..N). Size is count of records per page(1..N). "
-                      + "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. "
+                      + "Page results page you want to retrieve (0..N). "
+                      + "Size is count of records per page(1..N). "
+                      + "Sorting criteria in the format: property(,asc|desc). "
+                      + "Default sort order is ascending. "
                       + "Multiple sort criteria are supported.")
           Pageable pageable) {
     return ResponseEntity.ok(this.categoryService.findAllCategories(pageable));
   }
 
-  @GetMapping("/subcategories")
   @Operation(
       summary = "find all categories by title mapped by subcategories",
       security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponse(
+      responseCode = "200",
+      description = "Returns parent categories and relevant subcategories")
+  @GetMapping("/subcategories")
   public ResponseEntity<Map<String, List<PreferredCategoryDto>>> findCategoriesByTitle(
-      String title) {
+      @Parameter(description = "Category title") String title) {
     return ResponseEntity.ok(categoryService.findCategoriesByTitle(title));
   }
 }

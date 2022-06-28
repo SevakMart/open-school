@@ -58,9 +58,11 @@ public class UserController {
             responseCode = "200",
             description =
                 "Suggests 4 courses for user ordered by course rating desc. "
-                    + "If user has selected any category or categories the courses will be suggested "
-                    + "by corresponding categories. If no category is selected will be suggested random courses."
-                    + "If less then 4 courses exist will return corresponding count of courses or empty list."),
+                    + "If user has selected any category or categories "
+                    + "the courses will be suggested by corresponding categories. "
+                    + "If no category is selected will be suggested random courses."
+                    + "If less then 4 courses exist will return "
+                    + "corresponding count of courses or empty list."),
         @ApiResponse(
             responseCode = "400",
             description = "Invalid userId supplied",
@@ -73,12 +75,28 @@ public class UserController {
     return ResponseEntity.ok(CourseMapper.toCourseDtoList(userService.getSuggestedCourses(userId)));
   }
 
-  @PostMapping("/{userId}/categories")
   @Operation(
       summary = "save preferred categories",
       security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "The preferred categories have been saved"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "invalid userId or categoryId supplied",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
+  @PostMapping("/{userId}/categories")
   public ResponseEntity<Set<PreferredCategoryDto>> savePreferredCategories(
-      @PathVariable Long userId, @RequestBody Set<Long> categoryIds) {
+      @Parameter(description = "User's id whose chosen categories will be saved") @PathVariable
+          Long userId,
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description =
+                  "Ids of chosen categories which will be saved as user's preferred categories")
+          @RequestBody
+          Set<Long> categoryIds) {
     return ResponseEntity.ok(userService.savePreferredCategories(userId, categoryIds));
   }
 
@@ -90,7 +108,8 @@ public class UserController {
         @ApiResponse(
             responseCode = "200",
             description =
-                "Returns list of user's enrolled courses or empty list if no course have been found"),
+                "Returns list of user's enrolled courses or "
+                    + "empty list if no course have been found"),
         @ApiResponse(
             responseCode = "400",
             description = "Invalid userId supplied",
@@ -120,7 +139,8 @@ public class UserController {
         @ApiResponse(
             responseCode = "200",
             description =
-                "Will return list of user's saved courses or empty list if no course have been found"),
+                "Returns paginated list of user's saved courses or "
+                    + "empty list if no course has been found"),
         @ApiResponse(
             responseCode = "400",
             description = "Invalid userId supplied",
@@ -133,8 +153,10 @@ public class UserController {
       @Parameter(
               description =
                   "Includes parameters page, size, and sort which is not required. "
-                      + "Page results page you want to retrieve (0..N). Size is count of records per page(1..N). "
-                      + "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. "
+                      + "Page results page you want to retrieve (0..N). "
+                      + "Size is count of records per page(1..N). "
+                      + "Sorting criteria in the format: property(,asc|desc). "
+                      + "Default sort order is ascending. "
                       + "Multiple sort criteria are supported.")
           Pageable pageable) {
     return ResponseEntity.ok(
@@ -191,11 +213,20 @@ public class UserController {
     return ResponseEntity.ok(CourseMapper.toCourseDto(deletedCourse));
   }
 
-  @PostMapping("/{userId}/courses/{courseId}")
   @Operation(summary = "enroll course", security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "201", description = "The course has been enrolled"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid userId or courseId supplied",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
+  @PostMapping("/{userId}/courses/{courseId}")
   public ResponseEntity<CourseDto> enrollCourse(
-      @PathVariable long userId, @PathVariable long courseId) {
-
+      @Parameter(description = "User's id who enrolls the course") @PathVariable long userId,
+      @Parameter(description = "Id of the course which will be enrolled") @PathVariable
+          long courseId) {
     User user = authService.validateUserRequestAndReturnUser(userId);
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(CourseMapper.toCourseDto(userService.enrollCourse(user, courseId)));
@@ -224,20 +255,40 @@ public class UserController {
             userService.findEnrolledCourseById(enrolledCourseId)));
   }
 
-  @PostMapping("/{userId}/mentors/{mentorId}")
   @Operation(summary = "save mentor", security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "The mentor have been saved"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "invalid userId or mentorId supplied",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
+  @PostMapping("/{userId}/mentors/{mentorId}")
   public ResponseEntity<UserWithSavedMentorsDto> saveMentor(
-      @PathVariable Long userId, @PathVariable Long mentorId) {
-
+      @Parameter(description = "User's id whose  chosen mentor will be saved") @PathVariable
+          Long userId,
+      @Parameter(description = "Id of mentor which will be saved") @PathVariable Long mentorId) {
     User user = authService.validateUserRequestAndReturnUser(userId);
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(UserMapper.userToUserWithSavedMentorsDto(userService.saveMentor(user, mentorId)));
   }
 
-  @DeleteMapping("/{userId}/mentors/{mentorId}/saved")
   @Operation(summary = "delete saved mentor", security = @SecurityRequirement(name = "bearerAuth"))
-  public ResponseEntity<Void> deleteMentor(@PathVariable Long userId, @PathVariable Long mentorId) {
-
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Deleted the saved mentor"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid userId or mentorId supplied",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
+  @DeleteMapping("/{userId}/mentors/{mentorId}/saved")
+  public ResponseEntity<Void> deleteMentor(
+      @Parameter(description = "User's id whose saved mentor will be deleted") @PathVariable
+          Long userId,
+      @Parameter(description = "Id of user's saved mentor which will be deleted") @PathVariable
+          Long mentorId) {
     User user = authService.validateUserRequestAndReturnUser(userId);
     userService.deleteMentor(user, mentorId);
     return ResponseEntity.ok().build();

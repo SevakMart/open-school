@@ -1,5 +1,7 @@
 package app.openschool.auth.api.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -8,12 +10,21 @@ public class UserRegistrationDto {
   private static final String PASSWORD_PATTERN =
       "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*()_{}]).{8,20})";
 
+  private static final String EMAIL_PATTERN =
+      "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?"
+          + "(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$";
+
+  @Schema(description = "User name", example = "John")
   @NotBlank(message = "{validation.firstName.error.message}")
   private String firstName;
 
-  @NotBlank(message = "{validation.email.error.message}")
+  @Schema(description = "Provided email by user", example = "Test777@gmail.com")
+  @NotBlank(message = "{validation.email.blank.message}")
+  @Email(regexp = EMAIL_PATTERN, message = "{validation.email.pattern.message}")
   private String email;
 
+  @Schema(description = "Provided password by user", example = "Test777#")
+  @NotBlank(message = "{validation.password.blank.message}")
   @Pattern(regexp = PASSWORD_PATTERN, message = "{validation.password.error.message}")
   private String password;
 
