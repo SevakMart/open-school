@@ -10,19 +10,19 @@ import { SIGN_IN, SUCCESSFUL_SIGNIN_MESSAGE } from '../../../constants/Strings';
 import styles from './Default.module.scss';
 
 const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
-  { handleSignIn: (message: string) => void, forgotPasswordFunc: () => void }) => {
+  {handleSignIn:(message:string)=>void, forgotPasswordFunc:()=>void}) => {
   const dispatch = useDispatch();
   const [formValues, setFormValues] = useState<RegistrationFormType>({ firstName: '', email: '', password: '' });
   const [errorFormValue, setErrorFormValue] = useState({ fullNameError: '', emailError: '', passwordError: '' });
   const [signInErrorMessage, setSignInErrorMessage] = useState('');
   const [isVisible, setIsVisible] = useState(false);
-  const passwordInputRef = useRef<null | HTMLInputElement>(null);
+  const passwordInputRef = useRef<null|HTMLInputElement>(null);
   const { inputContent, errorField } = styles;
   const handlePasswordVisibility = () => {
     setIsVisible((prevState) => !prevState);
   };
 
-  const handleInputChange = (e: React.SyntheticEvent) => {
+  const handleInputChange = (e:React.SyntheticEvent) => {
     setFormValues({
       ...formValues,
       [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value,
