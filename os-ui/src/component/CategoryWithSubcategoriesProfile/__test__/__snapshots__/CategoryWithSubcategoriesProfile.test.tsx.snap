@@ -11,46 +11,50 @@ exports[`Create tests for the Component Create a Snapshot test 1`] = `
       Java
     </h3>
     <div
-      class="subcategoryContent"
+      class="subMainContent"
     >
-      <input
-        id="1"
-        type="checkbox"
-      />
-      <label
-        data-testid="Arrays"
-        for="1"
+      <div
+        class="subcategoryContent"
       >
-        Arrays
-      </label>
-    </div>
-    <div
-      class="subcategoryContent"
-    >
-      <input
-        id="2"
-        type="checkbox"
-      />
-      <label
-        data-testid="Functions"
-        for="2"
+        <input
+          id="1"
+          type="checkbox"
+        />
+        <label
+          data-testid="Arrays"
+          for="1"
+        >
+          Arrays
+        </label>
+      </div>
+      <div
+        class="subcategoryContent"
       >
-        Functions
-      </label>
-    </div>
-    <div
-      class="subcategoryContent"
-    >
-      <input
-        id="3"
-        type="checkbox"
-      />
-      <label
-        data-testid="Classes"
-        for="3"
+        <input
+          id="2"
+          type="checkbox"
+        />
+        <label
+          data-testid="Functions"
+          for="2"
+        >
+          Functions
+        </label>
+      </div>
+      <div
+        class="subcategoryContent"
       >
-        Classes
-      </label>
+        <input
+          id="3"
+          type="checkbox"
+        />
+        <label
+          data-testid="Classes"
+          for="3"
+        >
+          Classes
+        </label>
+      </div>
     </div>
   </div>
 </DocumentFragment>

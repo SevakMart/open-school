@@ -11,7 +11,7 @@ const CategoryWithSubcategoriesProfile = ({
     CategoryWithSubcategoriesProfilePropTypes) => {
   const subcategoryIdArray = useSelector<RootState>((state) => state.chooseSubcategories);
   const dispatch = useDispatch();
-  const { mainContent, subcategoryContent } = styles;
+  const { mainContent, subcategoryContent, subMainContent } = styles;
   const handleChange = (e:React.SyntheticEvent) => {
     if ((e.target as HTMLInputElement).checked) {
       dispatch(addSubcategory(+(e.target as HTMLInputElement).id));
@@ -21,7 +21,8 @@ const CategoryWithSubcategoriesProfile = ({
   return (
     <div className={mainContent}>
       <h3 data-testid={parentCategory}>{parentCategory}</h3>
-      {
+      <div className={subMainContent}>
+        {
             subcategories.length > 0 ? subcategories.map((subcategory) => (
               <div className={subcategoryContent} key={+subcategory.id}>
                 {
@@ -33,6 +34,7 @@ const CategoryWithSubcategoriesProfile = ({
               </div>
             )) : null
         }
+      </div>
     </div>
   );
 };

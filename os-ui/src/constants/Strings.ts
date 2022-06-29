@@ -6,9 +6,11 @@ export const BECOME_A_MENTOR = 'Become a mentor';
 export const SIGN_IN = 'Sign In';
 export const ALL_LEARNING_PATHS = 'All Learning Paths';
 export const MY_LEARNING_PATHS = 'My Learning Paths';
+export const SAVED_LEARNING_PATHS = 'Saved Learning paths';
 export const ALL = 'All';
 export const IN_PROGRESS = 'InProgress';
 export const COMPLETED = 'Completed';
+export const SORT_BY = 'Sort by';
 
 // Header strings
 export const FREE_EDUCATIONAL_PLATFORM = 'Educational Platform';
@@ -18,8 +20,8 @@ export const EDUCATION_PLATFORM_IMAGE = 'https://image.shutterstock.com/image-ve
 export const CHOOSE_CATEGORIES_HEADER = 'Choose Categories You Are Interested In';
 
 // Error Message
-export const ERROR_MESSAGE = 'Something went wrong please refresh the page :(';
-export const EMPTY_DATA_ERROR_MESSAGE = 'No data to display :(';
+export const ERROR_MESSAGE = 'Something went wrong please refresh the page';
+export const EMPTY_DATA_ERROR_MESSAGE = 'No data to display';
 
 // Successful Sign in message
 export const SUCCESSFUL_SIGNIN_MESSAGE = 'You have Successfully signed in!';
@@ -66,3 +68,14 @@ export const VERIFICATION_CODE = 'Verification code';
 export const NEW_PASSWORD = 'New Password';
 export const CONFIRM_PASSWORD = 'Confirm Password';
 export const RESEND_EMAIL = 'Resend Email';
+export const RATING = 'Rating';
+export const LAST_INSERTED = 'Last Inserted';
+export const FILTER = 'Filter';
+export const TECHNICAL = 'Technical';
+export const ENGINEERING = 'Engineering';
+export const SHOW_ALL = 'Show All';
+export const LANGUAGE = 'Language';
+export const COURSE_LEVEL = 'Course Level';
+export const CATEGORY = 'Category';
+export const TITLE = 'Title';
+export const DIFFICULTY = 'difficulty_id';

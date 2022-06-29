@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for FilterComponent component Create a snapshot tets 1`] = `
+<DocumentFragment>
+  <div
+    class="mainContainer"
+    style="display: flex;"
+  >
+    <div
+      class="filterMainContent"
+    >
+      <p
+        class="mainTitle"
+      >
+        Filter
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;

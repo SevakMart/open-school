@@ -54,8 +54,10 @@ const ChooseCategoryPage = () => {
   return (
     <>
       <NavbarOnSignIn />
-      <h1 className={mainHeader}>{CHOOSE_CATEGORIES_HEADER}</h1>
-      <Search changeUrlQueries={handleChangeUrlTitleParam} />
+      <div className={mainHeader}>
+        <h1>{CHOOSE_CATEGORIES_HEADER}</h1>
+        <Search changeUrlQueries={handleChangeUrlTitleParam} />
+      </div>
       <div className={categoriesList}>
         {
           isLoading ? <Loader />

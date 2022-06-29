@@ -15,13 +15,13 @@ const Search = ({ changeUrlQueries }:SearchProps) => {
   };
   return (
     <div className={inputContent}>
+      <SearchIcon />
       <input
         ref={inputRef}
         type="text"
         placeholder="Search name"
         onKeyPress={handleSearch}
       />
-      <SearchIcon />
     </div>
   );
 };

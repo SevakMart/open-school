@@ -38,7 +38,8 @@
         }
         .keywordsContent {
             @include flexStyle(row,center,space-between);
-            width:60%;
+            width:70%;
+            margin-top:4%;
             .keyword {
                 background-color: #EEEFF4;
                 border-radius: 1.25rem;

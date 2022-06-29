@@ -1,0 +1,9 @@
+@import "../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+
+.learningPathsMainContainer{
+    @include flexStyle(column,flex-start,space-between);
+    align-self:flex-start;
+    padding-right:6%;
+    width:75%;
+}
