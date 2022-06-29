@@ -1,13 +1,12 @@
 import { useEffect, useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import mentorService from '../../../../services/mentorService';
 import userService from '../../../../services/userService';
 import { userContext } from '../../../../contexts/Contexts';
 import MentorCard from '../../../../component/MentorProfile/MentorProfile';
 import { MentorType } from '../../../../types/MentorType';
 import styles from './Content.module.scss';
-
-// type MentorListType=MentorType & {isBookmarked:boolean}
 
 const Content = () => {
   const location = useLocation();
@@ -16,6 +15,7 @@ const Content = () => {
   const [mentorList, setMentorList] = useState<MentorType[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
   const { token, id } = useContext(userContext);
+  const { t } = useTranslation();
   const { mainContent } = styles;
 
   useEffect(() => {
@@ -31,8 +31,6 @@ const Content = () => {
       .then((combinedData) => {
         const requestedMentorsList = combinedData[0].content;
         const userSavedMentorList = combinedData[1].content;
-        console.log(userSavedMentorList);
-        console.log(requestedMentorsList);
         if (userSavedMentorList.length) {
         /* eslint-disable-next-line max-len */
           const finalMentorList = requestedMentorsList.reduce((acc:MentorType[], savedMentor:MentorType) => {
@@ -55,7 +53,7 @@ const Content = () => {
             [...requestedMentorsList.map((mentor:MentorType) => ({ ...mentor, isBookMarked: false }))],
           );
         }
-      }).catch(() => setErrorMessage('For some reason the data could not be loaded, please try refreshing the page'));
+      }).catch(() => setErrorMessage(t('Error Message')));
   }, [params.get('searchedMentor')]);
 
   return (
@@ -68,7 +66,7 @@ const Content = () => {
             saveMentor={(mentorId) => userService.saveUserMentor(id, mentorId, token)}
             deleteMentor={(mentorId) => userService.deleteUserSavedMentor(id, mentorId, token)}
           />
-        )) : <h2>No data to display</h2>}
+        )) : <h2>{t('Empty Data Error Message')}</h2>}
     </div>
   );
 };
