@@ -5,11 +5,14 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import app.openschool.category.Category;
 import app.openschool.category.api.CategoryGenerator;
 import app.openschool.course.Course;
+import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.dto.CourseDto;
+import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.language.Language;
+import app.openschool.user.User;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -50,5 +53,31 @@ public class CourseMapperTest {
   public void toCourseDtoTest() {
     CourseDto actual = CourseMapper.toCourseDto(courseList.get(0));
     assertThat(actual).hasOnlyFields("id", "title", "rating", "difficulty", "keywords");
+  }
+
+  @Test
+  public void toCourseInfoDto() {
+    CourseInfoDto actual =
+        CourseMapper.toCourseInfoDto(CourseGenerator.generateCourseWithEnrolledCourses());
+    assertThat(actual)
+        .hasOnlyFields(
+            "title",
+            "description",
+            "goal",
+            "modules",
+            "mentorDto",
+            "rating",
+            "enrolled",
+            "level",
+            "language",
+            "duration");
+  }
+
+  @Test
+  public void toEnrolledCourse() {
+    EnrolledCourse actual =
+        CourseMapper.toEnrolledCourse(CourseGenerator.generateCourse(), new User(1L));
+
+    assertThat(actual).isExactlyInstanceOf(EnrolledCourse.class);
   }
 }

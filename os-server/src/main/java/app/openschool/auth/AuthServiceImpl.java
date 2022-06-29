@@ -21,6 +21,7 @@ import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -77,12 +78,12 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   }
 
   @Override
-  public User verifyAccount(VerificationToken verificationToken) {
+  public User verifyAccount(String token) {
     Optional<VerificationToken> fetchedToken =
-        verificationTokenRepository.findVerificationTokenByToken(verificationToken.getToken());
+        verificationTokenRepository.findVerificationTokenByToken(token);
 
     if (fetchedToken.isPresent()) {
-      if (!verificationToken.isTokenExpired(fetchedToken.get().getCreatedAt(), expiresAt)) {
+      if (!VerificationToken.isTokenExpired(fetchedToken.get().getCreatedAt(), expiresAt)) {
         User user = fetchedToken.get().getUser();
         user.setEnabled(true);
         return userRepository.save(user);
@@ -139,6 +140,16 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   @Override
   public Optional<ResetPasswordToken> findByToken(String token) {
     return resetPasswordTokenRepository.findByToken(token);
+  }
+
+  @Override
+  public User validateUserRequestAndReturnUser(Long userId) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    User user = findUserByEmail(username);
+    if (!user.getId().equals(userId)) {
+      throw new IllegalArgumentException();
+    }
+    return user;
   }
 
   private boolean emailAlreadyExist(String email) {

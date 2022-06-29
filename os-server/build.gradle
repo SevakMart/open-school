@@ -4,6 +4,8 @@ plugins {
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'checkstyle'
+    id 'org.sonarqube' version '3.4.0.2513'
+    id "jacoco"
 }
 
 group 'app.open-school'
@@ -20,7 +22,7 @@ dependencies {
 
     // db dependencies
     runtimeOnly 'mysql:mysql-connector-java'
-    runtimeOnly('com.h2database:h2')
+    implementation('com.h2database:h2')
     implementation 'org.flywaydb:flyway-core:8.5.4'
     implementation 'org.flywaydb:flyway-mysql:8.4.4'
 
@@ -28,6 +30,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.mockito:mockito-inline:4.6.1'
 
     //open api
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
@@ -49,7 +52,16 @@ dependencies {
 test {
     useJUnitPlatform()
     environment "SPRING_PROFILES_ACTIVE", "test"
+    finalizedBy jacocoTestReport
 }
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.enabled true
+    }
+}
+
 jar {
     enabled = false
 }
@@ -60,10 +72,22 @@ checkstyle {
     ignoreFailures false
 }
 
+repositories {
+    mavenCentral()
+}
+
 tasks.withType(Checkstyle) {
     reports {
         xml.required = true
         html.required = true
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "SevakMart_open-school"
+        property "sonar.organization", "open-school"
+        property "sonar.host.url", "https://sonarcloud.io"
     }
 }
 

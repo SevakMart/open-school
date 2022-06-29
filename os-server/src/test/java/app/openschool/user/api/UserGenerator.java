@@ -24,4 +24,14 @@ public class UserGenerator {
     user.setCompany(company);
     return user;
   }
+
+  public static User generateUserWithSavedMentors() {
+    User user = new User();
+    user.setName("John");
+    user.setEmail("aaa@gmail.com");
+    user.setPassword("pass");
+    user.setRole(new Role("STUDENT"));
+    user.getMentors().add(generateUser());
+    return user;
+  }
 }

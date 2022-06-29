@@ -37,6 +37,13 @@ public class EnrolledModuleItem {
   public EnrolledModuleItem() {}
 
   public EnrolledModuleItem(
+      ModuleItem moduleItem, EnrolledModule enrolledModule, ModuleItemStatus moduleItemStatus) {
+    this.moduleItem = moduleItem;
+    this.enrolledModule = enrolledModule;
+    this.moduleItemStatus = moduleItemStatus;
+  }
+
+  public EnrolledModuleItem(
       Long id,
       ModuleItem moduleItem,
       EnrolledModule enrolledModule,

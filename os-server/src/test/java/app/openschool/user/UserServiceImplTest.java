@@ -1,8 +1,15 @@
 package app.openschool.user;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import app.openschool.category.Category;
@@ -12,6 +19,8 @@ import app.openschool.category.api.exception.CategoryNotFoundException;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
+import app.openschool.course.EnrolledCourseRepository;
+import app.openschool.course.api.CourseGenerator;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.language.Language;
@@ -20,6 +29,7 @@ import app.openschool.course.module.Module;
 import app.openschool.course.module.item.EnrolledModuleItem;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.status.ModuleItemStatus;
+import app.openschool.course.module.item.type.ModuleItemType;
 import app.openschool.course.module.status.ModuleStatus;
 import app.openschool.course.status.CourseStatus;
 import app.openschool.user.api.UserGenerator;
@@ -32,7 +42,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,12 +59,15 @@ class UserServiceImplTest {
   @Mock private UserRepository userRepository;
   @Mock private CategoryRepository categoryRepository;
   @Mock private CourseRepository courseRepository;
+  @Mock private EnrolledCourseRepository enrolledCourseRepository;
 
   private UserService userService;
 
   @BeforeEach
   void setUp() {
-    userService = new UserServiceImpl(userRepository, categoryRepository, courseRepository);
+    userService =
+        new UserServiceImpl(
+            userRepository, categoryRepository, courseRepository, enrolledCourseRepository);
   }
 
   @Test
@@ -67,8 +79,8 @@ class UserServiceImplTest {
     Pageable pageable = PageRequest.of(0, 2);
     Page<User> userPage = new PageImpl<>(userList, pageable, 5);
     when(userRepository.findAllMentors(pageable)).thenReturn(userPage);
-    Assertions.assertEquals(3, userService.findAllMentors(pageable).getTotalPages());
-    Assertions.assertEquals(5, userService.findAllMentors(pageable).getTotalElements());
+    assertEquals(3, userService.findAllMentors(pageable).getTotalPages());
+    assertEquals(5, userService.findAllMentors(pageable).getTotalElements());
     verify(userRepository, Mockito.times(2)).findAllMentors(pageable);
   }
 
@@ -120,7 +132,7 @@ class UserServiceImplTest {
     }
     when(userRepository.findById(1L)).thenReturn(Optional.of(user));
     when(courseRepository.getSuggestedCourses(1L)).thenReturn(courseList);
-    Assertions.assertEquals(4, userService.getSuggestedCourses(1L).size());
+    assertEquals(4, userService.getSuggestedCourses(1L).size());
     Mockito.verify(courseRepository, Mockito.times(1)).getSuggestedCourses(1L);
   }
 
@@ -211,7 +223,9 @@ class UserServiceImplTest {
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
       moduleItem.setId(i);
-      moduleItem.setModuleItemType("video");
+      ModuleItemType moduleItemType = new ModuleItemType();
+      moduleItemType.setType("reading");
+      moduleItem.setModuleItemType(moduleItemType);
       moduleItem.setEstimatedTime(35L);
       moduleItem.setModule(module1);
       moduleItemsModule1.add(moduleItem);
@@ -224,7 +238,9 @@ class UserServiceImplTest {
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
       moduleItem.setId(i + 2);
-      moduleItem.setModuleItemType("reading");
+      ModuleItemType moduleItemType = new ModuleItemType();
+      moduleItemType.setType("reading");
+      moduleItem.setModuleItemType(moduleItemType);
       moduleItem.setEstimatedTime(25L);
       moduleItem.setModule(module2);
       moduleItemsModule2.add(moduleItem);
@@ -234,10 +250,12 @@ class UserServiceImplTest {
     Module module3 =
         moduleSet.stream().filter(module -> module.getId().equals(3L)).findFirst().get();
     ModuleItem moduleItem = new ModuleItem();
-    moduleItem.setId(5L);
-    moduleItem.setModuleItemType("reading");
-    moduleItem.setEstimatedTime(30L);
     moduleItem.setModule(module3);
+    moduleItem.setId(5L);
+    ModuleItemType moduleItemType = new ModuleItemType();
+    moduleItemType.setType("reading");
+    moduleItem.setModuleItemType(moduleItemType);
+    moduleItem.setEstimatedTime(30L);
     Set<ModuleItem> moduleItemsModule3 = new HashSet<>();
     moduleItemsModule3.add(moduleItem);
     module3.setModuleItems(moduleItemsModule3);
@@ -316,9 +334,9 @@ class UserServiceImplTest {
     enrolledCourses.add(enrolledCourse);
     user.setEnrolledCourses(enrolledCourses);
     when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-    Assertions.assertEquals(1, userService.findEnrolledCourses(1L, null).size());
+    assertEquals(1, userService.findEnrolledCourses(1L, null).size());
     userService.findEnrolledCourses(1L, 1L);
-    Assertions.assertEquals(1, userService.findEnrolledCourses(1L, 1L).size());
+    assertEquals(1, userService.findEnrolledCourses(1L, 1L).size());
   }
 
   @Test
@@ -347,7 +365,180 @@ class UserServiceImplTest {
     Pageable pageable = PageRequest.of(0, 6);
     when(userRepository.findById(any())).thenReturn(Optional.of(user));
     when(courseRepository.findCoursesByMentorId(user.getId(), pageable)).thenReturn(coursePage);
-    Assertions.assertEquals(
+    assertEquals(
         5, userService.findMentorCourses(user.getId(), PageRequest.of(0, 6)).getTotalElements());
+  }
+
+  @Test
+  void enrollCourse_WithCorrectCourseId_returnCourse() {
+    when(courseRepository.findById(anyLong()))
+        .thenReturn(Optional.of(CourseGenerator.generateCourse()));
+
+    userService.enrollCourse(new User(), 1L);
+
+    verify(userRepository, times(1)).save(any());
+  }
+
+  @Test
+  void enrollCourse_WithIncorrectCourseId_throwsIllegalArgumentException() {
+    when(courseRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> userService.enrollCourse(new User(), 1L))
+        .isInstanceOf(IllegalArgumentException.class);
+
+    verifyNoInteractions(userRepository);
+  }
+
+  @Test
+  void findEnrolledCourseById_courseIsPresent_returnsEnrolledCourse() {
+    when(enrolledCourseRepository.findById(anyLong()))
+        .thenReturn(Optional.of(new EnrolledCourse()));
+    EnrolledCourse enrolledCourse = userService.findEnrolledCourseById(1L);
+    assertNotNull(enrolledCourse);
+    verify(enrolledCourseRepository, times(1)).findById(anyLong());
+  }
+
+  @Test
+  void findEnrolledCourseById_courseIsNotPresent_throwsException() {
+    when(enrolledCourseRepository.findById(anyLong())).thenReturn(Optional.empty());
+    assertThatThrownBy(() -> userService.findEnrolledCourseById(1L))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void findMentorsByName() {
+    String username = "username";
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<User> userPage = generateUserPage(pageable);
+    when(userRepository.findMentorsByName(username, pageable)).thenReturn(userPage);
+
+    assertEquals(3, userService.findMentorsByName(username, pageable).getTotalPages());
+    assertEquals(5, userService.findMentorsByName(username, pageable).getTotalElements());
+    verify(userRepository, Mockito.times(2)).findMentorsByName(username, pageable);
+  }
+
+  @Test
+  void saveMentor_withCorrectMentorId_returnUser() {
+    User mentor = new User(2L);
+    User student = new User(1L);
+    mentor.setRole(new Role("MENTOR"));
+    when(userRepository.findUserById(2L)).thenReturn(Optional.of(mentor));
+
+    userService.saveMentor(student, 2L);
+
+    verify(userRepository, Mockito.times(1)).save(student);
+    verify(userRepository, Mockito.times(1)).findUserById(anyLong());
+  }
+
+  @Test
+  void saveMentor_withIncorrectMentorId_returnUser() {
+    User student = new User(1L);
+    when(userRepository.findUserById(2L)).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> userService.saveMentor(student, 2L))
+        .isInstanceOf(IllegalArgumentException.class);
+
+    verify(userRepository, Mockito.times(0)).save(student);
+    verify(userRepository, Mockito.times(1)).findUserById(anyLong());
+  }
+
+  @Test
+  void saveMentor_withFakeMentor_returnUser() {
+    User fakeMentor = new User(2L);
+    User student = new User(1L);
+    fakeMentor.setRole(new Role("STUDENT"));
+    when(userRepository.findUserById(2L)).thenReturn(Optional.of(fakeMentor));
+
+    assertThatThrownBy(() -> userService.saveMentor(student, 2L))
+        .isInstanceOf(IllegalArgumentException.class);
+
+    verify(userRepository, Mockito.times(0)).save(student);
+    verify(userRepository, Mockito.times(1)).findUserById(anyLong());
+  }
+
+  @Test
+  void findSavedMentors_returnSavedMentors() {
+    User user = generateUserWithSavedMentors();
+
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<User> savedMentors = userService.findSavedMentors(user, pageable);
+
+    assertEquals(5, savedMentors.getTotalElements());
+    assertEquals(2, savedMentors.getPageable().getPageSize());
+    verifyNoInteractions(userRepository);
+  }
+
+  @Test
+  void findSavedMentorsByName_returnSavedMentors() {
+    Pageable pageable = PageRequest.of(0, 2);
+    when(userRepository.findSavedMentorsByName(anyLong(), anyString(), any()))
+        .thenReturn(generateUserPage(pageable));
+
+    Page<User> savedMentors = userService.findSavedMentorsByName(1L, "Mentor", pageable);
+
+    assertEquals(5, savedMentors.getTotalElements());
+    assertEquals(2, savedMentors.getPageable().getPageSize());
+    verify(userRepository, times(1)).findSavedMentorsByName(anyLong(), anyString(), any());
+  }
+
+  @Test
+  void deleteMentor_withExistingMentorAndContainingInUserSavedMentorsList_deleteSavedMentor() {
+    User mentor = new User(2L);
+    mentor.setRole(new Role("MENTOR"));
+    User student = new User(1L);
+    student.getMentors().add(mentor);
+
+    when(userRepository.findUserById(2L)).thenReturn(Optional.of(mentor));
+
+    userService.deleteMentor(student, 2L);
+
+    assertTrue(student.getMentors().isEmpty());
+    verify(userRepository, times(1)).save(student);
+    verify(userRepository, times(1)).findUserById(anyLong());
+  }
+
+  @Test
+  void deleteMentor_withNonexistentMentor_doNothing() {
+    User student = new User(1L);
+    when(userRepository.findUserById(2L)).thenReturn(Optional.empty());
+
+    userService.deleteMentor(student, 2L);
+
+    verify(userRepository, times(0)).save(student);
+    verify(userRepository, times(1)).findUserById(anyLong());
+  }
+
+  @Test
+  void deleteMentor_withExistingMentorButMissingFromUserSavedMentorsList_noUpdate() {
+    User mentor = new User(2L);
+    mentor.setRole(new Role("MENTOR"));
+    User student = new User(1L);
+    student.getMentors().add(new User(3L));
+
+    when(userRepository.findUserById(2L)).thenReturn(Optional.of(mentor));
+
+    userService.deleteMentor(student, 2L);
+
+    assertEquals(1, student.getMentors().size());
+    verify(userRepository, times(1)).save(student);
+    verify(userRepository, times(1)).findUserById(anyLong());
+  }
+
+  private Page<User> generateUserPage(Pageable pageable) {
+    List<User> userList = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      userList.add(UserGenerator.generateUser());
+    }
+    return new PageImpl<>(userList, pageable, 5);
+  }
+
+  private User generateUserWithSavedMentors() {
+    User user = new User(1L);
+    Set<User> mentors = new HashSet<>();
+    for (int i = 0; i < 5; i++) {
+      mentors.add(UserGenerator.generateUser());
+    }
+    user.setMentors(mentors);
+    return user;
   }
 }

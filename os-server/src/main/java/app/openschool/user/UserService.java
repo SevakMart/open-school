@@ -16,6 +16,10 @@ public interface UserService {
 
   Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds);
 
+  EnrolledCourse findEnrolledCourseById(Long enrolledCourseId);
+
+  Course enrollCourse(User user, long courseId);
+
   List<EnrolledCourse> findEnrolledCourses(Long userId, Long courseStatusId);
 
   Page<Course> findSavedCourses(Long userId, Pageable pageable);
@@ -25,4 +29,14 @@ public interface UserService {
   Course deleteCourse(Long userId, Long courseId);
 
   Page<Course> findMentorCourses(Long mentorId, Pageable page);
+
+  Page<User> findMentorsByName(String name, Pageable pageable);
+
+  User saveMentor(User user, Long mentorId);
+
+  Page<User> findSavedMentors(User user, Pageable pageable);
+
+  Page<User> findSavedMentorsByName(Long userId, String name, Pageable pageable);
+
+  void deleteMentor(User user, Long mentorId);
 }

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 public class UserCourseDto {
 
+  private Long id;
+
   private String title;
 
   private String courseStatus;
@@ -18,14 +20,21 @@ public class UserCourseDto {
 
   public UserCourseDto() {}
 
-  public UserCourseDto(String title, String courseStatus, Integer grade) {
+  public UserCourseDto(Long id, String title, String courseStatus, Integer grade) {
+    this.id = id;
     this.title = title;
     this.courseStatus = courseStatus;
     this.grade = grade;
   }
 
   public UserCourseDto(
-      String title, String courseStatus, long percentage, long remainingTime, LocalDate dueDate) {
+      Long id,
+      String title,
+      String courseStatus,
+      long percentage,
+      long remainingTime,
+      LocalDate dueDate) {
+    this.id = id;
     this.title = title;
     this.courseStatus = courseStatus;
     this.percentage = percentage;
@@ -34,12 +43,14 @@ public class UserCourseDto {
   }
 
   public UserCourseDto(
+      Long id,
       String title,
       String courseStatus,
       long percentage,
       long remainingTime,
       Integer grade,
       LocalDate dueDate) {
+    this.id = id;
     this.title = title;
     this.courseStatus = courseStatus;
     this.percentage = percentage;
@@ -94,5 +105,13 @@ public class UserCourseDto {
 
   public void setGrade(Integer grade) {
     this.grade = grade;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 }

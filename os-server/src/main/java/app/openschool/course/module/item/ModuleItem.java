@@ -1,6 +1,7 @@
 package app.openschool.course.module.item;
 
 import app.openschool.course.module.Module;
+import app.openschool.course.module.item.type.ModuleItemType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,8 +20,15 @@ public class ModuleItem {
   @Column(nullable = false)
   private Long id;
 
-  @Column(name = "module_item_type", nullable = false)
-  private String moduleItemType;
+  @Column(name = "title", nullable = false)
+  private String title;
+
+  @ManyToOne
+  @JoinColumn(name = "module_item_type_id")
+  private ModuleItemType moduleItemType;
+
+  @Column(name = "link")
+  private String link;
 
   @Column(name = "estimated_time")
   private Long estimatedTime;
@@ -31,9 +39,17 @@ public class ModuleItem {
 
   public ModuleItem() {}
 
-  public ModuleItem(Long id, String moduleItemType, Long estimatedTime, Module module) {
+  public ModuleItem(
+      Long id,
+      String title,
+      ModuleItemType moduleItemType,
+      String link,
+      Long estimatedTime,
+      Module module) {
     this.id = id;
+    this.title = title;
     this.moduleItemType = moduleItemType;
+    this.link = link;
     this.estimatedTime = estimatedTime;
     this.module = module;
   }
@@ -46,11 +62,11 @@ public class ModuleItem {
     this.id = id;
   }
 
-  public String getModuleItemType() {
+  public ModuleItemType getModuleItemType() {
     return moduleItemType;
   }
 
-  public void setModuleItemType(String moduleItemType) {
+  public void setModuleItemType(ModuleItemType moduleItemType) {
     this.moduleItemType = moduleItemType;
   }
 
@@ -68,5 +84,21 @@ public class ModuleItem {
 
   public void setModule(Module module) {
     this.module = module;
+  }
+
+  public String getLink() {
+    return link;
+  }
+
+  public void setLink(String link) {
+    this.link = link;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 }

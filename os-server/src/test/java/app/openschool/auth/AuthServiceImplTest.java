@@ -17,7 +17,6 @@ import app.openschool.auth.api.exception.EmailNotFoundException;
 import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.auth.exception.UserNotVerifiedException;
 import app.openschool.auth.repository.ResetPasswordTokenRepository;
-import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
@@ -105,12 +104,10 @@ public class AuthServiceImplTest {
 
   @Test
   void verifyAccountWithWrongToken() {
-    VerificationToken verificationToken = new VerificationToken();
-    verificationToken.setToken("testToken");
-    given(verificationTokenRepository.findVerificationTokenByToken(any()))
+    given(verificationTokenRepository.findVerificationTokenByToken(anyString()))
         .willReturn(Optional.empty());
 
-    assertThatThrownBy(() -> authService.verifyAccount(verificationToken))
+    assertThatThrownBy(() -> authService.verifyAccount(anyString()))
         .isInstanceOf(UserNotVerifiedException.class);
   }
 

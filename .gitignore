@@ -36,3 +36,6 @@ data
 
 # Ignore logs directory
 logs
+
+# Ignore out directory
+out

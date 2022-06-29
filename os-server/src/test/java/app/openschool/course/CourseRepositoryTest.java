@@ -14,6 +14,7 @@ import app.openschool.course.module.Module;
 import app.openschool.course.module.ModuleRepository;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.ModuleItemRepository;
+import app.openschool.course.module.item.type.ModuleItemTypeRepository;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.company.Company;
@@ -42,6 +43,7 @@ public class CourseRepositoryTest {
   @Autowired CompanyRepository companyRepository;
   @Autowired RoleRepository roleRepository;
   @Autowired UserRepository userRepository;
+  @Autowired ModuleItemTypeRepository moduleItemTypeRepository;
 
   @BeforeEach
   public void setup() {
@@ -93,7 +95,9 @@ public class CourseRepositoryTest {
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
       moduleItem.setId(i);
-      moduleItem.setModuleItemType("video");
+      moduleItem.setTitle("AAA");
+      ;
+      moduleItem.setModuleItemType(moduleItemTypeRepository.getById(1L));
       moduleItem.setEstimatedTime(35L);
       moduleItem.setModule(moduleRepository.getById(1L));
       moduleItemsModule1.add(moduleItem);
@@ -112,7 +116,8 @@ public class CourseRepositoryTest {
     for (long i = 1L; i < 3L; i++) {
       ModuleItem moduleItem = new ModuleItem();
       moduleItem.setId(i + 2);
-      moduleItem.setModuleItemType("reading");
+      moduleItem.setTitle("BBB");
+      moduleItem.setModuleItemType(moduleItemTypeRepository.getById(2L));
       moduleItem.setEstimatedTime(25L);
       moduleItem.setModule(moduleRepository.getById(2L));
       moduleItemsModule2.add(moduleItem);
@@ -161,6 +166,12 @@ public class CourseRepositoryTest {
   }
 
   @Test
+  public void findById() {
+    String title = "theCourse";
+    courseRepository.save(new Course(1L, title));
+    assertEquals(title, courseRepository.findById(1L).get().getTitle());
+  }
+
   public void searchCourses() {
     List<Course> searchedCourses =
         courseRepository
