@@ -28,7 +28,6 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
     if (!fullNameError && !emailError && !passwordError) {
       authService.register(formValues).then((response) => {
         if (response.status === 400) {
-          console.log(response.message);
           setErrorFormValue({ fullNameError: '', emailError: response.message, passwordError: '' });
         } else {
           setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
