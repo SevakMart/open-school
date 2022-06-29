@@ -38,12 +38,16 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
       authService.signIn({ email, password }).then((response) => {
         if (response.status === 401) {
           setSignInErrorMessage(response.message);
+          setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
         } else if (response.status === 200) {
           dispatch(addLoggedInUser(response));
           handleSignIn(SUCCESSFUL_SIGNIN_MESSAGE);
         }
       });
-    } else setErrorFormValue(validateSignInForm(formValues));
+    } else {
+      setErrorFormValue(validateSignInForm(formValues));
+      setSignInErrorMessage('');
+    }
   };
 
   useEffect(() => {
