@@ -40,7 +40,8 @@ public class AuthControllerTest {
     when(authService.register(any(UserRegistrationDto.class))).thenReturn(new User());
 
     String requestBody =
-        "{ \"firstName\": \"Test\",\"email\": \"test@gmail.com\",\"password\": \"1234$dhjsHH*\" }";
+        "{ \"firstName\": \"Test\",\"lastName\": \"Test\","
+            + "\"email\": \"test@gmail.com\",\"psd\": \"1234$dhjsHH*\" }";
     mockMvc
         .perform(post("/api/v1/auth/register").contentType(APPLICATION_JSON).content(requestBody))
         .andExpect(status().isCreated());
