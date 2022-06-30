@@ -2,7 +2,7 @@
 @import "../../styles/Mixins/FontMixin.scss";
 
 .mainContent {
-    @include flexStyle(column,flex-start,space-between);
+    @include flexStyle(column,flex-start,none);
     width:25%;
     margin-bottom:5%;
     h3 {
@@ -10,7 +10,11 @@
         color:#222427;
         padding-left:2%;
     }
+    .subMainContent {
+        @include flexStyle(column,flex-start,space-between);
+    }
     .subcategoryContent{
+        margin-bottom:3%;
         input{
             background-color:#D9DBE9;
             border-radius: 0.25rem;

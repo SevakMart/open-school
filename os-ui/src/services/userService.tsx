@@ -28,5 +28,20 @@ class UserService {
     const data = await (await fetchService.post(`${this.basePath}/${userId}/categories`, content, {}, userToken)).json();
     return data;
   }
+
+  async saveUserPreferredCourses(userId:number, courseId:number, userToken:string) {
+    const data = await (await fetchService.post(`${this.basePath}/${userId}/courses/saved`, { courseId }, {}, userToken)).json();
+    return data;
+  }
+
+  async getUserSavedCourses(userId:number, userToken:string, params = {}) {
+    const data = await (await fetchService.get(`${this.basePath}/${userId}/courses/saved`, params, userToken)).json();
+    return data;
+  }
+
+  async deleteUserSavedCourses(userId:number, courseId:number, userToken:string, params = {}) {
+    const data = await (await fetchService.delete(`${this.basePath}/${userId}/courses/${courseId}/saved`, params, userToken)).json();
+    return data;
+  }
 }
 export default new UserService();

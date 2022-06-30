@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for filteringcontent component where the content is of type string Create a snapshot case 1`] = `
+<DocumentFragment>
+  <div
+    class="filteringContent"
+  >
+    <p
+      class="mainFilteringContentTitle"
+      data-testid="Languages"
+    >
+      Languages
+    </p>
+    <div
+      class="checkedContentClass"
+    >
+      <input
+        data-testid="French"
+        id="1"
+        name="checkbox"
+        type="checkbox"
+      />
+      <label
+        data-testid="label of French"
+        for="1"
+      >
+        French
+      </label>
+    </div>
+    <div
+      class="checkedContentClass"
+    >
+      <input
+        data-testid="English"
+        id="2"
+        name="checkbox"
+        type="checkbox"
+      />
+      <label
+        data-testid="label of English"
+        for="2"
+      >
+        English
+      </label>
+    </div>
+    <div
+      class="checkedContentClass"
+    >
+      <input
+        data-testid="Arabic"
+        id="3"
+        name="checkbox"
+        type="checkbox"
+      />
+      <label
+        data-testid="label of Arabic"
+        for="3"
+      >
+        Arabic
+      </label>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Create test cases where the content element is of type object Create a snapshot case 1`] = `
+<DocumentFragment>
+  <div
+    class="filteringContent"
+  >
+    <p
+      class="mainFilteringContentTitle"
+      data-testid="Category"
+    >
+      Category
+    </p>
+    <div
+      class="filteringSubContent"
+    >
+      <p
+        class="filteringSubContentTitle"
+        data-testid="JS"
+      >
+        JS
+      </p>
+      <div
+        class="checkedContentClass"
+      >
+        <input
+          data-testid="React"
+          id="1"
+          name="checkbox"
+          type="checkbox"
+        />
+        <label
+          data-testid="label of React"
+          for="1"
+        >
+          React
+        </label>
+      </div>
+      <div
+        class="checkedContentClass"
+      >
+        <input
+          data-testid="Angular"
+          id="2"
+          name="checkbox"
+          type="checkbox"
+        />
+        <label
+          data-testid="label of Angular"
+          for="2"
+        >
+          Angular
+        </label>
+      </div>
+      <div
+        class="checkedContentClass"
+      >
+        <input
+          data-testid="Vue Js"
+          id="3"
+          name="checkbox"
+          type="checkbox"
+        />
+        <label
+          data-testid="label of Vue Js"
+          for="3"
+        >
+          Vue Js
+        </label>
+      </div>
+    </div>
+    <div
+      class="filteringSubContent"
+    >
+      <p
+        class="filteringSubContentTitle"
+        data-testid="Android"
+      >
+        Android
+      </p>
+      <div
+        class="checkedContentClass"
+      >
+        <input
+          data-testid="Java"
+          id="1"
+          name="checkbox"
+          type="checkbox"
+        />
+        <label
+          data-testid="label of Java"
+          for="1"
+        >
+          Java
+        </label>
+      </div>
+      <div
+        class="checkedContentClass"
+      >
+        <input
+          data-testid="Kotlin"
+          id="2"
+          name="checkbox"
+          type="checkbox"
+        />
+        <label
+          data-testid="label of Kotlin"
+          for="2"
+        >
+          Kotlin
+        </label>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

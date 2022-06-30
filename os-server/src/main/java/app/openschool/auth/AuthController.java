@@ -12,7 +12,7 @@ import app.openschool.auth.api.dto.UserRegistrationDto;
 import app.openschool.auth.api.dto.UserRegistrationResponse;
 import app.openschool.auth.api.mapper.UserRegistrationMapper;
 import app.openschool.auth.entity.ResetPasswordToken;
-import app.openschool.auth.verification.VerificationToken;
+import app.openschool.auth.verification.api.dto.VerificationTokenDto;
 import app.openschool.common.response.ResponseMessage;
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
@@ -154,8 +154,9 @@ public class AuthController {
   @Operation(summary = "verify account")
   @ApiResponse(responseCode = "200", description = "Account is verified")
   @GetMapping("/account/verification")
-  public String verifyAccount(@ModelAttribute VerificationToken verificationToken, Locale locale) {
-    User user = authService.verifyAccount(verificationToken);
+  public String verifyAccount(
+      @ModelAttribute VerificationTokenDto verificationTokenDto, Locale locale) {
+    User user = authService.verifyAccount(verificationTokenDto.getToken());
     String[] args = {user.getName()};
     String message = messageSource.getMessage("verification.success.message", args, locale);
     Context context = new Context();

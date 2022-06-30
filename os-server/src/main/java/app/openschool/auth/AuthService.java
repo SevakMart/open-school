@@ -4,7 +4,6 @@ import app.openschool.auth.api.dto.ResetPasswordRequest;
 import app.openschool.auth.api.dto.UserLoginDto;
 import app.openschool.auth.api.dto.UserRegistrationDto;
 import app.openschool.auth.entity.ResetPasswordToken;
-import app.openschool.auth.verification.VerificationToken;
 import app.openschool.user.User;
 import java.util.Optional;
 
@@ -16,7 +15,7 @@ public interface AuthService {
 
   UserLoginDto login(String userEmail);
 
-  User verifyAccount(VerificationToken verificationToken);
+  User verifyAccount(String token);
 
   void sendVerificationEmail(Long userId);
 

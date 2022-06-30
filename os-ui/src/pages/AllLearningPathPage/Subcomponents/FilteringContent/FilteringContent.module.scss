@@ -1,0 +1,14 @@
+@import "../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+
+.filteringContent .filteringSubContent{
+    @include flexStyle(column,flex-start,space-evenly);
+}
+.mainFilteringContentTitle{
+    @include fontStyle('Montserrat',normal,500,1rem,1.5rem);
+    color:#333941;
+}
+.filteringSubContentTitle{
+    @include fontStyle('Montserrat',normal,500,0.75rem,1rem);
+    color:#333941;
+}

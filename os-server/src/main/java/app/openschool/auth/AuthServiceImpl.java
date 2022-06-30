@@ -71,12 +71,12 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   }
 
   @Override
-  public User verifyAccount(VerificationToken verificationToken) {
+  public User verifyAccount(String token) {
     Optional<VerificationToken> fetchedToken =
-        verificationTokenRepository.findVerificationTokenByToken(verificationToken.getToken());
+        verificationTokenRepository.findVerificationTokenByToken(token);
 
     if (fetchedToken.isPresent()) {
-      if (!verificationToken.isTokenExpired(fetchedToken.get().getCreatedAt(), expiresAt)) {
+      if (!VerificationToken.isTokenExpired(fetchedToken.get().getCreatedAt(), expiresAt)) {
         User user = fetchedToken.get().getUser();
         user.setEnabled(true);
         return userRepository.save(user);

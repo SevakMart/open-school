@@ -3,12 +3,15 @@
 @import "../../styles/Mixins/FontMixin.scss";
 
 .mainHeader{
-    @include fontStyle('Montserrat',normal,800,3rem,3.688rem);
-    color:black;
     padding-left:6%;
-    width:45%;
+    padding-right:6%;
     margin-top:4%;
     margin-bottom:4%;
+    h1 {
+      @include fontStyle('Montserrat',normal,800,3rem,3.688rem);
+      color:black;
+      width:45%;
+    }
 }
 .categoriesList{
     @include flexStyle(row,none,space-between);
