@@ -14,8 +14,9 @@ public class UserRegistrationMapper {
       UserRegistrationDto userDto, BCryptPasswordEncoder passwordEncoder) {
     return new User(
         userDto.getFirstName(),
+        userDto.getLastName(),
         userDto.getEmail(),
-        passwordEncoder.encode(userDto.getPassword()),
+        passwordEncoder.encode(userDto.getPsd()),
         new Role(1, ROLE_USER));
   }
 

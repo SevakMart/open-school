@@ -151,7 +151,7 @@ public class AuthController {
     return ResponseEntity.ok().headers(jwtHeader).body(userLoginDto);
   }
 
-  @Operation(summary = "Verify account")
+  @Operation(summary = "verify account")
   @ApiResponse(responseCode = "200", description = "Account is verified")
   @GetMapping("/account/verification")
   public String verifyAccount(@ModelAttribute VerificationToken verificationToken, Locale locale) {
