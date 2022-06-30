@@ -42,7 +42,7 @@ class CategoryRepositoryTest {
   void findCategoryById() {
     Category category = new Category("JS", null);
     categoryRepository.save(category);
-    Category fetchedCategory = categoryRepository.findCategoryById(1L);
+    Category fetchedCategory = categoryRepository.getById(1L);
 
     assertThat(category.getId()).isEqualTo(fetchedCategory.getId());
   }

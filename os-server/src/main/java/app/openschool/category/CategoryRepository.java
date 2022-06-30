@@ -17,7 +17,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
   List<Category> findCategoriesByParentCategoryId(Long id);
 
-  Category findCategoryById(Long id);
-
   List<Category> findByTitleIgnoreCaseStartingWith(String prefix);
 }

@@ -6,13 +6,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import app.openschool.auth.api.dto.ResetPasswordRequest;
 import app.openschool.auth.api.dto.UserRegistrationDto;
-import app.openschool.auth.api.exception.EmailAlreadyExistException;
 import app.openschool.auth.api.exception.EmailNotFoundException;
 import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.auth.exception.UserNotVerifiedException;
@@ -20,7 +18,6 @@ import app.openschool.auth.repository.ResetPasswordTokenRepository;
 import app.openschool.auth.verification.VerificationTokenRepository;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
-import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,23 +56,9 @@ public class AuthServiceImplTest {
   }
 
   @Test
-  void registerUserWithNotUniqueEmail() {
-
-    given(userRepository.findUserByEmail(any())).willReturn(new User());
-
-    assertThatThrownBy(() -> authService.register(new UserRegistrationDto()))
-        .isInstanceOf(EmailAlreadyExistException.class);
-
-    verify(userRepository, never()).save(any());
-  }
-
-  @Test
   void registerUserWithUniqueEmail() {
-    given(userRepository.findUserByEmail(any())).willReturn(null);
     doReturn(new User("John", "testPass")).when(userRepository).save(any());
-
     authService.register(new UserRegistrationDto());
-
     verify(userRepository).save(any(User.class));
   }
 
@@ -114,10 +97,10 @@ public class AuthServiceImplTest {
   @Test
   void sendVerificationEmailWithWrongUserId() {
     long userId = 1L;
-    given(userRepository.findUserById(userId)).willReturn(Optional.empty());
+    given(userRepository.findById(userId)).willReturn(Optional.empty());
 
     assertThatThrownBy(() -> authService.sendVerificationEmail(userId))
-        .isInstanceOf(UserNotFoundException.class);
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test

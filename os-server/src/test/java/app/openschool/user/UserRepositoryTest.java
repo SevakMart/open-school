@@ -62,7 +62,7 @@ class UserRepositoryTest {
   void findUserById() {
     User user = new User("Test", "testEmail", "testPass", new Role(1, "STUDENT"));
     userRepository.save(user);
-    Optional<User> fetchedUser = userRepository.findUserById(1L);
+    Optional<User> fetchedUser = userRepository.findById(1L);
 
     assertThat(user).isEqualTo(fetchedUser.get());
   }

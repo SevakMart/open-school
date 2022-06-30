@@ -1,28 +1,46 @@
 package app.openschool.auth.api.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.Length;
 
 public class UserRegistrationDto {
 
-  private static final String PASSWORD_PATTERN =
+  private static final String PSD_PATTERN =
       "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*()_{}]).{8,20})";
 
+  private static final String EMAIL_PATTERN = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+
+  @Schema(description = "User name", example = "John")
+  @Length(max = 45, message = "{validation.firstName.length.message}")
   @NotBlank(message = "{validation.firstName.error.message}")
   private String firstName;
 
-  @NotBlank(message = "{validation.email.error.message}")
+  @Schema(description = "User surname", example = "Smith")
+  @Length(max = 45, message = "{validation.lastName.length.message}")
+  @NotBlank(message = "{validation.lastName.error.message}")
+  private String lastName;
+
+  @Schema(description = "Provided email by user", example = "Test777@gmail.com")
+  @NotBlank(message = "{validation.email.blank.message}")
+  @Length(max = 45, message = "{validation.email.length.message}")
+  @Email(regexp = EMAIL_PATTERN, message = "{validation.email.pattern.message}")
   private String email;
 
-  @Pattern(regexp = PASSWORD_PATTERN, message = "{validation.password.error.message}")
-  private String password;
+  @Schema(description = "Provided password by user", example = "Test777#")
+  @NotBlank(message = "{validation.password.blank.message}")
+  @Pattern(regexp = PSD_PATTERN, message = "{validation.password.error.message}")
+  private String psd;
 
   public UserRegistrationDto() {}
 
-  public UserRegistrationDto(String firstName, String email, String password) {
+  public UserRegistrationDto(String firstName, String lastName, String email, String psd) {
     this.firstName = firstName;
+    this.lastName = lastName;
     this.email = email;
-    this.password = password;
+    this.psd = psd;
   }
 
   public String getFirstName() {
@@ -41,11 +59,19 @@ public class UserRegistrationDto {
     this.email = email;
   }
 
-  public String getPassword() {
-    return password;
+  public String getPsd() {
+    return psd;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
+  public void setPsd(String psd) {
+    this.psd = psd;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 }

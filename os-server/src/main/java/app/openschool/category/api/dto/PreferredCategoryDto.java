@@ -1,8 +1,12 @@
 package app.openschool.category.api.dto;
 
-public class PreferredCategoryDto {
+import io.swagger.v3.oas.annotations.media.Schema;
 
+public class PreferredCategoryDto {
+  @Schema(description = "Category Id", example = "1")
   private Long id;
+
+  @Schema(description = "Category title", example = "Software-Development")
   private String title;
 
   public PreferredCategoryDto() {}
