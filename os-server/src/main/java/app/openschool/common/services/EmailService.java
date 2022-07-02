@@ -2,6 +2,8 @@ package app.openschool.common.services;
 
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
+import app.openschool.auth.verification.api.dto.VerificationTokenDto;
+import app.openschool.auth.verification.api.mapper.VerificationTokenMapper;
 import app.openschool.common.event.SendResetPasswordEmailEvent;
 import app.openschool.common.event.SendVerificationEmailEvent;
 import app.openschool.user.User;
@@ -67,7 +69,7 @@ public class EmailService implements CommunicationService {
             user.getName(),
             String.valueOf(expirationDuration),
             verificationEndpoint,
-            verificationToken),
+            VerificationTokenMapper.verificationTokenToVerificationTokenDto(verificationToken)),
         emailSubject);
   }
 
@@ -89,10 +91,10 @@ public class EmailService implements CommunicationService {
       String userName,
       String expiresAt,
       String verificationEndpoint,
-      VerificationToken verificationToken) {
+      VerificationTokenDto verificationTokenDto) {
     Context context = new Context();
     context.setVariable("userName", userName);
-    context.setVariable("verificationToken", verificationToken);
+    context.setVariable("verificationTokenDto", verificationTokenDto);
     context.setVariable("expiresAt", expiresAt);
     context.setVariable("verificationEndpoint", verificationEndpoint);
     return templateEngine.process("email/account-verification", context);

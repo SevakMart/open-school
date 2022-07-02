@@ -21,6 +21,11 @@ jobs:
             uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
             with:
               arguments: build
+          - name: sonar analyzes
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+              SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            run: ./gradlew sonarqube --info
           - name: Store artifact in github
             uses: actions/upload-artifact@v2
             with:

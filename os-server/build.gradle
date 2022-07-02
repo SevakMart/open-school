@@ -4,6 +4,9 @@ plugins {
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'checkstyle'
+    id 'org.sonarqube' version '3.4.0.2513'
+    id "jacoco"
+    id 'idea'
 }
 
 group 'app.open-school'
@@ -50,7 +53,16 @@ dependencies {
 test {
     useJUnitPlatform()
     environment "SPRING_PROFILES_ACTIVE", "test"
+    finalizedBy jacocoTestReport
 }
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.enabled true
+    }
+}
+
 jar {
     enabled = false
 }
@@ -61,6 +73,13 @@ checkstyle {
     ignoreFailures false
 }
 
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -69,6 +88,14 @@ tasks.withType(Checkstyle) {
     reports {
         xml.required = true
         html.required = true
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "SevakMart_open-school"
+        property "sonar.organization", "open-school"
+        property "sonar.host.url", "https://sonarcloud.io"
     }
 }
 

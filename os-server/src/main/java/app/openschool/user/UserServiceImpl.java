@@ -3,18 +3,15 @@ package app.openschool.user;
 import app.openschool.category.Category;
 import app.openschool.category.CategoryRepository;
 import app.openschool.category.api.dto.PreferredCategoryDto;
-import app.openschool.category.api.exception.CategoryNotFoundException;
 import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.api.mapper.CourseMapper;
-import app.openschool.user.api.exception.UserNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
@@ -73,25 +70,18 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds) {
-
-    Optional<User> user = userRepository.findUserById(userId);
+    User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     Set<PreferredCategoryDto> userCategories = new HashSet<>();
-
-    user.orElseThrow(() -> new UserNotFoundException(String.valueOf(userId)));
-
     Set<Category> categories = CategoryMapper.categoryIdSetToCategorySet(categoryIds);
-
     categories.forEach(
         (category -> {
-          Category fetchedCategory = categoryRepository.findCategoryById(category.getId());
-          if (fetchedCategory == null) {
-            throw new CategoryNotFoundException(String.valueOf(category.getId()));
-          } else {
-            userCategories.add(CategoryMapper.toPreferredCategoryDto(fetchedCategory));
-          }
+          Category fetchedCategory =
+              categoryRepository
+                  .findById(category.getId())
+                  .orElseThrow(IllegalArgumentException::new);
+          userCategories.add(CategoryMapper.toPreferredCategoryDto(fetchedCategory));
         }));
-
-    user.get().setCategories(categories);
+    user.setCategories(categories);
     return userCategories;
   }
 
@@ -122,7 +112,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public User saveMentor(User user, Long mentorId) {
-    User mentor = userRepository.findUserById(mentorId).orElseThrow(IllegalArgumentException::new);
+    User mentor = userRepository.findById(mentorId).orElseThrow(IllegalArgumentException::new);
     if (mentor.getRole().getType().equals("MENTOR")) {
       user.getMentors().add(mentor);
       return userRepository.save(user);
@@ -146,7 +136,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public void deleteMentor(User user, Long mentorId) {
     userRepository
-        .findUserById(mentorId)
+        .findById(mentorId)
         .map(
             mentor -> {
               user.getMentors().remove(mentor);
@@ -162,7 +152,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Course saveCourse(Long userId, Long courseId) {
-    User user = userRepository.findUserById(userId).orElseThrow(IllegalArgumentException::new);
+    User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
     user.getSavedCourses().add(course);
     userRepository.save(user);
@@ -171,7 +161,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Course deleteCourse(Long userId, Long courseId) {
-    User user = userRepository.findUserById(userId).orElseThrow(IllegalArgumentException::new);
+    User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
     Set<Course> savedCourses = user.getSavedCourses();
     if (savedCourses.contains(course)) {
