@@ -33,13 +33,13 @@ const SavedMentors = () => {
   return (
     <div className={mainContainer}>
       { /* eslint-disable-next-line max-len */
-        errorMessage ? <h2>{errorMessage}</h2> : savedMentorList.length ? savedMentorList.map((savedMentor) => (
+        errorMessage ? <h2 data-testid="errorMessageHeader">{errorMessage}</h2> : savedMentorList.length ? savedMentorList.map((savedMentor) => (
           <MentorCard
             key={savedMentor.id}
             mentor={savedMentor}
             deleteMentor={handleMentorDeletion}
           />
-        )) : <h2>{t('Empty Data Error Message')}</h2>
+        )) : <h2 data-testid="emptyMessageHeader">{t('Empty Data Error Message')}</h2>
         }
     </div>
   );

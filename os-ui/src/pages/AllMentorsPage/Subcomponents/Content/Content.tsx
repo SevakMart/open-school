@@ -58,7 +58,7 @@ const Content = () => {
 
   return (
     <div className={mainContent}>
-      { errorMessage ? <h2>{errorMessage}</h2>
+      { errorMessage ? <h2 data-testid="errorMessageHeader">{errorMessage}</h2>
         : mentorList.length ? mentorList.map((mentor) => (
           <MentorCard
             key={mentor.id}
@@ -66,7 +66,7 @@ const Content = () => {
             saveMentor={(mentorId) => userService.saveUserMentor(id, mentorId, token)}
             deleteMentor={(mentorId) => userService.deleteUserSavedMentor(id, mentorId, token)}
           />
-        )) : <h2>{t('Empty Data Error Message')}</h2>}
+        )) : <h2 data-testid="emptyMessageHeader">{t('Empty Data Error Message')}</h2>}
     </div>
   );
 };

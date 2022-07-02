@@ -19,11 +19,11 @@ const BookmarkIcon = (
   };
   useEffect(() => {
     if (isClicked) {
-      saveCourse && saveCourse(courseId!);
-      saveMentor && saveMentor(mentorId!);
+      courseId && saveCourse && saveCourse(courseId!);
+      mentorId && saveMentor && saveMentor(mentorId!);
     } else if (!isClicked && isBookmarked) {
-      deleteCourse && deleteCourse(courseId!);
-      deleteMentor && deleteMentor(mentorId!);
+      courseId && deleteCourse && deleteCourse(courseId!);
+      mentorId && deleteMentor && deleteMentor(mentorId!);
     }
   }, [isClicked]);
 

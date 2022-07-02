@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for Content component Create a snapshot test for Content component 1`] = `
+<DocumentFragment>
+  <div
+    class="mainContent"
+  >
+    <h2
+      data-testid="emptyMessageHeader"
+    >
+      No data to display
+    </h2>
+  </div>
+</DocumentFragment>
+`;
