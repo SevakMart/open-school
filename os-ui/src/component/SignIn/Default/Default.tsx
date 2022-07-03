@@ -12,7 +12,9 @@ import styles from './Default.module.scss';
 const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
   {handleSignIn:(message:string)=>void, forgotPasswordFunc:()=>void}) => {
   const dispatch = useDispatch();
-  const [formValues, setFormValues] = useState<RegistrationFormType>({ firstName: '', email: '', password: '' });
+  const [formValues, setFormValues] = useState<RegistrationFormType>({
+    firstName: '', lastName: '', email: '', psd: '',
+  });
   const [errorFormValue, setErrorFormValue] = useState({ fullNameError: '', emailError: '', passwordError: '' });
   const [signInErrorMessage, setSignInErrorMessage] = useState('');
   const [isVisible, setIsVisible] = useState(false);
@@ -33,9 +35,9 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
 
   const handleSignInForm = () => {
     const { fullNameError, emailError, passwordError } = validateSignInForm(formValues);
-    const { email, password } = formValues;
+    const { email, psd } = formValues;
     if (!fullNameError && !emailError && !passwordError) {
-      authService.signIn({ email, password }).then((response) => {
+      authService.signIn({ email, psd }).then((response) => {
         if (response.status === 401) {
           setSignInErrorMessage(response.message);
           setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
@@ -85,7 +87,7 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
           id="password"
           type="password"
           ref={passwordInputRef}
-          value={formValues.password}
+          value={formValues.psd}
           name="password"
           placeholder="Enter your password"
           onChange={handleInputChange}

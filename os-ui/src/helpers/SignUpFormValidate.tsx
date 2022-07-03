@@ -1,144 +1,41 @@
 import { RegistrationFormType } from '../types/RegistartionFormType';
 import {
-  fullNameRegex, emailRegex, passwordRegex, INVALID_EMAIL_ERROR_MESSAGE,
-  INVALID_FULL_NAME_ERROR_MESSAGE, INVALID_PASSWORD_ERROR_MESSAGE, EMAIL_TOO_SHORT,
-  FULL_NAME_TOO_SHORT, PASSWORD_TOO_SHORT,
+  emailRegex, passwordRegex, EMAIL_REQUIRED, EMAIL_TOO_LONG, INVALID_EMAIL_ERROR_MESSAGE,
+  PASSWORD_REQUIRED, INVALID_PASSWORD_ERROR_MESSAGE, FIRSTNAME_REQUIRED, LASTNAME_REQUIRED,
+  FIRSTNAME_TOO_LONG, LASTNAME_TOO_LONG,
 } from '../constants/Strings';
 
 export const validateSignUpForm = (formValues:RegistrationFormType) => {
-  const errorFormValue = { fullNameError: '', emailError: '', passwordError: '' };
-  const { firstName, email, password } = formValues;
-  if (firstName.length < 8 && email.length < 8 && password.length < 8) {
-    errorFormValue.fullNameError = FULL_NAME_TOO_SHORT;
-    errorFormValue.emailError = EMAIL_TOO_SHORT;
-    errorFormValue.passwordError = PASSWORD_TOO_SHORT;
-    return errorFormValue;
+  const errorFormValue = {
+    firstNameError: '', lastNameError: '', emailError: '', psdError: '',
+  };
+  const {
+    firstName, lastName, email, psd,
+  } = formValues;
+  if (email.length === 0) {
+    errorFormValue.emailError = EMAIL_REQUIRED;
+  } else if (email.length > 45) {
+    errorFormValue.emailError = EMAIL_TOO_LONG;
+  } else if (!email.match(emailRegex)) {
+    errorFormValue.emailError = INVALID_EMAIL_ERROR_MESSAGE;
   }
 
-  if (firstName.length < 8 && email.length < 8 && password.match(passwordRegex)) {
-    errorFormValue.fullNameError = FULL_NAME_TOO_SHORT;
-    errorFormValue.emailError = EMAIL_TOO_SHORT;
-    return errorFormValue;
-  }
-  if (firstName.length < 8 && email.length < 8 && !password.match(passwordRegex)) {
-    errorFormValue.fullNameError = FULL_NAME_TOO_SHORT;
-    errorFormValue.emailError = EMAIL_TOO_SHORT;
-    errorFormValue.passwordError = INVALID_PASSWORD_ERROR_MESSAGE;
-    return errorFormValue;
-  }
-  if (firstName.length < 8 && password.length < 8 && !email.match(emailRegex)) {
-    errorFormValue.fullNameError = FULL_NAME_TOO_SHORT;
-    errorFormValue.emailError = INVALID_EMAIL_ERROR_MESSAGE;
-    errorFormValue.passwordError = PASSWORD_TOO_SHORT;
-    return errorFormValue;
-  }
-  if (email.length < 8 && password.length < 8 && !firstName.match(fullNameRegex)) {
-    errorFormValue.fullNameError = INVALID_FULL_NAME_ERROR_MESSAGE;
-    errorFormValue.emailError = EMAIL_TOO_SHORT;
-    errorFormValue.passwordError = PASSWORD_TOO_SHORT;
-    return errorFormValue;
+  if (psd.length === 0) {
+    errorFormValue.psdError = PASSWORD_REQUIRED;
+  } else if (!psd.match(passwordRegex)) {
+    errorFormValue.psdError = INVALID_PASSWORD_ERROR_MESSAGE;
   }
 
-  if (firstName.length < 8 && email.match(emailRegex) && password.match(passwordRegex)) {
-    errorFormValue.fullNameError = FULL_NAME_TOO_SHORT;
-    return errorFormValue;
-  }
-  if (firstName.length < 8 && !email.match(emailRegex) && password.match(passwordRegex)) {
-    errorFormValue.fullNameError = FULL_NAME_TOO_SHORT;
-    errorFormValue.emailError = INVALID_EMAIL_ERROR_MESSAGE;
-    return errorFormValue;
-  }
-  if (firstName.length < 8 && email.match(emailRegex) && !password.match(passwordRegex)) {
-    errorFormValue.fullNameError = FULL_NAME_TOO_SHORT;
-    errorFormValue.passwordError = INVALID_PASSWORD_ERROR_MESSAGE;
-    return errorFormValue;
-  }
-  if (firstName.length < 8 && !email.match(emailRegex) && !password.match(passwordRegex)) {
-    errorFormValue.fullNameError = FULL_NAME_TOO_SHORT;
-    errorFormValue.emailError = INVALID_EMAIL_ERROR_MESSAGE;
-    errorFormValue.passwordError = INVALID_PASSWORD_ERROR_MESSAGE;
-    return errorFormValue;
-  }
-  if (email.length < 8 && firstName.match(fullNameRegex) && password.match(passwordRegex)) {
-    errorFormValue.emailError = EMAIL_TOO_SHORT;
-    return errorFormValue;
-  }
-  if (email.length < 8 && !firstName.match(fullNameRegex) && password.match(passwordRegex)) {
-    errorFormValue.fullNameError = INVALID_FULL_NAME_ERROR_MESSAGE;
-    errorFormValue.emailError = EMAIL_TOO_SHORT;
-    return errorFormValue;
-  }
-  if (email.length < 8 && firstName.match(fullNameRegex) && !password.match(passwordRegex)) {
-    errorFormValue.emailError = EMAIL_TOO_SHORT;
-    errorFormValue.passwordError = INVALID_PASSWORD_ERROR_MESSAGE;
-    return errorFormValue;
-  }
-  if (email.length < 8 && !firstName.match(fullNameRegex) && !password.match(passwordRegex)) {
-    errorFormValue.fullNameError = INVALID_FULL_NAME_ERROR_MESSAGE;
-    errorFormValue.emailError = EMAIL_TOO_SHORT;
-    errorFormValue.passwordError = INVALID_PASSWORD_ERROR_MESSAGE;
-    return errorFormValue;
-  }
-  if (password.length < 8 && firstName.match(fullNameRegex) && email.match(emailRegex)) {
-    errorFormValue.passwordError = PASSWORD_TOO_SHORT;
-    return errorFormValue;
-  }
-  if (password.length < 8 && !firstName.match(fullNameRegex) && email.match(emailRegex)) {
-    errorFormValue.fullNameError = INVALID_FULL_NAME_ERROR_MESSAGE;
-    errorFormValue.passwordError = PASSWORD_TOO_SHORT;
-    return errorFormValue;
-  }
-  if (password.length < 8 && firstName.match(fullNameRegex) && !email.match(emailRegex)) {
-    errorFormValue.emailError = INVALID_EMAIL_ERROR_MESSAGE;
-    errorFormValue.passwordError = PASSWORD_TOO_SHORT;
-    return errorFormValue;
-  }
-  if (password.length < 8 && !firstName.match(fullNameRegex) && !email.match(emailRegex)) {
-    errorFormValue.fullNameError = INVALID_FULL_NAME_ERROR_MESSAGE;
-    errorFormValue.emailError = INVALID_EMAIL_ERROR_MESSAGE;
-    errorFormValue.passwordError = PASSWORD_TOO_SHORT;
-    return errorFormValue;
-  }
-  if (!firstName.match(fullNameRegex) && !email.match(emailRegex)
-  && !password.match(passwordRegex)) {
-    errorFormValue.fullNameError = INVALID_FULL_NAME_ERROR_MESSAGE;
-    errorFormValue.emailError = INVALID_EMAIL_ERROR_MESSAGE;
-    errorFormValue.passwordError = INVALID_PASSWORD_ERROR_MESSAGE;
-    return errorFormValue;
+  if (firstName.length === 0 || firstName.trim().length === 0) {
+    errorFormValue.firstNameError = FIRSTNAME_REQUIRED;
+  } else if (firstName.length > 45) {
+    errorFormValue.firstNameError = FIRSTNAME_TOO_LONG;
   }
 
-  if (!firstName.match(fullNameRegex) && !email.match(emailRegex)
-  && password.match(passwordRegex)) {
-    errorFormValue.fullNameError = INVALID_FULL_NAME_ERROR_MESSAGE;
-    errorFormValue.emailError = INVALID_EMAIL_ERROR_MESSAGE;
-    return errorFormValue;
-  }
-  if (firstName.match(fullNameRegex) && !email.match(emailRegex) && password.match(passwordRegex)) {
-    errorFormValue.emailError = INVALID_EMAIL_ERROR_MESSAGE;
-    return errorFormValue;
-  }
-  if (firstName.match(fullNameRegex) && email.match(emailRegex) && !password.match(passwordRegex)) {
-    errorFormValue.passwordError = INVALID_PASSWORD_ERROR_MESSAGE;
-    return errorFormValue;
-  }
-  if (!firstName.match(fullNameRegex) && email.match(emailRegex)
-  && !password.match(passwordRegex)) {
-    errorFormValue.fullNameError = INVALID_FULL_NAME_ERROR_MESSAGE;
-    errorFormValue.passwordError = INVALID_PASSWORD_ERROR_MESSAGE;
-    return errorFormValue;
-  }
-  if (firstName.match(fullNameRegex) && !email.match(emailRegex)
-  && !password.match(passwordRegex)) {
-    errorFormValue.emailError = INVALID_EMAIL_ERROR_MESSAGE;
-    errorFormValue.passwordError = INVALID_PASSWORD_ERROR_MESSAGE;
-    return errorFormValue;
-  }
-  if (!firstName.match(fullNameRegex) && email.match(emailRegex) && password.match(passwordRegex)) {
-    errorFormValue.fullNameError = INVALID_FULL_NAME_ERROR_MESSAGE;
-    return errorFormValue;
-  }
-  if (firstName.match(fullNameRegex) && email.match(emailRegex) && password.match(passwordRegex)) {
-    return errorFormValue;
+  if (lastName.length === 0 || lastName.trim().length === 0) {
+    errorFormValue.lastNameError = LASTNAME_REQUIRED;
+  } else if (lastName.length > 45) {
+    errorFormValue.lastNameError = LASTNAME_TOO_LONG;
   }
   return errorFormValue;
 };

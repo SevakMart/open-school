@@ -7,9 +7,9 @@ exports[`Create tests for From component Create a snapshot test 1`] = `
   >
     <div>
       <label
-        for="fullName"
+        for="firstName"
       >
-        Full Name
+        First Name
         <span
           style="color: red;"
         >
@@ -17,9 +17,29 @@ exports[`Create tests for From component Create a snapshot test 1`] = `
         </span>
       </label>
       <input
-        id="fullName"
+        id="firstName"
         name="firstName"
         placeholder="Fill in first name"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+    <div>
+      <label
+        for="lastName"
+      >
+        Last Name
+        <span
+          style="color: red;"
+        >
+          *
+        </span>
+      </label>
+      <input
+        id="lastName"
+        name="lastName"
+        placeholder="Fill in last name"
         required=""
         type="text"
         value=""
@@ -47,7 +67,7 @@ exports[`Create tests for From component Create a snapshot test 1`] = `
     </div>
     <div>
       <label
-        for="password"
+        for="psd"
       >
         Password
         <span
@@ -57,8 +77,8 @@ exports[`Create tests for From component Create a snapshot test 1`] = `
         </span>
       </label>
       <input
-        id="password"
-        name="password"
+        id="psd"
+        name="psd"
         placeholder="Enter your password"
         required=""
         type="password"

@@ -10,11 +10,13 @@ class AuthService {
   }
 
   async register(content:RegistrationFormType) {
-    const data = await (await fetchService.post(`${this.basePath}/register`, content, {})).json();
-    return data;
+    const response = await fetchService.post(`${this.basePath}/register`, content, {});
+    const { status } = response;
+    const data = await response.json();
+    return { ...data, status };
   }
 
-  async signIn(content:Omit<RegistrationFormType, 'firstName'>) {
+  async signIn(content:Omit<RegistrationFormType, 'firstName' | 'lastName'>) {
     const response = await fetchService.post(`${this.basePath}/login`, content, {});
     const { status, headers } = response;
     const data = await response.json();
