@@ -79,16 +79,16 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
           : null}
       </div>
       <div>
-        <label htmlFor="password">
+        <label htmlFor="psd">
           Password
           <span style={{ color: 'red' }}>*</span>
         </label>
         <input
-          id="password"
+          id="psd"
           type="password"
           ref={passwordInputRef}
           value={formValues.psd}
-          name="password"
+          name="psd"
           placeholder="Enter your password"
           onChange={handleInputChange}
           required
