@@ -79,3 +79,5 @@ export const COURSE_LEVEL = 'Course Level';
 export const CATEGORY = 'Category';
 export const TITLE = 'Title';
 export const DIFFICULTY = 'difficulty_id';
+export const ALL_MENTORS = 'All Mentors';
+export const SAVED_MENTORS = 'Saved Mentors';
