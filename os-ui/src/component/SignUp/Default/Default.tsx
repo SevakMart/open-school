@@ -27,9 +27,13 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
     const { fullNameError, emailError, passwordError } = validateSignUpForm(formValues);
     if (!fullNameError && !emailError && !passwordError) {
       authService.register(formValues).then((response) => {
-        setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
-        setFormValues({ firstName: '', email: '', password: '' });
-        switchToSignInForm!(response.message);
+        if (response.status === 400) {
+          setErrorFormValue({ fullNameError: '', emailError: response.message, passwordError: '' });
+        } else {
+          setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
+          setFormValues({ firstName: '', email: '', password: '' });
+          switchToSignInForm!(response.message);
+        }
       });
     } else setErrorFormValue(validateSignUpForm(formValues));
   };
