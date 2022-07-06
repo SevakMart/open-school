@@ -76,7 +76,7 @@ public class AuthControllerTest {
             new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())))
         .thenThrow(BadCredentialsException.class);
 
-    String requestBody = "{ \"email\": \"test@gmail.com\",\"password\": \"1234$dhjshh*\" }";
+    String requestBody = "{ \"email\": \"test@gmail.com\",\"psd\": \"1234$dhjshh*\" }";
 
     mockMvc
         .perform(post("/api/v1/auth/login").contentType(APPLICATION_JSON).content(requestBody))

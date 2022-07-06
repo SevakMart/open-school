@@ -143,7 +143,7 @@ public class AuthController {
               description = "Request object which contains provided email and password")
           @RequestBody
           UserLoginRequest userLoginRequest) {
-    authenticate(userLoginRequest.getEmail(), userLoginRequest.getPassword());
+    authenticate(userLoginRequest.getEmail(), userLoginRequest.getPsd());
     UserLoginDto userLoginDto = authService.login(userLoginRequest.getEmail());
     User loggedUser = authService.findUserByEmail(userLoginRequest.getEmail());
     UserPrincipal userPrincipal = new UserPrincipal(loggedUser);
