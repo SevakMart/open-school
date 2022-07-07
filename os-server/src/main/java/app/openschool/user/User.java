@@ -31,7 +31,7 @@ public class User {
   private Long id;
 
   @Column(name = "enabled", nullable = false)
-  private Boolean enabled;
+  private Boolean enabled = false;
 
   @Column(name = "first_name", nullable = false)
   private String name;
@@ -121,7 +121,6 @@ public class User {
     this.email = email;
     this.password = password;
     this.role = role;
-    this.enabled = false;
   }
 
   public User(String name, String surname, String email, String password, Role role) {
