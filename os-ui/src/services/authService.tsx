@@ -16,7 +16,7 @@ class AuthService {
     return { ...data, status };
   }
 
-  async signIn(content:Omit<RegistrationFormType, 'firstName'>) {
+  async signIn(content:Omit<RegistrationFormType, 'firstName' | 'lastName'>) {
     const response = await fetchService.post(`${this.basePath}/login`, content, {});
     const { status, headers } = response;
     const data = await response.json();

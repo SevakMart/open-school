@@ -25,18 +25,19 @@ export const EMPTY_DATA_ERROR_MESSAGE = 'No data to display';
 
 // Successful Sign in message
 export const SUCCESSFUL_SIGNIN_MESSAGE = 'You have Successfully signed in!';
+export const SUCCESSFUL_SIGNUP_MESSAGE = 'You have successfully registered';
 
 // Regex for form validation
 export const fullNameRegex = /^[A-Z\s]*$/i;
-export const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+export const emailRegex = /^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/;
+export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@#$!%*?&]{8,20}$/;
 export const tokenRegex = /^[0-9]{4}$/;
 /* User’s Password should have at least 8 characters,
 including upper and lower case letters, numbers and signs (required) */
 
 // Form Validation error message
 export const INVALID_FULL_NAME_ERROR_MESSAGE = 'Invalid name or surname';
-export const INVALID_EMAIL_ERROR_MESSAGE = 'Invalid email address';
+export const INVALID_EMAIL_ERROR_MESSAGE = 'Invalid email format';
 export const INVALID_PASSWORD_ERROR_MESSAGE = 'Password should be at least 8 characters and contain at least one uppercase, lowercase, number and special character';
 export const INVALID_TOKEN = 'Invalid verification code';
 export const FULL_NAME_TOO_SHORT = 'Full name is too short';
@@ -46,6 +47,11 @@ export const PASSWORD_REQUIRED = 'Password is required';
 export const EMAIL_REQUIRED = 'Email is required';
 export const TOKEN_REQUIRED = 'Verification code is required';
 export const PASSWORDS_MISMATCH = 'Passwords do not match';
+export const FIRSTNAME_REQUIRED = 'First name is required';
+export const LASTNAME_REQUIRED = 'Last name is required';
+export const FIRSTNAME_TOO_LONG = 'First name is too long. Maximum 45 characters are allowed.';
+export const LASTNAME_TOO_LONG = 'Last name is too long. Maximum 45 characters are allowed.';
+export const EMAIL_TOO_LONG = 'Email is too long. Maximum 45 characters are allowed.';
 
 // Other non-specific strings
 export const NO_COURSES_YET = 'No Courses Yet';

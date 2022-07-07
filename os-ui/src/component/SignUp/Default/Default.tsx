@@ -4,12 +4,16 @@ import { RegistrationFormType } from '../../../types/RegistartionFormType';
 import authService from '../../../services/authService';
 import VisibileIcon from '../../../icons/Visibility';
 import HiddenIcon from '../../../icons/Hidden';
-import { SIGN_UP } from '../../../constants/Strings';
+import { SIGN_UP, SUCCESSFUL_SIGNUP_MESSAGE } from '../../../constants/Strings';
 import styles from './Default.module.scss';
 
 const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:string)=>void}) => {
-  const [formValues, setFormValues] = useState<RegistrationFormType>({ firstName: '', email: '', password: '' });
-  const [errorFormValue, setErrorFormValue] = useState({ fullNameError: '', emailError: '', passwordError: '' });
+  const [formValues, setFormValues] = useState<RegistrationFormType>({
+    firstName: '', lastName: '', email: '', psd: '',
+  });
+  const [errorFormValue, setErrorFormValue] = useState({
+    firstNameError: '', lastNameError: '', emailError: '', psdError: '',
+  });
   const [isVisible, setIsVisible] = useState(false);
   const passwordInputRef = useRef<null|HTMLInputElement>(null);
   const { inputContent, errorField } = styles;
@@ -24,15 +28,23 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
     });
   };
   const handleSubmitForm = () => {
-    const { fullNameError, emailError, passwordError } = validateSignUpForm(formValues);
-    if (!fullNameError && !emailError && !passwordError) {
+    const {
+      firstNameError, lastNameError, emailError, psdError,
+    } = validateSignUpForm(formValues);
+    if (!firstNameError && !lastNameError && !emailError && !psdError) {
       authService.register(formValues).then((response) => {
-        if (response.status === 400) {
-          setErrorFormValue({ fullNameError: '', emailError: response.message, passwordError: '' });
+        if (response.status === 201) {
+          setErrorFormValue({
+            firstNameError: '', lastNameError: '', emailError: '', psdError: '',
+          });
+          setFormValues({
+            firstName: '', lastName: '', email: '', psd: '',
+          });
+          switchToSignInForm!(SUCCESSFUL_SIGNUP_MESSAGE);
         } else {
-          setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
-          setFormValues({ firstName: '', email: '', password: '' });
-          switchToSignInForm!(response.message);
+          setErrorFormValue({
+            firstNameError: '', lastNameError: '', emailError: response[0], psdError: '',
+          });
         }
       });
     } else setErrorFormValue(validateSignUpForm(formValues));
@@ -47,12 +59,12 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
   return (
     <form className={inputContent}>
       <div>
-        <label htmlFor="fullName">
-          Full Name
+        <label htmlFor="firstName">
+          First Name
           <span style={{ color: 'red' }}>*</span>
         </label>
         <input
-          id="fullName"
+          id="firstName"
           type="text"
           value={formValues.firstName}
           name="firstName"
@@ -60,8 +72,26 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           onChange={handleInputChange}
           required
         />
-        {errorFormValue.fullNameError
-          ? <h4 data-testid="fullnameErrorField" className={errorField}>{errorFormValue.fullNameError}</h4>
+        {errorFormValue.firstNameError
+          ? <h4 data-testid="firstnameErrorField" className={errorField}>{errorFormValue.firstNameError}</h4>
+          : null}
+      </div>
+      <div>
+        <label htmlFor="lastName">
+          Last Name
+          <span style={{ color: 'red' }}>*</span>
+        </label>
+        <input
+          id="lastName"
+          type="text"
+          value={formValues.lastName}
+          name="lastName"
+          placeholder="Fill in last name"
+          onChange={handleInputChange}
+          required
+        />
+        {errorFormValue.lastNameError
+          ? <h4 data-testid="lastnameErrorField" className={errorField}>{errorFormValue.lastNameError}</h4>
           : null}
       </div>
       <div>
@@ -83,22 +113,22 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           : null}
       </div>
       <div>
-        <label htmlFor="password">
+        <label htmlFor="psd">
           Password
           <span style={{ color: 'red' }}>*</span>
         </label>
         <input
-          id="password"
+          id="psd"
           type="password"
           ref={passwordInputRef}
-          value={formValues.password}
-          name="password"
+          value={formValues.psd}
+          name="psd"
           placeholder="Enter your password"
           onChange={handleInputChange}
           required
         />
-        {errorFormValue.passwordError
-          ? <h4 data-testid="passwordErrorField" className={errorField}>{errorFormValue.passwordError}</h4>
+        {errorFormValue.psdError
+          ? <h4 data-testid="psdErrorField" className={errorField}>{errorFormValue.psdError}</h4>
           : null}
         {isVisible
           ? <VisibileIcon makeInvisible={handlePasswordVisibility} />
