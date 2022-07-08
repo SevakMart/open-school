@@ -5,12 +5,8 @@ exports[`Create test case to Search component Create a Snapshot test 1`] = `
   <div
     class="inputContent"
   >
-    <input
-      placeholder="Search name"
-      type="text"
-    />
     <div
-      style="position: absolute; left: 7%; z-index: 1; cursor: pointer; color: rgb(132, 138, 157);"
+      style="z-index: 1; color: rgb(132, 138, 157);"
     >
       <svg
         fill="currentColor"
@@ -26,6 +22,10 @@ exports[`Create test case to Search component Create a Snapshot test 1`] = `
         />
       </svg>
     </div>
+    <input
+      placeholder="Search name"
+      type="text"
+    />
   </div>
 </DocumentFragment>
 `;

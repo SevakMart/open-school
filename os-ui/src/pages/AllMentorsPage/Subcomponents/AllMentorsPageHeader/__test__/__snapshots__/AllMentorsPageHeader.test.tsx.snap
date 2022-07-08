@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for AllMentorsPageHeader component Create a snapshot test for AllMentorsHeader component 1`] = `
+<DocumentFragment>
+  <div
+    class="mentorHeader"
+  >
+    <nav>
+      <p
+        class="activeNav"
+      >
+        All Mentors
+      </p>
+      <p
+        class="nonActiveNav"
+      >
+        Saved Mentors
+      </p>
+    </nav>
+  </div>
+</DocumentFragment>
+`;

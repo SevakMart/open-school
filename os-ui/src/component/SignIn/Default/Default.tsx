@@ -12,7 +12,9 @@ import styles from './Default.module.scss';
 const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
   {handleSignIn:(message:string)=>void, forgotPasswordFunc:()=>void}) => {
   const dispatch = useDispatch();
-  const [formValues, setFormValues] = useState<RegistrationFormType>({ firstName: '', email: '', password: '' });
+  const [formValues, setFormValues] = useState<RegistrationFormType>({
+    firstName: '', lastName: '', email: '', psd: '',
+  });
   const [errorFormValue, setErrorFormValue] = useState({ fullNameError: '', emailError: '', passwordError: '' });
   const [signInErrorMessage, setSignInErrorMessage] = useState('');
   const [isVisible, setIsVisible] = useState(false);
@@ -33,17 +35,21 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
 
   const handleSignInForm = () => {
     const { fullNameError, emailError, passwordError } = validateSignInForm(formValues);
-    const { email, password } = formValues;
+    const { email, psd } = formValues;
     if (!fullNameError && !emailError && !passwordError) {
-      authService.signIn({ email, password }).then((response) => {
+      authService.signIn({ email, psd }).then((response) => {
         if (response.status === 401) {
           setSignInErrorMessage(response.message);
+          setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
         } else if (response.status === 200) {
           dispatch(addLoggedInUser(response));
           handleSignIn(SUCCESSFUL_SIGNIN_MESSAGE);
         }
       });
-    } else setErrorFormValue(validateSignInForm(formValues));
+    } else {
+      setErrorFormValue(validateSignInForm(formValues));
+      setSignInErrorMessage('');
+    }
   };
 
   useEffect(() => {
@@ -73,16 +79,16 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
           : null}
       </div>
       <div>
-        <label htmlFor="password">
+        <label htmlFor="psd">
           Password
           <span style={{ color: 'red' }}>*</span>
         </label>
         <input
-          id="password"
+          id="psd"
           type="password"
           ref={passwordInputRef}
-          value={formValues.password}
-          name="password"
+          value={formValues.psd}
+          name="psd"
           placeholder="Enter your password"
           onChange={handleInputChange}
           required

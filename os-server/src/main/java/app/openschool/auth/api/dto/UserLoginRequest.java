@@ -1,22 +1,27 @@
 package app.openschool.auth.api.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class UserLoginRequest {
-  private String password;
+  @Schema(description = "Provided password", example = "Test777#")
+  private String psd;
+
+  @Schema(description = "Provided email", example = "Test888@gmail.com")
   private String email;
 
   public UserLoginRequest() {}
 
-  public UserLoginRequest(String password, String email) {
-    this.password = password;
+  public UserLoginRequest(String psd, String email) {
+    this.psd = psd;
     this.email = email;
   }
 
-  public String getPassword() {
-    return password;
+  public String getPsd() {
+    return psd;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
+  public void setPsd(String psd) {
+    this.psd = psd;
   }
 
   public String getEmail() {

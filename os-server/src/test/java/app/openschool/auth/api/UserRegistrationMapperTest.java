@@ -17,9 +17,10 @@ class UserRegistrationMapperTest {
   void userRegistrationDtoToUser() {
     String email = "test@gmail.com";
     String name = "Test";
+    String surname = "Test1";
     String password = "1234$dhjsHH*";
     User user = new User(name, email, password, new Role(1, "STUDENT"));
-    UserRegistrationDto userDto = new UserRegistrationDto(name, email, password);
+    UserRegistrationDto userDto = new UserRegistrationDto(name, surname, email, password);
     User mappedUser = UserRegistrationMapper.userRegistrationDtoToUser(userDto, passwordEncoder);
     assertThat(user).isEqualTo(mappedUser);
   }

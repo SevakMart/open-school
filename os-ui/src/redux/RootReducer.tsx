@@ -4,6 +4,7 @@ import storageSession from 'redux-persist/lib/storage/session';
 import persistReducer from 'redux-persist/lib/persistReducer';
 import chooseSubcategoryReducer from './Slices/ChoosSubcategorySlice';
 import userInfoReducer from './Slices/loginUserSlice';
+import allLearningPathFilterParamsReducer from './Slices/AllLearningPathFilterParamsSlice';
 
 const loggedInUserPersistConfig = {
   key: 'loggedInUser',
@@ -12,7 +13,7 @@ const loggedInUserPersistConfig = {
 const persistConfig = {
   key: 'root',
   storage: storageSession,
-  blackList: ['userInfoReducer'],
+  blackList: ['userInfoReducer', 'allLearningPathFilterParamsReducer'],
 };
 
 const persistedLoggedInUserReducer = persistReducer(loggedInUserPersistConfig, userInfoReducer);
@@ -20,6 +21,7 @@ const persistedLoggedInUserReducer = persistReducer(loggedInUserPersistConfig, u
 const rootReducer = combineReducers({
   chooseSubcategories: chooseSubcategoryReducer,
   userInfo: persistedLoggedInUserReducer,
+  filterParams: allLearningPathFilterParamsReducer,
 });
 
 const persistedRootReducer = persistReducer(persistConfig, rootReducer);

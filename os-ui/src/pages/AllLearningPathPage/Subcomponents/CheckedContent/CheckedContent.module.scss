@@ -1,0 +1,15 @@
+@import "../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+
+.checkedContentClass {
+    @include flexStyle(row,flex-start,space-between);
+    width:40%;
+    label {
+        @include fontStyle('Montserrat',normal,400,0.875rem,1.063rem);
+        color:#5E617B;
+    };
+    input {
+        border: 3px solid #F7F7FC;
+    }
+}
+

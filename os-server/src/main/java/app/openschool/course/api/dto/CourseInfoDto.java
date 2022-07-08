@@ -1,27 +1,41 @@
 package app.openschool.course.api.dto;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Set;
 
 public class CourseInfoDto {
 
+  @Schema(description = "Course title", example = "Java")
   private String title;
 
+  @Schema(description = "Java Programming training course", example = "In progress")
   private String description;
 
+  @Schema(
+      description = "Purpose of the course",
+      example =
+          "Gain extensive hands-on experience writing, compiling, and executing Java programs")
   private String goal;
 
+  @ArraySchema(schema = @Schema(implementation = CourseInfoModuleDto.class))
   private Set<CourseInfoModuleDto> modules;
 
+  @Schema(description = "Object containing the information of course mentor")
   private CourseInfoMentorDto mentorDto;
 
+  @Schema(description = "Rating of the course", example = "5.5")
   private double rating;
 
   private int enrolled;
 
+  @Schema(description = "Difficulty level of the course", example = "Advanced")
   private String level;
 
+  @Schema(description = "Course language", example = "English")
   private String language;
 
+  @Schema(description = "Duration of the course", example = "360.5")
   private double duration;
 
   public CourseInfoDto() {}

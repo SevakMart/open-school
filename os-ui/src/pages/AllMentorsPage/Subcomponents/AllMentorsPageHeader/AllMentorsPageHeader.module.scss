@@ -1,0 +1,23 @@
+@import "../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+
+.mentorHeader{
+    @include flexStyle(row,center,space-between);
+    margin-bottom:1.5rem;
+    margin-top:1.5rem;
+    nav {
+        @include flexStyle(row,center,space-between);
+        width:30%;
+        .activeNav{
+            @include fontStyle('Montserrat',normal,600,1.25rem,1.5rem);
+            color:#222427;
+            border-bottom: 4px solid #848A9D;
+            cursor:pointer;
+        }
+        .nonActiveNav{
+            @include fontStyle('Montserrat',normal,600,1rem,1.5rem);
+            color:#5E617B;
+            cursor:pointer;
+        }
+    }
+}

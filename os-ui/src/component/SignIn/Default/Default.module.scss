@@ -2,6 +2,10 @@
 @import "../../../styles/Mixins/FlexMixins.scss";
 @import "../../../styles/Mixins/FontMixin.scss";
 
+::-ms-reveal {
+  display: none;
+}
+
 .inputContent {
     @include flexStyle(column, flex-start, space-between);
     margin-top: 3%;

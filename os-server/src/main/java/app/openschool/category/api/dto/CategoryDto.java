@@ -1,9 +1,15 @@
 package app.openschool.category.api.dto;
 
-public class CategoryDto {
+import io.swagger.v3.oas.annotations.media.Schema;
 
+public class CategoryDto {
+  @Schema(description = "Category title", example = "Software Engineering")
   private String title;
+
+  @Schema(description = "Path of the category logo", example = "S3554lst")
   private String logoPath;
+
+  @Schema(description = "Count of subcategories", example = "3")
   private Integer subCategoryCount;
 
   public CategoryDto() {}

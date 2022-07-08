@@ -6,6 +6,7 @@ plugins {
     id 'checkstyle'
     id 'org.sonarqube' version '3.4.0.2513'
     id "jacoco"
+    id 'idea'
 }
 
 group 'app.open-school'
@@ -70,6 +71,13 @@ checkstyle {
     toolVersion '8.40'
     maxWarnings = 0
     ignoreFailures false
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
 }
 
 repositories {
