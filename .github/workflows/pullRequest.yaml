@@ -34,5 +34,7 @@ jobs:
           SONAR_HOST_URL: "https://sonarcloud.io"
         with:
           projectBaseDir: os-ui/src
+          projectKey: SevakMart_open-school
+          organization: open-school
       - name: Print Message
         run: echo "CI pipeline part finished successfully!"
