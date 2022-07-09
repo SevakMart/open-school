@@ -27,19 +27,18 @@ allprojects {
         sonarqube{
             properties{
                 property "sonar.sources", "src"
-                property "sonar.tests", "**/__test__"
             }
         }
     }
 
-    project(":os-server"){
-        sonarqube{
-            properties{
-                property "sonar.sources", "src/main/java"
-                property "sonar.tests", "src/test/java"
-            }
-        }
-    }
+//    project(":os-server"){
+//        sonarqube{
+//            properties{
+//                property "sonar.sources", "src/main/java"
+//                property "sonar.tests", "src/test/java"
+//            }
+//        }
+//    }
 }
 
 
