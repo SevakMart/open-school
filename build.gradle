@@ -17,7 +17,6 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'org.sonarqube'
     sonarqube {
         properties {
             property "sonar.projectKey", "SevakMart_open-school"
@@ -29,9 +28,6 @@ subprojects {
     project(":os-ui"){
         sonarqube{
             skipProject = true
-            properties{
-
-            }
         }
     }
 }
