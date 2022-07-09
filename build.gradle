@@ -21,7 +21,7 @@ allprojects {
             property "sonar.organization", "open-school"
             property "sonar.host.url", "https://sonarcloud.io"
             property "sonar.sources", "src"
-            property "sonar.tests", "src/test/java"
+            property "sonar.tests", "src"
         }
     }
 }
