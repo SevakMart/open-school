@@ -20,7 +20,7 @@ allprojects {
             property "sonar.projectKey", "SevakMart_open-school"
             property "sonar.organization", "open-school"
             property "sonar.host.url", "https://sonarcloud.io"
-            property "sonar.sources", "src/main/java"
+            property "sonar.sources", "src"
             property "sonar.tests", "src/test/java"
         }
     }
