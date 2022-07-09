@@ -14,7 +14,9 @@ allprojects {
     repositories {
         mavenCentral()
     }
+}
 
+subprojects {
     sonarqube {
         properties {
             property "sonar.projectKey", "SevakMart_open-school"
