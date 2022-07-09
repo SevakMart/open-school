@@ -21,8 +21,8 @@ jobs:
         run: ./gradlew checkstyleTest
       - name: Build with Gradle
         run: SPRING_PROFILES_ACTIVE=test ./gradlew build
-      - name: npm init
-        run: npm init
+#      - name: npm init
+#        run: npm init
       - name: install jest
         run: npm install jest @types/jest sonar-scanner --dev
       - name: Test and coverage
