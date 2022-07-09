@@ -4,23 +4,9 @@
  * This is a general purpose Gradle build.
  * Learn more about Gradle by exploring our samples at https://docs.gradle.org/6.7/samples
  */
-//plugins {
-//    id 'org.sonarqube' version '3.4.0.2513'
-//}
-
 allprojects {
 
     repositories {
         mavenCentral()
     }
-
-//    sonarqube {
-//        properties {
-//            property "sonar.projectKey", "SevakMart_open-school"
-//            property "sonar.organization", "open-school"
-//            property "sonar.host.url", "https://sonarcloud.io"
-//            property "sonar.sources", "os-server/main/java"
-//            property "sonar.tests", "os-server/main/test"
-//        }
-//    }
 }

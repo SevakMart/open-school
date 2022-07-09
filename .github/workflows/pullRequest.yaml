@@ -21,20 +21,16 @@ jobs:
         run: ./gradlew checkstyleTest
       - name: Build with Gradle
         run: SPRING_PROFILES_ACTIVE=test ./gradlew build
-      - name: sonar analyzes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonarqube --info
-#      - name: SonarQube Scan
-#        uses: sonarsource/sonarqube-scan-action@master
+#      - name: sonar analyzes
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
 #          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#        run: ./gradlew sonarqube --info
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 #          SONAR_HOST_URL: "https://sonarcloud.io"
-#        with:
-#          projectBaseDir: os-ui/src
-#          projectKey: SevakMart_open-school
-#          organization: open-school
       - name: Print Message
         run: echo "CI pipeline part finished successfully!"
