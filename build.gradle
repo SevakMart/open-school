@@ -26,8 +26,8 @@ allprojects {
     project(":os-ui"){
         sonarqube{
             properties{
-                property "sonar.sources", "src/**"
-                property "sonar.tests", "src/**"
+                property "sonar.sources", "src"
+                property "sonar.tests", "src"
             }
         }
     }
