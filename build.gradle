@@ -17,11 +17,21 @@ allprojects {
 }
 
 subprojects {
+    apply plugin: 'org.sonarqube'
     sonarqube {
         properties {
             property "sonar.projectKey", "SevakMart_open-school"
             property "sonar.organization", "open-school"
             property "sonar.host.url", "https://sonarcloud.io"
+        }
+    }
+
+    project(":os-ui"){
+        sonarqube{
+            skipProject = true
+            properties{
+
+            }
         }
     }
 }
