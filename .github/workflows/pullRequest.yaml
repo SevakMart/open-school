@@ -21,10 +21,12 @@ jobs:
         run: ./gradlew checkstyleTest
       - name: Build with Gradle
         run: SPRING_PROFILES_ACTIVE=test ./gradlew build
-      - name: Install dependencies
-        run: yarn
+      - name: npm init
+        run: npm init
+      - name: install jest
+        run: npm install jest @types/jest sonar-scanner --dev
       - name: Test and coverage
-        run: yarn jest {cmd} --coverage
+        run: npm test
       - name: sonar analyzes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
