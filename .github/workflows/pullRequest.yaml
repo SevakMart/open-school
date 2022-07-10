@@ -24,7 +24,7 @@ jobs:
       - name: cd to os-ui
         run: cd os-ui
       - name: Test and coverage
-        run: npx jest --coverage
+        run: npm test
       - name: cd to os-ui
         run: cd..
       - name: sonar analyzes
