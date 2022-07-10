@@ -23,8 +23,14 @@ jobs:
         run: SPRING_PROFILES_ACTIVE=test ./gradlew build
       - name: pwd
         run: pwd
+      - name: ls
+        run: ls
       - name: cd to os-ui
         run: cd os-ui
+      - name: pwd
+        run: pwd
+      - name: ls
+        run: ls
       - name: Test and coverage
         run: npm test
       - name: cd to os-ui
