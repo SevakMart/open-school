@@ -21,8 +21,10 @@ jobs:
         run: ./gradlew checkstyleTest
       - name: Build with Gradle
         run: SPRING_PROFILES_ACTIVE=test ./gradlew build
+      - name: pwd
+        run: pwd
       - name: cd to os-ui
-        run: pwd | cd os-ui
+        run: cd os-ui
       - name: Test and coverage
         run: npm test
       - name: cd to os-ui
