@@ -36,7 +36,7 @@ jobs:
 #      - name: cd to open-school
 #        run: cd \home\runner\work\open-school\open-school
       - name: pwd
-        run: cd /home/runner/work/open-school/open-school/os-ui
+        run: cd /home/runner/work/open-school/open-school/os-ui/
       - name: ls
         run: ls
 #      - name: sonar analyzes
