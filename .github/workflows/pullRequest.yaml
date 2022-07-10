@@ -36,13 +36,16 @@ jobs:
 #      - name: cd to open-school
 #        run: cd \home\runner\work\open-school\open-school
       - name: pwd
-        run: cd..
-      - name: ls
-        run: ls
-      - name: pwd
-        run: cd /home/runner/work/open-school/open-school/os-ui
-      - name: ls
-        run: ls
+        run: |
+          cd os-ui
+          ls
+          npm test
+#      - name: ls
+#        run: ls
+#      - name: pwd
+#        run: cd /home/runner/work/open-school/open-school/os-ui
+#      - name: ls
+#        run: ls
 #      - name: sonar analyzes
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
