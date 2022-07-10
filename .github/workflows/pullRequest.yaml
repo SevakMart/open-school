@@ -25,7 +25,7 @@ jobs:
         run: |
           cd os-ui
           npm install
-      - name: test run and coverage
+      - name: test and coverage js code
         run: |
           cd os-ui
           npm test
