@@ -13,38 +13,32 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-      - name: Check google java format into main/java package
-        run: ./gradlew checkstyleMain
-      - name: Check google java format into test/java package
-        run: ./gradlew checkstyleTest
-      - name: Build with Gradle
-        run: SPRING_PROFILES_ACTIVE=test ./gradlew build
-      - name: pwd
-        run: pwd
-      - name: ls
-        run: ls
-      - name: cd to os-ui
-        run: cd \home\runner\work\open-school\open-school\os-server
-      - name: pwd
-        run: pwd
-      - name: ls
-        run: ls
+#      - name: Grant execute permission for gradlew
+#        run: chmod +x gradlew
+#      - name: Check google java format into main/java package
+#        run: ./gradlew checkstyleMain
+#      - name: Check google java format into test/java package
+#        run: ./gradlew checkstyleTest
+#      - name: Build with Gradle
+#        run: SPRING_PROFILES_ACTIVE=test ./gradlew build
+#      - name: pwd
+#        run: pwd
+#      - name: ls
+#        run: ls
+#      - name: cd to os-ui
+#        run: cd
+#      - name: pwd
+#        run: pwd
+#      - name: ls
+#        run: ls
       - name: Test and coverage
         run: npm test
-      - name: cd to open-school
-        run: cd \home\runner\work\open-school\open-school
+#      - name: cd to open-school
+#        run: cd \home\runner\work\open-school\open-school
       - name: sonar analyzes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew sonarqube --info
-#      - name: SonarQube Scan
-#        uses: sonarsource/sonarqube-scan-action@master
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#          SONAR_HOST_URL: "https://sonarcloud.io"
       - name: Print Message
         run: echo "CI pipeline part finished successfully!"
