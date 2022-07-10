@@ -36,11 +36,13 @@ jobs:
 #      - name: cd to open-school
 #        run: cd \home\runner\work\open-school\open-school
       - name: pwd
-        run: cat /home/runner/work/open-school/open-school/docker-compose.yml
-      - name: sonar analyzes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonarqube --info
-      - name: Print Message
-        run: echo "CI pipeline part finished successfully!"
+        run: cd /home/runner/work/open-school/open-school/os-ui
+      - name: ls
+        run: ls
+#      - name: sonar analyzes
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#        run: ./gradlew sonarqube --info
+#      - name: Print Message
+#        run: echo "CI pipeline part finished successfully!"
