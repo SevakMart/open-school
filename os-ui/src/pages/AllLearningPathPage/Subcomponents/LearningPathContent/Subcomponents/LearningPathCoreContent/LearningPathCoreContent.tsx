@@ -38,7 +38,7 @@ const LearningPathCoreContent = () => {
           }
         }
         setCourseList([...list]);
-      } else setCourseList([...searchedCourseContent!]);
+      } else setCourseList(searchedCourseContent);
     });
   }, [sendingParams]);
   return (
