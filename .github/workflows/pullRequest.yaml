@@ -26,7 +26,7 @@ jobs:
       - name: ls
         run: ls
       - name: cd to os-ui
-        run: cd /home/runner/work/open-school/open-school/os-ui
+        run: cd /home/runner/work/open-school/open-school/os-ui | ls
       - name: pwd
         run: pwd
       - name: ls
