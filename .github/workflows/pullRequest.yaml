@@ -13,23 +13,26 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-#      - name: Grant execute permission for gradlew
-#        run: chmod +x gradlew
-#      - name: Check google java format into main/java package
-#        run: ./gradlew checkstyleMain
-#      - name: Check google java format into test/java package
-#        run: ./gradlew checkstyleTest
-#      - name: Build with Gradle
-#        run: SPRING_PROFILES_ACTIVE=test ./gradlew build
-      - name: test coverage
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Check google java format into main/java package
+        run: ./gradlew checkstyleMain
+      - name: Check google java format into test/java package
+        run: ./gradlew checkstyleTest
+      - name: Build with Gradle
+        run: SPRING_PROFILES_ACTIVE=test ./gradlew build
+      - name: npm install
         run: |
           cd os-ui
           npm install
+      - name: test run and coverage
+        run: |
+          cd os-ui
           npm test
-#      - name: sonar analyzes
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#        run: ./gradlew sonarqube --info
-#      - name: Print Message
-#        run: echo "CI pipeline part finished successfully!"
+      - name: sonar analyzes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew sonarqube --info
+      - name: Print Message
+        run: echo "CI pipeline part finished successfully!"
