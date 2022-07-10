@@ -26,7 +26,7 @@ const LearningPathCoreContent = () => {
       const userSavedCourseContent = combinedData[0].content;
       const searchedCourseContent = combinedData[1].content;
       const list = [];
-      if (userSavedCourseContent.length) {
+      if (userSavedCourseContent?.length) {
         for (const searchedCourse of searchedCourseContent) {
           const index = userSavedCourseContent
             .findIndex((savedCourse:CourseListType) => savedCourse.id === searchedCourse.id);
