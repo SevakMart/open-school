@@ -26,7 +26,7 @@ jobs:
       - name: install jest
         run: npm install jest @types/jest sonar-scanner --dev
       - name: Test and coverage
-        run: npm jest --coverage
+        run: npm test
       - name: sonar analyzes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
