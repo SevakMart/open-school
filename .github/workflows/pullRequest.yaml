@@ -21,31 +21,11 @@ jobs:
 #        run: ./gradlew checkstyleTest
 #      - name: Build with Gradle
 #        run: SPRING_PROFILES_ACTIVE=test ./gradlew build
-#      - name: pwd
-#        run: pwd
-#      - name: ls
-#        run: ls
-#      - name: cd to os-ui
-#        run: cd
-#      - name: pwd
-#        run: pwd
-#      - name: ls
-#        run: ls
-#      - name: Test and coverage
-#        run: npm test
-#      - name: cd to open-school
-#        run: cd \home\runner\work\open-school\open-school
-      - name: pwd
+      - name: test coverage
         run: |
           cd os-ui
-          ls
+          npm install
           npm test
-#      - name: ls
-#        run: ls
-#      - name: pwd
-#        run: cd /home/runner/work/open-school/open-school/os-ui
-#      - name: ls
-#        run: ls
 #      - name: sonar analyzes
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
