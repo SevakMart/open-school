@@ -39,4 +39,6 @@ public interface UserService {
   Page<User> findSavedMentorsByName(Long userId, String name, Pageable pageable);
 
   void deleteMentor(User user, Long mentorId);
+
+  void completeEnrolledModuleItem(Long enrolledModuleItemId);
 }

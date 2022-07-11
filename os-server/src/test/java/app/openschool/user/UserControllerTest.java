@@ -9,6 +9,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import app.openschool.auth.AuthServiceImpl;
@@ -208,6 +209,18 @@ class UserControllerTest {
     mockMvc
         .perform(
             delete("/api/v1/users/1/mentors/2/saved")
+                .contentType(APPLICATION_JSON)
+                .header("Authorization", jwt))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void completeEnrolledModuleItem_status_ok() throws Exception {
+    doNothing().when(userService).completeEnrolledModuleItem(anyLong());
+    String jwt = generateJwtToken();
+    mockMvc
+        .perform(
+            put("/api/v1/users/1/enrolledModuleItems/1")
                 .contentType(APPLICATION_JSON)
                 .header("Authorization", jwt))
         .andExpect(status().isOk());

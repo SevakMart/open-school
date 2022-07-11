@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class EnrolledModuleItemOverviewDto {
 
+  @Schema(description = "Course id", example = "1")
+  private final Long id;
+
   @Schema(description = "Course type", example = "Video")
   private final String type;
 
@@ -20,7 +23,8 @@ public class EnrolledModuleItemOverviewDto {
   private final String status;
 
   public EnrolledModuleItemOverviewDto(
-      String type, String name, long estimatedTime, String link, String status) {
+      Long id, String type, String name, long estimatedTime, String link, String status) {
+    this.id = id;
     this.type = type;
     this.name = name;
     this.estimatedTime = estimatedTime;
@@ -46,5 +50,9 @@ public class EnrolledModuleItemOverviewDto {
 
   public String getStatus() {
     return status;
+  }
+
+  public Long getId() {
+    return id;
   }
 }

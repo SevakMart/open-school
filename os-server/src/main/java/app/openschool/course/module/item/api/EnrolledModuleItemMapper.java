@@ -19,6 +19,7 @@ public class EnrolledModuleItemMapper {
   public static EnrolledModuleItemOverviewDto toEnrolledModuleItemOverviewDto(
       EnrolledModuleItem enrolledModuleItem) {
     return new EnrolledModuleItemOverviewDto(
+        enrolledModuleItem.getId(),
         enrolledModuleItem.getModuleItem().getModuleItemType().getType(),
         enrolledModuleItem.getModuleItem().getTitle(),
         enrolledModuleItem.getModuleItem().getEstimatedTime(),
