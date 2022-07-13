@@ -4,9 +4,31 @@
  * This is a general purpose Gradle build.
  * Learn more about Gradle by exploring our samples at https://docs.gradle.org/6.7/samples
  */
+
+plugins{
+    id 'org.sonarqube' version '3.4.0.2513'
+}
+
 allprojects {
 
     repositories {
         mavenCentral()
+    }
+
+    sonarqube {
+        properties {
+            property "sonar.projectKey", "SevakMart_open-school"
+            property "sonar.organization", "open-school"
+            property "sonar.host.url", "https://sonarcloud.io"
+        }
+    }
+
+    project(":os-ui"){
+        sonarqube{
+            properties{
+                property "sonar.sources", "src"
+                property "sonar.javascript.lcov.reportPaths", "./coverage/lcov.info"
+            }
+        }
     }
 }
