@@ -241,15 +241,11 @@ public class UserServiceImpl implements UserService {
 
   private boolean allModuleItemsInModuleAreCompleted(EnrolledModule enrolledModule) {
     return enrolledModule.getEnrolledModuleItems().stream()
-        .filter(enrolledModuleItem -> enrolledModuleItem.getModuleItemStatus().isInProgress())
-        .findAny()
-        .isEmpty();
+        .noneMatch(enrolledModuleItem -> enrolledModuleItem.getModuleItemStatus().isInProgress());
   }
 
   private boolean allModulesInCourseAreCompleted(EnrolledCourse enrolledCourse) {
     return enrolledCourse.getEnrolledModules().stream()
-        .filter(enrolledModule -> enrolledModule.getModuleStatus().isInProgress())
-        .findAny()
-        .isEmpty();
+        .noneMatch(enrolledModule -> enrolledModule.getModuleStatus().isInProgress());
   }
 }
