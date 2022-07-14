@@ -5,7 +5,7 @@ on:
       artifact-version:
         description: 'Artifact version'
         required: true
-        default: '45'
+        default: '75'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,8 +18,7 @@ jobs:
           destination: ./data/
           aws_access_key_id: ${{ secrets.AWS_S3_ACCESS_ID }}
           aws_secret_access_key: ${{ secrets.AWS_S3_ACCESS_KEY }}
-          aws_region: eu-central-1
-
+          aws_region: ${{ secrets.AWS_REGION }}
       - name: Deploy to EB dev environment
         uses: einaregilsson/beanstalk-deploy@v20
         with:
@@ -29,4 +28,4 @@ jobs:
           environment_name: openschool-devenv
           version_label: ${{ github.event.inputs.artifact-version }}
           deployment_package: ./data/os-server-${{ github.event.inputs.artifact-version }}.jar
-          region: eu-central-1
+          region: ${{ secrets.AWS_REGION }}
