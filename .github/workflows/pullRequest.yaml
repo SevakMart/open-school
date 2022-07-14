@@ -21,6 +21,14 @@ jobs:
         run: ./gradlew checkstyleTest
       - name: Build with Gradle
         run: SPRING_PROFILES_ACTIVE=test ./gradlew build
+      - name: npm install
+        run: |
+          cd os-ui
+          npm install
+      - name: test and coverage js code
+        run: |
+          cd os-ui
+          npm test
       - name: sonar analyzes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
