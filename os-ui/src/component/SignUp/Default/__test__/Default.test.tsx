@@ -10,6 +10,18 @@ import {
 } from '../../../../constants/Strings';
 import SignUpDefault from '../Default';
 
+const inputCases = [
+  ['jwfjklwjfjsjfwoejfwofowfowjfojjfonvnvnjdfnvkdbjvbdjfvkjndknvkdfnvndfvn', 'Van Damn', 'blabala@blabla.com', 'P@ssword11'],
+  ['Jean Claude', 'jwfjklwjfjsjfwoejfwofowfowjfojjfonvnvnjdfnvkdbjvbdjfvkjndknvkdfnvndfvn', 'blabala@blabla.com', 'P@ssword11'],
+  ['Jean Claude', 'Van Damn', 'jwfjklwjfjsjfwoejfwofowfowjfojjfonvnvnjdfnvkdbjvbdjfvkjndknvkdfnvndfvn', 'P@ssword11'],
+  ['', 'Van Damn', 'blabala@blabla.com', 'P@ssword11'],
+  ['Jean Claude', '', 'blabala@blabla.com', 'P@ssword11'],
+  ['Jean Claude', 'Van Damn', '', 'P@ssword11'],
+  ['Jean Claude', 'Van Damn', 'blabala@blabla.com', ''],
+  ['Jean Claude', 'Van Damn', 'blabala', 'P@ssword11'],
+  ['Jean Claude', 'Van Damn', 'blabala@blabla.com', 'password'],
+];
+
 describe('Create test case for Default Sign up component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
@@ -19,7 +31,7 @@ describe('Create test case for Default Sign up component', () => {
     );
     expect(asFragment()).toMatchSnapshot();
   });
-  test('Create a test case where form is not submitted because first name was too long', () => {
+  test.each(inputCases)('Create test cases for input element', (firstName, lastName, email, password) => {
     render(
       <Provider store={store}>
         <SignUpDefault switchToSignInForm={() => null} />
@@ -31,164 +43,10 @@ describe('Create test case for Default Sign up component', () => {
     const passwordInputElement = screen.queryByPlaceholderText('Enter your password') as HTMLInputElement;
     const submitButtonElement = screen.queryByTestId('signUpButton') as HTMLButtonElement;
 
-    userEvent.type(firstNameInputElement, 'jwfjklwjfjsjfwoejfwofowfowjfojjfonvnvnjdfnvkdbjvbdjfvkjndknvkdfnvndfvn');
-    userEvent.type(lastNameInputElement, 'Van Damn');
-    userEvent.type(emailInputElement, 'blabala@blabla.com');
-    userEvent.type(passwordInputElement, 'P@ssword11');
-    userEvent.click(submitButtonElement);
-
-    const firstNameErrorField = screen.queryByTestId('firstnameErrorField');
-    const lastNameErrorField = screen.queryByTestId('lastnameErrorField');
-
-    expect(firstNameErrorField).toBeInTheDocument();
-    expect(lastNameErrorField).not.toBeInTheDocument();
-    expect(firstNameErrorField).toHaveTextContent(FIRSTNAME_TOO_LONG);
-  });
-  test('Create a test case where form is not submitted because last name was too long', () => {
-    render(
-      <Provider store={store}>
-        <SignUpDefault switchToSignInForm={() => null} />
-      </Provider>,
-    );
-    const firstNameInputElement = screen.queryByPlaceholderText('Fill in first name') as HTMLInputElement;
-    const lastNameInputElement = screen.queryByPlaceholderText('Fill in last name') as HTMLInputElement;
-    const emailInputElement = screen.queryByPlaceholderText('ex: namesurname@gmail.com') as HTMLInputElement;
-    const passwordInputElement = screen.queryByPlaceholderText('Enter your password') as HTMLInputElement;
-    const submitButtonElement = screen.queryByTestId('signUpButton') as HTMLButtonElement;
-
-    userEvent.type(firstNameInputElement, 'Jean Claude');
-    userEvent.type(lastNameInputElement, 'jwfjklwjfjsjfwoejfwofowfowjfojjfonvnvnjdfnvkdbjvbdjfvkjndknvkdfnvndfvn');
-    userEvent.type(emailInputElement, 'blabala@blabla.com');
-    userEvent.type(passwordInputElement, 'P@ssword11');
-    userEvent.click(submitButtonElement);
-
-    const firstNameErrorField = screen.queryByTestId('firstnameErrorField');
-    const lastNameErrorField = screen.queryByTestId('lastnameErrorField');
-
-    expect(firstNameErrorField).not.toBeInTheDocument();
-    expect(lastNameErrorField).toBeInTheDocument();
-    expect(lastNameErrorField).toHaveTextContent(LASTNAME_TOO_LONG);
-  });
-  test('Create a test case where form is not submitted because email was too long', () => {
-    render(
-      <Provider store={store}>
-        <SignUpDefault switchToSignInForm={() => null} />
-      </Provider>,
-    );
-    const firstNameInputElement = screen.queryByPlaceholderText('Fill in first name') as HTMLInputElement;
-    const lastNameInputElement = screen.queryByPlaceholderText('Fill in last name') as HTMLInputElement;
-    const emailInputElement = screen.queryByPlaceholderText('ex: namesurname@gmail.com') as HTMLInputElement;
-    const passwordInputElement = screen.queryByPlaceholderText('Enter your password') as HTMLInputElement;
-    const submitButtonElement = screen.queryByTestId('signUpButton') as HTMLButtonElement;
-
-    userEvent.type(firstNameInputElement, 'Jean Claude');
-    userEvent.type(lastNameInputElement, 'Van Damn');
-    userEvent.type(emailInputElement, 'jwfjklwjfjsjfwoejfwofowfowjfojjfonvnvnjdfnvkdbjvbdjfvkjndknvkdfnvndfvn@blabla.com');
-    userEvent.type(passwordInputElement, 'P@ssword11');
-    userEvent.click(submitButtonElement);
-
-    const firstNameErrorField = screen.queryByTestId('firstnameErrorField');
-    const lastNameErrorField = screen.queryByTestId('lastnameErrorField');
-    const emailErrorField = screen.queryByTestId('emailErrorField');
-
-    expect(firstNameErrorField).not.toBeInTheDocument();
-    expect(lastNameErrorField).not.toBeInTheDocument();
-    expect(emailErrorField).toBeInTheDocument();
-    expect(emailErrorField).toHaveTextContent(EMAIL_TOO_LONG);
-  });
-  test('Create a test case where form is not submitted because first name was not valid', () => {
-    render(
-      <Provider store={store}>
-        <SignUpDefault switchToSignInForm={() => null} />
-      </Provider>,
-    );
-    const firstNameInputElement = screen.queryByPlaceholderText('Fill in first name') as HTMLInputElement;
-    const lastNameInputElement = screen.queryByPlaceholderText('Fill in last name') as HTMLInputElement;
-    const emailInputElement = screen.queryByPlaceholderText('ex: namesurname@gmail.com') as HTMLInputElement;
-    const passwordInputElement = screen.queryByPlaceholderText('Enter your password') as HTMLInputElement;
-    const submitButtonElement = screen.queryByTestId('signUpButton') as HTMLButtonElement;
-
-    userEvent.type(firstNameInputElement, '');
-    userEvent.type(lastNameInputElement, 'Van Damn');
-    userEvent.type(emailInputElement, 'blabala@blabla.com');
-    userEvent.type(passwordInputElement, 'P@ssword11');
-    userEvent.click(submitButtonElement);
-
-    const firstNameErrorField = screen.queryByTestId('firstnameErrorField');
-    const lastNameErrorField = screen.queryByTestId('lastnameErrorField');
-
-    expect(firstNameErrorField).toBeInTheDocument();
-    expect(lastNameErrorField).not.toBeInTheDocument();
-    expect(firstNameErrorField).toHaveTextContent(FIRSTNAME_REQUIRED);
-  });
-  test('Create a test case where form is not submitted because last name was not valid', () => {
-    render(
-      <Provider store={store}>
-        <SignUpDefault switchToSignInForm={() => null} />
-      </Provider>,
-    );
-    const firstNameInputElement = screen.queryByPlaceholderText('Fill in first name') as HTMLInputElement;
-    const lastNameInputElement = screen.queryByPlaceholderText('Fill in last name') as HTMLInputElement;
-    const emailInputElement = screen.queryByPlaceholderText('ex: namesurname@gmail.com') as HTMLInputElement;
-    const passwordInputElement = screen.queryByPlaceholderText('Enter your password') as HTMLInputElement;
-    const submitButtonElement = screen.queryByTestId('signUpButton') as HTMLButtonElement;
-
-    userEvent.type(firstNameInputElement, 'Jean Claude');
-    userEvent.type(lastNameInputElement, '');
-    userEvent.type(emailInputElement, 'blabala@blabla.com');
-    userEvent.type(passwordInputElement, 'P@ssword11');
-    userEvent.click(submitButtonElement);
-
-    const firstNameErrorField = screen.queryByTestId('firstnameErrorField');
-    const lastNameErrorField = screen.queryByTestId('lastnameErrorField');
-
-    expect(firstNameErrorField).not.toBeInTheDocument();
-    expect(lastNameErrorField).toBeInTheDocument();
-    expect(lastNameErrorField).toHaveTextContent(LASTNAME_REQUIRED);
-  });
-  test('Create a test case where form is not submitted because email was not inserted', () => {
-    render(
-      <Provider store={store}>
-        <SignUpDefault switchToSignInForm={() => null} />
-      </Provider>,
-    );
-    const firstNameInputElement = screen.queryByPlaceholderText('Fill in first name') as HTMLInputElement;
-    const lastNameInputElement = screen.queryByPlaceholderText('Fill in last name') as HTMLInputElement;
-    const emailInputElement = screen.queryByPlaceholderText('ex: namesurname@gmail.com') as HTMLInputElement;
-    const passwordInputElement = screen.queryByPlaceholderText('Enter your password') as HTMLInputElement;
-    const submitButtonElement = screen.queryByTestId('signUpButton') as HTMLButtonElement;
-
-    userEvent.type(firstNameInputElement, 'Jean Claude');
-    userEvent.type(lastNameInputElement, 'Van Damn');
-    userEvent.type(emailInputElement, '');
-    userEvent.type(passwordInputElement, 'P@ssword11');
-    userEvent.click(submitButtonElement);
-
-    const firstNameErrorField = screen.queryByTestId('firstnameErrorField');
-    const lastNameErrorField = screen.queryByTestId('lastnameErrorField');
-    const emailErrorField = screen.queryByTestId('emailErrorField');
-
-    expect(firstNameErrorField).not.toBeInTheDocument();
-    expect(lastNameErrorField).not.toBeInTheDocument();
-    expect(emailErrorField).toBeInTheDocument();
-    expect(emailErrorField).toHaveTextContent(EMAIL_REQUIRED);
-  });
-  test('Create a test case where form is not submitted because password was not inserted', () => {
-    render(
-      <Provider store={store}>
-        <SignUpDefault switchToSignInForm={() => null} />
-      </Provider>,
-    );
-    const firstNameInputElement = screen.queryByPlaceholderText('Fill in first name') as HTMLInputElement;
-    const lastNameInputElement = screen.queryByPlaceholderText('Fill in last name') as HTMLInputElement;
-    const emailInputElement = screen.queryByPlaceholderText('ex: namesurname@gmail.com') as HTMLInputElement;
-    const passwordInputElement = screen.queryByPlaceholderText('Enter your password') as HTMLInputElement;
-    const submitButtonElement = screen.queryByTestId('signUpButton') as HTMLButtonElement;
-
-    userEvent.type(firstNameInputElement, 'Jean Claude');
-    userEvent.type(lastNameInputElement, 'Van Damn');
-    userEvent.type(emailInputElement, 'blabala@blabla.com');
-    userEvent.type(passwordInputElement, '');
+    userEvent.type(firstNameInputElement, firstName);
+    userEvent.type(lastNameInputElement, lastName);
+    userEvent.type(emailInputElement, email);
+    userEvent.type(passwordInputElement, password);
     userEvent.click(submitButtonElement);
 
     const firstNameErrorField = screen.queryByTestId('firstnameErrorField');
@@ -196,66 +54,17 @@ describe('Create test case for Default Sign up component', () => {
     const emailErrorField = screen.queryByTestId('emailErrorField');
     const passwordErrorField = screen.queryByTestId('psdErrorField');
 
-    expect(firstNameErrorField).not.toBeInTheDocument();
-    expect(lastNameErrorField).not.toBeInTheDocument();
-    expect(emailErrorField).not.toBeInTheDocument();
-    expect(passwordErrorField).toBeInTheDocument();
-    expect(passwordErrorField).toHaveTextContent(PASSWORD_REQUIRED);
-  });
-  test('Create a test case where form is not submitted because email was not valid', () => {
-    render(
-      <Provider store={store}>
-        <SignUpDefault switchToSignInForm={() => null} />
-      </Provider>,
-    );
-    const firstNameInputElement = screen.queryByPlaceholderText('Fill in first name') as HTMLInputElement;
-    const lastNameInputElement = screen.queryByPlaceholderText('Fill in last name') as HTMLInputElement;
-    const emailInputElement = screen.queryByPlaceholderText('ex: namesurname@gmail.com') as HTMLInputElement;
-    const passwordInputElement = screen.queryByPlaceholderText('Enter your password') as HTMLInputElement;
-    const submitButtonElement = screen.queryByTestId('signUpButton') as HTMLButtonElement;
-
-    userEvent.type(firstNameInputElement, 'Jean Claude');
-    userEvent.type(lastNameInputElement, 'Van Damn');
-    userEvent.type(emailInputElement, 'blabla');
-    userEvent.type(passwordInputElement, 'P@ssword11');
-    userEvent.click(submitButtonElement);
-
-    const firstNameErrorField = screen.queryByTestId('firstnameErrorField');
-    const lastNameErrorField = screen.queryByTestId('lastnameErrorField');
-    const emailErrorField = screen.queryByTestId('emailErrorField');
-
-    expect(firstNameErrorField).not.toBeInTheDocument();
-    expect(lastNameErrorField).not.toBeInTheDocument();
-    expect(emailErrorField).toBeInTheDocument();
-    expect(emailErrorField).toHaveTextContent(INVALID_EMAIL_ERROR_MESSAGE);
-  });
-  test('Create a test case where form is not submitted because password was not valid', () => {
-    render(
-      <Provider store={store}>
-        <SignUpDefault switchToSignInForm={() => null} />
-      </Provider>,
-    );
-    const firstNameInputElement = screen.queryByPlaceholderText('Fill in first name') as HTMLInputElement;
-    const lastNameInputElement = screen.queryByPlaceholderText('Fill in last name') as HTMLInputElement;
-    const emailInputElement = screen.queryByPlaceholderText('ex: namesurname@gmail.com') as HTMLInputElement;
-    const passwordInputElement = screen.queryByPlaceholderText('Enter your password') as HTMLInputElement;
-    const submitButtonElement = screen.queryByTestId('signUpButton') as HTMLButtonElement;
-
-    userEvent.type(firstNameInputElement, 'Jean Claude');
-    userEvent.type(lastNameInputElement, 'Van Damn');
-    userEvent.type(emailInputElement, 'blabala@blabla.com');
-    userEvent.type(passwordInputElement, 'password');
-    userEvent.click(submitButtonElement);
-
-    const firstNameErrorField = screen.queryByTestId('firstnameErrorField');
-    const lastNameErrorField = screen.queryByTestId('lastnameErrorField');
-    const emailErrorField = screen.queryByTestId('emailErrorField');
-    const passwordErrorField = screen.queryByTestId('psdErrorField');
-
-    expect(firstNameErrorField).not.toBeInTheDocument();
-    expect(lastNameErrorField).not.toBeInTheDocument();
-    expect(emailErrorField).not.toBeInTheDocument();
-    expect(passwordErrorField).toBeInTheDocument();
-    expect(passwordErrorField).toHaveTextContent(INVALID_PASSWORD_ERROR_MESSAGE);
+    firstNameErrorField && expect(firstNameErrorField).toBeInTheDocument();
+    /* eslint-disable-next-line max-len */
+    firstNameErrorField && expect(firstNameErrorField).toHaveTextContent((firstName.length > 45 ? FIRSTNAME_TOO_LONG : FIRSTNAME_REQUIRED));
+    lastNameErrorField && expect(lastNameErrorField).toBeInTheDocument();
+    /* eslint-disable-next-line max-len */
+    lastNameErrorField && expect(lastNameErrorField).toHaveTextContent(lastName.length > 45 ? LASTNAME_TOO_LONG : LASTNAME_REQUIRED);
+    emailErrorField && expect(emailErrorField).toBeInTheDocument();
+    /* eslint-disable-next-line max-len */
+    emailErrorField && expect(emailErrorField).toHaveTextContent(email.length > 45 ? EMAIL_TOO_LONG : email.length < 1 ? EMAIL_REQUIRED : INVALID_EMAIL_ERROR_MESSAGE);
+    passwordErrorField && expect(passwordErrorField).toBeInTheDocument();
+    /* eslint-disable-next-line max-len */
+    passwordErrorField && expect(passwordErrorField).toHaveTextContent(password.length < 1 ? PASSWORD_REQUIRED : INVALID_PASSWORD_ERROR_MESSAGE);
   });
 });
