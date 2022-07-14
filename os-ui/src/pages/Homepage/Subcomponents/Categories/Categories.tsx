@@ -62,7 +62,7 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
                 logoPath={category.logoPath}
               />
             )) : errorMessage ? <h2 data-testid="categoriesErrorMessage">{errorMessage}</h2>
-              : <h2 data-testid="emptyCategoryMessage">{t('No courses')}</h2>
+              : <h2 data-testid="emptyCategoryMessage">{t('No Categories')}</h2>
           }
         {categoryPage < maxCategoryPage ? (
           <RightArrowIcon

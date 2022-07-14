@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import SignInForm from './SignInForm';
 import styles from './SignIn.module.scss';
 import CloseIcon from '../../icons/Close';
@@ -9,6 +10,7 @@ import ForgotPassword from './ForgotPassword/ForgotPassword';
 import { SIGN_UP } from '../../constants/Strings';
 
 const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) => {
+  const { t } = useTranslation();
   const {
     mainContainer, formContainer, headerContent, iconContent, alreadyHaveAccount,
   } = styles;
@@ -43,12 +45,12 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
             <>
               <CloseIcon handleClosing={() => handleSignInClicks('closeButton')} />
               <div className={headerContent}>
-                <h2>Sign In!</h2>
+                <h2>{t('Sign in')}</h2>
                 <div className={iconContent}>
                   <button type="button"><LinkedinIcon1 /></button>
                   <button type="button"><EmailIcon1 /></button>
                 </div>
-                <p>Or</p>
+                <p>{t('Or')}</p>
               </div>
               <SignInForm
                 signInForm="default"

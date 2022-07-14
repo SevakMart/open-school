@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './SignUp.module.scss';
 import CloseIcon from '../../icons/Close';
 import LinkedinIcon1 from '../../icons/Linkedin1';
@@ -7,6 +8,7 @@ import { SIGN_IN } from '../../constants/Strings';
 import SignUpRegistrationForm from './RegistrationForm';
 
 const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) => {
+  const { t } = useTranslation();
   const {
     mainContainer, formContainer, headerContent, iconContent, alreadyHaveAccount,
   } = styles;
@@ -33,19 +35,19 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
             <>
               <CloseIcon handleClosing={() => handleSignUpClicks('closeButton')} />
               <div className={headerContent}>
-                <h2>Sign Up!</h2>
+                <h2>{t('Sign Up')}</h2>
                 <div className={iconContent}>
                   <button type="button"><LinkedinIcon1 /></button>
                   <button type="button"><EmailIcon1 /></button>
                 </div>
-                <p>Or</p>
+                <p>{t('Or')}</p>
               </div>
               <SignUpRegistrationForm
                 registrationForm="default"
                 switchToSignInForm={handleSignUp}
               />
               <p className={alreadyHaveAccount}>
-                Have An Account?
+                {t('Have Account')}
                 <span><button type="button" onClick={() => handleSignUpClicks('verify')}>{SIGN_IN}</button></span>
               </p>
             </>

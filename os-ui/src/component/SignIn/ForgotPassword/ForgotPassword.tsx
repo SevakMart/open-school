@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { validateEmail } from '../../../helpers/EmailValidate';
 import authService from '../../../services/authService';
 import ResetPassword from '../ResetPassword/ResetPassword';
@@ -12,6 +13,7 @@ import styles from './ForgotPassword.module.scss';
 const ForgotPassword = (
   { returnToSignInForm }: {returnToSignInForm: ()=> void},
 ) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -74,7 +76,7 @@ const ForgotPassword = (
                           id="email"
                           type="email"
                           name="email"
-                          placeholder="ex: namesurname@gmail.com"
+                          placeholder={t('Email placeholder')}
                           onChange={handleEmailChange}
                           required
                         />

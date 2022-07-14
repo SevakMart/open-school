@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../../redux/Store';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
 import NoCourses from './Subcomponents/NoCourses/NoCourses';
@@ -25,6 +26,7 @@ enum LearningPathNav {
 const MyLearningPathPage = () => {
   const navigate = useNavigate();
   const userInfo = useSelector<RootState>((state) => state.userInfo);
+  const { t } = useTranslation();
   const [userCourses, setUserCourses] = useState<UserCourseType[]>([]);
   const [suggestedCourses, setSuggestedCourses] = useState<SuggestedCourseType[]>([]);
   const [activeNavType, setActiveNavType] = useState(LearningPathNav.All);
@@ -136,7 +138,7 @@ const MyLearningPathPage = () => {
               key={index}
               courseInfo={suggestedCourse}
             />
-          )) : <h2>There are no suggested courses yet</h2>
+          )) : <h2>{t('No courses.suggested')}</h2>
         }
       </div>
     </>

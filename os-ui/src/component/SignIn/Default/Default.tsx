@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { validateSignInForm } from '../../../helpers/SignInFormValidate';
 import authService from '../../../services/authService';
 import { addLoggedInUser } from '../../../redux/Slices/loginUserSlice';
@@ -12,6 +13,7 @@ import styles from './Default.module.scss';
 const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
   {handleSignIn:(message:string)=>void, forgotPasswordFunc:()=>void}) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [formValues, setFormValues] = useState<RegistrationFormType>({
     firstName: '', lastName: '', email: '', psd: '',
   });
@@ -62,7 +64,7 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
     <form className={inputContent}>
       <div>
         <label htmlFor="email">
-          Email
+          {t('Email')}
           <span style={{ color: 'red' }}>*</span>
         </label>
         <input
@@ -70,7 +72,7 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
           type="email"
           value={formValues.email}
           name="email"
-          placeholder="ex: namesurname@gmail.com"
+          placeholder={t('Email placeholder')}
           onChange={handleInputChange}
           required
         />
@@ -80,7 +82,7 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
       </div>
       <div>
         <label htmlFor="psd">
-          Password
+          {t('Password')}
           <span style={{ color: 'red' }}>*</span>
         </label>
         <input
@@ -89,7 +91,7 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
           ref={passwordInputRef}
           value={formValues.psd}
           name="psd"
-          placeholder="Enter your password"
+          placeholder={t('Password placeholder.default')}
           onChange={handleInputChange}
           required
         />
@@ -101,7 +103,7 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
           : <HiddenIcon makeVisible={handlePasswordVisibility} />}
       </div>
       {signInErrorMessage ? <h4 data-testid="signInErrorMessage" className={errorField}>{signInErrorMessage}</h4> : null}
-      <p onClick={handleForgotPassword}>Forgot Password?</p>
+      <p onClick={handleForgotPassword}>{t('Forgot password')}</p>
       <button type="button" data-testid="signInButton" onClick={handleSignInForm}>{SIGN_IN}</button>
     </form>
   );

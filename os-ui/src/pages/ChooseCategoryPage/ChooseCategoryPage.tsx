@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../../redux/Store';
 import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
 import Search from '../../component/Search/Search';
@@ -15,6 +16,7 @@ import styles from './ChooseCategoryPage.module.scss';
 const ChooseCategoryPage = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
   const subcategoryIdArray = useSelector<RootState>((state) => state.chooseSubcategories);
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -70,7 +72,7 @@ const ChooseCategoryPage = () => {
             )) : <h2 data-testid="chooseSubcategoriesErrorMessage">{errorMessage}</h2>
       }
       </div>
-      <button className={nextButton} type="button" onClick={handleSavingCategories}>NEXT</button>
+      <button className={nextButton} type="button" onClick={handleSavingCategories}>{t('NEXT')}</button>
     </>
   );
 };

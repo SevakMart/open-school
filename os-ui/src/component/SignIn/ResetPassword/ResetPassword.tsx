@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { validateResetPasswordForm } from '../../../helpers/ResetPasswordFormValidate';
 import authService from '../../../services/authService';
 import {
@@ -11,6 +12,7 @@ import styles from './ResetPassword.module.scss';
 
 const ResetPassword = ({ returnToSignInForm, email }:
   {returnToSignInForm: ()=> void, email:string}) => {
+  const { t } = useTranslation();
   const [successForgotPasswordMessage, setSuccessForgotPasswordMessage] = useState('');
   const [successResetPasswordMessage, setSuccessResetPasswordMessage] = useState('');
   const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
@@ -107,7 +109,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   type="text"
                   name="token"
                   value={formValues.token}
-                  placeholder="Enter the 4 digits code that you received on your email"
+                  placeholder={t('Token placeholder')}
                   onChange={handleOnChange}
                   required
                 />
@@ -126,7 +128,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   name="newPassword"
                   ref={newPasswordRef}
                   value={formValues.newPassword}
-                  placeholder="Enter the new password"
+                  placeholder={t('Password placeholder.reset')}
                   onChange={handleOnChange}
                   required
                 />
@@ -147,7 +149,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   name="confirmedPassword"
                   ref={confirmPasswordRef}
                   value={formValues.confirmedPassword}
-                  placeholder="Confirm password"
+                  placeholder={t('Password placeholder.confirm')}
                   onChange={handleOnChange}
                   required
                 />

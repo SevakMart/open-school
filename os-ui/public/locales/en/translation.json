@@ -15,7 +15,6 @@
     "Language":"Language",
     "All Mentors":"All Mentors",
     "Saved Mentors":"Saved Mentors",
-    "No courses":"We do not have courses yet",
     "Our Mentors":"Our Mentors",
     "No mentors":"We do not have mentors yet",
     "Register mentor":"Register as a mentor",
@@ -23,5 +22,37 @@
     "Sign up student":"Sign up as a Student",
     "Sign up mentor":"Sign up as a Mentor",
     "SEE ALL":"SEE ALL",
-    "CHOOSE_CATEGORIES_HEADER":"Choose Categories You Are Interested In"
+    "NEXT":"NEXT",
+    "Sign in":"Sign In!",
+    "Sign up":"Sign Up!",
+    "Or":"Or",
+    "Have Account":"Have An Account?",
+    "Search name":"Search name",
+    "Open-School":"Open-School",
+    "Categories":"Categories",
+    "Design":"Design",
+    "Management":"Management",
+    "Become a Mentor":"Become a Mentor",
+    "About":"About",
+    "Help":"Help",
+    "Software Engineering":"Software Engineering",
+    "No Categories":"No categories yet",
+    "Email":"Email",
+    "Password":"Password",
+    "First Name":"First Name",
+    "Last Name":"Last Name",
+    "Forgot password":"Forgot Password?",
+    "Email placeholder":"ex: namesurname@gmail.com",
+    "First name placeholder":"Fill in first name",
+    "Last name placeholder":"Fill in last name",
+    "Token placeholder":"Enter the 4 digits code that you received on your email",
+    "Password placeholder":{
+      "default":"Enter your password",
+      "reset":"Enter the new password",
+      "confirm":"Confirm password"
+    },
+    "No courses": {
+      "registered":"We do not have courses yet",
+      "suggested":"There are no suggested courses yet"
+    }
   }

@@ -1,9 +1,11 @@
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './Search.module.scss';
 import SearchIcon from '../../icons/Search';
 import { SearchProps } from '../../types/SearchType';
 
 const Search = ({ changeUrlQueries }:SearchProps) => {
+  const { t } = useTranslation();
   const { inputContent } = styles;
   const inputRef = useRef<HTMLInputElement>(null);
   const handleSearch = (e:React.KeyboardEvent) => {
@@ -19,7 +21,7 @@ const Search = ({ changeUrlQueries }:SearchProps) => {
       <input
         ref={inputRef}
         type="text"
-        placeholder="Search name"
+        placeholder={t('Search name')}
         onKeyPress={handleSearch}
       />
     </div>
