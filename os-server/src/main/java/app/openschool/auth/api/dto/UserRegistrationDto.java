@@ -8,10 +8,21 @@ import org.hibernate.validator.constraints.Length;
 
 public class UserRegistrationDto {
 
+  /*
+  Password should be at least 8 characters at most 45 characters and contain
+  at least one uppercase, lowercase, number and special character.
+  */
   private static final String PSD_PATTERN =
       "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*()_{}]).{8,20})";
 
-  private static final String EMAIL_PATTERN = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+  /*
+   Email format allows at least one character before '@', '@' is required,
+   at least 2 characters after '@', '.' is required, at least 2 characters after '.',
+   digits not allowed after '.', email length must not increase 45 characters.
+  */
+  private static final String EMAIL_PATTERN =
+      "^(?=.{1,45}@)[A-Za-z0-9_-]+(.[A-Za-z0-9_-]+)*@"
+          + "[^-][A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,})$";
 
   @Schema(description = "User name", example = "John")
   @Length(max = 45, message = "{validation.firstName.length.message}")
