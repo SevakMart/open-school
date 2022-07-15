@@ -29,7 +29,7 @@ export const SUCCESSFUL_SIGNUP_MESSAGE = 'You have successfully registered';
 
 // Regex for form validation
 export const fullNameRegex = /^[A-Z\s]*$/i;
-export const emailRegex = /^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/;
+export const emailRegex = /^(?=.{1,45}@)[A-Za-z0-9_-]+(.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,})$/;
 export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@#$!%*?&]{8,20}$/;
 export const tokenRegex = /^[0-9]{4}$/;
 /* User’s Password should have at least 8 characters,
