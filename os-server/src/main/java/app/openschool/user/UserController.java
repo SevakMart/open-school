@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -291,6 +292,28 @@ public class UserController {
           Long mentorId) {
     User user = authService.validateUserRequestAndReturnUser(userId);
     userService.deleteMentor(user, mentorId);
+    return ResponseEntity.ok().build();
+  }
+
+  @Operation(
+      summary = "complete enrolled module item",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Enrolled module item status has been changed to completed"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid enrolled module item id supplied",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
+  @PutMapping("/{userId}/enrolledModuleItems/{enrolledModuleItemId}")
+  public ResponseEntity<HttpStatus> completeEnrolledModuleItem(
+      @Parameter(description = "Id of the enrolled module item which will be completed")
+          @PathVariable
+          Long enrolledModuleItemId) {
+    userService.completeEnrolledModuleItem(enrolledModuleItemId);
     return ResponseEntity.ok().build();
   }
 }
