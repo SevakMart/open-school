@@ -37,19 +37,25 @@
     "Help":"Help",
     "Software Engineering":"Software Engineering",
     "No Categories":"No categories yet",
-    "Email":"Email",
-    "Password":"Password",
-    "First Name":"First Name",
-    "Last Name":"Last Name",
+    "form": {
+      "labels" : {
+        "email": "Email",
+        "password":"Password", 
+        "name":"First Name", 
+        "surname":"Last Name"
+      }
+    },
     "Forgot password":"Forgot Password?",
-    "Email placeholder":"ex: namesurname@gmail.com",
-    "First name placeholder":"Fill in first name",
-    "Last name placeholder":"Fill in last name",
-    "Token placeholder":"Enter the 4 digits code that you received on your email",
-    "Password placeholder":{
+    "placeholder":{
+    "name":"Fill in first name",
+    "surname":"Fill in last name",
+    "token":"Enter the 4 digits code that you received on your email",
+    "email":"ex: namesurname@gmail.com",
+    "password":{
       "default":"Enter your password",
       "reset":"Enter the new password",
       "confirm":"Confirm password"
+    }
     },
     "No courses": {
       "registered":"We do not have courses yet",
