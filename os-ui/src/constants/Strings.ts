@@ -29,11 +29,18 @@ export const SUCCESSFUL_SIGNUP_MESSAGE = 'You have successfully registered';
 
 // Regex for form validation
 export const fullNameRegex = /^[A-Z\s]*$/i;
+/*
+   Email format allows at least one character before '@', '@' is required,
+   at least 2 characters after '@', '.' is required, at least 2 characters after '.',
+   digits not allowed after '.', email length must not increase 45 characters.
+  */
 export const emailRegex = /^(?=.{1,45}@)[A-Za-z0-9_-]+(.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,})$/;
+/*
+  Password should be at least 8 characters at most 45 characters and contain
+  at least one uppercase, lowercase, number and special character.
+  */
 export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@#$!%*?&]{8,20}$/;
 export const tokenRegex = /^[0-9]{4}$/;
-/* User’s Password should have at least 8 characters,
-including upper and lower case letters, numbers and signs (required) */
 
 // Form Validation error message
 export const INVALID_FULL_NAME_ERROR_MESSAGE = 'Invalid name or surname';
