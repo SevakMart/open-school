@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../../../../redux/Store';
 import { userContext } from '../../../../../../contexts/Contexts';
@@ -19,9 +20,13 @@ const LearningPathCoreContent = () => {
   const { mainCoreContainer, courseContainer } = styles;
 
   useEffect(() => {
+    const getSearchedCoursesPromise = Object.values(sendingParams as object)[0].length
+    /* eslint-disable-next-line max-len */
+      ? courseService.getSearchedCourses({ page: 0, size: 100, ...(sendingParams as object) }, token)
+      : courseService.getSearchedCourses({ page: 0, size: 100 }, token);
     Promise.all([
       userService.getUserSavedCourses(id, token, { page: 0, size: 100 }),
-      courseService.getSearchedCourses({ ...(sendingParams as object), page: 0, size: 100 }, token),
+      getSearchedCoursesPromise,
     ]).then((combinedData) => {
       const userSavedCourseContent = combinedData[0].content;
       const searchedCourseContent = combinedData[1].content;
@@ -41,19 +46,22 @@ const LearningPathCoreContent = () => {
       } else setCourseList(searchedCourseContent);
     });
   }, [sendingParams]);
+
   return (
     <div className={mainCoreContainer}>
       {courseList.length ? courseList.map((course) => (
         <div className={courseContainer} key={course.title}>
-          <LearningPath
-            courseInfo={course}
-            saveCourse={
+          <Link to={`/userCourse/${course.id}`}>
+            <LearningPath
+              courseInfo={course}
+              saveCourse={
               (courseId:number) => userService.saveUserPreferredCourses(id, courseId, token)
             }
-            deleteCourse={
+              deleteCourse={
               (courseId:number) => userService.deleteUserSavedCourses(id, courseId, token)
             }
-          />
+            />
+          </Link>
         </div>
       )) : <h2 data-testid="Error Message">{t('Empty Data Error Message')}</h2>}
     </div>

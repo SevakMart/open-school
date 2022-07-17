@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import userService from '../../../../services/userService';
 import { SuggestedCourseType } from '../../../../types/SuggestedCourseType';
@@ -38,15 +39,15 @@ const SavedCoursesContent = () => {
         <div className={mainContainer}>
           {savedCourseList.length ? savedCourseList.map((course) => (
             <React.Fragment key={course.title}>
-
-              <LearningPath
-                courseInfo={course}
-                saveCourse={(courseId:number) => {
-                  userService.saveUserPreferredCourses(id, courseId, token);
-                }}
-                deleteCourse={handleCourseDeletion}
-              />
-
+              <Link to={`/userCourse/${course.id}`}>
+                <LearningPath
+                  courseInfo={course}
+                  saveCourse={(courseId:number) => {
+                    userService.saveUserPreferredCourses(id, courseId, token);
+                  }}
+                  deleteCourse={handleCourseDeletion}
+                />
+              </Link>
             </React.Fragment>
           )) : <h2 data-testid="Empty data Message">{t('Empty Data Error Message')}</h2>}
         </div>
