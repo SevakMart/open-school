@@ -34,10 +34,10 @@ const CourseDescriptionPage = () => {
   return (
     <>
       <NavbarOnSignIn />
+      <h1>{title}</h1>
       {!errorMessage ? (
         <div className={mainContent}>
           <CourseMainContent
-            title={title}
             description={description}
             goal={goal}
             mentorDto={mentorDto}

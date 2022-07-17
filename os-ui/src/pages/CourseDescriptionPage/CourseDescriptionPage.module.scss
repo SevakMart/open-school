@@ -1,0 +1,7 @@
+@import "../../styles/Mixins/FlexMixins.scss";
+
+.mainContent {
+    padding-left:6%;
+    padding-right:6%;
+    @include flexStyle(row,none, space-between);
+}
