@@ -21,8 +21,8 @@ public class UserRegistrationDto {
    digits not allowed after '.', email length must not increase 45 characters.
   */
   private static final String EMAIL_PATTERN =
-      "^(?=.{1,45}@)[A-Za-z0-9_-]+(.[A-Za-z0-9_-]+)*@"
-          + "[^-][A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,})$";
+      "^(?=.{1,45}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-]"
+          + "[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
   @Schema(description = "User name", example = "John")
   @Length(max = 45, message = "{validation.firstName.length.message}")
