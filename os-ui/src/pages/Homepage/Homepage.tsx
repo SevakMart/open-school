@@ -63,10 +63,10 @@ const Homepage = () => {
       <HomepageCategories isLoggedIn={isLoggedIn} />
       <HomepageMentors isLoggedIn={isLoggedIn} handleButtonClick={handleButtonClick} />
       <div className={mainContainer}>
-        <h2>{t('Start journey')}</h2>
+        <h2>{t('string.homePage.footer.startJourney')}</h2>
         <div className={buttonContainer}>
-          <Button buttonType="signUp" buttonClick={handleButtonClick}>{t('Sign up student')}</Button>
-          <Button buttonType="signUp" buttonClick={handleButtonClick}>{t('Sign up mentor')}</Button>
+          <Button buttonType="signUp" buttonClick={handleButtonClick}>{t('button.homePage.signUpStudent')}</Button>
+          <Button buttonType="signUp" buttonClick={handleButtonClick}>{t('button.homePage.signUpMentor')}</Button>
         </div>
       </div>
       <Footer />

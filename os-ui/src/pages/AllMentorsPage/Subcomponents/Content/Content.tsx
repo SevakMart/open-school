@@ -53,7 +53,7 @@ const Content = () => {
             [...requestedMentorsList.map((mentor:MentorType) => ({ ...mentor, isBookMarked: false }))],
           );
         }
-      }).catch(() => setErrorMessage(t('Error Message')));
+      }).catch(() => setErrorMessage(t('messages.noData.default')));
   }, [params.get('searchedMentor')]);
 
   return (
@@ -66,7 +66,7 @@ const Content = () => {
             saveMentor={(mentorId) => userService.saveUserMentor(id, mentorId, token)}
             deleteMentor={(mentorId) => userService.deleteUserSavedMentor(id, mentorId, token)}
           />
-        )) : <h2 data-testid="emptyMessageHeader">{t('Empty Data Error Message')}</h2>}
+        )) : <h2 data-testid="emptyMessageHeader">{t('messages.noData.default')}</h2>}
     </div>
   );
 };

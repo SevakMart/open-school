@@ -2,9 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { validateResetPasswordForm } from '../../../helpers/ResetPasswordFormValidate';
 import authService from '../../../services/authService';
-import {
-  RESET_PASSWORD, VERIFICATION_CODE, NEW_PASSWORD, CONFIRM_PASSWORD, RESEND_EMAIL,
-} from '../../../constants/Strings';
 import VisibileIcon from '../../../icons/Visibility';
 import HiddenIcon from '../../../icons/Hidden';
 import CloseIcon from '../../../icons/Close';
@@ -98,10 +95,10 @@ const ResetPassword = ({ returnToSignInForm, email }:
           ? <h3 data-testid="successForgotPasswordMessage" className={successedResendEmailMessage}>{successForgotPasswordMessage}</h3> : (
             <>
               <CloseIcon handleClosing={() => returnToSignInForm()} />
-              <h2>{RESET_PASSWORD}</h2>
+              <h2>{t('string.resetPsd.title')}</h2>
               <div>
                 <label htmlFor="token">
-                  {VERIFICATION_CODE}
+                  {t('form.labels.resetPsdToken')}
                   <span style={{ color: 'red' }}> *</span>
                 </label>
                 <input
@@ -109,7 +106,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   type="text"
                   name="token"
                   value={formValues.token}
-                  placeholder={t('Token placeholder')}
+                  placeholder={t('form.placeholder.resetPsdToken')}
                   onChange={handleOnChange}
                   required
                 />
@@ -119,7 +116,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
               </div>
               <div>
                 <label htmlFor="newPassword">
-                  {NEW_PASSWORD}
+                  {t('form.labels.psd.reset')}
                   <span style={{ color: 'red' }}> *</span>
                 </label>
                 <input
@@ -128,7 +125,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   name="newPassword"
                   ref={newPasswordRef}
                   value={formValues.newPassword}
-                  placeholder={t('Password placeholder.reset')}
+                  placeholder={t('form.placeholder.psd.reset')}
                   onChange={handleOnChange}
                   required
                 />
@@ -140,7 +137,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
               </div>
               <div>
                 <label htmlFor="confirmedPassword">
-                  {CONFIRM_PASSWORD}
+                  {t('form.labels.psd.confirm')}
                   <span style={{ color: 'red' }}> *</span>
                 </label>
                 <input
@@ -149,7 +146,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   name="confirmedPassword"
                   ref={confirmPasswordRef}
                   value={formValues.confirmedPassword}
-                  placeholder={t('Password placeholder.confirm')}
+                  placeholder={t('form.placeholder.psd.confirm')}
                   onChange={handleOnChange}
                   required
                 />
@@ -160,8 +157,8 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   ? <VisibileIcon makeInvisible={handleConfirmPasswordVisibility} />
                   : <HiddenIcon makeVisible={handleConfirmPasswordVisibility} />}
               </div>
-              <button data-testid="resetPasswordButton" className={resetPasswordButton} type="button" onClick={sendResetPassword}>{RESET_PASSWORD}</button>
-              <button data-testid="resendEmailButton" className={resendEmailButton} type="button" onClick={resendEmail}>{RESEND_EMAIL}</button>
+              <button data-testid="resetPasswordButton" className={resetPasswordButton} type="button" onClick={sendResetPassword}>{t('button.resetPsd.submit')}</button>
+              <button data-testid="resendEmailButton" className={resendEmailButton} type="button" onClick={resendEmail}>{t('button.resetPsd.resendEmail')}</button>
             </>
           )}
     </div>

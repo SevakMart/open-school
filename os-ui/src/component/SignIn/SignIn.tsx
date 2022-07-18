@@ -7,7 +7,6 @@ import CloseIcon from '../../icons/Close';
 import LinkedinIcon1 from '../../icons/Linkedin1';
 import EmailIcon1 from '../../icons/Email1';
 import ForgotPassword from './ForgotPassword/ForgotPassword';
-import { SIGN_UP } from '../../constants/Strings';
 
 const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) => {
   const { t } = useTranslation();
@@ -45,12 +44,12 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
             <>
               <CloseIcon handleClosing={() => handleSignInClicks('closeButton')} />
               <div className={headerContent}>
-                <h2>{t('Sign in')}</h2>
+                <h2>{t('string.signIn.title')}</h2>
                 <div className={iconContent}>
                   <button type="button"><LinkedinIcon1 /></button>
                   <button type="button"><EmailIcon1 /></button>
                 </div>
-                <p>{t('Or')}</p>
+                <p>{t('string.signIn.or')}</p>
               </div>
               <SignInForm
                 signInForm="default"
@@ -58,8 +57,8 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
                 forgotPasswordHandler={forgotPassword}
               />
               <p className={alreadyHaveAccount}>
-                {'Don\'t Have An Account?'}
-                <span><button type="button" onClick={() => handleSignInClicks('signUp')}>{SIGN_UP}</button></span>
+                {t('string.signIn.dontHaveAccount')}
+                <span><button type="button" onClick={() => handleSignInClicks('signUp')}>{t('button.homePage.signUp')}</button></span>
               </p>
             </>
           )}

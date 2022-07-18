@@ -44,7 +44,7 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
 
   return (
     <div className={mentorMainContainer}>
-      <h2>{t('Our Mentors')}</h2>
+      <h2>{t('string.homePage.mentors.ourMentors')}</h2>
       <div className={mentorListContainer}>
         { page > 0 ? (
           <LeftArrowIcon
@@ -58,7 +58,7 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
         mentors.length > 0 && !errorMessage ? mentors.map((mentor, index) => (
           <MentorCard key={index} mentor={{ ...mentor }} />
         )) : errorMessage ? <h2 data-testid="mentorsErrorMessage">{errorMessage}</h2>
-          : <h2 data-testid="emptyMentorMessage">{t('No mentors')}</h2>
+          : <h2 data-testid="emptyMentorMessage">{t('messages.noData.mentors')}</h2>
       }
         {page < maxPage ? (
           <RightArrowIcon
@@ -69,7 +69,7 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
           />
         ) : null}
       </div>
-      <Button buttonType="signUp" buttonClick={() => handleButtonClick('signUp')}>{t('Register mentor')}</Button>
+      <Button buttonType="signUp" buttonClick={() => handleButtonClick('signUp')}>{t('button.homePage.registerMentor')}</Button>
     </div>
   );
 };

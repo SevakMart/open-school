@@ -8,20 +8,20 @@ const Footer = () => {
   } = styles;
   return (
     <div className={mainContainer}>
-      <button type="button">{t('Open-School')}</button>
+      <button type="button">{t('string.homePage.navBar.logo')}</button>
       <div className={categories}>
-        <h2>{t('Categories')}</h2>
-        <p>{t('Software Engineering')}</p>
-        <p>{t('Design')}</p>
-        <p>{t('Management')}</p>
+        <h2>{t('string.homePage.footer.categories')}</h2>
+        <p>{t('string.homePage.footer.softwareEngineering')}</p>
+        <p>{t('string.homePage.footer.design')}</p>
+        <p>{t('string.homePage.footer.management')}</p>
       </div>
       <div className={becomeMentor}>
-        <h2>{t('Become a Mentort')}</h2>
-        <p>{t('About')}</p>
-        <p>{t('Help')}</p>
+        <h2>{t('string.homePage.footer.becomeMentor')}</h2>
+        <p>{t('string.homePage.footer.about')}</p>
+        <p>{t('string.homePage.footer.help')}</p>
       </div>
       <div className={findUsOn}>
-        <h2>{t('Find Us On')}</h2>
+        <h2>{t('string.homePage.footer.findUs')}</h2>
         <p>Facebook</p>
         <p>Instagram</p>
       </div>

@@ -44,7 +44,7 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
 
   return (
     <div className={categoriesMainContainer}>
-      <h2>{t('welcome.title')}</h2>
+      <h2>{t('string.homePage.categories.exploreCategories')}</h2>
       <div className={categoriesListContainer}>
         {categoryPage > 0 ? (
           <LeftArrowIcon
@@ -62,7 +62,7 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
                 logoPath={category.logoPath}
               />
             )) : errorMessage ? <h2 data-testid="categoriesErrorMessage">{errorMessage}</h2>
-              : <h2 data-testid="emptyCategoryMessage">{t('No Categories')}</h2>
+              : <h2 data-testid="emptyCategoryMessage">{t('messages.noData.categories')}</h2>
           }
         {categoryPage < maxCategoryPage ? (
           <RightArrowIcon
@@ -73,7 +73,7 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
           />
         ) : null}
       </div>
-      <button type="button">{t('SEE ALL')}</button>
+      <button type="button">{t('button.homePage.seeAll')}</button>
     </div>
   );
 };

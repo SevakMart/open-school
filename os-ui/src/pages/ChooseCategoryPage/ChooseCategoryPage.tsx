@@ -8,7 +8,6 @@ import Search from '../../component/Search/Search';
 import Loader from '../../component/Loader/Loader';
 import userService from '../../services/userService';
 import categoriesService from '../../services/categoriesService';
-import { CHOOSE_CATEGORIES_HEADER, EMPTY_DATA_ERROR_MESSAGE } from '../../constants/Strings';
 import { SearchedCategoryType } from '../../types/SearchedCategoryType';
 import CategoryWithSubcategoriesProfile from '../../component/CategoryWithSubcategoriesProfile/CategoryWithSubcategoriesProfile';
 import styles from './ChooseCategoryPage.module.scss';
@@ -40,7 +39,7 @@ const ChooseCategoryPage = () => {
       .then((data) => {
         if (cancel) return;
         if (!Object.entries(data).length) {
-          setErrorMessage(EMPTY_DATA_ERROR_MESSAGE);
+          setErrorMessage(t('messages.noData.default'));
           setIsLoading(false);
         } else if (!data.errorMessage) {
           setSearchedCategories({ ...data });
@@ -57,7 +56,7 @@ const ChooseCategoryPage = () => {
     <>
       <NavbarOnSignIn />
       <div className={mainHeader}>
-        <h1>{CHOOSE_CATEGORIES_HEADER}</h1>
+        <h1>{t('string.homePage.header.chooseCategories')}</h1>
         <Search changeUrlQueries={handleChangeUrlTitleParam} />
       </div>
       <div className={categoriesList}>
@@ -72,7 +71,7 @@ const ChooseCategoryPage = () => {
             )) : <h2 data-testid="chooseSubcategoriesErrorMessage">{errorMessage}</h2>
       }
       </div>
-      <button className={nextButton} type="button" onClick={handleSavingCategories}>{t('NEXT')}</button>
+      <button className={nextButton} type="button" onClick={handleSavingCategories}>{t('button.chooseCategories.next')}</button>
     </>
   );
 };

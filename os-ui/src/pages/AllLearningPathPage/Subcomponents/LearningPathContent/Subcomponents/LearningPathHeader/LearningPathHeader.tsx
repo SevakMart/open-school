@@ -50,7 +50,7 @@ const LearningPathHeader = ({ handleChangeHeader }:
           data-testid={ALL_LEARNING_PATHS}
           onClick={() => handleChangeHeader(SAVED_LEARNING_PATHS)}
         >
-          {t('All Learning Paths')}
+          {t('string.learningPath.all')}
 
         </p>
         <p
@@ -58,18 +58,18 @@ const LearningPathHeader = ({ handleChangeHeader }:
           data-testid={SAVED_LEARNING_PATHS}
           onClick={() => handleChangeHeader(ALL_LEARNING_PATHS)}
         >
-          {t('Saved Learning Paths')}
+          {t('string.learningPath.saved')}
 
         </p>
       </nav>
       {focusedHeader === ALL_LEARNING_PATHS
       && (
       <div className={sortingContainer}>
-        <label data-testid="sorting" htmlFor="sorting">{t('Sort By')}</label>
+        <label data-testid="sorting" htmlFor="sorting">{t('string.learningPath.sortBy')}</label>
         <select ref={selectionRef} value={sortingFeature} name="sorting" id="sorting" onChange={switchSortingFeatures}>
-          <option value={RATING}>{t('Rating')}</option>
-          <option value={DIFFICULTY}>{t('difficulty_id')}</option>
-          <option value={TITLE}>{(t('Title'))}</option>
+          <option value={RATING}>{t('string.learningPath.rating')}</option>
+          <option value={DIFFICULTY}>{t('string.learningPath.difficulty')}</option>
+          <option value={TITLE}>{(t('string.learningPath.title'))}</option>
         </select>
       </div>
       )}

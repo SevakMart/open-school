@@ -3,10 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { validateEmail } from '../../../helpers/EmailValidate';
 import authService from '../../../services/authService';
 import ResetPassword from '../ResetPassword/ResetPassword';
-import {
-  EMAIL, FORGOT_PASSWORD, ENTER_EMAIL_FOR_VERIFICATION, SEND_CODE_NOTIFICATION,
-  CONTINUE,
-} from '../../../constants/Strings';
 import CloseIcon from '../../../icons/Close';
 import styles from './ForgotPassword.module.scss';
 
@@ -63,12 +59,12 @@ const ForgotPassword = (
                   <>
                     <CloseIcon handleClosing={() => returnToSignInForm()} />
                     <div className={mainContainer}>
-                      <h2>{FORGOT_PASSWORD}</h2>
-                      <p>{ENTER_EMAIL_FOR_VERIFICATION}</p>
-                      <p>{SEND_CODE_NOTIFICATION}</p>
+                      <h2>{t('string.forgotPsd.title')}</h2>
+                      <p>{t('string.forgotPsd.enterEmail')}</p>
+                      <p>{t('string.forgotPsd.sendNotification')}</p>
                       <div>
                         <label htmlFor="email">
-                          {EMAIL}
+                          {t('form.labels.email')}
                           <span style={{ color: 'red' }}> *</span>
                         </label>
                         <input
@@ -76,13 +72,13 @@ const ForgotPassword = (
                           id="email"
                           type="email"
                           name="email"
-                          placeholder={t('Email placeholder')}
+                          placeholder={t('form.placeholder.email')}
                           onChange={handleEmailChange}
                           required
                         />
                       </div>
                       {emailError ? (<h4 data-testid="emailErrorForgotPassword" className={errorMessage}>{emailError}</h4>) : null}
-                      <button data-testid="continueButton" type="button" onClick={sendForgotPassword}>{CONTINUE}</button>
+                      <button data-testid="continueButton" type="button" onClick={sendForgotPassword}>{t('button.forgotPsd.continue')}</button>
                     </div>
                   </>
                 )

@@ -21,7 +21,7 @@ const Search = ({ changeUrlQueries }:SearchProps) => {
       <input
         ref={inputRef}
         type="text"
-        placeholder={t('Search name')}
+        placeholder={t('string.search')}
         onKeyPress={handleSearch}
       />
     </div>
