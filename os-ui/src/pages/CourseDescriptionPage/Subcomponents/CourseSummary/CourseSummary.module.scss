@@ -1,0 +1,36 @@
+@import "../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+@import "../../../../styles/Mixins/ButtonMixin.scss";
+
+.mainContent {
+    position: absolute;
+    width: 31.75rem;
+    height: 47rem;
+    left: 52.75rem;
+    top: 8rem;
+    border-radius: 2.5rem;
+    border: 2px solid black;
+    .headerContent{
+        @include flexStyle(row,center,space-between);
+        padding-left:3rem;
+        padding-right:3rem;
+        background-color: #F9F9FD;
+        border-radius: 2.5rem 2.5rem 0px 0px;
+        h2{
+            @include fontStyle('Montserrat',normal,600,1.25rem,1.5rem);
+            color: #333941;
+        }
+        .headerIcons {
+            @include flexStyle(row, center, space-between);
+            width:18%;
+        }
+    }
+    .buttonContainer {
+        @include flexStyle(column,center,space-between);
+        margin-top:4rem;
+        button {
+            @include buttonStyle(#848A9D,#FFFFFF,1rem,25rem,3.75rem,10.375rem,10.375rem,1.25rem,1.25rem);
+            border:none;
+        }
+    }
+}

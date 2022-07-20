@@ -1,4 +1,13 @@
 @import "../../styles/Mixins/FlexMixins.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+
+.navAndMainTitle {
+    @include flexStyle(column,none, space-between);
+    border:1px solid red;
+    h1 {
+        padding-left:6%;
+    }
+}
 
 .mainContent {
     padding-left:6%;

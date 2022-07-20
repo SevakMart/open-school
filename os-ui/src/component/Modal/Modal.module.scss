@@ -1,0 +1,16 @@
+@import "../../styles/Mixins/FlexMixins.scss";
+
+.mainPortalContainer {
+    position: fixed;
+    z-index: 1;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background-color: #222427;
+    opacity: 0.9;
+    padding-top: 4%;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    @include flexStyle(column,center,center);
+}

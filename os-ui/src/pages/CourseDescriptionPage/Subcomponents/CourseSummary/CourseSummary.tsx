@@ -6,14 +6,14 @@ import CourseSummaryItem from './Subcomponent/CourseSummaryItem/CourseSummaryIte
 import styles from './CourseSummary.module.scss';
 
 const CourseSummary = ({
-  rating, enrolled, level, language, duration,
-}:Omit<CourseDescriptionType, 'title'|'description'|'goal'|'modules'|'mentorDto'>) => {
+  rating, enrolled, level, language, duration, enrollInCourse,
+}:Omit<CourseDescriptionType, 'title'|'description'|'goal'|'modules'|'mentorDto'> & {enrollInCourse:()=>void}) => {
   const { t } = useTranslation();
   const courseSummaryItem = {
     rating, enrolled, level, language, duration,
   };
   const {
-    mainContent, headerContent, headerIcons, courseSummaryItemList,
+    mainContent, headerContent, headerIcons, courseSummaryItemList, buttonContainer,
   } = styles;
   return (
     <div className={mainContent}>
@@ -35,7 +35,9 @@ const CourseSummary = ({
           ))
         }
       </div>
-      <button type="button">{t('Enroll')}</button>
+      <div className={buttonContainer}>
+        <button type="button" onClick={() => enrollInCourse()}>{t('Enroll')}</button>
+      </div>
     </div>
   );
 };
