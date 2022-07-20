@@ -1,5 +1,7 @@
 package app.openschool.feature;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import app.openschool.category.Category;
 import app.openschool.category.CategoryRepository;
 import app.openschool.course.difficulty.Difficulty;
@@ -7,10 +9,8 @@ import app.openschool.course.difficulty.DifficultyRepository;
 import app.openschool.course.language.Language;
 import app.openschool.course.language.LanguageRepository;
 import app.openschool.feature.api.CourseSearchingFeaturesDto;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,31 +31,23 @@ public class FeatureServiceImpl implements FeatureService {
 
   @Override
   public CourseSearchingFeaturesDto getCourseSearchingFeatures() {
-    List<Language> allLanguages = languageRepository.findAll();
-    Map<Integer, String> allLanguagesMap = new HashMap<>();
-    for (Language language : allLanguages) {
-      allLanguagesMap.put(language.getId(), language.getTitle());
-    }
-    List<Difficulty> allDifficultyLevels = difficultyRepository.findAll();
-    Map<Integer, String> allDifficultyLevelsMap = new HashMap<>();
-    for (Difficulty difficultyLevel : allDifficultyLevels) {
-      allDifficultyLevelsMap.put(difficultyLevel.getId(), difficultyLevel.getTitle());
-    }
-    return new CourseSearchingFeaturesDto(
-        getParentAndSubCategories(), allLanguagesMap, allDifficultyLevelsMap);
-  }
 
-  private Map<String, Map<Long, String>> getParentAndSubCategories() {
-    Map<String, Map<Long, String>> parentAndSubCategoriesMap = new HashMap<>();
-    List<Category> parentCategories = categoryRepository.findByParentCategoryIsNull();
-    for (Category parentCategory : parentCategories) {
-      Map<Long, String> subCategoriesMap = new HashMap<>();
-      Set<Category> subCategorySet = parentCategory.getSubCategories();
-      for (Category subCategory : subCategorySet) {
-        subCategoriesMap.put(subCategory.getId(), subCategory.getTitle());
-      }
-      parentAndSubCategoriesMap.put(parentCategory.getTitle(), subCategoriesMap);
-    }
-    return parentAndSubCategoriesMap;
+    Map<Integer, String> allLanguagesMap =
+        languageRepository.findAll().stream()
+            .collect(Collectors.toMap(Language::getId, Language::getTitle));
+
+    Map<Integer, String> allDifficultyLevelsMap =
+        difficultyRepository.findAll().stream()
+            .collect(Collectors.toMap(Difficulty::getId, Difficulty::getTitle));
+
+    Map<String, Map<Long, String>> parentAndSubCategoriesMap =
+        categoryRepository.findByParentCategoryIsNotNull().stream()
+            .collect(
+                groupingBy(
+                    category -> category.getParentCategory().getTitle(),
+                    Collectors.toMap(Category::getId, Category::getTitle)));
+
+    return new CourseSearchingFeaturesDto(
+        parentAndSubCategoriesMap, allLanguagesMap, allDifficultyLevelsMap);
   }
 }
