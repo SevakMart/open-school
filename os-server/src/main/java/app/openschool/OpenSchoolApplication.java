@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class OpenSchoolApplication {
 
   public static void main(String[] args) {
+
     SpringApplication.run(OpenSchoolApplication.class, args);
   }
 
