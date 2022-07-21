@@ -24,13 +24,18 @@ import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.language.Language;
 import app.openschool.course.module.EnrolledModule;
+import app.openschool.course.module.EnrolledModuleRepository;
 import app.openschool.course.module.Module;
 import app.openschool.course.module.item.EnrolledModuleItem;
+import app.openschool.course.module.item.EnrolledModuleItemRepository;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.status.ModuleItemStatus;
+import app.openschool.course.module.item.status.ModuleItemStatusRepository;
 import app.openschool.course.module.item.type.ModuleItemType;
 import app.openschool.course.module.status.ModuleStatus;
+import app.openschool.course.module.status.ModuleStatusRepository;
 import app.openschool.course.status.CourseStatus;
+import app.openschool.course.status.CourseStatusRepository;
 import app.openschool.user.api.UserGenerator;
 import app.openschool.user.company.Company;
 import app.openschool.user.role.Role;
@@ -58,6 +63,11 @@ class UserServiceImplTest {
   @Mock private CategoryRepository categoryRepository;
   @Mock private CourseRepository courseRepository;
   @Mock private EnrolledCourseRepository enrolledCourseRepository;
+  @Mock private EnrolledModuleItemRepository enrolledModuleItemRepository;
+  @Mock private EnrolledModuleRepository enrolledModuleRepository;
+  @Mock private CourseStatusRepository courseStatusRepository;
+  @Mock private ModuleStatusRepository moduleStatusRepository;
+  @Mock private ModuleItemStatusRepository moduleItemStatusRepository;
 
   private UserService userService;
 
@@ -65,7 +75,15 @@ class UserServiceImplTest {
   void setUp() {
     userService =
         new UserServiceImpl(
-            userRepository, categoryRepository, courseRepository, enrolledCourseRepository);
+            userRepository,
+            categoryRepository,
+            courseRepository,
+            enrolledCourseRepository,
+            enrolledModuleRepository,
+            enrolledModuleItemRepository,
+            courseStatusRepository,
+            moduleStatusRepository,
+            moduleItemStatusRepository);
   }
 
   @Test
@@ -533,5 +551,12 @@ class UserServiceImplTest {
     }
     user.setMentors(mentors);
     return user;
+  }
+
+  @Test
+  void completeEnrolledModuleItem_with_incorrect_argument_throws_exception() {
+    when(enrolledModuleItemRepository.findById(anyLong())).thenReturn(Optional.empty());
+    assertThatThrownBy(() -> userService.completeEnrolledModuleItem(1L))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 }

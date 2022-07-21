@@ -9,6 +9,13 @@ import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.module.EnrolledModule;
+import app.openschool.course.module.EnrolledModuleRepository;
+import app.openschool.course.module.item.EnrolledModuleItem;
+import app.openschool.course.module.item.EnrolledModuleItemRepository;
+import app.openschool.course.module.item.status.ModuleItemStatusRepository;
+import app.openschool.course.module.status.ModuleStatusRepository;
+import app.openschool.course.status.CourseStatusRepository;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -27,16 +34,31 @@ public class UserServiceImpl implements UserService {
   private final CategoryRepository categoryRepository;
   private final CourseRepository courseRepository;
   private final EnrolledCourseRepository enrolledCourseRepository;
+  private final EnrolledModuleRepository enrolledModuleRepository;
+  private final EnrolledModuleItemRepository enrolledModuleItemRepository;
+  private final CourseStatusRepository courseStatusRepository;
+  private final ModuleStatusRepository moduleStatusRepository;
+  private final ModuleItemStatusRepository moduleItemStatusRepository;
 
   public UserServiceImpl(
       UserRepository userRepository,
       CategoryRepository categoryRepository,
       CourseRepository courseRepository,
-      EnrolledCourseRepository enrolledCourseRepository) {
+      EnrolledCourseRepository enrolledCourseRepository,
+      EnrolledModuleRepository enrolledModuleRepository,
+      EnrolledModuleItemRepository enrolledModuleItemRepository,
+      CourseStatusRepository courseStatusRepository,
+      ModuleStatusRepository moduleStatusRepository,
+      ModuleItemStatusRepository moduleItemStatusRepository) {
     this.userRepository = userRepository;
     this.categoryRepository = categoryRepository;
     this.courseRepository = courseRepository;
     this.enrolledCourseRepository = enrolledCourseRepository;
+    this.enrolledModuleRepository = enrolledModuleRepository;
+    this.enrolledModuleItemRepository = enrolledModuleItemRepository;
+    this.courseStatusRepository = courseStatusRepository;
+    this.moduleStatusRepository = moduleStatusRepository;
+    this.moduleItemStatusRepository = moduleItemStatusRepository;
   }
 
   @Override
@@ -145,9 +167,16 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Page<Course> findSavedCourses(Long userId, Pageable pageable) {
+  public Page<Course> findSavedCourses(
+      Long userId,
+      String courseTitle,
+      List<Long> subCategoryIds,
+      List<Long> languageIds,
+      List<Long> difficultyIds,
+      Pageable pageable) {
     userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
-    return courseRepository.findSavedCourses(userId, pageable);
+    return courseRepository.findSavedCourses(
+        userId, courseTitle, subCategoryIds, languageIds, difficultyIds, pageable);
   }
 
   @Override
@@ -187,5 +216,43 @@ public class UserServiceImpl implements UserService {
     return enrolledCourseRepository
         .findById(enrolledCourseId)
         .orElseThrow(IllegalArgumentException::new);
+  }
+
+  @Override
+  public void completeEnrolledModuleItem(Long enrolledModuleItemId) {
+    EnrolledModuleItem enrolledModuleItem =
+        enrolledModuleItemRepository
+            .findById(enrolledModuleItemId)
+            .orElseThrow(IllegalArgumentException::new);
+    enrolledModuleItem.setModuleItemStatus(moduleItemStatusRepository.getById(2L));
+    enrolledModuleItemRepository.save(enrolledModuleItem);
+    EnrolledModule enrolledModule = enrolledModuleItem.getEnrolledModule();
+    if (allModuleItemsInModuleAreCompleted(enrolledModule)) {
+      completeEnrolledModule(enrolledModule);
+    }
+  }
+
+  private void completeEnrolledModule(EnrolledModule enrolledModule) {
+    enrolledModule.setModuleStatus(moduleStatusRepository.getById(2L));
+    enrolledModuleRepository.save(enrolledModule);
+    EnrolledCourse enrolledCourse = enrolledModule.getEnrolledCourse();
+    if (allModulesInCourseAreCompleted(enrolledCourse)) {
+      completeEnrolledCourse(enrolledCourse);
+    }
+  }
+
+  private void completeEnrolledCourse(EnrolledCourse enrolledCourse) {
+    enrolledCourse.setCourseStatus(courseStatusRepository.getById(2L));
+    enrolledCourseRepository.save(enrolledCourse);
+  }
+
+  private boolean allModuleItemsInModuleAreCompleted(EnrolledModule enrolledModule) {
+    return enrolledModule.getEnrolledModuleItems().stream()
+        .noneMatch(enrolledModuleItem -> enrolledModuleItem.getModuleItemStatus().isInProgress());
+  }
+
+  private boolean allModulesInCourseAreCompleted(EnrolledCourse enrolledCourse) {
+    return enrolledCourse.getEnrolledModules().stream()
+        .noneMatch(enrolledModule -> enrolledModule.getModuleStatus().isInProgress());
   }
 }

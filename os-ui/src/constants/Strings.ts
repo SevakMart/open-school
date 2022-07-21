@@ -17,7 +17,16 @@ export const EMPTY_DATA_ERROR_MESSAGE = 'No data to display';
 
 // Regex for form validation
 export const fullNameRegex = /^[A-Z\s]*$/i;
-export const emailRegex = /^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/;
+/*
+   Email format allows at least one character before '@', '@' is required,
+   at least 2 characters after '@', '.' is required, at least 2 characters after '.',
+   digits not allowed after '.', email length must not increase 45 characters.
+  */
+export const emailRegex = /^(?=.{1,45}@)[A-Za-z0-9_-]+(.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,})$/;
+/*
+  Password should be at least 8 characters at most 45 characters and contain
+  at least one uppercase, lowercase, number and special character.
+  */
 export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@#$!%*?&]{8,20}$/;
 export const tokenRegex = /^[0-9]{4}$/;
 

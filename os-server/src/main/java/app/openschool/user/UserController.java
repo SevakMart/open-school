@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -150,6 +151,17 @@ public class UserController {
   public ResponseEntity<Page<CourseDto>> findSavedCourses(
       @Parameter(description = "User's id whose saved courses will be returned") @PathVariable
           Long userId,
+      @Parameter(description = "Title of the course") @RequestParam(required = false)
+          String courseTitle,
+      @Parameter(description = "List of subCategory ids which were selected")
+          @RequestParam(required = false)
+          List<Long> subCategoryIds,
+      @Parameter(description = "List of language ids which where selected")
+          @RequestParam(required = false)
+          List<Long> languageIds,
+      @Parameter(description = "List of difficulty level ids which where selected")
+          @RequestParam(required = false)
+          List<Long> difficultyIds,
       @Parameter(
               description =
                   "Includes parameters page, size, and sort which is not required. "
@@ -160,7 +172,9 @@ public class UserController {
                       + "Multiple sort criteria are supported.")
           Pageable pageable) {
     return ResponseEntity.ok(
-        CourseMapper.toCourseDtoPage(userService.findSavedCourses(userId, pageable)));
+        CourseMapper.toCourseDtoPage(
+            userService.findSavedCourses(
+                userId, courseTitle, subCategoryIds, languageIds, difficultyIds, pageable)));
   }
 
   @Operation(summary = "save course", security = @SecurityRequirement(name = "bearerAuth"))
@@ -291,6 +305,28 @@ public class UserController {
           Long mentorId) {
     User user = authService.validateUserRequestAndReturnUser(userId);
     userService.deleteMentor(user, mentorId);
+    return ResponseEntity.ok().build();
+  }
+
+  @Operation(
+      summary = "complete enrolled module item",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Enrolled module item status has been changed to completed"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid enrolled module item id supplied",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
+  @PutMapping("/{userId}/enrolledModuleItems/{enrolledModuleItemId}")
+  public ResponseEntity<HttpStatus> completeEnrolledModuleItem(
+      @Parameter(description = "Id of the enrolled module item which will be completed")
+          @PathVariable
+          Long enrolledModuleItemId) {
+    userService.completeEnrolledModuleItem(enrolledModuleItemId);
     return ResponseEntity.ok().build();
   }
 }

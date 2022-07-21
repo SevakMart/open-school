@@ -31,9 +31,9 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
       value =
           "SELECT * FROM learning_path WHERE "
               + "(?1 IS NULL OR LOWER(title) LIKE LOWER(CONCAT('%', ?1, '%'))) "
-              + "AND ((?2) IS NULL OR category_id IN (?2)) "
-              + "AND ((?3) IS NULL OR language_id IN (?3)) "
-              + "AND ((?4) IS NULL OR difficulty_id IN (?4))",
+              + "AND (COALESCE(?2) IS NULL OR category_id IN (?2)) "
+              + "AND (COALESCE(?3) IS NULL OR language_id IN (?3)) "
+              + "AND (COALESCE(?4) IS NULL OR difficulty_id IN (?4))",
       nativeQuery = true)
   Page<Course> findAll(
       String courseTitle,
@@ -45,9 +45,19 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
   @Query(
       value =
           "SELECT * FROM learning_path lp JOIN user_saved_learning_paths ulp "
-              + "ON lp.id = ulp.learning_path_id WHERE ulp.user_id = ?1",
+              + "ON lp.id = ulp.learning_path_id WHERE ulp.user_id = ?1 "
+              + "AND (?2 IS NULL OR LOWER(title) LIKE LOWER(CONCAT('%', ?2, '%'))) "
+              + "AND (COALESCE(?3) IS NULL OR category_id IN (?3)) "
+              + "AND (COALESCE(?4) IS NULL OR language_id IN (?4)) "
+              + "AND (COALESCE(?5) IS NULL OR difficulty_id IN (?5))",
       nativeQuery = true)
-  Page<Course> findSavedCourses(Long userId, Pageable pageable);
+  Page<Course> findSavedCourses(
+      Long userId,
+      String courseTitle,
+      List<Long> subCategoryIds,
+      List<Long> languageIds,
+      List<Long> difficultyIds,
+      Pageable pageable);
 
   Page<Course> findCoursesByMentorId(Long mentorId, Pageable page);
 
