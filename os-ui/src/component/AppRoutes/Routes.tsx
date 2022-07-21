@@ -7,6 +7,7 @@ import ChooseCategoryPage from '../../pages/ChooseCategoryPage/ChooseCategoryPag
 import MyLearningPathPage from '../../pages/MyLearningPathPage/MyLearningPathPage';
 import AllLearningPathPage from '../../pages/AllLearningPathPage/AllLearningPathPage';
 import AllMentorsPage from '../../pages/AllMentorsPage/AllMentorsPage';
+import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
 
 const AppRoutes = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
@@ -46,6 +47,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         )}
       />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };

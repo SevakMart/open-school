@@ -19,22 +19,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-  private static final String[] PUBLIC_URLS = {
-    "/static/**",
-    "/index.html",
-    "/",
-    "/api/v1/auth/register",
-    "/api/v1/auth/account/verification",
-    "/api/v1/auth/{userId}/account/verification",
-    "/api/v1/auth/login",
-    "/api/v1/auth/password/forgot",
-    "/api/v1/auth/password/reset",
-    "/api/v1//public/categories",
-    "/api/v1/public/users/mentors",
-    "/h2/**",
-    "/open-school-api",
-    "/swagger-ui/**",
-    "/v3/api-docs/**",
+  private static final String[] PRIVATE_URLS = {
+    "/api/v1/users/**",
+    "/api/v1/features/**",
+    "/api/v1/categories/**",
+    "/api/v1/mentors/**",
+    "/api/v1/courses/**"
   };
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -67,9 +57,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .sessionCreationPolicy(STATELESS)
         .and()
         .authorizeRequests()
-        .antMatchers(PUBLIC_URLS)
+        .antMatchers("*")
         .permitAll()
-        .anyRequest()
+        .antMatchers(PRIVATE_URLS)
         .authenticated()
         .and()
         .exceptionHandling()

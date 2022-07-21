@@ -59,7 +59,7 @@ class UserControllerTest {
     List<EnrolledCourse> userEnrolledCourseList = new ArrayList<>();
     when(userService.findEnrolledCourses(1L, null)).thenReturn(userEnrolledCourseList);
     mockMvc
-        .perform(get("/users/1/courses/enrolled").contentType(APPLICATION_JSON))
+        .perform(get("/api/v1/users/1/courses/enrolled").contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
   }
 

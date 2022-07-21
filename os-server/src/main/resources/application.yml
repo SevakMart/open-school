@@ -12,6 +12,10 @@ spring:
     username: dev_user
     password: Password1!
 
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+
   flyway:
     locations: "classpath:db/migration/{vendor}"
     clean-on-validation-error: true
