@@ -167,9 +167,16 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Page<Course> findSavedCourses(Long userId, Pageable pageable) {
+  public Page<Course> findSavedCourses(
+      Long userId,
+      String courseTitle,
+      List<Long> subCategoryIds,
+      List<Long> languageIds,
+      List<Long> difficultyIds,
+      Pageable pageable) {
     userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
-    return courseRepository.findSavedCourses(userId, pageable);
+    return courseRepository.findSavedCourses(
+        userId, courseTitle, subCategoryIds, languageIds, difficultyIds, pageable);
   }
 
   @Override
