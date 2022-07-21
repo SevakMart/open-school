@@ -9,7 +9,7 @@ exports[`Create Test files for default signIn component Create a snapshot test 1
       <label
         for="email"
       >
-        Email
+        form.labels.email
         <span
           style="color: red;"
         >
@@ -17,9 +17,10 @@ exports[`Create Test files for default signIn component Create a snapshot test 1
         </span>
       </label>
       <input
+        data-testid="emailInput"
         id="email"
         name="email"
-        placeholder="ex: namesurname@gmail.com"
+        placeholder="form.placeholder.email"
         required=""
         type="email"
         value=""
@@ -29,7 +30,7 @@ exports[`Create Test files for default signIn component Create a snapshot test 1
       <label
         for="psd"
       >
-        Password
+        form.labels.psd.default
         <span
           style="color: red;"
         >
@@ -37,9 +38,10 @@ exports[`Create Test files for default signIn component Create a snapshot test 1
         </span>
       </label>
       <input
+        data-testid="psdInput"
         id="psd"
         name="psd"
-        placeholder="Enter your password"
+        placeholder="form.placeholder.psd.default"
         required=""
         type="password"
         value=""
@@ -66,13 +68,13 @@ exports[`Create Test files for default signIn component Create a snapshot test 1
       </i>
     </div>
     <p>
-      Forgot Password?
+      string.signIn.forgotPsd
     </p>
     <button
       data-testid="signInButton"
       type="button"
     >
-      Sign In
+      button.homePage.signIn
     </button>
   </form>
 </DocumentFragment>

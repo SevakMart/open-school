@@ -70,6 +70,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           value={formValues.firstName}
           name="firstName"
           placeholder={t('form.placeholder.name')}
+          data-testid="firstNameInput"
           onChange={handleInputChange}
           required
         />
@@ -88,6 +89,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           value={formValues.lastName}
           name="lastName"
           placeholder={t('form.placeholder.surname')}
+          data-testid="lastNameInput"
           onChange={handleInputChange}
           required
         />
@@ -106,6 +108,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           value={formValues.email}
           name="email"
           placeholder={t('form.placeholder.email')}
+          data-testid="emailInput"
           onChange={handleInputChange}
           required
         />
@@ -125,6 +128,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           value={formValues.psd}
           name="psd"
           placeholder={t('form.placeholder.psd.default')}
+          data-testid="psdInput"
           onChange={handleInputChange}
           required
         />

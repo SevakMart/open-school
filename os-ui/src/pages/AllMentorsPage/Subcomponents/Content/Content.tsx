@@ -53,7 +53,7 @@ const Content = () => {
             [...requestedMentorsList.map((mentor:MentorType) => ({ ...mentor, isBookMarked: false }))],
           );
         }
-      }).catch(() => setErrorMessage(t('messages.noData.default')));
+      }).catch(() => setErrorMessage(t('error')));
   }, [params.get('searchedMentor')]);
 
   return (

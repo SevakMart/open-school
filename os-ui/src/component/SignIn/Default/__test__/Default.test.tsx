@@ -27,8 +27,8 @@ describe('Create Test files for default signIn component', () => {
         />
       </Provider>,
     );
-    const emailInputElement = screen.queryByPlaceholderText('ex: namesurname@gmail.com') as HTMLInputElement;
-    const passwordInputElement = screen.queryByPlaceholderText('Enter your password') as HTMLInputElement;
+    const emailInputElement = screen.queryByTestId('emailInput') as HTMLInputElement;
+    const passwordInputElement = screen.queryByTestId('psdInput') as HTMLInputElement;
     const signInButton = screen.queryByTestId('signInButton') as HTMLButtonElement;
 
     userEvent.type(emailInputElement, '');
@@ -51,8 +51,8 @@ describe('Create Test files for default signIn component', () => {
         />
       </Provider>,
     );
-    const emailInputElement = screen.queryByPlaceholderText('ex: namesurname@gmail.com') as HTMLInputElement;
-    const passwordInputElement = screen.queryByPlaceholderText('Enter your password') as HTMLInputElement;
+    const emailInputElement = screen.queryByTestId('emailInput') as HTMLInputElement;
+    const passwordInputElement = screen.queryByTestId('psdInput') as HTMLInputElement;
     const signInButton = screen.queryByTestId('signInButton') as HTMLButtonElement;
 
     userEvent.type(emailInputElement, 'blabla@blabla.com');
@@ -75,8 +75,8 @@ describe('Create Test files for default signIn component', () => {
         />
       </Provider>,
     );
-    const emailInputElement = screen.queryByPlaceholderText('ex: namesurname@gmail.com') as HTMLInputElement;
-    const passwordInputElement = screen.queryByPlaceholderText('Enter your password') as HTMLInputElement;
+    const emailInputElement = screen.queryByTestId('emailInput') as HTMLInputElement;
+    const passwordInputElement = screen.queryByTestId('psdInput') as HTMLInputElement;
     const signInButton = screen.queryByTestId('signInButton') as HTMLButtonElement;
 
     userEvent.type(emailInputElement, 'blabla');

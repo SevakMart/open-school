@@ -33,7 +33,7 @@ exports[`Create test cases for SignIn component Create a snapshot test 1`] = `
         class="headerContent"
       >
         <h2>
-          Sign In!
+          string.signIn.title
         </h2>
         <div
           class="iconContent"
@@ -78,7 +78,7 @@ exports[`Create test cases for SignIn component Create a snapshot test 1`] = `
           </button>
         </div>
         <p>
-          Or
+          string.signIn.or
         </p>
       </div>
       <form
@@ -88,7 +88,7 @@ exports[`Create test cases for SignIn component Create a snapshot test 1`] = `
           <label
             for="email"
           >
-            Email
+            form.labels.email
             <span
               style="color: red;"
             >
@@ -96,9 +96,10 @@ exports[`Create test cases for SignIn component Create a snapshot test 1`] = `
             </span>
           </label>
           <input
+            data-testid="emailInput"
             id="email"
             name="email"
-            placeholder="ex: namesurname@gmail.com"
+            placeholder="form.placeholder.email"
             required=""
             type="email"
             value=""
@@ -108,7 +109,7 @@ exports[`Create test cases for SignIn component Create a snapshot test 1`] = `
           <label
             for="psd"
           >
-            Password
+            form.labels.psd.default
             <span
               style="color: red;"
             >
@@ -116,9 +117,10 @@ exports[`Create test cases for SignIn component Create a snapshot test 1`] = `
             </span>
           </label>
           <input
+            data-testid="psdInput"
             id="psd"
             name="psd"
-            placeholder="Enter your password"
+            placeholder="form.placeholder.psd.default"
             required=""
             type="password"
             value=""
@@ -145,24 +147,24 @@ exports[`Create test cases for SignIn component Create a snapshot test 1`] = `
           </i>
         </div>
         <p>
-          Forgot Password?
+          string.signIn.forgotPsd
         </p>
         <button
           data-testid="signInButton"
           type="button"
         >
-          Sign In
+          button.homePage.signIn
         </button>
       </form>
       <p
         class="alreadyHaveAccount"
       >
-        Don't Have An Account?
+        string.signIn.dontHaveAccount
         <span>
           <button
             type="button"
           >
-            SIGN UP
+            button.homePage.signUp
           </button>
         </span>
       </p>

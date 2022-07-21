@@ -107,6 +107,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   name="token"
                   value={formValues.token}
                   placeholder={t('form.placeholder.resetPsdToken')}
+                  data-testid="tokenInput"
                   onChange={handleOnChange}
                   required
                 />
@@ -126,6 +127,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   ref={newPasswordRef}
                   value={formValues.newPassword}
                   placeholder={t('form.placeholder.psd.reset')}
+                  data-testid="psdInput"
                   onChange={handleOnChange}
                   required
                 />
@@ -147,6 +149,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   ref={confirmPasswordRef}
                   value={formValues.confirmedPassword}
                   placeholder={t('form.placeholder.psd.confirm')}
+                  data-testid="confirmPsdInput"
                   onChange={handleOnChange}
                   required
                 />

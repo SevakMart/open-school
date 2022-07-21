@@ -39,7 +39,7 @@ const ChooseCategoryPage = () => {
       .then((data) => {
         if (cancel) return;
         if (!Object.entries(data).length) {
-          setErrorMessage(t('messages.noData.default'));
+          setErrorMessage(t('error'));
           setIsLoading(false);
         } else if (!data.errorMessage) {
           setSearchedCategories({ ...data });

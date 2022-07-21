@@ -12,7 +12,7 @@ exports[`Create test cases for FilterComponent component Create a snapshot tets 
       <p
         class="mainTitle"
       >
-        Filter
+        string.learningPath.filter
       </p>
     </div>
   </div>

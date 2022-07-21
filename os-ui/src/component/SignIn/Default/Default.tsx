@@ -72,6 +72,7 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
           value={formValues.email}
           name="email"
           placeholder={t('form.placeholder.email')}
+          data-testid="emailInput"
           onChange={handleInputChange}
           required
         />
@@ -91,6 +92,7 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
           value={formValues.psd}
           name="psd"
           placeholder={t('form.placeholder.psd.default')}
+          data-testid="psdInput"
           onChange={handleInputChange}
           required
         />
