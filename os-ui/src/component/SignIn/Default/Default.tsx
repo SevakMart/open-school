@@ -1,17 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { validateSignInForm } from '../../../helpers/SignInFormValidate';
 import authService from '../../../services/authService';
 import { addLoggedInUser } from '../../../redux/Slices/loginUserSlice';
 import VisibileIcon from '../../../icons/Visibility';
 import HiddenIcon from '../../../icons/Hidden';
 import { RegistrationFormType } from '../../../types/RegistartionFormType';
-import { SIGN_IN, SUCCESSFUL_SIGNIN_MESSAGE } from '../../../constants/Strings';
 import styles from './Default.module.scss';
 
 const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
-  {handleSignIn:(message:string)=>void, forgotPasswordFunc:()=>void}) => {
+  {handleSignIn:()=>void, forgotPasswordFunc:()=>void}) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [formValues, setFormValues] = useState<RegistrationFormType>({
     firstName: '', lastName: '', email: '', psd: '',
   });
@@ -43,7 +44,7 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
           setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
         } else if (response.status === 200) {
           dispatch(addLoggedInUser(response));
-          handleSignIn(SUCCESSFUL_SIGNIN_MESSAGE);
+          handleSignIn();
         }
       });
     } else {
@@ -62,7 +63,7 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
     <form className={inputContent}>
       <div>
         <label htmlFor="email">
-          Email
+          {t('form.labels.email')}
           <span style={{ color: 'red' }}>*</span>
         </label>
         <input
@@ -70,7 +71,8 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
           type="email"
           value={formValues.email}
           name="email"
-          placeholder="ex: namesurname@gmail.com"
+          placeholder={t('form.placeholder.email')}
+          data-testid="emailInput"
           onChange={handleInputChange}
           required
         />
@@ -80,7 +82,7 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
       </div>
       <div>
         <label htmlFor="psd">
-          Password
+          {t('form.labels.psd.default')}
           <span style={{ color: 'red' }}>*</span>
         </label>
         <input
@@ -89,7 +91,8 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
           ref={passwordInputRef}
           value={formValues.psd}
           name="psd"
-          placeholder="Enter your password"
+          placeholder={t('form.placeholder.psd.default')}
+          data-testid="psdInput"
           onChange={handleInputChange}
           required
         />
@@ -101,8 +104,8 @@ const SignInDefault = ({ handleSignIn, forgotPasswordFunc }:
           : <HiddenIcon makeVisible={handlePasswordVisibility} />}
       </div>
       {signInErrorMessage ? <h4 data-testid="signInErrorMessage" className={errorField}>{signInErrorMessage}</h4> : null}
-      <p onClick={handleForgotPassword}>Forgot Password?</p>
-      <button type="button" data-testid="signInButton" onClick={handleSignInForm}>{SIGN_IN}</button>
+      <p onClick={handleForgotPassword}>{t('string.signIn.forgotPsd')}</p>
+      <button type="button" data-testid="signInButton" onClick={handleSignInForm}>{t('button.homePage.signIn')}</button>
     </form>
   );
 };

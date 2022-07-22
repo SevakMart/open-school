@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { validateResetPasswordForm } from '../../../helpers/ResetPasswordFormValidate';
 import authService from '../../../services/authService';
-import {
-  RESET_PASSWORD, VERIFICATION_CODE, NEW_PASSWORD, CONFIRM_PASSWORD, RESEND_EMAIL,
-} from '../../../constants/Strings';
 import VisibileIcon from '../../../icons/Visibility';
 import HiddenIcon from '../../../icons/Hidden';
 import CloseIcon from '../../../icons/Close';
@@ -11,6 +9,7 @@ import styles from './ResetPassword.module.scss';
 
 const ResetPassword = ({ returnToSignInForm, email }:
   {returnToSignInForm: ()=> void, email:string}) => {
+  const { t } = useTranslation();
   const [successForgotPasswordMessage, setSuccessForgotPasswordMessage] = useState('');
   const [successResetPasswordMessage, setSuccessResetPasswordMessage] = useState('');
   const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
@@ -96,10 +95,10 @@ const ResetPassword = ({ returnToSignInForm, email }:
           ? <h3 data-testid="successForgotPasswordMessage" className={successedResendEmailMessage}>{successForgotPasswordMessage}</h3> : (
             <>
               <CloseIcon handleClosing={() => returnToSignInForm()} />
-              <h2>{RESET_PASSWORD}</h2>
+              <h2>{t('string.resetPsd.title')}</h2>
               <div>
                 <label htmlFor="token">
-                  {VERIFICATION_CODE}
+                  {t('form.labels.resetPsdToken')}
                   <span style={{ color: 'red' }}> *</span>
                 </label>
                 <input
@@ -107,7 +106,8 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   type="text"
                   name="token"
                   value={formValues.token}
-                  placeholder="Enter the 4 digits code that you received on your email"
+                  placeholder={t('form.placeholder.resetPsdToken')}
+                  data-testid="tokenInput"
                   onChange={handleOnChange}
                   required
                 />
@@ -117,7 +117,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
               </div>
               <div>
                 <label htmlFor="newPassword">
-                  {NEW_PASSWORD}
+                  {t('form.labels.psd.reset')}
                   <span style={{ color: 'red' }}> *</span>
                 </label>
                 <input
@@ -126,7 +126,8 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   name="newPassword"
                   ref={newPasswordRef}
                   value={formValues.newPassword}
-                  placeholder="Enter the new password"
+                  placeholder={t('form.placeholder.psd.reset')}
+                  data-testid="psdInput"
                   onChange={handleOnChange}
                   required
                 />
@@ -138,7 +139,7 @@ const ResetPassword = ({ returnToSignInForm, email }:
               </div>
               <div>
                 <label htmlFor="confirmedPassword">
-                  {CONFIRM_PASSWORD}
+                  {t('form.labels.psd.confirm')}
                   <span style={{ color: 'red' }}> *</span>
                 </label>
                 <input
@@ -147,7 +148,8 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   name="confirmedPassword"
                   ref={confirmPasswordRef}
                   value={formValues.confirmedPassword}
-                  placeholder="Confirm password"
+                  placeholder={t('form.placeholder.psd.confirm')}
+                  data-testid="confirmPsdInput"
                   onChange={handleOnChange}
                   required
                 />
@@ -158,8 +160,8 @@ const ResetPassword = ({ returnToSignInForm, email }:
                   ? <VisibileIcon makeInvisible={handleConfirmPasswordVisibility} />
                   : <HiddenIcon makeVisible={handleConfirmPasswordVisibility} />}
               </div>
-              <button data-testid="resetPasswordButton" className={resetPasswordButton} type="button" onClick={sendResetPassword}>{RESET_PASSWORD}</button>
-              <button data-testid="resendEmailButton" className={resendEmailButton} type="button" onClick={resendEmail}>{RESEND_EMAIL}</button>
+              <button data-testid="resetPasswordButton" className={resetPasswordButton} type="button" onClick={sendResetPassword}>{t('button.resetPsd.submit')}</button>
+              <button data-testid="resendEmailButton" className={resendEmailButton} type="button" onClick={resendEmail}>{t('button.resetPsd.resendEmail')}</button>
             </>
           )}
     </div>

@@ -55,7 +55,7 @@ const LearningPathCoreContent = () => {
             }
           />
         </div>
-      )) : <h2 data-testid="Error Message">{t('Empty Data Error Message')}</h2>}
+      )) : <h2 data-testid="Error Message">{t('messages.noData.default')}</h2>}
     </div>
   );
 };

@@ -1,31 +1,19 @@
 // Navbar strings
 export const APP_LOGO = 'Open-School';
-export const EXPLORE_CATEGORIES = 'Explore Categories';
 export const MENTORS = 'Mentors';
-export const BECOME_A_MENTOR = 'Become a mentor';
-export const SIGN_IN = 'Sign In';
 export const ALL_LEARNING_PATHS = 'All Learning Paths';
 export const MY_LEARNING_PATHS = 'My Learning Paths';
 export const SAVED_LEARNING_PATHS = 'Saved Learning paths';
 export const ALL = 'All';
 export const IN_PROGRESS = 'InProgress';
 export const COMPLETED = 'Completed';
-export const SORT_BY = 'Sort by';
 
 // Header strings
-export const FREE_EDUCATIONAL_PLATFORM = 'Educational Platform';
-export const SIGN_UP = 'SIGN UP';
-export const HEADER_INTRODUCTION = 'Choose Categories You Are Interested In Choose Categories You Are Interested InChoose Categories You Are Interested';
 export const EDUCATION_PLATFORM_IMAGE = 'https://image.shutterstock.com/image-vector/ebook-logo-design-vector-electronic-260nw-1767373559.jpg';
-export const CHOOSE_CATEGORIES_HEADER = 'Choose Categories You Are Interested In';
 
 // Error Message
 export const ERROR_MESSAGE = 'Something went wrong please refresh the page';
 export const EMPTY_DATA_ERROR_MESSAGE = 'No data to display';
-
-// Successful Sign in message
-export const SUCCESSFUL_SIGNIN_MESSAGE = 'You have Successfully signed in!';
-export const SUCCESSFUL_SIGNUP_MESSAGE = 'You have successfully registered';
 
 // Regex for form validation
 export const fullNameRegex = /^[A-Z\s]*$/i;
@@ -71,19 +59,9 @@ export const DUE_DATE = 'Due Date';
 export const RESUME_COURSE = 'Resume Course';
 export const GRADE = 'Grade';
 export const RATE_COURSE = 'Rate Course';
-export const FORGOT_PASSWORD = 'Forgot password';
-export const ENTER_EMAIL_FOR_VERIFICATION = 'Enter your email for the verification process.';
-export const SEND_CODE_NOTIFICATION = 'We will send 4 digits code to your email.';
-export const EMAIL = 'Email';
-export const CONTINUE = 'Continue';
-export const RESET_PASSWORD = 'Reset password';
-export const VERIFICATION_CODE = 'Verification code';
-export const NEW_PASSWORD = 'New Password';
-export const CONFIRM_PASSWORD = 'Confirm Password';
 export const RESEND_EMAIL = 'Resend Email';
 export const RATING = 'Rating';
 export const LAST_INSERTED = 'Last Inserted';
-export const FILTER = 'Filter';
 export const TECHNICAL = 'Technical';
 export const ENGINEERING = 'Engineering';
 export const SHOW_ALL = 'Show All';

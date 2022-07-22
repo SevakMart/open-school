@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../../redux/Store';
 import HomepageHeader from '../../component/HomepageHeader/HomepageHeader';
 import Footer from '../../component/Footer/Footer';
@@ -17,6 +18,7 @@ import { Types } from '../../types/types';
 const Homepage = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector<RootState>((state) => state.userInfo);
+  const { t } = useTranslation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [clickedButtonType, setClickedButtonType] = useState('');
@@ -61,10 +63,10 @@ const Homepage = () => {
       <HomepageCategories isLoggedIn={isLoggedIn} />
       <HomepageMentors isLoggedIn={isLoggedIn} handleButtonClick={handleButtonClick} />
       <div className={mainContainer}>
-        <h2>Start Your Journey Now!</h2>
+        <h2>{t('string.homePage.footer.startJourney')}</h2>
         <div className={buttonContainer}>
-          <Button buttonType="signUp" buttonClick={handleButtonClick}>Sign up as a Student</Button>
-          <Button buttonType="signUp" buttonClick={handleButtonClick}>sign up as a mentor</Button>
+          <Button buttonType="signUp" buttonClick={handleButtonClick}>{t('button.homePage.signUpStudent')}</Button>
+          <Button buttonType="signUp" buttonClick={handleButtonClick}>{t('button.homePage.signUpMentor')}</Button>
         </div>
       </div>
       <Footer />
