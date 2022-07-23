@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../../redux/Store';
 import RightArrowIcon from '../../../../icons/RightArrow';
 import LeftArrowIcon from '../../../../icons/LeftArrow';
@@ -11,6 +12,7 @@ import styles from './Categories.module.scss';
 
 const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
+  const { t } = useTranslation();
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [categoryPage, setCategoryPage] = useState(0);
@@ -42,7 +44,7 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
 
   return (
     <div className={categoriesMainContainer}>
-      <h2>Explore Categories You Are Interested In</h2>
+      <h2>{t('string.homePage.categories.exploreCategories')}</h2>
       <div className={categoriesListContainer}>
         {categoryPage > 0 ? (
           <LeftArrowIcon
@@ -60,7 +62,7 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
                 logoPath={category.logoPath}
               />
             )) : errorMessage ? <h2 data-testid="categoriesErrorMessage">{errorMessage}</h2>
-              : <h2 data-testid="emptyCategoryMessage">We do not have courses yet</h2>
+              : <h2 data-testid="emptyCategoryMessage">{t('messages.noData.categories')}</h2>
           }
         {categoryPage < maxCategoryPage ? (
           <RightArrowIcon
@@ -71,7 +73,7 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
           />
         ) : null}
       </div>
-      <button type="button">SEE ALL</button>
+      <button type="button">{t('button.homePage.seeAll')}</button>
     </div>
   );
 };

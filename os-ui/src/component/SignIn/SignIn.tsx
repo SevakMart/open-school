@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import SignInForm from './SignInForm';
 import styles from './SignIn.module.scss';
 import CloseIcon from '../../icons/Close';
 import LinkedinIcon1 from '../../icons/Linkedin1';
 import EmailIcon1 from '../../icons/Email1';
 import ForgotPassword from './ForgotPassword/ForgotPassword';
-import { SIGN_UP } from '../../constants/Strings';
 
 const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) => {
+  const { t } = useTranslation();
   const {
     mainContainer, formContainer, headerContent, iconContent, alreadyHaveAccount,
   } = styles;
@@ -43,12 +44,12 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
             <>
               <CloseIcon handleClosing={() => handleSignInClicks('closeButton')} />
               <div className={headerContent}>
-                <h2>Sign In!</h2>
+                <h2>{t('string.signIn.title')}</h2>
                 <div className={iconContent}>
                   <button type="button"><LinkedinIcon1 /></button>
                   <button type="button"><EmailIcon1 /></button>
                 </div>
-                <p>Or</p>
+                <p>{t('string.signIn.or')}</p>
               </div>
               <SignInForm
                 signInForm="default"
@@ -56,8 +57,8 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
                 forgotPasswordHandler={forgotPassword}
               />
               <p className={alreadyHaveAccount}>
-                {'Don\'t Have An Account?'}
-                <span><button type="button" onClick={() => handleSignInClicks('signUp')}>{SIGN_UP}</button></span>
+                {t('string.signIn.dontHaveAccount')}
+                <span><button type="button" onClick={() => handleSignInClicks('signUp')}>{t('button.homePage.signUp')}</button></span>
               </p>
             </>
           )}

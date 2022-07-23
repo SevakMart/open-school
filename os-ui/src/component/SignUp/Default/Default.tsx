@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { validateSignUpForm } from '../../../helpers/SignUpFormValidate';
 import { RegistrationFormType } from '../../../types/RegistartionFormType';
 import authService from '../../../services/authService';
 import VisibileIcon from '../../../icons/Visibility';
 import HiddenIcon from '../../../icons/Hidden';
-import { SIGN_UP, SUCCESSFUL_SIGNUP_MESSAGE } from '../../../constants/Strings';
 import styles from './Default.module.scss';
 
 const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:string)=>void}) => {
+  const { t } = useTranslation();
   const [formValues, setFormValues] = useState<RegistrationFormType>({
     firstName: '', lastName: '', email: '', psd: '',
   });
@@ -40,7 +41,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           setFormValues({
             firstName: '', lastName: '', email: '', psd: '',
           });
-          switchToSignInForm!(SUCCESSFUL_SIGNUP_MESSAGE);
+          switchToSignInForm!(t('messages.successfullSignUp'));
         } else {
           setErrorFormValue({
             firstNameError: '', lastNameError: '', emailError: response[0], psdError: '',
@@ -60,7 +61,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
     <form className={inputContent}>
       <div>
         <label htmlFor="firstName">
-          First Name
+          {t('form.labels.name')}
           <span style={{ color: 'red' }}>*</span>
         </label>
         <input
@@ -68,7 +69,8 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           type="text"
           value={formValues.firstName}
           name="firstName"
-          placeholder="Fill in first name"
+          placeholder={t('form.placeholder.name')}
+          data-testid="firstNameInput"
           onChange={handleInputChange}
           required
         />
@@ -78,7 +80,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
       </div>
       <div>
         <label htmlFor="lastName">
-          Last Name
+          {t('form.labels.surname')}
           <span style={{ color: 'red' }}>*</span>
         </label>
         <input
@@ -86,7 +88,8 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           type="text"
           value={formValues.lastName}
           name="lastName"
-          placeholder="Fill in last name"
+          placeholder={t('form.placeholder.surname')}
+          data-testid="lastNameInput"
           onChange={handleInputChange}
           required
         />
@@ -96,7 +99,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
       </div>
       <div>
         <label htmlFor="email">
-          Email
+          {t('form.labels.email')}
           <span style={{ color: 'red' }}>*</span>
         </label>
         <input
@@ -104,7 +107,8 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           type="email"
           value={formValues.email}
           name="email"
-          placeholder="ex: namesurname@gmail.com"
+          placeholder={t('form.placeholder.email')}
+          data-testid="emailInput"
           onChange={handleInputChange}
           required
         />
@@ -114,7 +118,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
       </div>
       <div>
         <label htmlFor="psd">
-          Password
+          {t('form.labels.psd.default')}
           <span style={{ color: 'red' }}>*</span>
         </label>
         <input
@@ -123,7 +127,8 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           ref={passwordInputRef}
           value={formValues.psd}
           name="psd"
-          placeholder="Enter your password"
+          placeholder={t('form.placeholder.psd.default')}
+          data-testid="psdInput"
           onChange={handleInputChange}
           required
         />
@@ -134,8 +139,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           ? <VisibileIcon makeInvisible={handlePasswordVisibility} />
           : <HiddenIcon makeVisible={handlePasswordVisibility} />}
       </div>
-      <p>Forgot Password?</p>
-      <button type="button" data-testid="signUpButton" onClick={handleSubmitForm}>{SIGN_UP}</button>
+      <button type="button" data-testid="signUpButton" onClick={handleSubmitForm}>{t('button.homePage.signUp')}</button>
     </form>
   );
 };

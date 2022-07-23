@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../../redux/Store';
 import RightArrowIcon from '../../../../icons/RightArrow';
 import Button from '../../../../component/Button/Button';
@@ -13,6 +14,7 @@ import styles from './Mentors.module.scss';
 const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
   handleButtonClick:(buttonType:string)=>void}) => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
+  const { t } = useTranslation();
   const [mentors, setMentors] = useState<MentorType[]>([]);
   const [page, setPage] = useState(0);
   const [maxPage, setMaxPage] = useState(10);
@@ -42,7 +44,7 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
 
   return (
     <div className={mentorMainContainer}>
-      <h2>Our Mentors</h2>
+      <h2>{t('string.homePage.mentors.ourMentors')}</h2>
       <div className={mentorListContainer}>
         { page > 0 ? (
           <LeftArrowIcon
@@ -56,7 +58,7 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
         mentors.length > 0 && !errorMessage ? mentors.map((mentor, index) => (
           <MentorCard key={index} mentor={{ ...mentor }} />
         )) : errorMessage ? <h2 data-testid="mentorsErrorMessage">{errorMessage}</h2>
-          : <h2 data-testid="emptyMentorMessage">We do not have mentors yet</h2>
+          : <h2 data-testid="emptyMentorMessage">{t('messages.noData.mentors')}</h2>
       }
         {page < maxPage ? (
           <RightArrowIcon
@@ -67,7 +69,7 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
           />
         ) : null}
       </div>
-      <Button buttonType="signUp" buttonClick={() => handleButtonClick('signUp')}>Register as a mentor</Button>
+      <Button buttonType="signUp" buttonClick={() => handleButtonClick('signUp')}>{t('button.homePage.registerMentor')}</Button>
     </div>
   );
 };

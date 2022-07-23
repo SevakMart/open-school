@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import ChooseCategoryPage from '../ChooseCategoryPage';
-import { EMPTY_DATA_ERROR_MESSAGE } from '../../../constants/Strings';
 import { store } from '../../../redux/Store';
 import categoriesService from '../../../services/categoriesService';
 
@@ -10,6 +9,15 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom') as any,
   useNavigate: () => mockUseNavigate,
 }));
+jest.mock('react-i18next', () => ({
+  ...jest.requireActual('react-i18next'),
+  useTranslation: () => ({
+    t: (message:string) => {
+      if (message === 'error') return 'Something went wrong please refresh the page';
+    },
+  }),
+}));
+
 const data = {
   Java: [
     {
@@ -83,6 +91,6 @@ describe('Create test case to ChooSecategoryPage', () => {
     );
     const errorMessageHeader = await screen.findByTestId('chooseSubcategoriesErrorMessage');
     expect(errorMessageHeader).toBeInTheDocument();
-    expect(errorMessageHeader).toHaveTextContent(EMPTY_DATA_ERROR_MESSAGE);
+    expect(errorMessageHeader).toHaveTextContent('Something went wrong please refresh the page');
   });
 });

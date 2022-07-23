@@ -9,7 +9,7 @@ exports[`Create test case for Default Sign up component Create a snapshot test 1
       <label
         for="firstName"
       >
-        First Name
+        form.labels.name
         <span
           style="color: red;"
         >
@@ -17,9 +17,10 @@ exports[`Create test case for Default Sign up component Create a snapshot test 1
         </span>
       </label>
       <input
+        data-testid="firstNameInput"
         id="firstName"
         name="firstName"
-        placeholder="Fill in first name"
+        placeholder="form.placeholder.name"
         required=""
         type="text"
         value=""
@@ -29,7 +30,7 @@ exports[`Create test case for Default Sign up component Create a snapshot test 1
       <label
         for="lastName"
       >
-        Last Name
+        form.labels.surname
         <span
           style="color: red;"
         >
@@ -37,9 +38,10 @@ exports[`Create test case for Default Sign up component Create a snapshot test 1
         </span>
       </label>
       <input
+        data-testid="lastNameInput"
         id="lastName"
         name="lastName"
-        placeholder="Fill in last name"
+        placeholder="form.placeholder.surname"
         required=""
         type="text"
         value=""
@@ -49,7 +51,7 @@ exports[`Create test case for Default Sign up component Create a snapshot test 1
       <label
         for="email"
       >
-        Email
+        form.labels.email
         <span
           style="color: red;"
         >
@@ -57,9 +59,10 @@ exports[`Create test case for Default Sign up component Create a snapshot test 1
         </span>
       </label>
       <input
+        data-testid="emailInput"
         id="email"
         name="email"
-        placeholder="ex: namesurname@gmail.com"
+        placeholder="form.placeholder.email"
         required=""
         type="email"
         value=""
@@ -69,7 +72,7 @@ exports[`Create test case for Default Sign up component Create a snapshot test 1
       <label
         for="psd"
       >
-        Password
+        form.labels.psd.default
         <span
           style="color: red;"
         >
@@ -77,9 +80,10 @@ exports[`Create test case for Default Sign up component Create a snapshot test 1
         </span>
       </label>
       <input
+        data-testid="psdInput"
         id="psd"
         name="psd"
-        placeholder="Enter your password"
+        placeholder="form.placeholder.psd.default"
         required=""
         type="password"
         value=""
@@ -105,14 +109,11 @@ exports[`Create test case for Default Sign up component Create a snapshot test 1
         </svg>
       </i>
     </div>
-    <p>
-      Forgot Password?
-    </p>
     <button
       data-testid="signUpButton"
       type="button"
     >
-      SIGN UP
+      button.homePage.signUp
     </button>
   </form>
 </DocumentFragment>

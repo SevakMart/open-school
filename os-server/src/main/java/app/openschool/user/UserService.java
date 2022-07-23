@@ -22,7 +22,13 @@ public interface UserService {
 
   List<EnrolledCourse> findEnrolledCourses(Long userId, Long courseStatusId);
 
-  Page<Course> findSavedCourses(Long userId, Pageable pageable);
+  Page<Course> findSavedCourses(
+      Long userId,
+      String courseTitle,
+      List<Long> subCategoryIds,
+      List<Long> languageIds,
+      List<Long> difficultyIds,
+      Pageable pageable);
 
   Course saveCourse(Long userId, Long courseId);
 

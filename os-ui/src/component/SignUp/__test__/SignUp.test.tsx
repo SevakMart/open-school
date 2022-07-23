@@ -34,10 +34,10 @@ describe('Create tests for sign up form', () => {
         <SignUp handleSignUpClicks={() => null} />
       </Provider>,
     );
-    const firstNameInputField = screen.queryByPlaceholderText('Fill in first name');
-    const lastNameInputField = screen.queryByPlaceholderText('Fill in last name');
-    const emailInputField = screen.queryByPlaceholderText('ex: namesurname@gmail.com');
-    const passwordInputField = screen.queryByPlaceholderText('Enter your password');
+    const firstNameInputField = screen.queryByTestId('firstNameInput');
+    const lastNameInputField = screen.queryByTestId('lastNameInput');
+    const emailInputField = screen.queryByTestId('emailInput');
+    const passwordInputField = screen.queryByTestId('psdInput');
     const signUpButton = screen.queryByTestId('signUpButton');
 
     userEvent.type(firstNameInputField as HTMLInputElement, 'hello');

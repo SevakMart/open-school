@@ -10,7 +10,7 @@ jest.mock('react-i18next', () => ({
   ...jest.requireActual('react-i18next'),
   useTranslation: () => ({
     t: (message:string) => {
-      if (message === 'Empty Data Error Message') return 'No data to display';
+      if (message === 'messages.noData.default') return 'No data to display';
       return 'Something went wrong please refresh the page';
     },
   }),

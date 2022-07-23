@@ -49,7 +49,7 @@ const SavedCoursesContent = () => {
                 />
               </Link>
             </React.Fragment>
-          )) : <h2 data-testid="Empty data Message">{t('Empty Data Error Message')}</h2>}
+          )) : <h2 data-testid="Empty data Message">{t('messages.noData.default')}</h2>}
         </div>
       </div>
     </>

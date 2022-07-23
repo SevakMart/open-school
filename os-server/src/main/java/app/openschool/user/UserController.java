@@ -151,6 +151,17 @@ public class UserController {
   public ResponseEntity<Page<CourseDto>> findSavedCourses(
       @Parameter(description = "User's id whose saved courses will be returned") @PathVariable
           Long userId,
+      @Parameter(description = "Title of the course") @RequestParam(required = false)
+          String courseTitle,
+      @Parameter(description = "List of subCategory ids which were selected")
+          @RequestParam(required = false)
+          List<Long> subCategoryIds,
+      @Parameter(description = "List of language ids which where selected")
+          @RequestParam(required = false)
+          List<Long> languageIds,
+      @Parameter(description = "List of difficulty level ids which where selected")
+          @RequestParam(required = false)
+          List<Long> difficultyIds,
       @Parameter(
               description =
                   "Includes parameters page, size, and sort which is not required. "
@@ -161,7 +172,9 @@ public class UserController {
                       + "Multiple sort criteria are supported.")
           Pageable pageable) {
     return ResponseEntity.ok(
-        CourseMapper.toCourseDtoPage(userService.findSavedCourses(userId, pageable)));
+        CourseMapper.toCourseDtoPage(
+            userService.findSavedCourses(
+                userId, courseTitle, subCategoryIds, languageIds, difficultyIds, pageable)));
   }
 
   @Operation(summary = "save course", security = @SecurityRequirement(name = "bearerAuth"))

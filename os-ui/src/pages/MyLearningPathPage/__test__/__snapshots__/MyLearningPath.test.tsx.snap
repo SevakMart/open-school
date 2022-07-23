@@ -140,7 +140,7 @@ exports[`Create test case for Learning path component Create a snapshot test 1`]
     class="suggestedCoursesContainer"
   >
     <h2>
-      There are no suggested courses yet
+      No courses.suggested
     </h2>
   </div>
 </DocumentFragment>

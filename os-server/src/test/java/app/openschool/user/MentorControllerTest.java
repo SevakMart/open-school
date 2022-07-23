@@ -77,7 +77,7 @@ public class MentorControllerTest {
     Page<Course> mentorCourseDtoPage = new PageImpl<>(mentorCourseList);
     when(userService.findMentorCourses(1L, null)).thenReturn(mentorCourseDtoPage);
     mockMvc
-        .perform(get("/mentors/1/courses").contentType(APPLICATION_JSON))
+        .perform(get("/api/v1/mentors/1/courses").contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
   }
 

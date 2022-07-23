@@ -11,13 +11,13 @@ exports[`Create test cases for learningPathHeader Component Create a snapshot te
         class="activeNav"
         data-testid="All Learning Paths"
       >
-        All Learning Paths
+        string.learningPath.all
       </p>
       <p
         class="nonActiveNav"
         data-testid="Saved Learning paths"
       >
-        Saved Learning Paths
+        string.learningPath.saved
       </p>
     </nav>
     <div
@@ -27,7 +27,7 @@ exports[`Create test cases for learningPathHeader Component Create a snapshot te
         data-testid="sorting"
         for="sorting"
       >
-        Sort By
+        string.learningPath.sortBy
       </label>
       <select
         id="sorting"
@@ -36,17 +36,17 @@ exports[`Create test cases for learningPathHeader Component Create a snapshot te
         <option
           value="Rating"
         >
-          Rating
+          string.learningPath.rating
         </option>
         <option
           value="difficulty_id"
         >
-          difficulty_id
+          string.learningPath.difficulty
         </option>
         <option
           value="Title"
         >
-          Title
+          string.learningPath.title
         </option>
       </select>
     </div>

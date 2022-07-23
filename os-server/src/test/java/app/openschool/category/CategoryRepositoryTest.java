@@ -3,6 +3,7 @@ package app.openschool.category;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
 import static org.springframework.test.util.AssertionErrors.assertNull;
 
 import java.util.List;
@@ -57,16 +58,16 @@ class CategoryRepositoryTest {
   }
 
   @Test
-  void findAllParentCategories() {
-    Category category1 = new Category();
-    category1.setTitle("Java");
-    categoryRepository.save(category1);
-    Category category2 = new Category();
-    category2.setTitle("Js");
-    categoryRepository.save(category2);
-    List<Category> categoryList = categoryRepository.findByParentCategoryIsNull();
+  void findAllSubCategories() {
+    Category category1 = new Category("JAVA", null);
+    Category category2 = new Category("JS", null);
+    Category category3 = new Category("Groovy", 1L);
+    category3.setParentCategory(category1);
+    Category category4 = new Category("React", 2L);
+    category4.setParentCategory(category2);
+    List<Category> categoryList = categoryRepository.findByParentCategoryIsNotNull();
     for (Category category : categoryList) {
-      assertNull(category.getTitle() + "isn't parent category", category.getParentCategoryId());
+      assertNotNull(category.getTitle() + "isn't subcategory", category.getParentCategoryId());
     }
   }
 
