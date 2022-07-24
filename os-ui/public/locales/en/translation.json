@@ -69,7 +69,12 @@
           "goal":"Course Goal",
           "modulesList":"Courses In This Program",
           "summary":"Course Summary",
-          "authorInfo":"Author Information"
+          "authorInfo":"Author Information",
+          "userEnrolled":"Enrolled"
+        },
+        "modal":{
+          "congratsHeader":"Congrats!",
+          "mainMessage":"You have enrolled to the course!"
         }
       }
     },
@@ -93,7 +98,9 @@
       "chooseCategories":{
       "next": "NEXT"
       },
-      "enroll":"Enroll"
+      "enroll":"Enroll",
+      "startCourse":"Start Course Now",
+      "startLearning":"Start"
     },
 
     "messages":{

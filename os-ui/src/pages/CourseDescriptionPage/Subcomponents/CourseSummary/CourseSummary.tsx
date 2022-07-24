@@ -6,8 +6,8 @@ import CourseSummaryItem from './Subcomponent/CourseSummaryItem/CourseSummaryIte
 import styles from './CourseSummary.module.scss';
 
 const CourseSummary = ({
-  rating, enrolled, level, language, duration, enrollInCourse,
-}:Omit<CourseDescriptionType, 'title'|'description'|'goal'|'modules'|'mentorDto'> & {enrollInCourse:()=>void}) => {
+  rating, enrolled, level, language, duration, enrollInCourse, isEnrolled,
+}:Omit<CourseDescriptionType, 'title'|'description'|'goal'|'modules'|'mentorDto'> & {enrollInCourse:()=>void, isEnrolled:boolean}) => {
   const { t } = useTranslation();
   const courseSummaryItem = {
     rating, enrolled, level, language, duration,
@@ -18,7 +18,7 @@ const CourseSummary = ({
   return (
     <div className={mainContent}>
       <div className={headerContent}>
-        <h2>{t('Course Summary')}</h2>
+        <h2>{t('string.courseDescription.title.summary')}</h2>
         <div className={headerIcons}>
           <ShareIcon iconSize="0.5 rem" />
           <BookmarkIcon iconSize="0.5 rem" />
@@ -36,7 +36,8 @@ const CourseSummary = ({
         }
       </div>
       <div className={buttonContainer}>
-        <button type="button" onClick={() => enrollInCourse()}>{t('Enroll')}</button>
+        {isEnrolled && <p>{t('string.courseDescription.title.userEnrolled')}</p>}
+        <button type="button" onClick={() => enrollInCourse()}>{isEnrolled ? t('button.startLearning') : t('button.enroll')}</button>
       </div>
     </div>
   );

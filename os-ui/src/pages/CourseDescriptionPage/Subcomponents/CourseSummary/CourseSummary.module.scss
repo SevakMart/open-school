@@ -27,7 +27,11 @@
     }
     .buttonContainer {
         @include flexStyle(column,center,space-between);
-        margin-top:4rem;
+        margin-top:2rem;
+        p {
+            @include fontStyle('Helvetica Neue',normal,500,1rem,1.25rem);
+            color:#5E617B
+        }
         button {
             @include buttonStyle(#848A9D,#FFFFFF,1rem,25rem,3.75rem,10.375rem,10.375rem,1.25rem,1.25rem);
             border:none;
