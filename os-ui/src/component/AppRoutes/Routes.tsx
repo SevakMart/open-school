@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
 import Loader from '../Loader/Loader';
 import ProtectedRoute from './ProtectedRoute';
-import Loader from '../Loader/Loader';
 import Homepage from '../../pages/Homepage/Homepage';
 import ChooseCategoryPage from '../../pages/ChooseCategoryPage/ChooseCategoryPage';
 import MyLearningPathPage from '../../pages/MyLearningPathPage/MyLearningPathPage';
