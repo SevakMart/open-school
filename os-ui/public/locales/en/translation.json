@@ -1,18 +1,128 @@
 {
-    "welcome": {
-      "title": "Explore Categories You Are Interested In"
+    "string":{
+      "homePage":{
+        "navBar":{
+          "logo":"Open-School",
+          "exploreCategories":"Explore Categories",
+          "mentors":"Mentors"
+        },
+        "header":{
+          "educationalPlatform":"Educational Platform",
+          "chooseCategories":"Choose Categories You Are Interested In"
+        },
+        "categories":{
+          "exploreCategories":"Explore Categories You Are Interested In"
+        },
+        "mentors":{
+          "ourMentors":"Our Mentors"
+        },
+        "footer":{
+          "startJourney":"Start Your Journey Now!",
+          "categories":"Categories",
+          "softwareEngineering":"Software Engineering",
+          "design":"Design",
+          "management":"Management",
+          "becomeMentor":"Become a Mentor",
+          "about":"About",
+          "help":"Help",
+          "findUs":"Find Us On"
+        }
+      },
+      "signIn":{
+        "title":"Sign In!",
+        "forgotPsd":"Forgot Password?",
+        "dontHaveAccount":"Don't Have An Account?",
+        "or":"Or"
+      },
+      "signUp":{
+        "title":"Sign Up!",
+        "haveAccount":"Have An Account?"
+      },
+      "forgotPsd":{
+        "title":"Forgot password",
+        "enterEmail":"Enter your email for the verification process.",
+        "sendNotification":"We will send 4 digits code to your email."
+      },
+      "resetPsd":{
+        "title":"Reset password"
+      },
+      "learningPath":{
+        "all":"All Learning Paths",
+        "saved":"Saved Learning Paths",
+        "rating":"Rating",
+        "difficulty":"difficulty_id",
+        "title":"Title",
+        "sortBy":"Sort By",
+        "category":"Category",
+        "language":"Language",
+        "courseLevel":"Course Level",
+        "filter":"Filter"
+      },
+      "mentors":{
+        "all":"All Mentors",
+        "saved":"Saved Mentors"
+      },
+      "search":"Search name"
     },
-    "Rating":"Rating",
-    "Course Level":"Course Level",
-    "Title":"Title",
-    "difficulty_id":"difficulty_id",
-    "Empty Data Error Message":"No data to display",
-    "Error Message":"Something went wrong please refresh the page",
-    "Sort By":"Sort By",
-    "All Learning Paths":"All Learning Paths",
-    "Saved Learning Paths":"Saved Learning Paths",
-    "Category":"Category",
-    "Language":"Language",
-    "All Mentors":"All Mentors",
-    "Saved Mentors":"Saved Mentors"
+    "button":{
+      "homePage":{
+        "becomeMentor":"Become a mentor",
+        "signIn":"SIGN IN",
+        "signUp":"SIGN UP",
+        "seeAll":"SEE ALL",
+        "registerMentor":"REGISTER AS A MENTOR",
+        "signUpStudent":"SIGN UP AS ASTUDENT",
+        "signUpMentor":"SIGN UP AS A MENTOR"
+        },
+      "forgotPsd":{
+        "continue":"Continue"
+      },
+      "resetPsd":{
+      "submit":"Reset Password",
+      "resendEmail":"Resend Email"
+      },
+      "chooseCategories":{
+      "next": "NEXT"
+      }  
+    },
+
+    "messages":{
+      "noData":{
+        "default":"No data to display",
+        "categories":"We dont have categories yet",
+        "mentors":"We do not have mentors yet",
+        "courses": {
+          "registered":"We do not have courses yet",
+          "suggested":"There are no suggested courses yet"
+        }
+      }, 
+      "successfullSignUp":"You have successfully registered",
+      "error":"Something went wrong please refresh the page"
+    },
+
+    "form": {
+      "labels" : {
+        "name":"First Name", 
+        "surname":"Last Name",
+        "resetPsdToken":"Verification code",
+        "email": "Email",
+        "psd":{
+          "default":"Password", 
+          "reset":"New Password", 
+          "confirm":"Confirm Password"}
+      },
+      "placeholder":{
+        "name":"Fill in first name",
+        "surname":"Fill in last name",
+        "resetPsdToken":"Enter the 4 digits code that you received on your email",
+        "email":"ex: namesurname@gmail.com",
+        "psd":{
+          "default":"Enter your password",
+          "reset":"Enter the new password",
+          "confirm":"Confirm password"
+        }
+      }
+    }
   }
+
+

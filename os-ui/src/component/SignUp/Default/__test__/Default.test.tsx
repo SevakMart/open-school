@@ -37,10 +37,10 @@ describe('Create test case for Default Sign up component', () => {
         <SignUpDefault switchToSignInForm={() => null} />
       </Provider>,
     );
-    const firstNameInputElement = screen.queryByPlaceholderText('Fill in first name') as HTMLInputElement;
-    const lastNameInputElement = screen.queryByPlaceholderText('Fill in last name') as HTMLInputElement;
-    const emailInputElement = screen.queryByPlaceholderText('ex: namesurname@gmail.com') as HTMLInputElement;
-    const passwordInputElement = screen.queryByPlaceholderText('Enter your password') as HTMLInputElement;
+    const firstNameInputElement = screen.queryByTestId('firstNameInput') as HTMLInputElement;
+    const lastNameInputElement = screen.queryByTestId('lastNameInput') as HTMLInputElement;
+    const emailInputElement = screen.queryByTestId('emailInput') as HTMLInputElement;
+    const passwordInputElement = screen.queryByTestId('psdInput') as HTMLInputElement;
     const submitButtonElement = screen.queryByTestId('signUpButton') as HTMLButtonElement;
 
     userEvent.type(firstNameInputElement, firstName);

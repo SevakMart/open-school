@@ -29,7 +29,7 @@ describe('Create test case to Search component', () => {
         />
       </Provider>,
     );
-    const inputField = screen.getByPlaceholderText('Search name');
+    const inputField = screen.queryByTestId('searchInput') as HTMLInputElement;
     userEvent.type(inputField, 'java');
     expect(inputField).toHaveValue('java');
   });

@@ -12,11 +12,11 @@ const AllMentorsPageHeader = ({ activeNavigator, changeHeaderFocus }:
       <nav>
         {/* eslint-disable-next-line max-len */}
         <p className={activeNavigator === ALL_MENTORS ? activeNav : nonActiveNav} onClick={() => changeHeaderFocus(ALL_MENTORS)}>
-          {t('All Mentors')}
+          {t('string.mentors.all')}
         </p>
         {/* eslint-disable-next-line max-len */}
         <p className={activeNavigator === SAVED_MENTORS ? activeNav : nonActiveNav} onClick={() => changeHeaderFocus(SAVED_MENTORS)}>
-          {t('Saved Mentors')}
+          {t('string.mentors.saved')}
         </p>
       </nav>
     </div>

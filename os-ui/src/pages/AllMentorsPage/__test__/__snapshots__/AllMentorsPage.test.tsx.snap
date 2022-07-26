@@ -91,12 +91,12 @@ exports[`Create test case for AllMentorsPage Create a snapshot test 1`] = `
         <p
           class="activeNav"
         >
-          All Mentors
+          string.mentors.all
         </p>
         <p
           class="nonActiveNav"
         >
-          Saved Mentors
+          string.mentors.saved
         </p>
       </nav>
     </div>
@@ -121,7 +121,8 @@ exports[`Create test case for AllMentorsPage Create a snapshot test 1`] = `
         </svg>
       </div>
       <input
-        placeholder="Search name"
+        data-testid="searchInput"
+        placeholder="string.search"
         type="text"
       />
     </div>
@@ -131,7 +132,7 @@ exports[`Create test case for AllMentorsPage Create a snapshot test 1`] = `
       <h2
         data-testid="emptyMessageHeader"
       >
-        Empty Data Error Message
+        messages.noData.default
       </h2>
     </div>
   </div>

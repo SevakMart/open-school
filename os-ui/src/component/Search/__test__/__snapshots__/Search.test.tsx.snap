@@ -23,7 +23,8 @@ exports[`Create test case to Search component Create a Snapshot test 1`] = `
       </svg>
     </div>
     <input
-      placeholder="Search name"
+      data-testid="searchInput"
+      placeholder="string.search"
       type="text"
     />
   </div>

@@ -1,7 +1,7 @@
 import SignInDefault from './Default/Default';
 
 const SignInForm = ({ signInForm, handleSignIn, forgotPasswordHandler }:
-    {signInForm:string, handleSignIn:(message:string)=>void, forgotPasswordHandler:()=>void}) => {
+    {signInForm:string, handleSignIn:()=>void, forgotPasswordHandler:()=>void}) => {
   const handleForgotPassword = () => forgotPasswordHandler();
 
   return (
@@ -10,7 +10,7 @@ const SignInForm = ({ signInForm, handleSignIn, forgotPasswordHandler }:
         signInForm === 'default'
           ? (
             <SignInDefault
-              handleSignIn={(message:string) => handleSignIn(message)}
+              handleSignIn={() => handleSignIn()}
               forgotPasswordFunc={handleForgotPassword}
             />
           ) : null

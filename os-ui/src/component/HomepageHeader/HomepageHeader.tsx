@@ -1,12 +1,14 @@
+import { useTranslation } from 'react-i18next';
 import Navbar from '../Navbar/Navbar';
 import styles from './HomepageHeader.module.scss';
 import {
-  FREE_EDUCATIONAL_PLATFORM, SIGN_UP, HEADER_INTRODUCTION, SIGN_IN, EDUCATION_PLATFORM_IMAGE,
+  EDUCATION_PLATFORM_IMAGE,
 } from '../../constants/Strings';
 import Button from '../Button/Button';
 
 const HomepageHeader = ({ handleFormVisibility }:
   {handleFormVisibility(buttonType:string):void}) => {
+  const { t } = useTranslation();
   const {
     headerContainer, mainContent, leftContent, rightContent, buttonContainer,
   } = styles;
@@ -16,20 +18,20 @@ const HomepageHeader = ({ handleFormVisibility }:
       <Navbar />
       <div className={mainContent}>
         <div className={leftContent}>
-          <h1>{FREE_EDUCATIONAL_PLATFORM}</h1>
-          <p>{HEADER_INTRODUCTION}</p>
+          <h1>{t('string.homePage.header.educationalPlatform')}</h1>
+          <p>{t('string.homePage.header.chooseCategories')}</p>
           <div className={buttonContainer}>
             <Button
               buttonType="signUp"
               buttonClick={(buttonType) => handleFormVisibility(buttonType)}
             >
-              {SIGN_UP}
+              {t('button.homePage.signUp')}
             </Button>
             <Button
               buttonType="signIn"
               buttonClick={(buttonType) => handleFormVisibility(buttonType)}
             >
-              {SIGN_IN}
+              {t('button.homePage.signIn')}
             </Button>
           </div>
         </div>

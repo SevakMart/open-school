@@ -6,7 +6,7 @@ exports[`Make unit tests of Navbar component Create a snapshot test 1`] = `
     class="navContainer"
   >
     <h2>
-      Open-School
+      string.homePage.navBar.logo
     </h2>
     <div
       class="navMainContent"
@@ -15,10 +15,10 @@ exports[`Make unit tests of Navbar component Create a snapshot test 1`] = `
         class="categoriesMentors"
       >
         <p>
-          Explore Categories
+          string.homePage.navBar.exploreCategories
         </p>
         <p>
-          Mentors
+          string.homePage.navBar.mentors
         </p>
       </div>
       <div
@@ -27,12 +27,12 @@ exports[`Make unit tests of Navbar component Create a snapshot test 1`] = `
         <button
           type="button"
         >
-          Become a mentor
+          button.homePage.becomeMentor
         </button>
         <button
           type="button"
         >
-          Sign In
+          button.homePage.signIn
         </button>
       </div>
     </div>
