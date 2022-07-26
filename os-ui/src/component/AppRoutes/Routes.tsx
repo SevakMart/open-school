@@ -1,8 +1,9 @@
+import { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Suspense } from 'react';
 import { RootState } from '../../redux/Store';
 import ProtectedRoute from './ProtectedRoute';
+import Loader from '../Loader/Loader';
 import Homepage from '../../pages/Homepage/Homepage';
 import ChooseCategoryPage from '../../pages/ChooseCategoryPage/ChooseCategoryPage';
 import MyLearningPathPage from '../../pages/MyLearningPathPage/MyLearningPathPage';
@@ -10,7 +11,6 @@ import AllLearningPathPage from '../../pages/AllLearningPathPage/AllLearningPath
 import AllMentorsPage from '../../pages/AllMentorsPage/AllMentorsPage';
 import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
 import AfterVerificationPage from '../../pages/AfterVerificationPage/AfterVerificationPage';
-import Loader from '../Loader/Loader';
 
 const AppRoutes = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
