@@ -76,9 +76,9 @@ describe('Create test cases for ResetPassword Component', () => {
         />
       </Provider>,
     );
-    const tokenInputField = screen.queryByPlaceholderText('Enter the 4 digits code that you received on your email');
-    const passwordInputField = screen.queryByPlaceholderText('Enter the new password');
-    const confirmPasswordInputField = screen.queryByPlaceholderText('Confirm password');
+    const tokenInputField = screen.queryByTestId('tokenInput');
+    const passwordInputField = screen.queryByTestId('psdInput');
+    const confirmPasswordInputField = screen.queryByTestId('confirmPsdInput');
 
     userEvent.type((tokenInputField as HTMLInputElement), '123');
     userEvent.type((passwordInputField as HTMLInputElement), 'Helloworld11$');
@@ -90,7 +90,7 @@ describe('Create test cases for ResetPassword Component', () => {
     const tokenErrorMessageElement = screen.queryByTestId('tokenErrorMessage');
 
     expect(tokenErrorMessageElement).toBeInTheDocument();
-    expect(tokenErrorMessageElement).toHaveTextContent(INVALID_TOKEN);
+    expect(tokenErrorMessageElement).toHaveTextContent('Invalid verification code');
   });
   test('Create a test case where we reset the password without inserting a password', () => {
     expect.hasAssertions();
@@ -150,9 +150,9 @@ describe('Create test cases for ResetPassword Component', () => {
         />
       </Provider>,
     );
-    const tokenInputField = screen.queryByPlaceholderText('Enter the 4 digits code that you received on your email');
-    const passwordInputField = screen.queryByPlaceholderText('Enter the new password');
-    const confirmPasswordInputField = screen.queryByPlaceholderText('Confirm password');
+    const tokenInputField = screen.queryByTestId('tokenInput');
+    const passwordInputField = screen.queryByTestId('psdInput');
+    const confirmPasswordInputField = screen.queryByTestId('confirmPsdInput');
 
     userEvent.type((tokenInputField as HTMLInputElement), '1234');
     userEvent.type((passwordInputField as HTMLInputElement), 'Helloworld11$');
@@ -180,9 +180,9 @@ describe('Create test cases for ResetPassword Component', () => {
         />
       </Provider>,
     );
-    const tokenInputField = screen.queryByPlaceholderText('Enter the 4 digits code that you received on your email');
-    const passwordInputField = screen.queryByPlaceholderText('Enter the new password');
-    const confirmPasswordInputField = screen.queryByPlaceholderText('Confirm password');
+    const tokenInputField = screen.queryByTestId('tokenInput');
+    const passwordInputField = screen.queryByTestId('psdInput');
+    const confirmPasswordInputField = screen.queryByTestId('confirmPsdInput');
 
     userEvent.type((tokenInputField as HTMLInputElement), '123');
     userEvent.type((passwordInputField as HTMLInputElement), 'Helloworld11');
@@ -213,9 +213,9 @@ describe('Create test cases for ResetPassword Component', () => {
         />
       </Provider>,
     );
-    const tokenInputField = screen.queryByPlaceholderText('Enter the 4 digits code that you received on your email');
-    const passwordInputField = screen.queryByPlaceholderText('Enter the new password');
-    const confirmPasswordInputField = screen.queryByPlaceholderText('Confirm password');
+    const tokenInputField = screen.queryByTestId('tokenInput');
+    const passwordInputField = screen.queryByTestId('psdInput');
+    const confirmPasswordInputField = screen.queryByTestId('confirmPsdInput');
 
     userEvent.type((tokenInputField as HTMLInputElement), '1234');
     userEvent.type((passwordInputField as HTMLInputElement), 'Helloworld11$');
@@ -242,9 +242,9 @@ describe('Create test cases for ResetPassword Component', () => {
         />
       </Provider>,
     );
-    const tokenInputField = screen.queryByPlaceholderText('Enter the 4 digits code that you received on your email');
-    const passwordInputField = screen.queryByPlaceholderText('Enter the new password');
-    const confirmPasswordInputField = screen.queryByPlaceholderText('Confirm password');
+    const tokenInputField = screen.queryByTestId('tokenInput');
+    const passwordInputField = screen.queryByTestId('psdInput');
+    const confirmPasswordInputField = screen.queryByTestId('confirmPsdInput');
 
     userEvent.type((tokenInputField as HTMLInputElement), '1234');
     userEvent.type((passwordInputField as HTMLInputElement), 'Helloworld11$');

@@ -9,7 +9,7 @@ exports[`Create test cases for AllMentorsPageHeader component Create a snapshot 
       <p
         class="activeNav"
       >
-        All Mentors
+        Saved Mentors
       </p>
       <p
         class="nonActiveNav"

@@ -90,13 +90,13 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
         class="activeNav"
         data-testid="All Learning Paths"
       >
-        All Learning Paths
+        string.learningPath.all
       </p>
       <p
         class="nonActiveNav"
         data-testid="Saved Learning paths"
       >
-        Saved Learning Paths
+        string.learningPath.saved
       </p>
     </nav>
     <div
@@ -106,7 +106,7 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
         data-testid="sorting"
         for="sorting"
       >
-        Sort By
+        string.learningPath.sortBy
       </label>
       <select
         id="sorting"
@@ -115,17 +115,17 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
         <option
           value="Rating"
         >
-          Rating
+          string.learningPath.rating
         </option>
         <option
           value="difficulty_id"
         >
-          difficulty_id
+          string.learningPath.difficulty
         </option>
         <option
           value="Title"
         >
-          Title
+          string.learningPath.title
         </option>
       </select>
     </div>
@@ -143,7 +143,7 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
         <p
           class="mainTitle"
         >
-          Filter
+          string.learningPath.filter
         </p>
       </div>
     </div>
@@ -171,7 +171,8 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
           </svg>
         </div>
         <input
-          placeholder="Search name"
+          data-testid="searchInput"
+          placeholder="string.search"
           type="text"
         />
       </div>
@@ -181,7 +182,7 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
         <h2
           data-testid="Error Message"
         >
-          Empty Data Error Message
+          messages.noData.default
         </h2>
       </div>
     </div>

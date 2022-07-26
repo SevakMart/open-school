@@ -9,7 +9,7 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
       class="navContainer"
     >
       <h2>
-        Open-School
+        string.homePage.navBar.logo
       </h2>
       <div
         class="navMainContent"
@@ -18,10 +18,10 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
           class="categoriesMentors"
         >
           <p>
-            Explore Categories
+            string.homePage.navBar.exploreCategories
           </p>
           <p>
-            Mentors
+            string.homePage.navBar.mentors
           </p>
         </div>
         <div
@@ -30,12 +30,12 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
           <button
             type="button"
           >
-            Become a mentor
+            button.homePage.becomeMentor
           </button>
           <button
             type="button"
           >
-            Sign In
+            button.homePage.signIn
           </button>
         </div>
       </div>
@@ -47,10 +47,10 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
         class="leftContent"
       >
         <h1>
-          Educational Platform
+          string.homePage.header.educationalPlatform
         </h1>
         <p>
-          Choose Categories You Are Interested In Choose Categories You Are Interested InChoose Categories You Are Interested
+          string.homePage.header.chooseCategories
         </p>
         <div
           class="buttonContainer"
@@ -59,13 +59,13 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
             name="signUp"
             type="button"
           >
-            SIGN UP
+            button.homePage.signUp
           </button>
           <button
             name="signIn"
             type="button"
           >
-            Sign In
+            button.homePage.signIn
           </button>
         </div>
       </div>
@@ -83,7 +83,7 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
     class="categoriesMainContainer"
   >
     <h2>
-      Explore Categories You Are Interested In
+      string.homePage.categories.exploreCategories
     </h2>
     <div
       class="categoriesListContainer"
@@ -91,7 +91,7 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
       <h2
         data-testid="emptyCategoryMessage"
       >
-        We do not have courses yet
+        messages.noData.categories
       </h2>
       <i
         data-testid="categoryRightArrow"
@@ -115,14 +115,14 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
     <button
       type="button"
     >
-      SEE ALL
+      button.homePage.seeAll
     </button>
   </div>
   <div
     class="mentorMainContainer"
   >
     <h2>
-      Our Mentors
+      string.homePage.mentors.ourMentors
     </h2>
     <div
       class="mentorListContainer"
@@ -130,7 +130,7 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
       <h2
         data-testid="emptyMentorMessage"
       >
-        We do not have mentors yet
+        messages.noData.mentors
       </h2>
       <i
         data-testid="mentorRightArrow"
@@ -155,14 +155,14 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
       name="signUp"
       type="button"
     >
-      Register as a mentor
+      button.homePage.registerMentor
     </button>
   </div>
   <div
     class="mainContainer"
   >
     <h2>
-      Start Your Journey Now!
+      string.homePage.footer.startJourney
     </h2>
     <div
       class="buttonContainer"
@@ -171,13 +171,13 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
         name="signUp"
         type="button"
       >
-        Sign up as a Student
+        button.homePage.signUpStudent
       </button>
       <button
         name="signUp"
         type="button"
       >
-        sign up as a mentor
+        button.homePage.signUpMentor
       </button>
     </div>
   </div>
@@ -187,42 +187,42 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
     <button
       type="button"
     >
-      Open-School
+      string.homePage.navBar.logo
     </button>
     <div
       class="categories"
     >
       <h2>
-        Categories
+        string.homePage.footer.categories
       </h2>
       <p>
-        Software Engineering
+        string.homePage.footer.softwareEngineering
       </p>
       <p>
-        Design
+        string.homePage.footer.design
       </p>
       <p>
-        Management
+        string.homePage.footer.management
       </p>
     </div>
     <div
       class="becomeMentor"
     >
       <h2>
-        Become a Mentor
+        string.homePage.footer.becomeMentor
       </h2>
       <p>
-        About
+        string.homePage.footer.about
       </p>
       <p>
-        Help
+        string.homePage.footer.help
       </p>
     </div>
     <div
       class="findUsOn"
     >
       <h2>
-        Find Us On
+        string.homePage.footer.findUs
       </h2>
       <p>
         Facebook

@@ -6,7 +6,7 @@ exports[`Create test cases for homepage mentors list Create a snapshot test 1`] 
     class="categoriesMainContainer"
   >
     <h2>
-      Explore Categories You Are Interested In
+      string.homePage.categories.exploreCategories
     </h2>
     <div
       class="categoriesListContainer"
@@ -14,7 +14,7 @@ exports[`Create test cases for homepage mentors list Create a snapshot test 1`] 
       <h2
         data-testid="emptyCategoryMessage"
       >
-        We do not have courses yet
+        messages.noData.categories
       </h2>
       <i
         data-testid="categoryRightArrow"
@@ -38,7 +38,7 @@ exports[`Create test cases for homepage mentors list Create a snapshot test 1`] 
     <button
       type="button"
     >
-      SEE ALL
+      button.homePage.seeAll
     </button>
   </div>
 </DocumentFragment>

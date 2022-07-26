@@ -6,7 +6,7 @@ exports[`Create test cases for homepage mentors list Create a snapshot test 1`] 
     class="mentorMainContainer"
   >
     <h2>
-      Our Mentors
+      string.homePage.mentors.ourMentors
     </h2>
     <div
       class="mentorListContainer"
@@ -14,7 +14,7 @@ exports[`Create test cases for homepage mentors list Create a snapshot test 1`] 
       <h2
         data-testid="emptyMentorMessage"
       >
-        We do not have mentors yet
+        messages.noData.mentors
       </h2>
       <i
         data-testid="mentorRightArrow"
@@ -39,7 +39,7 @@ exports[`Create test cases for homepage mentors list Create a snapshot test 1`] 
       name="signUp"
       type="button"
     >
-      Register as a mentor
+      button.homePage.registerMentor
     </button>
   </div>
 </DocumentFragment>
