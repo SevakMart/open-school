@@ -3,7 +3,6 @@ package app.openschool.auth.api.exception;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import app.openschool.auth.api.dto.UserLoginExceptionResponse;
-import app.openschool.auth.exception.UserNotVerifiedException;
 import app.openschool.common.response.ResponseMessage;
 import java.util.Locale;
 import java.util.Map;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.thymeleaf.ITemplateEngine;
-import org.thymeleaf.context.Context;
 
 @RestControllerAdvice
 public class UserExceptionHandling implements ErrorController {
@@ -43,14 +41,6 @@ public class UserExceptionHandling implements ErrorController {
   public ResponseEntity<UserLoginExceptionResponse> badCredentialsException(Locale locale) {
     String message = messageSource.getMessage("exception.bad.credentials.message", null, locale);
     return new ResponseEntity<>(new UserLoginExceptionResponse(message), UNAUTHORIZED);
-  }
-
-  @ExceptionHandler(UserNotVerifiedException.class)
-  public String userNotVerifiedException(Locale locale) {
-    String message = messageSource.getMessage("exception.unverified.user.message", null, locale);
-    Context context = new Context();
-    context.setVariable("message", message);
-    return templateEngine.process("verification-response", context);
   }
 
   @ExceptionHandler(IllegalArgumentException.class)

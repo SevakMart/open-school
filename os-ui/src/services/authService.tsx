@@ -27,6 +27,20 @@ class AuthService {
     return { ...data, status, token };
   }
 
+  async redirectUserToAccount(content:object) {
+    const response = await fetchService.post(`${this.basePath}/account`, content, {});
+    const { status, headers } = response;
+    let data = {};
+    if (response.status === 200) {
+      data = await response.json();
+    }
+    const FullTokenResponse = headers.get('Authorization');
+    const tokenStartingIndex = FullTokenResponse ? FullTokenResponse.indexOf(' ') : undefined;
+    const token = FullTokenResponse && tokenStartingIndex
+      ? FullTokenResponse.slice(tokenStartingIndex + 1) : null;
+    return { ...data, status, token };
+  }
+
   async sendForgotPasswordRequest(content:object) {
     const response = await fetchService.post(`${this.basePath}/password/forgot`, content, {});
     const { status } = response;

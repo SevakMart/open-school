@@ -8,12 +8,14 @@ import MyLearningPathPage from '../../pages/MyLearningPathPage/MyLearningPathPag
 import AllLearningPathPage from '../../pages/AllLearningPathPage/AllLearningPathPage';
 import AllMentorsPage from '../../pages/AllMentorsPage/AllMentorsPage';
 import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
+import AfterVerificationPage from '../../pages/AfterVerificationPage/AfterVerificationPage';
 
 const AppRoutes = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
   return (
     <Routes>
       <Route path="/homepage" element={<Homepage />} />
+      <Route path="/homepage/account" element={<AfterVerificationPage />} />
       <Route path="/" element={<Navigate replace to="/homepage" />} />
       <Route
         path="/categories/subcategories"
