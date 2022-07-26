@@ -15,17 +15,14 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.thymeleaf.ITemplateEngine;
 
 @RestControllerAdvice
 public class UserExceptionHandling implements ErrorController {
 
   private final MessageSource messageSource;
-  private final ITemplateEngine templateEngine;
 
-  public UserExceptionHandling(MessageSource messageSource, ITemplateEngine templateEngine) {
+  public UserExceptionHandling(MessageSource messageSource) {
     this.messageSource = messageSource;
-    this.templateEngine = templateEngine;
   }
 
   @ExceptionHandler(EmailNotFoundException.class)

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { VERIFICATION_TOKEN_NOT_VALID_MESSAGE_CONTENT, VERIFICATION_TOKEN_NOT_VALID_MESSAGE_HEADER } from '../../constants/Strings';
 import { addLoggedInUser } from '../../redux/Slices/loginUserSlice';
 import authService from '../../services/authService';
 import styles from './AfterVerificationPage.module.scss';
@@ -27,9 +28,8 @@ const AfterVerificationPage = () => {
         navigate('/categories/subcategories');
       } else {
         setMessage({
-          header: 'The verification token is expired or not valid',
-          content: 'Please check your email and verify your account with the email you received recently,'
-                 + ' otherwise click the "Resend" button on the app\'s home page to receive a new email.',
+          header: VERIFICATION_TOKEN_NOT_VALID_MESSAGE_HEADER,
+          content: VERIFICATION_TOKEN_NOT_VALID_MESSAGE_CONTENT,
         });
       }
     });

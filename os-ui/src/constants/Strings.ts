@@ -47,6 +47,9 @@ export const LASTNAME_REQUIRED = 'Last name is required';
 export const FIRSTNAME_TOO_LONG = 'First name is too long. Maximum 45 characters are allowed.';
 export const LASTNAME_TOO_LONG = 'Last name is too long. Maximum 45 characters are allowed.';
 export const EMAIL_TOO_LONG = 'Email is too long. Maximum 45 characters are allowed.';
+export const VERIFICATION_TOKEN_NOT_VALID_MESSAGE_HEADER = 'The verification token is expired or not valid';
+export const VERIFICATION_TOKEN_NOT_VALID_MESSAGE_CONTENT = 'Please check your email and verify your account with the email you received recently,'
+                                                          + ' otherwise click the "Resend" button on the app\'s home page to receive a new email.';
 
 // Other non-specific strings
 export const NO_COURSES_YET = 'No Courses Yet';
