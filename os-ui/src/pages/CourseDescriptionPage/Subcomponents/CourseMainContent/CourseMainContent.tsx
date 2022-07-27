@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseDescriptionType } from '../../../../types/CourseDescriptionType';
 import LinkedinIcon from '../../../../icons/Linkedin';
+import ModuleItem from '../ModuleItem/ModuleItem';
 import styles from './CourseMainContent.module.scss';
 
 const CourseMainContent = ({
@@ -10,7 +11,7 @@ const CourseMainContent = ({
   const { t } = useTranslation();
   const {
     mainContent, subContent, coursesInProgram, authorInformationContainer,
-    authorInfo, imageAndFullName,
+    authorInfo, imageAndFullName, moduleListContainer,
   } = styles;
 
   return (
@@ -25,6 +26,16 @@ const CourseMainContent = ({
       </div>
       <div className={subContent}>
         <h2>{t('string.courseDescription.title.modulesList')}</h2>
+        <div className={moduleListContainer}>
+          {
+              modules.map((module, index) => (
+                <ModuleItem
+                  key={index}
+                  moduleInfo={module}
+                />
+              ))
+            }
+        </div>
       </div>
       <div className={authorInformationContainer}>
         <h2>{t('string.courseDescription.title.authorInfo')}</h2>
