@@ -54,6 +54,10 @@ class AuthService {
     const data = await response.json();
     return { data, status };
   }
+
+  async resendVerificationEmail(userId:number) {
+    fetchService.get(`${this.basePath}/${userId}/account/verification`);
+  }
 }
 
 export default new AuthService();
