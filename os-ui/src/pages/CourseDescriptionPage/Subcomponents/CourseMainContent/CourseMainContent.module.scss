@@ -17,7 +17,6 @@
         .moduleListContainer {
             @include flexStyle(column, center, space-between);
             padding-left:0.625rem;
-            border:2px solid blue;
         }
     }
     .authorInformationContainer {

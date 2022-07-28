@@ -2,10 +2,11 @@
 @import "../../styles/Mixins/FontMixin.scss";
 
 .navAndMainTitle {
-    @include flexStyle(column,none, space-between);
-    border:1px solid red;
+    height:18rem;
     h1 {
         padding-left:6%;
+        position:absolute;
+        top:7.125rem;
     }
 }
 

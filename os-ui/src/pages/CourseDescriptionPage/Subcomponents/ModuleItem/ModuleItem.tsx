@@ -10,7 +10,7 @@ const ModuleItem = ({ moduleInfo }:{moduleInfo:Module}) => {
   const [moduleListIsOpen, setModuleListIsOpen] = useState(false);
   const {
     mainContainer, vector, mainContent, ellipseIcon, titleAndEllipseIcon,
-    chevronIsOpen, chevronIsClosed,
+    chevronIsOpen, chevronIsClosed, moduleDescriptionIsOpen, moduleDescriptionIsClosed,
   } = styles;
   const openModuleList = () => {
     setModuleListIsOpen((prevState) => !prevState);
@@ -25,6 +25,9 @@ const ModuleItem = ({ moduleInfo }:{moduleInfo:Module}) => {
           <p>{moduleInfo.title}</p>
         </div>
         <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
+      </div>
+      <div className={moduleListIsOpen ? moduleDescriptionIsOpen : moduleDescriptionIsClosed}>
+        <p>This is where the module description will be implemented</p>
       </div>
     </div>
   );
