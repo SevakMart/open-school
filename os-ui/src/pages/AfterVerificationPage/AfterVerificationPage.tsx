@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { VERIFICATION_TOKEN_NOT_VALID_MESSAGE_CONTENT, VERIFICATION_TOKEN_NOT_VALID_MESSAGE_HEADER } from '../../constants/Strings';
+import { useTranslation } from 'react-i18next';
 import { addLoggedInUser } from '../../redux/Slices/loginUserSlice';
 import authService from '../../services/authService';
 import styles from './AfterVerificationPage.module.scss';
@@ -16,6 +16,7 @@ const AfterVerificationPage = () => {
     }
     return null;
   }
+  const { t } = useTranslation();
   const { mainContainer } = styles;
   const [message, setMessage] = useState({ header: 'Please Wait...', content: '' });
   const token = getCookie('verification-token');
@@ -28,8 +29,8 @@ const AfterVerificationPage = () => {
         navigate('/categories/subcategories');
       } else {
         setMessage({
-          header: VERIFICATION_TOKEN_NOT_VALID_MESSAGE_HEADER,
-          content: VERIFICATION_TOKEN_NOT_VALID_MESSAGE_CONTENT,
+          header: t('string.afterVerification.verificationTokenNotValidMessageHeader'),
+          content: t('string.afterVerification.verificationTokenNotValidMessageContent'),
         });
       }
     });
