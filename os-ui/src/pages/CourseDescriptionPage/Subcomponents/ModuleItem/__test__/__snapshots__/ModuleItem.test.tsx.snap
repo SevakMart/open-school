@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for ModuleItem component Create a snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="mainContainer"
+  >
+    <img
+      alt="vector"
+      class="vector"
+      src="Vector.svg"
+    />
+    <div
+      class="mainContent"
+    >
+      <div
+        class="titleAndEllipseIcon"
+      >
+        <div
+          class="ellipseIcon"
+        />
+        <p>
+          React js
+        </p>
+      </div>
+      <img
+        alt="chevron"
+        class="chevronIsClosed"
+        src="ArrowRight.svg"
+      />
+    </div>
+    <div
+      class="moduleDescriptionIsClosed"
+    >
+      <p>
+        This is where the module description will be implemented
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;

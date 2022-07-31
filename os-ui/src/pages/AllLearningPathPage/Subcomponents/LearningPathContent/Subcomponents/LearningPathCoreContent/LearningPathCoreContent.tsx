@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../../../../redux/Store';
 import { userContext } from '../../../../../../contexts/Contexts';
@@ -51,17 +50,15 @@ const LearningPathCoreContent = () => {
     <div className={mainCoreContainer}>
       {courseList.length ? courseList.map((course) => (
         <div className={courseContainer} key={course.title}>
-          <Link to={`/userCourse/${course.id}`}>
-            <LearningPath
-              courseInfo={course}
-              saveCourse={
+          <LearningPath
+            courseInfo={course}
+            saveCourse={
               (courseId:number) => userService.saveUserPreferredCourses(id, courseId, token)
             }
-              deleteCourse={
+            deleteCourse={
               (courseId:number) => userService.deleteUserSavedCourses(id, courseId, token)
             }
-            />
-          </Link>
+          />
         </div>
       )) : <h2 data-testid="Error Message">{t('messages.noData.default')}</h2>}
     </div>

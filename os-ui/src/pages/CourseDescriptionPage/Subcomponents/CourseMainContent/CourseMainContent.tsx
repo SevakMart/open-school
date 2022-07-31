@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CourseDescriptionType } from '../../../../types/CourseDescriptionType';
 import LinkedinIcon from '../../../../icons/Linkedin';
@@ -10,8 +9,8 @@ const CourseMainContent = ({
 }:Omit<CourseDescriptionType, 'title'|'rating'|'enrolled'|'level'|'language'|'duration'>) => {
   const { t } = useTranslation();
   const {
-    mainContent, subContent, coursesInProgram, authorInformationContainer,
-    authorInfo, imageAndFullName, moduleListContainer,
+    mainContent, subContent, authorInformationContainer, authorInfo,
+    imageAndFullName, moduleListContainer,
   } = styles;
 
   return (

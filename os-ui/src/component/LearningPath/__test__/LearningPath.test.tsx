@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { BrowserRouter } from 'react-router-dom';
 import LearningPath from '../LearningPath';
 
 const props = {
@@ -15,6 +16,7 @@ describe('Create test cases to learning path component', () => {
       <LearningPath
         courseInfo={props}
       />,
+      { wrapper: BrowserRouter },
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -23,6 +25,7 @@ describe('Create test cases to learning path component', () => {
       <LearningPath
         courseInfo={props}
       />,
+      { wrapper: BrowserRouter },
     );
     const difficultyContentElement = screen.queryByTestId('Medium');
     const learningPathElement = screen.queryByTestId('React');
@@ -40,6 +43,7 @@ describe('Create test cases to learning path component', () => {
       <LearningPath
         courseInfo={props}
       />,
+      { wrapper: BrowserRouter },
     );
     const remainingKeywordNumberElement = screen.queryByTestId('remainingKeywordNumber');
     expect(remainingKeywordNumberElement).not.toBeInTheDocument();

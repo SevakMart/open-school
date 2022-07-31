@@ -76,6 +76,8 @@ const CourseDescriptionPage = () => {
             duration={duration}
             enrollInCourse={enrollInCourse}
             isEnrolled={isEnrolled}
+            courseId={Number(courseId)}
+            userIdAndToken={idAndToken}
           />
         </div>
       ) : <h2>{errorMessage}</h2>}
