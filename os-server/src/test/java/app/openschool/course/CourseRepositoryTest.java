@@ -86,6 +86,7 @@ public class CourseRepositoryTest {
       Module module = new Module();
       module.setId(i);
       module.setCourse(courseRepository.getById(1L));
+      module.setDescription("description");
       moduleSet.add(module);
       moduleRepository.save(module);
     }

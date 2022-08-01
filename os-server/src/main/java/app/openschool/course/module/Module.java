@@ -25,6 +25,9 @@ public class Module {
   @Column(name = "title")
   private String title;
 
+  @Column(name = "description")
+  private String description;
+
   @ManyToOne
   @JoinColumn(name = "learning_path_id")
   private Course course;
@@ -74,5 +77,13 @@ public class Module {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 }
