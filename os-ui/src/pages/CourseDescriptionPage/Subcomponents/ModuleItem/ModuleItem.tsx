@@ -27,7 +27,7 @@ const ModuleItem = ({ moduleInfo }:{moduleInfo:Module}) => {
         <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
       </div>
       <div className={moduleListIsOpen ? moduleDescriptionIsOpen : moduleDescriptionIsClosed}>
-        <p>This is where the module description will be implemented</p>
+        <p>{moduleInfo.description}</p>
       </div>
     </div>
   );

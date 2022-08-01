@@ -15,7 +15,7 @@
     }
     .mainContent {
         margin-right: 1.5rem;
-        margin-left:1.1rem;
+        margin-left:1.5rem;
         @include flexStyle(row,center, space-between);
         .titleAndEllipseIcon {
             @include flexStyle(row,center, space-between);
@@ -42,7 +42,7 @@
         background-color: #F9F9FD;
         border-radius: 0.5rem;
         margin-bottom:0.625rem;
-        margin-left:1.5rem;
+        margin-left:2rem;
     }
     .moduleDescriptionIsClosed {
         display:none;

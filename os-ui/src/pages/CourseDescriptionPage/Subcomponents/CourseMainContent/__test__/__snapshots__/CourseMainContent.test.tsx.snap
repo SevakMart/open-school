@@ -65,7 +65,7 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
             class="moduleDescriptionIsClosed"
           >
             <p>
-              This is where the module description will be implemented
+              It talks about React
             </p>
           </div>
         </div>

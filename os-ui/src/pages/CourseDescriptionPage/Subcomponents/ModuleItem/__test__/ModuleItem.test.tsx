@@ -6,6 +6,7 @@ import ModuleItem from '../ModuleItem';
 
 const moduleInfo = {
   title: 'React js',
+  description: 'It talks about React',
   moduleItemSet: [{ title: 'Redux' }],
 };
 

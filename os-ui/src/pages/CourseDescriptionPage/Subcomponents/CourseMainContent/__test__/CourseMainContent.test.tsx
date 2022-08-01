@@ -7,6 +7,7 @@ import CourseMainContent from '../CourseMainContent';
 
 const moduleInfo = {
   title: 'React js',
+  description: 'It talks about React',
   moduleItemSet: [{ title: 'Redux' }],
 };
 const mockUseNavigate = jest.fn();
