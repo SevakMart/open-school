@@ -34,7 +34,7 @@ const BookmarkIcon = (
         fontSize: `${iconSize}`,
         cursor: 'pointer',
         color: '#5E617B',
-        fill: isClicked ? 'black' : 'none',
+        fill: (isClicked || isBookmarked) ? 'black' : 'none',
       }}
     />
   );

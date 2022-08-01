@@ -21,16 +21,21 @@ const CourseSummary = ({
   const {
     mainContent, headerContent, headerIcons, courseSummaryItemList, buttonContainer,
   } = styles;
-
+  const saveUserCourse = (courseId:number) => {
+    userService.saveUserPreferredCourses(userIdAndToken.id, courseId, userIdAndToken.token);
+    setIsBookmarked(true);
+  };
+  const deleteUserSavedCourse = (courseId:number) => {
+    userService.deleteUserSavedCourses(userIdAndToken.id, courseId, userIdAndToken.token);
+    setIsBookmarked(false);
+  };
   useEffect(() => {
     userService.getUserSavedCourses(userIdAndToken.id, userIdAndToken.token, { page: 0, size: 100 })
       .then((data) => {
-        console.log(data);
-        console.log(data.content.some((savedCourse:CourseListType) => savedCourse.id === courseId));
         /* eslint-disable-next-line max-len */
         setIsBookmarked(data.content.some((savedCourse:CourseListType) => savedCourse.id === courseId));
       });
-  }, [isBookmarked]);
+  }, []);
 
   return (
     <div className={mainContent}>
@@ -41,11 +46,11 @@ const CourseSummary = ({
           <BookmarkIcon
             iconSize="0.5 rem"
             courseId={courseId}
-            /* isBookmarked={isBookmarked} */
+            isBookmarked={isBookmarked}
             /* eslint-disable-next-line max-len */
-            saveCourse={(courseId:number) => userService.saveUserPreferredCourses(userIdAndToken.id, courseId, userIdAndToken.token)}
+            saveCourse={saveUserCourse}
             /* eslint-disable-next-line max-len */
-            deleteCourse={(courseId:number) => userService.deleteUserSavedCourses(userIdAndToken.id, courseId, userIdAndToken.token)}
+            deleteCourse={deleteUserSavedCourse}
           />
         </div>
       </div>

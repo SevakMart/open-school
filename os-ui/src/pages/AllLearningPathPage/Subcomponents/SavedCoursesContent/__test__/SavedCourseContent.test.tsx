@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { store } from '../../../../../redux/Store';
@@ -38,21 +39,19 @@ jest.mock('react-router-dom', () => ({
 
 describe('Create test cases for SavedCourseContent component', () => {
   test('Create a snapshot test', () => {
-    const { asFragment } = render(
-      <Provider store={store}>
-        <SavedCoursesContent />
-      </Provider>,
-    );
+    const { asFragment } = render(<Provider store={store}>
+      <SavedCoursesContent />
+      {/* eslint-disable-next-line */}
+    </Provider>, { wrapper: BrowserRouter });
     expect(asFragment()).toMatchSnapshot();
   });
   test('Test if component renders as expected when we do not have saved courses', async () => {
     expect.hasAssertions();
     jest.spyOn(userService, 'getUserSavedCourses').mockResolvedValue({ content: [] });
-    render(
-      <Provider store={store}>
-        <SavedCoursesContent />
-      </Provider>,
-    );
+    render(<Provider store={store}>
+      <SavedCoursesContent />
+      {/* eslint-disable-next-line */}
+    </Provider>, { wrapper: BrowserRouter });
     const emptyDataheaderElement = await screen.findByTestId('Empty data Message');
     expect(emptyDataheaderElement).toBeInTheDocument();
     expect(emptyDataheaderElement).toHaveTextContent('No data to display');
@@ -60,11 +59,10 @@ describe('Create test cases for SavedCourseContent component', () => {
   test('Test if component renders as expected when we have saved courses', async () => {
     expect.hasAssertions();
     jest.spyOn(userService, 'getUserSavedCourses').mockResolvedValue(data);
-    render(
-      <Provider store={store}>
-        <SavedCoursesContent />
-      </Provider>,
-    );
+    render(<Provider store={store}>
+      <SavedCoursesContent />
+      {/* eslint-disable-next-line */}
+    </Provider>, { wrapper: BrowserRouter });
     const emptyDataheaderElement = await screen.findByTestId('Empty data Message');
     expect(emptyDataheaderElement).not.toBeInTheDocument();
   });
