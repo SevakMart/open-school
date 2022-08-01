@@ -15,7 +15,7 @@ public interface AuthService {
 
   UserLoginDto login(String userEmail);
 
-  User verifyAccount(String token);
+  Optional<User> verifyAccount(String token);
 
   void sendVerificationEmail(Long userId);
 

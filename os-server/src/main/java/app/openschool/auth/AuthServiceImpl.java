@@ -7,7 +7,6 @@ import app.openschool.auth.api.exception.EmailNotFoundException;
 import app.openschool.auth.api.mapper.UserLoginMapper;
 import app.openschool.auth.api.mapper.UserRegistrationMapper;
 import app.openschool.auth.entity.ResetPasswordToken;
-import app.openschool.auth.exception.UserNotVerifiedException;
 import app.openschool.auth.repository.ResetPasswordTokenRepository;
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
@@ -71,7 +70,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   }
 
   @Override
-  public User verifyAccount(String token) {
+  public Optional<User> verifyAccount(String token) {
     Optional<VerificationToken> fetchedToken =
         verificationTokenRepository.findVerificationTokenByToken(token);
 
@@ -79,14 +78,14 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
       if (!VerificationToken.isTokenExpired(fetchedToken.get().getCreatedAt(), expiresAt)) {
         User user = fetchedToken.get().getUser();
         user.setEnabled(true);
-        return userRepository.save(user);
+        return Optional.of(userRepository.save(user));
       } else {
         applicationEventPublisher.publishEvent(
             new SendVerificationEmailEvent(this, fetchedToken.get().getUser()));
-        throw new UserNotVerifiedException();
+        return Optional.empty();
       }
     }
-    throw new UserNotVerifiedException();
+    return Optional.empty();
   }
 
   @Override
