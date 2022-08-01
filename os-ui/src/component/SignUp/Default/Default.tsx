@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { addLoggedInUser } from '../../../redux/Slices/loginUserSlice';
 import { validateSignUpForm } from '../../../helpers/SignUpFormValidate';
 import { RegistrationFormType } from '../../../types/RegistartionFormType';
 import authService from '../../../services/authService';
@@ -8,6 +10,7 @@ import HiddenIcon from '../../../icons/Hidden';
 import styles from './Default.module.scss';
 
 const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:string)=>void}) => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const [formValues, setFormValues] = useState<RegistrationFormType>({
     firstName: '', lastName: '', email: '', psd: '',
@@ -41,6 +44,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           setFormValues({
             firstName: '', lastName: '', email: '', psd: '',
           });
+          dispatch(addLoggedInUser(response));
           switchToSignInForm!(t('messages.successfullSignUp'));
         } else {
           setErrorFormValue({

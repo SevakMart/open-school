@@ -77,7 +77,10 @@ public class CourseMapper {
     return course.getModules().stream()
         .map(
             (module ->
-                new CourseInfoModuleDto(module.getTitle(), getCourseInfoModuleItemDtoSet(module))))
+                new CourseInfoModuleDto(
+                    module.getTitle(),
+                    module.getDescription(),
+                    getCourseInfoModuleItemDtoSet(module))))
         .collect(Collectors.toSet());
   }
 
