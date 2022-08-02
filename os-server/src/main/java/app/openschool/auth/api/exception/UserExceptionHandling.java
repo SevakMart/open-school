@@ -3,7 +3,6 @@ package app.openschool.auth.api.exception;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import app.openschool.auth.api.dto.UserLoginExceptionResponse;
-import app.openschool.common.response.ResponseMessage;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,12 +37,6 @@ public class UserExceptionHandling implements ErrorController {
   public ResponseEntity<UserLoginExceptionResponse> badCredentialsException(Locale locale) {
     String message = messageSource.getMessage("exception.bad.credentials.message", null, locale);
     return new ResponseEntity<>(new UserLoginExceptionResponse(message), UNAUTHORIZED);
-  }
-
-  @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<ResponseMessage> handleIncorrectArgumentException(Locale locale) {
-    String message = messageSource.getMessage("incorrect.argument", null, locale);
-    return ResponseEntity.badRequest().body(new ResponseMessage(message));
   }
 
   private Map<String, String> getValidationErrors(
