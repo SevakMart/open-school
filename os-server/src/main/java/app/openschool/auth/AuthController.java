@@ -1,5 +1,6 @@
 package app.openschool.auth;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -10,6 +11,7 @@ import app.openschool.auth.api.dto.UserLoginExceptionResponse;
 import app.openschool.auth.api.dto.UserLoginRequest;
 import app.openschool.auth.api.dto.UserRegistrationDto;
 import app.openschool.auth.api.dto.UserRegistrationResponse;
+import app.openschool.auth.api.mapper.UserLoginMapper;
 import app.openschool.auth.api.mapper.UserRegistrationMapper;
 import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.auth.verification.api.dto.VerificationTokenDto;
@@ -25,9 +27,12 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -44,8 +49,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.thymeleaf.ITemplateEngine;
-import org.thymeleaf.context.Context;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -53,13 +56,14 @@ public class AuthController {
 
   private static final String TOKEN_PREFIX = "Bearer ";
   private static final String JWT_TOKEN_HEADER = "Authorization";
+  private static final String VERIFICATION_TOKEN_COOKIE_KEY = "verification-token";
 
   private final JwtTokenProvider jwtTokenProvider;
   private final AuthenticationManager authenticationManager;
   private final MessageSource messageSource;
   private final AuthService authService;
   private final Integer tokenExpirationAfterMinutes;
-  private final ITemplateEngine templateEngine;
+  private final Integer verificationTokenCookieExpirationMinutes;
 
   public AuthController(
       JwtTokenProvider jwtTokenProvider,
@@ -67,13 +71,14 @@ public class AuthController {
       MessageSource messageSource,
       AuthService authService,
       @Value("${token.expiration}") Integer tokenExpirationAfterMinutes,
-      ITemplateEngine templateEngine) {
+      @Value("${verification.cookie-expiration}")
+          Integer verificationTokenCookieExpirationMinutes) {
     this.jwtTokenProvider = jwtTokenProvider;
     this.authenticationManager = authenticationManager;
     this.messageSource = messageSource;
     this.authService = authService;
     this.tokenExpirationAfterMinutes = tokenExpirationAfterMinutes;
-    this.templateEngine = templateEngine;
+    this.verificationTokenCookieExpirationMinutes = verificationTokenCookieExpirationMinutes;
   }
 
   @Operation(summary = "register students")
@@ -151,17 +156,45 @@ public class AuthController {
     return ResponseEntity.ok().headers(jwtHeader).body(userLoginDto);
   }
 
-  @Operation(summary = "verify account")
-  @ApiResponse(responseCode = "200", description = "Account is verified")
+  @Operation(summary = "Redirect to /homepage/account (do not test in swagger)")
   @GetMapping("/account/verification")
-  public String verifyAccount(
-      @ModelAttribute VerificationTokenDto verificationTokenDto, Locale locale) {
-    User user = authService.verifyAccount(verificationTokenDto.getToken());
-    String[] args = {user.getName()};
-    String message = messageSource.getMessage("verification.success.message", args, locale);
-    Context context = new Context();
-    context.setVariable("message", message);
-    return templateEngine.process("verification-response", context);
+  public void verifyAccount(
+      @ModelAttribute VerificationTokenDto verificationTokenDto, HttpServletResponse response)
+      throws IOException {
+
+    Cookie cookie = createVerificationTokenCookie(verificationTokenDto);
+    response.addCookie(cookie);
+    response.sendRedirect("/homepage/account");
+  }
+
+  @Operation(summary = "verify account (do not test in swagger)")
+  @PostMapping("/account")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "User has been verified",
+            content = @Content(schema = @Schema(implementation = UserLoginDto.class))),
+        @ApiResponse(
+            responseCode = "400",
+            description = "The verification token is expired or not valid",
+            content = @Content(schema = @Schema()))
+      })
+  public ResponseEntity<UserLoginDto> forwardUserToAccount(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description = "Request object which contains verification token")
+          @RequestBody
+          VerificationTokenDto verificationTokenDto) {
+    return authService
+        .verifyAccount(verificationTokenDto.getToken())
+        .map(
+            user -> {
+              HttpHeaders jwtHeader = getJwtHeader(new UserPrincipal(user));
+              return ResponseEntity.ok()
+                  .headers(jwtHeader)
+                  .body(UserLoginMapper.toUserLoginDto(user));
+            })
+        .orElseGet(() -> ResponseEntity.status(BAD_REQUEST).build());
   }
 
   @Operation(summary = "resend email for account verification")
@@ -287,5 +320,12 @@ public class AuthController {
     HttpHeaders headers = new HttpHeaders();
     headers.add(JWT_TOKEN_HEADER, TOKEN_PREFIX + jwtTokenProvider.generateJwtToken(userPrincipal));
     return headers;
+  }
+
+  private Cookie createVerificationTokenCookie(VerificationTokenDto verificationTokenDto) {
+    Cookie cookie = new Cookie(VERIFICATION_TOKEN_COOKIE_KEY, verificationTokenDto.getToken());
+    cookie.setMaxAge(verificationTokenCookieExpirationMinutes);
+    cookie.setPath("/");
+    return cookie;
   }
 }

@@ -125,4 +125,25 @@ public class AuthControllerTest {
             post("/api/v1/auth/password/reset").contentType(APPLICATION_JSON).content(requestBody))
         .andExpect(status().isOk());
   }
+
+  @Test
+  void forwardUserToAccount_withCorrectCredentials_HttpOk() throws Exception {
+    User user = new User("John", "Doe", "john@testmail.com", "testPassword", new Role("STUDENT"));
+    when(authService.verifyAccount(any())).thenReturn(Optional.of(user));
+
+    String requestBody = "{ \"token\": \"correctToken\" }";
+    mockMvc
+        .perform(post("/api/v1/auth/account").contentType(APPLICATION_JSON).content(requestBody))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void forwardUserToAccount_withIncorrectCredentials_HttpBadRequest() throws Exception {
+    when(authService.verifyAccount(any())).thenReturn(Optional.empty());
+
+    String requestBody = "{ \"token\": \"incorrectToken\" }";
+    mockMvc
+        .perform(post("/api/v1/auth/account").contentType(APPLICATION_JSON).content(requestBody))
+        .andExpect(status().isBadRequest());
+  }
 }

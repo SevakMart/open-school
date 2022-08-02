@@ -8,11 +8,16 @@ public class CourseInfoModuleDto {
   @Schema(description = "Module title", example = "Collection")
   private final String title;
 
+  @Schema(description = "Module description", example = "Deep understanding of data structures")
+  private final String description;
+
   @ArraySchema(schema = @Schema(implementation = CourseInfoModuleItemDto.class))
   private final Set<CourseInfoModuleItemDto> moduleItemSet;
 
-  public CourseInfoModuleDto(String title, Set<CourseInfoModuleItemDto> moduleItemSet) {
+  public CourseInfoModuleDto(
+      String title, String description, Set<CourseInfoModuleItemDto> moduleItemSet) {
     this.title = title;
+    this.description = description;
     this.moduleItemSet = moduleItemSet;
   }
 
@@ -22,5 +27,9 @@ public class CourseInfoModuleDto {
 
   public Set<CourseInfoModuleItemDto> getModuleItemSet() {
     return moduleItemSet;
+  }
+
+  public String getDescription() {
+    return description;
   }
 }

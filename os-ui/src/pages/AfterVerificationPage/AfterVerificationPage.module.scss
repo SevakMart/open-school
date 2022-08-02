@@ -1,11 +1,14 @@
 .mainContainer{
     background-color: white;
-    display: flex;
+    display: block;
     height: 70rem;
+    padding: 5%;
     h1{
         color: rgb(179, 179, 208);
         font-size: 80px;
-        margin: auto;
+    }
+    p{
+        color: rgb(179, 179, 208);
+        font-size: 40px;
     }
 }
-

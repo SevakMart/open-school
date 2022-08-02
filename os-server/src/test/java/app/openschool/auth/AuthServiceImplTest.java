@@ -1,6 +1,7 @@
 package app.openschool.auth;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -13,7 +14,6 @@ import app.openschool.auth.api.dto.ResetPasswordRequest;
 import app.openschool.auth.api.dto.UserRegistrationDto;
 import app.openschool.auth.api.exception.EmailNotFoundException;
 import app.openschool.auth.entity.ResetPasswordToken;
-import app.openschool.auth.exception.UserNotVerifiedException;
 import app.openschool.auth.repository.ResetPasswordTokenRepository;
 import app.openschool.auth.verification.VerificationTokenRepository;
 import app.openschool.user.User;
@@ -90,8 +90,7 @@ public class AuthServiceImplTest {
     given(verificationTokenRepository.findVerificationTokenByToken(anyString()))
         .willReturn(Optional.empty());
 
-    assertThatThrownBy(() -> authService.verifyAccount(anyString()))
-        .isInstanceOf(UserNotVerifiedException.class);
+    assertEquals(authService.verifyAccount(anyString()), Optional.empty());
   }
 
   @Test

@@ -36,7 +36,8 @@ spring:
     default-encoding: UTF-8
 
 verification:
-  duration: 30 # minutes
+  duration: 3 # minutes
+  cookie-expiration: 120 # seconds
   subject: 'Verify your account'
   endpoint: 'http://open-school-dev.eu-central-1.elasticbeanstalk.com/api/v1/auth/account/verification'
   reset:
