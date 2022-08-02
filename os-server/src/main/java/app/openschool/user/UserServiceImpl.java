@@ -8,6 +8,7 @@ import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
+import app.openschool.course.api.exception.EnrolledCourseExistsException;
 import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.course.module.EnrolledModule;
 import app.openschool.course.module.EnrolledModuleRepository;
@@ -206,7 +207,15 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public Course enrollCourse(User user, long courseId) {
     Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
-    user.getEnrolledCourses().add(CourseMapper.toEnrolledCourse(course, user));
+    Set<EnrolledCourse> enrolledCourses = user.getEnrolledCourses();
+    boolean enrolledCourseExists =
+        enrolledCourses.stream()
+            .map(enrolledCourse -> enrolledCourse.getCourse().getId())
+            .anyMatch(fetchedCourseId -> fetchedCourseId == courseId);
+    if (enrolledCourseExists) {
+      throw new EnrolledCourseExistsException();
+    }
+    enrolledCourses.add(CourseMapper.toEnrolledCourse(course, user));
     userRepository.save(user);
     return course;
   }
