@@ -1,0 +1,28 @@
+@import "../../../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../../../styles/Mixins/FontMixin.scss";
+
+.mainContainer {
+    padding-left:3rem;
+    .mainSubContainer {
+        @include flexStyle(row,center,space-between);
+        width:28%;
+        .dotNotation {
+            background-color: #FFF;
+            border-radius: 50%;
+            width:3rem;
+            height:3rem;
+        }
+        .mainContent {
+            @include flexStyle(column,center, space-between);
+            h2{
+                @include fontStyle('Montserrat',normal,400,0.875rem,1.063rem);
+                color:#5E617B;
+            }
+            p {
+                @include fontStyle('Montserrat',normal,600,1.25rem,1.5rem);
+                color:#333941;
+            }
+        }
+    }
+
+}

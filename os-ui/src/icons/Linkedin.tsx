@@ -1,6 +1,6 @@
 import { FaLinkedinIn } from 'react-icons/fa';
 
-const LinkedinIcon = () => (
-  <FaLinkedinIn />
+const LinkedinIcon = ({ size }:{size?:string}) => (
+  <FaLinkedinIn style={{ fontSize: `${size}` }} />
 );
 export default LinkedinIcon;

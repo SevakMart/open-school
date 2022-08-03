@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { store } from '../../../../../../../redux/Store';
@@ -42,22 +43,20 @@ const data = {
 };
 describe('Create test cases for learningPathCoreComponent component', () => {
   test('Create a snapshot test', () => {
-    const { asFragment } = render(
-      <Provider store={store}>
-        <LearningPathCoreContent />
-      </Provider>,
-    );
+    const { asFragment } = render(<Provider store={store}>
+      <LearningPathCoreContent />
+      {/* eslint-disable-next-line */}
+    </Provider>, { wrapper: BrowserRouter });
     expect(asFragment()).toMatchSnapshot();
   });
   test('Test component when we have an empty data array', async () => {
     expect.hasAssertions();
     jest.spyOn(courseService, 'getSearchedCourses').mockResolvedValue({ content: [] });
     jest.spyOn(userService, 'getUserSavedCourses').mockResolvedValue({ content: [] });
-    render(
-      <Provider store={store}>
-        <LearningPathCoreContent />
-      </Provider>,
-    );
+    render(<Provider store={store}>
+      <LearningPathCoreContent />
+      {/* eslint-disable-next-line */}
+    </Provider>, { wrapper: BrowserRouter });
     const ErrorMessageHeaderElement = await screen.findByTestId('Error Message');
     expect(ErrorMessageHeaderElement).toBeInTheDocument();
     expect(ErrorMessageHeaderElement).toHaveTextContent('No data to display');
@@ -66,11 +65,10 @@ describe('Create test cases for learningPathCoreComponent component', () => {
     expect.hasAssertions();
     jest.spyOn(courseService, 'getSearchedCourses').mockResolvedValue(data);
     jest.spyOn(userService, 'getUserSavedCourses').mockResolvedValue({ content: [] });
-    render(
-      <Provider store={store}>
-        <LearningPathCoreContent />
-      </Provider>,
-    );
+    render(<Provider store={store}>
+      <LearningPathCoreContent />
+      {/* eslint-disable-next-line */}
+    </Provider>, { wrapper: BrowserRouter });
     const ErrorMessageHeaderElement = await screen.findByTestId('Error Message');
     const learningPathTitleElement = await screen.findByTestId('React');
 

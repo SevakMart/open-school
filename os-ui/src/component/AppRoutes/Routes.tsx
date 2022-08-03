@@ -11,6 +11,7 @@ import AllLearningPathPage from '../../pages/AllLearningPathPage/AllLearningPath
 import AllMentorsPage from '../../pages/AllMentorsPage/AllMentorsPage';
 import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
 import AfterVerificationPage from '../../pages/AfterVerificationPage/AfterVerificationPage';
+import CourseDescriptionPage from '../../pages/CourseDescriptionPage/CourseDescriptionPage';
 
 const AppRoutes = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
@@ -49,6 +50,14 @@ const AppRoutes = () => {
           element={(
             <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
               <AllMentorsPage />
+            </ProtectedRoute>
+        )}
+        />
+        <Route
+          path="/userCourse/:courseId"
+          element={(
+            <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
+              <CourseDescriptionPage />
             </ProtectedRoute>
         )}
         />

@@ -19,9 +19,13 @@ const LearningPathCoreContent = () => {
   const { mainCoreContainer, courseContainer } = styles;
 
   useEffect(() => {
+    const getSearchedCoursesPromise = Object.values(sendingParams as object)[0].length
+    /* eslint-disable-next-line max-len */
+      ? courseService.getSearchedCourses({ page: 0, size: 100, ...(sendingParams as object) }, token)
+      : courseService.getSearchedCourses({ page: 0, size: 100 }, token);
     Promise.all([
       userService.getUserSavedCourses(id, token, { page: 0, size: 100 }),
-      courseService.getSearchedCourses({ ...(sendingParams as object), page: 0, size: 100 }, token),
+      getSearchedCoursesPromise,
     ]).then((combinedData) => {
       const userSavedCourseContent = combinedData[0].content;
       const searchedCourseContent = combinedData[1].content;
@@ -41,6 +45,7 @@ const LearningPathCoreContent = () => {
       } else setCourseList(searchedCourseContent);
     });
   }, [sendingParams]);
+
   return (
     <div className={mainCoreContainer}>
       {courseList.length ? courseList.map((course) => (

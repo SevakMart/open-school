@@ -1,0 +1,47 @@
+@import "../../../../styles/Mixins/FontMixin.scss";
+@import "../../../../styles/Mixins/FlexMixins.scss";
+
+.mainContent{
+    width:50%;
+    margin-top:2rem;
+    .subContent {
+        h2 {
+            @include fontStyle('Montserrat',normal,600, 1.25rem,1.5rem);
+            color: #333941;
+        }
+        p{
+            @include fontStyle('Montserrat',normal,400, 1rem,1.5rem);
+            color: #5E617B;
+            text-align: justify;
+        }
+        .moduleListContainer {
+            @include flexStyle(column, center, space-between);
+            padding-left:0.625rem;
+        }
+    }
+    .authorInformationContainer {
+        h2 {
+            @include fontStyle('Montserrat',normal,600, 1.25rem,1.5rem);
+            color: #333941;
+        }
+        .authorInfo {
+            @include flexStyle(row,center,space-between);
+            width:30%;
+            .imageAndFullName{
+                @include flexStyle(row,center,space-between);
+                width:60%;  
+            img {
+                border-radius: 50%;
+                width:2rem;
+                height:2rem;
+                border-color: black;
+                color:black;
+            }
+        }
+           a {
+            cursor:pointer;
+           }
+        }
+    }
+}
+

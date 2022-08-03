@@ -66,7 +66,21 @@
         "all":"All Mentors",
         "saved":"Saved Mentors"
       },
-      "search":"Search name"
+      "search":"Search name",
+      "courseDescription":{
+        "title":{
+          "description":"What you will learn",
+          "goal":"Course Goal",
+          "modulesList":"Courses In This Program",
+          "summary":"Course Summary",
+          "authorInfo":"Author Information",
+          "userEnrolled":"Enrolled"
+        },
+        "modal":{
+          "congratsHeader":"Congrats!",
+          "mainMessage":"You have enrolled to the course!"
+        }
+      }
     },
     "button":{
       "homePage":{
@@ -87,7 +101,10 @@
       },
       "chooseCategories":{
       "next": "NEXT"
-      }  
+      },
+      "enroll":"Enroll",
+      "startCourse":"Start Course Now",
+      "startLearning":"Start"
     },
 
     "messages":{
@@ -128,5 +145,3 @@
       }
     }
   }
-
-
