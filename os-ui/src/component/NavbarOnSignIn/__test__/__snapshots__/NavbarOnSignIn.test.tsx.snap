@@ -79,6 +79,9 @@ exports[`Create a Snapshot test 1`] = `
           </svg>
         </i>
       </div>
+      <p>
+        Logout
+      </p>
     </div>
   </nav>
 </DocumentFragment>

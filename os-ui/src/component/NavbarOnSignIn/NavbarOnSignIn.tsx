@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import styles from './NavbarOnSignIn.module.scss';
 import {
   APP_LOGO, ALL_LEARNING_PATHS, MY_LEARNING_PATHS, MENTORS,
@@ -6,8 +7,14 @@ import {
 import BookmarkIcon from '../../icons/Bookmark';
 import Notification from '../../icons/Notification';
 import DownArrowIcon from '../../icons/DownArrow';
+import { removeLoggedInUser } from '../../redux/Slices/loginUserSlice';
 
 const NavbarOnSignIn = () => {
+  const dispatch = useDispatch();
+  const logout = () => {
+    dispatch(removeLoggedInUser());
+  };
+
   const navigate = useNavigate();
   const { mainContent, navMainContent, userInfoContent } = styles;
   return (
@@ -23,6 +30,7 @@ const NavbarOnSignIn = () => {
           <img src="https://reactjs.org/logo-og.png" alt="avatar" />
           <DownArrowIcon />
         </div>
+        <p onClick={logout}>Logout</p>
       </div>
     </nav>
   );

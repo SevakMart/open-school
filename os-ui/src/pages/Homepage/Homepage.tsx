@@ -71,7 +71,7 @@ const Homepage = () => {
       </div>
       <Footer />
       {isOpen && clickedButtonType === 'signUp' ? <SignUp handleSignUpClicks={handleButtonClick} />
-        : isOpen && clickedButtonType === 'verify' ? <VerifyMessage handleSignInClicks={handleButtonClick} />
+        : isOpen && clickedButtonType === 'verify' ? <VerifyMessage />
           : isOpen && clickedButtonType === 'signIn' ? <SignIn handleSignInClicks={handleButtonClick} />
             : null}
     </>
