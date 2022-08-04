@@ -51,7 +51,7 @@ class CategoryRepositoryTest {
   @Test
   void findAllCategoriesCheckIsParentCategory() {
     List<Category> categoryList =
-        categoryRepository.findAllCategories(PageRequest.of(0, 10)).toList();
+        categoryRepository.findByParentCategoryIsNull(PageRequest.of(0, 10)).toList();
     for (Category category : categoryList) {
       assertNull(category.getTitle() + "isn't parent category", category.getParentCategoryId());
     }

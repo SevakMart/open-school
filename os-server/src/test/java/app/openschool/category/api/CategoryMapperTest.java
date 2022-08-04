@@ -16,7 +16,7 @@ public class CategoryMapperTest {
   @Test
   public void toCategoryDtoTest() {
     CategoryDto expected = CategoryMapper.toCategoryDto(CategoryGenerator.generateCategory());
-    assertThat(expected).hasOnlyFields("title", "logoPath", "subCategoryCount");
+    assertThat(expected).hasOnlyFields("id", "title", "logoPath");
   }
 
   @Test

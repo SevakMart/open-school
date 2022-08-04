@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,8 @@ public class CategoryServiceImplTest {
   @Mock private CategoryRepository categoryRepository;
 
   private CategoryService categoryService;
+
+  private MessageSource messageSource;
 
   @BeforeEach
   void setUp() {
@@ -43,10 +46,10 @@ public class CategoryServiceImplTest {
     }
     Pageable pageable = PageRequest.of(0, 2);
     Page<Category> categoryPage = new PageImpl<>(categoryList, pageable, 5);
-    when(categoryRepository.findAllCategories(pageable)).thenReturn(categoryPage);
-    Assertions.assertEquals(3, categoryService.findAllCategories(pageable).getTotalPages());
-    Assertions.assertEquals(5, categoryService.findAllCategories(pageable).getTotalElements());
-    Mockito.verify(categoryRepository, Mockito.times(2)).findAllCategories(pageable);
+    when(categoryRepository.findByParentCategoryIsNull(pageable)).thenReturn(categoryPage);
+    Assertions.assertEquals(3, categoryService.findAllParentCategories(pageable).getTotalPages());
+    Assertions.assertEquals(5, categoryService.findAllParentCategories(pageable).getTotalElements());
+    Mockito.verify(categoryRepository, Mockito.times(2)).findByParentCategoryIsNull(pageable);
   }
 
   @Test

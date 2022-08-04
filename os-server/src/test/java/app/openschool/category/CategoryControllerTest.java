@@ -40,7 +40,7 @@ public class CategoryControllerTest {
     }
     Pageable pageable = PageRequest.of(0, 2);
     Page<CategoryDto> categoryDtoPage = new PageImpl<>(categoryDtoList, pageable, 5);
-    when(categoryService.findAllCategories(pageable)).thenReturn(categoryDtoPage);
+    when(categoryService.findAllParentCategories(pageable)).thenReturn(categoryDtoPage);
     mockMvc
         .perform(
             get("/api/v1/categories")
