@@ -64,6 +64,6 @@ public class PublicController {
                       + "Default sort order is ascending. "
                       + "Multiple sort criteria are supported.")
           Pageable pageable) {
-    return ResponseEntity.ok(this.categoryService.findAllCategories(pageable));
+    return ResponseEntity.ok(this.categoryService.findAllParentCategories(pageable));
   }
 }

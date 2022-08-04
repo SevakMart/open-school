@@ -28,4 +28,10 @@ public class CommonExceptionHandler implements ErrorController {
     String message = messageSource.getMessage("incorrect.argument", null, locale);
     return ResponseEntity.badRequest().body(new ResponseMessage(message));
   }
+
+  @ExceptionHandler(UnsupportedOperationException.class)
+  public ResponseEntity<ResponseMessage> handleUnsupportedOperationException(
+      UnsupportedOperationException ex) {
+    return ResponseEntity.badRequest().body(new ResponseMessage(ex.getMessage()));
+  }
 }

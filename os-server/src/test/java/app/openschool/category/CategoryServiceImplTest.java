@@ -32,7 +32,7 @@ public class CategoryServiceImplTest {
 
   @BeforeEach
   void setUp() {
-    categoryService = new CategoryServiceImpl(categoryRepository);
+    categoryService = new CategoryServiceImpl(categoryRepository, messageSource);
   }
 
   @Test

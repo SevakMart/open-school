@@ -23,8 +23,7 @@ public class CategoryMapper {
   }
 
   public static CategoryDto toCategoryDto(Category category) {
-    return new CategoryDto(
-        category.getTitle(), category.getLogoPath(), category.getSubCategoryCount());
+    return new CategoryDto(category.getId(), category.getTitle(), category.getLogoPath());
   }
 
   public static PreferredCategoryDto toPreferredCategoryDto(Category category) {
