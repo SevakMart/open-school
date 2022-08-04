@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,14 +78,23 @@ public class CategoryController {
   @ApiResponse(
       responseCode = "200",
       description = "Returns all parent categories and relevant subcategories")
+  @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping
   public ResponseEntity<ParentAndSubCategoriesDto> findAll() {
     return ResponseEntity.ok(categoryService.findAll());
   }
 
+  @Operation(summary = "find category", security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponse(responseCode = "200", description = "Returns parent category or subcategory by id")
+  @GetMapping("/{id}")
+  public ResponseEntity<CategoryDto> findById(@PathVariable(value = "id") Long categoryId) {
+    return ResponseEntity.ok(CategoryMapper.toCategoryDto(categoryService.findById(categoryId)));
+  }
+
   @Operation(
       summary = "add categories or subcategories",
       security = @SecurityRequirement(name = "bearerAuth"))
+  @PreAuthorize("hasAuthority('ADMIN')")
   @PostMapping
   @SuppressWarnings("rawtypes")
   public ResponseEntity add(
@@ -101,6 +111,7 @@ public class CategoryController {
   @Operation(
       summary = "modify categories or subcategories",
       security = @SecurityRequirement(name = "bearerAuth"))
+  @PreAuthorize("hasAuthority('ADMIN')")
   @PatchMapping("/{id}")
   @SuppressWarnings("rawtypes")
   public ResponseEntity modify(
@@ -120,6 +131,7 @@ public class CategoryController {
   @Operation(
       summary = "delete categories or subcategories",
       security = @SecurityRequirement(name = "bearerAuth"))
+  @PreAuthorize("hasAuthority('ADMIN')")
   @DeleteMapping("/{id}")
   public ResponseEntity<HttpStatus> delete(
       @PathVariable(value = "id") Long categoryId, Locale locale) {

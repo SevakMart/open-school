@@ -121,6 +121,11 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
+  public Category findById(Long categoryId) {
+    return categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
+  }
+
+  @Override
   public Category add(CreateCategoryRequest request) {
     String title = request.getTitle();
     String logoPath = request.getLogoPath();

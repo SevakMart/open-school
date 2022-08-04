@@ -19,6 +19,8 @@ public interface CategoryService {
 
   ParentAndSubCategoriesDto findAll();
 
+  Category findById(Long categoryId);
+
   Category add(CreateCategoryRequest request);
 
   Category modify(Long categoryId, ModifyCategoryRequest request);
