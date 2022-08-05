@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import styles from './NavbarOnSignIn.module.scss';
 import {
   APP_LOGO, ALL_LEARNING_PATHS, MY_LEARNING_PATHS, MENTORS,
@@ -17,6 +18,7 @@ const NavbarOnSignIn = () => {
 
   const navigate = useNavigate();
   const { mainContent, navMainContent, userInfoContent } = styles;
+  const { t } = useTranslation();
   return (
     <nav className={mainContent}>
       <h2>{APP_LOGO}</h2>
@@ -30,7 +32,7 @@ const NavbarOnSignIn = () => {
           <img src="https://reactjs.org/logo-og.png" alt="avatar" />
           <DownArrowIcon />
         </div>
-        <p onClick={logout}>Logout</p>
+        <p onClick={logout}>{t('string.navBar.logout')}</p>
       </div>
     </nav>
   );

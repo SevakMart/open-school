@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import Button from '../../../component/Button/Button';
 import styles from '../VerifyMessage.module.scss';
 
 const Message = ({ reSend, isVerify }:
   {reSend(arg:string):void, isVerify: boolean }) => {
-  const messageBeforeVerify = 'Go to in your registered email and verify, If you haven\'t received a verification email within a few minutes, click the "Resend" button to receive another one.';
+  const { t } = useTranslation();
+  const messageBeforeVerify = t('messages.verificationPageHint');
 
   const { mainContainer, buttonContainer } = styles;
   return (
