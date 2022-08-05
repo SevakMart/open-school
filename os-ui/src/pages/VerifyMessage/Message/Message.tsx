@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import Button from '../../../component/Button/Button';
 import styles from '../VerifyMessage.module.scss';
 
-const Message = ({ goToLogin, reSend, isVerify }:
-  {goToLogin(arg:string):void, reSend(arg:string):void, isVerify: boolean }) => {
-  const messageBeforeVerify = 'Go to in your registered email and verify';
+const Message = ({ reSend, isVerify }:
+  {reSend(arg:string):void, isVerify: boolean }) => {
+  const { t } = useTranslation();
+  const messageBeforeVerify = t('messages.verificationPageHint');
 
   const { mainContainer, buttonContainer } = styles;
   return (
@@ -15,7 +17,6 @@ const Message = ({ goToLogin, reSend, isVerify }:
       </div>
       <div className={buttonContainer}>
         <Button buttonType="button" buttonClick={reSend}>Re Send</Button>
-        <Button buttonType="button" buttonClick={goToLogin}>Login</Button>
       </div>
     </div>
   );

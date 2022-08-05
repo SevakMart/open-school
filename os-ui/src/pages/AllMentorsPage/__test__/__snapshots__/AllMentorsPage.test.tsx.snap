@@ -79,6 +79,9 @@ exports[`Create test case for AllMentorsPage Create a snapshot test 1`] = `
           </svg>
         </i>
       </div>
+      <p>
+        string.navBar.logout
+      </p>
     </div>
   </nav>
   <div

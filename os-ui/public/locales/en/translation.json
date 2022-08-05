@@ -28,6 +28,9 @@
           "findUs":"Find Us On"
         }
       },
+      "navBar":{
+        "logout": "Logout"
+      },
       "afterVerification":{
         "verificationTokenNotValidMessageHeader": "The verification token is expired or not valid",
         "verificationTokenNotValidMessageContent":"Please check your email and verify your account with the email you received recently, otherwise click the \"Resend\" button on the app's home page to receive a new email."
@@ -91,6 +94,7 @@
     },
 
     "messages":{
+      "verificationPageHint": "Go to in your registered email and verify, If you haven't received a verification email within a few minutes, click the \"Resend\" button to receive another one.",
       "noData":{
         "default":"No data to display",
         "categories":"We dont have categories yet",

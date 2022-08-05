@@ -4,7 +4,7 @@ import { RootState } from '../../redux/Store';
 import authService from '../../services/authService';
 import Message from './Message/Message';
 
-const VerifyMessage = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) => {
+const VerifyMessage = () => {
   const {
     mainContainer, formContainer,
   } = styles;
@@ -18,7 +18,7 @@ const VerifyMessage = ({ handleSignInClicks }:{handleSignInClicks(arg:string):vo
   return (
     <div className={mainContainer}>
       <div className={formContainer}>
-        <Message isVerify reSend={reSend} goToLogin={() => handleSignInClicks('signIn')} />
+        <Message isVerify reSend={reSend} />
       </div>
     </div>
   );
