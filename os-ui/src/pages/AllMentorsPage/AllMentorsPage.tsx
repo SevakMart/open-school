@@ -34,8 +34,10 @@ const AllMentorsPage = () => {
   };
 
   const handleSearchQueries = (title:string) => {
-    params.set('searchedMentor', title);
-    navigate(`/mentors?${params}`);
+    if (title) {
+      params.set('searchedMentor', title);
+      navigate(`/mentors?${params}`);
+    } else navigate('/mentors');
   };
 
   return (

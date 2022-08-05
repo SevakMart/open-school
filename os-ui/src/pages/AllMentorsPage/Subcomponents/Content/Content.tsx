@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import mentorService from '../../../../services/mentorService';
 import userService from '../../../../services/userService';
@@ -10,7 +10,6 @@ import styles from './Content.module.scss';
 
 const Content = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const [mentorList, setMentorList] = useState<MentorType[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
@@ -24,7 +23,6 @@ const Content = () => {
       requestMentors = mentorService.searchMentorsByName(token, { name: params.get('searchedMentor'), page: 0, size: 100 });
     } else {
       requestMentors = mentorService.requestAllMentors(token, { page: 0, size: 100 });
-      navigate('/mentors');
     }
     /* eslint-disable-next-line max-len */
     Promise.all([requestMentors, mentorService.requestUserSavedMentors(id, token, { page: 0, size: 100 })])
