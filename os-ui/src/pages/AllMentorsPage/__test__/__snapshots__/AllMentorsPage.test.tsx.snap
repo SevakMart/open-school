@@ -80,7 +80,7 @@ exports[`Create test case for AllMentorsPage Create a snapshot test 1`] = `
         </i>
       </div>
       <p>
-        Logout
+        string.navBar.logout
       </p>
     </div>
   </nav>

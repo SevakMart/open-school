@@ -80,7 +80,7 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
         </i>
       </div>
       <p>
-        Logout
+        string.navBar.logout
       </p>
     </div>
   </nav>

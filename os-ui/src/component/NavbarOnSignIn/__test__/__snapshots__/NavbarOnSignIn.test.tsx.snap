@@ -80,7 +80,7 @@ exports[`Create a Snapshot test 1`] = `
         </i>
       </div>
       <p>
-        Logout
+        string.navBar.logout
       </p>
     </div>
   </nav>
