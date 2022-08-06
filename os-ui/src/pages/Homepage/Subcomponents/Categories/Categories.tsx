@@ -17,7 +17,10 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [categoryPage, setCategoryPage] = useState(0);
   const [maxCategoryPage, setMaxCategoryPage] = useState(10);
-  const { categoriesMainContainer, categoriesListContainer } = styles;
+  const {
+    categoriesMainContainer, categoryHeader, gridContent,
+    icon, icon__right, icon__left, categoriesListContainer, registrationButton,
+  } = styles;
 
   useEffect(() => {
     let cancel = false;
@@ -44,17 +47,19 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
 
   return (
     <div className={categoriesMainContainer}>
-      <h2>{t('string.homePage.categories.exploreCategories')}</h2>
+      <div className={categoryHeader}>
+        <h3>{t('string.homePage.categories.title')}</h3>
+        <h2>{t('string.homePage.categories.exploreCategories')}</h2>
+      </div>
       <div className={categoriesListContainer}>
-        {categoryPage > 0 ? (
-          <LeftArrowIcon
-            testId="categoryLeftArrow"
-            handleArrowClick={() => {
-              setCategoryPage((prevPage) => prevPage - 1);
-            }}
-          />
-        ) : null}
-        {
+        {categoryPage > 0
+        && (
+        <div className={`${icon} ${icon__left}`}>
+          <LeftArrowIcon testId="categoryLeftArrow" handleArrowClick={() => { setCategoryPage((prevPage) => prevPage - 1); }} />
+        </div>
+        )}
+        <div className={gridContent}>
+          {
             categories.length > 0 && !errorMessage ? categories.map((category, index) => (
               <CategoryCard
                 key={index}
@@ -64,16 +69,17 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
             )) : errorMessage ? <h2 data-testid="categoriesErrorMessage">{errorMessage}</h2>
               : <h2 data-testid="emptyCategoryMessage">{t('messages.noData.categories')}</h2>
           }
-        {categoryPage < maxCategoryPage ? (
-          <RightArrowIcon
-            testId="categoryRightArrow"
-            handleArrowClick={() => {
-              setCategoryPage((prevPage) => prevPage + 1);
-            }}
-          />
-        ) : null}
+        </div>
+        {categoryPage < maxCategoryPage
+        && (
+        <div className={`${icon} ${icon__right}`}>
+          <RightArrowIcon testId="categoryRightArrow" handleArrowClick={() => { setCategoryPage((prevPage) => prevPage + 1); }} />
+        </div>
+        )}
       </div>
-      <button type="button">{t('button.homePage.seeAll')}</button>
+      <div className={registrationButton}>
+        <button type="button">{t('button.homePage.registerMentor')}</button>
+      </div>
     </div>
   );
 };

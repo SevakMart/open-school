@@ -7,14 +7,16 @@
           "mentors":"Mentors"
         },
         "header":{
-          "educationalPlatform":"Educational Platform",
-          "chooseCategories":"Choose Categories You Are Interested In"
+          "educationalPlatform":"Free Educational Platform",
+          "chooseCategories":"Choose Categories You Are Interested In Choose Categories You Are Interested InChoose Categories You Are Interested"
         },
         "categories":{
+          "title": "Categories",
           "exploreCategories":"Explore Categories You Are Interested In"
         },
         "mentors":{
-          "ourMentors":"Our Mentors"
+          "ourMentors":"Our Mentors",
+          "learnAboutContributors":"Learn More About Our Contributors"
         },
         "footer":{
           "startJourney":"Start Your Journey Now!",

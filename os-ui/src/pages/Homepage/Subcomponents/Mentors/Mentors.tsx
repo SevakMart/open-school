@@ -19,7 +19,10 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
   const [page, setPage] = useState(0);
   const [maxPage, setMaxPage] = useState(10);
   const [errorMessage, setErrorMessage] = useState('');
-  const { mentorMainContainer, mentorListContainer } = styles;
+  const {
+    mentorMainContainer, mentorHeader, gridContent,
+    icon, icon__right, icon__left, mentorListContainer, registrationButton,
+  } = styles;
 
   useEffect(() => {
     const cancel = false;
@@ -44,32 +47,45 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
 
   return (
     <div className={mentorMainContainer}>
-      <h2>{t('string.homePage.mentors.ourMentors')}</h2>
+      <div className={mentorHeader}>
+        <h3>{t('string.homePage.mentors.ourMentors')}</h3>
+        <h2>{t('string.homePage.mentors.learnAboutContributors')}</h2>
+      </div>
       <div className={mentorListContainer}>
-        { page > 0 ? (
-          <LeftArrowIcon
-            testId="mentorLeftArrow"
-            handleArrowClick={() => {
-              setPage((prevPage) => prevPage - 1);
-            }}
-          />
-        ) : null}
-        {
+        { page > 0
+          && (
+          <div className={`${icon} ${icon__left}`}>
+            <LeftArrowIcon
+              testId="mentorLeftArrow"
+              handleArrowClick={() => {
+                setPage((prevPage) => prevPage - 1);
+              }}
+            />
+          </div>
+          )}
+        <div className={gridContent}>
+          {
         mentors.length > 0 && !errorMessage ? mentors.map((mentor, index) => (
           <MentorCard key={index} mentor={{ ...mentor }} />
         )) : errorMessage ? <h2 data-testid="mentorsErrorMessage">{errorMessage}</h2>
           : <h2 data-testid="emptyMentorMessage">{t('messages.noData.mentors')}</h2>
-      }
-        {page < maxPage ? (
+          }
+        </div>
+        {page < maxPage
+        && (
+        <div className={`${icon} ${icon__right}`}>
           <RightArrowIcon
             testId="mentorRightArrow"
             handleArrowClick={() => {
               setPage((prevPage) => prevPage + 1);
             }}
           />
-        ) : null}
+        </div>
+        )}
       </div>
-      <Button buttonType="signUp" buttonClick={() => handleButtonClick('signUp')}>{t('button.homePage.registerMentor')}</Button>
+      <div className={registrationButton}>
+        <button type="button">{t('button.homePage.registerMentor')}</button>
+      </div>
     </div>
   );
 };

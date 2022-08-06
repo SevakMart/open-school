@@ -1,34 +1,65 @@
 @import "../../../../styles/Mixins/ButtonMixin.scss";
 @import "../../../../styles/Mixins/FlexMixins.scss";
 @import "../../../../styles/Mixins/FontMixin.scss";
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
 
 .mentorMainContainer {
-    background-color: #eeeff4;
-    padding: 5% 1% 7% 1%;
-  @include flexStyle(column, center, space-between);
-  & h2:nth-of-type(1) {
-    @include fontStyle("Montserrat", normal, 800, 2.25rem, 2.75rem);
-    color: #333941;
-  }
-  & button:nth-of-type(1) {
-    @include buttonStyle(
-      transparent,
-      #5e617b,
-      1rem,
-      none,
-      4rem,
-      2rem,
-      2rem,
-      1.375rem,
-      1.375rem
-    );
-    border: 1px solid #5e617b;
-    text-transform: uppercase;
-    margin-top: 5%;
-  }
-  .mentorListContainer {
-      width: 90%;
-      @include flexStyle(row, center, space-between);
-      flex-wrap: wrap;
+  margin: 0 2.7%;
+  border-radius: 2.5rem;
+  background-color: #F9FAFD;
+  box-sizing: border-box;
+
+  .mentorHeader {
+    margin:auto;
+    width:50%;
+    padding-top:5%;
+    text-align: center;
+    h3 {
+      @include fontStyle($primary-font, normal, 500, 1rem, 1.5rem);
+      color:$header-main-color;
+    }
+    h2 {
+      @include fontStyle($primary-font, normal, 800, 2.25rem, 2.75rem);
     }
   }
+  
+  .mentorListContainer {
+      position:relative;
+      margin:6%;
+      .gridContent{
+        display:grid;
+        grid-template-columns: repeat(4,1fr);
+        justify-content:center;
+        gap:2rem;
+      }
+      .icon {
+        position:absolute;
+        z-index:2;
+        top:45%;
+        font-size: 3rem;
+        cursor:pointer;
+  
+        &__left {
+          left:0;
+        }
+        &__right {
+          right:0;
+        }
+      }
+    }
+    .registrationButton{
+      width:40%;
+      margin:auto;
+      padding-top:5%;
+      padding-bottom: 10%;
+      text-align: center;
+      button {
+        @include buttonStyle(transparent, $main-text-color, 1rem, none, 4rem, 2rem, 2rem, 1.375rem, 1.375rem);
+        @include fontStyle($primary-font, normal, 500, 1rem, 1.5rem);
+        border: 1px solid $main-text-color;
+        text-transform: uppercase;
+      
+      }
+    }
+}

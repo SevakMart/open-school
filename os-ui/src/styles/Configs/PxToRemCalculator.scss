@@ -1,0 +1,3 @@
+@function px-To-rem($sizeInPx) {
+    @return ($sizeInPx/16)rem
+}
