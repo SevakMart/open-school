@@ -33,7 +33,6 @@ const BookmarkIcon = (
       style={{
         fontSize: `${iconSize}`,
         cursor: 'pointer',
-        color: '#5E617B',
         fill: isClicked ? 'black' : 'none',
       }}
     />

@@ -61,13 +61,9 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
         <div className={gridContent}>
           {
             categories.length > 0 && !errorMessage ? categories.map((category, index) => (
-              <CategoryCard
-                key={index}
-                title={category.title}
-                logoPath={category.logoPath}
-              />
-            )) : errorMessage ? <h2 data-testid="categoriesErrorMessage">{errorMessage}</h2>
-              : <h2 data-testid="emptyCategoryMessage">{t('messages.noData.categories')}</h2>
+              <CategoryCard key={index} category={category} />))
+              : errorMessage ? <h2 data-testid="categoriesErrorMessage">{errorMessage}</h2>
+                : <h2 data-testid="emptyCategoryMessage">{t('messages.noData.categories')}</h2>
           }
         </div>
         {categoryPage < maxCategoryPage

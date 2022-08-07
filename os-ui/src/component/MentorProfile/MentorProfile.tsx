@@ -3,8 +3,9 @@ import EmailIcon from '../../icons/Email';
 import LinkedinIcon from '../../icons/Linkedin';
 import BookmarkIcon from '../../icons/Bookmark';
 import BookIcon from '../../icons/Book';
+import Separator from '../../assets/svg/Separator.svg';
 import styles from './MentorProfile.module.scss';
-/* eslint-disable-next-line max-len */
+
 const MentorCard = ({ mentor, saveMentor, deleteMentor }:
   {mentor:MentorType, saveMentor?:(mentorid:number)=>void,
     deleteMentor?:(mentorid:number)=>void}) => {
@@ -17,7 +18,7 @@ const MentorCard = ({ mentor, saveMentor, deleteMentor }:
       <div className={headerContainer}>
         <div className={MailLinkedinIconsContainer}>
           <p onClick={() => { window.location.href = mentor.emailPath; }}><EmailIcon /></p>
-          <p>|</p>
+          <img src={Separator} alt="Separator" />
           <p onClick={() => { window.location.href = mentor.linkedinPath; }}><LinkedinIcon /></p>
         </div>
         <p>

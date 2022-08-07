@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../../redux/Store';
 import RightArrowIcon from '../../../../icons/RightArrow';
-import Button from '../../../../component/Button/Button';
 import LeftArrowIcon from '../../../../icons/LeftArrow';
 import MentorCard from '../../../../component/MentorProfile/MentorProfile';
 import { MentorType } from '../../../../types/MentorType';
