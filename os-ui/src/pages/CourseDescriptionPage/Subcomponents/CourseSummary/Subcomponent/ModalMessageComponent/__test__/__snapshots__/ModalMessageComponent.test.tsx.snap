@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for ModalMessageComponent Create a snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="mainContainer"
+  >
+    <div
+      class="mainContent"
+    >
+      <img
+        alt="Enrolled"
+        src="Enroll.svg"
+      />
+      <div
+        class="textContent"
+      >
+        <h2>
+          string.courseDescription.modal.congratsHeader
+        </h2>
+        <p>
+          string.courseDescription.modal.mainMessage
+        </p>
+      </div>
+      <button
+        type="button"
+      >
+        button.startCourse
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;
