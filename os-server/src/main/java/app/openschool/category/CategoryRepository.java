@@ -11,9 +11,11 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
   Page<Category> findByParentCategoryIsNull(Pageable pageable);
 
+  List<Category> findByParentCategoryIsNull();
+
   List<Category> findByParentCategoryIsNotNull();
 
-  List<Category> findCategoriesByParentCategoryId(Long id);
+  List<Category> findByTitleContainingIgnoreCaseAndParentCategoryIsNull(String title);
 
-  List<Category> findByTitleIgnoreCaseStartingWith(String prefix);
+  List<Category> findByTitleContainingIgnoreCaseAndParentCategoryIsNotNull(String title);
 }

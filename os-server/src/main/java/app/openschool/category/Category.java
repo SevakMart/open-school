@@ -55,18 +55,14 @@ public class Category {
 
   public Category() {}
 
-  public Category(Long id) {
-    this.id = id;
+  public Category(String title, Category parentCategory) {
+    this.title = title;
+    this.parentCategory = parentCategory;
   }
 
-  public Category(String title, Long parentCategoryId) {
+  public Category(Long id, String title, Category parentCategory) {
+    this.id =id;
     this.title = title;
-    this.parentCategoryId = parentCategoryId;
-  }
-
-  public Category(String title, String logoPath, Category parentCategory) {
-    this.title = title;
-    this.logoPath = logoPath;
     this.parentCategory = parentCategory;
   }
 

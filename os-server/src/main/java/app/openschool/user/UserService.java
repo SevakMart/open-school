@@ -1,5 +1,6 @@
 package app.openschool.user;
 
+import app.openschool.category.Category;
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
@@ -14,7 +15,7 @@ public interface UserService {
 
   List<Course> getSuggestedCourses(Long userId);
 
-  Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds);
+  Set<Category> savePreferredCategories(Long userId, Set<Long> categoryIds);
 
   EnrolledCourse findEnrolledCourseById(Long enrolledCourseId);
 

@@ -6,7 +6,6 @@ import app.openschool.category.api.dto.PreferredCategoryDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -22,6 +21,14 @@ public class CategoryMapper {
         categoryDtoList, categoryPage.getPageable(), categoryPage.getTotalElements());
   }
 
+//  public static List<CategoryDto> toCategoryDtoList(List<Category> categories) {
+//    List<CategoryDto> categoryDtoList = new ArrayList<>();
+//    for (Category category : categories) {
+//      categoryDtoList.add(toCategoryDto(category));
+//    }
+//    return categoryDtoList;
+//  }
+
   public static CategoryDto toCategoryDto(Category category) {
     return new CategoryDto(category.getId(), category.getTitle(), category.getLogoPath());
   }
@@ -30,7 +37,11 @@ public class CategoryMapper {
     return new PreferredCategoryDto(category.getId(), category.getTitle());
   }
 
-  public static Set<Category> categoryIdSetToCategorySet(Set<Long> categoryIdSet) {
-    return categoryIdSet.stream().map(Category::new).collect(Collectors.toSet());
+  public static List<PreferredCategoryDto> toPreferredCategoryDtoList(Set<Category> categories) {
+    List<PreferredCategoryDto> preferredCategoryDtoList = new ArrayList<>();
+    for (Category category : categories) {
+      preferredCategoryDtoList.add(toPreferredCategoryDto(category));
+    }
+    return preferredCategoryDtoList;
   }
 }

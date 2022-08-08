@@ -2,6 +2,7 @@ package app.openschool.user;
 
 import app.openschool.auth.AuthService;
 import app.openschool.category.api.dto.PreferredCategoryDto;
+import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.common.response.ResponseMessage;
 import app.openschool.course.Course;
 import app.openschool.course.api.dto.CourseDto;
@@ -90,7 +91,7 @@ public class UserController {
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
   @PostMapping("/{userId}/categories")
-  public ResponseEntity<Set<PreferredCategoryDto>> savePreferredCategories(
+  public ResponseEntity<List<PreferredCategoryDto>> savePreferredCategories(
       @Parameter(description = "User's id whose chosen categories will be saved") @PathVariable
           Long userId,
       @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -98,7 +99,9 @@ public class UserController {
                   "Ids of chosen categories which will be saved as user's preferred categories")
           @RequestBody
           Set<Long> categoryIds) {
-    return ResponseEntity.ok(userService.savePreferredCategories(userId, categoryIds));
+    return ResponseEntity.ok(
+        CategoryMapper.toPreferredCategoryDtoList(
+            userService.savePreferredCategories(userId, categoryIds)));
   }
 
   @Operation(

@@ -10,19 +10,15 @@ import app.openschool.category.api.dto.ModifyCategoryRequest;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.category.api.mapper.CategoryMapper;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -42,72 +38,48 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  @Transactional
   public Map<String, List<PreferredCategoryDto>> findCategoriesByTitle(String title) {
 
-    Map<String, List<PreferredCategoryDto>> mappedCategories;
+    Map<String, List<PreferredCategoryDto>> result;
 
     if (StringUtils.isBlank(title)) {
-      return mapCategoriesToSubcategories(
-          categoryRepository.findCategoriesByParentCategoryId(null));
+      result = findBySubCategories(categoryRepository.findByParentCategoryIsNotNull());
+      result.putAll(findByParentCategories(categoryRepository.findByParentCategoryIsNull()));
+      return result;
     }
-
-    List<Category> parentCategories =
-        getCategories(title, category -> category.getParentCategoryId() == null);
-
-    List<Category> subcategories =
-        getCategories(title, category -> category.getParentCategoryId() != null);
-
-    if (parentCategories.size() > 0) {
-      mappedCategories = mapCategoriesToSubcategories(parentCategories);
-    } else if (subcategories.size() > 0) {
-      mappedCategories = mapSubcategoriesToCategories(subcategories);
-    } else {
-      mappedCategories = new HashMap<>();
-    }
-
-    return mappedCategories;
+    result =
+        findBySubCategories(
+            categoryRepository.findByTitleContainingIgnoreCaseAndParentCategoryIsNotNull(
+                title.trim()));
+    result.putAll(
+        findByParentCategories(
+            categoryRepository.findByTitleContainingIgnoreCaseAndParentCategoryIsNull(
+                title.trim())));
+    return result;
   }
 
-  private List<Category> getCategories(String title, Predicate<Category> predicate) {
-    return categoryRepository.findByTitleIgnoreCaseStartingWith(title).stream()
-        .filter(predicate)
-        .collect(toList());
+  private static Map<String, List<PreferredCategoryDto>> findBySubCategories(
+      List<Category> subCategories) {
+    return subCategories.stream()
+        .collect(
+            groupingBy(
+                subCategory -> subCategory.getParentCategory().getTitle(),
+                mapping(CategoryMapper::toPreferredCategoryDto, toList())));
   }
 
-  private Map<String, List<PreferredCategoryDto>> mapCategoriesToSubcategories(
-      List<Category> categories) {
-    return categories.stream()
+  private static Map<String, List<PreferredCategoryDto>> findByParentCategories(
+      List<Category> parentCategories) {
+    return parentCategories.stream()
         .collect(
             Collectors.toMap(
                 Category::getTitle,
-                (category) ->
-                    categoryRepository.findCategoriesByParentCategoryId(category.getId()).stream()
-                        .map((CategoryMapper::toPreferredCategoryDto))
-                        .collect(toList())));
+                category ->
+                    CategoryMapper.toPreferredCategoryDtoList(category.getSubCategories())));
   }
 
-  private Map<String, List<PreferredCategoryDto>> mapSubcategoriesToCategories(
-      List<Category> categories) {
-
-    Map<String, List<PreferredCategoryDto>> categoryMap = new HashMap<>();
-
-    categories.forEach(
-        (category -> {
-          String parentCategoryTitle =
-              categoryRepository.getById(category.getParentCategoryId()).getTitle();
-          if (categoryMap.containsKey(parentCategoryTitle)) {
-            categoryMap
-                .get(parentCategoryTitle)
-                .add(CategoryMapper.toPreferredCategoryDto(category));
-          } else {
-            List<PreferredCategoryDto> subcategories = new ArrayList<>();
-            subcategories.add(CategoryMapper.toPreferredCategoryDto(category));
-            categoryMap.put(parentCategoryTitle, subcategories);
-          }
-        }));
-
-    return categoryMap;
+  @Override
+  public Category findById(Long categoryId) {
+    return categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
   }
 
   @Override
@@ -121,21 +93,16 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public Category findById(Long categoryId) {
-    return categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
-  }
-
-  @Override
   public Category add(CreateCategoryRequest request) {
     String title = request.getTitle();
     String logoPath = request.getLogoPath();
     Long parentCategoryId = request.getParentCategoryId();
     if (parentCategoryId == null) {
-      return categoryRepository.save(new Category(title, logoPath, null));
+      return categoryRepository.save(new Category(title, null));
     }
     Category parent =
         categoryRepository.findById(parentCategoryId).orElseThrow(IllegalArgumentException::new);
-    return categoryRepository.save(new Category(title, logoPath, parent));
+    return categoryRepository.save(new Category(title, parent));
   }
 
   @Override
