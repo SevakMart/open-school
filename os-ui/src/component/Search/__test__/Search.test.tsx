@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 import Search from '../Search';
 import { store } from '../../../redux/Store';
 
@@ -8,6 +9,11 @@ const mockUseNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom') as any,
   useNavigate: () => mockUseNavigate,
+}));
+jest.mock('redux-state-sync', () => ({
+  createStateSyncMiddleware:
+    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
+  initMessageListener: () => jest.fn(),
 }));
 
 describe('Create test case to Search component', () => {

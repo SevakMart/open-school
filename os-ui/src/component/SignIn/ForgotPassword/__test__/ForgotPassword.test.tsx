@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { store } from '../../../../redux/Store';
 import { EMAIL_REQUIRED, INVALID_EMAIL_ERROR_MESSAGE } from '../../../../constants/Strings';
 import ForgotPassword from '../ForgotPassword';
@@ -19,6 +20,12 @@ const failedData = {
   },
   status: 400,
 };
+
+jest.mock('redux-state-sync', () => ({
+  createStateSyncMiddleware:
+    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
+  initMessageListener: () => jest.fn(),
+}));
 
 describe('Create test cases for ForgotPassword component', () => {
   test('Create a snapshot test', () => {

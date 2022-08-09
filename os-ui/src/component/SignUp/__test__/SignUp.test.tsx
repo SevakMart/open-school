@@ -2,9 +2,16 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { store } from '../../../redux/Store';
 import authService from '../../../services/authService';
 import SignUp from '../SignUp';
+
+jest.mock('redux-state-sync', () => ({
+  createStateSyncMiddleware:
+    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
+  initMessageListener: () => jest.fn(),
+}));
 
 describe('Create tests for sign up form', () => {
   test('Create a snapshot test', () => {

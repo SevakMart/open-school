@@ -2,10 +2,16 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { store } from '../../../../redux/Store';
 import { PASSWORD_REQUIRED, EMAIL_REQUIRED, INVALID_EMAIL_ERROR_MESSAGE } from '../../../../constants/Strings';
 import SignInDefault from '../Default';
 
+jest.mock('redux-state-sync', () => ({
+  createStateSyncMiddleware:
+    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
+  initMessageListener: () => jest.fn(),
+}));
 describe('Create Test files for default signIn component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
