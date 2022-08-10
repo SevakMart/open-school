@@ -60,11 +60,19 @@ public class Category {
     this.parentCategory = parentCategory;
   }
 
+  public Category(String title, String logoPath, Category parentCategory) {
+    this.title = title;
+    this.logoPath = logoPath;
+    this.parentCategory = parentCategory;
+  }
+
   public Category(Long id, String title, Category parentCategory) {
     this.id =id;
     this.title = title;
     this.parentCategory = parentCategory;
   }
+
+
 
   public Long getId() {
     return id;

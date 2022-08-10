@@ -5,30 +5,41 @@ import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
 import app.openschool.category.api.dto.CategoryDto;
-import app.openschool.category.api.dto.CreateCategoryRequest;
-import app.openschool.category.api.dto.ModifyCategoryRequest;
+import app.openschool.category.api.dto.CreateOrModifyCategoryRequest;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
 import app.openschool.category.api.dto.PreferredCategoryDto;
+import app.openschool.category.api.exception.ImageNotExistsException;
+import app.openschool.category.api.exception.IncorrectCategoryTitleException;
 import app.openschool.category.api.mapper.CategoryMapper;
+import app.openschool.common.services.aws.S3Service;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
   private final CategoryRepository categoryRepository;
   private final MessageSource messageSource;
+  private final S3Service s3Service;
+  private final Logger logger = LoggerFactory.getLogger("CategoryServiceImpl");
 
-  public CategoryServiceImpl(CategoryRepository categoryRepository, MessageSource messageSource) {
+  public CategoryServiceImpl(
+      CategoryRepository categoryRepository, MessageSource messageSource, S3Service s3Service) {
     this.categoryRepository = categoryRepository;
     this.messageSource = messageSource;
+    this.s3Service = s3Service;
   }
 
   @Override
@@ -93,37 +104,60 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public Category add(CreateCategoryRequest request) {
+  public Category add(String createCategoryRequest, MultipartFile file) {
+    CreateOrModifyCategoryRequest request = new CreateOrModifyCategoryRequest();
+    try {
+      ObjectMapper objectMapper = new ObjectMapper();
+      request = objectMapper.readValue(createCategoryRequest, CreateOrModifyCategoryRequest.class);
+    } catch (IOException e) {
+      logger.error("Error converting request");
+    }
     String title = request.getTitle();
-    String logoPath = request.getLogoPath();
+    if (StringUtils.isBlank(title) || title.length() > 100) {
+      throw new IncorrectCategoryTitleException();
+    }
+    if (file == null) {
+      throw new ImageNotExistsException();
+    }
+    String logoPath = s3Service.uploadFile(file);
     Long parentCategoryId = request.getParentCategoryId();
     if (parentCategoryId == null) {
-      return categoryRepository.save(new Category(title, null));
+      return categoryRepository.save(new Category(title, logoPath, null));
     }
     Category parent =
         categoryRepository.findById(parentCategoryId).orElseThrow(IllegalArgumentException::new);
-    return categoryRepository.save(new Category(title, parent));
+    return categoryRepository.save(new Category(title, logoPath, parent));
   }
 
   @Override
-  public Category modify(Long categoryId, ModifyCategoryRequest request) {
+  public Category modify(Long categoryId, String modifyCategoryRequest, MultipartFile file) {
     Category category =
         categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
-    String newTitle = request.getTitle();
-    String newLogoPath = request.getLogoPath();
-    Long newParentCategoryId = request.getParentCategoryId();
-    if (newTitle != null && newTitle.trim().length() > 0) {
-      category.setTitle(newTitle);
+    if (modifyCategoryRequest != null) {
+      CreateOrModifyCategoryRequest request = new CreateOrModifyCategoryRequest();
+      try {
+        ObjectMapper objectMapper = new ObjectMapper();
+        request =
+            objectMapper.readValue(modifyCategoryRequest, CreateOrModifyCategoryRequest.class);
+      } catch (IOException e) {
+        logger.error("Error converting request");
+      }
+      String newTitle = request.getTitle();
+      if (newTitle != null && newTitle.trim().length() > 0) {
+        category.setTitle(newTitle);
+      }
+      Long newParentCategoryId = request.getParentCategoryId();
+      if (newParentCategoryId != null) {
+        Category newParent =
+            categoryRepository
+                .findById(newParentCategoryId)
+                .orElseThrow(IllegalArgumentException::new);
+        category.setParentCategory(newParent);
+      }
     }
-    if (newLogoPath != null && newLogoPath.trim().length() > 0) {
-      category.setLogoPath(newLogoPath);
-    }
-    if (newParentCategoryId != null) {
-      Category newParent =
-          categoryRepository
-              .findById(newParentCategoryId)
-              .orElseThrow(IllegalArgumentException::new);
-      category.setParentCategory(newParent);
+    if (file != null) {
+      category.setLogoPath(s3Service.uploadFile(file));
+      //      s3Service.deleteFile(file.getOriginalFilename());
     }
     return categoryRepository.save(category);
   }

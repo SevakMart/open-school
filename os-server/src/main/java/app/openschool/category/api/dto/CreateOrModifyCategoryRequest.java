@@ -1,22 +1,16 @@
 package app.openschool.category.api.dto;
 
-import org.hibernate.validator.constraints.Length;
+public class CreateOrModifyCategoryRequest {
 
-public class ModifyCategoryRequest {
-
-  @Length(max = 100, message = "{category.name.length}")
   private String title;
 
   private Long parentCategoryId;
 
-  private String logoPath;
+  public CreateOrModifyCategoryRequest() {}
 
-  public ModifyCategoryRequest() {}
-
-  public ModifyCategoryRequest(String title, Long parentCategoryId, String logoPath) {
+  public CreateOrModifyCategoryRequest(String title, Long parentCategoryId) {
     this.title = title;
     this.parentCategoryId = parentCategoryId;
-    this.logoPath = logoPath;
   }
 
   public String getTitle() {
@@ -33,13 +27,5 @@ public class ModifyCategoryRequest {
 
   public void setParentCategoryId(Long parentCategoryId) {
     this.parentCategoryId = parentCategoryId;
-  }
-
-  public String getLogoPath() {
-    return logoPath;
-  }
-
-  public void setLogoPath(String logoPath) {
-    this.logoPath = logoPath;
   }
 }

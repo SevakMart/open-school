@@ -40,7 +40,7 @@ public class CategoryServiceImplTest {
 
   @BeforeEach
   void setUp() {
-    categoryService = new CategoryServiceImpl(categoryRepository, messageSource);
+    categoryService = new CategoryServiceImpl(categoryRepository, messageSource, s3Service);
   }
 
   @Test
@@ -137,7 +137,7 @@ public class CategoryServiceImplTest {
   }
 
   @Test
-  public void findAll_withNotEmptyMap_returnsDtoContainingParentAndSubCategoriesMap() {
+  public void findAll_returnsDtoContainingParentAndSubCategoriesMap() {
     Category parentCategoryJava = new Category(1L, "Java", null);
     Category parentCategoryJs = new Category(2L, "JS", null);
     Category subCategoryJava1 = new Category(3L, "Thread", parentCategoryJava);

@@ -53,3 +53,17 @@ springdoc:
     path: /open-school-api
     operationsSorter: method
 
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAW4ZHLXN4GDXAJ2IP
+      secret-key: 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
+    region:
+      static: eu-central-1
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: open-school-logo
+

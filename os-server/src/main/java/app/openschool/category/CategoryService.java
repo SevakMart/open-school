@@ -1,8 +1,6 @@
 package app.openschool.category;
 
 import app.openschool.category.api.dto.CategoryDto;
-import app.openschool.category.api.dto.CreateCategoryRequest;
-import app.openschool.category.api.dto.ModifyCategoryRequest;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import java.util.List;
@@ -10,6 +8,7 @@ import java.util.Locale;
 import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface CategoryService {
 
@@ -21,9 +20,9 @@ public interface CategoryService {
 
   Category findById(Long categoryId);
 
-  Category add(CreateCategoryRequest request);
+  Category add(String createCategoryRequest, MultipartFile file);
 
-  Category modify(Long categoryId, ModifyCategoryRequest request);
+  Category modify(Long categoryId, String modifyCategoryRequest, MultipartFile file);
 
   void delete(Long categoryId, Locale locale);
 }
