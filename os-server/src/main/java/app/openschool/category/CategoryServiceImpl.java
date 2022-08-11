@@ -143,7 +143,10 @@ public class CategoryServiceImpl implements CategoryService {
         logger.error("Error converting request");
       }
       String newTitle = request.getTitle();
-      if (newTitle != null && newTitle.trim().length() > 0) {
+      if (newTitle != null) {
+        if (newTitle.trim().length() == 0 || newTitle.trim().length() > 100) {
+          throw new IncorrectCategoryTitleException();
+        }
         category.setTitle(newTitle);
       }
       Long newParentCategoryId = request.getParentCategoryId();
@@ -156,8 +159,9 @@ public class CategoryServiceImpl implements CategoryService {
       }
     }
     if (file != null) {
+      String olvFileName = category.getLogoPath().substring(55);
       category.setLogoPath(s3Service.uploadFile(file));
-      //      s3Service.deleteFile(file.getOriginalFilename());
+      s3Service.deleteFile(olvFileName);
     }
     return categoryRepository.save(category);
   }
@@ -170,6 +174,8 @@ public class CategoryServiceImpl implements CategoryService {
       throw new UnsupportedOperationException(
           messageSource.getMessage("category.delete.not.allowed", null, locale));
     }
+    String olvFileName = category.getLogoPath().substring(55);
+    s3Service.deleteFile(olvFileName);
     categoryRepository.deleteById(categoryId);
   }
 }

@@ -1,5 +1,7 @@
 package app.openschool.category;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 import app.openschool.category.api.dto.CategoryDto;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
 import app.openschool.category.api.dto.PreferredCategoryDto;
@@ -76,76 +78,139 @@ public class CategoryController {
     return ResponseEntity.ok(categoryService.findCategoriesByTitle(title));
   }
 
-  @Operation(summary = "find all categories", security = @SecurityRequirement(name = "bearerAuth"))
+  @Operation(
+      summary = "find all categories and relevant subcategories",
+      security = @SecurityRequirement(name = "bearerAuth"))
   @ApiResponse(
       responseCode = "200",
       description = "Returns all parent categories and relevant subcategories")
-  @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping
   public ResponseEntity<ParentAndSubCategoriesDto> findAll() {
     return ResponseEntity.ok(categoryService.findAll());
   }
 
-  @Operation(summary = "find category", security = @SecurityRequirement(name = "bearerAuth"))
-  @ApiResponse(responseCode = "200", description = "Returns parent category or subcategory by id")
+  @Operation(
+      summary = "find category or subcategory",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Returns parent category or subcategory"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid category id supplied",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
   @GetMapping("/{id}")
-  public ResponseEntity<CategoryDto> findById(@PathVariable(value = "id") Long categoryId) {
+  public ResponseEntity<CategoryDto> findById(
+      @Parameter(description = "Id of category which will be returned") @PathVariable(value = "id")
+          Long categoryId) {
     return ResponseEntity.ok(CategoryMapper.toCategoryDto(categoryService.findById(categoryId)));
   }
 
   @Operation(
-      summary =
-          "add categories or subcategories. only user with admin role has access to this method",
+      summary = "add categories or subcategories",
       security = @SecurityRequirement(name = "bearerAuth"))
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Creates new category and returns that"),
+        @ApiResponse(responseCode = "201", description = "Creates new category and returns that"),
         @ApiResponse(
             responseCode = "400",
-            description = "invalid category title supplied or image not provided",
-            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+            description = "Invalid category title supplied or image not provided",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Only user with admin role has access to this method",
+            content = @Content(schema = @Schema()))
       })
   @PreAuthorize("hasAuthority('ADMIN')")
   @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
   public ResponseEntity<CategoryDto> add(
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+      @Parameter(
               description =
                   "Includes title and id of parent category, which is necessary to pass "
-                      + "only when will be created a subcategory.")
+                      + "only when will be created a subcategory.",
+              example = "{ 'title': 'Java', 'parentCategoryId': '1' }")
           @RequestPart
           String createCategoryRequest,
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(
-              description = "Image of creating category")
-          @RequestPart
-          MultipartFile file) {
-    return ResponseEntity.ok(
-        CategoryMapper.toCategoryDto(categoryService.add(createCategoryRequest, file)));
+      @Parameter(description = "Image of creating category") @RequestPart MultipartFile file) {
+    return ResponseEntity.status(CREATED)
+        .body(CategoryMapper.toCategoryDto(categoryService.add(createCategoryRequest, file)));
   }
 
   @Operation(
       summary = "modify categories or subcategories",
       security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description =
+                "Modifies provided field or fields of Category and returns updated category"),
+        @ApiResponse(
+            responseCode = "400",
+            description =
+                "Invalid category id supplied, invalid new parent category id "
+                    + "or invalid category title supplied",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Only user with admin role has access to this method",
+            content = @Content(schema = @Schema()))
+      })
   @PreAuthorize("hasAuthority('ADMIN')")
   @PatchMapping(
       value = "/{id}",
       consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-  public ResponseEntity<CategoryDto> modify(
-      @PathVariable(value = "id") Long categoryId,
-      @RequestPart(required = false) String modifyCategoryRequest,
-      @RequestPart(required = false) MultipartFile file) {
-    return ResponseEntity.ok(
-        CategoryMapper.toCategoryDto(
-            categoryService.modify(categoryId, modifyCategoryRequest, file)));
+  public ResponseEntity<CategoryDto> update(
+      @Parameter(description = "Id of category which fields will be modified")
+          @PathVariable(value = "id")
+          Long categoryId,
+      @Parameter(
+              description =
+                  "Includes title and id of parent category. Both parameters aren't required. "
+                      + "It is necessary to pass that parameters or parameter which will be modified.",
+              example = "{ 'title': 'Java', 'parentCategoryId': '1' }")
+          @RequestPart(required = false)
+          String modifyCategoryRequest,
+      @Parameter(
+              description =
+                  "New image of category. Parameter isn't required. "
+                      + "It is necessary to pass parameter if the image will be changed")
+          @RequestPart(required = false)
+          MultipartFile file) {
+    return ResponseEntity.status(CREATED)
+        .body(
+            CategoryMapper.toCategoryDto(
+                categoryService.modify(categoryId, modifyCategoryRequest, file)));
   }
 
   @Operation(
       summary = "delete categories or subcategories",
       security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "204",
+            description = "Category was deleted",
+            content = @Content(schema = @Schema())),
+        @ApiResponse(
+            responseCode = "400",
+            description =
+                "Invalid category id supplied, or provided id of parent category. "
+                    + "Deleting parent categories not allowed",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Only user with admin role has access to this method",
+            content = @Content(schema = @Schema()))
+      })
   @PreAuthorize("hasAuthority('ADMIN')")
   @DeleteMapping("/{id}")
   public ResponseEntity<HttpStatus> delete(
-      @PathVariable(value = "id") Long categoryId, Locale locale) {
+      @Parameter(description = "Id of category which will be deleted") @PathVariable(value = "id")
+          Long categoryId,
+      Locale locale) {
     categoryService.delete(categoryId, locale);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.noContent().build();
   }
 }
