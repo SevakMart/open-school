@@ -113,7 +113,7 @@ public class CategoryServiceImpl implements CategoryService {
       logger.error("Error converting request");
     }
     String title = request.getTitle();
-    if (StringUtils.isBlank(title) || title.length() > 100) {
+    if (StringUtils.isBlank(title)) {
       throw new IncorrectCategoryTitleException();
     }
     if (file == null) {
@@ -130,7 +130,7 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public Category modify(Long categoryId, String modifyCategoryRequest, MultipartFile file) {
+  public Category update(Long categoryId, String modifyCategoryRequest, MultipartFile file) {
     Category category =
         categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
     if (modifyCategoryRequest != null) {
@@ -143,12 +143,10 @@ public class CategoryServiceImpl implements CategoryService {
         logger.error("Error converting request");
       }
       String newTitle = request.getTitle();
-      if (newTitle != null) {
-        if (newTitle.trim().length() == 0 || newTitle.trim().length() > 100) {
-          throw new IncorrectCategoryTitleException();
-        }
-        category.setTitle(newTitle);
+      if (StringUtils.isBlank(newTitle)) {
+        throw new IncorrectCategoryTitleException();
       }
+      category.setTitle(newTitle);
       Long newParentCategoryId = request.getParentCategoryId();
       if (newParentCategoryId != null) {
         Category newParent =

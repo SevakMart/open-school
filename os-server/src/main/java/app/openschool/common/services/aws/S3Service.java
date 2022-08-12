@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ public class S3Service {
     amazonS3.putObject(
         new PutObjectRequest(bucketName, fileName, convertedFile)
             .withCannedAcl(CannedAccessControlList.PublicRead));
-    convertedFile.delete();
+    boolean deletedFile = convertedFile.delete();
     return amazonS3.getUrl(bucketName, fileName).toString();
   }
 
@@ -42,7 +43,7 @@ public class S3Service {
   }
 
   private File convertMultiPartFileToFile(MultipartFile file) {
-    File convertedFile = new File(file.getOriginalFilename());
+    File convertedFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
     try (FileOutputStream out = new FileOutputStream(convertedFile)) {
       out.write(file.getBytes());
     } catch (IOException e) {

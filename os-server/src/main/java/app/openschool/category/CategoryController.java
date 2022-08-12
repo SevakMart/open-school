@@ -129,7 +129,7 @@ public class CategoryController {
               description =
                   "Includes title and id of parent category, which is necessary to pass "
                       + "only when will be created a subcategory.",
-              example = "{ 'title': 'Java', 'parentCategoryId': '1' }")
+              example = "{ \"title\": \"Java\", \"parentCategoryId\": \"1\" }")
           @RequestPart
           String createCategoryRequest,
       @Parameter(description = "Image of creating category") @RequestPart MultipartFile file) {
@@ -169,7 +169,7 @@ public class CategoryController {
               description =
                   "Includes title and id of parent category. Both parameters aren't required. "
                       + "It is necessary to pass that parameters or parameter which will be modified.",
-              example = "{ 'title': 'Java', 'parentCategoryId': '1' }")
+              example = "{ \"title\": \"Java\", \"parentCategoryId\": \"1\" }")
           @RequestPart(required = false)
           String modifyCategoryRequest,
       @Parameter(
@@ -181,7 +181,7 @@ public class CategoryController {
     return ResponseEntity.status(CREATED)
         .body(
             CategoryMapper.toCategoryDto(
-                categoryService.modify(categoryId, modifyCategoryRequest, file)));
+                categoryService.update(categoryId, modifyCategoryRequest, file)));
   }
 
   @Operation(

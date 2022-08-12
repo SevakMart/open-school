@@ -22,7 +22,7 @@ public interface CategoryService {
 
   Category add(String createCategoryRequest, MultipartFile file);
 
-  Category modify(Long categoryId, String modifyCategoryRequest, MultipartFile file);
+  Category update(Long categoryId, String modifyCategoryRequest, MultipartFile file);
 
   void delete(Long categoryId, Locale locale);
 }

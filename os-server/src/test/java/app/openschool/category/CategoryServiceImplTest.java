@@ -2,9 +2,14 @@ package app.openschool.category;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -13,13 +18,21 @@ import static org.mockito.Mockito.when;
 import app.openschool.category.api.CategoryGenerator;
 import app.openschool.category.api.dto.CategoryDto;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
+import app.openschool.category.api.exception.ImageNotExistsException;
+import app.openschool.category.api.exception.IncorrectCategoryTitleException;
+import app.openschool.common.services.aws.S3Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,15 +41,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
 public class CategoryServiceImplTest {
 
   @Mock private CategoryRepository categoryRepository;
 
-  private CategoryService categoryService;
+  @Mock private MessageSource messageSource;
 
-  private MessageSource messageSource;
+  @Mock private S3Service s3Service;
+
+  private CategoryService categoryService;
 
   @BeforeEach
   void setUp() {
@@ -57,61 +75,6 @@ public class CategoryServiceImplTest {
         5, categoryService.findAllParentCategories(pageable).getTotalElements());
     Mockito.verify(categoryRepository, Mockito.times(2)).findByParentCategoryIsNull(pageable);
   }
-
-  //  @Test
-  //  @Transactional
-  //  void mapAllCategoriesToSubcategories() {
-  //    List<Category> categories = new ArrayList<>();
-  //    Category parentCategory1 = new Category("Java", null);
-  //    parentCategory1.setId(1L);
-  //    Category parentCategory2 = new Category("JS", null);
-  //    parentCategory2.setId(2L);
-  //    categories.add(parentCategory1);
-  //    categories.add(parentCategory2);
-  //    List<Category> subcategories1 = new ArrayList<>();
-  //    subcategories1.add(new Category("Collections", parentCategory1));
-  //    subcategories1.add(new Category("Generics", parentCategory1));
-  //    List<Category> subcategories2 = new ArrayList<>();
-  //    subcategories2.add(new Category("Angular-JS", parentCategory2));
-  //    subcategories2.add(new Category("React-JS", parentCategory2));
-  //
-  //    List<Category> categoriesSearchedByJs = new ArrayList<>();
-  //    List<Category> categoriesSearchedByAng = new ArrayList<>();
-  //    categoriesSearchedByJs.add(parentCategory2);
-  //    categoriesSearchedByAng.add(new Category("Angular-JS", parentCategory2));
-  //
-  //    given(categoryRepository.findCategoriesByParentCategoryId(null)).willReturn(categories);
-  //    given(categoryRepository.findByTitleIgnoreCaseStartingWith("Js"))
-  //        .willReturn(categoriesSearchedByJs);
-  //    given(categoryRepository.findByTitleIgnoreCaseStartingWith("ang"))
-  //        .willReturn(categoriesSearchedByAng);
-  //    given(categoryRepository.getById(2L)).willReturn(parentCategory2);
-  //    given(categoryRepository.findCategoriesByParentCategoryId(1L)).willReturn(subcategories1);
-  //    given(categoryRepository.findCategoriesByParentCategoryId(2L)).willReturn(subcategories2);
-  //
-  //    Map<String, List<PreferredCategoryDto>> categoryMap1 =
-  //        categoryService.findCategoriesByTitle(" ");
-  //
-  //    PreferredCategoryDto categoryDto1 = new PreferredCategoryDto(null, "Collections");
-  //    PreferredCategoryDto categoryDto2 = new PreferredCategoryDto(null, "React-JS");
-  //
-  //    assertThat(categoryMap1.get("Java").get(0).getTitle()).isEqualTo(categoryDto1.getTitle());
-  //    assertThat(categoryMap1.get("JS").get(1).getTitle()).isEqualTo(categoryDto2.getTitle());
-  //
-  //    Map<String, List<PreferredCategoryDto>> categoryMap2 =
-  //        categoryService.findCategoriesByTitle("Js");
-  //
-  //    assertThat(categoryMap2.get("JS").get(1).getTitle()).isEqualTo(categoryDto2.getTitle());
-  //    assertEquals(2, categoryMap2.get("JS").size());
-  //
-  //    Map<String, List<PreferredCategoryDto>> categoryMap3 =
-  //        categoryService.findCategoriesByTitle("ang");
-  //
-  //    System.out.println(categoryMap3);
-  //    assertEquals(1, categoryMap3.size());
-  //    assertEquals(1, categoryMap3.get("JS").size());
-  //    assertThat(categoryMap3.get("JS").get(0).getTitle()).isEqualTo("Angular-JS");
-  //  }
 
   @Test
   public void findById_withExistingCategoryId_returnsCategory() {
@@ -165,5 +128,185 @@ public class CategoryServiceImplTest {
     assertEquals(actualDto.getParentAndSubCategoriesMap().get(categoryDtoJS).size(), 2);
     verify(categoryRepository, times(1)).findByParentCategoryIsNotNull();
     verifyNoMoreInteractions(categoryRepository);
+  }
+
+  @Test
+  public void add_withCorrectArguments_returnsSavedCategory() {
+    String createCategoryRequest = "{\"title\": \"Java\"}";
+    String logoPath = "AWS/S3/Java.txt";
+    MockMultipartFile multipartFile =
+        new MockMultipartFile("Java", "Java.txt", MediaType.TEXT_PLAIN_VALUE, "Java".getBytes());
+    Category expected = new Category("Java", logoPath, null);
+    given(s3Service.uploadFile(multipartFile)).willReturn(logoPath);
+    given(categoryRepository.save(any())).willReturn(expected);
+
+    Category actual = categoryService.add(createCategoryRequest, multipartFile);
+
+    assertEquals(actual.getTitle(), expected.getTitle());
+    assertEquals(actual.getLogoPath(), expected.getLogoPath());
+    assertNull(actual.getParentCategoryId());
+    verify(s3Service, times(1)).uploadFile(any());
+    verify(categoryRepository, times(1)).save(any());
+    verifyNoMoreInteractions(categoryRepository);
+  }
+
+  @Test
+  public void add_withNullCreateCategoryRequest_throwsIllegalArgumentException() {
+    MockMultipartFile multipartFile =
+        new MockMultipartFile("Java", "Java.txt", MediaType.TEXT_PLAIN_VALUE, "Java".getBytes());
+    assertThatThrownBy(() -> categoryService.add(null, multipartFile))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  public void add_withNullMultiPartFile_throwsImageNotExistsException() {
+    String createCategoryRequest = "{\"title\": \"Java\"}";
+    assertThatThrownBy(() -> categoryService.add(createCategoryRequest, null))
+        .isInstanceOf(ImageNotExistsException.class);
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  public void add_withBlankTitle_IncorrectCategoryTitleException(
+      String createCategoryRequest, MultipartFile multipartFile) {
+    assertThatThrownBy(() -> categoryService.add(createCategoryRequest, multipartFile))
+        .isInstanceOf(IncorrectCategoryTitleException.class);
+  }
+
+  private static Stream<Arguments> add_withBlankTitle_IncorrectCategoryTitleException() {
+    MockMultipartFile multipartFile =
+        new MockMultipartFile("Java", "Java.txt", MediaType.TEXT_PLAIN_VALUE, "Java".getBytes());
+    return Stream.of(
+        arguments("", multipartFile),
+        arguments(" ", multipartFile),
+        arguments("{ }", multipartFile),
+        arguments("{\"title\": }", multipartFile),
+        arguments("{\"title\": \"\"}", multipartFile),
+        arguments("{\"title\": \" \"}", multipartFile));
+  }
+
+  @Test
+  public void update_withCorrectArguments_returnsSavedCategory() {
+    Category updatingCategory =
+        new Category(
+            "Java",
+            "Amazon/S3/open-school/eu-central-1/kldnfjnerjkvvernejkvdnfjnfjdbnk_JS.txt",
+            null);
+    given(categoryRepository.findById(1L)).willReturn(Optional.of(updatingCategory));
+    String modifyCategoryRequest = "{\"title\": \"JS\"}";
+    MockMultipartFile multipartFile =
+        new MockMultipartFile("JS", "JS.txt", MediaType.TEXT_PLAIN_VALUE, "JS".getBytes());
+    String logoPath = "AWS/S3/JS.txt";
+    given(s3Service.uploadFile(multipartFile)).willReturn(logoPath);
+    doNothing().when(s3Service).deleteFile(any());
+    Category expected = new Category("JS", logoPath, null);
+    given(categoryRepository.save(any())).willReturn(expected);
+
+    Category actual = categoryService.update(1L, modifyCategoryRequest, multipartFile);
+
+    assertEquals(actual.getTitle(), expected.getTitle());
+    assertEquals(actual.getLogoPath(), expected.getLogoPath());
+    assertNull(actual.getParentCategoryId());
+    verify(s3Service, times(1)).uploadFile(any());
+    verify(s3Service, times(1)).deleteFile(any());
+    verify(categoryRepository, times(1)).save(any());
+    verifyNoMoreInteractions(categoryRepository);
+  }
+
+  @Test
+  public void update_withIncorrectCategoryId_throwsIllegalArgumentException() {
+    String modifyCategoryRequest = "{\"title\": \"Java\"}";
+    MockMultipartFile multipartFile =
+        new MockMultipartFile("Java", "Java.txt", MediaType.TEXT_PLAIN_VALUE, "Java".getBytes());
+    given(categoryRepository.findById(1L)).willReturn(Optional.empty());
+    assertThatThrownBy(() -> categoryService.update(1L, modifyCategoryRequest, multipartFile))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  public void update_withBlank_throwsIncorrectCategoryTitleException(
+      Long categoryId, String createCategoryRequest, MultipartFile multipartFile) {
+    Category updatingCategory =
+        new Category(
+            "Java",
+            "Amazon/S3/open-school/eu-central-1/kldnfjnerjkvvernejkvdnfjnfjdbnk_JS.txt",
+            null);
+    given(categoryRepository.findById(1L)).willReturn(Optional.of(updatingCategory));
+
+    assertThatThrownBy(
+            () -> categoryService.update(categoryId, createCategoryRequest, multipartFile))
+        .isInstanceOf(IncorrectCategoryTitleException.class);
+  }
+
+  private static Stream<Arguments> update_withBlank_throwsIncorrectCategoryTitleException() {
+    MockMultipartFile multipartFile =
+        new MockMultipartFile("Java", "Java.txt", MediaType.TEXT_PLAIN_VALUE, "Java".getBytes());
+    return Stream.of(
+        arguments(1L, "", multipartFile),
+        arguments(1L, " ", multipartFile),
+        arguments(1L, "{ }", multipartFile),
+        arguments(1L, "{\"title\": }", multipartFile),
+        arguments(1L, "{\"title\": \"\"}", multipartFile),
+        arguments(1L, "{\"title\": \" \"}", multipartFile));
+  }
+
+  @Test
+  public void update_withIncorrectNewParenCategoryId_throwsIllegalArgumentException() {
+    Category updatingCategory =
+        new Category(
+            "Java",
+            "Amazon/S3/open-school/eu-central-1/kldnfjnerjkvvernejkvdnfjnfjdbnk_JS.txt",
+            null);
+    given(categoryRepository.findById(1L)).willReturn(Optional.of(updatingCategory));
+    given(categoryRepository.findById(2L)).willReturn(Optional.empty());
+    String modifyCategoryRequest = "{ \"title\": \"JS\", \"parentCategoryId\": \"2\" }";
+    MockMultipartFile multipartFile =
+        new MockMultipartFile("Java", "Java.txt", MediaType.TEXT_PLAIN_VALUE, "Java".getBytes());
+
+    assertThatThrownBy(() -> categoryService.update(1L, modifyCategoryRequest, multipartFile))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  public void delete_withCorrectCategoryId() {
+    Category parentCategory =
+        new Category(
+            "Java",
+            "Amazon/S3/open-school/eu-central-1/kldnfjnerjkvvernejkvdnfjnfjdbnk_Java.png",
+            null);
+    Category deletingCategory =
+        new Category(
+            "Collections",
+            "Amazon/S3/open-school/eu-central-1/kldnfjnerjkvvernejkvdnfjnfjdbnk_Collections.png",
+            parentCategory);
+    deletingCategory.setParentCategoryId(1L);
+    given(categoryRepository.findById(1L)).willReturn(Optional.of(deletingCategory));
+
+    categoryService.delete(1L, Locale.ROOT);
+
+    verify(s3Service, times(1)).deleteFile(anyString());
+    verifyNoMoreInteractions(s3Service);
+    verify(categoryRepository, times(1)).deleteById(1L);
+    verifyNoMoreInteractions(categoryRepository);
+  }
+
+  @Test
+  public void delete_withIncorrectCategoryId_throwsIllegalArgumentException() {
+    given(categoryRepository.findById(1L)).willReturn(Optional.empty());
+    assertThatThrownBy(() -> categoryService.delete(1L, Locale.ROOT))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  public void delete_whenDeletingCategoryIsParent_throwsUnsupportedOperationException() {
+    Category deletingCategory =
+        new Category("Java", "Amazon/S3/open-school/eu-central-1/k_Java.png", null);
+    given(categoryRepository.findById(1L)).willReturn(Optional.of(deletingCategory));
+    given(messageSource.getMessage("category.delete.not.allowed", null, Locale.ROOT))
+        .willReturn("Deleting parent category not allowed");
+
+    assertThatThrownBy(() -> categoryService.delete(1L, Locale.ROOT))
+        .isInstanceOf(UnsupportedOperationException.class);
   }
 }
