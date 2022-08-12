@@ -106,26 +106,26 @@ public class CategoryServiceImplTest {
     Category subCategoryJava1 = new Category(3L, "Thread", parentCategoryJava);
     Category subCategoryJava2 = new Category(4L, "Collections", parentCategoryJava);
     Category subCategoryJava3 = new Category(5L, "Collections List", parentCategoryJava);
-    Category subCategoryJS1 = new Category(6L, "React", parentCategoryJs);
-    Category subCategoryJS2 = new Category(7L, "Collections", parentCategoryJs);
+    Category subCategoryJs1 = new Category(6L, "React", parentCategoryJs);
+    Category subCategoryJs2 = new Category(7L, "Collections", parentCategoryJs);
     CategoryDto categoryDtoJava = new CategoryDto(1L, "Java", null);
-    CategoryDto categoryDtoJS = new CategoryDto(2L, "JS", null);
+    CategoryDto categoryDtoJs = new CategoryDto(2L, "JS", null);
     given(categoryRepository.findByParentCategoryIsNotNull())
         .willReturn(
             List.of(
                 subCategoryJava1,
                 subCategoryJava2,
                 subCategoryJava3,
-                subCategoryJS1,
-                subCategoryJS2));
+                subCategoryJs1,
+                subCategoryJs2));
 
     ParentAndSubCategoriesDto actualDto = categoryService.findAll();
 
     assertTrue(actualDto.getParentAndSubCategoriesMap().containsKey(categoryDtoJava));
-    assertTrue(actualDto.getParentAndSubCategoriesMap().containsKey(categoryDtoJS));
+    assertTrue(actualDto.getParentAndSubCategoriesMap().containsKey(categoryDtoJs));
     assertEquals(actualDto.getParentAndSubCategoriesMap().size(), 2);
     assertEquals(actualDto.getParentAndSubCategoriesMap().get(categoryDtoJava).size(), 3);
-    assertEquals(actualDto.getParentAndSubCategoriesMap().get(categoryDtoJS).size(), 2);
+    assertEquals(actualDto.getParentAndSubCategoriesMap().get(categoryDtoJs).size(), 2);
     verify(categoryRepository, times(1)).findByParentCategoryIsNotNull();
     verifyNoMoreInteractions(categoryRepository);
   }

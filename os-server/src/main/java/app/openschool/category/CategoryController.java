@@ -168,7 +168,7 @@ public class CategoryController {
       @Parameter(
               description =
                   "Includes title and id of parent category. Both parameters aren't required. "
-                      + "It is necessary to pass that parameters or parameter which will be modified.",
+                      + "It is necessary to pass that parameters which will be modified.",
               example = "{ \"title\": \"Java\", \"parentCategoryId\": \"1\" }")
           @RequestPart(required = false)
           String modifyCategoryRequest,

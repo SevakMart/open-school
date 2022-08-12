@@ -67,12 +67,10 @@ public class Category {
   }
 
   public Category(Long id, String title, Category parentCategory) {
-    this.id =id;
+    this.id = id;
     this.title = title;
     this.parentCategory = parentCategory;
   }
-
-
 
   public Long getId() {
     return id;

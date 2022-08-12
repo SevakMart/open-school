@@ -21,14 +21,6 @@ public class CategoryMapper {
         categoryDtoList, categoryPage.getPageable(), categoryPage.getTotalElements());
   }
 
-//  public static List<CategoryDto> toCategoryDtoList(List<Category> categories) {
-//    List<CategoryDto> categoryDtoList = new ArrayList<>();
-//    for (Category category : categories) {
-//      categoryDtoList.add(toCategoryDto(category));
-//    }
-//    return categoryDtoList;
-//  }
-
   public static CategoryDto toCategoryDto(Category category) {
     return new CategoryDto(category.getId(), category.getTitle(), category.getLogoPath());
   }
