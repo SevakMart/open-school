@@ -17,6 +17,7 @@
             @include fontStyle('Montserrat',normal,500,1rem,1.5rem);
             color:#5E617B;
             cursor:pointer;
+            margin-left: 1px;
         }
         .userInfoContent {
             @include flexStyle(row, center, space-between);

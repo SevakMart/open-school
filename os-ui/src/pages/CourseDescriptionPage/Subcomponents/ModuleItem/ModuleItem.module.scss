@@ -1,0 +1,50 @@
+@import "../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+
+.mainContainer {
+    width:100%;
+    background-color: #F9F9FD;
+    border-radius: 0.5rem;
+    margin-bottom:0.625rem;
+    position:relative;
+    .vector{
+       margin-left:1.5rem;
+       position:absolute;
+       height:100%;
+       z-index:0;
+    }
+    .mainContent {
+        margin-right: 1.5rem;
+        margin-left:1.5rem;
+        @include flexStyle(row,center, space-between);
+        .titleAndEllipseIcon {
+            @include flexStyle(row,center, space-between);
+            width:10%;
+            .ellipseIcon{
+                border-radius: 50%;
+                width:1rem;
+                height:1rem;
+                background-color:  #D9DBE9;;
+            }
+        }
+        .chevronIsOpen {
+            cursor:pointer;
+            transform:rotate(90deg);
+            transition: 0.5s;
+        }
+        .chevronIsClosed {
+            cursor:pointer;
+            transform:rotate(0deg);
+            transition: 0.5s;
+        }
+    }
+    .moduleDescriptionIsOpen{
+        background-color: #F9F9FD;
+        border-radius: 0.5rem;
+        margin-bottom:0.625rem;
+        margin-left:2rem;
+    }
+    .moduleDescriptionIsClosed {
+        display:none;
+    }
+}

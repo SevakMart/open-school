@@ -21,8 +21,8 @@ spring:
     clean-on-validation-error: true
 
   mail:
-    username: epam.open.school@gmail.com
-    password: gaqbkpxlbmgjztwm
+    username: openschool.epam@gmail.com
+    password: ueiafqlkvmahqari
     port: 587
     host: smtp.gmail.com
     personal: Open school support

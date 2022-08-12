@@ -79,6 +79,9 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
           </svg>
         </i>
       </div>
+      <p>
+        string.navBar.logout
+      </p>
     </div>
   </nav>
   <div

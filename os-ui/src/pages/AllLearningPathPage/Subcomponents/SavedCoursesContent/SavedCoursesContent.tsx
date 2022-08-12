@@ -38,7 +38,6 @@ const SavedCoursesContent = () => {
         <div className={mainContainer}>
           {savedCourseList.length ? savedCourseList.map((course) => (
             <React.Fragment key={course.title}>
-
               <LearningPath
                 courseInfo={course}
                 saveCourse={(courseId:number) => {
@@ -46,7 +45,6 @@ const SavedCoursesContent = () => {
                 }}
                 deleteCourse={handleCourseDeletion}
               />
-
             </React.Fragment>
           )) : <h2 data-testid="Empty data Message">{t('messages.noData.default')}</h2>}
         </div>
