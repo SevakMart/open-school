@@ -56,8 +56,8 @@ springdoc:
 cloud:
   aws:
     credentials:
-      access-key:
-      secret-key:
+      access-key: AKIAW4ZHLXN4FADKFV7Z
+      secret-key: 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
     region:
       static: eu-central-1
     stack:
@@ -65,5 +65,5 @@ cloud:
 
 application:
   bucket:
-    name:
+    name: open-school-logo
 

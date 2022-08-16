@@ -5,15 +5,13 @@ import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
 import app.openschool.category.api.dto.CategoryDto;
-import app.openschool.category.api.dto.CreateOrModifyCategoryRequest;
+import app.openschool.category.api.dto.CreateCategoryRequest;
+import app.openschool.category.api.dto.ModifyCategoryDataRequest;
+import app.openschool.category.api.dto.ModifyCategoryImageRequest;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
 import app.openschool.category.api.dto.PreferredCategoryDto;
-import app.openschool.category.api.exception.ImageNotExistsException;
-import app.openschool.category.api.exception.IncorrectCategoryTitleException;
 import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.common.services.aws.S3Service;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -104,22 +102,9 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public Category add(String createCategoryRequest, MultipartFile file) {
-    CreateOrModifyCategoryRequest request = new CreateOrModifyCategoryRequest();
-    try {
-      ObjectMapper objectMapper = new ObjectMapper();
-      request = objectMapper.readValue(createCategoryRequest, CreateOrModifyCategoryRequest.class);
-    } catch (IOException e) {
-      logger.error("Error converting request");
-    }
+  public Category add(CreateCategoryRequest request) {
     String title = request.getTitle();
-    if (StringUtils.isBlank(title)) {
-      throw new IncorrectCategoryTitleException();
-    }
-    if (file == null) {
-      throw new ImageNotExistsException();
-    }
-    String logoPath = s3Service.uploadFile(file);
+    String logoPath = s3Service.uploadFile(request.getImage());
     Long parentCategoryId = request.getParentCategoryId();
     if (parentCategoryId == null) {
       return categoryRepository.save(new Category(title, logoPath, null));
@@ -130,37 +115,35 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public Category update(Long categoryId, String modifyCategoryRequest, MultipartFile file) {
+  public Category updateData(Long categoryId, ModifyCategoryDataRequest request) {
     Category category =
         categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
-    if (modifyCategoryRequest != null) {
-      CreateOrModifyCategoryRequest request = new CreateOrModifyCategoryRequest();
-      try {
-        ObjectMapper objectMapper = new ObjectMapper();
-        request =
-            objectMapper.readValue(modifyCategoryRequest, CreateOrModifyCategoryRequest.class);
-      } catch (IOException e) {
-        logger.error("Error converting request");
-      }
-      String newTitle = request.getTitle();
-      if (StringUtils.isBlank(newTitle)) {
-        throw new IncorrectCategoryTitleException();
+    String newTitle = request.getTitle();
+    if (newTitle != null) {
+      if (newTitle.isBlank()) {
+        throw new IllegalArgumentException();
       }
       category.setTitle(newTitle);
-      Long newParentCategoryId = request.getParentCategoryId();
-      if (newParentCategoryId != null) {
-        Category newParent =
-            categoryRepository
-                .findById(newParentCategoryId)
-                .orElseThrow(IllegalArgumentException::new);
-        category.setParentCategory(newParent);
-      }
     }
-    if (file != null) {
-      String olvFileName = category.getLogoPath().substring(55);
-      category.setLogoPath(s3Service.uploadFile(file));
-      s3Service.deleteFile(olvFileName);
+    Long newParentCategoryId = request.getParentCategoryId();
+    if (newParentCategoryId != null) {
+      Category newParent =
+          categoryRepository
+              .findById(newParentCategoryId)
+              .orElseThrow(IllegalArgumentException::new);
+      category.setParentCategory(newParent);
     }
+    return categoryRepository.save(category);
+  }
+
+  @Override
+  public Category updateImage(Long categoryId, ModifyCategoryImageRequest request) {
+    Category category =
+        categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
+    MultipartFile image = request.getImage();
+    String oldImageName = category.getLogoPath().substring(55);
+    category.setLogoPath(s3Service.uploadFile(image));
+    s3Service.deleteFile(oldImageName);
     return categoryRepository.save(category);
   }
 

@@ -3,6 +3,9 @@ package app.openschool.category;
 import static org.springframework.http.HttpStatus.CREATED;
 
 import app.openschool.category.api.dto.CategoryDto;
+import app.openschool.category.api.dto.CreateCategoryRequest;
+import app.openschool.category.api.dto.ModifyCategoryDataRequest;
+import app.openschool.category.api.dto.ModifyCategoryImageRequest;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.category.api.mapper.CategoryMapper;
@@ -17,6 +20,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,14 +29,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/categories")
@@ -72,7 +76,7 @@ public class CategoryController {
   @ApiResponse(
       responseCode = "200",
       description = "Returns parent categories and relevant subcategories")
-  @GetMapping("/searched")
+  @GetMapping("/subcategories")
   public ResponseEntity<Map<String, List<PreferredCategoryDto>>> findCategoriesByTitle(
       @Parameter(description = "Category title") @RequestParam(required = false) String title) {
     return ResponseEntity.ok(categoryService.findCategoriesByTitle(title));
@@ -118,70 +122,94 @@ public class CategoryController {
             description = "Invalid category title supplied or image not provided",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
-            responseCode = "403",
+            responseCode = "405",
             description = "Only user with admin role has access to this method",
             content = @Content(schema = @Schema()))
       })
   @PreAuthorize("hasAuthority('ADMIN')")
-  @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+  @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   public ResponseEntity<CategoryDto> add(
       @Parameter(
               description =
-                  "Includes title and id of parent category, which is necessary to pass "
-                      + "only when will be created a subcategory.",
-              example = "{ \"title\": \"Java\", \"parentCategoryId\": \"1\" }")
-          @RequestPart
-          String createCategoryRequest,
-      @Parameter(description = "Image of creating category") @RequestPart MultipartFile file) {
+                  "Request object for creating new category, which includes title, "
+                      + "id of parent category, which is necessary to pass only when"
+                      + " will be created a subcategory and image of category")
+          @Valid
+          @ModelAttribute
+          CreateCategoryRequest createCategoryRequest) {
     return ResponseEntity.status(CREATED)
-        .body(CategoryMapper.toCategoryDto(categoryService.add(createCategoryRequest, file)));
+        .body(CategoryMapper.toCategoryDto(categoryService.add(createCategoryRequest)));
   }
 
   @Operation(
-      summary = "modify categories or subcategories",
+      summary = "modify data of categories or subcategories",
       security = @SecurityRequirement(name = "bearerAuth"))
   @ApiResponses(
       value = {
         @ApiResponse(
             responseCode = "200",
             description =
-                "Modifies provided field or fields of Category and returns updated category"),
+                "Modifies provided field or fields of category and returns updated category"),
         @ApiResponse(
             responseCode = "400",
             description =
-                "Invalid category id supplied, invalid new parent category id "
-                    + "or invalid category title supplied",
+                "Invalid category id, invalid new parent category id, invalid category title supplied",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
-            responseCode = "403",
+            responseCode = "405",
             description = "Only user with admin role has access to this method",
             content = @Content(schema = @Schema()))
       })
   @PreAuthorize("hasAuthority('ADMIN')")
-  @PatchMapping(
-      value = "/{id}",
-      consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-  public ResponseEntity<CategoryDto> update(
+  @PatchMapping(value = "/{id}")
+  public ResponseEntity<?> updateData(
       @Parameter(description = "Id of category which fields will be modified")
           @PathVariable(value = "id")
           Long categoryId,
       @Parameter(
               description =
-                  "Includes title and id of parent category. Both parameters aren't required. "
-                      + "It is necessary to pass that parameters which will be modified.",
-              example = "{ \"title\": \"Java\", \"parentCategoryId\": \"1\" }")
-          @RequestPart(required = false)
-          String modifyCategoryRequest,
+                  "Request object for modifying category, which includes new title and "
+                      + "id of new parent category. Both parameters are not required")
+          @Valid
+          @RequestBody
+          ModifyCategoryDataRequest request) {
+    return ResponseEntity.ok()
+        .body(CategoryMapper.toCategoryDto(categoryService.updateData(categoryId, request)));
+  }
+
+  @Operation(
+      summary = "modify image of categories or subcategories",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Modifies image of category and returns updated category"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid category id supplied or new image not provided",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "405",
+            description = "Only user with admin role has access to this method",
+            content = @Content(schema = @Schema()))
+      })
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @PatchMapping(
+      value = "/{id}/image",
+      consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  public ResponseEntity<?> updateImage(
+      @Parameter(description = "Id of category which image will be modified")
+          @PathVariable(value = "id")
+          Long categoryId,
       @Parameter(
               description =
-                  "New image of category. Parameter isn't required. "
-                      + "It is necessary to pass parameter if the image will be changed")
-          @RequestPart(required = false)
-          MultipartFile file) {
-    return ResponseEntity.status(CREATED)
-        .body(
-            CategoryMapper.toCategoryDto(
-                categoryService.update(categoryId, modifyCategoryRequest, file)));
+                  "Request object for modifying image of category, which includes new image.")
+          @Valid
+          @ModelAttribute
+          ModifyCategoryImageRequest request) {
+    return ResponseEntity.ok()
+        .body(CategoryMapper.toCategoryDto(categoryService.updateImage(categoryId, request)));
   }
 
   @Operation(
@@ -200,7 +228,7 @@ public class CategoryController {
                     + "Deleting parent categories not allowed",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
-            responseCode = "403",
+            responseCode = "405",
             description = "Only user with admin role has access to this method",
             content = @Content(schema = @Schema()))
       })
