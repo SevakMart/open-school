@@ -153,7 +153,8 @@ public class CategoryController {
         @ApiResponse(
             responseCode = "400",
             description =
-                "Invalid category id, invalid new parent category id, invalid category title supplied",
+                "Invalid category id, invalid new parent category id or"
+                    + " invalid category title supplied",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
             responseCode = "405",

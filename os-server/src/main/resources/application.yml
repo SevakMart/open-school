@@ -35,6 +35,11 @@ spring:
     protocol: smtp
     default-encoding: UTF-8
 
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 10MB
+
 verification:
   duration: 3 # minutes
   cookie-expiration: 120 # seconds
@@ -55,9 +60,6 @@ springdoc:
 
 cloud:
   aws:
-    credentials:
-      access-key: AKIAW4ZHLXN4FADKFV7Z
-      secret-key: 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
     region:
       static: eu-central-1
     stack:
@@ -65,5 +67,9 @@ cloud:
 
 application:
   bucket:
-    name: open-school-logo
+    name: open-school-images
+
+
+
+
 

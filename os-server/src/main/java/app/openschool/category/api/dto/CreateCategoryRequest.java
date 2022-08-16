@@ -1,9 +1,9 @@
 package app.openschool.category.api.dto;
 
+import app.openschool.common.annotation.MaxFileSize;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 public class CreateCategoryRequest {
@@ -12,14 +12,15 @@ public class CreateCategoryRequest {
   @Length(max = 45, message = "{category.title.long}")
   private String title;
 
-  @Nullable private Long parentCategoryId;
+  private Long parentCategoryId;
 
   @NotNull(message = "{category.image.blank}")
+  @MaxFileSize(maxSizeInMb = 3)
   private MultipartFile image;
 
   public CreateCategoryRequest() {}
 
-  public CreateCategoryRequest(String title, @Nullable Long parentCategoryId, MultipartFile image) {
+  public CreateCategoryRequest(String title, Long parentCategoryId, MultipartFile image) {
     this.title = title;
     this.parentCategoryId = parentCategoryId;
     this.image = image;
@@ -33,12 +34,11 @@ public class CreateCategoryRequest {
     this.title = title;
   }
 
-  @Nullable
   public Long getParentCategoryId() {
     return parentCategoryId;
   }
 
-  public void setParentCategoryId(@Nullable Long parentCategoryId) {
+  public void setParentCategoryId(Long parentCategoryId) {
     this.parentCategoryId = parentCategoryId;
   }
 

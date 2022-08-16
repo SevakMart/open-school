@@ -47,7 +47,7 @@ public class CategoryDto {
 
   @Override
   public int hashCode() {
-    int hashcode = Math.toIntExact(this.id);
+    int hashcode = this.id == null ? 0 : (this.id).intValue();
     hashcode = hashcode * 31 + (this.title == null ? 0 : this.title.hashCode());
     return hashcode;
   }

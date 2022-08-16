@@ -17,8 +17,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +29,6 @@ public class CategoryServiceImpl implements CategoryService {
   private final CategoryRepository categoryRepository;
   private final MessageSource messageSource;
   private final S3Service s3Service;
-  private final Logger logger = LoggerFactory.getLogger("CategoryServiceImpl");
 
   public CategoryServiceImpl(
       CategoryRepository categoryRepository, MessageSource messageSource, S3Service s3Service) {
@@ -48,15 +45,13 @@ public class CategoryServiceImpl implements CategoryService {
 
   @Override
   public Map<String, List<PreferredCategoryDto>> findCategoriesByTitle(String title) {
-
-    Map<String, List<PreferredCategoryDto>> result;
-
     if (StringUtils.isBlank(title)) {
-      result = findBySubCategories(categoryRepository.findByParentCategoryIsNotNull());
+      Map<String, List<PreferredCategoryDto>> result =
+          findBySubCategories(categoryRepository.findByParentCategoryIsNotNull());
       result.putAll(findByParentCategories(categoryRepository.findByParentCategoryIsNull()));
       return result;
     }
-    result =
+    Map<String, List<PreferredCategoryDto>> result =
         findBySubCategories(
             categoryRepository.findByTitleContainingIgnoreCaseAndParentCategoryIsNotNull(
                 title.trim()));
@@ -141,7 +136,7 @@ public class CategoryServiceImpl implements CategoryService {
     Category category =
         categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
     MultipartFile image = request.getImage();
-    String oldImageName = category.getLogoPath().substring(55);
+    String oldImageName = category.getLogoPath().substring(57);
     category.setLogoPath(s3Service.uploadFile(image));
     s3Service.deleteFile(oldImageName);
     return categoryRepository.save(category);
@@ -155,8 +150,8 @@ public class CategoryServiceImpl implements CategoryService {
       throw new UnsupportedOperationException(
           messageSource.getMessage("category.delete.not.allowed", null, locale));
     }
-    String olvFileName = category.getLogoPath().substring(55);
-    s3Service.deleteFile(olvFileName);
+    String oldFileName = category.getLogoPath().substring(57);
+    s3Service.deleteFile(oldFileName);
     categoryRepository.deleteById(categoryId);
   }
 }

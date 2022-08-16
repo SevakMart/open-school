@@ -14,6 +14,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import app.openschool.category.api.dto.CreateCategoryRequest;
 import app.openschool.category.api.dto.ModifyCategoryDataRequest;
+import app.openschool.category.api.dto.ModifyCategoryImageRequest;
 import app.openschool.common.services.aws.S3Service;
 import java.util.Locale;
 import java.util.Optional;
@@ -101,28 +102,6 @@ public class CategoryServiceImplTest {
         .isInstanceOf(IllegalArgumentException.class);
   }
 
-  //
-  //  private static Stream<Arguments> add_withBlankTitle_IncorrectCategoryTitleException() {
-  //    MockMultipartFile multipartFile =
-  //        new MockMultipartFile("Java", "Java.txt", MediaType.TEXT_PLAIN_VALUE,
-  // "Java".getBytes());
-  //    return Stream.of(
-  //        arguments("", multipartFile),
-  //        arguments(" ", multipartFile),
-  //        arguments("{ }", multipartFile),
-  //        arguments("{\"title\": }", multipartFile),
-  //        arguments("{\"title\": \"\"}", multipartFile),
-  //        arguments("{\"title\": \" \"}", multipartFile));
-  //  }
-  //
-  //  @ParameterizedTest
-  //  @MethodSource
-  //  public void add_withBlankTitle_IncorrectCategoryTitleException(
-  //      String createCategoryRequest, MultipartFile multipartFile) {
-  //    assertThatThrownBy(() -> categoryService.add(createCategoryRequest, multipartFile))
-  //        .isInstanceOf(IncorrectCategoryTitleException.class);
-  //  }
-  //
   @Test
   public void updateData_withCorrectArguments_returnsUpdatedCategory() {
     Category updatingCategory = new Category("Java", "Aws/S3/Js.png", null);
@@ -168,20 +147,43 @@ public class CategoryServiceImplTest {
         .isInstanceOf(IllegalArgumentException.class);
   }
 
-    @Test
-    public void update_withIncorrectNewParenCategoryId_throwsIllegalArgumentException() {
-      Category updatingCategory =
-          new Category(
-              "Java",
-              "Amazon/S3/open-school/eu-central-1/Java.png",
-              null);
-      given(categoryRepository.findById(1L)).willReturn(Optional.of(updatingCategory));
-      given(categoryRepository.findById(2L)).willReturn(Optional.empty());
-      ModifyCategoryDataRequest request = new ModifyCategoryDataRequest("Js", 2L);
+  @Test
+  public void updateData_withIncorrectNewParenCategoryId_throwsIllegalArgumentException() {
+    Category updatingCategory =
+        new Category("Java", "Amazon/S3/open-school/eu-central-1/Java.png", null);
+    given(categoryRepository.findById(1L)).willReturn(Optional.of(updatingCategory));
+    given(categoryRepository.findById(2L)).willReturn(Optional.empty());
+    ModifyCategoryDataRequest request = new ModifyCategoryDataRequest("Js", 2L);
 
-      assertThatThrownBy(() -> categoryService.updateData(1L, request))
-          .isInstanceOf(IllegalArgumentException.class);
-    }
+    assertThatThrownBy(() -> categoryService.updateData(1L, request))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  public void updateImage_withNotNullImage_returnsUpdatedCategory() {
+    Category updatingCategory =
+        new Category(
+            "Java",
+            "Amazon/S3/open-school/eu-central-1/kldnfjnerjkvvernejkvdnfjnfjdbnk_Java.png",
+            null);
+    given(categoryRepository.findById(1L)).willReturn(Optional.of(updatingCategory));
+    String logoPath = "Aws/S3/Java2.png";
+    MockMultipartFile multipartFile = new MockMultipartFile("Java2.png", "Java2".getBytes());
+    given(s3Service.uploadFile(multipartFile)).willReturn(logoPath);
+    Category expected = new Category("Java", logoPath, null);
+    given(categoryRepository.save(any())).willReturn(expected);
+    ModifyCategoryImageRequest request = new ModifyCategoryImageRequest(multipartFile);
+
+    Category actual = categoryService.updateImage(1L, request);
+
+    assertEquals(actual.getLogoPath(), expected.getLogoPath());
+    verify(categoryRepository, times(1)).findById(1L);
+    verify(s3Service, times(1)).uploadFile(multipartFile);
+    verify(s3Service, times(1)).deleteFile(anyString());
+    verify(categoryRepository, times(1)).save(any());
+    verifyNoMoreInteractions(s3Service);
+    verifyNoMoreInteractions(categoryRepository);
+  }
 
   @Test
   public void delete_withCorrectCategoryId() {

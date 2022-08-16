@@ -2,9 +2,12 @@ package app.openschool.category;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,6 +22,7 @@ import app.openschool.user.role.Role;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,11 +75,11 @@ public class CategoryControllerTest {
   }
 
   @Test
-  void findById_withCorrectArgument_returnsStatus200() throws Exception {
+  void findById_withCorrectArgument_returnsStatusOk() throws Exception {
     given(categoryService.findById(1L)).willReturn(new Category());
     mockStatic(CategoryMapper.class);
     given(CategoryMapper.toCategoryDto(any())).willReturn(new CategoryDto());
-    String jwt = generateJwtToken();
+    String jwt = generateJwtToken(new Role("USER"));
     mockMvc
         .perform(
             get("/api/v1/categories/1").header("Authorization", jwt).queryParam("categoryId", "1"))
@@ -83,9 +87,9 @@ public class CategoryControllerTest {
   }
 
   @Test
-  void findById_withInCorrectCategoryId_returnsStatus400() throws Exception {
+  void findById_withInCorrectCategoryId_returnsStatusBadRequest() throws Exception {
     given(categoryService.findById(1L)).willThrow(new IllegalArgumentException());
-    String jwt = generateJwtToken();
+    String jwt = generateJwtToken(new Role("USER"));
     mockMvc
         .perform(
             get("/api/v1/categories/1").header("Authorization", jwt).queryParam("categoryId", "1"))
@@ -93,17 +97,55 @@ public class CategoryControllerTest {
   }
 
   @Test
-  void findAll_returnsStatus200() throws Exception {
+  void findAll_returnsStatusOk() throws Exception {
     given(categoryService.findAll()).willReturn(new ParentAndSubCategoriesDto(new HashMap<>()));
-    String jwt = generateJwtToken();
+    String jwt = generateJwtToken(new Role("USER"));
     mockMvc
         .perform(get("/api/v1/categories").header("Authorization", jwt))
         .andExpect(status().isOk());
   }
 
-  private String generateJwtToken() {
-    User user = new User("email", "pass");
-    user.setRole(new Role("USER"));
+  @Test
+  void delete_withCorrectCategoryIdAndUserWithAdminRole_returnsStatusNoContent() throws Exception {
+    doNothing().when(categoryService).delete(1L, Locale.ROOT);
+    String jwt = generateJwtToken(new Role("ADMIN"));
+
+    mockMvc
+        .perform(
+            delete("/api/v1/categories/1")
+                .contentType(APPLICATION_JSON)
+                .header("Authorization", jwt))
+        .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void delete_withUserRole_returnsStatusForbidden() throws Exception {
+    doNothing().when(categoryService).delete(1L, Locale.ROOT);
+    String jwt = generateJwtToken(new Role("USER"));
+
+    mockMvc
+        .perform(
+            delete("/api/v1/categories/1")
+                .contentType(APPLICATION_JSON)
+                .header("Authorization", jwt))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void delete_withIncorrectCategoryId_returnsStatusBadRequest() throws Exception {
+    doThrow(IllegalArgumentException.class).when(categoryService).delete(any(), any());
+    String jwt = generateJwtToken(new Role("ADMIN"));
+
+    mockMvc
+        .perform(
+            delete("/api/v1/categories/1")
+                .contentType(APPLICATION_JSON)
+                .header("Authorization", jwt))
+        .andExpect(status().isBadRequest());
+  }
+
+  private String generateJwtToken(Role role) {
+    User user = new User("Smith", "email", "pass", role);
     return "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
   }
 }
