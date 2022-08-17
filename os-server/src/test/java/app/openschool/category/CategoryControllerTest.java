@@ -1,6 +1,7 @@
 package app.openschool.category;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -9,6 +10,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import app.openschool.category.api.CategoryGenerator;
@@ -87,7 +89,7 @@ public class CategoryControllerTest {
   }
 
   @Test
-  void findById_withInCorrectCategoryId_returnsStatusBadRequest() throws Exception {
+  void findById_withIncorrectCategoryId_returnsStatusBadRequest() throws Exception {
     given(categoryService.findById(1L)).willThrow(new IllegalArgumentException());
     String jwt = generateJwtToken(new Role("USER"));
     mockMvc
@@ -106,6 +108,70 @@ public class CategoryControllerTest {
   }
 
   @Test
+  void updateData_with_CorrectArguments_returnsStatusOk() throws Exception {
+    given(categoryService.updateData(anyLong(), any())).willReturn(new Category());
+    mockStatic(CategoryMapper.class);
+    given(CategoryMapper.toCategoryDto(any())).willReturn(new CategoryDto());
+    String jwt = generateJwtToken(new Role("ADMIN"));
+    String requestBody = "{ \"title\": \"Java\", \"parentCategoryId\": 1}";
+
+    mockMvc
+        .perform(
+            patch("/api/v1/categories/1")
+                .contentType(APPLICATION_JSON)
+                .content(requestBody)
+                .header("Authorization", jwt))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void updateData_withIncorrectCategoryIdOrBlankTitleOrParentCategoryId_returnsStatusBadRequest()
+      throws Exception {
+    doThrow(IllegalArgumentException.class).when(categoryService).updateData(any(), any());
+    String jwt = generateJwtToken(new Role("ADMIN"));
+    String requestBody = "{ \"title\": \" \", \"parentCategoryId\": 31}";
+
+    mockMvc
+        .perform(
+            patch("/api/v1/categories/1")
+                .contentType(APPLICATION_JSON)
+                .content(requestBody)
+                .header("Authorization", jwt))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void updateData_with_whenNewTitleLengthExceededAllowedSize_returnsStatusBadRequest()
+      throws Exception {
+    String jwt = generateJwtToken(new Role("ADMIN"));
+    String requestBody =
+        "{ \"title\": \" Kancsjnacjdmslmdlmvslskvmkslmvlksmsklmv"
+            + "sdvslmlnnjndmlsdlms\", \"parentCategoryId\": 1}";
+
+    mockMvc
+        .perform(
+            patch("/api/v1/categories/1")
+                .contentType(APPLICATION_JSON)
+                .content(requestBody)
+                .header("Authorization", jwt))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void updateData_withUnsupportedRole_returnsStatusForbidden() throws Exception {
+    String jwt = generateJwtToken(new Role("USER"));
+    String requestBody = "{ \"title\": \"Java\", \"parentCategoryId\": 1}";
+
+    mockMvc
+        .perform(
+            patch("/api/v1/categories/1")
+                .contentType(APPLICATION_JSON)
+                .content(requestBody)
+                .header("Authorization", jwt))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
   void delete_withCorrectCategoryIdAndUserWithAdminRole_returnsStatusNoContent() throws Exception {
     doNothing().when(categoryService).delete(1L, Locale.ROOT);
     String jwt = generateJwtToken(new Role("ADMIN"));
@@ -119,21 +185,31 @@ public class CategoryControllerTest {
   }
 
   @Test
-  void delete_withUserRole_returnsStatusForbidden() throws Exception {
-    doNothing().when(categoryService).delete(1L, Locale.ROOT);
-    String jwt = generateJwtToken(new Role("USER"));
-
+  void delete_withUnsupportedRole_returnsStatusForbidden() throws Exception {
     mockMvc
         .perform(
             delete("/api/v1/categories/1")
                 .contentType(APPLICATION_JSON)
-                .header("Authorization", jwt))
+                .header("Authorization", generateJwtToken(new Role("USER"))))
         .andExpect(status().isForbidden());
   }
 
   @Test
   void delete_withIncorrectCategoryId_returnsStatusBadRequest() throws Exception {
     doThrow(IllegalArgumentException.class).when(categoryService).delete(any(), any());
+    String jwt = generateJwtToken(new Role("ADMIN"));
+
+    mockMvc
+        .perform(
+            delete("/api/v1/categories/1")
+                .contentType(APPLICATION_JSON)
+                .header("Authorization", jwt))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void delete_whenDeletingCategoryIsParent_returnsStatusBadRequest() throws Exception {
+    doThrow(UnsupportedOperationException.class).when(categoryService).delete(any(), any());
     String jwt = generateJwtToken(new Role("ADMIN"));
 
     mockMvc
