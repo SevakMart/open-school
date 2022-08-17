@@ -122,7 +122,7 @@ public class CategoryController {
             description = "Invalid category title supplied or image not provided",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
-            responseCode = "405",
+            responseCode = "403",
             description = "Only user with admin role has access to this method",
             content = @Content(schema = @Schema()))
       })
@@ -157,13 +157,13 @@ public class CategoryController {
                     + " invalid category title supplied",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
-            responseCode = "405",
+            responseCode = "403",
             description = "Only user with admin role has access to this method",
             content = @Content(schema = @Schema()))
       })
   @PreAuthorize("hasAuthority('ADMIN')")
   @PatchMapping(value = "/{id}")
-  public ResponseEntity<?> updateData(
+  public ResponseEntity<CategoryDto> updateData(
       @Parameter(description = "Id of category which fields will be modified")
           @PathVariable(value = "id")
           Long categoryId,
@@ -179,7 +179,7 @@ public class CategoryController {
   }
 
   @Operation(
-      summary = "modify image of categories or subcategories",
+      summary = "change image of categories or subcategories",
       security = @SecurityRequirement(name = "bearerAuth"))
   @ApiResponses(
       value = {
@@ -191,7 +191,7 @@ public class CategoryController {
             description = "Invalid category id supplied or new image not provided",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
-            responseCode = "405",
+            responseCode = "403",
             description = "Only user with admin role has access to this method",
             content = @Content(schema = @Schema()))
       })
@@ -199,7 +199,7 @@ public class CategoryController {
   @PatchMapping(
       value = "/{id}/image",
       consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  public ResponseEntity<?> updateImage(
+  public ResponseEntity<CategoryDto> updateImage(
       @Parameter(description = "Id of category which image will be modified")
           @PathVariable(value = "id")
           Long categoryId,
@@ -229,7 +229,7 @@ public class CategoryController {
                     + "Deleting parent categories not allowed",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
-            responseCode = "405",
+            responseCode = "403",
             description = "Only user with admin role has access to this method",
             content = @Content(schema = @Schema()))
       })

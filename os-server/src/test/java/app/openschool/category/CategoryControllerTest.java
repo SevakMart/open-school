@@ -111,7 +111,7 @@ public class CategoryControllerTest {
   }
 
   @Test
-  void updateData_with_CorrectArguments_returnsStatusOk() throws Exception {
+  void updateData_withCorrectArguments_returnsStatusOk() throws Exception {
     try (MockedStatic<CategoryMapper> mapper = Mockito.mockStatic(CategoryMapper.class)) {
       mapper.when(() -> CategoryMapper.toCategoryDto(any())).thenReturn(new CategoryDto());
     }
@@ -145,8 +145,7 @@ public class CategoryControllerTest {
   }
 
   @Test
-  void updateData_with_whenNewTitleLengthExceededAllowedSize_returnsStatusBadRequest()
-      throws Exception {
+  void updateData_whenNewTitleLengthExceededAllowedSize_returnsStatusBadRequest() throws Exception {
     String jwt = generateJwtToken(new Role("ADMIN"));
     String requestBody =
         "{ \"title\": \" Kancsjnacjdmslmdlmvslskvmkslmvlksmsklmv"
