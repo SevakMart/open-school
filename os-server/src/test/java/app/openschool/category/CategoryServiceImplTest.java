@@ -11,14 +11,19 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
+import app.openschool.category.api.CategoryGenerator;
 import app.openschool.category.api.dto.CreateCategoryRequest;
 import app.openschool.category.api.dto.ModifyCategoryDataRequest;
 import app.openschool.category.api.dto.ModifyCategoryImageRequest;
 import app.openschool.common.services.aws.S3Service;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,8 +31,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,6 +54,21 @@ public class CategoryServiceImplTest {
   @BeforeEach
   void setUp() {
     categoryService = new CategoryServiceImpl(categoryRepository, messageSource, s3Service);
+  }
+
+  @Test
+  void findAllParentCategories_returnsPageOfCategoryDto() {
+    List<Category> categoryList = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      categoryList.add(CategoryGenerator.generateCategory());
+    }
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<Category> categoryPage = new PageImpl<>(categoryList, pageable, 5);
+    when(categoryRepository.findByParentCategoryIsNull(pageable)).thenReturn(categoryPage);
+    Assertions.assertEquals(3, categoryService.findAllParentCategories(pageable).getTotalPages());
+    Assertions.assertEquals(
+        5, categoryService.findAllParentCategories(pageable).getTotalElements());
+    Mockito.verify(categoryRepository, Mockito.times(2)).findByParentCategoryIsNull(pageable);
   }
 
   @Test

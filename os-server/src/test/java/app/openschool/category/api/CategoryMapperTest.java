@@ -14,4 +14,11 @@ public class CategoryMapperTest {
     CategoryDto expected = CategoryMapper.toCategoryDto(CategoryGenerator.generateCategory());
     assertThat(expected).hasOnlyFields("id", "title", "logoPath");
   }
+
+  @Test
+  public void toPreferredCategoryDto() {
+    PreferredCategoryDto expected =
+        CategoryMapper.toPreferredCategoryDto(CategoryGenerator.generateCategory());
+    assertThat(expected).hasOnlyFields("id", "title");
+  }
 }

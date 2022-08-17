@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -27,6 +26,8 @@ import java.util.List;
 import java.util.Locale;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -78,10 +79,12 @@ public class CategoryControllerTest {
 
   @Test
   void findById_withCorrectArgument_returnsStatusOk() throws Exception {
+    try (MockedStatic<CategoryMapper> mapper = Mockito.mockStatic(CategoryMapper.class)) {
+      mapper.when(() -> CategoryMapper.toCategoryDto(any())).thenReturn(new CategoryDto());
+    }
     given(categoryService.findById(1L)).willReturn(new Category());
-    mockStatic(CategoryMapper.class);
-    given(CategoryMapper.toCategoryDto(any())).willReturn(new CategoryDto());
     String jwt = generateJwtToken(new Role("USER"));
+
     mockMvc
         .perform(
             get("/api/v1/categories/1").header("Authorization", jwt).queryParam("categoryId", "1"))
@@ -109,9 +112,10 @@ public class CategoryControllerTest {
 
   @Test
   void updateData_with_CorrectArguments_returnsStatusOk() throws Exception {
+    try (MockedStatic<CategoryMapper> mapper = Mockito.mockStatic(CategoryMapper.class)) {
+      mapper.when(() -> CategoryMapper.toCategoryDto(any())).thenReturn(new CategoryDto());
+    }
     given(categoryService.updateData(anyLong(), any())).willReturn(new Category());
-    mockStatic(CategoryMapper.class);
-    given(CategoryMapper.toCategoryDto(any())).willReturn(new CategoryDto());
     String jwt = generateJwtToken(new Role("ADMIN"));
     String requestBody = "{ \"title\": \"Java\", \"parentCategoryId\": 1}";
 
