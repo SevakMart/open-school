@@ -11,7 +11,7 @@ import app.openschool.category.api.dto.ModifyCategoryImageRequest;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.category.api.mapper.CategoryMapper;
-import app.openschool.common.services.aws.S3Service;
+import app.openschool.common.services.aws.FileStorageService;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -28,13 +28,15 @@ public class CategoryServiceImpl implements CategoryService {
 
   private final CategoryRepository categoryRepository;
   private final MessageSource messageSource;
-  private final S3Service s3Service;
+  private final FileStorageService fileStorageService;
 
   public CategoryServiceImpl(
-      CategoryRepository categoryRepository, MessageSource messageSource, S3Service s3Service) {
+      CategoryRepository categoryRepository,
+      MessageSource messageSource,
+      FileStorageService fileStorageService) {
     this.categoryRepository = categoryRepository;
     this.messageSource = messageSource;
-    this.s3Service = s3Service;
+    this.fileStorageService = fileStorageService;
   }
 
   @Override
@@ -99,7 +101,7 @@ public class CategoryServiceImpl implements CategoryService {
   @Override
   public Category add(CreateCategoryRequest request) {
     String title = request.getTitle();
-    String logoPath = s3Service.uploadFile(request.getImage());
+    String logoPath = fileStorageService.uploadFile(request.getImage());
     Long parentCategoryId = request.getParentCategoryId();
     if (parentCategoryId == null) {
       return categoryRepository.save(new Category(title, logoPath, null));
@@ -137,8 +139,8 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
     MultipartFile image = request.getImage();
     String oldImageName = category.getLogoPath().substring(57);
-    category.setLogoPath(s3Service.uploadFile(image));
-    s3Service.deleteFile(oldImageName);
+    category.setLogoPath(fileStorageService.uploadFile(image));
+    fileStorageService.deleteFile(oldImageName);
     return categoryRepository.save(category);
   }
 
@@ -151,7 +153,7 @@ public class CategoryServiceImpl implements CategoryService {
           messageSource.getMessage("category.delete.not.allowed", null, locale));
     }
     String oldFileName = category.getLogoPath().substring(57);
-    s3Service.deleteFile(oldFileName);
+    fileStorageService.deleteFile(oldFileName);
     categoryRepository.deleteById(categoryId);
   }
 }

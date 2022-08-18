@@ -3,6 +3,7 @@ package app.openschool.category;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -14,10 +15,12 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import app.openschool.category.api.CategoryGenerator;
+import app.openschool.category.api.dto.CategoryDto;
 import app.openschool.category.api.dto.CreateCategoryRequest;
 import app.openschool.category.api.dto.ModifyCategoryDataRequest;
 import app.openschool.category.api.dto.ModifyCategoryImageRequest;
-import app.openschool.common.services.aws.S3Service;
+import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
+import app.openschool.common.services.aws.FileStorageService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -47,13 +50,14 @@ public class CategoryServiceImplTest {
 
   @Mock private MessageSource messageSource;
 
-  @Mock private S3Service s3Service;
+  @Mock private FileStorageService fileStorageService;
 
   private CategoryService categoryService;
 
   @BeforeEach
   void setUp() {
-    categoryService = new CategoryServiceImpl(categoryRepository, messageSource, s3Service);
+    categoryService =
+        new CategoryServiceImpl(categoryRepository, messageSource, fileStorageService);
   }
 
   @Test
@@ -95,10 +99,39 @@ public class CategoryServiceImplTest {
   }
 
   @Test
+  public void findAll_returnsDtoContainingParentAndSubCategoriesMap() {
+    Category parentCategoryJava = new Category(1L, "Java", null);
+    Category parentCategoryJs = new Category(2L, "Js", null);
+    Category subCategoryJava1 = new Category(3L, "Thread", parentCategoryJava);
+    Category subCategoryJava2 = new Category(4L, "Collections", parentCategoryJava);
+    Category subCategoryJava3 = new Category(5L, "Collections List", parentCategoryJava);
+    Category subCategoryJs1 = new Category(6L, "React", parentCategoryJs);
+    Category subCategoryJs2 = new Category(7L, "Collections", parentCategoryJs);
+    CategoryDto categoryDtoJava = new CategoryDto(1L, "Java", null);
+    CategoryDto categoryDtoJs = new CategoryDto(2L, "Js", null);
+    given(categoryRepository.findByParentCategoryIsNotNull())
+        .willReturn(
+            List.of(
+                subCategoryJava1,
+                subCategoryJava2,
+                subCategoryJava3,
+                subCategoryJs1,
+                subCategoryJs2));
+    ParentAndSubCategoriesDto actualDto = categoryService.findAll();
+    assertTrue(actualDto.getParentAndSubCategoriesMap().containsKey(categoryDtoJava));
+    assertTrue(actualDto.getParentAndSubCategoriesMap().containsKey(categoryDtoJs));
+    assertEquals(actualDto.getParentAndSubCategoriesMap().size(), 2);
+    assertEquals(actualDto.getParentAndSubCategoriesMap().get(categoryDtoJava).size(), 3);
+    assertEquals(actualDto.getParentAndSubCategoriesMap().get(categoryDtoJs).size(), 2);
+    verify(categoryRepository, times(1)).findByParentCategoryIsNotNull();
+    verifyNoMoreInteractions(categoryRepository);
+  }
+
+  @Test
   public void add_withCorrectArguments_returnsSavedCategory() {
     String logoPath = "Aws/S3/Java.png";
     MockMultipartFile multipartFile = new MockMultipartFile("Java.png", "Java".getBytes());
-    given(s3Service.uploadFile(multipartFile)).willReturn(logoPath);
+    given(fileStorageService.uploadFile(multipartFile)).willReturn(logoPath);
     Category expected = new Category("Java", logoPath, null);
     given(categoryRepository.save(any())).willReturn(expected);
     CreateCategoryRequest createCategoryRequest =
@@ -109,7 +142,7 @@ public class CategoryServiceImplTest {
     assertEquals(actual.getTitle(), expected.getTitle());
     assertEquals(actual.getLogoPath(), expected.getLogoPath());
     assertNull(actual.getParentCategoryId());
-    verify(s3Service, times(1)).uploadFile(any());
+    verify(fileStorageService, times(1)).uploadFile(any());
     verify(categoryRepository, times(1)).save(any());
     verifyNoMoreInteractions(categoryRepository);
   }
@@ -118,7 +151,7 @@ public class CategoryServiceImplTest {
   public void add_withIncorrectParentCategoryId_throwsIllegalArgumentException() {
     String logoPath = "Aws/S3/Java.png";
     MockMultipartFile multipartFile = new MockMultipartFile("Java.png", "Java".getBytes());
-    given(s3Service.uploadFile(multipartFile)).willReturn(logoPath);
+    given(fileStorageService.uploadFile(multipartFile)).willReturn(logoPath);
     given(categoryRepository.findById(3L)).willReturn(Optional.empty());
     CreateCategoryRequest createCategoryRequest =
         new CreateCategoryRequest("Java", 3L, multipartFile);
@@ -194,7 +227,7 @@ public class CategoryServiceImplTest {
     given(categoryRepository.findById(1L)).willReturn(Optional.of(updatingCategory));
     String logoPath = "Aws/S3/Java2.png";
     MockMultipartFile multipartFile = new MockMultipartFile("Java2.png", "Java2".getBytes());
-    given(s3Service.uploadFile(multipartFile)).willReturn(logoPath);
+    given(fileStorageService.uploadFile(multipartFile)).willReturn(logoPath);
     Category expected = new Category("Java", logoPath, null);
     given(categoryRepository.save(any())).willReturn(expected);
     ModifyCategoryImageRequest request = new ModifyCategoryImageRequest(multipartFile);
@@ -203,10 +236,10 @@ public class CategoryServiceImplTest {
 
     assertEquals(actual.getLogoPath(), expected.getLogoPath());
     verify(categoryRepository, times(1)).findById(1L);
-    verify(s3Service, times(1)).uploadFile(multipartFile);
-    verify(s3Service, times(1)).deleteFile(anyString());
+    verify(fileStorageService, times(1)).uploadFile(multipartFile);
+    verify(fileStorageService, times(1)).deleteFile(anyString());
     verify(categoryRepository, times(1)).save(any());
-    verifyNoMoreInteractions(s3Service);
+    verifyNoMoreInteractions(fileStorageService);
     verifyNoMoreInteractions(categoryRepository);
   }
 
@@ -227,8 +260,8 @@ public class CategoryServiceImplTest {
 
     categoryService.delete(1L, Locale.ROOT);
 
-    verify(s3Service, times(1)).deleteFile(anyString());
-    verifyNoMoreInteractions(s3Service);
+    verify(fileStorageService, times(1)).deleteFile(anyString());
+    verifyNoMoreInteractions(fileStorageService);
     verify(categoryRepository, times(1)).deleteById(1L);
     verifyNoMoreInteractions(categoryRepository);
   }

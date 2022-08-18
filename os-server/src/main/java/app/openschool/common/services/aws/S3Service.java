@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class S3Service {
+public class S3Service implements FileStorageService {
 
   private final String bucketName;
 
@@ -28,6 +28,7 @@ public class S3Service {
     this.amazonS3 = amazonS3;
   }
 
+  @Override
   public String uploadFile(MultipartFile file) {
     String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
     File convertedFile = convertMultiPartFileToFile(file);
@@ -38,6 +39,7 @@ public class S3Service {
     return amazonS3.getUrl(bucketName, fileName).toString();
   }
 
+  @Override
   public void deleteFile(String fileName) {
     amazonS3.deleteObject(bucketName, fileName);
   }
