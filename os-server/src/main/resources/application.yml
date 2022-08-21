@@ -35,6 +35,11 @@ spring:
     protocol: smtp
     default-encoding: UTF-8
 
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 10MB
+
 verification:
   duration: 3 # minutes
   cookie-expiration: 120 # seconds
@@ -45,16 +50,6 @@ verification:
       email:
         subject: Verification code to reset your password
 
-cloud:
-  aws:
-    region:
-      static: eu-central-1
-    stack:
-      auto: false
-
-mail:
-  username: openschool.epam@gmail.com
-
 token:
   expiration: 30
 
@@ -62,6 +57,22 @@ springdoc:
   swagger-ui:
     path: /open-school-api
     operationsSorter: method
+
+cloud:
+  aws:
+    region:
+      static: eu-central-1
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: open-school-images
+
+mail:
+  username: openschool.epam@gmail.com
+
+
 
 
 
