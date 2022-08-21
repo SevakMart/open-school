@@ -1,4 +1,4 @@
-package app.openschool.common.services.aws;
+package app.openschool.common.services.aws.email;
 
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;

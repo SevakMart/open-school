@@ -1,6 +1,6 @@
 package app.openschool.common.configuration;
 
-import app.openschool.common.services.aws.Ses;
+import app.openschool.common.services.aws.email.Ses;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;

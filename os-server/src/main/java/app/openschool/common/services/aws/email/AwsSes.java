@@ -1,4 +1,4 @@
-package app.openschool.common.services.aws;
+package app.openschool.common.services.aws.email;
 
 import com.amazonaws.services.simpleemail.model.CreateTemplateResult;
 import java.util.List;

@@ -1,4 +1,4 @@
-package app.openschool.common.services.aws;
+package app.openschool.common.services.aws.email;
 
 import app.openschool.common.event.SendResetPasswordEmailEvent;
 import app.openschool.common.event.SendVerificationEmailEvent;

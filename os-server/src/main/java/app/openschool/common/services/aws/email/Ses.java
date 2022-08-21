@@ -1,4 +1,4 @@
-package app.openschool.common.services.aws;
+package app.openschool.common.services.aws.email;
 
 import app.openschool.common.services.EmailSenderService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;

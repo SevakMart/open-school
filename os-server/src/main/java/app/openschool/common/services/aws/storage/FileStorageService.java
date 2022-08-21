@@ -1,4 +1,4 @@
-package app.openschool.common.services.aws;
+package app.openschool.common.services.aws.storage;
 
 import org.springframework.web.multipart.MultipartFile;
 
