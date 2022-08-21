@@ -9,7 +9,6 @@ public class CategoryGenerator {
     category.setId(1L);
     category.setTitle("Java");
     category.setLogoPath("AAA");
-    category.setSubCategoryCount(3);
     return category;
   }
 }

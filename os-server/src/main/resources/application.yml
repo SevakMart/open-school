@@ -35,6 +35,11 @@ spring:
     protocol: smtp
     default-encoding: UTF-8
 
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 10MB
+
 verification:
   duration: 3 # minutes
   cookie-expiration: 120 # seconds
@@ -52,4 +57,19 @@ springdoc:
   swagger-ui:
     path: /open-school-api
     operationsSorter: method
+
+cloud:
+  aws:
+    region:
+      static: eu-central-1
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: open-school-images
+
+
+
+
 
