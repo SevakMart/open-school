@@ -45,6 +45,16 @@ verification:
       email:
         subject: Verification code to reset your password
 
+cloud:
+  aws:
+    region:
+      static: eu-central-1
+    stack:
+      auto: false
+
+mail:
+  username: openschool.epam@gmail.com
+
 token:
   expiration: 30
 
@@ -52,4 +62,6 @@ springdoc:
   swagger-ui:
     path: /open-school-api
     operationsSorter: method
+
+
 

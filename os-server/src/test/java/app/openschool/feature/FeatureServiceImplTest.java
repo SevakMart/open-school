@@ -29,7 +29,7 @@ public class FeatureServiceImplTest {
   @BeforeEach
   void setUp() {
     featureService =
-        new FeatureServiceImpl(categoryRepository, languageRepository, difficultyRepository);
+        new FeatureServiceImpl(categoryRepository, languageRepository, difficultyRepository, applicationEventPublisher);
   }
 
   @Test

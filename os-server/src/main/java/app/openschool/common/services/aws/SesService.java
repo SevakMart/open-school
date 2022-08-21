@@ -1,4 +1,4 @@
-package app.openschool.common.services;
+package app.openschool.common.services.aws;
 
 import app.openschool.auth.verification.VerificationToken;
 import app.openschool.auth.verification.VerificationTokenRepository;
@@ -6,73 +6,85 @@ import app.openschool.auth.verification.api.dto.VerificationTokenDto;
 import app.openschool.auth.verification.api.mapper.VerificationTokenMapper;
 import app.openschool.common.event.SendResetPasswordEmailEvent;
 import app.openschool.common.event.SendVerificationEmailEvent;
+import app.openschool.common.services.EmailSenderServiceImpl;
+import app.openschool.feature.api.CreateAwsTemplateRequest;
 import app.openschool.user.User;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.context.Context;
 
-@Profile(value = {"local", "test"})
+@ConditionalOnMissingBean(value = {EmailSenderServiceImpl.class})
 @Service
-public class EmailService implements CommunicationService {
-  private final EmailSenderService emailSender;
+public class SesService implements AwsSesService {
+
+  private final AwsSes awsSes;
+  private final VerificationTokenRepository verificationTokenRepository;
   private final ITemplateEngine templateEngine;
   private final String resetPasswordEmailSubject;
-  private final VerificationTokenRepository verificationTokenRepository;
-  private final long expirationDuration;
-  private final String verificationEndpoint;
   private final String emailSubject;
+  private final String verificationEndpoint;
+  private final long expirationDuration;
 
-  public EmailService(
-      EmailSenderService emailSender,
+  public SesService(
+      AwsSes awsSes,
+      VerificationTokenRepository verificationTokenRepository,
       ITemplateEngine templateEngine,
       @Value("${verification.reset.password.email.subject}") String resetPasswordEmailSubject,
-      VerificationTokenRepository verificationTokenRepository,
-      @Value("${verification.duration}") long expirationDuration,
+      @Value("${verification.subject}") String emailSubject,
       @Value("${verification.endpoint}") String verificationEndpoint,
-      @Value("${verification.subject}") String emailSubject) {
-    this.emailSender = emailSender;
+      @Value("${verification.duration}") long expirationDuration) {
+    this.awsSes = awsSes;
+    this.verificationTokenRepository = verificationTokenRepository;
     this.templateEngine = templateEngine;
     this.resetPasswordEmailSubject = resetPasswordEmailSubject;
-    this.verificationTokenRepository = verificationTokenRepository;
-    this.expirationDuration = expirationDuration;
-    this.verificationEndpoint = verificationEndpoint;
     this.emailSubject = emailSubject;
+    this.verificationEndpoint = verificationEndpoint;
+    this.expirationDuration = expirationDuration;
   }
 
   @Override
-  @Async
   @EventListener(classes = {SendResetPasswordEmailEvent.class})
   public void sendResetPasswordEmail(SendResetPasswordEmailEvent event) {
-    emailSender.sendEmail(
-        event.getEmail(),
+    awsSes.sendStandardEmail(
+        List.of(event.getEmail()),
         createResetPasswordEmailContent(event.getToken()),
         resetPasswordEmailSubject);
   }
 
   @Override
   @Transactional
-  @Async
   @EventListener(SendVerificationEmailEvent.class)
   public void sendEmailToVerifyUserAccount(SendVerificationEmailEvent event) {
     User user = event.getUser();
     VerificationToken verificationToken = VerificationToken.generateVerificationToken(user);
-
     overwriteVerificationTokenIfAlreadyExist(user, verificationToken);
-
-    emailSender.sendEmail(
-        user.getEmail(),
+    awsSes.sendStandardEmail(
+        List.of(user.getEmail()),
         createEmailContent(
             user.getName(),
             String.valueOf(expirationDuration),
             verificationEndpoint,
             VerificationTokenMapper.verificationTokenToVerificationTokenDto(verificationToken)),
         emailSubject);
+  }
+
+  @EventListener(CreateAwsTemplateRequest.class)
+  @Override
+  public void createTemplate(CreateAwsTemplateRequest request) {
+    awsSes.createTemplate(
+        request.getTemplateName(), request.getSubjectPart(), request.getHtmlPart());
+  }
+
+  @EventListener(String.class)
+  @Override
+  public void deleteTemplate(String templateName) {
+    awsSes.deleteTemplate(templateName);
   }
 
   private String createResetPasswordEmailContent(String resetPasswordToken) {

@@ -47,6 +47,12 @@ dependencies {
     //logging
     implementation 'ch.qos.logback:logback-classic:1.2.11'
 
+    //aws
+    //aws
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
+    implementation 'com.amazonaws:aws-java-sdk-s3'
+    implementation 'com.amazonaws:aws-java-sdk-ses'
+
 }
 
 test {
