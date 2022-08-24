@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../../redux/Store';
-import RightArrowIcon from '../../../../icons/RightArrow';
-import LeftArrowIcon from '../../../../icons/LeftArrow';
 import CategoryCard from '../../../../component/CategoryProfile/CategoryProfile';
 import { CategoryType } from '../../../../types/CategoryType';
 import publicService from '../../../../services/publicService';
 import categoriesService from '../../../../services/categoriesService';
-import Button from '../../../../component/Button/Button';
+import Title from '../Title/Title';
+import MainBody from '../MainBody/MainBody';
 import styles from './Categories.module.scss';
 
 const HomepageCategories = () => {
@@ -18,10 +17,7 @@ const HomepageCategories = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [categoryPage, setCategoryPage] = useState(0);
   const [maxCategoryPage, setMaxCategoryPage] = useState(10);
-  const {
-    categoriesMainContainer, categoryHeader, gridContent,
-    icon, icon__right, icon__left, categoriesListContainer, registrationButton,
-  } = styles;
+  const { categoriesMainContainer, gridContent } = styles;
 
   useEffect(() => {
     let categoryPromise:any;
@@ -42,34 +38,25 @@ const HomepageCategories = () => {
 
   return (
     <div className={categoriesMainContainer}>
-      <div className={categoryHeader}>
-        <h3>{t('string.homePage.categories.title')}</h3>
-        <h2>{t('string.homePage.categories.exploreCategories')}</h2>
-      </div>
-      <div className={categoriesListContainer}>
-        {categoryPage && (
-        <div className={`${icon} ${icon__left}`}>
-          <LeftArrowIcon testId="categoryLeftArrow" handleArrowClick={() => { setCategoryPage((prevPage) => prevPage - 1); }} />
-        </div>
-        )}
+      <Title
+        mainTitle={t('string.homePage.categories.title')}
+        subTitle={t('string.homePage.categories.exploreCategories')}
+        isMentor={false}
+      />
+      <MainBody
+        page={categoryPage}
+        maxPage={maxCategoryPage}
+        isMentor={false}
+        clickPrevious={() => setCategoryPage((prevPage) => prevPage - 1)}
+        clickNext={() => setCategoryPage((prevPage) => prevPage + 1)}
+      >
         <div className={gridContent}>
           {errorMessage && <h2 data-testid="categoriesErrorMessage">{errorMessage}</h2>}
           {!categories.length && <h2 data-testid="emptyCategoryMessage">{t('messages.noData.categories')}</h2> }
           {categories.length && !errorMessage && categories.map((category, index) => (
             <CategoryCard key={index} category={category} />))}
         </div>
-        {categoryPage < maxCategoryPage
-        && (
-        <div className={`${icon} ${icon__right}`}>
-          <RightArrowIcon testId="categoryRightArrow" handleArrowClick={() => { setCategoryPage((prevPage) => prevPage + 1); }} />
-        </div>
-        )}
-      </div>
-      <div className={registrationButton}>
-        <Button.SignUpButton className={['mainMentorRegistrationButton']}>
-          {t('button.homePage.registerMentor')}
-        </Button.SignUpButton>
-      </div>
+      </MainBody>
     </div>
   );
 };

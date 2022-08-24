@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../../redux/Store';
-import RightArrowIcon from '../../../../icons/RightArrow';
-import LeftArrowIcon from '../../../../icons/LeftArrow';
 import MentorCard from '../../../../component/MentorProfile/MentorProfile';
 import { MentorType } from '../../../../types/MentorType';
 import publicService from '../../../../services/publicService';
 import userService from '../../../../services/userService';
-import Button from '../../../../component/Button/Button';
+import Title from '../Title/Title';
+import MainBody from '../MainBody/MainBody';
 import styles from './Mentors.module.scss';
 
 const HomepageMentors = ({ handleButtonClick }:{handleButtonClick:(buttonType:string)=>void}) => {
@@ -18,10 +17,7 @@ const HomepageMentors = ({ handleButtonClick }:{handleButtonClick:(buttonType:st
   const [page, setPage] = useState(0);
   const [maxPage, setMaxPage] = useState(10);
   const [errorMessage, setErrorMessage] = useState('');
-  const {
-    mentorMainContainer, mentorHeader, gridContent,
-    icon, icon__right, icon__left, mentorListContainer, registrationButton,
-  } = styles;
+  const { mentorMainContainer, gridContent } = styles;
 
   useEffect(() => {
     const cancel = false;
@@ -46,44 +42,25 @@ const HomepageMentors = ({ handleButtonClick }:{handleButtonClick:(buttonType:st
 
   return (
     <div className={mentorMainContainer}>
-      <div className={mentorHeader}>
-        <h3>{t('string.homePage.mentors.ourMentors')}</h3>
-        <h2>{t('string.homePage.mentors.learnAboutContributors')}</h2>
-      </div>
-      <div className={mentorListContainer}>
-        { page && (
-          <div className={`${icon} ${icon__left}`}>
-            <LeftArrowIcon
-              testId="mentorLeftArrow"
-              handleArrowClick={() => {
-                setPage((prevPage) => prevPage - 1);
-              }}
-            />
-          </div>
-        )}
+      <Title
+        mainTitle={t('string.homePage.mentors.ourMentors')}
+        subTitle={t('string.homePage.mentors.learnAboutContributors')}
+        isMentor
+      />
+      <MainBody
+        page={page}
+        maxPage={maxPage}
+        isMentor
+        clickPrevious={() => setPage((prevPage) => prevPage - 1)}
+        clickNext={() => setPage((prevPage) => prevPage + 1)}
+      >
         <div className={gridContent}>
           {errorMessage && <h2 data-testid="mentorsErrorMessage">{errorMessage}</h2>}
           {!mentors.length && <h2 data-testid="emptyMentorMessage">{t('messages.noData.mentors')}</h2>}
           {mentors.length && !errorMessage && mentors.map((mentor, index) => (
             <MentorCard key={index} mentor={{ ...mentor }} />))}
         </div>
-        {page < maxPage
-        && (
-        <div className={`${icon} ${icon__right}`}>
-          <RightArrowIcon
-            testId="mentorRightArrow"
-            handleArrowClick={() => {
-              setPage((prevPage) => prevPage + 1);
-            }}
-          />
-        </div>
-        )}
-      </div>
-      <div className={registrationButton}>
-        <Button.SignUpButton className={['mainMentorRegistrationButton']}>
-          {t('button.homePage.registerMentor')}
-        </Button.SignUpButton>
-      </div>
+      </MainBody>
     </div>
   );
 };
