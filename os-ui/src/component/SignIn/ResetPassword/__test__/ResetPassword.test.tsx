@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { store } from '../../../../redux/Store';
 import {
   INVALID_PASSWORD_ERROR_MESSAGE, INVALID_TOKEN,
@@ -28,6 +29,12 @@ const forgotPasswordResponse = {
   },
   status: 200,
 };
+
+jest.mock('redux-state-sync', () => ({
+  createStateSyncMiddleware:
+    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
+  initMessageListener: () => jest.fn(),
+}));
 
 describe('Create test cases for ResetPassword Component', () => {
   test('Create a snapshot test', () => {

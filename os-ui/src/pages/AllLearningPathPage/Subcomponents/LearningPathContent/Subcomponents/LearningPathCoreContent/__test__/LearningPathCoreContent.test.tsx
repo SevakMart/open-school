@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { store } from '../../../../../../../redux/Store';
 import courseService from '../../../../../../../services/courseService';
 import userService from '../../../../../../../services/userService';
@@ -11,6 +12,12 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: () => 'No data to display',
   }),
+}));
+
+jest.mock('redux-state-sync', () => ({
+  createStateSyncMiddleware:
+    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
+  initMessageListener: () => jest.fn(),
 }));
 
 const data = {

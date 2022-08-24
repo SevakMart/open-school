@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 import CategoryWithSubcategoriesProfile from '../CategoryWithSubcategoriesProfile';
 import { store } from '../../../redux/Store';
 
@@ -18,6 +19,12 @@ const subcategoriesArray = [
   },
 
 ];
+
+jest.mock('redux-state-sync', () => ({
+  createStateSyncMiddleware:
+    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
+  initMessageListener: () => jest.fn(),
+}));
 
 describe('Create tests for the Component', () => {
   test('Create a Snapshot test', () => {

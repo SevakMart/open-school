@@ -82,6 +82,9 @@ exports[`Create test cases for course description page Create a snapshot test 1`
             </svg>
           </i>
         </div>
+        <p>
+          string.navBar.logout
+        </p>
       </div>
     </nav>
     <h1 />
