@@ -19,10 +19,12 @@ const HomepageHeader = ({ handleFormVisibility }:
           <h1>{t('string.homePage.header.educationalPlatform')}</h1>
           <p>{t('string.homePage.header.chooseCategories')}</p>
           <div className={buttonContainer}>
-            <Button.SignUpButton className={['signupHeaderButton']}>
+            <Button.SignUpButton className={['headerButton', 'headerButton__signUp']}>
               {t('button.homePage.signUp')}
             </Button.SignUpButton>
-            <button type="button">{t('button.homePage.signIn')}</button>
+            <Button.SignInButton className={['headerButton', 'headerButton__signIn']}>
+              {t('button.homePage.signIn')}
+            </Button.SignInButton>
           </div>
         </div>
         <div className={rightContent}>

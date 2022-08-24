@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import Button from '../Button/Button';
 import styles from './Navbar.module.scss';
 
 const Navbar = () => {
@@ -13,7 +14,9 @@ const Navbar = () => {
       </div>
       <div className={buttonContent}>
         <p>{t('button.homePage.becomeMentor')}</p>
-        <button type="button">{t('button.homePage.signIn')}</button>
+        <Button.SignInButton className={['navbarSignInButton']}>
+          {t('button.homePage.signIn')}
+        </Button.SignInButton>
       </div>
     </nav>
   );

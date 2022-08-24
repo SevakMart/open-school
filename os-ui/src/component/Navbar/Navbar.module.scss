@@ -26,10 +26,5 @@
   }
   .buttonContent {
     width: 20%;
-    button {
-      @include buttonStyle(#333941, $white-text-color, 1.25rem, none, 2.2rem, 1rem, 1rem, 0.625rem, 0.625rem);
-      @include fontStyle($primary-font, normal, 500, 0.75rem, 0.938rem);
-      text-transform: uppercase;
-    }
   }
 }
