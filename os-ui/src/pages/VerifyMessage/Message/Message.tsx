@@ -14,8 +14,8 @@ const Message = ({ goToLogin, reSend, isVerify }:
         </h4>
       </div>
       <div className={buttonContainer}>
-        <Button buttonType="button" buttonClick={reSend}>Re Send</Button>
-        <Button buttonType="button" buttonClick={goToLogin}>Login</Button>
+        {/* <Button buttonType="button" buttonClick={reSend}>Re Send</Button>
+        <Button buttonType="button" buttonClick={goToLogin}>Login</Button> */}
       </div>
     </div>
   );

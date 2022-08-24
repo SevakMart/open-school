@@ -8,10 +8,10 @@ import MentorCard from '../../../../component/MentorProfile/MentorProfile';
 import { MentorType } from '../../../../types/MentorType';
 import publicService from '../../../../services/publicService';
 import userService from '../../../../services/userService';
+import Button from '../../../../component/Button/Button';
 import styles from './Mentors.module.scss';
 
-const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
-  handleButtonClick:(buttonType:string)=>void}) => {
+const HomepageMentors = ({ handleButtonClick }:{handleButtonClick:(buttonType:string)=>void}) => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
   const { t } = useTranslation();
   const [mentors, setMentors] = useState<MentorType[]>([]);
@@ -27,7 +27,7 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
     const cancel = false;
     let mentorPromise;
 
-    if (isLoggedIn) {
+    if ((userInfo as any).token) {
       mentorPromise = userService.getMentors(
         { page, size: 4 },
         (userInfo as any).token,
@@ -42,7 +42,7 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
         setMaxPage(data.totalPages - 1);
       } else if (data.errorMessage) setErrorMessage(data.errorMessage);
     });
-  }, [isLoggedIn, page]);
+  }, [page]);
 
   return (
     <div className={mentorMainContainer}>
@@ -51,8 +51,7 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
         <h2>{t('string.homePage.mentors.learnAboutContributors')}</h2>
       </div>
       <div className={mentorListContainer}>
-        { page > 0
-          && (
+        { page && (
           <div className={`${icon} ${icon__left}`}>
             <LeftArrowIcon
               testId="mentorLeftArrow"
@@ -61,14 +60,12 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
               }}
             />
           </div>
-          )}
+        )}
         <div className={gridContent}>
-          {
-        mentors.length > 0 && !errorMessage ? mentors.map((mentor, index) => (
-          <MentorCard key={index} mentor={{ ...mentor }} />
-        )) : errorMessage ? <h2 data-testid="mentorsErrorMessage">{errorMessage}</h2>
-          : <h2 data-testid="emptyMentorMessage">{t('messages.noData.mentors')}</h2>
-          }
+          {errorMessage && <h2 data-testid="mentorsErrorMessage">{errorMessage}</h2>}
+          {!mentors.length && <h2 data-testid="emptyMentorMessage">{t('messages.noData.mentors')}</h2>}
+          {mentors.length && !errorMessage && mentors.map((mentor, index) => (
+            <MentorCard key={index} mentor={{ ...mentor }} />))}
         </div>
         {page < maxPage
         && (
@@ -83,7 +80,9 @@ const HomepageMentors = ({ isLoggedIn, handleButtonClick }:{isLoggedIn:boolean,
         )}
       </div>
       <div className={registrationButton}>
-        <button type="button">{t('button.homePage.registerMentor')}</button>
+        <Button.SignUpButton className={['mainMentorRegistrationButton']}>
+          {t('button.homePage.registerMentor')}
+        </Button.SignUpButton>
       </div>
     </div>
   );

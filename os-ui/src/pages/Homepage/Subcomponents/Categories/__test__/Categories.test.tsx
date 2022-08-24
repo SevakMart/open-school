@@ -42,7 +42,7 @@ describe('Create test cases for homepage mentors list', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <HomepageCategories isLoggedIn />
+        <HomepageCategories />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();
@@ -52,7 +52,7 @@ describe('Create test cases for homepage mentors list', () => {
     jest.spyOn(publicService, 'getPublicCategories').mockResolvedValue(notSignInData);
     render(
       <Provider store={store}>
-        <HomepageCategories isLoggedIn={false} />
+        <HomepageCategories />
       </Provider>,
     );
     const categoryTitle = await screen.findByTestId('JavaScript');
@@ -63,7 +63,7 @@ describe('Create test cases for homepage mentors list', () => {
     jest.spyOn(categoriesService, 'getCategories').mockResolvedValue(signInData);
     render(
       <Provider store={store}>
-        <HomepageCategories isLoggedIn />
+        <HomepageCategories />
       </Provider>,
     );
     const categoryTitle = await screen.findByTestId('Angular');
@@ -73,7 +73,7 @@ describe('Create test cases for homepage mentors list', () => {
     jest.spyOn(publicService, 'getPublicCategories').mockResolvedValue({ data: { content: [], totalPages: 0 }, status: 200 });
     render(
       <Provider store={store}>
-        <HomepageCategories isLoggedIn={false} />
+        <HomepageCategories />
       </Provider>,
     );
     const emptyCategoryHeading = await screen.findByTestId('emptyCategoryMessage');

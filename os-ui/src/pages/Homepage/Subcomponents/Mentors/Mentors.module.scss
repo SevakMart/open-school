@@ -54,12 +54,5 @@
       padding-top:5%;
       padding-bottom: 10%;
       text-align: center;
-      button {
-        @include buttonStyle(transparent, $main-text-color, 1rem, none, 4rem, 2rem, 2rem, 1.375rem, 1.375rem);
-        @include fontStyle($primary-font, normal, 500, 1rem, 1.5rem);
-        border: 1px solid $main-text-color;
-        text-transform: uppercase;
-      
-      }
     }
 }

@@ -8,9 +8,10 @@ import CategoryCard from '../../../../component/CategoryProfile/CategoryProfile'
 import { CategoryType } from '../../../../types/CategoryType';
 import publicService from '../../../../services/publicService';
 import categoriesService from '../../../../services/categoriesService';
+import Button from '../../../../component/Button/Button';
 import styles from './Categories.module.scss';
 
-const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
+const HomepageCategories = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
   const { t } = useTranslation();
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -23,27 +24,21 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
   } = styles;
 
   useEffect(() => {
-    let cancel = false;
-    let categoryPromise;
-    if (isLoggedIn) {
-      categoryPromise = categoriesService.getCategories(
-        { page: categoryPage, size: 6 },
-        (userInfo as any).token,
-      );
+    let categoryPromise:any;
+    if ((userInfo as any).token) {
+      /* eslint-disable-next-line max-len */
+      categoryPromise = categoriesService.getCategories({ page: categoryPage, size: 6 }, (userInfo as any).token);
     } else {
       categoryPromise = publicService.getPublicCategories({ page: categoryPage, size: 6 });
     }
-
-    categoryPromise.then((res) => {
-      if (cancel) return;
+    categoryPromise.then((res:any) => {
       const { data } = res;
       if (!data.errorMessage && data.content.length > 0) {
         setCategories(data.content);
         setMaxCategoryPage(data.totalPages - 1);
       } else if (data.errorMessage) setErrorMessage(data.errorMessage);
     });
-    return () => { cancel = true; };
-  }, [isLoggedIn, categoryPage]);
+  }, [categoryPage]);
 
   return (
     <div className={categoriesMainContainer}>
@@ -52,19 +47,16 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
         <h2>{t('string.homePage.categories.exploreCategories')}</h2>
       </div>
       <div className={categoriesListContainer}>
-        {categoryPage > 0
-        && (
+        {categoryPage && (
         <div className={`${icon} ${icon__left}`}>
           <LeftArrowIcon testId="categoryLeftArrow" handleArrowClick={() => { setCategoryPage((prevPage) => prevPage - 1); }} />
         </div>
         )}
         <div className={gridContent}>
-          {
-            categories.length > 0 && !errorMessage ? categories.map((category, index) => (
-              <CategoryCard key={index} category={category} />))
-              : errorMessage ? <h2 data-testid="categoriesErrorMessage">{errorMessage}</h2>
-                : <h2 data-testid="emptyCategoryMessage">{t('messages.noData.categories')}</h2>
-          }
+          {errorMessage && <h2 data-testid="categoriesErrorMessage">{errorMessage}</h2>}
+          {!categories.length && <h2 data-testid="emptyCategoryMessage">{t('messages.noData.categories')}</h2> }
+          {categories.length && !errorMessage && categories.map((category, index) => (
+            <CategoryCard key={index} category={category} />))}
         </div>
         {categoryPage < maxCategoryPage
         && (
@@ -74,7 +66,9 @@ const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
         )}
       </div>
       <div className={registrationButton}>
-        <button type="button">{t('button.homePage.registerMentor')}</button>
+        <Button.SignUpButton className={['mainMentorRegistrationButton']}>
+          {t('button.homePage.registerMentor')}
+        </Button.SignUpButton>
       </div>
     </div>
   );

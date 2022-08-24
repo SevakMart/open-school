@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import Navbar from '../Navbar/Navbar';
 import HomepageMainImage from '../../assets/svg/HomepageMainImage.svg';
+import Button from '../Button/Button';
 import styles from './HomepageHeader.module.scss';
 
 const HomepageHeader = ({ handleFormVisibility }:
@@ -18,7 +19,9 @@ const HomepageHeader = ({ handleFormVisibility }:
           <h1>{t('string.homePage.header.educationalPlatform')}</h1>
           <p>{t('string.homePage.header.chooseCategories')}</p>
           <div className={buttonContainer}>
-            <button type="button">{t('button.homePage.signUp')}</button>
+            <Button.SignUpButton className={['signupHeaderButton']}>
+              {t('button.homePage.signUp')}
+            </Button.SignUpButton>
             <button type="button">{t('button.homePage.signIn')}</button>
           </div>
         </div>

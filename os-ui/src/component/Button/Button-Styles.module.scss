@@ -1,0 +1,34 @@
+@import "../../styles/Mixins/ButtonMixin.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+@import "../../styles/Configs/Fonts.scss";
+@import "../../styles/Configs/Colors.scss";
+
+.signupHeaderButton{
+    @include fontStyle($primary-font, normal, 500, 1rem, 1.25rem);
+    @include buttonStyle($secondary-color, $white-text-color, 1rem, none, 4rem, 2rem, 2rem, 1.375rem, 1.375rem);
+    text-transform: uppercase;
+    border:none;
+}
+.signUpFooter {
+    @include fontStyle($primary-font, normal, 500, 1rem, 1.25rem);
+    text-transform: uppercase;
+    margin-right:5%;
+    border:none;
+    &__student {
+        @include buttonStyle($secondary-color, $white-text-color, 1rem, none, 4rem, 2rem, 2rem, 1.375rem, 1.375rem);
+    }
+    &__mentor {
+        @include buttonStyle(transparent, $white-text-color, 1rem, none, 4rem, 2rem, 2rem, 1.375rem, 1.375rem);
+        &:hover {
+          background-color: $secondary-color;
+          color: $white-text-color;
+        }
+    }
+}
+
+.mainMentorRegistrationButton {
+    @include buttonStyle(transparent, $main-text-color, 1rem, none, 4rem, 2rem, 2rem, 1.375rem, 1.375rem);
+    @include fontStyle($primary-font, normal, 500, 1rem, 1.5rem);
+    border: 1px solid $main-text-color;
+    text-transform: uppercase;
+}
