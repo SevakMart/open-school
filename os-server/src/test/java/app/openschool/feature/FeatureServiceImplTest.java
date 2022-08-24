@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 @ExtendWith(MockitoExtension.class)
 public class FeatureServiceImplTest {
@@ -23,13 +24,18 @@ public class FeatureServiceImplTest {
   @Mock private CategoryRepository categoryRepository;
   @Mock private LanguageRepository languageRepository;
   @Mock private DifficultyRepository difficultyRepository;
+  @Mock private ApplicationEventPublisher applicationEventPublisher;
 
   private FeatureService featureService;
 
   @BeforeEach
   void setUp() {
     featureService =
-        new FeatureServiceImpl(categoryRepository, languageRepository, difficultyRepository);
+        new FeatureServiceImpl(
+            categoryRepository,
+            languageRepository,
+            difficultyRepository,
+            applicationEventPublisher);
   }
 
   @Test

@@ -20,7 +20,7 @@ import app.openschool.category.api.dto.CreateCategoryRequest;
 import app.openschool.category.api.dto.ModifyCategoryDataRequest;
 import app.openschool.category.api.dto.ModifyCategoryImageRequest;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
-import app.openschool.common.services.aws.FileStorageService;
+import app.openschool.common.services.aws.storage.FileStorageService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;

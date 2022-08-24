@@ -1,4 +1,4 @@
-package app.openschool.common.services.aws;
+package app.openschool.common.services.aws.storage;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -11,9 +11,11 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+@Profile({"!local", "!test"})
 @Service
 public class S3Service implements FileStorageService {
 

@@ -11,7 +11,7 @@ import app.openschool.category.api.dto.ModifyCategoryImageRequest;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.category.api.mapper.CategoryMapper;
-import app.openschool.common.services.aws.FileStorageService;
+import app.openschool.common.services.aws.storage.FileStorageService;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;

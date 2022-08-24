@@ -9,8 +9,10 @@ import app.openschool.course.difficulty.DifficultyRepository;
 import app.openschool.course.language.Language;
 import app.openschool.course.language.LanguageRepository;
 import app.openschool.feature.api.CourseSearchingFeaturesDto;
+import app.openschool.feature.api.CreateAwsTemplateRequest;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,14 +21,17 @@ public class FeatureServiceImpl implements FeatureService {
   private final CategoryRepository categoryRepository;
   private final LanguageRepository languageRepository;
   private final DifficultyRepository difficultyRepository;
+  private final ApplicationEventPublisher publisher;
 
   public FeatureServiceImpl(
       CategoryRepository categoryRepository,
       LanguageRepository languageRepository,
-      DifficultyRepository difficultyRepository) {
+      DifficultyRepository difficultyRepository,
+      ApplicationEventPublisher publisher) {
     this.categoryRepository = categoryRepository;
     this.languageRepository = languageRepository;
     this.difficultyRepository = difficultyRepository;
+    this.publisher = publisher;
   }
 
   @Override
@@ -49,5 +54,15 @@ public class FeatureServiceImpl implements FeatureService {
 
     return new CourseSearchingFeaturesDto(
         parentAndSubCategoriesMap, allLanguagesMap, allDifficultyLevelsMap);
+  }
+
+  @Override
+  public void createTemplate(CreateAwsTemplateRequest request) {
+    publisher.publishEvent(request);
+  }
+
+  @Override
+  public void deleteTemplate(String templateName) {
+    publisher.publishEvent(templateName);
   }
 }
