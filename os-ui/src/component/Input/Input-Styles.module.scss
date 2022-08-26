@@ -1,0 +1,23 @@
+@import "../../styles/Configs/Colors.scss";
+@import "../../styles/Configs/Fonts.scss";
+@import "../../styles/Mixins/FlexMixins.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+
+.textInputContainer,.EmailInputContainer {
+        position: relative;
+        width: 100%;
+        margin-bottom: 4%;
+        @include flexStyle(column, flex-start, space-between);
+      input {
+        width: 100%;
+        border: 1px solid #d9dbe9;
+        box-sizing: border-box;
+        border-radius: 0.75rem;
+        height: 3.5rem;
+        margin-top: 2%;
+      }
+      label {
+        @include fontStyle($primary-font, normal, 500, 0.875rem, 1rem);
+        color: #333941;
+      }
+}

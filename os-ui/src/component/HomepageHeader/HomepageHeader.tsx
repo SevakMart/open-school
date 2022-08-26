@@ -7,8 +7,7 @@ import { Types } from '../../types/types';
 import { openModal } from '../../redux/Slices/PortalOpenStatus';
 import styles from './HomepageHeader.module.scss';
 
-const HomepageHeader = ({ handleFormVisibility }:
-  {handleFormVisibility(buttonType:string):void}) => {
+const HomepageHeader = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const {

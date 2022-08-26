@@ -47,3 +47,11 @@
     @include fontStyle($primary-font, normal, 500, 0.75rem, 0.938rem);
     text-transform: uppercase;
 }
+.registerButton {
+    @include buttonStyle($secondary-color,$white-text-color,1rem,100%,4.5rem,none,none,none,none);
+    @include fontStyle($primary-font, normal, 500, 1rem, 1.25rem);
+    display: block;
+    text-align: center;
+    border: 1px solid #5e617b;
+    box-sizing: border-box;
+}

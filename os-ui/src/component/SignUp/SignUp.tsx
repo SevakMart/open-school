@@ -27,7 +27,7 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
     return () => clearTimeout(timer);
   }, [isSignUp]);
   return (
-    <>
+    <div>
       {isSignUp ? <h3 data-testid="successfulSignUpMessage">{succesfullSignUpMessage}</h3>
         : (
           <>
@@ -50,7 +50,7 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
             </p>
           </>
         )}
-    </>
+    </div>
   );
 };
 export default SignUp;

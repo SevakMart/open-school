@@ -1,0 +1,8 @@
+@import "../../styles/Configs/Fonts.scss";
+@import "../../styles/Configs/Colors.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+
+.inputErrorField {
+    @include fontStyle($primary-font, normal, 800, 0.875rem, 1rem);
+    color: $main-error-color;
+}

@@ -10,7 +10,7 @@ import Title from '../Title/Title';
 import MainBody from '../MainBody/MainBody';
 import styles from './Mentors.module.scss';
 
-const HomepageMentors = ({ handleButtonClick }:{handleButtonClick:(buttonType:string)=>void}) => {
+const HomepageMentors = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
   const { t } = useTranslation();
   const [mentors, setMentors] = useState<MentorType[]>([]);

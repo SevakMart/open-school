@@ -17,11 +17,9 @@ const Homepage = () => {
 
   return (
     <>
-      <HomepageHeader
-        handleFormVisibility={() => null}
-      />
+      <HomepageHeader />
       <HomepageCategories />
-      <HomepageMentors handleButtonClick={() => null} />
+      <HomepageMentors />
       <Footer />
       <Portal isOpen={isOpen}>
         {/* eslint-disable max-len */}
