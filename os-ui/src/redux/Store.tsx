@@ -11,10 +11,10 @@ import rootReducer from './RootReducer';
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+  /* middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
-  }),
+  }), */
 });
 export type RootState = ReturnType<typeof store.getState>

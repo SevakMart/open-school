@@ -1,0 +1,21 @@
+@import "../../styles/Configs/Colors.scss";
+
+.overlayStyles {
+    position:fixed;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    opacity: 0.9;
+    background-color: $header-main-color;
+    z-index:100;
+}
+.modalStyles {
+    position:fixed;
+    top:50%;
+    left:50%;
+    background-color: $white-text-color;
+    transform:translate(-50%,-50%);
+    width:35%;
+    z-index:100;
+}

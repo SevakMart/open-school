@@ -27,32 +27,30 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
     return () => clearTimeout(timer);
   }, [isSignUp]);
   return (
-    <div className={mainContainer}>
-      <div className={formContainer}>
-        {isSignUp ? <h3 data-testid="successfulSignUpMessage">{succesfullSignUpMessage}</h3>
-          : (
-            <>
-              <CloseIcon handleClosing={() => handleSignUpClicks('closeButton')} />
-              <div className={headerContent}>
-                <h2>{t('string.signUp.title')}</h2>
-                <div className={iconContent}>
-                  <button type="button"><LinkedinIcon1 /></button>
-                  <button type="button"><EmailIcon1 /></button>
-                </div>
-                <p>{t('string.signIn.or')}</p>
+    <>
+      {isSignUp ? <h3 data-testid="successfulSignUpMessage">{succesfullSignUpMessage}</h3>
+        : (
+          <>
+            <CloseIcon handleClosing={() => handleSignUpClicks('closeButton')} />
+            <div className={headerContent}>
+              <h2>{t('string.signUp.title')}</h2>
+              <div className={iconContent}>
+                <button type="button"><LinkedinIcon1 /></button>
+                <button type="button"><EmailIcon1 /></button>
               </div>
-              <SignUpRegistrationForm
-                registrationForm="default"
-                switchToSignInForm={handleSignUp}
-              />
-              <p className={alreadyHaveAccount}>
-                {t('string.signUp.haveAccount')}
-                <span><button type="button" onClick={() => handleSignUpClicks('verify')}>{t('button.homePage.signIn')}</button></span>
-              </p>
-            </>
-          )}
-      </div>
-    </div>
+              <p>{t('string.signIn.or')}</p>
+            </div>
+            <SignUpRegistrationForm
+              registrationForm="default"
+              switchToSignInForm={handleSignUp}
+            />
+            <p className={alreadyHaveAccount}>
+              {t('string.signUp.haveAccount')}
+              <span><button type="button" onClick={() => handleSignUpClicks('verify')}>{t('button.homePage.signIn')}</button></span>
+            </p>
+          </>
+        )}
+    </>
   );
 };
 export default SignUp;

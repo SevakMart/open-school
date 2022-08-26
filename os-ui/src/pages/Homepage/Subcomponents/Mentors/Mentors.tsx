@@ -56,8 +56,8 @@ const HomepageMentors = ({ handleButtonClick }:{handleButtonClick:(buttonType:st
       >
         <div className={gridContent}>
           {errorMessage && <h2 data-testid="mentorsErrorMessage">{errorMessage}</h2>}
-          {!mentors.length && <h2 data-testid="emptyMentorMessage">{t('messages.noData.mentors')}</h2>}
-          {mentors.length && !errorMessage && mentors.map((mentor, index) => (
+          {mentors.length === 0 && <h2 data-testid="emptyMentorMessage">{t('messages.noData.mentors')}</h2>}
+          {mentors.length > 0 && !errorMessage && mentors.map((mentor, index) => (
             <MentorCard key={index} mentor={{ ...mentor }} />))}
         </div>
       </MainBody>

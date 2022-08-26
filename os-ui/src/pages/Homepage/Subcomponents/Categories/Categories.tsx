@@ -52,8 +52,8 @@ const HomepageCategories = () => {
       >
         <div className={gridContent}>
           {errorMessage && <h2 data-testid="categoriesErrorMessage">{errorMessage}</h2>}
-          {!categories.length && <h2 data-testid="emptyCategoryMessage">{t('messages.noData.categories')}</h2> }
-          {categories.length && !errorMessage && categories.map((category, index) => (
+          {categories.length === 0 && <h2 data-testid="emptyCategoryMessage">{t('messages.noData.categories')}</h2> }
+          {categories.length > 0 && !errorMessage && categories.map((category, index) => (
             <CategoryCard key={index} category={category} />))}
         </div>
       </MainBody>

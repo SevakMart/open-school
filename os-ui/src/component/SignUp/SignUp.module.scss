@@ -2,7 +2,7 @@
 @import "../../styles/Mixins/FlexMixins.scss";
 @import "../../styles/Mixins/FontMixin.scss";
 
-.mainContainer {
+/*.mainContainer {
   position: fixed;
   z-index: 1;
   left: 0px;
@@ -13,8 +13,8 @@
   opacity: 0.9;
   padding-top: 4%;
   overflow-y: scroll;
-  scrollbar-width: none;
-  .formContainer {
+  scrollbar-width: none;*/
+  /*.formContainer {
     display: block;
     padding-top: 2%;
     padding-bottom: 3%;
@@ -22,7 +22,7 @@
     background-color: #f9f9fd;
     box-shadow: 0px 2px 20px rgba(199, 202, 221, 0.5);
     border-radius: 2.5rem;
-    width: 40%;
+    width: 40%;*/
     .headerContent {
       @include flexStyle(column, center, space-between);
       margin-top: 7%;
@@ -105,5 +105,4 @@
         border: none;
       }
     }
-  }
-}
+

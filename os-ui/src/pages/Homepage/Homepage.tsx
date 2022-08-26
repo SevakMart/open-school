@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/Store';
 import HomepageHeader from '../../component/HomepageHeader/HomepageHeader';
 import Footer from '../../component/Footer/Footer';
 import HomepageCategories from './Subcomponents/Categories/Categories';
@@ -6,39 +7,28 @@ import HomepageMentors from './Subcomponents/Mentors/Mentors';
 import SignUp from '../../component/SignUp/SignUp';
 import SignIn from '../../component/SignIn/SignIn';
 import VerifyMessage from '../VerifyMessage/VerifyMessage';
+import Portal from '../../component/Portal/Portal';
 import { Types } from '../../types/types';
+import { PortalStatus } from '../../types/PortalStatusType';
 
 const Homepage = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [clickedButtonType, setClickedButtonType] = useState('');
-
-  const manipulateByButtonType = (buttonType: string) => {
-    setIsOpen(true);
-    setClickedButtonType(buttonType);
-  };
-
-  const handleButtonClick = (buttonType:string) => {
-    const isTrue = (buttonType === Types.Button.SIGN_IN
-      || Types.Button.SIGN_UP || Types.Button.VERIFY);
-    if (isTrue) {
-      manipulateByButtonType(buttonType);
-    } else {
-      setIsOpen(false);
-    }
-  };
+  const portalStatus = useSelector<RootState>((state) => state.portalStatus);
+  const { isOpen, buttonType } = portalStatus as PortalStatus;
 
   return (
     <>
       <HomepageHeader
-        handleFormVisibility={handleButtonClick}
+        handleFormVisibility={() => null}
       />
       <HomepageCategories />
-      <HomepageMentors handleButtonClick={handleButtonClick} />
+      <HomepageMentors handleButtonClick={() => null} />
       <Footer />
-      {isOpen && clickedButtonType === 'signUp' ? <SignUp handleSignUpClicks={handleButtonClick} />
-        : isOpen && clickedButtonType === 'verify' ? <VerifyMessage handleSignInClicks={handleButtonClick} />
-          : isOpen && clickedButtonType === 'signIn' ? <SignIn handleSignInClicks={handleButtonClick} />
-            : null}
+      <Portal isOpen={isOpen}>
+        {/* eslint-disable max-len */}
+        {isOpen && buttonType === Types.Button.SIGN_UP && <SignUp handleSignUpClicks={() => null} />}
+        {isOpen && buttonType === Types.Button.VERIFY && <VerifyMessage handleSignInClicks={() => null} />}
+        {isOpen && buttonType === Types.Button.SIGN_IN && <SignIn handleSignInClicks={() => null} />}
+      </Portal>
     </>
   );
 };
