@@ -34,7 +34,7 @@ public class Module {
   @JoinColumn(name = "learning_path_id")
   private Course course;
 
-  @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "module")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
   private Set<ModuleItem> moduleItems = new HashSet<>();
 
   public Module() {}

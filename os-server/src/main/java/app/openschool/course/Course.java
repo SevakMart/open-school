@@ -72,7 +72,7 @@ public class Course {
       inverseJoinColumns = {@JoinColumn(name = "user_id")})
   private Set<User> users = new HashSet<>();
 
-  @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "course")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
   private Set<Module> modules = new HashSet<>();
 
   @OneToMany(mappedBy = "course")

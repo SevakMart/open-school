@@ -9,27 +9,35 @@ import org.hibernate.validator.constraints.Length;
 
 public class CreateCourseRequest {
 
-  @NotBlank(message = "{course.title.blank}")
-  @Length(max = 45, message = "{course.title.long}")
+  @NotBlank(message = "{argument.required}")
+  @Length(max = 45, message = "{length.max.string}")
   private String title;
 
-  @NotBlank(message = "{course.description.blank}")
+  @NotBlank(message = "{argument.required}")
+  @Length(max = 1000, message = "{length.max.string}")
   private String description;
 
-  @NotBlank(message = "{course.goal.blank}")
+  @NotBlank(message = "{argument.required}")
+  @Length(max = 1000, message = "{length.max.string}")
   private String goal;
 
-  @NotNull private Long category_id;
+  @NotNull(message = "{argument.required}")
+  private Long category_id;
 
-  @NotNull private Integer difficulty_id;
+  @NotNull(message = "{argument.required}")
+  private Integer difficulty_id;
 
-  @NotNull private Integer language_id;
+  @NotNull(message = "{argument.required}")
+  private Integer language_id;
 
-  @NotNull private Long mentor_id;
+  @NotNull(message = "{argument.required}")
+  private Long mentor_id;
 
+  @NotEmpty(message = "{argument.required}")
   private Set<Long> keyword_ids;
 
-  @NotEmpty Set<CreateModuleRequest> createModuleRequests;
+  @NotEmpty(message = "{argument.required}")
+  Set<CreateModuleRequest> createModuleRequests;
 
   public CreateCourseRequest() {}
 
