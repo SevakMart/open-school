@@ -29,7 +29,7 @@ public class S3Service implements FileStorageService {
 
   @Override
   public String uploadFile(MultipartFile file) {
-    File convertedFile = new File(UUID.randomUUID().toString());
+    File convertedFile = convertMultiPartFileToFile(file);
     try (FileOutputStream out = new FileOutputStream(convertedFile)) {
       out.write(file.getBytes());
     } catch (IOException e) {
@@ -45,5 +45,22 @@ public class S3Service implements FileStorageService {
   @Override
   public void deleteFile(String fileName) {
     amazonS3.deleteObject(bucketName, fileName);
+  }
+
+  private File convertMultiPartFileToFile(MultipartFile file) {
+    String originalName = file.getOriginalFilename();
+    if (originalName == null) {
+      throw new IllegalArgumentException();
+    }
+    int index = originalName.lastIndexOf('.');
+    String extension = originalName.substring(index);
+    String fileName = UUID.randomUUID() + extension;
+    File convertedFile = new File(fileName);
+    try (FileOutputStream out = new FileOutputStream(convertedFile)) {
+      out.write(file.getBytes());
+    } catch (IOException e) {
+      logger.error("Error converting multipartFile to file");
+    }
+    return convertedFile;
   }
 }
