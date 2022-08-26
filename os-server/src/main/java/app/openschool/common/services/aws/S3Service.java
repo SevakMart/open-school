@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,11 +31,6 @@ public class S3Service implements FileStorageService {
   @Override
   public String uploadFile(MultipartFile file) {
     File convertedFile = convertMultiPartFileToFile(file);
-    try (FileOutputStream out = new FileOutputStream(convertedFile)) {
-      out.write(file.getBytes());
-    } catch (IOException e) {
-      logger.error("Error converting multipartFile to file");
-    }
     amazonS3.putObject(
         new PutObjectRequest(bucketName, convertedFile.getName(), convertedFile)
             .withCannedAcl(CannedAccessControlList.PublicRead));
@@ -48,13 +44,8 @@ public class S3Service implements FileStorageService {
   }
 
   private File convertMultiPartFileToFile(MultipartFile file) {
-    String originalName = file.getOriginalFilename();
-    if (originalName == null) {
-      throw new IllegalArgumentException();
-    }
-    int index = originalName.lastIndexOf('.');
-    String extension = originalName.substring(index);
-    String fileName = UUID.randomUUID() + extension;
+    String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+    String fileName = UUID.randomUUID() + "." + extension;
     File convertedFile = new File(fileName);
     try (FileOutputStream out = new FileOutputStream(convertedFile)) {
       out.write(file.getBytes());

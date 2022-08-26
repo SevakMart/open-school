@@ -37,6 +37,7 @@ dependencies {
 
     // apache commons-lang3
     implementation 'org.apache.commons:commons-lang3'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
     //email support
     implementation "org.springframework.boot:spring-boot-starter-mail"
