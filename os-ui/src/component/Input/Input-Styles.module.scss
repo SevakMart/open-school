@@ -3,12 +3,12 @@
 @import "../../styles/Mixins/FlexMixins.scss";
 @import "../../styles/Mixins/FontMixin.scss";
 
-.textInputContainer,.EmailInputContainer {
+.textInputContainer,.EmailInputContainer,.PasswordInputContainer {
         position: relative;
         width: 100%;
         margin-bottom: 4%;
         @include flexStyle(column, flex-start, space-between);
-      input {
+      input,.PasswordInputFieldWithIcon {
         width: 100%;
         border: 1px solid #d9dbe9;
         box-sizing: border-box;
@@ -20,4 +20,16 @@
         @include fontStyle($primary-font, normal, 500, 0.875rem, 1rem);
         color: #333941;
       }
+}
+.PasswordInputFieldWithIcon {
+  @include flexStyle(row,center,space-between);
+   input{
+    margin:0;
+    padding: 0;
+    border:0;
+    height:100%;
+    &:focus{
+      outline:none;
+    }
+   }
 }

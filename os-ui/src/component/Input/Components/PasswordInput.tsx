@@ -11,13 +11,21 @@ textName:string, labelText:string, errorMessage:string, value:string, placeholde
 handleInputChange:(event:React.SyntheticEvent)=>void
 }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const passwordInputRef = useRef<null|HTMLInputElement>(null);
-  const { PasswordInputContainer } = styles;
+  const passwordInputContainerRef = useRef<null|HTMLDivElement>(null);
+  const { PasswordInputContainer, PasswordInputFieldWithIcon } = styles;
 
   const handlePasswordVisibility = () => {
     setIsVisible((prevState) => !prevState);
   };
-
+  useEffect(() => {
+    if (isFocused) {
+      (passwordInputContainerRef.current as HTMLDivElement).style.borderColor = 'black';
+    } else {
+      (passwordInputContainerRef.current as HTMLDivElement).style.borderColor = '#d9dbe9';
+    }
+  }, [isFocused]);
   useEffect(() => {
     if (isVisible) {
       (passwordInputRef.current as HTMLInputElement).type = 'text';
@@ -30,21 +38,25 @@ handleInputChange:(event:React.SyntheticEvent)=>void
         {labelText}
         <span style={{ color: 'red' }}>*</span>
       </label>
-      <input
-        id={textName}
-        type="password"
-        ref={passwordInputRef}
-        value={value}
-        name={textName}
-        placeholder={placeholderText}
-        data-testid="psdInput"
-        onChange={handleInputChange}
-        required
-      />
-      {errorMessage && <ErrorField.InputErrorField className={['inputErrorField']}>{errorMessage}</ErrorField.InputErrorField>}
-      {isVisible
-        ? <VisibileIcon makeInvisible={handlePasswordVisibility} />
-        : <HiddenIcon makeVisible={handlePasswordVisibility} />}
+      <div className={PasswordInputFieldWithIcon} ref={passwordInputContainerRef}>
+        <input
+          id={textName}
+          type="password"
+          ref={passwordInputRef}
+          value={value}
+          name={textName}
+          placeholder={placeholderText}
+          data-testid="psdInput"
+          onChange={handleInputChange}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          required
+        />
+        {errorMessage && <ErrorField.InputErrorField className={['inputErrorField']}>{errorMessage}</ErrorField.InputErrorField>}
+        {isVisible
+          ? <VisibileIcon makeInvisible={handlePasswordVisibility} />
+          : <HiddenIcon makeVisible={handlePasswordVisibility} />}
+      </div>
     </div>
   );
 };

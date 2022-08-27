@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import styles from '../../component/SignIn/SignIn.module.scss';
+import styles from '../../component/SignUpSignIn/SignIn/SignIn.module.scss';
 import { RootState } from '../../redux/Store';
 import authService from '../../services/authService';
 import Message from './Message/Message';
