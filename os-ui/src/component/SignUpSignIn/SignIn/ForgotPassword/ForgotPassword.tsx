@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { validateEmail } from '../../../../helpers/EmailValidate';
+import { openModal } from '../../../../redux/Slices/PortalOpenStatus';
+import { Types } from '../../../../types/types';
 import authService from '../../../../services/authService';
 import Header from '../../Header/Header';
 import Button from '../../../Button/Button';
 import { Input } from '../../../Input/Input';
-import ResetPassword from '../ResetPassword/ResetPassword';
-import CloseIcon from '../../../../icons/Close';
 import styles from './ForgotPassword.module.scss';
 
 const ForgotPassword = () => {
@@ -16,10 +16,9 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [resetPassword, setResetPassword] = useState(false);
-  const { mainContainer, errorMessage, successedMessage } = styles;
+  const { mainContent, successedMessage } = styles;
 
-  const handleEmailChange = (e:React.SyntheticEvent) => {
+  const handleInputChange = (e:React.SyntheticEvent) => {
     setEmail((e.target as HTMLInputElement).value);
   };
 
@@ -40,7 +39,7 @@ const ForgotPassword = () => {
   useEffect(() => {
     let timer:any;
     if (successMessage) {
-      timer = setTimeout(() => setResetPassword(true), 3500);
+      timer = setTimeout(() => dispatch(openModal(Types.Button.RESET_PASSWORD)), 3500);
     }
     return () => clearTimeout(timer);
   }, [successMessage]);
@@ -50,28 +49,23 @@ const ForgotPassword = () => {
       {successMessage ? <h3 data-testid="forgotPasswordSuccessMessage" className={successedMessage}>{successMessage}</h3>
         : (
           <>
-            <Header mainTitle={t('string.forgotPsd.title')} shouldRemoveIconContent />
-            <div className={mainContainer}>
-              <h2>{t('string.forgotPsd.title')}</h2>
-              <p>{t('string.forgotPsd.enterEmail')}</p>
-              <p>{t('string.forgotPsd.sendNotification')}</p>
-              <div>
-                <label htmlFor="email">
-                  {t('form.labels.email')}
-                  <span style={{ color: 'red' }}> *</span>
-                </label>
-                <input
-                  data-testid="forgotPasswordEmailInput"
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder={t('form.placeholder.email')}
-                  onChange={handleEmailChange}
-                  required
-                />
-              </div>
-              {emailError ? (<h4 data-testid="emailErrorForgotPassword" className={errorMessage}>{emailError}</h4>) : null}
-              <button data-testid="continueButton" type="button" onClick={sendForgotPassword}>{t('button.forgotPsd.continue')}</button>
+            <Header
+              mainTitle={t('string.forgotPsd.title')}
+              shouldRemoveIconContent
+              isForgotPasswordContent
+            />
+            <div className={mainContent}>
+              <Input.EmailInput
+                textName="email"
+                labelText={t('form.labels.email')}
+                errorMessage={emailError}
+                placeholderText={t('form.placeholder.email')}
+                value={email}
+                handleInputChange={handleInputChange}
+              />
+              <Button.FormButton className={['formButton']} onClick={sendForgotPassword}>
+                {t('button.forgotPsd.continue')}
+              </Button.FormButton>
             </div>
           </>
         )}

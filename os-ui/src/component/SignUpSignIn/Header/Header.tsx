@@ -6,7 +6,7 @@ import LinkedinIcon1 from '../../../icons/Linkedin1';
 import EmailIcon1 from '../../../icons/Email1';
 import styles from './Header.module.scss';
 /* eslint-disable max-len */
-const Header = ({ mainTitle, shouldRemoveIconContent }:{mainTitle:string, shouldRemoveIconContent:boolean}) => {
+const Header = ({ mainTitle, shouldRemoveIconContent, isForgotPasswordContent }:{mainTitle:string, shouldRemoveIconContent:boolean, isForgotPasswordContent:boolean}) => {
   const {
     headerContent, iconContent, closeIcon, icon,
   } = styles;
@@ -22,6 +22,13 @@ const Header = ({ mainTitle, shouldRemoveIconContent }:{mainTitle:string, should
       <div className={closeIcon} onClick={handleClosePortal}><CloseIcon /></div>
       <div className={headerContent}>
         <h2>{mainTitle}</h2>
+        {isForgotPasswordContent
+          && (
+          <>
+            <p>{t('string.forgotPsd.enterEmail')}</p>
+            <p>{t('string.forgotPsd.sendNotification')}</p>
+          </>
+          )}
         { !shouldRemoveIconContent
         && (
         <>

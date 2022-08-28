@@ -37,7 +37,11 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
 
   return (
     <>
-      <Header mainTitle={t('string.signIn.title')} shouldRemoveIconContent={false} />
+      <Header
+        mainTitle={t('string.signIn.title')}
+        shouldRemoveIconContent={false}
+        isForgotPasswordContent={false}
+      />
       <SignInForm
         signInForm="default"
         handleSignIn={handleSignIn}

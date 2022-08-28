@@ -34,7 +34,11 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
       {isSignUp ? <h3 data-testid="successfulSignUpMessage">{succesfullSignUpMessage}</h3>
         : (
           <>
-            <Header mainTitle={t('string.signUp.title')} shouldRemoveIconContent={false} />
+            <Header
+              mainTitle={t('string.signUp.title')}
+              shouldRemoveIconContent={false}
+              isForgotPasswordContent={false}
+            />
             <SignUpRegistrationForm
               registrationForm="default"
               switchToSignInForm={handleSignUp}
