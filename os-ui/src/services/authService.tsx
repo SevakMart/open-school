@@ -1,5 +1,6 @@
 import fetchService from './fetchData';
 import { RegistrationFormType } from '../types/RegistartionFormType';
+import { FormValues } from '../component/SignUpSignIn/Form/Form';
 import { ResetPasswordType } from '../types/ResetPasswordType';
 
 class AuthService {
@@ -9,7 +10,7 @@ class AuthService {
     this.basePath = 'auth';
   }
 
-  async register(content:RegistrationFormType) {
+  async register(content:FormValues) {
     const response = await fetchService.post(`${this.basePath}/register`, content, {});
     const { status } = response;
     const data = await response.json();

@@ -8,7 +8,7 @@ import styles from './Header.module.scss';
 /* eslint-disable max-len */
 const Header = ({ mainTitle, shouldRemoveIconContent }:{mainTitle:string, shouldRemoveIconContent:boolean}) => {
   const {
-    headerContainer, headerContent, iconContent, closeIcon, icon,
+    headerContent, iconContent, closeIcon, icon,
   } = styles;
   const dispatch = useDispatch();
   const { t } = useTranslation();
