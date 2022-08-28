@@ -27,7 +27,7 @@ const Homepage = () => {
         {/* eslint-disable max-len */}
         {isOpen && buttonType === Types.Button.SIGN_UP && <SignUp handleSignUpClicks={() => null} />}
         {isOpen && buttonType === Types.Button.VERIFY && <VerifyMessage handleSignInClicks={() => null} />}
-        {isOpen && buttonType === Types.Button.SIGN_IN && <SignIn handleSignInClicks={() => null} />}
+        {isOpen && buttonType === Types.Button.SIGN_IN && <SignIn />}
         {isOpen && buttonType === Types.Button.FORGOT_PASSWORD && <ForgotPassword />}
 
       </Portal>

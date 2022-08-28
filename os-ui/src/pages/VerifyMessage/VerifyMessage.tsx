@@ -1,14 +1,10 @@
 import { useSelector } from 'react-redux';
-import styles from '../../component/SignUpSignIn/SignIn/SignIn.module.scss';
+
 import { RootState } from '../../redux/Store';
 import authService from '../../services/authService';
 import Message from './Message/Message';
 
 const VerifyMessage = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) => {
-  const {
-    mainContainer, formContainer,
-  } = styles;
-
   const userInfo = useSelector<RootState>((state) => state.userInfo);
 
   const reSend = () => {
@@ -16,8 +12,8 @@ const VerifyMessage = ({ handleSignInClicks }:{handleSignInClicks(arg:string):vo
   };
 
   return (
-    <div className={mainContainer}>
-      <div className={formContainer}>
+    <div>
+      <div>
         <Message isVerify reSend={reSend} goToLogin={() => handleSignInClicks('signIn')} />
       </div>
     </div>

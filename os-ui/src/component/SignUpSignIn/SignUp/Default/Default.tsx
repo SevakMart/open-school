@@ -40,9 +40,6 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
           setErrorFormValue({
             firstNameError: '', lastNameError: '', emailError: '', psdError: '',
           });
-          /* setFormValues({
-            firstName: '', lastName: '', email: '', psd: '',
-          }); */
           dispatch(addLoggedInUser(response));
           switchToSignInForm!(t('messages.successfullSignUp'));
         } else {

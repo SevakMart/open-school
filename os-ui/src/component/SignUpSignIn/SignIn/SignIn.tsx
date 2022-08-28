@@ -5,23 +5,15 @@ import SignInForm from './SignInForm';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import { Types } from '../../../types/types';
-import styles from './SignIn.module.scss';
 
-const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) => {
+const SignIn = () => {
   const { t } = useTranslation();
-  const {
-    mainContainer, formContainer, headerContent, iconContent, alreadyHaveAccount,
-  } = styles;
   const navigate = useNavigate();
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [forgotPasswordIsSet, setForgotPasswordIsSet] = useState(false);
 
   const handleSignIn = () => {
     setIsSignedIn(true);
-  };
-
-  const forgotPassword = () => {
-    setForgotPasswordIsSet(true);
   };
 
   const returnToSignInForm = () => {
@@ -45,7 +37,6 @@ const SignIn = ({ handleSignInClicks }:{handleSignInClicks(arg:string):void}) =>
       <SignInForm
         signInForm="default"
         handleSignIn={handleSignIn}
-        forgotPasswordHandler={forgotPassword}
       />
       <Footer
         mainText={t('string.signIn.dontHaveAccount')}
