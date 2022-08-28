@@ -6,6 +6,8 @@ import HomepageCategories from './Subcomponents/Categories/Categories';
 import HomepageMentors from './Subcomponents/Mentors/Mentors';
 import SignUp from '../../component/SignUpSignIn/SignUp/SignUp';
 import SignIn from '../../component/SignUpSignIn/SignIn/SignIn';
+import ForgotPassword from '../../component/SignUpSignIn/SignIn/ForgotPassword/ForgotPassword';
+import ResetPassword from '../../component/SignUpSignIn/SignIn/ResetPassword/ResetPassword';
 import VerifyMessage from '../VerifyMessage/VerifyMessage';
 import Portal from '../../component/Portal/Portal';
 import { Types } from '../../types/types';
@@ -26,6 +28,8 @@ const Homepage = () => {
         {isOpen && buttonType === Types.Button.SIGN_UP && <SignUp handleSignUpClicks={() => null} />}
         {isOpen && buttonType === Types.Button.VERIFY && <VerifyMessage handleSignInClicks={() => null} />}
         {isOpen && buttonType === Types.Button.SIGN_IN && <SignIn handleSignInClicks={() => null} />}
+        {isOpen && buttonType === Types.Button.FORGOT_PASSWORD && <ForgotPassword />}
+
       </Portal>
     </>
   );

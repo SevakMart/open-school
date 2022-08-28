@@ -5,7 +5,9 @@ import CloseIcon from '../../../icons/Close';
 import LinkedinIcon1 from '../../../icons/Linkedin1';
 import EmailIcon1 from '../../../icons/Email1';
 import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 import SignUpRegistrationForm from './RegistrationForm';
+import { Types } from '../../../types/types';
 
 const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) => {
   const { t } = useTranslation();
@@ -37,10 +39,11 @@ const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) =>
               registrationForm="default"
               switchToSignInForm={handleSignUp}
             />
-            <p className={alreadyHaveAccount}>
-              {t('string.signUp.haveAccount')}
-              <span><button type="button" onClick={() => handleSignUpClicks('verify')}>{t('button.homePage.signIn')}</button></span>
-            </p>
+            <Footer
+              mainText={t('string.signUp.haveAccount')}
+              buttonType={Types.Button.SIGN_IN}
+              buttonText={t('button.homePage.signIn')}
+            />
           </>
         )}
     </>

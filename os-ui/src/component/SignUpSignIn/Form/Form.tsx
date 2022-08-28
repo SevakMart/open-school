@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { Input } from '../../Input/Input';
+import { Types } from '../../../types/types';
+import { openModal } from '../../../redux/Slices/PortalOpenStatus';
 import Button from '../../Button/Button';
 import styles from './Form.module.scss';
 
@@ -13,13 +16,14 @@ interface ErrorFormValues {
 
 /* eslint-disable max-len */
 const Form = ({
-  isSignUpForm, isResetPasswordForm, formButtonText, errorFormValue, handleForm, handleForgotPassword,
+  isSignUpForm, isResetPasswordForm, formButtonText, errorFormValue, handleForm,
 }:
-    {isSignUpForm:boolean, isResetPasswordForm:boolean, formButtonText:string, errorFormValue:ErrorFormValues, handleForm:(formValue:FormValues)=>void, handleForgotPassword?:()=>void}) => {
+    {isSignUpForm:boolean, isResetPasswordForm:boolean, formButtonText:string, errorFormValue:ErrorFormValues, handleForm:(formValue:FormValues)=>void }) => {
   const [formValues, setFormValues] = useState({
     firstName: '', lastName: '', email: '', psd: '', token: '', newPassword: '', confirmedPassword: '',
   });
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const { inputContent, forgotPassword } = styles;
 
   const handleInputChange = (e:React.SyntheticEvent) => {
@@ -27,6 +31,10 @@ const Form = ({
       ...formValues,
       [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value,
     });
+  };
+
+  const handleForgotPassword = () => {
+    dispatch(openModal(Types.Button.FORGOT_PASSWORD));
   };
 
   const handleFormOnClick = () => {
@@ -84,7 +92,7 @@ const Form = ({
           handleInputChange={handleInputChange}
         />
         )}
-      {!isSignUpForm && !isResetPasswordForm && <p className={forgotPassword} onClick={() => handleForgotPassword && handleForgotPassword()}>{t('string.signIn.forgotPsd')}</p>}
+      {!isSignUpForm && !isResetPasswordForm && <p className={forgotPassword} onClick={handleForgotPassword}>{t('string.signIn.forgotPsd')}</p>}
       <Button.FormButton className={['formButton']} onClick={handleFormOnClick}>
         {formButtonText}
       </Button.FormButton>

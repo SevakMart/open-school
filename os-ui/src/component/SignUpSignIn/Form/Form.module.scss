@@ -1,3 +1,14 @@
+@import "../../../styles/Configs/Colors.scss";
+@import "../../../styles/Configs/Fonts.scss";
+@import "../../../styles/Mixins/FontMixin.scss";
+
 .inputContent {
     margin:0 80px;
+    .forgotPassword {
+        text-align: center;
+        @include fontStyle($primary-font, normal, 500, 1rem, 1.5rem);
+        color: $main-text-color;
+        cursor: pointer;
+        margin:24px 0 40px;
+    }
 }
