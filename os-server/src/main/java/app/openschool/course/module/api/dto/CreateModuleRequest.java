@@ -1,19 +1,23 @@
-package app.openschool.course.module.api;
+package app.openschool.course.module.api.dto;
 
-import app.openschool.course.module.item.api.CreateModuleItemRequest;
+import app.openschool.course.module.item.api.dto.CreateModuleItemRequest;
 import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Length;
 
 public class CreateModuleRequest {
 
-  @NotBlank(message = "")
+  @NotBlank(message = "{argument.required}")
+  @Length(max = 45, message = "{length.max.string}")
   private String title;
 
-  @NotBlank(message = "")
+  @NotBlank(message = "{argument.required}")
+  @Length(max = 1000, message = "{length.max.text}")
   private String description;
 
-  @NotEmpty Set<CreateModuleItemRequest> createModuleItemRequests;
+  @NotEmpty(message = "{argument.required}")
+  Set<CreateModuleItemRequest> createModuleItemRequests;
 
   public CreateModuleRequest() {}
 

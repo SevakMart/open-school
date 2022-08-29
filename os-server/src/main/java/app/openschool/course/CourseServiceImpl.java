@@ -2,14 +2,15 @@ package app.openschool.course;
 
 import app.openschool.category.CategoryRepository;
 import app.openschool.course.api.dto.CreateCourseRequest;
+import app.openschool.course.api.dto.UpdateCourseRequest;
 import app.openschool.course.difficulty.DifficultyRepository;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.keyword.KeywordRepository;
 import app.openschool.course.language.LanguageRepository;
 import app.openschool.course.module.Module;
-import app.openschool.course.module.api.CreateModuleRequest;
+import app.openschool.course.module.api.dto.CreateModuleRequest;
 import app.openschool.course.module.item.ModuleItem;
-import app.openschool.course.module.item.api.CreateModuleItemRequest;
+import app.openschool.course.module.item.api.dto.CreateModuleItemRequest;
 import app.openschool.course.module.item.type.ModuleItemTypeRepository;
 import app.openschool.user.UserRepository;
 import java.util.List;
@@ -70,30 +71,29 @@ public class CourseServiceImpl implements CourseService {
     course.setTitle(request.getTitle());
     course.setDescription(request.getDescription());
     course.setGoal(request.getGoal());
-    course.setRating(0.0);
     course.setCategory(
         categoryRepository
-            .findById(request.getCategory_id())
+            .findById(request.getCategoryId())
             .orElseThrow(IllegalArgumentException::new));
     course.setDifficulty(
         difficultyRepository
-            .findById(request.getDifficulty_id())
+            .findById(request.getDifficultyId())
             .orElseThrow(IllegalArgumentException::new));
     course.setLanguage(
         languageRepository
-            .findById(request.getLanguage_id())
+            .findById(request.getLanguageId())
             .orElseThrow(IllegalArgumentException::new));
     course.setMentor(
-        userRepository.findById(request.getMentor_id()).orElseThrow(IllegalArgumentException::new));
-    Set<Keyword> createdKeywords =
-        request.getKeyword_ids().stream()
+        userRepository.findById(request.getMentorId()).orElseThrow(IllegalArgumentException::new));
+    Set<Keyword> keywords =
+        request.getKeywordIds().stream()
             .map(
                 keywordId ->
                     keywordRepository
                         .findById(keywordId)
                         .orElseThrow(IllegalArgumentException::new))
             .collect(Collectors.toSet());
-    course.getKeywords().addAll(createdKeywords);
+    course.getKeywords().addAll(keywords);
     course.setModules(createModules(request.getCreateModuleRequests(), course));
     return courseRepository.save(course);
   }
@@ -137,5 +137,46 @@ public class CourseServiceImpl implements CourseService {
     Set<ModuleItem> moduleItems = module.getModuleItems();
     moduleItems.addAll(createdModuleItems);
     return moduleItems;
+  }
+
+  @Override
+  public Course update(Long courseId, UpdateCourseRequest request) {
+    Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
+    course.setTitle(request.getTitle());
+    course.setDescription(request.getDescription());
+    course.setGoal(request.getGoal());
+    course.setCategory(
+        categoryRepository
+            .findById(request.getCategory_id())
+            .orElseThrow(IllegalArgumentException::new));
+    course.setDifficulty(
+        difficultyRepository
+            .findById(request.getDifficulty())
+            .orElseThrow(IllegalArgumentException::new));
+    course.setLanguage(
+        languageRepository
+            .findById(request.getLanguage_id())
+            .orElseThrow(IllegalArgumentException::new));
+    Set<Keyword> keywords =
+        request.getKeywordIds().stream()
+            .map(
+                keywordId ->
+                    keywordRepository
+                        .findById(keywordId)
+                        .orElseThrow(IllegalArgumentException::new))
+            .collect(Collectors.toSet());
+    course.setKeywords(keywords);
+    return courseRepository.save(course);
+  }
+
+  @Override
+  public void delete(Long courseId) {
+    courseRepository
+        .findById(courseId)
+        .ifPresentOrElse(
+            courseRepository::delete,
+            () -> {
+              throw new IllegalArgumentException();
+            });
   }
 }

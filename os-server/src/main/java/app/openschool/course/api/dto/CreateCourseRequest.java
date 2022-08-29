@@ -1,6 +1,6 @@
 package app.openschool.course.api.dto;
 
-import app.openschool.course.module.api.CreateModuleRequest;
+import app.openschool.course.module.api.dto.CreateModuleRequest;
 import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -14,27 +14,27 @@ public class CreateCourseRequest {
   private String title;
 
   @NotBlank(message = "{argument.required}")
-  @Length(max = 1000, message = "{length.max.string}")
+  @Length(max = 1000, message = "{length.max.text}")
   private String description;
 
   @NotBlank(message = "{argument.required}")
-  @Length(max = 1000, message = "{length.max.string}")
+  @Length(max = 1000, message = "{length.max.text}")
   private String goal;
 
   @NotNull(message = "{argument.required}")
-  private Long category_id;
+  private Long categoryId;
 
   @NotNull(message = "{argument.required}")
-  private Integer difficulty_id;
+  private Integer difficultyId;
 
   @NotNull(message = "{argument.required}")
-  private Integer language_id;
+  private Integer languageId;
 
   @NotNull(message = "{argument.required}")
-  private Long mentor_id;
+  private Long mentorId;
 
   @NotEmpty(message = "{argument.required}")
-  private Set<Long> keyword_ids;
+  private Set<Long> keywordIds;
 
   @NotEmpty(message = "{argument.required}")
   Set<CreateModuleRequest> createModuleRequests;
@@ -54,11 +54,11 @@ public class CreateCourseRequest {
     this.title = title;
     this.description = description;
     this.goal = goal;
-    this.category_id = category_id;
-    this.difficulty_id = difficulty_id;
-    this.language_id = language_id;
-    this.mentor_id = mentor_id;
-    this.keyword_ids = keyword_ids;
+    this.categoryId = category_id;
+    this.difficultyId = difficulty_id;
+    this.languageId = language_id;
+    this.mentorId = mentor_id;
+    this.keywordIds = keyword_ids;
     this.createModuleRequests = createModuleRequests;
   }
 
@@ -86,44 +86,44 @@ public class CreateCourseRequest {
     this.goal = goal;
   }
 
-  public Long getCategory_id() {
-    return category_id;
+  public Long getCategoryId() {
+    return categoryId;
   }
 
-  public void setCategory_id(Long category_id) {
-    this.category_id = category_id;
+  public void setCategoryId(Long categoryId) {
+    this.categoryId = categoryId;
   }
 
-  public Integer getDifficulty_id() {
-    return difficulty_id;
+  public Integer getDifficultyId() {
+    return difficultyId;
   }
 
-  public void setDifficulty_id(Integer difficulty_id) {
-    this.difficulty_id = difficulty_id;
+  public void setDifficultyId(Integer difficultyId) {
+    this.difficultyId = difficultyId;
   }
 
-  public Integer getLanguage_id() {
-    return language_id;
+  public Integer getLanguageId() {
+    return languageId;
   }
 
-  public void setLanguage_id(Integer language_id) {
-    this.language_id = language_id;
+  public void setLanguageId(Integer languageId) {
+    this.languageId = languageId;
   }
 
-  public Long getMentor_id() {
-    return mentor_id;
+  public Long getMentorId() {
+    return mentorId;
   }
 
-  public void setMentor_id(Long mentor_id) {
-    this.mentor_id = mentor_id;
+  public void setMentorId(Long mentorId) {
+    this.mentorId = mentorId;
   }
 
-  public Set<Long> getKeyword_ids() {
-    return keyword_ids;
+  public Set<Long> getKeywordIds() {
+    return keywordIds;
   }
 
-  public void setKeyword_ids(Set<Long> keyword_ids) {
-    this.keyword_ids = keyword_ids;
+  public void setKeywordIds(Set<Long> keywordIds) {
+    this.keywordIds = keywordIds;
   }
 
   public Set<CreateModuleRequest> getCreateModuleRequests() {

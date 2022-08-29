@@ -1,6 +1,7 @@
 package app.openschool.course;
 
 import app.openschool.course.api.dto.CreateCourseRequest;
+import app.openschool.course.api.dto.UpdateCourseRequest;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -18,4 +19,8 @@ public interface CourseService {
       Pageable pageable);
 
   Course add(CreateCourseRequest request);
+
+  Course update(Long courseId, UpdateCourseRequest request);
+
+  void delete(Long courseId);
 }

@@ -1,22 +1,27 @@
-package app.openschool.course.module.item.api;
+package app.openschool.course.module.item.api.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 
-public class CreateModuleItemRequest {
+public class UpdateModuleItemRequest {
 
-  @NotBlank(message = "")
+  @NotBlank(message = "{argument.required}")
+  @Length(max = 45, message = "{length.max.string}")
   private String title;
 
-  @NotNull private Long ModuleItemTypeId;
+  @NotNull(message = "{argument.required}")
+  private Long ModuleItemTypeId;
 
-  @NotBlank private String link;
+  @NotBlank(message = "{argument.required}")
+  private String link;
 
-  @NotNull private Long estimatedTime;
+  @NotNull(message = "{argument.required}")
+  private Long estimatedTime;
 
-  public CreateModuleItemRequest() {}
+  public UpdateModuleItemRequest() {}
 
-  public CreateModuleItemRequest(
+  public UpdateModuleItemRequest(
       String title, Long moduleItemTypeId, String link, Long estimatedTime) {
     this.title = title;
     ModuleItemTypeId = moduleItemTypeId;
