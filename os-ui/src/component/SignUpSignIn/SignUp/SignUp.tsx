@@ -1,48 +1,27 @@
-import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import SignUpRegistrationForm from './RegistrationForm';
 import { Types } from '../../../types/types';
 
-const SignUp = ({ handleSignUpClicks }:{handleSignUpClicks(arg:string):void}) => {
+const SignUp = () => {
   const { t } = useTranslation();
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [succesfullSignUpMessage, setSuccessfulSignUpMessage] = useState('');
-
-  const handleSignUp = (message:string) => {
-    setIsSignUp(true);
-    setSuccessfulSignUpMessage(message);
-  };
-
-  useEffect(() => {
-    let timer:any;
-    if (isSignUp) {
-      timer = setTimeout(() => handleSignUpClicks('verify'), 3000);
-    }
-    return () => clearTimeout(timer);
-  }, [isSignUp]);
   return (
     <>
-      {isSignUp ? <h3 data-testid="successfulSignUpMessage">{succesfullSignUpMessage}</h3>
-        : (
-          <>
-            <Header
-              mainTitle={t('string.signUp.title')}
-              shouldRemoveIconContent={false}
-              isForgotPasswordContent={false}
-            />
-            <SignUpRegistrationForm
-              registrationForm="default"
-              switchToSignInForm={handleSignUp}
-            />
-            <Footer
-              mainText={t('string.signUp.haveAccount')}
-              buttonType={Types.Button.SIGN_IN}
-              buttonText={t('button.homePage.signIn')}
-            />
-          </>
-        )}
+      <Header
+        mainTitle={t('string.signUp.title')}
+        shouldRemoveIconContent={false}
+        isForgotPasswordContent={false}
+      />
+      <SignUpRegistrationForm
+        registrationForm="default"
+      />
+      <Footer
+        mainText={t('string.signUp.haveAccount')}
+        buttonType={Types.Button.SIGN_IN}
+        buttonText={t('button.homePage.signIn')}
+      />
+
     </>
   );
 };

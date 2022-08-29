@@ -7,6 +7,7 @@ import HomepageMentors from './Subcomponents/Mentors/Mentors';
 import SignUp from '../../component/SignUpSignIn/SignUp/SignUp';
 import SignIn from '../../component/SignUpSignIn/SignIn/SignIn';
 import ForgotPassword from '../../component/SignUpSignIn/SignIn/ForgotPassword/ForgotPassword';
+import SuccessMessage from '../../component/SignUpSignIn/Success-Message/Success-Message';
 import ResetPassword from '../../component/SignUpSignIn/SignIn/ResetPassword/ResetPassword';
 import VerifyMessage from '../VerifyMessage/VerifyMessage';
 import Portal from '../../component/Portal/Portal';
@@ -15,7 +16,9 @@ import { PortalStatus } from '../../types/PortalStatusType';
 
 const Homepage = () => {
   const portalStatus = useSelector<RootState>((state) => state.portalStatus);
-  const { isOpen, buttonType } = portalStatus as PortalStatus;
+  const {
+    isOpen, buttonType, withSuccessMessage, isSignUpSuccessfulRegistration,
+  } = portalStatus as PortalStatus;
 
   return (
     <>
@@ -25,10 +28,11 @@ const Homepage = () => {
       <Footer />
       <Portal isOpen={isOpen}>
         {/* eslint-disable max-len */}
-        {isOpen && buttonType === Types.Button.SIGN_UP && <SignUp handleSignUpClicks={() => null} />}
+        {isOpen && buttonType === Types.Button.SIGN_UP && <SignUp />}
         {isOpen && buttonType === Types.Button.VERIFY && <VerifyMessage handleSignInClicks={() => null} />}
         {isOpen && buttonType === Types.Button.SIGN_IN && <SignIn />}
         {isOpen && buttonType === Types.Button.FORGOT_PASSWORD && <ForgotPassword />}
+        {isOpen && buttonType === Types.Button.SUCCESS_MESSAGE && <SuccessMessage message={withSuccessMessage} isSignUpSuccessfulRegistration={isSignUpSuccessfulRegistration} />}
 
       </Portal>
     </>

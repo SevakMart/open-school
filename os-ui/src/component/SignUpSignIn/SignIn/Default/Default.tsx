@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { validateSignInForm } from '../../../../helpers/SignInFormValidate';
 import authService from '../../../../services/authService';
 import { addLoggedInUser } from '../../../../redux/Slices/loginUserSlice';
@@ -8,6 +9,7 @@ import Form, { FormValues } from '../../Form/Form';
 const SignInDefault = ({ handleSignIn }:
   {handleSignIn:()=>void }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [errorFormValue, setErrorFormValue] = useState({ fullNameError: '', emailError: '', passwordError: '' });
   const [signInErrorMessage, setSignInErrorMessage] = useState('');
 
@@ -34,7 +36,7 @@ const SignInDefault = ({ handleSignIn }:
     <Form
       isSignUpForm={false}
       isResetPasswordForm={false}
-      formButtonText="Sign In"
+      formButtonText={t('button.homePage.signIn')}
       errorFormValue={errorFormValue}
       handleForm={handleSignInForm}
     />

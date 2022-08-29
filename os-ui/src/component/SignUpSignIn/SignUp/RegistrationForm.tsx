@@ -1,9 +1,8 @@
 import SignUpDefault from './Default/Default';
 
-const SignUpRegistrationForm = ({ registrationForm, switchToSignInForm }:
-  {registrationForm:string, switchToSignInForm:(message:string)=>void}) => (
-    <>
-      {registrationForm === 'default' && <SignUpDefault switchToSignInForm={(message:string) => switchToSignInForm(message)} />}
-    </>
+const SignUpRegistrationForm = ({ registrationForm }:{registrationForm:string, }) => (
+  <>
+    {registrationForm === 'default' && <SignUpDefault />}
+  </>
 );
 export default SignUpRegistrationForm;

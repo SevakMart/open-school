@@ -6,6 +6,7 @@ export namespace Types {
         VERIFY = 'verify',
         CLOSE = 'closeButton',
         FORGOT_PASSWORD = 'forgotPassword',
-        RESET_PASSWORD = 'resetPassword'
+        RESET_PASSWORD = 'resetPassword',
+        SUCCESS_MESSAGE= 'successMessage'
     }
 }

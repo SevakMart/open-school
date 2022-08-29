@@ -3,32 +3,17 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { addLoggedInUser } from '../../../../redux/Slices/loginUserSlice';
 import { validateSignUpForm } from '../../../../helpers/SignUpFormValidate';
-import { RegistrationFormType } from '../../../../types/RegistartionFormType';
-import { Input } from '../../../Input/Input';
-import Button from '../../../Button/Button';
+import { openModalWithSuccessMessage } from '../../../../redux/Slices/PortalOpenStatus';
+import { Types } from '../../../../types/types';
 import Form, { FormValues } from '../../Form/Form';
 import authService from '../../../../services/authService';
 
-import styles from './Default.module.scss';
-
-const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:string)=>void}) => {
+const SignUpDefault = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  /* const [formValues, setFormValues] = useState<RegistrationFormType>({
-    firstName: '', lastName: '', email: '', psd: '',
-  }); */
   const [errorFormValue, setErrorFormValue] = useState({
     firstNameError: '', lastNameError: '', emailError: '', psdError: '',
   });
-
-  /* const { inputContent } = styles;
-
-  const handleInputChange = (e:React.SyntheticEvent) => {
-    setFormValues({
-      ...formValues,
-      [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value,
-    });
-  }; */
 
   const handleSubmitForm = (formValues:FormValues) => {
     const {
@@ -41,7 +26,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
             firstNameError: '', lastNameError: '', emailError: '', psdError: '',
           });
           dispatch(addLoggedInUser(response));
-          switchToSignInForm!(t('messages.successfullSignUp'));
+          dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: t('messages.successfullSignUp'), isSignUpSuccessfulRegistration: true }));
         } else {
           setErrorFormValue({
             firstNameError: '', lastNameError: '', emailError: response[0], psdError: '',
@@ -55,7 +40,7 @@ const SignUpDefault = ({ switchToSignInForm }:{switchToSignInForm:(message:strin
     <Form
       isSignUpForm
       isResetPasswordForm={false}
-      formButtonText="Sign Up"
+      formButtonText={t('button.homePage.signUp')}
       errorFormValue={errorFormValue}
       handleForm={handleSubmitForm}
     />

@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isOpen: false,
   buttonType: '',
+  withSuccessMessage: '',
+  isSignUpSuccessfulRegistration: false,
 };
 
 const portalSlice = createSlice({
@@ -13,6 +15,16 @@ const portalSlice = createSlice({
       return {
         isOpen: true,
         buttonType: action.payload,
+        withSuccessMessage: '',
+        isSignUpSuccessfulRegistration: false,
+      };
+    },
+    openModalWithSuccessMessage(_, action) {
+      return {
+        isOpen: true,
+        buttonType: action.payload.buttonType,
+        withSuccessMessage: action.payload.successMessage,
+        isSignUpSuccessfulRegistration: action.payload.isSignUpSuccessfulRegistration,
       };
     },
     closeModal() {
@@ -20,5 +32,5 @@ const portalSlice = createSlice({
     },
   },
 });
-export const { openModal, closeModal } = portalSlice.actions;
+export const { openModal, openModalWithSuccessMessage, closeModal } = portalSlice.actions;
 export default portalSlice.reducer;
