@@ -33,6 +33,7 @@ const SignIn = () => {
         mainTitle={t('string.signIn.title')}
         shouldRemoveIconContent={false}
         isForgotPasswordContent={false}
+        isVerificationContent={false}
       />
       <SignInForm
         signInForm="default"

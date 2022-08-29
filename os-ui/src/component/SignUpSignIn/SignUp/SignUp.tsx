@@ -12,6 +12,7 @@ const SignUp = () => {
         mainTitle={t('string.signUp.title')}
         shouldRemoveIconContent={false}
         isForgotPasswordContent={false}
+        isVerificationContent={false}
       />
       <SignUpRegistrationForm
         registrationForm="default"

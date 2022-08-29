@@ -30,4 +30,3 @@ const Footer = ({ mainText, buttonType, buttonText }:{mainText:string, buttonTyp
   );
 };
 export default Footer;
-// <button type="button" onClick={() => handleSignUpClicks('verify')}>{t('button.homePage.signIn')}</button>

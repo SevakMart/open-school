@@ -53,6 +53,7 @@ const ForgotPassword = () => {
               mainTitle={t('string.forgotPsd.title')}
               shouldRemoveIconContent
               isForgotPasswordContent
+              isVerificationContent={false}
             />
             <div className={mainContent}>
               <Input.EmailInput

@@ -23,7 +23,7 @@ const portalSlice = createSlice({
       return {
         isOpen: true,
         buttonType: action.payload.buttonType,
-        withSuccessMessage: action.payload.successMessage,
+        withSuccessMessage: action.payload.withSuccessMessage,
         isSignUpSuccessfulRegistration: action.payload.isSignUpSuccessfulRegistration,
       };
     },
