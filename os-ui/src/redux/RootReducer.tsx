@@ -2,10 +2,11 @@ import { combineReducers } from 'redux';
 import storage from 'redux-persist/lib/storage';
 import storageSession from 'redux-persist/lib/storage/session';
 import persistReducer from 'redux-persist/lib/persistReducer';
-import portalStatusReducer from './Slices/PortalOpenStatus';
 import chooseSubcategoryReducer from './Slices/ChoosSubcategorySlice';
 import userInfoReducer from './Slices/loginUserSlice';
 import allLearningPathFilterParamsReducer from './Slices/AllLearningPathFilterParamsSlice';
+import forgotPasswordEmailReducer from './Slices/ForgotPasswordEmailSlice';
+import portalStatusReducer from './Slices/PortalOpenStatus';
 
 /* const loggedInUserPersistConfig = {
   key: 'loggedInUser',
@@ -33,5 +34,6 @@ const rootReducer = combineReducers({
   userInfo: userInfoReducer,
   chooseSubcategories: chooseSubcategoryReducer,
   filterParams: allLearningPathFilterParamsReducer,
+  forgotPasswordEmail: forgotPasswordEmailReducer,
 });
 export default rootReducer;

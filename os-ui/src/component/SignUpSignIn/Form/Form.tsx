@@ -65,6 +65,17 @@ const Form = ({
       />
     </>
     )}
+      {isResetPasswordForm && (
+      <Input.TextInput
+        textName="token"
+        labelText={t('form.labels.resetPsdToken')}
+        errorMessage={errorFormValue.tokenError}
+        placeholderText={t('form.placeholder.resetPsdToken')}
+        value={formValues.token}
+        handleInputChange={handleInputChange}
+      />
+      )}
+      {!isResetPasswordForm && (
       <Input.EmailInput
         textName="email"
         labelText={t('form.labels.email')}
@@ -73,6 +84,7 @@ const Form = ({
         value={formValues.email}
         handleInputChange={handleInputChange}
       />
+      )}
       <Input.PasswordInput
         textName={isResetPasswordForm ? 'newPassword' : 'psd'}
         labelText={isResetPasswordForm ? t('form.labels.psd.reset') : t('form.labels.psd.default')}
@@ -96,6 +108,11 @@ const Form = ({
       <Button.FormButton className={['formButton']} onClick={handleFormOnClick}>
         {formButtonText}
       </Button.FormButton>
+      {isResetPasswordForm && (
+        <Button.FormButton className={['formButton']} onClick={handleFormOnClick}>
+          {t('button.resetPsd.resendEmail')}
+        </Button.FormButton>
+      )}
     </form>
   );
 };
