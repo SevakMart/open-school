@@ -1,10 +1,10 @@
-import { ResetPasswordType } from '../types/ResetPasswordType';
+import { FormValues } from '../component/SignUpSignIn/Form/Form';
 import {
   passwordRegex, tokenRegex, INVALID_PASSWORD_ERROR_MESSAGE, INVALID_TOKEN,
   TOKEN_REQUIRED, PASSWORD_REQUIRED, PASSWORDS_MISMATCH,
 } from '../constants/Strings';
 
-export const validateResetPasswordForm = (formValues:ResetPasswordType) => {
+export const validateResetPasswordForm = (formValues:FormValues) => {
   const errorFormValue = { tokenError: '', newPasswordError: '', confirmedPasswordError: '' };
   const { token, newPassword, confirmedPassword } = formValues;
   if (!token.match(tokenRegex)) {

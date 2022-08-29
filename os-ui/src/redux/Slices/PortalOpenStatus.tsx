@@ -5,6 +5,7 @@ const initialState = {
   buttonType: '',
   withSuccessMessage: '',
   isSignUpSuccessfulRegistration: false,
+  isResetPasswordSuccessfulMessage: false,
 };
 
 const portalSlice = createSlice({
@@ -17,6 +18,7 @@ const portalSlice = createSlice({
         buttonType: action.payload,
         withSuccessMessage: '',
         isSignUpSuccessfulRegistration: false,
+        isResetPasswordSuccessfulMessage: false,
       };
     },
     openModalWithSuccessMessage(_, action) {
@@ -25,6 +27,7 @@ const portalSlice = createSlice({
         buttonType: action.payload.buttonType,
         withSuccessMessage: action.payload.withSuccessMessage,
         isSignUpSuccessfulRegistration: action.payload.isSignUpSuccessfulRegistration,
+        isResetPasswordSuccessfulMessage: action.payload.isResetPasswordSuccessfulMessage,
       };
     },
     closeModal() {

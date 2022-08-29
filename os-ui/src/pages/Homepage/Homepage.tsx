@@ -15,10 +15,12 @@ import Portal from '../../component/Portal/Portal';
 import { Types } from '../../types/types';
 import { PortalStatus } from '../../types/PortalStatusType';
 
+/* eslint-disable max-len */
+
 const Homepage = () => {
   const portalStatus = useSelector<RootState>((state) => state.portalStatus);
   const {
-    isOpen, buttonType, withSuccessMessage, isSignUpSuccessfulRegistration,
+    isOpen, buttonType, withSuccessMessage, isSignUpSuccessfulRegistration, isResetPasswordSuccessfulMessage,
   } = portalStatus as PortalStatus;
   const { t } = useTranslation();
 
@@ -33,8 +35,9 @@ const Homepage = () => {
         {isOpen && buttonType === Types.Button.SIGN_UP && <SignUp />}
         {isOpen && buttonType === Types.Button.VERIFY && <Verification />}
         {isOpen && buttonType === Types.Button.SIGN_IN && <SignIn />}
+        {isOpen && buttonType === Types.Button.RESET_PASSWORD && <ResetPassword />}
         {isOpen && buttonType === Types.Button.FORGOT_PASSWORD && <ForgotPassword />}
-        {isOpen && buttonType === Types.Button.SUCCESS_MESSAGE && <SuccessMessage message={withSuccessMessage} isSignUpSuccessfulRegistration={isSignUpSuccessfulRegistration} />}
+        {isOpen && buttonType === Types.Button.SUCCESS_MESSAGE && <SuccessMessage message={withSuccessMessage} isSignUpSuccessfulRegistration={isSignUpSuccessfulRegistration} isResetPasswordSuccessfulMessage={isResetPasswordSuccessfulMessage} />}
 
       </Portal>
     </>

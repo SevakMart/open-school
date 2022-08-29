@@ -13,15 +13,15 @@ export interface FormValues {
 interface ErrorFormValues {
     [index:string]:string
 }
-
+const initialFormValues = {
+  firstName: '', lastName: '', email: '', psd: '', token: '', newPassword: '', confirmedPassword: '',
+};
 /* eslint-disable max-len */
 const Form = ({
-  isSignUpForm, isResetPasswordForm, formButtonText, errorFormValue, handleForm,
+  isSignUpForm, isResetPasswordForm, formButtonText, errorFormValue, handleForm, resendEmail,
 }:
-    {isSignUpForm:boolean, isResetPasswordForm:boolean, formButtonText:string, errorFormValue:ErrorFormValues, handleForm:(formValue:FormValues)=>void }) => {
-  const [formValues, setFormValues] = useState({
-    firstName: '', lastName: '', email: '', psd: '', token: '', newPassword: '', confirmedPassword: '',
-  });
+    {isSignUpForm:boolean, isResetPasswordForm:boolean, formButtonText:string, errorFormValue:ErrorFormValues, handleForm:(formValue:FormValues)=>void, resendEmail?:()=>void }) => {
+  const [formValues, setFormValues] = useState(initialFormValues);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { inputContent, forgotPassword } = styles;
@@ -40,6 +40,7 @@ const Form = ({
   const handleFormOnClick = () => {
     const newFormValues = Object.fromEntries(Object.entries(formValues).filter((formValue) => formValue[1] !== ''));
     handleForm(newFormValues);
+    setFormValues(initialFormValues);
   };
 
   return (
@@ -109,7 +110,7 @@ const Form = ({
         {formButtonText}
       </Button.FormButton>
       {isResetPasswordForm && (
-        <Button.FormButton className={['formButton']} onClick={handleFormOnClick}>
+        <Button.FormButton className={['formButton']} onClick={resendEmail}>
           {t('button.resetPsd.resendEmail')}
         </Button.FormButton>
       )}

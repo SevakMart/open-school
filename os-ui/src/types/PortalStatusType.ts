@@ -3,4 +3,5 @@ export interface PortalStatus {
     buttonType:string;
     withSuccessMessage:string;
     isSignUpSuccessfulRegistration:boolean;
+    isResetPasswordSuccessfulMessage:boolean;
 }
