@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { validateSignInForm } from '../../../../helpers/SignInFormValidate';
 import authService from '../../../../services/authService';
-import { addLoggedInUser } from '../../../../redux/Slices/loginUserSlice';
+import { storage } from '../../../../services/storage/storage';
 import Form, { FormValues } from '../../Form/Form';
 
 const initialErrorFormValues = { fullNameError: '', emailError: '', passwordError: '' };
 
 const SignInDefault = () => {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [errorFormValue, setErrorFormValue] = useState(initialErrorFormValues);
@@ -25,7 +23,7 @@ const SignInDefault = () => {
           setSignInErrorMessage(response.message);
           setErrorFormValue(initialErrorFormValues);
         } else if (response.status === 200) {
-          dispatch(addLoggedInUser(response));
+          storage.addItemToLocalStorage('userInfo', response);
           navigate('/categories/subcategories');
         }
       });
@@ -42,6 +40,7 @@ const SignInDefault = () => {
       formButtonText={t('button.homePage.signIn')}
       errorFormValue={errorFormValue}
       handleForm={handleSignInForm}
+      unAuthorizedSignInError={signInErrorMessage}
     />
   );
 };

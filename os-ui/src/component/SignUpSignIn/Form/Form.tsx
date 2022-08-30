@@ -18,13 +18,13 @@ const initialFormValues = {
 };
 /* eslint-disable max-len */
 const Form = ({
-  isSignUpForm, isResetPasswordForm, formButtonText, errorFormValue, handleForm, resendEmail,
+  isSignUpForm, isResetPasswordForm, formButtonText, errorFormValue, handleForm, resendEmail, unAuthorizedSignInError,
 }:
-    {isSignUpForm:boolean, isResetPasswordForm:boolean, formButtonText:string, errorFormValue:ErrorFormValues, handleForm:(formValue:FormValues)=>void, resendEmail?:()=>void }) => {
+    {isSignUpForm:boolean, isResetPasswordForm:boolean, formButtonText:string, errorFormValue:ErrorFormValues, unAuthorizedSignInError?:string, handleForm:(formValue:FormValues)=>void, resendEmail?:()=>void }) => {
   const [formValues, setFormValues] = useState(initialFormValues);
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { inputContent, forgotPassword } = styles;
+  const { inputContent, forgotPassword, unAuthorizedSignInErrorStyle } = styles;
 
   const handleInputChange = (e:React.SyntheticEvent) => {
     setFormValues({
@@ -105,6 +105,7 @@ const Form = ({
           handleInputChange={handleInputChange}
         />
         )}
+      {unAuthorizedSignInError && <p className={unAuthorizedSignInErrorStyle}>{unAuthorizedSignInError}</p>}
       {!isSignUpForm && !isResetPasswordForm && <p className={forgotPassword} onClick={handleForgotPassword}>{t('string.signIn.forgotPsd')}</p>}
       <Button.FormButton className={['formButton']} onClick={handleFormOnClick}>
         {formButtonText}
