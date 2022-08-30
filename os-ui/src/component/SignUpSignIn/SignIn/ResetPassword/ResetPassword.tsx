@@ -8,13 +8,14 @@ import Form, { FormValues } from '../../Form/Form';
 import { Types } from '../../../../types/types';
 import authService from '../../../../services/authService';
 
+const initialErrorFormValues = { tokenError: '', newPasswordError: '', confirmedPasswordError: '' };
 /* eslint-disable max-len */
 
 const ResetPassword = () => {
   const { t } = useTranslation();
   const forgotPasswordEmail = useSelector<RootState>((state) => state.forgotPasswordEmail);
   const dispatch = useDispatch();
-  const [errorFormValue, setErrorFormValue] = useState({ tokenError: '', newPasswordError: '', confirmedPasswordError: '' });
+  const [errorFormValue, setErrorFormValue] = useState(initialErrorFormValues);
 
   const sendResetPassword = (formValues:FormValues) => {
     const { token, newPassword, confirmedPassword } = formValues;
@@ -23,12 +24,12 @@ const ResetPassword = () => {
       authService.sendResetPasswordRequest({ token, newPassword, confirmedPassword })
         .then((response) => {
           if (response.status === 200) {
-            setErrorFormValue({ tokenError: '', newPasswordError: '', confirmedPasswordError: '' });
+            setErrorFormValue(initialErrorFormValues);
             dispatch(openModalWithSuccessMessage({
               buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: response.data.message, isSignUpSuccessfulRegistration: false, isResetPasswordSuccessfulMessage: true,
             }));
           } else if (response.status === 400) {
-            setErrorFormValue({ tokenError: response.data.message, newPasswordError: '', confirmedPasswordError: '' });
+            setErrorFormValue({ ...initialErrorFormValues, tokenError: response.data.message });
           }
         });
     } else setErrorFormValue(validateResetPasswordForm(formValues));
@@ -38,7 +39,7 @@ const ResetPassword = () => {
     authService.sendForgotPasswordRequest({ forgotPasswordEmail })
       .then((response) => {
         dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: response.data.message, isSignUpSuccessfulRegistration: false }));
-        setErrorFormValue({ tokenError: '', newPasswordError: '', confirmedPasswordError: '' });
+        setErrorFormValue(initialErrorFormValues);
       });
   };
 

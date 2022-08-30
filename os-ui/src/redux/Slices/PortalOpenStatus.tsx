@@ -26,8 +26,8 @@ const portalSlice = createSlice({
         isOpen: true,
         buttonType: action.payload.buttonType,
         withSuccessMessage: action.payload.withSuccessMessage,
-        isSignUpSuccessfulRegistration: action.payload.isSignUpSuccessfulRegistration,
-        isResetPasswordSuccessfulMessage: action.payload.isResetPasswordSuccessfulMessage,
+        isSignUpSuccessfulRegistration: action.payload.isSignUpSuccessfulRegistration || false,
+        isResetPasswordSuccessfulMessage: action.payload.isResetPasswordSuccessfulMessage || false,
       };
     },
     closeModal() {

@@ -8,12 +8,14 @@ import { Types } from '../../../../types/types';
 import Form, { FormValues } from '../../Form/Form';
 import authService from '../../../../services/authService';
 
+const initialErrorFormValues = {
+  firstNameError: '', lastNameError: '', emailError: '', psdError: '',
+};
+
 const SignUpDefault = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [errorFormValue, setErrorFormValue] = useState({
-    firstNameError: '', lastNameError: '', emailError: '', psdError: '',
-  });
+  const [errorFormValue, setErrorFormValue] = useState(initialErrorFormValues);
 
   const handleSubmitForm = (formValues:FormValues) => {
     const {
@@ -22,15 +24,11 @@ const SignUpDefault = () => {
     if (!firstNameError && !lastNameError && !emailError && !psdError) {
       authService.register(formValues).then((response) => {
         if (response.status === 201) {
-          setErrorFormValue({
-            firstNameError: '', lastNameError: '', emailError: '', psdError: '',
-          });
+          setErrorFormValue(initialErrorFormValues);
           dispatch(addLoggedInUser(response));
           dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: t('messages.successfullSignUp'), isSignUpSuccessfulRegistration: true }));
         } else {
-          setErrorFormValue({
-            firstNameError: '', lastNameError: '', emailError: response[0], psdError: '',
-          });
+          setErrorFormValue({ ...initialErrorFormValues, emailError: response[0] });
         }
       });
     } else setErrorFormValue(validateSignUpForm(formValues));

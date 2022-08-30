@@ -7,11 +7,13 @@ import authService from '../../../../services/authService';
 import { addLoggedInUser } from '../../../../redux/Slices/loginUserSlice';
 import Form, { FormValues } from '../../Form/Form';
 
+const initialErrorFormValues = { fullNameError: '', emailError: '', passwordError: '' };
+
 const SignInDefault = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [errorFormValue, setErrorFormValue] = useState({ fullNameError: '', emailError: '', passwordError: '' });
+  const [errorFormValue, setErrorFormValue] = useState(initialErrorFormValues);
   const [signInErrorMessage, setSignInErrorMessage] = useState('');
 
   const handleSignInForm = (formValues:FormValues) => {
@@ -21,7 +23,7 @@ const SignInDefault = () => {
       authService.signIn({ email, psd }).then((response) => {
         if (response.status === 401) {
           setSignInErrorMessage(response.message);
-          setErrorFormValue({ fullNameError: '', emailError: '', passwordError: '' });
+          setErrorFormValue(initialErrorFormValues);
         } else if (response.status === 200) {
           dispatch(addLoggedInUser(response));
           navigate('/categories/subcategories');
