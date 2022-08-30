@@ -6,8 +6,8 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.UUID;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,13 +30,12 @@ public class S3Service implements FileStorageService {
 
   @Override
   public String uploadFile(MultipartFile file) {
-    String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
     File convertedFile = convertMultiPartFileToFile(file);
     amazonS3.putObject(
-        new PutObjectRequest(bucketName, fileName, convertedFile)
+        new PutObjectRequest(bucketName, convertedFile.getName(), convertedFile)
             .withCannedAcl(CannedAccessControlList.PublicRead));
     boolean deletedFile = convertedFile.delete();
-    return amazonS3.getUrl(bucketName, fileName).toString();
+    return amazonS3.getUrl(bucketName, convertedFile.getName()).toString();
   }
 
   @Override
@@ -45,7 +44,9 @@ public class S3Service implements FileStorageService {
   }
 
   private File convertMultiPartFileToFile(MultipartFile file) {
-    File convertedFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
+    String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+    String fileName = UUID.randomUUID() + "." + extension;
+    File convertedFile = new File(fileName);
     try (FileOutputStream out = new FileOutputStream(convertedFile)) {
       out.write(file.getBytes());
     } catch (IOException e) {
