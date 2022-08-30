@@ -7,6 +7,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
+import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync';
 import rootReducer from './RootReducer';
 
 export const store = configureStore({
@@ -15,6 +16,13 @@ export const store = configureStore({
     serializableCheck: {
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
-  }),
+  }).concat(
+    createStateSyncMiddleware({
+      blacklist: ['persist/PERSIST', 'persist/REHYDRATE'],
+    }),
+  ),
 });
+
+initMessageListener(store);
+
 export type RootState = ReturnType<typeof store.getState>

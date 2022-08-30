@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { store } from '../../../../../redux/Store';
 import Content from '../Content';
 import mentorService from '../../../../../services/mentorService';
@@ -14,6 +15,11 @@ jest.mock('react-i18next', () => ({
       return 'Something went wrong please refresh the page';
     },
   }),
+}));
+jest.mock('redux-state-sync', () => ({
+  createStateSyncMiddleware:
+    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
+  initMessageListener: () => jest.fn(),
 }));
 
 jest.mock('react-router-dom', () => ({

@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { store } from '../../../redux/Store';
 import userService from '../../../services/userService';
 import MyLearningPathPage from '../MyLearningPathPage';
@@ -12,6 +13,12 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom') as any,
   useNavigate: () => mockUseNavigate,
   useLocation: () => mockUseLocation,
+}));
+
+jest.mock('redux-state-sync', () => ({
+  createStateSyncMiddleware:
+    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
+  initMessageListener: () => jest.fn(),
 }));
 
 const userAllCourseData = [
