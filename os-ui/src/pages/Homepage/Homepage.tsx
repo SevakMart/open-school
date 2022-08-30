@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
 import HomepageHeader from '../../component/HomepageHeader/HomepageHeader';
@@ -22,7 +21,6 @@ const Homepage = () => {
   const {
     isOpen, buttonType, withSuccessMessage, isSignUpSuccessfulRegistration, isResetPasswordSuccessfulMessage,
   } = portalStatus as PortalStatus;
-  const { t } = useTranslation();
 
   return (
     <>
@@ -38,7 +36,6 @@ const Homepage = () => {
         {isOpen && buttonType === Types.Button.RESET_PASSWORD && <ResetPassword />}
         {isOpen && buttonType === Types.Button.FORGOT_PASSWORD && <ForgotPassword />}
         {isOpen && buttonType === Types.Button.SUCCESS_MESSAGE && <SuccessMessage message={withSuccessMessage} isSignUpSuccessfulRegistration={isSignUpSuccessfulRegistration} isResetPasswordSuccessfulMessage={isResetPasswordSuccessfulMessage} />}
-
       </Portal>
     </>
   );

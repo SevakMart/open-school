@@ -1,8 +1,8 @@
 import SignInDefault from './Default/Default';
 
-const SignInForm = ({ signInForm, handleSignIn }:{signInForm:string, handleSignIn:()=>void}) => (
+const SignInForm = ({ signInForm }:{signInForm:string}) => (
   <>
-    {signInForm === 'default' && <SignInDefault handleSignIn={() => handleSignIn()} />}
+    {signInForm === 'default' && <SignInDefault />}
   </>
 );
 export default SignInForm;

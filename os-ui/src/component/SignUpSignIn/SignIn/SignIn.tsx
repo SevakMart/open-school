@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import SignInForm from './SignInForm';
 import Header from '../Header/Header';
@@ -8,24 +6,6 @@ import { Types } from '../../../types/types';
 
 const SignIn = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  const [forgotPasswordIsSet, setForgotPasswordIsSet] = useState(false);
-
-  const handleSignIn = () => {
-    setIsSignedIn(true);
-  };
-
-  const returnToSignInForm = () => {
-    setForgotPasswordIsSet(false);
-    setIsSignedIn(false);
-  };
-
-  useEffect(() => {
-    if (isSignedIn) {
-      navigate('/categories/subcategories');
-    }
-  }, [isSignedIn]);
 
   return (
     <>
@@ -35,10 +15,7 @@ const SignIn = () => {
         isForgotPasswordContent={false}
         isVerificationContent={false}
       />
-      <SignInForm
-        signInForm="default"
-        handleSignIn={handleSignIn}
-      />
+      <SignInForm signInForm="default" />
       <Footer
         mainText={t('string.signIn.dontHaveAccount')}
         buttonType={Types.Button.SIGN_UP}
