@@ -33,8 +33,9 @@ public class ModuleServiceImpl implements ModuleService {
   }
 
   @Override
-  public Module add(Long courseId, CreateModuleRequest request) {
-    Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
+  public Module add(CreateModuleRequest request) {
+    Course course =
+        courseRepository.findById(request.getCourseId()).orElseThrow(IllegalArgumentException::new);
     Module module = new Module();
     module.setTitle(request.getTitle());
     module.setDescription(request.getDescription());

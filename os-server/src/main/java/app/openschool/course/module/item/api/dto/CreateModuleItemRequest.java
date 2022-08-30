@@ -6,6 +6,9 @@ import org.hibernate.validator.constraints.Length;
 
 public class CreateModuleItemRequest {
 
+  @NotNull(message = "{argument.required}")
+  private Long moduleId;
+
   @NotBlank(message = "{argument.required}")
   @Length(max = 45, message = "{length.max.string}")
   private String title;
@@ -22,11 +25,20 @@ public class CreateModuleItemRequest {
   public CreateModuleItemRequest() {}
 
   public CreateModuleItemRequest(
-      String title, Long moduleItemTypeId, String link, Long estimatedTime) {
+      Long moduleId, String title, Long moduleItemTypeId, String link, Long estimatedTime) {
+    this.moduleId = moduleId;
     this.title = title;
     ModuleItemTypeId = moduleItemTypeId;
     this.link = link;
     this.estimatedTime = estimatedTime;
+  }
+
+  public Long getModuleId() {
+    return moduleId;
+  }
+
+  public void setModuleId(Long moduleId) {
+    this.moduleId = moduleId;
   }
 
   public String getTitle() {

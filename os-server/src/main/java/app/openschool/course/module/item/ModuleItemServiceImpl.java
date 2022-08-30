@@ -30,8 +30,9 @@ public class ModuleItemServiceImpl implements ModuleItemService {
   }
 
   @Override
-  public ModuleItem add(Long moduleId, CreateModuleItemRequest request) {
-    Module module = moduleRepository.findById(moduleId).orElseThrow(IllegalArgumentException::new);
+  public ModuleItem add(CreateModuleItemRequest request) {
+    Module module =
+        moduleRepository.findById(request.getModuleId()).orElseThrow(IllegalArgumentException::new);
     ModuleItem moduleItem = new ModuleItem();
     moduleItem.setTitle(request.getTitle());
     moduleItem.setEstimatedTime(request.getEstimatedTime());

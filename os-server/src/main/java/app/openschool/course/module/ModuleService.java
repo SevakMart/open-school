@@ -5,7 +5,7 @@ import app.openschool.course.module.api.dto.UpdateModuleRequest;
 
 public interface ModuleService {
 
-  Module add(Long courseId, CreateModuleRequest request);
+  Module add(CreateModuleRequest request);
 
   Module update(Long moduleId, UpdateModuleRequest request);
 

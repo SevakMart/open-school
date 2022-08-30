@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/courses/{courseId}/modules/{moduleId}/moduleItems")
+@RequestMapping("/api/v1/module-items")
 public class ModuleItemController {
 
   private final ModuleItemService moduleItemService;
@@ -33,16 +33,13 @@ public class ModuleItemController {
   @PreAuthorize("hasAuthority('ADMIN')")
   @PostMapping
   public ResponseEntity<ModuleItemDto> add(
-      @Parameter(description = "Id of the module which the new module item will belong")
-          @PathVariable
-          Long moduleId,
       @io.swagger.v3.oas.annotations.parameters.RequestBody(
               description = "Request object for creating new moduleItem")
           @Valid
           @RequestBody
           CreateModuleItemRequest request) {
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(ModuleItemMapper.toModuleItemDto(moduleItemService.add(moduleId, request)));
+        .body(ModuleItemMapper.toModuleItemDto(moduleItemService.add(request)));
   }
 
   @Operation(summary = "modify moduleItem", security = @SecurityRequirement(name = "bearerAuth"))
