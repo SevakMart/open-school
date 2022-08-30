@@ -52,7 +52,7 @@ handleInputChange:(event:React.SyntheticEvent)=>void
           onBlur={() => setIsFocused(false)}
           required
         />
-        {errorMessage && <ErrorField.InputErrorField className={['inputErrorField']}>{errorMessage}</ErrorField.InputErrorField>}
+        {errorMessage !== '' && <ErrorField.InputErrorField className={['inputErrorField']}>{errorMessage}</ErrorField.InputErrorField>}
         {isVisible
           ? <VisibileIcon makeInvisible={handlePasswordVisibility} />
           : <HiddenIcon makeVisible={handlePasswordVisibility} />}

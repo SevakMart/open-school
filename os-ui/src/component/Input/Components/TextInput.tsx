@@ -25,7 +25,7 @@ handleInputChange:(event:React.SyntheticEvent)=>void
         onChange={(e) => handleInputChange(e)}
         required
       />
-      {errorMessage && <ErrorField.InputErrorField className={['inputErrorField']}>{errorMessage}</ErrorField.InputErrorField>}
+      {errorMessage !== '' && <ErrorField.InputErrorField className={['inputErrorField']}>{errorMessage}</ErrorField.InputErrorField>}
     </div>
   );
 };
