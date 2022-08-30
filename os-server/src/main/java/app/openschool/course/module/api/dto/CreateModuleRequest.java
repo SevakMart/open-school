@@ -21,7 +21,7 @@ public class CreateModuleRequest {
   private String description;
 
   @NotEmpty(message = "{argument.required}")
-  Set<CreateModuleItemRequest> createModuleItemRequests;
+  private Set<CreateModuleItemRequest> createModuleItemRequests;
 
   public CreateModuleRequest() {}
 

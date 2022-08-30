@@ -37,7 +37,7 @@ public class CreateCourseRequest {
   private Set<Long> keywordIds;
 
   @NotEmpty(message = "{argument.required}")
-  Set<CreateModuleRequest> createModuleRequests;
+  private Set<CreateModuleRequest> createModuleRequests;
 
   public CreateCourseRequest() {}
 
