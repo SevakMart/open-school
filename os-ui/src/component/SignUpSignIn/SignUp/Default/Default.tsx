@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { addLoggedInUser } from '../../../../redux/Slices/loginUserSlice';
+import { addSignedUpUserId } from '../../../../redux/Slices/SignedUpUserIdSlice';
 import { validateSignUpForm } from '../../../../helpers/SignUpFormValidate';
 import { openModalWithSuccessMessage } from '../../../../redux/Slices/PortalOpenStatus';
 import { Types } from '../../../../types/types';
@@ -25,7 +25,7 @@ const SignUpDefault = () => {
       authService.register(formValues).then((response) => {
         if (response.status === 201) {
           setErrorFormValue(initialErrorFormValues);
-          dispatch(addLoggedInUser(response));
+          dispatch(addSignedUpUserId(response.userId));
           dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: t('messages.successfullSignUp'), isSignUpSuccessfulRegistration: true }));
         } else {
           setErrorFormValue({ ...initialErrorFormValues, emailError: response[0] });

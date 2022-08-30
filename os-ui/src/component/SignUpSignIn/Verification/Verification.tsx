@@ -6,12 +6,11 @@ import Header from '../Header/Header';
 import authService from '../../../services/authService';
 
 const Verification = () => {
-  /* the userInfo below is temporary until I create local storage helpers */
-  const userInfo = useSelector<RootState>((state) => state.userInfo);
+  const signedUpUserId = useSelector<RootState>((state) => state.signedUpUserId);
   const { t } = useTranslation();
 
   const handleResend = () => {
-    authService.resendVerificationEmail((userInfo as any).userId);
+    authService.resendVerificationEmail(signedUpUserId as number);
   };
 
   return (
