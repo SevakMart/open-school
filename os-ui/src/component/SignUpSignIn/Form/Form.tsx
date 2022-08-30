@@ -105,7 +105,7 @@ const Form = ({
           handleInputChange={handleInputChange}
         />
         )}
-      {unAuthorizedSignInError && <p className={unAuthorizedSignInErrorStyle}>{unAuthorizedSignInError}</p>}
+      {unAuthorizedSignInError ? <p className={unAuthorizedSignInErrorStyle}>{unAuthorizedSignInError}</p> : null}
       {!isSignUpForm && !isResetPasswordForm && <p className={forgotPassword} onClick={handleForgotPassword}>{t('string.signIn.forgotPsd')}</p>}
       <Button.FormButton className={['formButton']} onClick={handleFormOnClick}>
         {formButtonText}
