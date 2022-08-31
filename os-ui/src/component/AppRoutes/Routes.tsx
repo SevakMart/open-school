@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
+import { storage } from '../../services/storage/storage';
 import Loader from '../Loader/Loader';
 import ProtectedRoute from './ProtectedRoute';
 import Homepage from '../../pages/Homepage/Homepage';
@@ -13,7 +14,8 @@ import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
 import AfterVerificationPage from '../../pages/AfterVerificationPage/AfterVerificationPage';
 
 const AppRoutes = () => {
-  const userInfo = useSelector<RootState>((state) => state.userInfo);
+  // const userInfo = useSelector<RootState>((state) => state.userInfo);
+  const userInfo = storage.getItemFromLocalStorage('userInfo');
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
@@ -24,7 +26,7 @@ const AppRoutes = () => {
           path="/categories/subcategories"
           element={(
             <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
-              <ChooseCategoryPage />
+              <ChooseCategoryPage userInfo={userInfo} />
             </ProtectedRoute>
      )}
         />

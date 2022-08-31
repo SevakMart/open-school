@@ -12,8 +12,8 @@ import { SearchedCategoryType } from '../../types/SearchedCategoryType';
 import CategoryWithSubcategoriesProfile from '../../component/CategoryWithSubcategoriesProfile/CategoryWithSubcategoriesProfile';
 import styles from './ChooseCategoryPage.module.scss';
 
-const ChooseCategoryPage = () => {
-  const userInfo = useSelector<RootState>((state) => state.userInfo);
+const ChooseCategoryPage = ({ userInfo }:{userInfo:object}) => {
+  // const userInfo = useSelector<RootState>((state) => state.userInfo);
   const subcategoryIdArray = useSelector<RootState>((state) => state.chooseSubcategories);
   const { t } = useTranslation();
   const navigate = useNavigate();
