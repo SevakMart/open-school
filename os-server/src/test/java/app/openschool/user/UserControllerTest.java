@@ -224,7 +224,7 @@ class UserControllerTest {
             patch("/api/v1/users/1/enrolledModuleItems/1")
                 .contentType(APPLICATION_JSON)
                 .header("Authorization", jwt))
-        .andExpect(status().is(204));
+        .andExpect(status().isNoContent());
   }
 
   private String generateJwtToken() {
