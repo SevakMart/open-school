@@ -2,6 +2,8 @@ package app.openschool.course.module;
 
 import app.openschool.course.Course;
 import app.openschool.course.module.item.ModuleItem;
+import app.openschool.course.module.quiz.Quiz;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,7 +37,14 @@ public class Module {
   @OneToMany(mappedBy = "module")
   private Set<ModuleItem> moduleItems;
 
+  @OneToMany(mappedBy = "module")
+  private Set<Quiz> moduleQuizzes = new HashSet<>();
+
   public Module() {}
+
+  public Module(Long id) {
+    this.id = id;
+  }
 
   public Module(Course course) {
     this.course = course;
@@ -45,6 +54,10 @@ public class Module {
     this.id = id;
     this.course = course;
     this.moduleItems = moduleItems;
+  }
+
+  public static Module getInstance() {
+    return new Module();
   }
 
   public Long getId() {
@@ -85,5 +98,13 @@ public class Module {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public Set<Quiz> getModuleQuizzes() {
+    return moduleQuizzes;
+  }
+
+  public void setModuleQuizzes(Set<Quiz> moduleQuizzes) {
+    this.moduleQuizzes = moduleQuizzes;
   }
 }

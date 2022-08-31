@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -220,10 +221,10 @@ class UserControllerTest {
     String jwt = generateJwtToken();
     mockMvc
         .perform(
-            put("/api/v1/users/1/enrolledModuleItems/1")
+            patch("/api/v1/users/1/enrolledModuleItems/1")
                 .contentType(APPLICATION_JSON)
                 .header("Authorization", jwt))
-        .andExpect(status().isOk());
+        .andExpect(status().is(204));
   }
 
   private String generateJwtToken() {
