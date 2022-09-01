@@ -5,11 +5,18 @@ import {
 } from '../../constants/Strings';
 import BookmarkIcon from '../../icons/Bookmark';
 import Notification from '../../icons/Notification';
+import { storage } from '../../services/storage/storage';
 import DownArrowIcon from '../../icons/DownArrow';
 
 const NavbarOnSignIn = () => {
   const navigate = useNavigate();
   const { mainContent, navMainContent, userInfoContent } = styles;
+
+  const handleLogout = () => {
+    storage.removeItemFromLocalStorage('userInfo');
+    navigate('/');
+  };
+
   return (
     <nav className={mainContent}>
       <h2>{APP_LOGO}</h2>
@@ -23,6 +30,7 @@ const NavbarOnSignIn = () => {
           <img src="https://reactjs.org/logo-og.png" alt="avatar" />
           <DownArrowIcon />
         </div>
+        <p onClick={handleLogout}>Logout</p>
       </div>
     </nav>
   );

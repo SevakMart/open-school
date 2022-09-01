@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { validateSignInForm } from '../../../../helpers/SignInFormValidate';
 import authService from '../../../../services/authService';
+import { closeModal } from '../../../../redux/Slices/PortalOpenStatus';
 import { storage } from '../../../../services/storage/storage';
 import Form, { FormValues } from '../../Form/Form';
 
 const initialErrorFormValues = { fullNameError: '', emailError: '', passwordError: '' };
 
-const SignInDefault = () => {
+const SignInDefault = ({ handleSignIn }:{handleSignIn:()=>void}) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [errorFormValue, setErrorFormValue] = useState(initialErrorFormValues);
   const [signInErrorMessage, setSignInErrorMessage] = useState('');
 
@@ -24,7 +25,8 @@ const SignInDefault = () => {
           setErrorFormValue(initialErrorFormValues);
         } else if (response.status === 200) {
           storage.addItemToLocalStorage('userInfo', response);
-          navigate('/categories/subcategories');
+          handleSignIn();
+          dispatch(closeModal());
         }
       });
     } else {
