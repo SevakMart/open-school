@@ -44,7 +44,7 @@ const AllMentorsPage = () => {
       <div className={mainContainer}>
         {/* eslint-disable-next-line max-len */}
         <AllMentorsPageHeader activeNavigator={activeNav} changeHeaderFocus={changeHeaderFocus} />
-        <Search changeUrlQueries={handleSearchQueries} />
+        {/* <Search changeUrlQueries={handleSearchQueries} /> */}
         <userContext.Provider value={idAndToken}>
           {
             activeNav === ALL_MENTORS ? <Content /> : <SavedMentors />

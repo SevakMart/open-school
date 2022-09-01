@@ -5,6 +5,7 @@ import { RootState } from '../../../../redux/Store';
 import { validateResetPasswordForm } from '../../../../helpers/ResetPasswordFormValidate';
 import { openModalWithSuccessMessage } from '../../../../redux/Slices/PortalOpenStatus';
 import Form, { FormValues } from '../../Form/Form';
+import Header from '../../Header/Header';
 import { Types } from '../../../../types/types';
 import authService from '../../../../services/authService';
 
@@ -44,14 +45,22 @@ const ResetPassword = () => {
   };
 
   return (
-    <Form
-      isSignUpForm={false}
-      isResetPasswordForm={false}
-      formButtonText={t('button.homePage.signIn')}
-      errorFormValue={errorFormValue}
-      handleForm={sendResetPassword}
-      resendEmail={resendEmail}
-    />
+    <>
+      <Header
+        mainTitle={t('string.resetPsd.title')}
+        shouldRemoveIconContent={false}
+        isForgotPasswordContent={false}
+        isVerificationContent={false}
+      />
+      <Form
+        isSignUpForm={false}
+        isResetPasswordForm
+        formButtonText={t('button.resetPsd.submit')}
+        errorFormValue={errorFormValue}
+        handleForm={sendResetPassword}
+        resendEmail={resendEmail}
+      />
+    </>
   );
 };
 export default ResetPassword;

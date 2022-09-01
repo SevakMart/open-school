@@ -35,7 +35,8 @@
       },
       "afterVerification":{
         "verificationTokenNotValidMessageHeader": "The verification token is expired or not valid",
-        "verificationTokenNotValidMessageContent":"Please check your email and verify your account with the email you received recently, otherwise click the \"Resend\" button on the app's home page to receive a new email."
+        "verificationTokenNotValidMessageContent":"Please check your email and verify your account with the email you received recently, otherwise click the \"Resend\" button on the app's home page to receive a new email.",
+        "loading":"Please Wait"
       },
       "signIn":{
         "title":"Sign In!",

@@ -55,6 +55,9 @@
     box-sizing: border-box;
     border:none;
     margin-top:24px;
+    &__resendEmail {
+        margin-bottom: 24px;
+    }
 }
 .account {
     background-color: transparent;

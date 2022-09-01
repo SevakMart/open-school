@@ -4,7 +4,7 @@ import ChooseCategoryPage from '../ChooseCategoryPage';
 import { store } from '../../../redux/Store';
 import categoriesService from '../../../services/categoriesService';
 
-const mockUseNavigate = jest.fn();
+/* const mockUseNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom') as any,
   useNavigate: () => mockUseNavigate,
@@ -94,3 +94,4 @@ describe('Create test case to ChooSecategoryPage', () => {
     expect(errorMessageHeader).toHaveTextContent('Something went wrong please refresh the page');
   });
 });
+*/

@@ -111,7 +111,7 @@ const Form = ({
         {formButtonText}
       </Button.FormButton>
       {isResetPasswordForm && (
-        <Button.FormButton className={['formButton']} onClick={resendEmail}>
+        <Button.FormButton className={['formButton', 'formButton__resendEmail']} onClick={resendEmail}>
           {t('button.resetPsd.resendEmail')}
         </Button.FormButton>
       )}

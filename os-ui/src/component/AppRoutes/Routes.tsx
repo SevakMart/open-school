@@ -1,7 +1,5 @@
 import { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/Store';
 import { storage } from '../../services/storage/storage';
 import Loader from '../Loader/Loader';
 import ProtectedRoute from './ProtectedRoute';
@@ -13,8 +11,9 @@ import AllMentorsPage from '../../pages/AllMentorsPage/AllMentorsPage';
 import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
 import AfterVerificationPage from '../../pages/AfterVerificationPage/AfterVerificationPage';
 
+/* eslint-disable max-len */
+
 const AppRoutes = () => {
-  // const userInfo = useSelector<RootState>((state) => state.userInfo);
   const userInfo = storage.getItemFromLocalStorage('userInfo');
   return (
     <Suspense fallback={<Loader />}>
@@ -25,7 +24,7 @@ const AppRoutes = () => {
         <Route
           path="/categories/subcategories"
           element={(
-            <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
+            <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
               <ChooseCategoryPage userInfo={userInfo} />
             </ProtectedRoute>
      )}
@@ -33,7 +32,7 @@ const AppRoutes = () => {
         <Route
           path="/myLearningPath"
           element={(
-            <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
+            <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
               <MyLearningPathPage />
             </ProtectedRoute>
    )}
@@ -41,7 +40,7 @@ const AppRoutes = () => {
         <Route
           path="/exploreLearningPaths"
           element={(
-            <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
+            <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
               <AllLearningPathPage />
             </ProtectedRoute>
         )}
@@ -49,7 +48,7 @@ const AppRoutes = () => {
         <Route
           path="/mentors"
           element={(
-            <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
+            <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
               <AllMentorsPage />
             </ProtectedRoute>
         )}

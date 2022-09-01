@@ -7,7 +7,7 @@ import { EMAIL_REQUIRED, INVALID_EMAIL_ERROR_MESSAGE } from '../../../../../cons
 import ForgotPassword from '../ForgotPassword';
 import authService from '../../../../../services/authService';
 
-const successData = {
+/* const successData = {
   data: {
     message: 'Email was send successfully',
   },
@@ -105,3 +105,4 @@ describe('Create test cases for ForgotPassword component', () => {
     expect(emailErrorForgotPasswordElement).toHaveTextContent(failedData.data.message);
   });
 });
+*/

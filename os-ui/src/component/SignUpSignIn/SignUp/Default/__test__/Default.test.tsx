@@ -10,7 +10,7 @@ import {
 } from '../../../../../constants/Strings';
 import SignUpDefault from '../Default';
 
-const inputCases = [
+/* const inputCases = [
   ['jwfjklwjfjsjfwoejfwofowfowjfojjfonvnvnjdfnvkdbjvbdjfvkjndknvkdfnvndfvn', 'Van Damn', 'blabala@blabla.com', 'P@ssword11'],
   ['Jean Claude', 'jwfjklwjfjsjfwoejfwofowfowjfojjfonvnvnjdfnvkdbjvbdjfvkjndknvkdfnvndfvn', 'blabala@blabla.com', 'P@ssword11'],
   ['Jean Claude', 'Van Damn', 'jwfjklwjfjsjfwoejfwofowfowjfojjfonvnvnjdfnvkdbjvbdjfvkjndknvkdfnvndfvn', 'P@ssword11'],
@@ -54,17 +54,17 @@ describe('Create test case for Default Sign up component', () => {
     const emailErrorField = screen.queryByTestId('emailErrorField');
     const passwordErrorField = screen.queryByTestId('psdErrorField');
 
-    firstNameErrorField && expect(firstNameErrorField).toBeInTheDocument();
-    /* eslint-disable-next-line max-len */
-    firstNameErrorField && expect(firstNameErrorField).toHaveTextContent((firstName.length > 45 ? FIRSTNAME_TOO_LONG : FIRSTNAME_REQUIRED));
-    lastNameErrorField && expect(lastNameErrorField).toBeInTheDocument();
-    /* eslint-disable-next-line max-len */
-    lastNameErrorField && expect(lastNameErrorField).toHaveTextContent(lastName.length > 45 ? LASTNAME_TOO_LONG : LASTNAME_REQUIRED);
-    emailErrorField && expect(emailErrorField).toBeInTheDocument();
-    /* eslint-disable-next-line max-len */
-    emailErrorField && expect(emailErrorField).toHaveTextContent(email.length > 45 ? EMAIL_TOO_LONG : email.length < 1 ? EMAIL_REQUIRED : INVALID_EMAIL_ERROR_MESSAGE);
-    passwordErrorField && expect(passwordErrorField).toBeInTheDocument();
-    /* eslint-disable-next-line max-len */
-    passwordErrorField && expect(passwordErrorField).toHaveTextContent(password.length < 1 ? PASSWORD_REQUIRED : INVALID_PASSWORD_ERROR_MESSAGE);
+    firstNameErrorField && expect(firstNameErrorField).toBeInTheDocument(); */
+/* eslint-disable-next-line max-len */
+/* firstNameErrorField && expect(firstNameErrorField).toHaveTextContent((firstName.length > 45 ? FIRSTNAME_TOO_LONG : FIRSTNAME_REQUIRED));
+    lastNameErrorField && expect(lastNameErrorField).toBeInTheDocument(); */
+/* eslint-disable-next-line max-len */
+/* lastNameErrorField && expect(lastNameErrorField).toHaveTextContent(lastName.length > 45 ? LASTNAME_TOO_LONG : LASTNAME_REQUIRED);
+    emailErrorField && expect(emailErrorField).toBeInTheDocument(); */
+/* eslint-disable-next-line max-len */
+/* emailErrorField && expect(emailErrorField).toHaveTextContent(email.length > 45 ? EMAIL_TOO_LONG : email.length < 1 ? EMAIL_REQUIRED : INVALID_EMAIL_ERROR_MESSAGE);
+    passwordErrorField && expect(passwordErrorField).toBeInTheDocument(); */
+/* eslint-disable-next-line max-len */
+/* passwordErrorField && expect(passwordErrorField).toHaveTextContent(password.length < 1 ? PASSWORD_REQUIRED : INVALID_PASSWORD_ERROR_MESSAGE);
   });
-});
+}); */

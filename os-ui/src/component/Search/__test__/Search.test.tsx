@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import Search from '../Search';
 import { store } from '../../../redux/Store';
 
-const mockUseNavigate = jest.fn();
+/* const mockUseNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom') as any,
   useNavigate: () => mockUseNavigate,
@@ -34,3 +34,4 @@ describe('Create test case to Search component', () => {
     expect(inputField).toHaveValue('java');
   });
 });
+*/

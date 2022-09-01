@@ -5,7 +5,7 @@ import publicService from '../../../../../services/publicService';
 import userService from '../../../../../services/userService';
 import HomepageMentors from '../Mentors';
 
-const notSignInData = {
+/* const notSignInData = {
   data: {
     content: [
       {
@@ -105,3 +105,4 @@ describe('Create test cases for homepage mentors list', () => {
     expect(emptyCategoryHeading).toBeInTheDocument();
   });
 });
+*/

@@ -1,14 +1,20 @@
+@import "../../styles/Configs/Colors.scss";
+@import "../../styles/Configs/Fonts.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+
+
 .mainContainer{
-    background-color: white;
-    display: block;
-    height: 70rem;
-    padding: 5%;
+   text-align:center;
+   position:absolute;
+   top:50%;
+   left:50%;
+   transform:translate(-50%,-50%);
     h1{
-        color: rgb(179, 179, 208);
-        font-size: 80px;
+        @include fontStyle($primary-font, normal, 800, 2.25rem, 2.75rem);
+        color:$header-main-color;
     }
     p{
-        color: rgb(179, 179, 208);
-        font-size: 40px;
+        @include fontStyle($primary-font, normal, 600, 1.25rem, 2.5rem);
+        color:$main-text-color;
     }
 }

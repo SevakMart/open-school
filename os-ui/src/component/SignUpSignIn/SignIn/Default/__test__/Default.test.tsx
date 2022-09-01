@@ -6,7 +6,7 @@ import { store } from '../../../../../redux/Store';
 import { PASSWORD_REQUIRED, EMAIL_REQUIRED, INVALID_EMAIL_ERROR_MESSAGE } from '../../../../../constants/Strings';
 import SignInDefault from '../Default';
 
-describe('Create Test files for default signIn component', () => {
+/* describe('Create Test files for default signIn component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
@@ -91,3 +91,4 @@ describe('Create Test files for default signIn component', () => {
     expect(emailErrorField).toHaveTextContent(INVALID_EMAIL_ERROR_MESSAGE);
   });
 });
+*/
