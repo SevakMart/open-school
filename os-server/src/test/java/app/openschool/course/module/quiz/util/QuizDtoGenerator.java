@@ -1,7 +1,7 @@
 package app.openschool.course.module.quiz.util;
 
 import app.openschool.course.module.quiz.api.dto.CreateQuizDto;
-import app.openschool.course.module.quiz.question.api.dto.CreateAnswerOptionDto;
+import app.openschool.course.module.quiz.question.answer.api.dto.CreateAnswerOptionDto;
 import app.openschool.course.module.quiz.question.api.dto.CreateQuestionDto;
 import java.util.Set;
 

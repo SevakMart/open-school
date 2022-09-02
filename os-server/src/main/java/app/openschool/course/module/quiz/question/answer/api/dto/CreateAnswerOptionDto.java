@@ -1,4 +1,4 @@
-package app.openschool.course.module.quiz.question.api.dto;
+package app.openschool.course.module.quiz.question.answer.api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

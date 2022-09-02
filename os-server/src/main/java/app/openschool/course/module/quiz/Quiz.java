@@ -2,6 +2,7 @@ package app.openschool.course.module.quiz;
 
 import app.openschool.course.module.Module;
 import app.openschool.course.module.quiz.question.Question;
+import app.openschool.course.module.quiz.status.QuizStatus;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

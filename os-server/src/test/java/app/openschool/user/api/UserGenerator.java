@@ -4,7 +4,25 @@ import app.openschool.user.User;
 import app.openschool.user.company.Company;
 import app.openschool.user.role.Role;
 
-public class UserGenerator {
+public final class UserGenerator {
+
+  private UserGenerator() {}
+
+  public static User generateMentor() {
+    String email = "mentor";
+    String password = "pass";
+    User mentor = new User(email, password);
+    mentor.setRole(Role.isMentor());
+    return mentor;
+  }
+
+  public static User generateStudent() {
+    String email = "student";
+    String password = "pass";
+    User mentor = new User(email, password);
+    mentor.setRole(Role.isStudent());
+    return mentor;
+  }
 
   public static User generateUser() {
     User user = new User();

@@ -13,7 +13,7 @@ import app.openschool.common.security.UserPrincipal;
 import app.openschool.course.module.quiz.api.mapper.QuizMapper;
 import app.openschool.course.module.quiz.util.QuizGenerator;
 import app.openschool.user.User;
-import app.openschool.user.role.Role;
+import app.openschool.user.api.UserGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -66,7 +66,7 @@ class QuizControllerTest {
             post("/api/v1/quizzes/1")
                 .contentType(APPLICATION_JSON)
                 .content(REQUEST_BODY)
-                .header(AUTHORIZATION, generateJwtToken(generateMentor())))
+                .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isCreated())
         .andExpect(
             content().json(new ObjectMapper().writeValueAsString(QuizMapper.quizToQuizDto(quiz))));
@@ -81,8 +81,21 @@ class QuizControllerTest {
             post("/api/v1/quizzes/1")
                 .contentType(APPLICATION_JSON)
                 .content(REQUEST_BODY)
-                .header(AUTHORIZATION, generateJwtToken(generateMentor())))
+                .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void createQuiz_withIncorrectMentor_isBadRequest() throws Exception {
+    when(quizService.createQuiz(anyLong(), any())).thenThrow(IllegalArgumentException.class);
+
+    mockMvc
+        .perform(
+            post("/api/v1/quizzes/1")
+                .contentType(APPLICATION_JSON)
+                .content(REQUEST_BODY)
+                .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
+        .andExpect(status().isBadRequest());
   }
 
   @Test
@@ -92,7 +105,7 @@ class QuizControllerTest {
             post("/api/v1/quizzes/1")
                 .contentType(APPLICATION_JSON)
                 .content(REQUEST_BODY)
-                .header(AUTHORIZATION, generateJwtToken(generateStudent())))
+                .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateStudent())))
         .andExpect(status().isForbidden());
   }
 
@@ -105,17 +118,5 @@ class QuizControllerTest {
 
   private String generateJwtToken(User user) {
     return "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
-  }
-
-  private User generateMentor() {
-    User mentor = new User("Test", "pass");
-    mentor.setRole(new Role("MENTOR"));
-    return mentor;
-  }
-
-  private User generateStudent() {
-    User mentor = new User("Test", "pass");
-    mentor.setRole(new Role("STUDENT"));
-    return mentor;
   }
 }

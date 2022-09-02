@@ -1,5 +1,6 @@
 package app.openschool.course.module.quiz.question.api.dto;
 
+import app.openschool.course.module.quiz.question.answer.api.dto.CreateAnswerOptionDto;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Set;

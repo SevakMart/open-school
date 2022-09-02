@@ -1,4 +1,4 @@
-package app.openschool.course.module.quiz.question;
+package app.openschool.course.module.quiz.status;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,33 +8,26 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "question_type")
-public class QuestionType {
-
-  private static final String MATCHING = "MATCHING";
-  private static final String MULTIPLE_CHOICE = "MULTIPLE_CHOICE";
+@Table(name = "quiz_status")
+public class QuizStatus {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @Column(name = "type", nullable = false)
+  @Column(name = "status_type", nullable = false)
   private String type;
 
-  public QuestionType() {}
+  public QuizStatus() {}
 
-  public QuestionType(Long id, String type) {
+  public QuizStatus(Long id, String type) {
     this.id = id;
     this.type = type;
   }
 
-  public static QuestionType isMatching() {
-    return new QuestionType(1L, MATCHING);
-  }
-
-  public static QuestionType isMultipleChoice() {
-    return new QuestionType(2L, MULTIPLE_CHOICE);
+  public static QuizStatus isInitial() {
+    return new QuizStatus(1L, "INITIAL");
   }
 
   public Long getId() {

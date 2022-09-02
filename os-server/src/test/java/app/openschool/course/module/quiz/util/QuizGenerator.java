@@ -2,10 +2,10 @@ package app.openschool.course.module.quiz.util;
 
 import app.openschool.course.module.Module;
 import app.openschool.course.module.quiz.Quiz;
-import app.openschool.course.module.quiz.QuizStatus;
-import app.openschool.course.module.quiz.question.AnswerOption;
 import app.openschool.course.module.quiz.question.Question;
-import app.openschool.course.module.quiz.question.QuestionType;
+import app.openschool.course.module.quiz.question.answer.AnswerOption;
+import app.openschool.course.module.quiz.question.type.QuestionType;
+import app.openschool.course.module.quiz.status.QuizStatus;
 import java.util.Set;
 
 public final class QuizGenerator {

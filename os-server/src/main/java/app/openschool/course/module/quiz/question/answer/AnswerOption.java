@@ -1,5 +1,6 @@
-package app.openschool.course.module.quiz.question;
+package app.openschool.course.module.quiz.question.answer;
 
+import app.openschool.course.module.quiz.question.Question;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;

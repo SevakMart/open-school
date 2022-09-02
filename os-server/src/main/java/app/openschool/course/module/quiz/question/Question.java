@@ -1,6 +1,8 @@
 package app.openschool.course.module.quiz.question;
 
 import app.openschool.course.module.quiz.Quiz;
+import app.openschool.course.module.quiz.question.answer.AnswerOption;
+import app.openschool.course.module.quiz.question.type.QuestionType;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;

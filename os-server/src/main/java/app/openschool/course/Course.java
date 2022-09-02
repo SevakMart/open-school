@@ -90,6 +90,10 @@ public class Course {
     this.category = category;
   }
 
+  public static Course getInstance() {
+    return new Course();
+  }
+
   public void setTitle(String title) {
     this.title = title;
   }

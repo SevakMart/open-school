@@ -2,16 +2,16 @@ package app.openschool.course.module.quiz.api.mapper;
 
 import app.openschool.course.module.Module;
 import app.openschool.course.module.quiz.Quiz;
-import app.openschool.course.module.quiz.QuizStatus;
 import app.openschool.course.module.quiz.api.dto.CreateQuizDto;
 import app.openschool.course.module.quiz.api.dto.QuizDto;
-import app.openschool.course.module.quiz.question.AnswerOption;
 import app.openschool.course.module.quiz.question.Question;
-import app.openschool.course.module.quiz.question.QuestionType;
-import app.openschool.course.module.quiz.question.api.dto.AnswerOptionDto;
-import app.openschool.course.module.quiz.question.api.dto.CreateAnswerOptionDto;
+import app.openschool.course.module.quiz.question.answer.AnswerOption;
+import app.openschool.course.module.quiz.question.answer.api.dto.AnswerOptionDto;
+import app.openschool.course.module.quiz.question.answer.api.dto.CreateAnswerOptionDto;
 import app.openschool.course.module.quiz.question.api.dto.CreateQuestionDto;
 import app.openschool.course.module.quiz.question.api.dto.QuestionDto;
+import app.openschool.course.module.quiz.question.type.QuestionType;
+import app.openschool.course.module.quiz.status.QuizStatus;
 import java.util.Set;
 import java.util.stream.Collectors;
 

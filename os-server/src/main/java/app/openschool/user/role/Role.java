@@ -36,6 +36,14 @@ public class Role {
     this.type = type;
   }
 
+  public static Role isStudent() {
+    return new Role(1, "STUDENT");
+  }
+
+  public static Role isMentor() {
+    return new Role(3, "MENTOR");
+  }
+
   public Set<User> getUsers() {
     return users;
   }

@@ -33,7 +33,7 @@ public class QuizServiceImpl implements QuizService {
 
   private void checkIfTheModuleBelongsToCurrentMentor(Module module) {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
-    if (!module.getCourse().getMentor().getName().equals(username)) {
+    if (!module.getCourse().getMentor().getEmail().equals(username)) {
       throw new IllegalArgumentException();
     }
   }
