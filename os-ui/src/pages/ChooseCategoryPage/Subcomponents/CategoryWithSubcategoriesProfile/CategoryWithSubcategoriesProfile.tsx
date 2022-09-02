@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/Store';
 import { addSubcategory, removeSubcategory } from '../../../../redux/Slices/ChoosSubcategorySlice';
 import { CategoryWithSubcategoriesProfilePropTypes } from '../../../../types/CategoryWithSubcategoriesProfilePropTypes';
+import SubcategoryList from '../SubcategoryList/SubcategoryList';
 import styles from './CategoryWithSubcategoriesProfile.module.scss';
 
 const CategoryWithSubcategoriesProfile = ({
@@ -21,20 +22,7 @@ const CategoryWithSubcategoriesProfile = ({
   return (
     <div className={mainContent}>
       <h3 data-testid={parentCategory}>{parentCategory}</h3>
-      <div className={subMainContent}>
-        {
-            subcategories.length > 0 ? subcategories.map((subcategory) => (
-              <div className={subcategoryContent} key={+subcategory.id}>
-                {
-                  (subcategoryIdArray as Array<number>).some((id) => id === +subcategory.id)
-                    ? <input type="checkbox" id={`${subcategory.id}`} onChange={handleChange} checked />
-                    : <input type="checkbox" id={`${subcategory.id}`} onChange={handleChange} checked={false} />
-                }
-                <label data-testid={subcategory.title} htmlFor={`${subcategory.id}`}>{subcategory.title}</label>
-              </div>
-            )) : null
-        }
-      </div>
+      <SubcategoryList subcategories={subcategories} />
     </div>
   );
 };

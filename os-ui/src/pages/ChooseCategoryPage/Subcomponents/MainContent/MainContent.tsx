@@ -15,8 +15,8 @@ const MainContent = ({
     <>
       <div className={categoriesList}>
         {isLoading && <Loader />}
-        {!isLoading && errorMessage !== '' && <ErrorField.MainErrorField className={['subcategoriesErrorField']}>{errorMessage}</ErrorField.MainErrorField>}
-        {!isLoading && errorMessage === '' && (
+        {errorMessage !== '' && <ErrorField.MainErrorField className={['subcategoriesErrorField']}>{errorMessage}</ErrorField.MainErrorField>}
+        {errorMessage === '' && (
           Object.entries(searchedCategories).map((category) => (
             <CategoryWithSubcategoriesProfile
               key={category[0]}
