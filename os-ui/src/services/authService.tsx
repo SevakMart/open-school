@@ -56,8 +56,10 @@ class AuthService {
     return { data, status };
   }
 
-  async resendVerificationEmail(userId:number) {
-    fetchService.get(`${this.basePath}/${userId}/account/verification`);
+  async resendVerificationEmail(userId:number, params: object = {}) {
+    /* Talk with backend to sen success message when successful resend email */
+    const response = await (await fetchService.get(`${this.basePath}/${userId}/account/verification`, params)).json();
+    return response;
   }
 }
 

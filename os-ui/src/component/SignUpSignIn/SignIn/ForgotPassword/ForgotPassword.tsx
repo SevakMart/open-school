@@ -28,7 +28,7 @@ const ForgotPassword = () => {
       authService.sendForgotPasswordRequest({ email })
         .then((response) => {
           if (response.status === 200) {
-            dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: response.data.message, isSignUpSuccessfulRegistration: false }));
+            dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: response.data.message }));
             dispatch(addEmail(email));
             setEmailError('');
           } else if (response.status === 400) {

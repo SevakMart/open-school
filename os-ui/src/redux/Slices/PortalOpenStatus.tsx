@@ -6,6 +6,7 @@ const initialState = {
   withSuccessMessage: '',
   isSignUpSuccessfulRegistration: false,
   isResetPasswordSuccessfulMessage: false,
+  isResendVerificationEmailMessage: false,
 };
 
 const portalSlice = createSlice({
@@ -19,6 +20,7 @@ const portalSlice = createSlice({
         withSuccessMessage: '',
         isSignUpSuccessfulRegistration: false,
         isResetPasswordSuccessfulMessage: false,
+        isResendVerificationEmailMessage: false,
       };
     },
     openModalWithSuccessMessage(_, action) {
@@ -28,6 +30,7 @@ const portalSlice = createSlice({
         withSuccessMessage: action.payload.withSuccessMessage,
         isSignUpSuccessfulRegistration: action.payload.isSignUpSuccessfulRegistration || false,
         isResetPasswordSuccessfulMessage: action.payload.isResetPasswordSuccessfulMessage || false,
+        isResendVerificationEmailMessage: action.payload.isResendVerificationEmailMessage || false,
       };
     },
     closeModal() {

@@ -38,9 +38,7 @@ const Form = ({
   };
 
   const handleFormOnClick = () => {
-    const newFormValues = Object.fromEntries(Object.entries(formValues).filter((formValue) => formValue[1] !== ''));
-    handleForm(newFormValues);
-    setFormValues(initialFormValues);
+    handleForm(formValues);
   };
 
   return (

@@ -19,7 +19,7 @@ import { PortalStatus } from '../../types/PortalStatusType';
 const Homepage = () => {
   const portalStatus = useSelector<RootState>((state) => state.portalStatus);
   const {
-    isOpen, buttonType, withSuccessMessage, isSignUpSuccessfulRegistration, isResetPasswordSuccessfulMessage,
+    isOpen, buttonType, withSuccessMessage, isSignUpSuccessfulRegistration, isResetPasswordSuccessfulMessage, isResendVerificationEmailMessage,
   } = portalStatus as PortalStatus;
 
   return (
@@ -35,7 +35,7 @@ const Homepage = () => {
         {isOpen && buttonType === Types.Button.SIGN_IN && <SignIn />}
         {isOpen && buttonType === Types.Button.RESET_PASSWORD && <ResetPassword />}
         {isOpen && buttonType === Types.Button.FORGOT_PASSWORD && <ForgotPassword />}
-        {isOpen && buttonType === Types.Button.SUCCESS_MESSAGE && <SuccessMessage message={withSuccessMessage} isSignUpSuccessfulRegistration={isSignUpSuccessfulRegistration} isResetPasswordSuccessfulMessage={isResetPasswordSuccessfulMessage} />}
+        {isOpen && buttonType === Types.Button.SUCCESS_MESSAGE && <SuccessMessage message={withSuccessMessage} isSignUpSuccessfulRegistration={isSignUpSuccessfulRegistration} isResetPasswordSuccessfulMessage={isResetPasswordSuccessfulMessage} isResendVerificationEmailMessage={isResendVerificationEmailMessage} />}
       </Portal>
     </>
   );

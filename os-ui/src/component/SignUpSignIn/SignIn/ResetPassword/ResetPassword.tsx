@@ -48,7 +48,7 @@ const ResetPassword = () => {
     <>
       <Header
         mainTitle={t('string.resetPsd.title')}
-        shouldRemoveIconContent={false}
+        shouldRemoveIconContent
         isForgotPasswordContent={false}
         isVerificationContent={false}
       />

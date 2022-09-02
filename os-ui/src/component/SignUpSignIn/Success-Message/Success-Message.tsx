@@ -7,14 +7,17 @@ import styles from './Success-Message.module.scss';
 
 /* eslint-disable max-len */
 
-const SuccessMessage = ({ message, isSignUpSuccessfulRegistration, isResetPasswordSuccessfulMessage }:{message:string, isSignUpSuccessfulRegistration:boolean, isResetPasswordSuccessfulMessage:boolean}) => {
+const SuccessMessage = ({
+  message, isSignUpSuccessfulRegistration, isResetPasswordSuccessfulMessage, isResendVerificationEmailMessage,
+}:
+  {message:string, isSignUpSuccessfulRegistration:boolean, isResetPasswordSuccessfulMessage:boolean, isResendVerificationEmailMessage:boolean}) => {
   const { mainContainer } = styles;
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   useEffect(() => {
     let timer:any;
-    if (isSignUpSuccessfulRegistration) {
+    if (isSignUpSuccessfulRegistration || isResendVerificationEmailMessage) {
       timer = setTimeout(() => dispatch(openModal(Types.Button.VERIFY)), 3000);
     } else if (isResetPasswordSuccessfulMessage) {
       timer = setTimeout(() => dispatch(openModal(Types.Button.SIGN_IN)), 3000);
