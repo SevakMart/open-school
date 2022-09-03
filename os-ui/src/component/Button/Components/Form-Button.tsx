@@ -1,8 +1,10 @@
 import styles from '../Button-Styles.module.scss';
 
-export const FormButton = ({ children, className, onClick }:any) => {
-  const styleNames = className.map((className:any) => styles[`${className}`]);
+/* eslint-disable max-len */
+
+export const FormButton = ({ children, className, onClick }:{children:string, className:Array<string>, onClick?:()=>void}) => {
+  const styleNames = className.map((className:string) => styles[`${className}`]);
   return (
-    <button type="button" className={styleNames.join(' ')} onClick={() => onClick()}>{children}</button>
+    <button type="button" className={styleNames.join(' ')} onClick={() => onClick!()}>{children}</button>
   );
 };

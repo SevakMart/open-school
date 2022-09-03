@@ -46,8 +46,6 @@ const ChooseCategoryPage = ({ userInfo }:{userInfo:object}) => {
         isLoading={isLoading}
         errorMessage={errorMessage}
         searchedCategories={searchedCategories}
-        userInfoId={(userInfo as any).id}
-        userInfoToken={(userInfo as any).token}
       />
       <div className={buttonContainer}>
         <Button.NextButton userInfoId={(userInfo as any).id} userInfoToken={(userInfo as any).token} className={['nextButton']}>

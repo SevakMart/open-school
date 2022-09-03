@@ -2,14 +2,11 @@ import CategoryWithSubcategoriesProfile from '../CategoryWithSubcategoriesProfil
 import Loader from '../../../../component/Loader/Loader';
 import { SearchedCategoryType } from '../../../../types/SearchedCategoryType';
 import { ErrorField } from '../../../../component/ErrorField/ErrorField';
-import Button from '../../../../component/Button/Button';
 import styles from './MainContent.module.scss';
 
 /* eslint-disable max-len */
 
-const MainContent = ({
-  isLoading, errorMessage, searchedCategories, userInfoId, userInfoToken,
-}:{isLoading:boolean, errorMessage:string, searchedCategories:SearchedCategoryType, userInfoId:number, userInfoToken:string}) => {
+const MainContent = ({ isLoading, errorMessage, searchedCategories }:{isLoading:boolean, errorMessage:string, searchedCategories:SearchedCategoryType}) => {
   const { categoriesList } = styles;
   return (
     <>
@@ -26,7 +23,6 @@ const MainContent = ({
           ))
         )}
       </div>
-      {/* <button className={nextButton} type="button" onClick={handleSavingCategories}>{t('button.chooseCategories.next')}</button> */}
     </>
   );
 };
