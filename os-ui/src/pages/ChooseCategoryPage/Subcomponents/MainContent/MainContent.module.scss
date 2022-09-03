@@ -1,0 +1,8 @@
+.categoriesList {
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    justify-content:center;
+    gap:64px 127px;
+    margin:42px 88px 0;
+    box-sizing: border-box;
+}

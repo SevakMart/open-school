@@ -5,13 +5,15 @@ import styles from './SubcategoryContent.module.scss';
 
 const SubcategoryContent = ({ subcategoryItem }:{subcategoryItem:{id:number, title:string}}) => {
   const [isChecked, handleChecking] = useCheck(subcategoryItem.title, subcategoryItem.id);
+  const { mainContent, checkboxContent } = styles;
 
   return (
-    <div>
-      <div onClick={() => handleChecking()}>
+    <div className={mainContent}>
+      <div onClick={() => handleChecking()} className={checkboxContent}>
         <img src={isChecked ? CheckedSubcategory : UncheckedSubcategory} alt="logo" />
       </div>
       <p>{subcategoryItem.title}</p>
+
     </div>
   );
 };

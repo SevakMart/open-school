@@ -38,14 +38,18 @@
   box-sizing: border-box;
   margin:0 88px;
   height:56px;
-  background-color: #FFFFFF;
-  border-radius: 0.75rem;
+  background-color: $white-text-color;
+  border-radius: 12px;
   input {
-      border: none;
-      outline:none;
+      border:0;
       height:100%;
-      margin-left:2%;
-      @include fontStyle('Montserrat',normal,400,1rem,1.5rem);
-      color:#848A9D;
+      width:80%;
+      margin:0 0 0 2%;
+      padding:0;
+      @include fontStyle($primary-font,normal,400,16px,24px);
+      color:$main-text-color;
+      &:focus{
+        outline:none;
+      }
   }
 }

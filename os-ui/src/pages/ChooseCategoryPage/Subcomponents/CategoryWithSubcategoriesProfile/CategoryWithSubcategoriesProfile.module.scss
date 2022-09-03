@@ -1,28 +1,10 @@
-/*@import "../../styles/Mixins/FlexMixins.scss";
-@import "../../styles/Mixins/FontMixin.scss";
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
 
 .mainContent {
-    @include flexStyle(column,flex-start,none);
-    width:25%;
-    margin-bottom:5%;
-    h3 {
-        @include fontStyle('Montserrat',normal,700,1.5rem,1.813rem);
-        color:#222427;
-        padding-left:2%;
-    }
-    .subMainContent {
-        @include flexStyle(column,flex-start,space-between);
-    }
-    .subcategoryContent{
-        margin-bottom:3%;
-        input{
-            background-color:#D9DBE9;
-            border-radius: 0.25rem;
-        }
-        label{
-            @include fontStyle('Montserrat',normal,600,1.25rem,1.5rem);
-            color:#5E617B;
-        }
-        margin-bottom:4%;
-    }
-}*/
+   h3 {
+    @include fontStyle($primary-font,normal,700,24px,29px);
+    color:$header-main-color;
+   }
+}

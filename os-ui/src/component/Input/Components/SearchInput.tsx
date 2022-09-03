@@ -7,10 +7,10 @@ import { SearchProps } from '../../../types/SearchType';
 
 export const SearchInput = ({ changeUrlQueries, className }:SearchProps) => {
   const { t } = useTranslation();
-  const styleNames = className.map((className:any) => styles[`${className}`]);
+  const styleNames = className.map((className:string) => styles[`${className}`]);
   const inputRef = useRef<HTMLInputElement|null>(null);
   const searchContainerRef = useRef<HTMLDivElement|null>(null);
-  const [handleOnFocus, handleOnBlur] = useFocus('none', searchContainerRef.current);
+  const [handleOnFocus, handleOnBlur] = useFocus('white', searchContainerRef.current);
   const handleSearch = (e:React.KeyboardEvent) => {
     if (e.key === 'Enter' && inputRef.current && inputRef.current.value) {
       return changeUrlQueries(inputRef.current.value);

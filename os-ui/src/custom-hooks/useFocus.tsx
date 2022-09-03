@@ -10,9 +10,9 @@ export const useFocus = (coloronBlur:string, element:HTMLElement|null) => {
   };
   useEffect(() => {
     if (isFocused) {
-      element ? element.style.borderColor = 'black' : null;
+      element ? element.style.border = '2px solid black' : null;
     } else {
-      element ? element.style.borderColor = coloronBlur : null;
+      element ? element.style.border = `2px solid ${coloronBlur}` : null;
     }
   }, [isFocused]);
   return [handleOnFocus, handleOnBlur] as const;
