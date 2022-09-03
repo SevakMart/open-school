@@ -2,28 +2,9 @@
 @import "../../styles/Mixins/FlexMixins.scss";
 @import "../../styles/Mixins/FontMixin.scss";
 
-.mainHeader{
-    padding-left:6%;
-    padding-right:6%;
-    margin-top:4%;
-    margin-bottom:4%;
-    h1 {
-      @include fontStyle('Montserrat',normal,800,3rem,3.688rem);
-      color:black;
-      width:45%;
-    }
-}
-.categoriesList{
-    @include flexStyle(row,none,space-between);
-    flex-wrap:wrap;
-    padding-left: 6%;
-    padding-right:6%;
-    margin-top:5%;
-}
-.nextButton{
-    @include fontStyle('Montserrat',normal,500,1rem,1.25rem);
-    @include buttonStyle(#5E617B,#FFFFFF,1rem,6.75rem,4rem,2rem,2rem,1.375rem,1.375rem);
+.buttonContainer {
+    margin:24px 88px;
+    box-sizing: border-box;
+    width:108px;
     float:right;
-    margin-right:4%;
-    margin-bottom:6%;
 }

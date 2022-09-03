@@ -65,3 +65,9 @@
     color:$black-text-color;
     cursor:pointer;
 }
+
+.nextButton {
+    @include buttonStyle($secondary-color,$white-text-color,1rem,100%,64px,32px,32px,22px,22px);
+    @include fontStyle($primary-font, normal, 500, 1rem, 1.25rem);
+    border:none;
+}

@@ -16,10 +16,3 @@ const SubcategoryList = ({ subcategories }:{subcategories:Array<{id:number, titl
   );
 };
 export default SubcategoryList;
-/* <Input.CheckedInput
-          key={+subcategory.id}
-          subcategoryItem={subcategory}
-          className={['subcategoryContent']}
-          isChecked={false}
-          onChange={handleChange}
-      /> */

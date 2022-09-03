@@ -13,7 +13,6 @@ const SubcategoryContent = ({ subcategoryItem }:{subcategoryItem:{id:number, tit
         <img src={isChecked ? CheckedSubcategory : UncheckedSubcategory} alt="logo" />
       </div>
       <p>{subcategoryItem.title}</p>
-
     </div>
   );
 };
