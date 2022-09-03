@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ErrorField } from '../../ErrorField/ErrorField';
 import VisibileIcon from '../../../icons/Visibility';
 import HiddenIcon from '../../../icons/Hidden';
+import { useFocus } from '../../../custom-hooks/useFocus';
 import styles from '../Input-Styles.module.scss';
 
 export const PasswordInput = ({
@@ -11,21 +12,15 @@ textName:string, labelText:string, errorMessage:string, value:string, placeholde
 handleInputChange:(event:React.SyntheticEvent)=>void
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
   const passwordInputRef = useRef<null|HTMLInputElement>(null);
   const passwordInputContainerRef = useRef<null|HTMLDivElement>(null);
+  const [handleOnFocus, handleOnBlur] = useFocus('#d9dbe9', passwordInputContainerRef.current);
   const { PasswordInputContainer, PasswordInputFieldWithIcon } = styles;
 
   const handlePasswordVisibility = () => {
     setIsVisible((prevState) => !prevState);
   };
-  useEffect(() => {
-    if (isFocused) {
-      (passwordInputContainerRef.current as HTMLDivElement).style.borderColor = 'black';
-    } else {
-      (passwordInputContainerRef.current as HTMLDivElement).style.borderColor = '#d9dbe9';
-    }
-  }, [isFocused]);
+
   useEffect(() => {
     if (isVisible) {
       (passwordInputRef.current as HTMLInputElement).type = 'text';
@@ -48,8 +43,8 @@ handleInputChange:(event:React.SyntheticEvent)=>void
           placeholder={placeholderText}
           data-testid="psdInput"
           onChange={handleInputChange}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+          onFocus={() => handleOnFocus()}
+          onBlur={() => handleOnBlur()}
           required
         />
         {isVisible

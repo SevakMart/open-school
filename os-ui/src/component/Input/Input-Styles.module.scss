@@ -33,3 +33,19 @@
     }
    }
 }
+.subcategoriesSearch {
+  @include flexStyle(row,center,none);
+  box-sizing: border-box;
+  margin:0 88px;
+  height:56px;
+  background-color: #FFFFFF;
+  border-radius: 0.75rem;
+  input {
+      border: none;
+      outline:none;
+      height:100%;
+      margin-left:2%;
+      @include fontStyle('Montserrat',normal,400,1rem,1.5rem);
+      color:#848A9D;
+  }
+}
