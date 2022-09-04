@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import Navbar from '../Navbar/Navbar';
+import Navbar from '../Navbar-Component/Navbar/Navbar';
 import HomepageMainImage from '../../assets/svg/HomepageMainImage.svg';
 import Button from '../Button/Button';
 import { Types } from '../../types/types';

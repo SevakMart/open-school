@@ -1,9 +1,9 @@
 @import "../../../styles/Mixins/FlexMixins.scss";
-@import "../../styles/Mixins/FontMixin.scss";
-@import "../../styles/Mixins/ButtonMixin.scss";
-@import "../../styles/Configs/Colors.scss";
-@import "../../styles/Configs/Fonts.scss";
-@import "../../styles/Configs/PxToRemCalculator.scss";
+@import "../../../styles/Mixins/FontMixin.scss";
+@import "../../../styles/Mixins/ButtonMixin.scss";
+@import "../../../styles/Configs/Colors.scss";
+@import "../../../styles/Configs/Fonts.scss";
+@import "../../../styles/Configs/PxToRemCalculator.scss";
 
 .navContainer,.categoriesMentors,.buttonContent {
   @include flexStyle(row, center, space-between);

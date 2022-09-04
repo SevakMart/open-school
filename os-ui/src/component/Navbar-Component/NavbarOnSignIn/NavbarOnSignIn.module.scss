@@ -1,0 +1,49 @@
+@import "../../../styles/Mixins/ButtonMixin.scss";
+@import "../../../styles/Mixins/FlexMixins.scss";
+@import "../../../styles/Mixins/FontMixin.scss";
+@import "../../../styles/Configs/Colors.scss";
+@import "../../../styles/Configs/Fonts.scss";
+.mainContent {
+    @include flexStyle(row, center, space-between);
+    margin:0 88px;
+    padding:28px 0;
+    background-color: transparent;
+    h2 {
+        @include fontStyle($secondary-font,italic,700,20px,24px);
+        color:$header-main-color;
+        margin:0;
+    }
+    .navMainContent{
+        @include flexStyle(row, center, space-between);
+        p{
+            @include fontStyle($primary-font,normal,500,16px,24px);
+            color:$main-text-color;
+            cursor:pointer;
+            box-sizing: border-box;
+            margin:0 0 0 32px;
+        }
+        .bookmarkIconStyle {
+            margin:0 0 0 25px;
+            width:20px;
+            height:20px;
+            text-align: center;
+        }
+        .notificationIcon {
+            margin:0 0 0 25px;
+            cursor:pointer;
+        }
+        .userInfoContent {
+            @include flexStyle(row, center, space-between);
+            box-sizing: border-box;
+            margin:0 0 0 25px;
+            .avatarLogo {
+                width:32px;
+                height:32px;
+                border-radius: 50%;
+            }
+            .arrowDownIcon {
+                cursor:pointer;
+            }
+        }
+    }
+}

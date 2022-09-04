@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Input } from '../../../../component/Input/Input';
-import NavbarOnSignIn from '../../../../component/NavbarOnSignIn/NavbarOnSignIn';
+import NavbarOnSignIn from '../../../../component/Navbar-Component/NavbarOnSignIn/NavbarOnSignIn';
 import styles from './Header.module.scss';
 
 const Header = ({ changeUrlQueries }:{changeUrlQueries:(title:string)=>void}) => {

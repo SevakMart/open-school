@@ -4,7 +4,9 @@
         "navBar":{
           "logo":"Open-School",
           "exploreCategories":"Explore Categories",
-          "mentors":"Mentors"
+          "mentors":"Mentors",
+          "allLearningPaths":"All Learning Paths",
+          "myLearningPaths":"My Learning Paths"
         },
         "header":{
           "educationalPlatform":"Free Educational Platform",
