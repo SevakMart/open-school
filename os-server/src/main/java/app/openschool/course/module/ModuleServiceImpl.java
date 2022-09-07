@@ -7,10 +7,13 @@ import app.openschool.course.module.api.dto.UpdateModuleRequest;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.api.dto.CreateModuleItemRequest;
 import app.openschool.course.module.item.type.ModuleItemTypeRepository;
+import app.openschool.user.User;
+import app.openschool.user.UserRepository;
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,16 +21,19 @@ public class ModuleServiceImpl implements ModuleService {
 
   private final CourseRepository courseRepository;
   private final ModuleRepository moduleRepository;
+  private final UserRepository userRepository;
   private final ModuleItemTypeRepository moduleItemTypeRepository;
   private final MessageSource messageSource;
 
   public ModuleServiceImpl(
       CourseRepository courseRepository,
       ModuleRepository moduleRepository,
+      UserRepository userRepository,
       ModuleItemTypeRepository moduleItemTypeRepository,
       MessageSource messageSource) {
     this.courseRepository = courseRepository;
     this.moduleRepository = moduleRepository;
+    this.userRepository = userRepository;
     this.moduleItemTypeRepository = moduleItemTypeRepository;
     this.messageSource = messageSource;
   }
@@ -36,6 +42,13 @@ public class ModuleServiceImpl implements ModuleService {
   public Module add(CreateModuleRequest request) {
     Course course =
         courseRepository.findById(request.getCourseId()).orElseThrow(IllegalArgumentException::new);
+    User authenticatedUser =
+        userRepository.findUserByEmail(
+            SecurityContextHolder.getContext().getAuthentication().getName());
+    if (authenticatedUser.getRole().getType().equals("MENTOR")
+        && !course.getMentor().getEmail().equals(authenticatedUser.getEmail())) {
+      throw new IllegalArgumentException();
+    }
     Module module = new Module();
     module.setTitle(request.getTitle());
     module.setDescription(request.getDescription());
@@ -69,6 +82,13 @@ public class ModuleServiceImpl implements ModuleService {
   @Override
   public Module update(Long moduleId, UpdateModuleRequest request) {
     Module module = moduleRepository.findById(moduleId).orElseThrow(IllegalArgumentException::new);
+    User authenticatedUser =
+        userRepository.findUserByEmail(
+            SecurityContextHolder.getContext().getAuthentication().getName());
+    if (authenticatedUser.getRole().getType().equals("MENTOR")
+        && !module.getCourse().getMentor().getEmail().equals(authenticatedUser.getEmail())) {
+      throw new IllegalArgumentException();
+    }
     module.setTitle(request.getTitle());
     module.setDescription(request.getDescription());
     return moduleRepository.save(module);
@@ -77,6 +97,13 @@ public class ModuleServiceImpl implements ModuleService {
   @Override
   public void delete(Long moduleId) {
     Module module = moduleRepository.findById(moduleId).orElseThrow(IllegalArgumentException::new);
+    User authenticatedUser =
+        userRepository.findUserByEmail(
+            SecurityContextHolder.getContext().getAuthentication().getName());
+    if (authenticatedUser.getRole().getType().equals("MENTOR")
+        && !module.getCourse().getMentor().getEmail().equals(authenticatedUser.getEmail())) {
+      throw new IllegalArgumentException();
+    }
     Set<Module> modules = module.getCourse().getModules();
     if (modules.size() == 1) {
       throw new UnsupportedOperationException(

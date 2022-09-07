@@ -11,7 +11,7 @@ public class ModuleItemDto {
   private final String title;
 
   @Schema(description = "Id of the module item type", example = "3")
-  private final Long ModuleItemTypeId;
+  private final Long moduleItemTypeId;
 
   @Schema(description = "Link of the moduleItem", example = "https//1654hjjhj")
   private final String link;
@@ -23,7 +23,7 @@ public class ModuleItemDto {
       Long id, String title, Long moduleItemTypeId, String link, Long estimatedTime) {
     this.id = id;
     this.title = title;
-    ModuleItemTypeId = moduleItemTypeId;
+    this.moduleItemTypeId = moduleItemTypeId;
     this.link = link;
     this.estimatedTime = estimatedTime;
   }
@@ -37,7 +37,7 @@ public class ModuleItemDto {
   }
 
   public Long getModuleItemTypeId() {
-    return ModuleItemTypeId;
+    return moduleItemTypeId;
   }
 
   public String getLink() {

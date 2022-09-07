@@ -12,6 +12,7 @@ import app.openschool.course.module.api.dto.CreateModuleRequest;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.api.dto.CreateModuleItemRequest;
 import app.openschool.course.module.item.type.ModuleItemTypeRepository;
+import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -84,7 +86,8 @@ public class CourseServiceImpl implements CourseService {
             .findById(request.getLanguageId())
             .orElseThrow(IllegalArgumentException::new));
     course.setMentor(
-        userRepository.findById(request.getMentorId()).orElseThrow(IllegalArgumentException::new));
+        userRepository.findUserByEmail(
+            SecurityContextHolder.getContext().getAuthentication().getName()));
     Set<Keyword> keywords =
         request.getKeywordIds().stream()
             .map(
@@ -142,20 +145,27 @@ public class CourseServiceImpl implements CourseService {
   @Override
   public Course update(Long courseId, UpdateCourseRequest request) {
     Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
+    User authenticatedUser =
+        userRepository.findUserByEmail(
+            SecurityContextHolder.getContext().getAuthentication().getName());
+    if (authenticatedUser.getRole().getType().equals("MENTOR")
+        && !course.getMentor().getEmail().equals(authenticatedUser.getEmail())) {
+      throw new IllegalArgumentException();
+    }
     course.setTitle(request.getTitle());
     course.setDescription(request.getDescription());
     course.setGoal(request.getGoal());
     course.setCategory(
         categoryRepository
-            .findById(request.getCategory_id())
+            .findById(request.getCategoryId())
             .orElseThrow(IllegalArgumentException::new));
     course.setDifficulty(
         difficultyRepository
-            .findById(request.getDifficulty())
+            .findById(request.getDifficultyId())
             .orElseThrow(IllegalArgumentException::new));
     course.setLanguage(
         languageRepository
-            .findById(request.getLanguage_id())
+            .findById(request.getLanguageId())
             .orElseThrow(IllegalArgumentException::new));
     Set<Keyword> keywords =
         request.getKeywordIds().stream()
@@ -171,12 +181,14 @@ public class CourseServiceImpl implements CourseService {
 
   @Override
   public void delete(Long courseId) {
-    courseRepository
-        .findById(courseId)
-        .ifPresentOrElse(
-            courseRepository::delete,
-            () -> {
-              throw new IllegalArgumentException();
-            });
+    Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
+    User authenticatedUser =
+        userRepository.findUserByEmail(
+            SecurityContextHolder.getContext().getAuthentication().getName());
+    if (authenticatedUser.getRole().getType().equals("MENTOR")
+        && !course.getMentor().getEmail().equals(authenticatedUser.getEmail())) {
+      throw new IllegalArgumentException();
+    }
+    courseRepository.delete(course);
   }
 }

@@ -30,9 +30,6 @@ public class CreateCourseRequest {
   @NotNull(message = "{argument.required}")
   private Integer languageId;
 
-  @NotNull(message = "{argument.required}")
-  private Long mentorId;
-
   @NotEmpty(message = "{argument.required}")
   private Set<Long> keywordIds;
 
@@ -45,20 +42,18 @@ public class CreateCourseRequest {
       String title,
       String description,
       String goal,
-      Long category_id,
-      Integer difficulty_id,
-      Integer language_id,
-      Long mentor_id,
-      Set<Long> keyword_ids,
+      Long categoryId,
+      Integer difficultyId,
+      Integer languageId,
+      Set<Long> keywordIds,
       Set<CreateModuleRequest> createModuleRequests) {
     this.title = title;
     this.description = description;
     this.goal = goal;
-    this.categoryId = category_id;
-    this.difficultyId = difficulty_id;
-    this.languageId = language_id;
-    this.mentorId = mentor_id;
-    this.keywordIds = keyword_ids;
+    this.categoryId = categoryId;
+    this.difficultyId = difficultyId;
+    this.languageId = languageId;
+    this.keywordIds = keywordIds;
     this.createModuleRequests = createModuleRequests;
   }
 
@@ -108,14 +103,6 @@ public class CreateCourseRequest {
 
   public void setLanguageId(Integer languageId) {
     this.languageId = languageId;
-  }
-
-  public Long getMentorId() {
-    return mentorId;
-  }
-
-  public void setMentorId(Long mentorId) {
-    this.mentorId = mentorId;
   }
 
   public Set<Long> getKeywordIds() {

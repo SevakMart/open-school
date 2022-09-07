@@ -105,10 +105,10 @@ public class CourseController {
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
             responseCode = "403",
-            description = "Only user with admin role has access to this method",
+            description = "Only users with ADMIN or MENTOR role have access to this method",
             content = @Content(schema = @Schema()))
       })
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
   @PostMapping
   public ResponseEntity<CourseDto> add(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -130,10 +130,10 @@ public class CourseController {
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
             responseCode = "403",
-            description = "Only user with admin role has access to this method",
+            description = "Only users with ADMIN or MENTOR role have access to this method",
             content = @Content(schema = @Schema()))
       })
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
   @PutMapping("/{id}")
   public ResponseEntity<CourseDto> update(
       @Parameter(description = "Course id which will be updated") @PathVariable(value = "id")
@@ -160,10 +160,10 @@ public class CourseController {
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
             responseCode = "403",
-            description = "Only user with admin role has access to this method",
+            description = "Only users with ADMIN or MENTOR role have access to this method",
             content = @Content(schema = @Schema()))
       })
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
   @DeleteMapping("/{id}")
   public ResponseEntity<HttpStatus> delete(
       @Parameter(description = "Id of course which will be deleted") @PathVariable(value = "id")

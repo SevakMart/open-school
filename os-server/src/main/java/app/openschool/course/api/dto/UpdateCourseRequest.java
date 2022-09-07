@@ -21,13 +21,13 @@ public class UpdateCourseRequest {
   private String goal;
 
   @NotNull(message = "{argument.required}")
-  private Long category_id;
+  private Long categoryId;
 
   @NotNull(message = "{argument.required}")
-  private Integer difficulty;
+  private Integer difficultyId;
 
   @NotNull(message = "{argument.required}")
-  private Integer language_id;
+  private Integer languageId;
 
   @NotEmpty(message = "{argument.required}")
   private Set<Long> keywordIds;
@@ -38,16 +38,16 @@ public class UpdateCourseRequest {
       String title,
       String description,
       String goal,
-      Long category_id,
-      Integer difficulty,
-      Integer language_id,
+      Long categoryId,
+      Integer difficultyId,
+      Integer languageId,
       Set<Long> keywordIds) {
     this.title = title;
     this.description = description;
     this.goal = goal;
-    this.category_id = category_id;
-    this.difficulty = difficulty;
-    this.language_id = language_id;
+    this.categoryId = categoryId;
+    this.difficultyId = difficultyId;
+    this.languageId = languageId;
     this.keywordIds = keywordIds;
   }
 
@@ -75,28 +75,28 @@ public class UpdateCourseRequest {
     this.goal = goal;
   }
 
-  public Long getCategory_id() {
-    return category_id;
+  public Long getCategoryId() {
+    return categoryId;
   }
 
-  public void setCategory_id(Long category_id) {
-    this.category_id = category_id;
+  public void setCategoryId(Long categoryId) {
+    this.categoryId = categoryId;
   }
 
-  public Integer getDifficulty() {
-    return difficulty;
+  public Integer getDifficultyId() {
+    return difficultyId;
   }
 
-  public void setDifficulty(Integer difficulty) {
-    this.difficulty = difficulty;
+  public void setDifficultyId(Integer difficultyId) {
+    this.difficultyId = difficultyId;
   }
 
-  public Integer getLanguage_id() {
-    return language_id;
+  public Integer getLanguageId() {
+    return languageId;
   }
 
-  public void setLanguage_id(Integer language_id) {
-    this.language_id = language_id;
+  public void setLanguageId(Integer languageId) {
+    this.languageId = languageId;
   }
 
   public Set<Long> getKeywordIds() {

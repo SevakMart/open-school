@@ -14,7 +14,7 @@ public class CreateModuleItemRequest {
   private String title;
 
   @NotNull(message = "{argument.required}")
-  private Long ModuleItemTypeId;
+  private Long moduleItemTypeId;
 
   @NotBlank(message = "{argument.required}")
   private String link;
@@ -28,7 +28,7 @@ public class CreateModuleItemRequest {
       Long moduleId, String title, Long moduleItemTypeId, String link, Long estimatedTime) {
     this.moduleId = moduleId;
     this.title = title;
-    ModuleItemTypeId = moduleItemTypeId;
+    this.moduleItemTypeId = moduleItemTypeId;
     this.link = link;
     this.estimatedTime = estimatedTime;
   }
@@ -50,11 +50,11 @@ public class CreateModuleItemRequest {
   }
 
   public Long getModuleItemTypeId() {
-    return ModuleItemTypeId;
+    return moduleItemTypeId;
   }
 
   public void setModuleItemTypeId(Long moduleItemTypeId) {
-    ModuleItemTypeId = moduleItemTypeId;
+    this.moduleItemTypeId = moduleItemTypeId;
   }
 
   public String getLink() {

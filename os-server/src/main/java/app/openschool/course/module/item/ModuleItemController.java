@@ -1,11 +1,16 @@
 package app.openschool.course.module.item;
 
+import app.openschool.common.response.ResponseMessage;
 import app.openschool.course.module.item.api.dto.CreateModuleItemRequest;
 import app.openschool.course.module.item.api.dto.ModuleItemDto;
 import app.openschool.course.module.item.api.dto.UpdateModuleItemRequest;
 import app.openschool.course.module.item.api.mapper.ModuleItemMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -30,7 +35,21 @@ public class ModuleItemController {
   }
 
   @Operation(summary = "add moduleItem", security = @SecurityRequirement(name = "bearerAuth"))
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "201",
+            description = "Creates new module item and returns that"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid request arguments supplied or not provided",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Only users with ADMIN or MENTOR role has access to this method",
+            content = @Content(schema = @Schema()))
+      })
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
   @PostMapping
   public ResponseEntity<ModuleItemDto> add(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -43,7 +62,21 @@ public class ModuleItemController {
   }
 
   @Operation(summary = "modify moduleItem", security = @SecurityRequirement(name = "bearerAuth"))
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Modifies the module item and returns that"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid request arguments supplied or not provided",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Only users with ADMIN or MENTOR role have access to this method",
+            content = @Content(schema = @Schema()))
+      })
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
   @PutMapping("/{moduleItemId}")
   public ResponseEntity<ModuleItemDto> update(
       @Parameter(description = "Id of the moduleItem which will be modified") @PathVariable
@@ -58,7 +91,22 @@ public class ModuleItemController {
   }
 
   @Operation(summary = "delete moduleItem", security = @SecurityRequirement(name = "bearerAuth"))
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "204",
+            description = "The module item was deleted",
+            content = @Content(schema = @Schema())),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid module item id supplied",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Only users with ADMIN or MENTOR role have access to this method",
+            content = @Content(schema = @Schema()))
+      })
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
   @DeleteMapping("/{moduleItemId}")
   public ResponseEntity<ModuleItemDto> delete(
       @Parameter(description = "Id of the module which will be deleted") @PathVariable
