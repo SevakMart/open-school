@@ -11,7 +11,7 @@ const Footer = () => {
   const { mainContainer, buttonContainer } = styles;
 
   const handleSignUp = () => {
-    dispatch(openModal(Types.Button.SIGN_UP));
+    dispatch(openModal({ buttonType: Types.Button.SIGN_UP }));
   };
 
   return (

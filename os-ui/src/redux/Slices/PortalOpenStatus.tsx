@@ -7,6 +7,8 @@ const initialState = {
   isSignUpSuccessfulRegistration: false,
   isResetPasswordSuccessfulMessage: false,
   isResendVerificationEmailMessage: false,
+  isRequestForExploreCategoriesPage: false,
+  isRequestForMentorsPage: false,
 };
 
 const portalSlice = createSlice({
@@ -14,24 +16,10 @@ const portalSlice = createSlice({
   initialState,
   reducers: {
     openModal(_, action) {
-      return {
-        isOpen: true,
-        buttonType: action.payload,
-        withSuccessMessage: '',
-        isSignUpSuccessfulRegistration: false,
-        isResetPasswordSuccessfulMessage: false,
-        isResendVerificationEmailMessage: false,
-      };
+      return { ...initialState, isOpen: true, ...action.payload };
     },
     openModalWithSuccessMessage(_, action) {
-      return {
-        isOpen: true,
-        buttonType: action.payload.buttonType,
-        withSuccessMessage: action.payload.withSuccessMessage,
-        isSignUpSuccessfulRegistration: action.payload.isSignUpSuccessfulRegistration || false,
-        isResetPasswordSuccessfulMessage: action.payload.isResetPasswordSuccessfulMessage || false,
-        isResendVerificationEmailMessage: action.payload.isResendVerificationEmailMessage || false,
-      };
+      return { ...initialState, isOpen: true, ...action.payload };
     },
     closeModal() {
       return initialState;

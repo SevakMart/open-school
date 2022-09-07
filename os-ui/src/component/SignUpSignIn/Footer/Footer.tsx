@@ -10,11 +10,11 @@ const Footer = ({ mainText, buttonType, buttonText }:{mainText:string, buttonTyp
   const dispatch = useDispatch();
 
   const handleSignIn = () => {
-    dispatch(openModal(buttonType));
+    dispatch(openModal({ buttonType }));
   };
 
   const handleSignUp = () => {
-    dispatch(openModal(buttonType));
+    dispatch(openModal({ buttonType }));
   };
 
   return (

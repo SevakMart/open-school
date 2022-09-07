@@ -15,11 +15,11 @@ const HomepageHeader = () => {
   } = styles;
 
   const handleSignUp = () => {
-    dispatch(openModal(Types.Button.SIGN_UP));
+    dispatch(openModal({ buttonType: Types.Button.SIGN_UP }));
   };
 
   const handleSignIn = () => {
-    dispatch(openModal(Types.Button.SIGN_IN));
+    dispatch(openModal({ buttonType: Types.Button.SIGN_IN }));
   };
 
   return (

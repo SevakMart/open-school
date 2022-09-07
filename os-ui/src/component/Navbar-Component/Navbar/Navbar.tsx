@@ -18,8 +18,8 @@ const Navbar = () => {
     <nav className={navContainer}>
       <h2>{t('string.homePage.navBar.logo')}</h2>
       <div className={categoriesMentors}>
-        <p>{t('string.homePage.navBar.exploreCategories')}</p>
-        <p>{t('string.homePage.navBar.mentors')}</p>
+        <p onClick={handleSignIn}>{t('string.homePage.navBar.exploreCategories')}</p>
+        <p onClick={handleSignIn}>{t('string.homePage.navBar.mentors')}</p>
       </div>
       <div className={buttonContent}>
         <p>{t('button.homePage.becomeMentor')}</p>

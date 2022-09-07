@@ -26,9 +26,7 @@ const ResetPassword = () => {
         .then((response) => {
           if (response.status === 200) {
             setErrorFormValue(initialErrorFormValues);
-            dispatch(openModalWithSuccessMessage({
-              buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: response.data.message, isSignUpSuccessfulRegistration: false, isResetPasswordSuccessfulMessage: true,
-            }));
+            dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: response.data.message, isResetPasswordSuccessfulMessage: true }));
           } else if (response.status === 400) {
             setErrorFormValue({ ...initialErrorFormValues, tokenError: response.data.message });
           }
@@ -39,7 +37,7 @@ const ResetPassword = () => {
   const resendEmail = () => {
     authService.sendForgotPasswordRequest({ forgotPasswordEmail })
       .then((response) => {
-        dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: response.data.message, isSignUpSuccessfulRegistration: false }));
+        dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: response.data.message }));
         setErrorFormValue(initialErrorFormValues);
       });
   };

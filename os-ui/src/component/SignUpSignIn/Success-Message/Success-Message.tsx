@@ -18,11 +18,11 @@ const SuccessMessage = ({
   useEffect(() => {
     let timer:any;
     if (isSignUpSuccessfulRegistration || isResendVerificationEmailMessage) {
-      timer = setTimeout(() => dispatch(openModal(Types.Button.VERIFY)), 3000);
+      timer = setTimeout(() => dispatch(openModal({ buttonType: Types.Button.VERIFY })), 3000);
     } else if (isResetPasswordSuccessfulMessage) {
-      timer = setTimeout(() => dispatch(openModal(Types.Button.SIGN_IN)), 3000);
+      timer = setTimeout(() => dispatch(openModal({ buttonType: Types.Button.SIGN_IN })), 3000);
     } else {
-      timer = setTimeout(() => dispatch(openModal(Types.Button.RESET_PASSWORD)), 3000);
+      timer = setTimeout(() => dispatch(openModal({ buttonType: Types.Button.RESET_PASSWORD })), 3000);
     }
     return () => clearTimeout(timer);
   }, []);

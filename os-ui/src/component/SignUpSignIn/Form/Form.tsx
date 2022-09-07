@@ -34,7 +34,7 @@ const Form = ({
   };
 
   const handleForgotPassword = () => {
-    dispatch(openModal(Types.Button.FORGOT_PASSWORD));
+    dispatch(openModal({ buttonType: Types.Button.FORGOT_PASSWORD }));
   };
 
   const handleFormOnClick = () => {
