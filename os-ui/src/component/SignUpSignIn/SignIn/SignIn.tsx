@@ -13,18 +13,16 @@ import { Types } from '../../../types/types';
 
 const SignIn = () => {
   const portalState = useSelector<RootState>((state) => state.portalStatus);
-  const { isRequestForExploreCategoriesPage, isRequestForMentorsPage } = portalState as PortalStatus;
+  const { isRequestForMentorsPage } = portalState as PortalStatus;
   const [isSignedIn, setIsSignedIn] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   useEffect(() => {
     if (isSignedIn) {
-      if (isRequestForExploreCategoriesPage) {
-        navigate('/categories/subcategories');
-      } else if (isRequestForMentorsPage) {
+      if (isRequestForMentorsPage) {
         navigate('/mentors');
-      }
+      } else navigate('/categories/subcategories');
     }
   }, [isSignedIn]);
 

@@ -10,7 +10,7 @@ import ForgotPassword from '../../component/SignUpSignIn/SignIn/ForgotPassword/F
 import SuccessMessage from '../../component/SignUpSignIn/Success-Message/Success-Message';
 import ResetPassword from '../../component/SignUpSignIn/SignIn/ResetPassword/ResetPassword';
 import Verification from '../../component/SignUpSignIn/Verification/Verification';
-import Portal from '../../component/Portal/Portal';
+import { Portal } from '../../component/Portal/Portal';
 import { Types } from '../../types/types';
 import { PortalStatus } from '../../types/PortalStatusType';
 
@@ -28,7 +28,7 @@ const Homepage = () => {
       <HomepageCategories />
       <HomepageMentors />
       <Footer />
-      <Portal isOpen={isOpen}>
+      <Portal.FormPortal isOpen={isOpen}>
         {/* eslint-disable max-len */}
         {isOpen && buttonType === Types.Button.SIGN_UP && <SignUp />}
         {isOpen && buttonType === Types.Button.VERIFY && <Verification />}
@@ -36,7 +36,7 @@ const Homepage = () => {
         {isOpen && buttonType === Types.Button.RESET_PASSWORD && <ResetPassword />}
         {isOpen && buttonType === Types.Button.FORGOT_PASSWORD && <ForgotPassword />}
         {isOpen && buttonType === Types.Button.SUCCESS_MESSAGE && <SuccessMessage message={withSuccessMessage} isSignUpSuccessfulRegistration={isSignUpSuccessfulRegistration} isResetPasswordSuccessfulMessage={isResetPasswordSuccessfulMessage} isResendVerificationEmailMessage={isResendVerificationEmailMessage} />}
-      </Portal>
+      </Portal.FormPortal>
     </>
   );
 };

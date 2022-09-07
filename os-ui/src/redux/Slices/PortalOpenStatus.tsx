@@ -7,7 +7,6 @@ const initialState = {
   isSignUpSuccessfulRegistration: false,
   isResetPasswordSuccessfulMessage: false,
   isResendVerificationEmailMessage: false,
-  isRequestForExploreCategoriesPage: false,
   isRequestForMentorsPage: false,
 };
 

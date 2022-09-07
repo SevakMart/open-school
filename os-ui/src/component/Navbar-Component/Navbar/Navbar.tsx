@@ -16,7 +16,7 @@ const Navbar = () => {
     dispatch(openModal({ buttonType: Types.Button.SIGN_IN }));
   };
   const goToExploreCategoriesPage = () => {
-    dispatch(openModal({ buttonType: Types.Button.SIGN_IN, isRequestForExploreCategoriesPage: true }));
+    dispatch(openModal({ buttonType: Types.Button.SIGN_IN }));
   };
   const goToMentorsPage = () => {
     dispatch(openModal({ buttonType: Types.Button.SIGN_IN, isRequestForMentorsPage: true }));

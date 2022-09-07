@@ -74,7 +74,10 @@
         "all":"All Mentors",
         "saved":"Saved Mentors"
       },
-      "search":"Search name"
+      "search":"Search name",
+      "profilePortal":{
+        "signOut":"Sign out"
+      }
     },
     "button":{
       "homePage":{

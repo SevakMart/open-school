@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { addLoggedInUser } from '../../redux/Slices/loginUserSlice';
 import authService from '../../services/authService';
 import { storage } from '../../services/storage/storage';
-import Portal from '../../component/Portal/Portal';
+import { Portal } from '../../component/Portal/Portal';
 import styles from './AfterVerificationPage.module.scss';
 import { getCookie } from '../../helpers/GetCoockies';
 
@@ -36,7 +36,7 @@ const AfterVerificationPage = () => {
   }, []);
 
   return (
-    <Portal isOpen>
+    <Portal.FormPortal isOpen>
       <div className={mainContainer}>
         <h1>
           { message.header }
@@ -44,7 +44,7 @@ const AfterVerificationPage = () => {
         </h1>
         {message.content !== '' && <p>{ message.content }</p>}
       </div>
-    </Portal>
+    </Portal.FormPortal>
 
   );
 };

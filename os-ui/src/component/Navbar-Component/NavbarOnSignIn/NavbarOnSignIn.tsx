@@ -1,23 +1,26 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import styles from './NavbarOnSignIn.module.scss';
 import ArrowDownIcon from '../../../assets/svg/Arrow-down.svg';
 import NotificationIcon from '../../../assets/svg/Notification.svg';
 import BookmarkIcon from '../../../icons/Bookmark';
-import { storage } from '../../../services/storage/storage';
+import { SignoutIcon } from '../../../icons/Signout/Signout';
+import ProfilePortalContent from '../../ProfilePortalContent/ProfilePortalContent';
+import { Portal } from '../../Portal/Portal';
 
 /* eslint-disable max-len */
 
 const NavbarOnSignIn = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const {
     mainContent, navMainContent, userInfoContent, bookmarkIconStyle, notificationIcon, avatarLogo, arrowDownIcon,
   } = styles;
 
-  const handleLogout = () => {
-    storage.removeItemFromLocalStorage('userInfo');
-    navigate('/');
+  const handleProfilePortal = () => {
+    setIsOpen((prevState) => !prevState);
   };
 
   return (
@@ -33,9 +36,18 @@ const NavbarOnSignIn = () => {
         <img className={notificationIcon} src={NotificationIcon} alt="Notification" />
         <div className={userInfoContent}>
           <img className={avatarLogo} src="https://reactjs.org/logo-og.png" alt="avatar" />
-          <img className={arrowDownIcon} src={ArrowDownIcon} alt="Arrow down Icon" />
+          <img className={arrowDownIcon} style={isOpen ? { transform: 'rotate(180deg)' } : undefined} src={ArrowDownIcon} alt="Arrow down Icon" onClick={handleProfilePortal} />
         </div>
-        <p onClick={handleLogout}>Logout</p>
+        <Portal.ProfilePortal isOpen={isOpen}>
+          <>
+            <ProfilePortalContent icon={<SignoutIcon />} isSignOut>
+              {t('string.profilePortal.signOut')}
+            </ProfilePortalContent>
+            <ProfilePortalContent icon={<SignoutIcon />}>
+              {t('string.profilePortal.signOut')}
+            </ProfilePortalContent>
+          </>
+        </Portal.ProfilePortal>
       </div>
     </nav>
   );
