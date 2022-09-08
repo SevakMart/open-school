@@ -23,9 +23,9 @@ enum LearningPathNav {
   Completed='Completed'
 }
 
-const MyLearningPathPage = () => {
+const MyLearningPathPage = ({ userInfo }:any) => {
   const navigate = useNavigate();
-  const userInfo = useSelector<RootState>((state) => state.userInfo);
+  // const userInfo = useSelector<RootState>((state) => state.userInfo);
   const { t } = useTranslation();
   const [userCourses, setUserCourses] = useState<UserCourseType[]>([]);
   const [suggestedCourses, setSuggestedCourses] = useState<SuggestedCourseType[]>([]);

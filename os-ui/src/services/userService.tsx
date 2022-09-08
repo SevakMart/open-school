@@ -13,8 +13,10 @@ class UserService {
   }
 
   async getSuggestedCourses(userId:number, userToken:string) {
-    const data = await (await fetchService.get(`${this.basePath}/${userId}/courses/suggested`, {}, userToken)).json();
-    return data;
+    const response = await fetchService.get(`${this.basePath}/${userId}/courses/suggested`, {}, userToken);
+    const { status } = response;
+    const data = await response.json();
+    return { data, status };
   }
 
   async getMentors(params:object = {}, token:string) {

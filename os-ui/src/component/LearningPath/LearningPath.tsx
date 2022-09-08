@@ -33,14 +33,12 @@ const LearningPath = ({
         <div className={keywordsContent}>
           <div className={keyword}>{courseInfo.keywords[0]}</div>
           <div className={keyword}>{courseInfo.keywords[1]}</div>
-          {
-           courseInfo.keywords.length > 2 ? (
-             <p data-testid={`remainingKeywordNumber of ${courseInfo.title}`}>
-               +
-               {courseInfo.keywords.length - 2}
-             </p>
-           ) : null
-          }
+          {courseInfo.keywords.length > 2 && (
+          <p data-testid={`remainingKeywordNumber of ${courseInfo.title}`}>
+            +
+            {courseInfo.keywords.length - 2}
+          </p>
+          )}
         </div>
       </div>
     </div>
