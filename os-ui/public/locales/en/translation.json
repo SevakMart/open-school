@@ -77,6 +77,15 @@
       "search":"Search name",
       "profilePortal":{
         "signOut":"Sign out"
+      },
+      "myLearningPaths":{
+        "suggestedLearningPaths":"Suggested Learning Paths",
+        "mainHeaderTitle":"My Learning Paths",
+        "courseStatus":{
+          "all":"All",
+          "inProgress":"InProgress",
+          "completed":"Completed"
+        }
       }
     },
     "button":{

@@ -1,8 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userService from '../../services/userService';
 
-export const getSuggestedCourses = createAsyncThunk('get/getSuggestedCourse', async ({ userId, token }:{userId:number, token:string}) => {
-  const response = await userService.getSuggestedCourses(userId, token);
+/* eslint-disable max-len */
+
+export const getUserEnrolledCourseByCourseStatus = createAsyncThunk('get/courseByCourseStatus', async ({ userId, token, params = {} }:{userId:number, token:string, params?:object}) => {
+  const response = await userService.getUserCourses(userId, token, params);
   if (response.status === 200) {
     return response.data;
   }
@@ -12,24 +14,26 @@ export const getSuggestedCourses = createAsyncThunk('get/getSuggestedCourse', as
     throw new Error('An error occurred please reload the page');
   }
 });
+
 const initialState = {
   entity: [],
   isLoading: false,
   errorMessage: '',
 };
-const suggestedCourseSlice = createSlice({
-  name: 'suggestedCourse',
+
+const courseByCourseStatusSlice = createSlice({
+  name: 'userEnrolledCourseByCourseStatus',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getSuggestedCourses.pending, (state) => {
+    builder.addCase(getUserEnrolledCourseByCourseStatus.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(getSuggestedCourses.fulfilled, (state, action) => {
+    builder.addCase(getUserEnrolledCourseByCourseStatus.fulfilled, (state, action) => {
       state.entity = action.payload;
       state.isLoading = false;
     });
-    builder.addCase(getSuggestedCourses.rejected, (state, action) => {
+    builder.addCase(getUserEnrolledCourseByCourseStatus.rejected, (state, action) => {
       if (action.payload instanceof Error) {
         state.errorMessage = action.payload.message;
       } else {
@@ -39,4 +43,4 @@ const suggestedCourseSlice = createSlice({
     });
   },
 });
-export default suggestedCourseSlice.reducer;
+export default courseByCourseStatusSlice.reducer;

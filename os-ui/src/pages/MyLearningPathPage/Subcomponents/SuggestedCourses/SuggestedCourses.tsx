@@ -15,7 +15,10 @@ const SuggestedCourses = ({ userId, token }:{userId:number, token:string}) => {
   const { t } = useTranslation();
   const suggestedCourseState = useSelector<RootState>((state) => state.suggestedCourse);
   const { entity, isLoading, errorMessage } = suggestedCourseState as {entity:any[], isLoading:boolean, errorMessage:string};
-  const { mainContainer, suggestedCoursesContainer } = styles;
+  const {
+    mainContainer, suggestedCoursesContainer, mainTitle, loaderContent,
+  } = styles;
+  const Title = <p className={mainTitle}>{t('string.myLearningPaths.suggestedLearningPaths')}</p>;
 
   useEffect(() => {
     dispatch(getSuggestedCourses({ userId, token }));
@@ -23,13 +26,17 @@ const SuggestedCourses = ({ userId, token }:{userId:number, token:string}) => {
   if (isLoading) {
     return (
       <div className={mainContainer}>
-        <Loader />
+        {Title}
+        <div className={loaderContent}>
+          <Loader />
+        </div>
       </div>
     );
   }
   if (errorMessage) {
     return (
       <div className={mainContainer}>
+        {Title}
         <ErrorField.MainErrorField className={['suggestedCourseErrorStyle']}>
           {errorMessage}
         </ErrorField.MainErrorField>
@@ -39,18 +46,22 @@ const SuggestedCourses = ({ userId, token }:{userId:number, token:string}) => {
   if (!entity.length) {
     return (
       <div className={mainContainer}>
+        {Title}
         <h2>{t('No courses.suggested')}</h2>
       </div>
     );
   }
   return (
-    <div className={suggestedCoursesContainer}>
-      {entity.map((suggestedCourse, index) => (
-        <LearningPath
-          key={index}
-          courseInfo={suggestedCourse}
-        />
-      ))}
+    <div className={mainContainer}>
+      {Title}
+      <div className={suggestedCoursesContainer}>
+        {entity.map((suggestedCourse, index) => (
+          <LearningPath
+            key={index}
+            courseInfo={suggestedCourse}
+          />
+        ))}
+      </div>
     </div>
   );
 };
