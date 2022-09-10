@@ -5,8 +5,7 @@
 @import "../../../styles/Configs/Fonts.scss";
 .mainContent {
     @include flexStyle(row, center, space-between);
-    margin:0 88px;
-    padding:28px 0;
+    padding:28px 88px;
     background-color: #F9F9FD;
     h2 {
         @include fontStyle($secondary-font,italic,700,20px,24px);
