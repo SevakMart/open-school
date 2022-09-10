@@ -85,7 +85,8 @@
           "all":"All",
           "inProgress":"InProgress",
           "completed":"Completed"
-        }
+        },
+        "noCourseStatus":"No Courses Yet"
       }
     },
     "button":{
@@ -108,7 +109,10 @@
       "chooseCategories":{
       "next": "NEXT"
       },
-      "resend":"Resend"
+      "resend":"Resend",
+      "myLearningPathsPage":{
+        "exploreCourses":"Explore Courses"
+      }
     },
 
     "messages":{

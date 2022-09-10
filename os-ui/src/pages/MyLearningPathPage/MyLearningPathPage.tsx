@@ -1,16 +1,16 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import MyLearningPathMainContent from './Subcomponents/MainContent/MainContent';
 import Header from './Subcomponents/Header/Header';
 import SuggestedCourses from './Subcomponents/SuggestedCourses/SuggestedCourses';
-import { EXPLORE_COURSES } from '../../constants/Strings';
-import styles from './MyLearningPathPage.module.scss';
+import Button from '../../component/Button/Button';
 
 /* eslint-disable max-len */
 
 const MyLearningPathPage = ({ userInfo }:any) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id: userId, token } = userInfo;
-  const { exploreCourseButton } = styles;
 
   const exploreLearningPaths = () => {
     navigate('/exploreLearningPaths');
@@ -20,7 +20,11 @@ const MyLearningPathPage = ({ userInfo }:any) => {
     <>
       <Header userId={userId} token={token} />
       <MyLearningPathMainContent />
-      <button type="button" className={exploreCourseButton} onClick={exploreLearningPaths}>{EXPLORE_COURSES}</button>
+      <div style={{ textAlign: 'center' }}>
+        <Button.MainButton className={['exploreCourseButton']} onClick={exploreLearningPaths}>
+          {t('button.myLearningPathsPage.exploreCourses')}
+        </Button.MainButton>
+      </div>
       <SuggestedCourses userId={userId} token={token} />
     </>
   );

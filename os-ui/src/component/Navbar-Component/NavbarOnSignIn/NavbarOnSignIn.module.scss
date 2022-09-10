@@ -6,6 +6,7 @@
 .mainContent {
     @include flexStyle(row, center, space-between);
     padding:28px 88px;
+    box-sizing: border-box;
     background-color: #F9F9FD;
     h2 {
         @include fontStyle($secondary-font,italic,700,20px,24px);
