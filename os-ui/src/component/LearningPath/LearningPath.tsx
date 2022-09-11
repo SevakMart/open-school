@@ -9,7 +9,7 @@ const LearningPath = ({
 }:{courseInfo:SuggestedCourseType, saveCourse?(courseId:number):void, deleteCourse?(courseId:number):void}) => {
   const {
     mainContainer, header, mainBody, ratingContent, courseTitle, keywordsContent, difficultyContent,
-    ratingValue, keyword,
+    ratingValue, keyword, bookmarkIcon, iconStyle,
   } = styles;
   const handleSaveCourse = (courseId:number) => {
     saveCourse && saveCourse(courseId);
@@ -22,11 +22,11 @@ const LearningPath = ({
       <div className={header}>
         {/* eslint-disable-next-line max-len */}
         <p data-testid={courseInfo.difficulty} className={difficultyContent}>{courseInfo.difficulty}</p>
-        <p><BookmarkIcon iconSize="1rem" isBookmarked={courseInfo.isBookMarked} courseId={courseInfo.id} saveCourse={handleSaveCourse} deleteCourse={handleDeleteCourse} /></p>
+        <p className={bookmarkIcon}><BookmarkIcon iconSize="1rem" isBookmarked={courseInfo.isBookMarked} courseId={courseInfo.id} saveCourse={handleSaveCourse} deleteCourse={handleDeleteCourse} /></p>
       </div>
       <div className={mainBody}>
         <div className={ratingContent}>
-          <p><StarIcon /></p>
+          <p className={iconStyle}><StarIcon /></p>
           <p data-testid={ratingValue} className={ratingValue}>{courseInfo.rating}</p>
         </div>
         <p data-testid={courseInfo.title} className={courseTitle}>{courseInfo.title}</p>

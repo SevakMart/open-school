@@ -1,0 +1,23 @@
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+
+.mainContainer {
+    margin:156px 88px 130px;
+    box-sizing: border-box;
+    .mainTitle {
+        @include fontStyle($primary-font,normal,500,16px,24px);
+        color:$main-text-color;
+        margin-top: 0;
+    }
+    .noSuggestedCourses {
+        text-align: center;
+    }
+    .suggestedCoursesContainer {
+        display:grid;
+        grid-template-columns: repeat(4,1fr);
+        justify-content:center;
+        column-gap: 32px;
+
+    }
+}

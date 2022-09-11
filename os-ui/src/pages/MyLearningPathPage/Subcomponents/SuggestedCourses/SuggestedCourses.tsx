@@ -16,46 +16,27 @@ const SuggestedCourses = ({ userId, token }:{userId:number, token:string}) => {
   const suggestedCourseState = useSelector<RootState>((state) => state.suggestedCourse);
   const { entity, isLoading, errorMessage } = suggestedCourseState as {entity:any[], isLoading:boolean, errorMessage:string};
   const {
-    mainContainer, suggestedCoursesContainer, mainTitle, loaderContent,
+    mainContainer, suggestedCoursesContainer, mainTitle, noSuggestedCourses,
   } = styles;
   const Title = <p className={mainTitle}>{t('string.myLearningPaths.suggestedLearningPaths')}</p>;
+  const NoSuggestedCourses = <h2>{t('No courses.suggested')}</h2>;
 
   useEffect(() => {
     dispatch(getSuggestedCourses({ userId, token }));
   }, []);
-  if (isLoading) {
-    return (
-      <div className={mainContainer}>
-        {Title}
-        <div className={loaderContent}>
-          <Loader />
-        </div>
-      </div>
-    );
-  }
-  if (errorMessage) {
-    return (
-      <div className={mainContainer}>
-        {Title}
-        <ErrorField.MainErrorField className={['suggestedCourseErrorStyle']}>
-          {errorMessage}
-        </ErrorField.MainErrorField>
-      </div>
-    );
-  }
-  if (!entity.length) {
-    return (
-      <div className={mainContainer}>
-        {Title}
-        <h2>{t('No courses.suggested')}</h2>
-      </div>
-    );
-  }
+
   return (
     <div className={mainContainer}>
       {Title}
-      <div className={suggestedCoursesContainer}>
-        {entity.map((suggestedCourse, index) => (
+      <div className={entity.length > 0 ? suggestedCoursesContainer : noSuggestedCourses}>
+        {isLoading && <Loader />}
+        {errorMessage !== '' && (
+          <ErrorField.MainErrorField className={['suggestedCourseErrorStyle']}>
+            {errorMessage}
+          </ErrorField.MainErrorField>
+        )}
+        {entity.length === 0 && !isLoading && NoSuggestedCourses }
+        {entity.length > 0 && entity.map((suggestedCourse, index) => (
           <LearningPath
             key={index}
             courseInfo={suggestedCourse}
