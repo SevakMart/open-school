@@ -86,7 +86,13 @@
           "inProgress":"InProgress",
           "completed":"Completed"
         },
-        "noCourseStatus":"No Courses Yet"
+        "noCourseStatus":"No Courses Yet",
+        "completedCourse":{
+          "status":"Status",
+          "grade":"Grade",
+          "rateCourse":"Rate Course"
+
+        }
       }
     },
     "button":{
