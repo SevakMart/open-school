@@ -25,9 +25,9 @@ const FilteringContent = ({ title, content, filterFeature }:
                   </p>
                   {
                     Object.entries(innerContent[1]).length
-                    && Object.entries(innerContent[1]).map((subcontent, i) => (
+                    && Object.entries(innerContent[1]).map((subcontent) => (
                       <CheckedContent
-                        key={i}
+                        key={subcontent[1]}
                         filterFeature={filterFeature}
                         id={subcontent[0]}
                         checkedContent={subcontent[1]}

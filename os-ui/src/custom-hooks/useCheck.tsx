@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export const useCheck = (queryKey:string, queryValue:any) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const params = new URLSearchParams(location.search);
   const [isChecked, setIsChecked] = useState(params.has(queryKey));
 
@@ -21,5 +23,5 @@ export const useCheck = (queryKey:string, queryValue:any) => {
     }
   }, [isChecked]);
 
-  return [isChecked, handleChecking] as const;
+  return [isChecked, handleChecking, dispatch] as const;
 };

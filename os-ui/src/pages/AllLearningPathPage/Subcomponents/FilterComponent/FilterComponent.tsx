@@ -27,20 +27,18 @@ const FilterComponent = () => {
     >
       <div className={filterMainContent}>
         <p className={mainTitle}>{t('string.learningPath.filter')}</p>
-        {
-          Object.entries(filterFeatures).length
-            ? Object.entries(filterFeatures).map((feature, index) => {
-              const title:string = feature[0] === 'parentAndSubcategories' ? t('string.learningPath.category') : feature[0] === 'allLanguages' ? t('string.learningPath.language') : t('string.learningPath.courseLevel');
-              return (
-                <FilteringContent
-                  title={title}
-                  key={index}
-                  content={feature[1]}
-                  filterFeature={title === t('string.learningPath.category') ? 'subCategoryIds' : title === t('string.learningPath.language') ? 'languageIds' : 'difficultyIds'}
-                />
-              );
-            }) : null
-        }
+        {Object.entries(filterFeatures).length > 0
+        && Object.entries(filterFeatures).map((feature, index) => {
+          const title:string = feature[0] === 'parentAndSubcategories' ? t('string.learningPath.category') : feature[0] === 'allLanguages' ? t('string.learningPath.language') : t('string.learningPath.courseLevel');
+          return (
+            <FilteringContent
+              title={title}
+              key={index}
+              content={feature[1]}
+              filterFeature={title === t('string.learningPath.category') ? 'subCategoryIds' : title === t('string.learningPath.language') ? 'languageIds' : 'difficultyIds'}
+            />
+          );
+        })}
       </div>
     </div>
   );

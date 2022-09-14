@@ -27,9 +27,9 @@ const NavbarOnSignIn = () => {
     <nav className={mainContent}>
       <h2>{t('string.homePage.navBar.logo')}</h2>
       <div className={navMainContent}>
-        <p onClick={() => navigate('/mentors')}>{t('string.homePage.navBar.allLearningPaths')}</p>
+        <p onClick={() => navigate('/exploreLearningPaths')}>{t('string.homePage.navBar.allLearningPaths')}</p>
         <p onClick={() => navigate('/myLearningPath')}>{t('string.homePage.navBar.myLearningPaths')}</p>
-        <p onClick={() => navigate('/exploreLearningPaths')}>{t('string.homePage.navBar.mentors')}</p>
+        <p onClick={() => navigate('/mentors')}>{t('string.homePage.navBar.mentors')}</p>
         <div className={bookmarkIconStyle}>
           <BookmarkIcon iconSize="20px" isBookmarked={false} />
         </div>

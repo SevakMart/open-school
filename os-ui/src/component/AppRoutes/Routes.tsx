@@ -41,7 +41,7 @@ const AppRoutes = () => {
           path="/exploreLearningPaths"
           element={(
             <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
-              <AllLearningPathPage />
+              <AllLearningPathPage userInfo={userInfo} />
             </ProtectedRoute>
         )}
         />
