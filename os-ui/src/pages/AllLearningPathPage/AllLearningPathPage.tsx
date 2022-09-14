@@ -32,7 +32,8 @@ const AllLearningPathPage = ({ userInfo }:{userInfo:object}) => {
     <>
       <NavbarOnSignIn />
       <userContext.Provider value={idAndToken}>
-        <headerTitleContext.Provider value={changeHeaderFocus}>
+
+        {/* <headerTitleContext.Provider value={changeHeaderFocus}>
           <LearningPathHeader handleChangeHeader={changeNavTitleFocus} />
           {changeHeaderFocus === ALL_LEARNING_PATHS
             ? (
@@ -41,7 +42,7 @@ const AllLearningPathPage = ({ userInfo }:{userInfo:object}) => {
                 <LearningPathContent />
               </div>
             ) : <SavedCoursesContent />}
-        </headerTitleContext.Provider>
+            </headerTitleContext.Provider> */}
       </userContext.Provider>
     </>
   );

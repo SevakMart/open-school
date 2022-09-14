@@ -8,14 +8,20 @@ export const useCheck = (queryKey:string, queryValue:any) => {
   const dispatch = useDispatch();
   const params = new URLSearchParams(location.search);
   const [isChecked, setIsChecked] = useState(params.has(queryKey));
+  const [value, setValue] = useState(queryValue);
 
   const handleChecking = () => {
     setIsChecked((prevState) => !prevState);
   };
 
+  const handleSearchedResult = (searchedValue:string) => {
+    setValue(searchedValue);
+    setIsChecked(searchedValue !== '');
+  };
+
   useEffect(() => {
     if (isChecked) {
-      params.set(queryKey, JSON.stringify(queryValue));
+      params.set(queryKey, JSON.stringify(value));
       navigate(`${location.pathname}?${params}`);
     } else {
       params.delete(queryKey);
@@ -23,5 +29,5 @@ export const useCheck = (queryKey:string, queryValue:any) => {
     }
   }, [isChecked]);
 
-  return [isChecked, handleChecking, dispatch] as const;
+  return [isChecked, handleChecking, dispatch, handleSearchedResult] as const;
 };
