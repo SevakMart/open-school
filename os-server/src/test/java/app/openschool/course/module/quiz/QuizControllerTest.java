@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -114,6 +115,53 @@ class QuizControllerTest {
     mockMvc
         .perform(post("/api/v1/quizzes/1").contentType(APPLICATION_JSON).content(REQUEST_BODY))
         .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void deleteQuiz_withCorrectCredentials_isNoContent() throws Exception {
+    when(quizService.deleteQuiz(anyLong())).thenReturn(true);
+
+    mockMvc
+        .perform(
+            delete("/api/v1/quizzes/1")
+                .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
+        .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void deleteQuiz_withIncorrectQuizId_returnNotFound() throws Exception {
+    when(quizService.deleteQuiz(anyLong())).thenReturn(false);
+
+    mockMvc
+        .perform(
+            delete("/api/v1/quizzes/1")
+                .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void deleteQuiz_withIncorrectMentor_isBadRequest() throws Exception {
+    when(quizService.deleteQuiz(anyLong())).thenThrow(IllegalArgumentException.class);
+
+    mockMvc
+        .perform(
+            delete("/api/v1/quizzes/1")
+                .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void deleteQuiz_withStudent_isForbidden() throws Exception {
+    mockMvc
+        .perform(
+            delete("/api/v1/quizzes/1")
+                .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateStudent())))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void deleteQuiz_withoutJwtToken_isUnauthorized() throws Exception {
+    mockMvc.perform(delete("/api/v1/quizzes/1")).andExpect(status().isUnauthorized());
   }
 
   private String generateJwtToken(User user) {

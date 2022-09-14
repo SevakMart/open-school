@@ -6,4 +6,6 @@ import java.util.Optional;
 public interface QuizService {
 
   Optional<Quiz> createQuiz(Long moduleId, CreateQuizDto createQuizDto);
+
+  Boolean deleteQuiz(Long quizId);
 }

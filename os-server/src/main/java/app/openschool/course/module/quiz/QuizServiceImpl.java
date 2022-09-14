@@ -31,6 +31,26 @@ public class QuizServiceImpl implements QuizService {
             });
   }
 
+  @Override
+  public Boolean deleteQuiz(Long quizId) {
+    return quizRepository
+        .findById(quizId)
+        .map(
+            quiz -> {
+              checkIfTheQuizBelongsToCurrentMentor(quiz);
+              quizRepository.delete(quiz);
+              return true;
+            })
+        .orElse(false);
+  }
+
+  private void checkIfTheQuizBelongsToCurrentMentor(Quiz quiz) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    if (!quiz.getModule().getCourse().getMentor().getEmail().equals(username)) {
+      throw new IllegalArgumentException();
+    }
+  }
+
   private void checkIfTheModuleBelongsToCurrentMentor(Module module) {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
     if (!module.getCourse().getMentor().getEmail().equals(username)) {

@@ -1,11 +1,11 @@
 package app.openschool.course.module.quiz.util;
 
-import app.openschool.course.module.Module;
 import app.openschool.course.module.quiz.Quiz;
 import app.openschool.course.module.quiz.question.Question;
 import app.openschool.course.module.quiz.question.answer.AnswerOption;
 import app.openschool.course.module.quiz.question.type.QuestionType;
 import app.openschool.course.module.quiz.status.QuizStatus;
+import app.openschool.course.module.util.ModuleGenerator;
 import java.util.Set;
 
 public final class QuizGenerator {
@@ -23,7 +23,7 @@ public final class QuizGenerator {
   public static Quiz generateQuiz() {
     Quiz quiz = Quiz.getInstance();
     quiz.setId(ID);
-    quiz.setModule(new Module(ID));
+    quiz.setModule(ModuleGenerator.generateModule());
     quiz.setMaxGrade(MAX_GRADE);
     quiz.setPassingScore(PASSING_SCORE);
     quiz.setStudentGrade(STUDENT_GRADE);

@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,6 +46,10 @@ public class QuizController {
             responseCode = "403",
             description =
                 "If the user have not mentor role, request body is not built correctly, etc.",
+            content = @Content(schema = @Schema())),
+        @ApiResponse(
+            responseCode = "400",
+            description = "if the module doesn't belong to the current user",
             content = @Content(schema = @Schema()))
       })
   @PreAuthorize("hasAuthority('MENTOR')")
@@ -60,5 +65,33 @@ public class QuizController {
         .createQuiz(moduleId, createQuizDto)
         .map(quiz -> ResponseEntity.status(HttpStatus.CREATED).body(QuizMapper.quizToQuizDto(quiz)))
         .orElse(ResponseEntity.notFound().build());
+  }
+
+  @Operation(summary = "delete quiz", security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "204", description = "quiz successfully deleted"),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Invalid quiz id supplied",
+            content = @Content(schema = @Schema())),
+        @ApiResponse(
+            responseCode = "403",
+            description = "If the user have not mentor role",
+            content = @Content(schema = @Schema())),
+        @ApiResponse(
+            responseCode = "400",
+            description = "if the quiz doesn't belong to the current user",
+            content = @Content(schema = @Schema()))
+      })
+  @PreAuthorize("hasAuthority('MENTOR')")
+  @DeleteMapping("/{quizId}")
+  public ResponseEntity<Void> deleteQuiz(
+      @Parameter(description = "Id of the quiz which will be deleted") @PathVariable Long quizId) {
+    if (quizService.deleteQuiz(quizId)) {
+      return ResponseEntity.noContent().build();
+    } else {
+      return ResponseEntity.notFound().build();
+    }
   }
 }

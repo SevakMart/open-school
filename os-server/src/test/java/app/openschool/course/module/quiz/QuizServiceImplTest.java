@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import app.openschool.course.module.ModuleRepository;
 import app.openschool.course.module.quiz.util.QuizDtoGenerator;
+import app.openschool.course.module.quiz.util.QuizGenerator;
 import app.openschool.course.module.util.ModuleGenerator;
 import app.openschool.user.User;
 import app.openschool.user.api.UserGenerator;
@@ -77,6 +78,35 @@ class QuizServiceImplTest {
         Optional.of(quiz));
     verify(moduleRepository, times(1)).findById(anyLong());
     verify(quizRepository, times(1)).save(any());
+  }
+
+  @Test
+  void deleteQuiz_withInCorrectQuizId_returnFalse() {
+    when(quizRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+    Long quizId = 1L;
+    assertEquals(quizService.deleteQuiz(quizId), false);
+  }
+
+  @Test
+  void deleteQuiz_withCorrectQuizId_returnTrue() {
+    when(quizRepository.findById(anyLong())).thenReturn(Optional.of(QuizGenerator.generateQuiz()));
+
+    setAuthentication(UserGenerator.generateMentor());
+
+    Long quizId = 1L;
+    assertEquals(quizService.deleteQuiz(quizId), true);
+  }
+
+  @Test
+  void deleteQuiz_withIncorrectMentor_throwIllegalArgumentException() {
+    when(quizRepository.findById(anyLong())).thenReturn(Optional.of(QuizGenerator.generateQuiz()));
+
+    setAuthentication(UserGenerator.generateStudent());
+
+    Long quizId = 1L;
+    assertThatThrownBy(() -> quizService.deleteQuiz(quizId))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   private void setAuthentication(User user) {
