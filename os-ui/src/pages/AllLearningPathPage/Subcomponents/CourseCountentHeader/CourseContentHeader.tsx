@@ -7,17 +7,17 @@ import { Input } from '../../../../component/Input/Input';
 import { addFilterParams, removeFilterParams } from '../../../../redux/Slices/AllLearningPathFilterParamsSlice';
 import styles from './CourseContentHeader.module.scss';
 
-enum HeaderPath {
+export enum HeaderPath {
     ALL_LEARNING_PATHS='All learning Path',
     SAVED_LEARNING_PATHS='Saved Learning Path'
 }
-
-const CourseContentHeader = () => {
+/* eslint-disable max-len */
+const CourseContentHeader = ({ handleChangeHeader }:{handleChangeHeader:(headerTitle:HeaderPath)=>void}) => {
   const [focusedHeader, setFocusedHeader] = useState(HeaderPath.ALL_LEARNING_PATHS);
-  const [sortingFeature, setSortingFeature] = useState(RATING);
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
+  const [sortingFeature, setSortingFeature] = useState<any>(params.has('sort') ? params.get('sort') : RATING);
   const { t } = useTranslation();
   const [, , dispatch, handleSearchedResult] = useCheck('courseTitle', '');
   const {
@@ -30,17 +30,10 @@ const CourseContentHeader = () => {
     } else dispatch(removeFilterParams({ courseTitle: title }));
     handleSearchedResult(title);
   };
-  const switchSortingFeatures = (e:React.SyntheticEvent) => {
-    setSortingFeature((e.target as HTMLSelectElement).value);
-  };
-
-  useEffect(() => {
-    if (params.has('sort'))setSortingFeature(params.get('sort') as string);
-  }, []);
 
   useEffect(() => {
     if (focusedHeader === HeaderPath.ALL_LEARNING_PATHS) {
-      params.set('sort', sortingFeature);
+      params.set('sort', sortingFeature!);
       dispatch(addFilterParams({ sort: sortingFeature }));
       navigate(`/exploreLearningPaths?${params}`);
     }
@@ -53,7 +46,7 @@ const CourseContentHeader = () => {
           <p
             className={focusedHeader === HeaderPath.ALL_LEARNING_PATHS ? activeNav : nonActiveNav}
             data-testid={HeaderPath.ALL_LEARNING_PATHS}
-            // onClick={() => handleChangeHeader(SAVED_LEARNING_PATHS)}
+            onClick={() => { handleChangeHeader(HeaderPath.SAVED_LEARNING_PATHS); setFocusedHeader(HeaderPath.SAVED_LEARNING_PATHS); }}
           >
             {t('string.learningPath.all')}
 
@@ -61,7 +54,7 @@ const CourseContentHeader = () => {
           <p
             className={focusedHeader === HeaderPath.SAVED_LEARNING_PATHS ? activeNav : nonActiveNav}
             data-testid={HeaderPath.SAVED_LEARNING_PATHS}
-            // onClick={() => handleChangeHeader(ALL_LEARNING_PATHS)}
+            onClick={() => { handleChangeHeader(HeaderPath.ALL_LEARNING_PATHS); setFocusedHeader(HeaderPath.ALL_LEARNING_PATHS); }}
           >
             {t('string.learningPath.saved')}
 
@@ -71,7 +64,7 @@ const CourseContentHeader = () => {
       && (
       <div className={sortingContainer}>
         <label data-testid="sorting" htmlFor="sorting">{t('string.learningPath.sortBy')}</label>
-        <select value={sortingFeature} name="sorting" id="sorting" onChange={switchSortingFeatures}>
+        <select value={sortingFeature} name="sorting" id="sorting" onChange={(e) => setSortingFeature(e.target.value)}>
           <option value={RATING}>{t('string.learningPath.rating')}</option>
           <option value={DIFFICULTY}>{t('string.learningPath.difficulty')}</option>
           <option value={TITLE}>{(t('string.learningPath.title'))}</option>

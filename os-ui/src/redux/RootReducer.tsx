@@ -6,6 +6,7 @@ import forgotPasswordEmailReducer from './Slices/ForgotPasswordEmailSlice';
 import signedUpUserIdReducer from './Slices/SignedUpUserIdSlice';
 import suggestedCourseReducer from './Slices/SuggestedCourseSlice';
 import userEnrolledCourseByCourseStatusReducer from './Slices/UserEnrolledCourseByCourseStatus';
+import allLearningPathCoursesReducer from './Slices/AllLearningPathCourseSlice';
 import portalStatusReducer from './Slices/PortalOpenStatus';
 
 const rootReducer = combineReducers({
@@ -17,5 +18,6 @@ const rootReducer = combineReducers({
   signedUpUserId: signedUpUserIdReducer,
   suggestedCourse: suggestedCourseReducer,
   userEnrolledCourseByCourseStatus: userEnrolledCourseByCourseStatusReducer,
+  allLearningPathCourses: allLearningPathCoursesReducer,
 });
 export default rootReducer;

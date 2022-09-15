@@ -1,29 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { FiBookmark } from 'react-icons/fi';
+import userService from '../services/userService';
+import { userContext } from '../contexts/Contexts';
 
-const BookmarkIcon = (
-  {
-    iconSize, isBookmarked, courseId, saveCourse, deleteCourse, mentorId, saveMentor, deleteMentor,
-  }:
-  {iconSize:string, isBookmarked?:boolean, courseId?:number, mentorId?:number
-  saveCourse?:(courseId:number)=>void,
-  deleteCourse?:(courseId:number)=>void,
-  saveMentor?:(mentorId:number)=>void,
-  deleteMentor?:(mentorId:number)=>void
-  },
-) => {
+const BookmarkIcon = ({
+  iconSize, isBookmarked, courseId, mentorId,
+}:
+  {iconSize:string, isBookmarked?:boolean, courseId?:number, mentorId?:number}) => {
   const [isClicked, setIsClicked] = useState(isBookmarked);
+  const { token, id: userId } = useContext(userContext);
 
   const handleCourseSaving = () => {
     setIsClicked((prevState) => !prevState);
   };
+
   useEffect(() => {
     if (isClicked) {
-      courseId && saveCourse && saveCourse(courseId!);
-      mentorId && saveMentor && saveMentor(mentorId!);
-    } else if (!isClicked && isBookmarked) {
-      courseId && deleteCourse && deleteCourse(courseId!);
-      mentorId && deleteMentor && deleteMentor(mentorId!);
+      if (courseId) {
+        userService.saveUserPreferredCourses(userId, courseId, token);
+      } else if (mentorId) {
+        userService.saveUserMentor(userId, mentorId, token);
+      }
+    } else if (!isClicked) {
+      if (courseId) {
+        userService.deleteUserSavedCourses(userId, courseId, token);
+      } else if (mentorId) {
+        userService.deleteUserSavedMentor(userId, mentorId, token);
+      }
     }
   }, [isClicked]);
 
@@ -33,7 +36,7 @@ const BookmarkIcon = (
       style={{
         fontSize: `${iconSize}`,
         cursor: 'pointer',
-        fill: isClicked ? 'black' : 'none',
+        fill: isClicked ? 'white' : 'none',
       }}
     />
   );
