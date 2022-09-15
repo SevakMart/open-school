@@ -27,7 +27,6 @@ public final class QuizGenerator {
     quiz.setMaxGrade(MAX_GRADE);
     quiz.setPassingScore(PASSING_SCORE);
     quiz.setStudentGrade(STUDENT_GRADE);
-    quiz.setQuizStatus(QuizStatus.isInitial());
     quiz.setQuestions(generateQuestionSet());
     return quiz;
   }

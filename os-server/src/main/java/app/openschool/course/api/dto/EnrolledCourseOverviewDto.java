@@ -1,6 +1,6 @@
 package app.openschool.course.api.dto;
 
-import app.openschool.course.module.api.EnrolledModuleOverviewDto;
+import app.openschool.course.module.api.dto.EnrolledModuleOverviewDto;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Set;

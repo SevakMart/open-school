@@ -18,8 +18,7 @@ class QuizMapperTest {
             QuizDtoGenerator.generateCreateQuizDto(), Module.getInstance());
 
     assertThat(quiz)
-        .hasOnlyFields(
-            "id", "maxGrade", "studentGrade", "passingScore", "quizStatus", "questions", "module");
+        .hasOnlyFields("id", "maxGrade", "studentGrade", "passingScore", "questions", "module");
   }
 
   @Test
@@ -27,13 +26,6 @@ class QuizMapperTest {
     QuizDto quizDto = QuizMapper.quizToQuizDto(QuizGenerator.generateQuiz());
 
     assertThat(quizDto)
-        .hasOnlyFields(
-            "id",
-            "moduleId",
-            "maxGrade",
-            "studentGrade",
-            "passingScore",
-            "quizStatus",
-            "questions");
+        .hasOnlyFields("id", "moduleId", "maxGrade", "studentGrade", "passingScore", "questions");
   }
 }

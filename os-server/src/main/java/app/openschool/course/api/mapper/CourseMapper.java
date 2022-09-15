@@ -10,7 +10,10 @@ import app.openschool.course.api.dto.CourseInfoModuleItemDto;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.module.EnrolledModule;
 import app.openschool.course.module.Module;
+import app.openschool.course.module.api.mapper.EnrolledModuleMapper;
 import app.openschool.course.module.item.ModuleItem;
+import app.openschool.course.module.quiz.api.dto.QuizDto;
+import app.openschool.course.module.quiz.api.mapper.QuizMapper;
 import app.openschool.course.status.CourseStatus;
 import app.openschool.user.User;
 import java.time.LocalDate;
@@ -68,7 +71,8 @@ public class CourseMapper {
   public static EnrolledCourse toEnrolledCourse(Course course, User user) {
     EnrolledCourse enrolledCourse =
         new EnrolledCourse(LocalDate.now(), course, user, CourseStatus.inProgress());
-    Set<EnrolledModule> enrolledModules = ModuleMapper.toEnrolledModules(course, enrolledCourse);
+    Set<EnrolledModule> enrolledModules =
+        EnrolledModuleMapper.toEnrolledModules(course, enrolledCourse);
     enrolledCourse.setEnrolledModules(enrolledModules);
     return enrolledCourse;
   }
@@ -80,7 +84,23 @@ public class CourseMapper {
                 new CourseInfoModuleDto(
                     module.getTitle(),
                     module.getDescription(),
-                    getCourseInfoModuleItemDtoSet(module))))
+                    getCourseInfoModuleItemDtoSet(module),
+                    getQuizDtoSet(module))))
+        .collect(Collectors.toSet());
+  }
+
+  private static Set<CourseInfoModuleItemDto> getCourseInfoModuleItemDtoSet(Module module) {
+    return module.getModuleItems().stream()
+        .map(
+            moduleItem ->
+                new CourseInfoModuleItemDto(
+                    moduleItem.getModuleItemType().getType(), moduleItem.getLink()))
+        .collect(Collectors.toSet());
+  }
+
+  private static Set<QuizDto> getQuizDtoSet(Module module) {
+    return module.getModuleQuizzes().stream()
+        .map(QuizMapper::quizToQuizDto)
         .collect(Collectors.toSet());
   }
 
@@ -97,14 +117,5 @@ public class CourseMapper {
         .flatMapToLong(
             module -> module.getModuleItems().stream().mapToLong(ModuleItem::getEstimatedTime))
         .sum();
-  }
-
-  private static Set<CourseInfoModuleItemDto> getCourseInfoModuleItemDtoSet(Module module) {
-    return module.getModuleItems().stream()
-        .map(
-            moduleItem ->
-                new CourseInfoModuleItemDto(
-                    moduleItem.getModuleItemType().getType(), moduleItem.getLink()))
-        .collect(Collectors.toSet());
   }
 }

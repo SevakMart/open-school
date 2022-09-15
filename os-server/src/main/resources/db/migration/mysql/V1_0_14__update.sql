@@ -41,6 +41,30 @@ CREATE TABLE IF NOT EXISTS `open_school_db`.`quiz` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
+-- Table `open_school_db`.`enrolled_quiz`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `open_school_db`.`enrolled_quiz` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `quiz_status_id` BIGINT NOT NULL,
+  `quiz_id` BIGINT NOT NULL,
+  `enrolled_module_id` BIGINT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_enrolled_quiz_quiz_status_idx` (`quiz_status_id` ASC) VISIBLE,
+  INDEX `fk_enrolled_quiz_quiz_idx` (`quiz_id` ASC) VISIBLE,
+  INDEX `fk_enrolled_quiz_enrolled_module_idx` (`enrolled_module_id` ASC) VISIBLE,
+  CONSTRAINT `fk_enrolled_quiz_quiz_status`
+    FOREIGN KEY (`quiz_status_id`)
+    REFERENCES `open_school_db`.`quiz_status` (`id`),
+  CONSTRAINT `fk_enrolled_quiz_quiz`
+    FOREIGN KEY (`quiz_id`)
+    REFERENCES `open_school_db`.`quiz` (`id`),
+  CONSTRAINT `fk_enrolled_quiz_enrolled_module`
+    FOREIGN KEY (`enrolled_module_id`)
+    REFERENCES `open_school_db`.`enrolled_module` (`id`)
+  )
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
 -- Table `open_school_db`.`questions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `open_school_db`.`questions` (
@@ -79,10 +103,9 @@ CREATE TABLE IF NOT EXISTS `open_school_db`.`answer_options` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-INSERT INTO quiz_status(id, status_type) VALUES (1,'INITIAL');
-INSERT INTO quiz_status(id, status_type) VALUES (2,'IN_PROGRESS');
-INSERT INTO quiz_status(id, status_type) VALUES (3,'COMPLETED');
-INSERT INTO quiz_status(id, status_type) VALUES (4,'FAILED');
+INSERT INTO quiz_status(id, status_type) VALUES (1,'IN_PROGRESS');
+INSERT INTO quiz_status(id, status_type) VALUES (2,'COMPLETED');
+INSERT INTO quiz_status(id, status_type) VALUES (3,'FAILED');
 
 INSERT INTO question_type(id, type) VALUES (1,'MATCHING');
 INSERT INTO question_type(id, type) VALUES (2,'MULTIPLE_CHOICE');

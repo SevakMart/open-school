@@ -26,7 +26,7 @@ public class QuizStatus {
     this.type = type;
   }
 
-  public static QuizStatus isInitial() {
+  public static QuizStatus isInProgress() {
     return new QuizStatus(1L, "INITIAL");
   }
 

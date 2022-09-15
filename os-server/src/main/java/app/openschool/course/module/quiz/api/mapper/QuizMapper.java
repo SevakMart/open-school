@@ -11,7 +11,6 @@ import app.openschool.course.module.quiz.question.answer.api.dto.CreateAnswerOpt
 import app.openschool.course.module.quiz.question.api.dto.CreateQuestionDto;
 import app.openschool.course.module.quiz.question.api.dto.QuestionDto;
 import app.openschool.course.module.quiz.question.type.QuestionType;
-import app.openschool.course.module.quiz.status.QuizStatus;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,7 +25,6 @@ public final class QuizMapper {
     quiz.setMaxGrade(createQuizDto.getMaxGrade());
     quiz.setPassingScore(createQuizDto.getPassingScore());
     quiz.setQuestions(createQuestionDtoToQuestions(createQuizDto.getQuestions(), quiz));
-    quiz.setQuizStatus(QuizStatus.isInitial());
     quiz.setModule(module);
     return quiz;
   }
@@ -38,7 +36,6 @@ public final class QuizMapper {
     quizDto.setMaxGrade(quiz.getMaxGrade());
     quizDto.setStudentGrade(quiz.getStudentGrade());
     quizDto.setPassingScore(quiz.getPassingScore());
-    quizDto.setQuizStatus(quiz.getQuizStatus().getType());
     quizDto.setQuestions(questionsToQuestionDto(quiz.getQuestions()));
     return quizDto;
   }

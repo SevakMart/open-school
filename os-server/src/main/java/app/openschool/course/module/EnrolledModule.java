@@ -2,6 +2,7 @@ package app.openschool.course.module;
 
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.module.item.EnrolledModuleItem;
+import app.openschool.course.module.quiz.EnrolledQuiz;
 import app.openschool.course.module.status.ModuleStatus;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -38,6 +39,9 @@ public class EnrolledModule {
 
   @OneToMany(cascade = CascadeType.MERGE, mappedBy = "enrolledModule")
   private Set<EnrolledModuleItem> enrolledModuleItems;
+
+  @OneToMany(cascade = CascadeType.MERGE, mappedBy = "enrolledModule")
+  private Set<EnrolledQuiz> enrolledQuiz;
 
   public EnrolledModule() {}
 
@@ -98,5 +102,13 @@ public class EnrolledModule {
 
   public void setEnrolledModuleItems(Set<EnrolledModuleItem> enrolledModuleItems) {
     this.enrolledModuleItems = enrolledModuleItems;
+  }
+
+  public Set<EnrolledQuiz> getEnrolledQuiz() {
+    return enrolledQuiz;
+  }
+
+  public void setEnrolledQuiz(Set<EnrolledQuiz> enrolledQuiz) {
+    this.enrolledQuiz = enrolledQuiz;
   }
 }

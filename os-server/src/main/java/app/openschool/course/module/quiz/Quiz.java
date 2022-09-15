@@ -2,7 +2,6 @@ package app.openschool.course.module.quiz;
 
 import app.openschool.course.module.Module;
 import app.openschool.course.module.quiz.question.Question;
-import app.openschool.course.module.quiz.status.QuizStatus;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,10 +34,6 @@ public class Quiz {
 
   @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
   private Set<Question> questions;
-
-  @ManyToOne
-  @JoinColumn(name = "quiz_status_id")
-  private QuizStatus quizStatus;
 
   @ManyToOne
   @JoinColumn(name = "module_id")
@@ -86,14 +81,6 @@ public class Quiz {
 
   public void setQuestions(Set<Question> questions) {
     this.questions = questions;
-  }
-
-  public QuizStatus getQuizStatus() {
-    return quizStatus;
-  }
-
-  public void setQuizStatus(QuizStatus quizStatus) {
-    this.quizStatus = quizStatus;
   }
 
   public Module getModule() {

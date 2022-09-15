@@ -24,12 +24,8 @@ CREATE TABLE IF NOT EXISTS quiz (
     max_grade INT NOT NULL,
     student_grade INT NOT NULL,
     passing_score INT NOT NULL,
-    quiz_status_id BIGINT NOT NULL,
     module_id BIGINT NOT NULL,
     PRIMARY KEY (id),
-    CONSTRAINT fk_quiz_quiz_status
-      FOREIGN KEY (quiz_status_id)
-      REFERENCES quiz_status (id),
     CONSTRAINT fk_quiz_module
       FOREIGN KEY (module_id)
       REFERENCES module (id)
@@ -37,8 +33,31 @@ CREATE TABLE IF NOT EXISTS quiz (
       ON UPDATE CASCADE
 );
 
-    CREATE INDEX fk_quiz_quiz_status_idx ON quiz (quiz_status_id ASC);
     CREATE INDEX fk_quiz_module_idx ON quiz (module_id ASC);
+
+-- -----------------------------------------------------
+-- Table enrolled_quiz
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS enrolled_quiz (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    quiz_status_id BIGINT NOT NULL,
+    quiz_id BIGINT NOT NULL,
+    enrolled_module_id BIGINT NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_enrolled_quiz_quiz_status
+      FOREIGN KEY (quiz_status_id)
+      REFERENCES quiz_status (id),
+    CONSTRAINT fk_enrolled_quiz_quiz
+      FOREIGN KEY (quiz_id)
+      REFERENCES quiz (id),
+    CONSTRAINT fk_enrolled_quiz_enrolled_module
+      FOREIGN KEY (enrolled_module_id)
+      REFERENCES enrolled_module (id)
+);
+
+    CREATE INDEX fk_enrolled_quiz_quiz_status_idx ON enrolled_quiz (quiz_status_id ASC);
+    CREATE INDEX fk_enrolled_quiz_quiz_idx ON enrolled_quiz (quiz_id ASC);
+    CREATE INDEX fk_enrolled_quiz_enrolled_module_idx ON enrolled_quiz (enrolled_module_id ASC);
 
 -- -----------------------------------------------------
 -- Table questions
@@ -80,10 +99,9 @@ CREATE TABLE IF NOT EXISTS answer_options (
 
     CREATE INDEX fk_answer_options_question_idx ON answer_options(question_id ASC);
 
-INSERT INTO quiz_status(id, status_type) VALUES (1,'INITIAL');
-INSERT INTO quiz_status(id, status_type) VALUES (2,'IN_PROGRESS');
-INSERT INTO quiz_status(id, status_type) VALUES (3,'COMPLETED');
-INSERT INTO quiz_status(id, status_type) VALUES (4,'FAILED');
+INSERT INTO quiz_status(id, status_type) VALUES (1,'IN_PROGRESS');
+INSERT INTO quiz_status(id, status_type) VALUES (2,'COMPLETED');
+INSERT INTO quiz_status(id, status_type) VALUES (3,'FAILED');
 
 INSERT INTO question_type(id, type) VALUES (1,'MATCHING');
 INSERT INTO question_type(id, type) VALUES (2,'MULTIPLE_CHOICE');

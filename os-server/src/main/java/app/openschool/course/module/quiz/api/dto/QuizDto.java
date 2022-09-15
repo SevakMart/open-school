@@ -22,9 +22,6 @@ public class QuizDto {
   @Schema(description = "The minimum score to pass quiz", example = "7")
   private int passingScore;
 
-  @Schema(description = "The quiz current status", example = "IN_PROGRESS")
-  private String quizStatus;
-
   @ArraySchema(schema = @Schema(implementation = QuestionDto.class))
   private Set<QuestionDto> questions;
 
@@ -70,14 +67,6 @@ public class QuizDto {
 
   public void setPassingScore(int passingScore) {
     this.passingScore = passingScore;
-  }
-
-  public String getQuizStatus() {
-    return quizStatus;
-  }
-
-  public void setQuizStatus(String quizStatus) {
-    this.quizStatus = quizStatus;
   }
 
   public Set<QuestionDto> getQuestions() {
