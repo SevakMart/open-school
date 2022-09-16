@@ -9,7 +9,7 @@ import styles from './CheckedContent.module.scss';
 const CheckedContent = ({ id, checkedContent, filterFeature }:
   {id:string, checkedContent:string, filterFeature:string}) => {
   const [isChecked, handleChecking, dispatch] = useCheck(checkedContent, id);
-  const { checkedContentClass, checkboxContent } = styles;
+  const { checkedContentClass } = styles;
 
   const handleCheck = () => {
     /* The state change will occur after dispatching the action so the the dispatched actions should be reversed */
@@ -21,9 +21,7 @@ const CheckedContent = ({ id, checkedContent, filterFeature }:
 
   return (
     <div className={checkedContentClass}>
-      <div onClick={handleCheck} className={checkboxContent}>
-        <img src={isChecked ? CheckedSubcategory : UncheckedSubcategory} alt="logo" />
-      </div>
+      <img onClick={handleCheck} src={isChecked ? CheckedSubcategory : UncheckedSubcategory} alt="logo" />
       <p>{checkedContent}</p>
     </div>
   );
