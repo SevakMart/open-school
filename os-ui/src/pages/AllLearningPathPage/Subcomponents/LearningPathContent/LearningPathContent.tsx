@@ -36,7 +36,7 @@ const LearningPathContent = () => {
   return (
     <div ref={mainContentRef} className={learningPathsMainContainer}>
       {/* <Search changeUrlQueries={(title:string) => setSearchTitle(title)} /> */}
-      <LearningPathCoreContent />
+      {/* <LearningPathCoreContent /> */}
     </div>
   );
 };

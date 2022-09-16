@@ -1,37 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import courseService from '../../services/courseService';
-import { SuggestedCourseType } from '../../types/SuggestedCourseType';
-import userService from '../../services/userService';
 
-type CourseListType=SuggestedCourseType & {id:number, isBookMarked?:boolean}
 /* eslint-disable max-len */
 
-export const getAllLearningPathCourses = createAsyncThunk('get/AllLearningPathCourses', async ({ userId, token, params }:{userId:number, token:string, params:object}) => {
+export const getAllLearningPathCourses = createAsyncThunk('get/AllLearningPathCourses', async ({ token, params }:{token:string, params:object}) => {
   try {
-    const combinedData = await Promise.all([
-      userService.getUserSavedCourses(userId, token, { page: 0, size: 100 }),
-      courseService.getSearchedCourses({ ...params, page: 0, size: 100 }, token),
-    ]);
-    const userSavedCourseContent = combinedData[0].content;
-    const searchedCourseContent = combinedData[1].content;
-    const list = [];
-    if (userSavedCourseContent?.length) {
-      for (const searchedCourse of searchedCourseContent) {
-        const index = userSavedCourseContent
-          .findIndex((savedCourse:CourseListType) => savedCourse.id === searchedCourse.id);
-        if (index !== -1) {
-          userSavedCourseContent[index].isBookMarked = true;
-          list.push(userSavedCourseContent[index]);
-        } else {
-          searchedCourse.isBookMarked = false;
-          list.push(searchedCourse);
-        }
-      } return list;
-    } return searchedCourseContent;
+    const data = await courseService.getSearchedCourses({ ...params, page: 0, size: 100 }, token);
+    return data.content;
   } catch (error:any) {
     throw new Error(error.message);
   }
 });
+
 const initialState = {
   entity: [],
   isLoading: false,

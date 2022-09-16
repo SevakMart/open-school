@@ -11,31 +11,30 @@ import { filterSendingParams } from '../../../../helpers';
 import { getAllLearningPathCourses } from '../../../../../../redux/Slices/AllLearningPathCourseSlice';
 import styles from './LearningPathCoreContent.module.scss';
 
-type CourseListType=SuggestedCourseType & {id:number, isBookMarked?:boolean}
-
 /* eslint-disable max-len */
 
 const LearningPathCoreContent = () => {
   const sendingParams = useSelector<RootState>((state) => state.filterParams);
   const allLearningPathCourseState = useSelector<RootState>((state) => state.allLearningPathCourses);
-  const { entity, isLoading, errorMessage } = allLearningPathCourseState as {entity:CourseListType[], isLoading:boolean, errorMessage:string};
+  const { entity, isLoading, errorMessage } = allLearningPathCourseState as {entity:SuggestedCourseType[], isLoading:boolean, errorMessage:string};
   const filteredParams = filterSendingParams(sendingParams as object);
-  const { token, id: userId } = useContext(userContext);
+  const { token } = useContext(userContext);
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const NoDisplayedDataMessage = <h2 data-testid="Error Message">{t('messages.noData.default')}</h2>;
   const { mainCoreContainer, courseContainer } = styles;
 
   useEffect(() => {
-    dispatch(getAllLearningPathCourses({ userId, token, params: filteredParams }));
+    dispatch(getAllLearningPathCourses({ token, params: filteredParams }));
   }, [sendingParams]);
+
   return (
     <div className={mainCoreContainer}>
       {isLoading && <Loader />}
       {errorMessage !== '' && (
-      <ErrorField.MainErrorField className={['allLearningPathErrorStyle']}>
-        {errorMessage}
-      </ErrorField.MainErrorField>
+        <ErrorField.MainErrorField className={['allLearningPathErrorStyle']}>
+          {errorMessage}
+        </ErrorField.MainErrorField>
       )}
       {entity.length === 0 && !isLoading && NoDisplayedDataMessage }
       {entity.length > 0 && entity.map((course) => (

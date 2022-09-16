@@ -1,42 +1,41 @@
-import { useState, useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { FiBookmark } from 'react-icons/fi';
 import userService from '../services/userService';
+import { useCheck } from '../custom-hooks/useCheck';
 import { userContext } from '../contexts/Contexts';
 
+/* eslint-disable max-len */
+
 const BookmarkIcon = ({
-  iconSize, isBookmarked, courseId, mentorId,
+  iconSize, courseId, mentorId, courseTitle,
 }:
-  {iconSize:string, isBookmarked?:boolean, courseId?:number, mentorId?:number}) => {
-  const [isClicked, setIsClicked] = useState(isBookmarked);
+  {iconSize:string, courseId?:number, mentorId?:number, courseTitle?:string}) => {
   const { token, id: userId } = useContext(userContext);
+  const [isChecked, handleChecking] = useCheck(courseTitle!, courseId);
 
-  const handleCourseSaving = () => {
-    setIsClicked((prevState) => !prevState);
-  };
-
-  useEffect(() => {
-    if (isClicked) {
+  const handleSaving = () => {
+    if (!isChecked) {
       if (courseId) {
         userService.saveUserPreferredCourses(userId, courseId, token);
       } else if (mentorId) {
         userService.saveUserMentor(userId, mentorId, token);
       }
-    } else if (!isClicked) {
+    } else if (isChecked) {
       if (courseId) {
         userService.deleteUserSavedCourses(userId, courseId, token);
       } else if (mentorId) {
         userService.deleteUserSavedMentor(userId, mentorId, token);
       }
-    }
-  }, [isClicked]);
+    }handleChecking();
+  };
 
   return (
     <FiBookmark
-      onClick={handleCourseSaving}
+      onClick={handleSaving}
       style={{
         fontSize: `${iconSize}`,
         cursor: 'pointer',
-        fill: isClicked ? 'white' : 'none',
+        fill: isChecked ? 'white' : 'none',
       }}
     />
   );

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import FilterComponent from '../FilterComponent/FilterComponent';
 import SavedCoursesContent from '../SavedCoursesContent/SavedCoursesContent';
-import LearningPathContent from '../LearningPathContent/LearningPathContent';
+import LearningPathCoreContent from '../LearningPathContent/Subcomponents/LearningPathCoreContent/LearningPathCoreContent';
 import CourseContentHeader, { HeaderPath } from '../CourseCountentHeader/CourseContentHeader';
 
 import styles from './MainContent.module.scss';
@@ -9,12 +9,13 @@ import styles from './MainContent.module.scss';
 
 const MainContent = () => {
   const [focusedHeader, setFocusedHeader] = useState(HeaderPath.ALL_LEARNING_PATHS);
+
   return (
     <div>
       <FilterComponent />
       <div>
         <CourseContentHeader handleChangeHeader={(headerTitle) => setFocusedHeader(headerTitle)} />
-        {focusedHeader === HeaderPath.ALL_LEARNING_PATHS ? <LearningPathContent /> : <SavedCoursesContent />}
+        {focusedHeader === HeaderPath.ALL_LEARNING_PATHS ? <LearningPathCoreContent /> : <SavedCoursesContent />}
       </div>
     </div>
   );

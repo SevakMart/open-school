@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import userService from '../../../../services/userService';
 import { SuggestedCourseType } from '../../../../types/SuggestedCourseType';
 import LearningPath from '../../../../component/LearningPath/LearningPath';
@@ -12,9 +13,12 @@ const SavedCoursesContent = () => {
   const { token, id } = useContext(userContext);
   const [savedCourseList, setSavedCourseList] = useState<CourseListType[]>([]);
   const { t } = useTranslation();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
   const { mainContainer, coreContent } = styles;
+  const NoDisplayedDataMessage = <h2 data-testid="Error Message">{t('messages.noData.default')}</h2>;
 
-  const handleCourseDeletion = (courseId:number) => {
+  /* const handleCourseDeletion = (courseId:number) => {
     userService.deleteUserSavedCourses(id, courseId, token);
     const index = savedCourseList.findIndex((course) => course.id === courseId);
     const savedCourses = savedCourseList;
@@ -23,32 +27,26 @@ const SavedCoursesContent = () => {
       (course:CourseListType) => ({ ...course, isBookMarked: true }),
     );
     setSavedCourseList([...bookmarkedCourses]);
-  };
+  }; */
 
   useEffect(() => {
     userService.getUserSavedCourses(id, token, { page: 0, size: 100 })
-      .then((data) => setSavedCourseList([...data.content.map((
-        course:CourseListType,
-      ) => ({ ...course, isBookMarked: true }))]));
-  }, []);
+      .then((data) => setSavedCourseList([...data.content]));
+  }, [params]);
 
   return (
     <>
       <div className={coreContent}>
         <div className={mainContainer}>
-          {savedCourseList.length ? savedCourseList.map((course) => (
+          {savedCourseList.length > 0 ? savedCourseList.map((course) => (
             <React.Fragment key={course.title}>
 
               <LearningPath
                 courseInfo={course}
-                saveCourse={(courseId:number) => {
-                  userService.saveUserPreferredCourses(id, courseId, token);
-                }}
-                deleteCourse={handleCourseDeletion}
               />
 
             </React.Fragment>
-          )) : <h2 data-testid="Empty data Message">{t('messages.noData.default')}</h2>}
+          )) : NoDisplayedDataMessage}
         </div>
       </div>
     </>

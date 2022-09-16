@@ -31,7 +31,7 @@ const NavbarOnSignIn = () => {
         <p onClick={() => navigate('/myLearningPath')}>{t('string.homePage.navBar.myLearningPaths')}</p>
         <p onClick={() => navigate('/mentors')}>{t('string.homePage.navBar.mentors')}</p>
         <div className={bookmarkIconStyle}>
-          <BookmarkIcon iconSize="20px" isBookmarked={false} />
+          <BookmarkIcon iconSize="20px" />
         </div>
         <img className={notificationIcon} src={NotificationIcon} alt="Notification" />
         <div className={userInfoContent}>

@@ -24,10 +24,10 @@ const MentorCard = ({ mentor, saveMentor, deleteMentor }:
         <p>
           <BookmarkIcon
             iconSize="1rem"
-            isBookmarked={mentor.isBookMarked}
+            // isBookmarked={mentor.isBookMarked}
             mentorId={mentor.id}
-            saveMentor={(mentorId) => saveMentor && saveMentor(mentorId)}
-            deleteMentor={(mentorId) => deleteMentor && deleteMentor(mentorId)}
+            /* saveMentor={(mentorId) => saveMentor && saveMentor(mentorId)}
+            deleteMentor={(mentorId) => deleteMentor && deleteMentor(mentorId)} */
           />
 
         </p>

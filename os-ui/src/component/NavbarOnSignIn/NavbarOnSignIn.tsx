@@ -24,7 +24,7 @@ const NavbarOnSignIn = () => {
         <p>{ALL_LEARNING_PATHS}</p>
         <p>{MY_LEARNING_PATHS}</p>
         <p onClick={() => navigate('/mentors')}>{MENTORS}</p>
-        <BookmarkIcon iconSize="1.5rem" isBookmarked={false} />
+        <BookmarkIcon iconSize="1.5rem" />
         <Notification />
         <div className={userInfoContent}>
           <img src="https://reactjs.org/logo-og.png" alt="avatar" />

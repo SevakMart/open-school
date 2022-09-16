@@ -14,7 +14,7 @@ const LearningPath = ({ courseInfo }:{courseInfo:SuggestedCourseType}) => {
       <div className={header}>
         {/* eslint-disable-next-line max-len */}
         <p data-testid={courseInfo.difficulty} className={difficultyContent}>{courseInfo.difficulty}</p>
-        <p className={bookmarkIcon}><BookmarkIcon iconSize="1rem" isBookmarked={courseInfo.isBookMarked} courseId={courseInfo.id} /></p>
+        <p className={bookmarkIcon}><BookmarkIcon iconSize="1rem" courseId={courseInfo.id} courseTitle={courseInfo.title} /></p>
       </div>
       <div className={mainBody}>
         <div className={ratingContent}>

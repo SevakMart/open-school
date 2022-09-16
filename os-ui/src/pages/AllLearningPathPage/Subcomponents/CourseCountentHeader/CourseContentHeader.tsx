@@ -46,7 +46,7 @@ const CourseContentHeader = ({ handleChangeHeader }:{handleChangeHeader:(headerT
           <p
             className={focusedHeader === HeaderPath.ALL_LEARNING_PATHS ? activeNav : nonActiveNav}
             data-testid={HeaderPath.ALL_LEARNING_PATHS}
-            onClick={() => { handleChangeHeader(HeaderPath.SAVED_LEARNING_PATHS); setFocusedHeader(HeaderPath.SAVED_LEARNING_PATHS); }}
+            onClick={() => { handleChangeHeader(HeaderPath.ALL_LEARNING_PATHS); setFocusedHeader(HeaderPath.ALL_LEARNING_PATHS); }}
           >
             {t('string.learningPath.all')}
 
@@ -54,7 +54,7 @@ const CourseContentHeader = ({ handleChangeHeader }:{handleChangeHeader:(headerT
           <p
             className={focusedHeader === HeaderPath.SAVED_LEARNING_PATHS ? activeNav : nonActiveNav}
             data-testid={HeaderPath.SAVED_LEARNING_PATHS}
-            onClick={() => { handleChangeHeader(HeaderPath.ALL_LEARNING_PATHS); setFocusedHeader(HeaderPath.ALL_LEARNING_PATHS); }}
+            onClick={() => { handleChangeHeader(HeaderPath.SAVED_LEARNING_PATHS); setFocusedHeader(HeaderPath.SAVED_LEARNING_PATHS); }}
           >
             {t('string.learningPath.saved')}
 
