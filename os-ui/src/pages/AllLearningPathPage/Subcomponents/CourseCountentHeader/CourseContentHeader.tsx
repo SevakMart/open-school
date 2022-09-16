@@ -73,7 +73,7 @@ const CourseContentHeader = ({ handleChangeHeader }:{handleChangeHeader:(headerT
       ) }
       </div>
       <Input.SearchInput
-        className={['AllLearningPathSearch']}
+        className={['search', 'search__allLearningPathSearch']}
         changeUrlQueries={handleSearch}
       />
     </div>

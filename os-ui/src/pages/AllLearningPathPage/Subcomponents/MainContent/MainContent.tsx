@@ -9,11 +9,11 @@ import styles from './MainContent.module.scss';
 
 const MainContent = () => {
   const [focusedHeader, setFocusedHeader] = useState(HeaderPath.ALL_LEARNING_PATHS);
-
+  const { learningPathContainer, mainContainer } = styles;
   return (
-    <div>
+    <div className={mainContainer}>
       <FilterComponent />
-      <div>
+      <div className={learningPathContainer}>
         <CourseContentHeader handleChangeHeader={(headerTitle) => setFocusedHeader(headerTitle)} />
         {focusedHeader === HeaderPath.ALL_LEARNING_PATHS ? <LearningPathCoreContent /> : <SavedCoursesContent />}
       </div>

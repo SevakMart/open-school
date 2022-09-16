@@ -18,17 +18,6 @@ const SavedCoursesContent = () => {
   const { mainContainer, coreContent } = styles;
   const NoDisplayedDataMessage = <h2 data-testid="Error Message">{t('messages.noData.default')}</h2>;
 
-  /* const handleCourseDeletion = (courseId:number) => {
-    userService.deleteUserSavedCourses(id, courseId, token);
-    const index = savedCourseList.findIndex((course) => course.id === courseId);
-    const savedCourses = savedCourseList;
-    savedCourses.splice(index, 1);
-    const bookmarkedCourses = savedCourses.map(
-      (course:CourseListType) => ({ ...course, isBookMarked: true }),
-    );
-    setSavedCourseList([...bookmarkedCourses]);
-  }; */
-
   useEffect(() => {
     userService.getUserSavedCourses(id, token, { page: 0, size: 100 })
       .then((data) => setSavedCourseList([...data.content]));
@@ -40,11 +29,9 @@ const SavedCoursesContent = () => {
         <div className={mainContainer}>
           {savedCourseList.length > 0 ? savedCourseList.map((course) => (
             <React.Fragment key={course.title}>
-
               <LearningPath
                 courseInfo={course}
               />
-
             </React.Fragment>
           )) : NoDisplayedDataMessage}
         </div>

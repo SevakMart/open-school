@@ -2,9 +2,7 @@
 @import "../../../../styles/Mixins/FontMixin.scss";
 
 .mainContainer,.hiddenContainer{
-    @include flexStyle(row,center,space-between);
-    width:15%;
-    align-self:flex-start;
+    width:358px;
     .filterMainContent{
         background-color:#FFFFFF;
         border-radius:1.125rem;

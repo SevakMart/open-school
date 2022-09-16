@@ -33,10 +33,9 @@
     }
    }
 }
-.subcategoriesSearch {
+.search {
   @include flexStyle(row,center,none);
   box-sizing: border-box;
-  margin:0 88px;
   height:56px;
   background-color: $white-text-color;
   border-radius: 12px;
@@ -51,5 +50,11 @@
       &:focus{
         outline:none;
       }
+  }
+  &__subcategoriesSearch{
+    margin:0 88px;
+  }
+  &__allLearningPathSearch{
+    margin:8px 0 0 0;
   }
 }

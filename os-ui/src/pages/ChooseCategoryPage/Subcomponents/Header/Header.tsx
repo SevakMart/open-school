@@ -12,7 +12,7 @@ const Header = ({ changeUrlQueries }:{changeUrlQueries:(title:string)=>void}) =>
       <h1>{t('string.homePage.header.chooseCategories')}</h1>
       <Input.SearchInput
         changeUrlQueries={(title:string) => changeUrlQueries(title)}
-        className={['subcategoriesSearch']}
+        className={['search', 'search__subcategoriesSearch']}
       />
     </div>
   );

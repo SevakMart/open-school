@@ -64,7 +64,7 @@
         "rating":"Rating",
         "difficulty":"difficulty_id",
         "title":"Title",
-        "sortBy":"Sort By",
+        "sortBy":"Sort By: ",
         "category":"Category",
         "language":"Language",
         "courseLevel":"Course Level",
