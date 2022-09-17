@@ -15,7 +15,7 @@ const SavedCoursesContent = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const { mainContainer, coreContent } = styles;
+  const { mainContainer } = styles;
   const NoDisplayedDataMessage = <h2 data-testid="Error Message">{t('messages.noData.default')}</h2>;
 
   useEffect(() => {
@@ -24,19 +24,16 @@ const SavedCoursesContent = () => {
   }, [params]);
 
   return (
-    <>
-      <div className={coreContent}>
-        <div className={mainContainer}>
-          {savedCourseList.length > 0 ? savedCourseList.map((course) => (
-            <React.Fragment key={course.title}>
-              <LearningPath
-                courseInfo={course}
-              />
-            </React.Fragment>
-          )) : NoDisplayedDataMessage}
-        </div>
-      </div>
-    </>
+    <div className={mainContainer}>
+      {savedCourseList.length > 0 ? savedCourseList.map((course) => (
+        <React.Fragment key={course.title}>
+          <LearningPath
+            courseInfo={course}
+          />
+        </React.Fragment>
+      )) : NoDisplayedDataMessage}
+    </div>
+
   );
 };
 export default SavedCoursesContent;

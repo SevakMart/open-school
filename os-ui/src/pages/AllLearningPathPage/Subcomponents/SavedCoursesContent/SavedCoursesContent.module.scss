@@ -1,14 +1,8 @@
 @import "../../../../styles/Mixins/FlexMixins.scss";
 
 
-.coreContent{
-    @include flexStyle(column,none,space-between);
-    padding-left:6%;
-    padding-right:6%;
-    margin-top:3rem;
 .mainContainer {
     display:grid;
-    grid-template-columns: repeat(4,1fr);
-    gap:1.25rem;
-}
+    grid-template-columns: repeat(3,1fr);
+    gap:32px;
 }
