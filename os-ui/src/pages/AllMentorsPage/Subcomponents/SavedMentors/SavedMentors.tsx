@@ -1,46 +1,36 @@
-import { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import mentorService from '../../../../services/mentorService';
-import userService from '../../../../services/userService';
 import { userContext } from '../../../../contexts/Contexts';
-import MentorCard from '../../../../component/MentorProfile/MentorProfile';
 import { MentorType } from '../../../../types/MentorType';
+import MentorCard from '../../../../component/MentorProfile/MentorProfile';
 import styles from './SavedMentors.module.scss';
+/* eslint-disable max-len */
 
 const SavedMentors = () => {
-  const [savedMentorList, setSavedMentorList] = useState<MentorType[]>([]);
-  const [errorMessage, setErrorMessage] = useState('');
-  const { token, id } = useContext(userContext);
+  const { token, id: userId } = useContext(userContext);
+  const [mentorsList, setMentorsList] = useState<MentorType[]>([]);
+  const location = useLocation();
   const { t } = useTranslation();
+  const NoDisplayedDataMessage = <h2 data-testid="emptyMessageHeader">{t('messages.noData.default')}</h2>;
   const { mainContainer } = styles;
 
-  const handleMentorDeletion = (mentorId:number) => {
-    const mentorIndex = savedMentorList.findIndex((savedMentor) => savedMentor.id === mentorId);
-    const mentorList = [...savedMentorList];
-    mentorList.splice(mentorIndex, 1);
-    userService.deleteUserSavedMentor(id, mentorId, token);
-    setSavedMentorList(mentorList);
-  };
-
   useEffect(() => {
-    mentorService.requestUserSavedMentors(id, token, { page: 0, size: 100 })
-      .then((data) => {
-        /* eslint-disable-next-line max-len */
-        setSavedMentorList([...data.content.map((savedMentor:MentorType) => ({ ...savedMentor, isBookMarked: true }))]);
-      }).catch(() => setErrorMessage(t('Error Message')));
-  }, []);
+    mentorService.requestUserSavedMentors(userId, token, { page: 0, size: 100 })
+      .then((data) => setMentorsList([...data.content]));
+  }, [location]);
 
   return (
     <div className={mainContainer}>
-      { /* eslint-disable-next-line max-len */
-        errorMessage ? <h2 data-testid="errorMessageHeader">{errorMessage}</h2> : savedMentorList.length ? savedMentorList.map((savedMentor) => (
+
+      {mentorsList.length > 0 ? mentorsList.map((savedMentor) => (
+        <React.Fragment key={`${savedMentor.name} ${savedMentor.surname}`}>
           <MentorCard
-            key={savedMentor.id}
             mentor={savedMentor}
-            deleteMentor={handleMentorDeletion}
           />
-        )) : <h2 data-testid="emptyMessageHeader">{t('Empty Data Error Message')}</h2>
-        }
+        </React.Fragment>
+      )) : NoDisplayedDataMessage}
     </div>
   );
 };

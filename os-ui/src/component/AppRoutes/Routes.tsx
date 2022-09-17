@@ -49,7 +49,7 @@ const AppRoutes = () => {
           path="/mentors"
           element={(
             <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
-              <AllMentorsPage />
+              <AllMentorsPage userInfo={userInfo} />
             </ProtectedRoute>
         )}
         />

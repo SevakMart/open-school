@@ -5,7 +5,7 @@ import { store } from '../../../../../redux/Store';
 import Content from '../Content';
 import mentorService from '../../../../../services/mentorService';
 
-const mockUseNavigate = jest.fn();
+/* const mockUseNavigate = jest.fn();
 jest.mock('react-i18next', () => ({
   ...jest.requireActual('react-i18next'),
   useTranslation: () => ({
@@ -59,3 +59,4 @@ describe('Create test cases for Content component', () => {
     expect(emptyMessageHeader).toHaveTextContent('Something went wrong please refresh the page');
   });
 });
+*/

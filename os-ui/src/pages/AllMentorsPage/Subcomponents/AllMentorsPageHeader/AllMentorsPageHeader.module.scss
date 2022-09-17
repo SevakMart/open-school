@@ -1,23 +1,26 @@
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
 @import "../../../../styles/Mixins/FlexMixins.scss";
 @import "../../../../styles/Mixins/FontMixin.scss";
 
-.mentorHeader{
-    @include flexStyle(row,center,space-between);
-    margin-bottom:1.5rem;
-    margin-top:1.5rem;
-    nav {
+.mentorHeaderMainContainer {
+    margin:56px 88px 32px;
+    .navContent {
         @include flexStyle(row,center,space-between);
-        width:30%;
-        .activeNav{
-            @include fontStyle('Montserrat',normal,600,1.25rem,1.5rem);
-            color:#222427;
-            border-bottom: 4px solid #848A9D;
-            cursor:pointer;
-        }
-        .nonActiveNav{
-            @include fontStyle('Montserrat',normal,600,1rem,1.5rem);
-            color:#5E617B;
-            cursor:pointer;
+        nav {
+            .activeNav,.nonActiveNav{
+                display:inline-block;
+                margin-right:24px;
+                margin-top:0;
+                cursor:pointer;
+                @include fontStyle($primary-font,normal,600,20px,24px);
+                color:$header-main-color;
+                border-bottom: 4px solid $header-main-color;
+            }
+            .nonActiveNav {
+                border:none;
+                color:$main-text-color;
+            }
         }
     }
 }

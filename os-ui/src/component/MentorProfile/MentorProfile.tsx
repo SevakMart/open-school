@@ -6,9 +6,7 @@ import BookIcon from '../../icons/Book';
 import Separator from '../../assets/svg/Separator.svg';
 import styles from './MentorProfile.module.scss';
 
-const MentorCard = ({ mentor, saveMentor, deleteMentor }:
-  {mentor:MentorType, saveMentor?:(mentorid:number)=>void,
-    deleteMentor?:(mentorid:number)=>void}) => {
+const MentorCard = ({ mentor }:{mentor:MentorType}) => {
   const {
     mainContainer, headerContainer, MailLinkedinIconsContainer, bodyContainer, mentorInfo,
     mentorAvatar, mentorInfoContainer, mentorExtraInfo,
@@ -24,12 +22,9 @@ const MentorCard = ({ mentor, saveMentor, deleteMentor }:
         <p>
           <BookmarkIcon
             iconSize="1rem"
-            // isBookmarked={mentor.isBookMarked}
             mentorId={mentor.id}
-            /* saveMentor={(mentorId) => saveMentor && saveMentor(mentorId)}
-            deleteMentor={(mentorId) => deleteMentor && deleteMentor(mentorId)} */
+            mentorName={`${mentor.name} ${mentor.surname}`}
           />
-
         </p>
       </div>
       <div className={bodyContainer}>

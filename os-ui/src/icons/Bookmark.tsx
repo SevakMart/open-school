@@ -7,11 +7,11 @@ import { userContext } from '../contexts/Contexts';
 /* eslint-disable max-len */
 
 const BookmarkIcon = ({
-  iconSize, courseId, mentorId, courseTitle,
+  iconSize, courseId, mentorId, courseTitle, mentorName,
 }:
-  {iconSize:string, courseId?:number, mentorId?:number, courseTitle?:string}) => {
+  {iconSize:string, courseId?:number, mentorId?:number, courseTitle?:string, mentorName?:string}) => {
   const { token, id: userId } = useContext(userContext);
-  const [isChecked, handleChecking] = useCheck(courseTitle!, courseId);
+  const [isChecked, handleChecking] = useCheck(mentorName! || courseTitle!, mentorId || courseId);
 
   const handleSaving = () => {
     if (!isChecked) {

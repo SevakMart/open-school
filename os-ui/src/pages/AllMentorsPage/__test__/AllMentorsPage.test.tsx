@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from '../../../redux/Store';
 import AllMentorsPage from '../AllMentorsPage';
 
-const mockedUseNavigation = jest.fn();
+/* const mockedUseNavigation = jest.fn();
 const mockedUseLocation = jest.fn();
 
 jest.mock('react-router-dom', () => ({
@@ -23,3 +23,4 @@ describe('Create test case for AllMentorsPage', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 });
+*/
