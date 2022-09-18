@@ -60,7 +60,7 @@ const HomepageMentors = () => {
           {errorMessage && <h2 data-testid="mentorsErrorMessage">{errorMessage}</h2>}
           {mentors.length === 0 && <h2 data-testid="emptyMentorMessage">{t('messages.noData.mentors')}</h2>}
           {mentors.length > 0 && !errorMessage && mentors.map((mentor, index) => (
-            <MentorCard key={index} mentor={{ ...mentor }} isHomepageNotSignedMentorCard={(userInfo as any).token.length > 0} />))}
+            <MentorCard key={index} mentor={{ ...mentor }} isHomepageNotSignedMentorCard />))}
         </div>
       </MainBody>
     </div>

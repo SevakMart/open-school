@@ -10,7 +10,7 @@ import { userContext } from '../contexts/Contexts';
 /* eslint-disable max-len */
 
 const BookmarkIcon = ({
-  iconSize, courseId, mentorId, courseTitle, mentorName, isHomepageNotSignedInMentor = false,
+  iconSize, courseId, mentorId, courseTitle, mentorName, isHomepageNotSignedInMentor,
 }:
   {iconSize:string, courseId?:number, mentorId?:number, courseTitle?:string, mentorName?:string, isHomepageNotSignedInMentor?:boolean}) => {
   const { token, id: userId } = useContext(userContext);
