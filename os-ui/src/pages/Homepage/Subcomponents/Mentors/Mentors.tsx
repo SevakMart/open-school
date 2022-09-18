@@ -10,6 +10,8 @@ import Title from '../Title/Title';
 import MainBody from '../MainBody/MainBody';
 import styles from './Mentors.module.scss';
 
+/* eslint-disable max-len */
+
 const HomepageMentors = () => {
   const userInfo = useSelector<RootState>((state) => state.userInfo);
   const { t } = useTranslation();
@@ -58,7 +60,7 @@ const HomepageMentors = () => {
           {errorMessage && <h2 data-testid="mentorsErrorMessage">{errorMessage}</h2>}
           {mentors.length === 0 && <h2 data-testid="emptyMentorMessage">{t('messages.noData.mentors')}</h2>}
           {mentors.length > 0 && !errorMessage && mentors.map((mentor, index) => (
-            <MentorCard key={index} mentor={{ ...mentor }} />))}
+            <MentorCard key={index} mentor={{ ...mentor }} isHomepageNotSignedMentorCard={(userInfo as any).token.length > 0} />))}
         </div>
       </MainBody>
     </div>

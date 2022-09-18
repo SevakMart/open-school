@@ -37,6 +37,7 @@ const Content = () => {
         <MentorCard
           key={`${mentor.name} ${mentor.surname}`}
           mentor={mentor}
+          isHomepageNotSignedMentorCard={false}
         />
       ))}
     </div>

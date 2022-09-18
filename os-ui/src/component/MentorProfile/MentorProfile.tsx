@@ -6,7 +6,9 @@ import BookIcon from '../../icons/Book';
 import Separator from '../../assets/svg/Separator.svg';
 import styles from './MentorProfile.module.scss';
 
-const MentorCard = ({ mentor }:{mentor:MentorType}) => {
+/* eslint-disable max-len */
+
+const MentorCard = ({ mentor, isHomepageNotSignedMentorCard }:{mentor:MentorType, isHomepageNotSignedMentorCard:boolean}) => {
   const {
     mainContainer, headerContainer, MailLinkedinIconsContainer, bodyContainer, mentorInfo,
     mentorAvatar, mentorInfoContainer, mentorExtraInfo,
@@ -24,6 +26,7 @@ const MentorCard = ({ mentor }:{mentor:MentorType}) => {
             iconSize="1rem"
             mentorId={mentor.id}
             mentorName={`${mentor.name} ${mentor.surname}`}
+            isHomepageNotSignedInMentor={isHomepageNotSignedMentorCard}
           />
         </p>
       </div>

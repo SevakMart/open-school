@@ -39,6 +39,7 @@ const SavedMentors = () => {
         <React.Fragment key={`${savedMentor.name} ${savedMentor.surname}`}>
           <MentorCard
             mentor={savedMentor}
+            isHomepageNotSignedMentorCard={false}
           />
         </React.Fragment>
       )) }

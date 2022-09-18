@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import MentorCard from '../MentorProfile';
 
-const MentorProfile = {
+/* const MentorProfile = {
   name: 'John',
   surname: 'Smith',
   professionName: 'JS Developer',
@@ -33,3 +33,4 @@ describe('Make unit tests on Mentor Profile', () => {
     expect(courseCountElem).toHaveTextContent('5');
   });
 });
+*/

@@ -1,17 +1,21 @@
 import { useContext } from 'react';
+import { useDispatch } from 'react-redux';
 import { FiBookmark } from 'react-icons/fi';
 import userService from '../services/userService';
 import { useCheck } from '../custom-hooks/useCheck';
+import { Types } from '../types/types';
+import { openModal } from '../redux/Slices/PortalOpenStatus';
 import { userContext } from '../contexts/Contexts';
 
 /* eslint-disable max-len */
 
 const BookmarkIcon = ({
-  iconSize, courseId, mentorId, courseTitle, mentorName,
+  iconSize, courseId, mentorId, courseTitle, mentorName, isHomepageNotSignedInMentor = false,
 }:
-  {iconSize:string, courseId?:number, mentorId?:number, courseTitle?:string, mentorName?:string}) => {
+  {iconSize:string, courseId?:number, mentorId?:number, courseTitle?:string, mentorName?:string, isHomepageNotSignedInMentor?:boolean}) => {
   const { token, id: userId } = useContext(userContext);
   const [isChecked, handleChecking] = useCheck(mentorName! || courseTitle!, mentorId || courseId);
+  const dispatch = useDispatch();
 
   const handleSaving = () => {
     if (!isChecked) {
@@ -29,9 +33,13 @@ const BookmarkIcon = ({
     }handleChecking();
   };
 
+  const handleMentorBookmark = () => {
+    dispatch(openModal({ buttonType: Types.Button.SIGN_IN, isRequestForMentorsPage: true }));
+  };
+
   return (
     <FiBookmark
-      onClick={handleSaving}
+      onClick={isHomepageNotSignedInMentor ? handleMentorBookmark : handleSaving}
       style={{
         fontSize: `${iconSize}`,
         cursor: 'pointer',
