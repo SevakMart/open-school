@@ -9,6 +9,8 @@ import userEnrolledCourseByCourseStatusReducer from './Slices/UserEnrolledCourse
 import allLearningPathCoursesReducer from './Slices/AllLearningPathCourseSlice';
 import allMentorsFilterParamsReducer from './Slices/AllMentorsFilterParamsSlice';
 import allMentorsSliceReducer from './Slices/AllMentorsSlice';
+import savedMentorsReducer from './Slices/SavedMentorsSlice';
+import savedCourseReducer from './Slices/SavedLearningPathSlice';
 import portalStatusReducer from './Slices/PortalOpenStatus';
 
 const rootReducer = combineReducers({
@@ -23,5 +25,7 @@ const rootReducer = combineReducers({
   allLearningPathCourses: allLearningPathCoursesReducer,
   allMentorsFilterParams: allMentorsFilterParamsReducer,
   allMentorsList: allMentorsSliceReducer,
+  savedMentors: savedMentorsReducer,
+  savedCourse: savedCourseReducer,
 });
 export default rootReducer;

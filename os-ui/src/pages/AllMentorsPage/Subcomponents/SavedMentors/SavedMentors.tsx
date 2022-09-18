@@ -1,7 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import mentorService from '../../../../services/mentorService';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../../redux/Store';
+import { getSavedMentors } from '../../../../redux/Slices/SavedMentorsSlice';
+import Loader from '../../../../component/Loader/Loader';
+import { ErrorField } from '../../../../component/ErrorField/ErrorField';
 import { userContext } from '../../../../contexts/Contexts';
 import { MentorType } from '../../../../types/MentorType';
 import MentorCard from '../../../../component/MentorProfile/MentorProfile';
@@ -10,27 +14,34 @@ import styles from './SavedMentors.module.scss';
 
 const SavedMentors = () => {
   const { token, id: userId } = useContext(userContext);
-  const [mentorsList, setMentorsList] = useState<MentorType[]>([]);
+  const dispatch = useDispatch();
+  const savedMentorsState = useSelector<RootState>((state) => state.savedMentors)as {entity:MentorType[], isLoading:boolean, errorMessage:string};
+  const { entity, isLoading, errorMessage } = savedMentorsState;
   const location = useLocation();
   const { t } = useTranslation();
   const NoDisplayedDataMessage = <h2 data-testid="emptyMessageHeader">{t('messages.noData.default')}</h2>;
   const { mainContainer } = styles;
 
   useEffect(() => {
-    mentorService.requestUserSavedMentors(userId, token, { page: 0, size: 100 })
-      .then((data) => setMentorsList([...data.content]));
+    dispatch(getSavedMentors({ userId, token }));
   }, [location]);
 
   return (
     <div className={mainContainer}>
-
-      {mentorsList.length > 0 ? mentorsList.map((savedMentor) => (
+      {isLoading && <Loader />}
+      {errorMessage !== '' && (
+        <ErrorField.MainErrorField className={['allLearningPathErrorStyle']}>
+          {errorMessage}
+        </ErrorField.MainErrorField>
+      )}
+      {entity.length === 0 && !isLoading && errorMessage.length === 0 && NoDisplayedDataMessage }
+      {entity.length > 0 && entity.map((savedMentor) => (
         <React.Fragment key={`${savedMentor.name} ${savedMentor.surname}`}>
           <MentorCard
             mentor={savedMentor}
           />
         </React.Fragment>
-      )) : NoDisplayedDataMessage}
+      )) }
     </div>
   );
 };

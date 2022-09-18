@@ -36,7 +36,7 @@ const LearningPathCoreContent = () => {
           {errorMessage}
         </ErrorField.MainErrorField>
       )}
-      {entity.length === 0 && !isLoading && NoDisplayedDataMessage }
+      {entity.length === 0 && !isLoading && errorMessage.length === 0 && NoDisplayedDataMessage }
       {entity.length > 0 && entity.map((course) => (
         <div className={courseContainer} key={course.title}>
           <LearningPath
