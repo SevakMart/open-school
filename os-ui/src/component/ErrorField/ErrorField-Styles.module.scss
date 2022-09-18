@@ -6,3 +6,8 @@
     @include fontStyle($primary-font, normal, 800, 0.875rem, 1rem);
     color: $main-error-color;
 }
+.myLearningPathsErrorStyle {
+    @include fontStyle($primary-font, normal, 800, 0.875rem, 1rem);
+    color: $main-error-color;
+    margin:32px 88px;
+}

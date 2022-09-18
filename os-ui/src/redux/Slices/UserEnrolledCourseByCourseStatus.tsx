@@ -3,15 +3,17 @@ import userService from '../../services/userService';
 
 /* eslint-disable max-len */
 
-export const getUserEnrolledCourseByCourseStatus = createAsyncThunk('get/courseByCourseStatus', async ({ userId, token, params = {} }:{userId:number, token:string, params?:object}) => {
-  const response = await userService.getUserCourses(userId, token, params);
-  if (response.status === 200) {
-    return response.data;
-  }
-  if (response.status === 400) {
-    throw response.data.message;
-  } else {
-    throw new Error('An error occurred please reload the page');
+export const getUserEnrolledCourseByCourseStatus = createAsyncThunk('userEnrolledCourseByCourseStatus/getUserEnrolledCourseByCourseStatus', async ({ userId, token, params = {} }:{userId:number, token:string, params?:object}, { rejectWithValue }) => {
+  try {
+    const response = await userService.getUserCourses(userId, token, params);
+    if (response.status === 200) {
+      return response.data;
+    }
+    if (response.status === 400) {
+      throw new Error(`Code 400: ${response.data.message}`);
+    }
+  } catch (error:any) {
+    return rejectWithValue(error.message);
   }
 });
 
@@ -30,17 +32,14 @@ const courseByCourseStatusSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getUserEnrolledCourseByCourseStatus.fulfilled, (state, action) => {
-      state.entity = action.payload;
-      state.isLoading = false;
-    });
-    builder.addCase(getUserEnrolledCourseByCourseStatus.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        state.errorMessage = action.payload.message;
+      if (action.payload.errorMessage) {
+        state.errorMessage = action.payload.errorMessage;
       } else {
-        state.errorMessage = action.payload as string;
+        state.entity = action.payload;
       }
       state.isLoading = false;
     });
+    builder.addCase(getUserEnrolledCourseByCourseStatus.rejected, (state, action) => ({ ...initialState, errorMessage: `${action.payload}` }));
   },
 });
 export default courseByCourseStatusSlice.reducer;

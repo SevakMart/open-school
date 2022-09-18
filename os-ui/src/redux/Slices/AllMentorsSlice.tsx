@@ -2,21 +2,16 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import mentorService from '../../services/mentorService';
 import { MentorStateType } from './AllMentorsFilterParamsSlice';
 /* eslint-disable max-len */
-export const getMentorsList = createAsyncThunk('get/MentorList', async ({ params, token }:{params:MentorStateType, token:string}) => {
-  if (params.name !== '') {
-    try {
+export const getMentorsList = createAsyncThunk('mentorsList/getMentorsList', async ({ params, token }:{params:MentorStateType, token:string}, { rejectWithValue }) => {
+  try {
+    if (params.name !== '') {
       const data = await mentorService.searchMentorsByName(token, params);
       return data.content;
-    } catch (error:any) {
-      throw new Error(error.message);
     }
-  } else {
-    try {
-      const data = await mentorService.requestAllMentors(token, params);
-      return data.content;
-    } catch (error:any) {
-      throw new Error(error.message);
-    }
+    const data = await mentorService.requestAllMentors(token, params);
+    return data.content;
+  } catch (error:any) {
+    return rejectWithValue(error.message);
   }
 });
 
@@ -35,13 +30,15 @@ const allMentorsListSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getMentorsList.fulfilled, (state, action) => {
+      if (action.payload.errorMessage) {
+        state.errorMessage = action.payload.errorMessage;
+      } else {
+        state.entity = action.payload;
+      }
       state.isLoading = false;
-      state.entity = action.payload;
     });
     builder.addCase(getMentorsList.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        state.errorMessage = action.payload.message;
-      }
+      state.errorMessage = `Code ${action.error.code}: ${action.error.message}`;
     });
   },
 });

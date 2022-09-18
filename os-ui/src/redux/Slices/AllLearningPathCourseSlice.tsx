@@ -3,12 +3,12 @@ import courseService from '../../services/courseService';
 
 /* eslint-disable max-len */
 
-export const getAllLearningPathCourses = createAsyncThunk('get/AllLearningPathCourses', async ({ token, params }:{token:string, params:object}) => {
+export const getAllLearningPathCourses = createAsyncThunk('get/AllLearningPathCourses', async ({ token, params }:{token:string, params:object}, { rejectWithValue }) => {
   try {
     const data = await courseService.getSearchedCourses({ ...params, page: 0, size: 100 }, token);
     return data.content;
   } catch (error:any) {
-    throw new Error(error.message);
+    return rejectWithValue(error.message);
   }
 });
 
@@ -27,13 +27,15 @@ const allLearningPathCoursesSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getAllLearningPathCourses.fulfilled, (state, action) => {
+      if (action.payload.errorMessage) {
+        state.errorMessage = action.payload.errorMessage;
+      } else {
+        state.entity = action.payload;
+      }
       state.isLoading = false;
-      state.entity = action.payload;
     });
     builder.addCase(getAllLearningPathCourses.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        state.errorMessage = action.payload.message;
-      }
+      state.errorMessage = `Code ${action.error.code}: ${action.error.message}`;
     });
   },
 });

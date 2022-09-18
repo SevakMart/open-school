@@ -21,7 +21,7 @@ const MyLearningPathMainContent = () => {
         {errorMessage}
       </ErrorField.MainErrorField>
       )}
-      {entity.length === 0 && !isLoading && <NoCourses /> }
+      {entity.length === 0 && !isLoading && errorMessage.length === 0 && <NoCourses /> }
       {entity.length > 0 && entity.map((userCourse, index) => {
         if (userCourse.courseStatus === 'IN_PROGRESS') {
           return (

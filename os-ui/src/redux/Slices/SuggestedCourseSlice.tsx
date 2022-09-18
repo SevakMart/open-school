@@ -1,15 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userService from '../../services/userService';
 
-export const getSuggestedCourses = createAsyncThunk('get/getSuggestedCourse', async ({ userId, token }:{userId:number, token:string}) => {
-  const response = await userService.getSuggestedCourses(userId, token);
-  if (response.status === 200) {
-    return response.data;
-  }
-  if (response.status === 400) {
-    throw response.data.message;
-  } else {
-    throw new Error('An error occurred please reload the page');
+export const getSuggestedCourses = createAsyncThunk('suggestedCourse/getSuggestedCourse', async ({ userId, token }:{userId:number, token:string}, { rejectWithValue }) => {
+  try {
+    const response = await userService.getSuggestedCourses(userId, token);
+    if (response.status === 200) {
+      return response.data;
+    }
+    if (response.status === 400) {
+      throw new Error(`Code 400: ${response.data.message}`);
+    }
+  } catch (error:any) {
+    return rejectWithValue(error.message);
   }
 });
 const initialState = {
@@ -26,16 +28,15 @@ const suggestedCourseSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getSuggestedCourses.fulfilled, (state, action) => {
-      state.entity = action.payload;
+      if (action.payload.errorMessage) {
+        state.errorMessage = action.payload.errorMessage;
+      } else {
+        state.entity = action.payload;
+      }
       state.isLoading = false;
     });
     builder.addCase(getSuggestedCourses.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        state.errorMessage = action.payload.message;
-      } else {
-        state.errorMessage = action.payload as string;
-      }
-      state.isLoading = false;
+      state.errorMessage = `${action.error.message}`;
     });
   },
 });

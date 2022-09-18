@@ -35,7 +35,7 @@ const SuggestedCourses = ({ userId, token }:{userId:number, token:string}) => {
             {errorMessage}
           </ErrorField.MainErrorField>
         )}
-        {entity.length === 0 && !isLoading && NoSuggestedCourses }
+        {entity.length === 0 && !isLoading && errorMessage.length === 0 && NoSuggestedCourses }
         {entity.length > 0 && entity.map((suggestedCourse, index) => (
           <LearningPath
             key={index}
