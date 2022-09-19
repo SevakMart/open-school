@@ -9,12 +9,14 @@ import { ErrorField } from '../../../../component/ErrorField/ErrorField';
 import { userContext } from '../../../../contexts/Contexts';
 import { MentorType } from '../../../../types/MentorType';
 import MentorCard from '../../../../component/MentorProfile/MentorProfile';
+import { MentorStateType } from '../../../../redux/Slices/AllMentorsFilterParamsSlice';
 import styles from './SavedMentors.module.scss';
 /* eslint-disable max-len */
 
 const SavedMentors = () => {
   const { token, id: userId } = useContext(userContext);
   const dispatch = useDispatch();
+  const mentorsSendingParams = useSelector<RootState>((state) => state.allMentorsFilterParams) as MentorStateType;
   const savedMentorsState = useSelector<RootState>((state) => state.savedMentors)as {entity:MentorType[], isLoading:boolean, errorMessage:string};
   const { entity, isLoading, errorMessage } = savedMentorsState;
   const location = useLocation();
@@ -23,8 +25,8 @@ const SavedMentors = () => {
   const { mainContainer } = styles;
 
   useEffect(() => {
-    dispatch(getSavedMentors({ userId, token }));
-  }, [location]);
+    dispatch(getSavedMentors({ userId, token, params: mentorsSendingParams }));
+  }, [location, mentorsSendingParams]);
 
   return (
     <div className={mainContainer}>

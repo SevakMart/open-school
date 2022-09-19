@@ -1,8 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { MentorStateType } from './AllMentorsFilterParamsSlice';
 import mentorService from '../../services/mentorService';
 
-export const getSavedMentors = createAsyncThunk('savedMentors/getSavedMentors', async ({ userId, token }:{userId:number, token:string}, { rejectWithValue }) => {
+export const getSavedMentors = createAsyncThunk('savedMentors/getSavedMentors', async ({ userId, token, params }:{userId:number, token:string, params:MentorStateType}, { rejectWithValue }) => {
   try {
+    if (params.name) {
+      const data = await mentorService.searchSavedMentorsByName(userId, token, params);
+      return data.content;
+    }
     const data = await mentorService.requestUserSavedMentors(userId, token, { page: 0, size: 100 });
     return data.content;
   } catch (error:any) {

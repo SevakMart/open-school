@@ -21,5 +21,10 @@ class MentorService {
     const data = await (await fetchService.get(`${this.basePath}/searched`, params, userToken)).json();
     return data;
   }
+
+  async searchSavedMentorsByName(userId:number, userToken:string, params = {}) {
+    const data = await (await fetchService.get(`${this.basePath}/searched/${userId}`, params, userToken)).json();
+    return data;
+  }
 }
 export default new MentorService();

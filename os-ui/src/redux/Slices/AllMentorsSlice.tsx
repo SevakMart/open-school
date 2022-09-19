@@ -4,7 +4,7 @@ import { MentorStateType } from './AllMentorsFilterParamsSlice';
 /* eslint-disable max-len */
 export const getMentorsList = createAsyncThunk('mentorsList/getMentorsList', async ({ params, token }:{params:MentorStateType, token:string}, { rejectWithValue }) => {
   try {
-    if (params.name !== '') {
+    if (params.name) {
       const data = await mentorService.searchMentorsByName(token, params);
       return data.content;
     }
