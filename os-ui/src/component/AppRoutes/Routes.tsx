@@ -18,7 +18,7 @@ const AppRoutes = () => {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        <Route path="/homepage" element={<Homepage />} />
+        <Route path="/homepage" element={<Homepage userInfo={userInfo} />} />
         <Route path="/homepage/account" element={<AfterVerificationPage />} />
         <Route path="/" element={<Navigate replace to="/homepage" />} />
         <Route

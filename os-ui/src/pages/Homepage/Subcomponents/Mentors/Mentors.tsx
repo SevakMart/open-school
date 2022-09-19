@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/Store';
 import MentorCard from '../../../../component/MentorProfile/MentorProfile';
+import { getHomepageMentorsList } from '../../../../redux/Slices/HomepageMentorSlice';
+import Loader from '../../../../component/Loader/Loader';
+import { ErrorField } from '../../../../component/ErrorField/ErrorField';
 import { MentorType } from '../../../../types/MentorType';
-import publicService from '../../../../services/publicService';
-import userService from '../../../../services/userService';
+import { userContext } from '../../../../contexts/Contexts';
 import Title from '../Title/Title';
 import MainBody from '../MainBody/MainBody';
 import styles from './Mentors.module.scss';
@@ -13,33 +15,19 @@ import styles from './Mentors.module.scss';
 /* eslint-disable max-len */
 
 const HomepageMentors = () => {
-  const userInfo = useSelector<RootState>((state) => state.userInfo);
+  const { token } = useContext(userContext);
+  const dispatch = useDispatch();
+  const homepageMentorListState = useSelector<RootState>((state) => state.homepageMentorList)as {entity:MentorType[], isLoading:boolean, errorMessage:string, totalPages:number};
+  const {
+    entity, isLoading, errorMessage, totalPages,
+  } = homepageMentorListState;
   const { t } = useTranslation();
-  const [mentors, setMentors] = useState<MentorType[]>([]);
   const [page, setPage] = useState(0);
-  const [maxPage, setMaxPage] = useState(10);
-  const [errorMessage, setErrorMessage] = useState('');
   const { mentorMainContainer, gridContent } = styles;
+  const NoDisplayedDataMessage = <h2 data-testid="emptyMessageHeader">{t('messages.noData.default')}</h2>;
 
   useEffect(() => {
-    const cancel = false;
-    let mentorPromise;
-
-    if ((userInfo as any).token) {
-      mentorPromise = userService.getMentors(
-        { page, size: 4 },
-        (userInfo as any).token,
-      );
-    } else mentorPromise = publicService.getPublicMentors({ page, size: 4 });
-
-    mentorPromise.then((res) => {
-      if (cancel) return;
-      const { data } = res;
-      if (!data.errorMessage && data.content.length > 0) {
-        setMentors(data.content);
-        setMaxPage(data.totalPages - 1);
-      } else if (data.errorMessage) setErrorMessage(data.errorMessage);
-    });
+    dispatch(getHomepageMentorsList({ page, token: token || '' }));
   }, [page]);
 
   return (
@@ -51,15 +39,20 @@ const HomepageMentors = () => {
       />
       <MainBody
         page={page}
-        maxPage={maxPage}
+        maxPage={totalPages}
         isMentor
         clickPrevious={() => setPage((prevPage) => prevPage - 1)}
         clickNext={() => setPage((prevPage) => prevPage + 1)}
       >
         <div className={gridContent}>
-          {errorMessage && <h2 data-testid="mentorsErrorMessage">{errorMessage}</h2>}
-          {mentors.length === 0 && <h2 data-testid="emptyMentorMessage">{t('messages.noData.mentors')}</h2>}
-          {mentors.length > 0 && !errorMessage && mentors.map((mentor, index) => (
+          {isLoading && <Loader />}
+          {errorMessage !== '' && (
+          <ErrorField.MainErrorField className={['allLearningPathErrorStyle']}>
+            {errorMessage}
+          </ErrorField.MainErrorField>
+          )}
+          {entity.length === 0 && !isLoading && errorMessage.length === 0 && NoDisplayedDataMessage }
+          {entity.length > 0 && entity.map((mentor, index) => (
             <MentorCard key={index} mentor={{ ...mentor }} isHomepageNotSignedMentorCard />))}
         </div>
       </MainBody>

@@ -39,7 +39,10 @@ const courseByCourseStatusSlice = createSlice({
       }
       state.isLoading = false;
     });
-    builder.addCase(getUserEnrolledCourseByCourseStatus.rejected, (state, action) => ({ ...initialState, errorMessage: `${action.payload}` }));
+    builder.addCase(getUserEnrolledCourseByCourseStatus.rejected, (state, action) => {
+      state.errorMessage = `Code ${action.error.code}: ${action.error.message}`;
+    });
   },
+
 });
 export default courseByCourseStatusSlice.reducer;

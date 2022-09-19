@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
 import HomepageHeader from '../../component/HomepageHeader/HomepageHeader';
@@ -10,23 +11,30 @@ import ForgotPassword from '../../component/SignUpSignIn/SignIn/ForgotPassword/F
 import SuccessMessage from '../../component/SignUpSignIn/Success-Message/Success-Message';
 import ResetPassword from '../../component/SignUpSignIn/SignIn/ResetPassword/ResetPassword';
 import Verification from '../../component/SignUpSignIn/Verification/Verification';
+import { userContext } from '../../contexts/Contexts';
 import { Portal } from '../../component/Portal/Portal';
 import { Types } from '../../types/types';
 import { PortalStatus } from '../../types/PortalStatusType';
 
 /* eslint-disable max-len */
 
-const Homepage = () => {
+const Homepage = ({ userInfo }:{userInfo:any}) => {
   const portalStatus = useSelector<RootState>((state) => state.portalStatus);
   const {
     isOpen, buttonType, withSuccessMessage, isSignUpSuccessfulRegistration, isResetPasswordSuccessfulMessage, isResendVerificationEmailMessage,
   } = portalStatus as PortalStatus;
+  const idAndToken = useMemo(() => ({
+    token: userInfo ? (userInfo as any).token : '',
+    id: userInfo ? (userInfo as any).id : -1,
+  }), []);
 
   return (
     <>
       <HomepageHeader />
-      <HomepageCategories />
-      <HomepageMentors />
+      <userContext.Provider value={idAndToken}>
+        <HomepageCategories />
+        <HomepageMentors />
+      </userContext.Provider>
       <Footer />
       <Portal.FormPortal isOpen={isOpen}>
         {/* eslint-disable max-len */}
