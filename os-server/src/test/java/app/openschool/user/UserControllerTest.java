@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import app.openschool.auth.AuthServiceImpl;
@@ -21,9 +20,11 @@ import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.CourseGenerator;
 import app.openschool.course.api.dto.EnrolledCourseOverviewDto;
 import app.openschool.course.api.mapper.EnrolledCourseMapper;
+import app.openschool.course.module.quiz.api.dto.EnrolledQuizAssessmentResponseDto;
 import app.openschool.user.role.Role;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,18 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
+
+  private static final String COMPLETE_ENROLLED_QUIZ_REQUEST =
+      "{\n"
+          + "  \"questionWithChosenAnswerDtoSet\": [\n"
+          + "    {\n"
+          + "      \"questionId\": 1,\n"
+          + "      \"chosenAnswersIds\": [\n"
+          + "        2,3\n"
+          + "      ]\n"
+          + "    }\n"
+          + "  ]\n"
+          + "}";
 
   @Autowired private MockMvc mockMvc;
 
@@ -225,6 +238,43 @@ class UserControllerTest {
                 .contentType(APPLICATION_JSON)
                 .header("Authorization", jwt))
         .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void completeEnrolledQuiz_withIncorrectEnrolledQuizId_notFound() throws Exception {
+    when(userService.completeEnrolledQuiz(anyLong(), any(), any())).thenReturn(Optional.empty());
+
+    mockMvc
+        .perform(
+            post("/api/v1/users/enrolledQuizzes/1")
+                .contentType(APPLICATION_JSON)
+                .content(COMPLETE_ENROLLED_QUIZ_REQUEST)
+                .header("Authorization", generateJwtToken()))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void completeEnrolledQuiz_withCorrectEnrolledQuizId_isOk() throws Exception {
+    when(userService.completeEnrolledQuiz(anyLong(), any(), any()))
+        .thenReturn(Optional.of(EnrolledQuizAssessmentResponseDto.getInstant()));
+
+    mockMvc
+        .perform(
+            post("/api/v1/users/enrolledQuizzes/1")
+                .contentType(APPLICATION_JSON)
+                .content(COMPLETE_ENROLLED_QUIZ_REQUEST)
+                .header("Authorization", generateJwtToken()))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void completeEnrolledQuiz_withoutJwtToken_isUnAuthorized() throws Exception {
+    mockMvc
+        .perform(
+            post("/api/v1/users/enrolledQuizzes/1")
+                .contentType(APPLICATION_JSON)
+                .content(COMPLETE_ENROLLED_QUIZ_REQUEST))
+        .andExpect(status().isUnauthorized());
   }
 
   private String generateJwtToken() {

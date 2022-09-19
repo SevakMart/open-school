@@ -1,10 +1,13 @@
 package app.openschool.user;
 
 import app.openschool.category.Category;
-import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
+import app.openschool.course.module.quiz.api.dto.EnrolledQuizAssessmentRequestDto;
+import app.openschool.course.module.quiz.api.dto.EnrolledQuizAssessmentResponseDto;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,4 +51,9 @@ public interface UserService {
   void deleteMentor(User user, Long mentorId);
 
   void completeEnrolledModuleItem(Long enrolledModuleItemId);
+
+  Optional<EnrolledQuizAssessmentResponseDto> completeEnrolledQuiz(
+      Long enrolledQuizId,
+      EnrolledQuizAssessmentRequestDto enrolledQuizAssessmentRequestDto,
+      Locale locale);
 }

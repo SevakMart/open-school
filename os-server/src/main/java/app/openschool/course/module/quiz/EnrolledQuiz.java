@@ -20,6 +20,9 @@ public class EnrolledQuiz {
   @Column(name = "id", nullable = false)
   private Long id;
 
+  @Column(name = "student_grade")
+  private int studentGrade = 0;
+
   @ManyToOne
   @JoinColumn(name = "quiz_status_id")
   private QuizStatus quizStatus;
@@ -70,5 +73,13 @@ public class EnrolledQuiz {
 
   public void setEnrolledModule(EnrolledModule enrolledModule) {
     this.enrolledModule = enrolledModule;
+  }
+
+  public int getStudentGrade() {
+    return studentGrade;
+  }
+
+  public void setStudentGrade(int studentGrade) {
+    this.studentGrade = studentGrade;
   }
 }

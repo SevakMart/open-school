@@ -26,9 +26,6 @@ public class Quiz {
   @Column(name = "max_grade", nullable = false)
   private int maxGrade;
 
-  @Column(name = "student_grade")
-  private int studentGrade;
-
   @Column(name = "passing_score", nullable = false)
   private int passingScore;
 
@@ -57,14 +54,6 @@ public class Quiz {
 
   public void setMaxGrade(int maxGrade) {
     this.maxGrade = maxGrade;
-  }
-
-  public int getStudentGrade() {
-    return studentGrade;
-  }
-
-  public void setStudentGrade(int studentGrade) {
-    this.studentGrade = studentGrade;
   }
 
   public int getPassingScore() {

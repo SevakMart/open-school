@@ -1,6 +1,7 @@
 package app.openschool.course.module.api.dto;
 
 import app.openschool.course.module.item.api.EnrolledModuleItemOverviewDto;
+import app.openschool.course.module.quiz.api.dto.EnrolledQuizDto;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Set;
@@ -19,15 +20,21 @@ public class EnrolledModuleOverviewDto {
   @ArraySchema(schema = @Schema(implementation = EnrolledModuleItemOverviewDto.class))
   private final Set<EnrolledModuleItemOverviewDto> enrolledModulesItems;
 
+  @ArraySchema(schema = @Schema(implementation = EnrolledQuizDto.class))
+  private final Set<EnrolledQuizDto> enrolledQuizDtoSet;
+
   public EnrolledModuleOverviewDto(
       String title,
       String status,
       long estimatedTime,
-      Set<EnrolledModuleItemOverviewDto> enrolledModulesItems) {
+      Set<EnrolledModuleItemOverviewDto> enrolledModulesItems,
+      Set<EnrolledQuizDto> enrolledQuizDtoSet) {
     this.title = title;
     this.status = status;
     this.estimatedTime = estimatedTime;
     this.enrolledModulesItems = enrolledModulesItems;
+
+    this.enrolledQuizDtoSet = enrolledQuizDtoSet;
   }
 
   public String getTitle() {
@@ -44,5 +51,9 @@ public class EnrolledModuleOverviewDto {
 
   public Set<EnrolledModuleItemOverviewDto> getEnrolledModulesItems() {
     return enrolledModulesItems;
+  }
+
+  public Set<EnrolledQuizDto> getEnrolledQuizDtoSet() {
+    return enrolledQuizDtoSet;
   }
 }

@@ -15,6 +15,9 @@ public class QuestionDto {
       example = "Which of the following is a Java keyword")
   private String question;
 
+  @Schema(description = "The right answers count", example = "3")
+  private int rightAnswersCount;
+
   @Schema(
       description = "One of quiz question type (MATCHING or MULTIPLE_CHOICE)",
       example = "MULTIPLE_CHOICE")
@@ -57,5 +60,13 @@ public class QuestionDto {
 
   public void setAnswerOptions(Set<AnswerOptionDto> answerOptions) {
     this.answerOptions = answerOptions;
+  }
+
+  public int getRightAnswersCount() {
+    return rightAnswersCount;
+  }
+
+  public void setRightAnswersCount(int rightAnswersCount) {
+    this.rightAnswersCount = rightAnswersCount;
   }
 }

@@ -10,6 +10,7 @@ import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.api.EnrolledModuleItemMapper;
 import app.openschool.course.module.item.status.ModuleItemStatus;
 import app.openschool.course.module.quiz.EnrolledQuiz;
+import app.openschool.course.module.quiz.api.mapper.QuizMapper;
 import app.openschool.course.module.quiz.status.QuizStatus;
 import app.openschool.course.module.status.ModuleStatus;
 import java.util.HashSet;
@@ -34,7 +35,8 @@ public class EnrolledModuleMapper {
         enrolledModule.getModuleStatus().getType(),
         getModuleEstimatedTime(enrolledModule.getModule()),
         EnrolledModuleItemMapper.toEnrolledModuleItemOverviewDtoList(
-            enrolledModule.getEnrolledModuleItems()));
+            enrolledModule.getEnrolledModuleItems()),
+        QuizMapper.enrolledQuizzesToEnrolledQuizDtoSet(enrolledModule.getEnrolledQuizzes()));
   }
 
   public static Set<EnrolledModule> toEnrolledModules(
@@ -48,7 +50,7 @@ public class EnrolledModuleMapper {
         .map(
             enrolledModule -> {
               enrolledModule.setEnrolledModuleItems(getEnrolledModuleItems(enrolledModule));
-              enrolledModule.setEnrolledQuiz(getEnrolledQuizzes(enrolledModule));
+              enrolledModule.setEnrolledQuizzes(getEnrolledQuizzes(enrolledModule));
               return enrolledModule;
             })
         .collect(Collectors.toSet());

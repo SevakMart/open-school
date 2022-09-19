@@ -1,8 +1,10 @@
 package app.openschool.course.module.quiz.api.mapper;
 
 import app.openschool.course.module.Module;
+import app.openschool.course.module.quiz.EnrolledQuiz;
 import app.openschool.course.module.quiz.Quiz;
 import app.openschool.course.module.quiz.api.dto.CreateQuizDto;
+import app.openschool.course.module.quiz.api.dto.EnrolledQuizDto;
 import app.openschool.course.module.quiz.api.dto.QuizDto;
 import app.openschool.course.module.quiz.question.Question;
 import app.openschool.course.module.quiz.question.answer.AnswerOption;
@@ -34,10 +36,14 @@ public final class QuizMapper {
     quizDto.setId(quiz.getId());
     quizDto.setModuleId(quiz.getModule().getId());
     quizDto.setMaxGrade(quiz.getMaxGrade());
-    quizDto.setStudentGrade(quiz.getStudentGrade());
     quizDto.setPassingScore(quiz.getPassingScore());
     quizDto.setQuestions(questionsToQuestionDto(quiz.getQuestions()));
     return quizDto;
+  }
+
+  public static Set<EnrolledQuizDto> enrolledQuizzesToEnrolledQuizDtoSet(
+      Set<EnrolledQuiz> enrolledQuiz) {
+    return enrolledQuiz.stream().map(QuizMapper::toEnrolledQuizDtoSet).collect(Collectors.toSet());
   }
 
   private static Set<Question> createQuestionDtoToQuestions(
@@ -47,6 +53,7 @@ public final class QuizMapper {
             createQuestionDto -> {
               Question question = Question.getInstance();
               question.setQuestion(createQuestionDto.getQuestion());
+              question.setRightAnswersCount(createQuestionDto.getRightAnswersCount());
               question.setAnswerOptions(
                   createAnswerOptionDtoToAnswerOptions(
                       createQuestionDto.getAnswerOptions(), question));
@@ -84,6 +91,7 @@ public final class QuizMapper {
               QuestionDto questionDto = QuestionDto.getInstance();
               questionDto.setId(question.getId());
               questionDto.setQuestion(question.getQuestion());
+              questionDto.setRightAnswersCount(question.getRightAnswersCount());
               questionDto.setQuestionType(question.getQuestionType().getType());
               questionDto.setAnswerOptions(
                   answerOptionToAnswerOptionDto(question.getAnswerOptions()));
@@ -104,5 +112,17 @@ public final class QuizMapper {
               return answerOptionDto;
             })
         .collect(Collectors.toSet());
+  }
+
+  private static EnrolledQuizDto toEnrolledQuizDtoSet(EnrolledQuiz enrolledQuiz) {
+    EnrolledQuizDto enrolledQuizDto = EnrolledQuizDto.getInstance();
+    enrolledQuizDto.setId(enrolledQuiz.getId());
+    enrolledQuizDto.setEnrolledModuleId(enrolledQuiz.getEnrolledModule().getId());
+    enrolledQuizDto.setMaxGrade(enrolledQuiz.getQuiz().getMaxGrade());
+    enrolledQuizDto.setStudentGrade(enrolledQuiz.getStudentGrade());
+    enrolledQuizDto.setPassingScore(enrolledQuiz.getQuiz().getPassingScore());
+    enrolledQuizDto.setQuizStatus(enrolledQuiz.getQuizStatus().getType());
+    enrolledQuizDto.setQuestions(questionsToQuestionDto(enrolledQuiz.getQuiz().getQuestions()));
+    return enrolledQuizDto;
   }
 }

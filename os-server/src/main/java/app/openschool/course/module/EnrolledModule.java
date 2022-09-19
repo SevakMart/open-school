@@ -41,7 +41,7 @@ public class EnrolledModule {
   private Set<EnrolledModuleItem> enrolledModuleItems;
 
   @OneToMany(cascade = CascadeType.MERGE, mappedBy = "enrolledModule")
-  private Set<EnrolledQuiz> enrolledQuiz;
+  private Set<EnrolledQuiz> enrolledQuizzes;
 
   public EnrolledModule() {}
 
@@ -62,6 +62,10 @@ public class EnrolledModule {
     this.enrolledCourse = enrolledCourse;
     this.moduleStatus = moduleStatus;
     this.enrolledModuleItems = enrolledModuleItems;
+  }
+
+  public static EnrolledModule getInstance() {
+    return new EnrolledModule();
   }
 
   public Long getId() {
@@ -104,11 +108,11 @@ public class EnrolledModule {
     this.enrolledModuleItems = enrolledModuleItems;
   }
 
-  public Set<EnrolledQuiz> getEnrolledQuiz() {
-    return enrolledQuiz;
+  public Set<EnrolledQuiz> getEnrolledQuizzes() {
+    return enrolledQuizzes;
   }
 
-  public void setEnrolledQuiz(Set<EnrolledQuiz> enrolledQuiz) {
-    this.enrolledQuiz = enrolledQuiz;
+  public void setEnrolledQuizzes(Set<EnrolledQuiz> enrolledQuizzes) {
+    this.enrolledQuizzes = enrolledQuizzes;
   }
 }

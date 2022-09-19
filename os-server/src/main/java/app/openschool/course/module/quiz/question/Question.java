@@ -28,6 +28,9 @@ public class Question {
   @Column(name = "question", nullable = false)
   private String question;
 
+  @Column(name = "right_answer_count", nullable = false)
+  private int rightAnswersCount = 1;
+
   @ManyToOne
   @JoinColumn(name = "question_type_id", nullable = false)
   private QuestionType questionType;
@@ -99,5 +102,13 @@ public class Question {
 
   public void setAnswerOptions(Set<AnswerOption> answerOptions) {
     this.answerOptions = answerOptions;
+  }
+
+  public int getRightAnswersCount() {
+    return rightAnswersCount;
+  }
+
+  public void setRightAnswersCount(int rightAnswersCount) {
+    this.rightAnswersCount = rightAnswersCount;
   }
 }

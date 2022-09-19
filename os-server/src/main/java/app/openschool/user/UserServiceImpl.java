@@ -13,13 +13,27 @@ import app.openschool.course.module.EnrolledModuleRepository;
 import app.openschool.course.module.item.EnrolledModuleItem;
 import app.openschool.course.module.item.EnrolledModuleItemRepository;
 import app.openschool.course.module.item.status.ModuleItemStatusRepository;
+import app.openschool.course.module.quiz.EnrolledQuiz;
+import app.openschool.course.module.quiz.EnrolledQuizRepository;
+import app.openschool.course.module.quiz.Quiz;
+import app.openschool.course.module.quiz.api.dto.EnrolledQuizAssessmentRequestDto;
+import app.openschool.course.module.quiz.api.dto.EnrolledQuizAssessmentResponseDto;
+import app.openschool.course.module.quiz.api.mapper.EnrolledQuizAssessmentResponseMapper;
+import app.openschool.course.module.quiz.question.Question;
+import app.openschool.course.module.quiz.status.QuizStatus;
 import app.openschool.course.module.status.ModuleStatusRepository;
 import app.openschool.course.status.CourseStatusRepository;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +52,8 @@ public class UserServiceImpl implements UserService {
   private final CourseStatusRepository courseStatusRepository;
   private final ModuleStatusRepository moduleStatusRepository;
   private final ModuleItemStatusRepository moduleItemStatusRepository;
+  private final EnrolledQuizRepository enrolledQuizRepository;
+  private final MessageSource messageSource;
 
   public UserServiceImpl(
       UserRepository userRepository,
@@ -48,7 +64,9 @@ public class UserServiceImpl implements UserService {
       EnrolledModuleItemRepository enrolledModuleItemRepository,
       CourseStatusRepository courseStatusRepository,
       ModuleStatusRepository moduleStatusRepository,
-      ModuleItemStatusRepository moduleItemStatusRepository) {
+      ModuleItemStatusRepository moduleItemStatusRepository,
+      EnrolledQuizRepository enrolledQuizRepository,
+      MessageSource messageSource) {
     this.userRepository = userRepository;
     this.categoryRepository = categoryRepository;
     this.courseRepository = courseRepository;
@@ -58,6 +76,8 @@ public class UserServiceImpl implements UserService {
     this.courseStatusRepository = courseStatusRepository;
     this.moduleStatusRepository = moduleStatusRepository;
     this.moduleItemStatusRepository = moduleItemStatusRepository;
+    this.enrolledQuizRepository = enrolledQuizRepository;
+    this.messageSource = messageSource;
   }
 
   @Override
@@ -237,6 +257,17 @@ public class UserServiceImpl implements UserService {
     }
   }
 
+  @Override
+  @Transactional
+  public Optional<EnrolledQuizAssessmentResponseDto> completeEnrolledQuiz(
+      Long enrolledQuizId,
+      EnrolledQuizAssessmentRequestDto enrolledQuizAssessmentRequestDto,
+      Locale locale) {
+    return enrolledQuizRepository
+        .findById(enrolledQuizId)
+        .map(enrolledQuiz -> completeQuiz(enrolledQuiz, enrolledQuizAssessmentRequestDto, locale));
+  }
+
   private void completeEnrolledModule(EnrolledModule enrolledModule) {
     enrolledModule.setModuleStatus(moduleStatusRepository.getById(2L));
     enrolledModuleRepository.save(enrolledModule);
@@ -259,5 +290,80 @@ public class UserServiceImpl implements UserService {
   private boolean allModulesInCourseAreCompleted(EnrolledCourse enrolledCourse) {
     return enrolledCourse.getEnrolledModules().stream()
         .noneMatch(enrolledModule -> enrolledModule.getModuleStatus().isInProgress());
+  }
+
+  private EnrolledQuizAssessmentResponseDto completeQuiz(
+      EnrolledQuiz enrolledQuiz,
+      EnrolledQuizAssessmentRequestDto enrolledQuizAssessmentRequestDto,
+      Locale locale) {
+    AtomicInteger rightAnswers =
+        checkQuestionsAndReturnRightAnswersCount(
+            enrolledQuiz.getQuiz(), enrolledQuizAssessmentRequestDto);
+    String assessmentResult =
+        getAssessmentResult(rightAnswers.get(), enrolledQuiz.getQuiz(), locale);
+    updateEnrolledQuiz(rightAnswers.get(), enrolledQuiz);
+    return EnrolledQuizAssessmentResponseMapper.toEnrolledQuizAssessmentResponseDto(
+        rightAnswers.get(),
+        assessmentResult,
+        enrolledQuiz.getQuiz().getPassingScore(),
+        enrolledQuiz.getQuiz().getMaxGrade());
+  }
+
+  private void updateEnrolledQuiz(int studentGrade, EnrolledQuiz enrolledQuiz) {
+    enrolledQuiz.setStudentGrade(studentGrade);
+    if (studentGrade >= enrolledQuiz.getQuiz().getPassingScore()) {
+      enrolledQuiz.setQuizStatus(QuizStatus.isCompleted());
+    } else {
+      enrolledQuiz.setQuizStatus(QuizStatus.isFailed());
+    }
+    enrolledQuizRepository.save(enrolledQuiz);
+  }
+
+  private String getAssessmentResult(int rightAnswers, Quiz quiz, Locale locale) {
+    return quiz.getPassingScore() <= rightAnswers
+        ? messageSource.getMessage("quiz.completed", null, locale)
+        : messageSource.getMessage("quiz.failed", null, locale);
+  }
+
+  private AtomicInteger checkQuestionsAndReturnRightAnswersCount(
+      Quiz quiz, EnrolledQuizAssessmentRequestDto enrolledQuizAssessmentRequestDto) {
+    AtomicInteger rightAnswers = new AtomicInteger(0);
+    quiz.getQuestions()
+        .forEach(
+            question -> {
+              if (checkQuestion(question, enrolledQuizAssessmentRequestDto)) {
+                rightAnswers.getAndIncrement();
+              }
+            });
+    return rightAnswers;
+  }
+
+  private boolean checkQuestion(
+      Question question, EnrolledQuizAssessmentRequestDto enrolledQuizAssessmentRequestDto) {
+    AtomicBoolean isRightAnswer = new AtomicBoolean(false);
+    enrolledQuizAssessmentRequestDto
+        .getQuestionWithChosenAnswerDtoSet()
+        .forEach(
+            questionWithChosenAnswerDto -> {
+              if (Objects.equals(questionWithChosenAnswerDto.getQuestionId(), question.getId())) {
+                isRightAnswer.set(
+                    checkQuestionAnswers(
+                        question, questionWithChosenAnswerDto.getChosenAnswersIds()));
+              }
+            });
+    return isRightAnswer.get();
+  }
+
+  private boolean checkQuestionAnswers(Question question, List<Long> chosenAnswerIds) {
+    AtomicInteger rightAnswers = new AtomicInteger();
+    question
+        .getAnswerOptions()
+        .forEach(
+            answerOption -> {
+              if (chosenAnswerIds.contains(answerOption.getId()) && answerOption.isRightAnswer()) {
+                rightAnswers.getAndIncrement();
+              }
+            });
+    return rightAnswers.get() == question.getRightAnswersCount();
   }
 }

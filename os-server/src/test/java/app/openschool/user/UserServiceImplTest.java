@@ -32,6 +32,11 @@ import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.status.ModuleItemStatus;
 import app.openschool.course.module.item.status.ModuleItemStatusRepository;
 import app.openschool.course.module.item.type.ModuleItemType;
+import app.openschool.course.module.quiz.EnrolledQuizRepository;
+import app.openschool.course.module.quiz.QuizRepository;
+import app.openschool.course.module.quiz.util.EnrolledQuizAssessmentRequestDtoGenerator;
+import app.openschool.course.module.quiz.util.EnrolledQuizAssessmentResponseDtoGenerator;
+import app.openschool.course.module.quiz.util.EnrolledQuizGenerator;
 import app.openschool.course.module.status.ModuleStatus;
 import app.openschool.course.module.status.ModuleStatusRepository;
 import app.openschool.course.status.CourseStatus;
@@ -43,6 +48,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,6 +57,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -68,6 +75,8 @@ class UserServiceImplTest {
   @Mock private CourseStatusRepository courseStatusRepository;
   @Mock private ModuleStatusRepository moduleStatusRepository;
   @Mock private ModuleItemStatusRepository moduleItemStatusRepository;
+  @Mock private EnrolledQuizRepository enrolledQuizRepository;
+  @Mock private MessageSource messageSource;
 
   private UserService userService;
 
@@ -83,7 +92,9 @@ class UserServiceImplTest {
             enrolledModuleItemRepository,
             courseStatusRepository,
             moduleStatusRepository,
-            moduleItemStatusRepository);
+            moduleItemStatusRepository,
+            enrolledQuizRepository,
+            messageSource);
   }
 
   @Test
@@ -535,6 +546,37 @@ class UserServiceImplTest {
     verify(userRepository, times(1)).findById(anyLong());
   }
 
+  @Test
+  void completeEnrolledModuleItem_with_incorrect_argument_throws_exception() {
+    when(enrolledModuleItemRepository.findById(anyLong())).thenReturn(Optional.empty());
+    assertThatThrownBy(() -> userService.completeEnrolledModuleItem(1L))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void completeEnrolledQuiz_WithIncorrectQuizId_returnEmptyOptional() {
+    when(enrolledQuizRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+    assertEquals(userService.completeEnrolledQuiz(1L, null, null), Optional.empty());
+  }
+
+  @Test
+  void completeEnrolledQuiz_WithCorrectQuizId_returnOptionalOfEnrolledQuizAssessmentResponseDto() {
+    String quizStatus = "FAILED";
+    when(enrolledQuizRepository.findById(anyLong()))
+        .thenReturn(Optional.of(EnrolledQuizGenerator.generateEnrolledQuiz()));
+    when(messageSource.getMessage(anyString(), any(), any())).thenReturn(quizStatus);
+
+    assertEquals(
+        userService.completeEnrolledQuiz(
+            1L,
+            EnrolledQuizAssessmentRequestDtoGenerator.generateEnrolledQuizAssessmentRequestDto(),
+            Locale.ROOT),
+        Optional.of(
+            EnrolledQuizAssessmentResponseDtoGenerator.generateEnrolledQuizAssessmentResponseDto(
+                quizStatus)));
+  }
+
   private Page<User> generateUserPage(Pageable pageable) {
     List<User> userList = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
@@ -551,12 +593,5 @@ class UserServiceImplTest {
     }
     user.setMentors(mentors);
     return user;
-  }
-
-  @Test
-  void completeEnrolledModuleItem_with_incorrect_argument_throws_exception() {
-    when(enrolledModuleItemRepository.findById(anyLong())).thenReturn(Optional.empty());
-    assertThatThrownBy(() -> userService.completeEnrolledModuleItem(1L))
-        .isInstanceOf(IllegalArgumentException.class);
   }
 }

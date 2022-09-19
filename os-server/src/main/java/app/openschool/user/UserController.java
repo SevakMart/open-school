@@ -12,6 +12,8 @@ import app.openschool.course.api.dto.UserSavedCourseRequest;
 import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.course.api.mapper.EnrolledCourseMapper;
 import app.openschool.course.api.mapper.UserCourseMapper;
+import app.openschool.course.module.quiz.api.dto.EnrolledQuizAssessmentRequestDto;
+import app.openschool.course.module.quiz.api.dto.EnrolledQuizAssessmentResponseDto;
 import app.openschool.user.api.dto.UserWithSavedMentorsDto;
 import app.openschool.user.api.mapper.UserMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +24,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -332,5 +335,31 @@ public class UserController {
           Long enrolledModuleItemId) {
     userService.completeEnrolledModuleItem(enrolledModuleItemId);
     return ResponseEntity.noContent().build();
+  }
+
+  @Operation(
+      summary = "complete enrolled quiz",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Enrolled quiz assessment result"),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Invalid quiz id supplied",
+            content = @Content(schema = @Schema())),
+      })
+  @PostMapping("/enrolledQuizzes/{enrolledQuizId}")
+  public ResponseEntity<EnrolledQuizAssessmentResponseDto> completeEnrolledQuiz(
+      @Parameter(description = "Id of the enrolled quiz which will be completed") @PathVariable
+          Long enrolledQuizId,
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description = "Request object which contains questions and chosen answer options")
+          @RequestBody
+          EnrolledQuizAssessmentRequestDto enrolledQuizAssessmentRequestDto,
+      Locale locale) {
+    return userService
+        .completeEnrolledQuiz(enrolledQuizId, enrolledQuizAssessmentRequestDto, locale)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
   }
 }

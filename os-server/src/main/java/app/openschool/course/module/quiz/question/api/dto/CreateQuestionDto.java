@@ -12,6 +12,9 @@ public class CreateQuestionDto {
       example = "What is Java bytecode")
   private String question;
 
+  @Schema(description = "The right answers count", example = "3")
+  private int rightAnswersCount;
+
   @ArraySchema(schema = @Schema(implementation = CreateAnswerOptionDto.class))
   private Set<CreateAnswerOptionDto> answerOptions;
 
@@ -46,5 +49,13 @@ public class CreateQuestionDto {
 
   public void setQuestionType(String questionType) {
     this.questionType = questionType;
+  }
+
+  public int getRightAnswersCount() {
+    return rightAnswersCount;
+  }
+
+  public void setRightAnswersCount(int rightAnswersCount) {
+    this.rightAnswersCount = rightAnswersCount;
   }
 }

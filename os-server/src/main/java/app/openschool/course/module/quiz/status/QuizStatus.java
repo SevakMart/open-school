@@ -27,7 +27,15 @@ public class QuizStatus {
   }
 
   public static QuizStatus isInProgress() {
-    return new QuizStatus(1L, "INITIAL");
+    return new QuizStatus(1L, "IN_PROGRESS");
+  }
+
+  public static QuizStatus isFailed() {
+    return new QuizStatus(3L, "FAILED");
+  }
+
+  public static QuizStatus isCompleted() {
+    return new QuizStatus(2L, "COMPLETED");
   }
 
   public Long getId() {

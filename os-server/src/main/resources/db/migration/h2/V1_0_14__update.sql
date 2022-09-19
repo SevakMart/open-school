@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS question_type (
 CREATE TABLE IF NOT EXISTS quiz (
     id BIGINT NOT NULL AUTO_INCREMENT,
     max_grade INT NOT NULL,
-    student_grade INT NOT NULL,
     passing_score INT NOT NULL,
     module_id BIGINT NOT NULL,
     PRIMARY KEY (id),
@@ -40,6 +39,7 @@ CREATE TABLE IF NOT EXISTS quiz (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS enrolled_quiz (
     id BIGINT NOT NULL AUTO_INCREMENT,
+    student_grade INT NOT NULL,
     quiz_status_id BIGINT NOT NULL,
     quiz_id BIGINT NOT NULL,
     enrolled_module_id BIGINT NOT NULL,
@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS enrolled_quiz (
 CREATE TABLE IF NOT EXISTS questions (
     id BIGINT NOT NULL AUTO_INCREMENT,
     question TEXT NOT NULL,
+    right_answer_count INT NOT NULL,
     quiz_id BIGINT NOT NULL,
     question_type_id BIGINT NOT NULL,
     PRIMARY KEY (id),
