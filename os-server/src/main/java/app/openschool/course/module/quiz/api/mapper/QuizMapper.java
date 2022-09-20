@@ -9,10 +9,9 @@ import app.openschool.course.module.quiz.api.dto.QuizDto;
 import app.openschool.course.module.quiz.question.Question;
 import app.openschool.course.module.quiz.question.answer.AnswerOption;
 import app.openschool.course.module.quiz.question.answer.api.dto.AnswerOptionDto;
-import app.openschool.course.module.quiz.question.answer.api.dto.CreateAnswerOptionDto;
 import app.openschool.course.module.quiz.question.api.dto.CreateQuestionDto;
 import app.openschool.course.module.quiz.question.api.dto.QuestionDto;
-import app.openschool.course.module.quiz.question.type.QuestionType;
+import app.openschool.course.module.quiz.question.api.mapper.QuestionMapper;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,38 +49,9 @@ public final class QuizMapper {
       Set<CreateQuestionDto> questions, Quiz quiz) {
     return questions.stream()
         .map(
-            createQuestionDto -> {
-              Question question = Question.getInstance();
-              question.setQuestion(createQuestionDto.getQuestion());
-              question.setRightAnswersCount(createQuestionDto.getRightAnswersCount());
-              question.setAnswerOptions(
-                  createAnswerOptionDtoToAnswerOptions(
-                      createQuestionDto.getAnswerOptions(), question));
-              question.setQuestionType(createQuestionType(createQuestionDto.getQuestionType()));
-              question.setQuiz(quiz);
-              return question;
-            })
+            createQuestionDto ->
+                QuestionMapper.createQuestionDtoToQuestion(createQuestionDto, quiz))
         .collect(Collectors.toSet());
-  }
-
-  private static Set<AnswerOption> createAnswerOptionDtoToAnswerOptions(
-      Set<CreateAnswerOptionDto> answerOptions, Question question) {
-    return answerOptions.stream()
-        .map(
-            createAnswerOptionDto -> {
-              AnswerOption answerOption = AnswerOption.getInstance();
-              answerOption.setAnswerOption(createAnswerOptionDto.getAnswerOption());
-              answerOption.setRightAnswer(createAnswerOptionDto.getRightAnswer());
-              answerOption.setQuestion(question);
-              return answerOption;
-            })
-        .collect(Collectors.toSet());
-  }
-
-  private static QuestionType createQuestionType(String questionType) {
-    return questionType.equals(MULTIPLE_CHOICE)
-        ? QuestionType.isMultipleChoice()
-        : QuestionType.isMatching();
   }
 
   private static Set<QuestionDto> questionsToQuestionDto(Set<Question> questions) {

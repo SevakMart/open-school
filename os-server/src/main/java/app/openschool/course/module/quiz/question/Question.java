@@ -35,7 +35,7 @@ public class Question {
   @JoinColumn(name = "question_type_id", nullable = false)
   private QuestionType questionType;
 
-  @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "question", orphanRemoval = true, cascade = CascadeType.ALL)
   private Set<AnswerOption> answerOptions;
 
   @ManyToOne

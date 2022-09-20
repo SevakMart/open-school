@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
+import app.openschool.course.module.quiz.question.api.dto.CreateQuestionDto;
+import app.openschool.course.module.quiz.question.util.CreateQuestionDtoGenerator;
 import app.openschool.course.module.quiz.question.util.QuestionGenerator;
 import app.openschool.user.User;
 import app.openschool.user.api.UserGenerator;
@@ -65,6 +67,40 @@ class QuestionServiceImplTest {
 
     Long questionId = 1L;
     assertThatThrownBy(() -> questionService.deleteQuestion(questionId))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void updateQuestion_withCorrectQuestionId_returnTrue() {
+    when(questionRepository.findById(anyLong()))
+        .thenReturn(Optional.of(QuestionGenerator.generateQuestion()));
+
+    setAuthentication(UserGenerator.generateMentor());
+
+    Long questionId = 1L;
+    assertTrue(
+        questionService.updateQuestion(
+            questionId, CreateQuestionDtoGenerator.generateCreateQuestionDto()));
+  }
+
+  @Test
+  void updateQuestion_withInCorrectQuestionId_returnFalse() {
+    when(questionRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+    Long questionId = 1L;
+    assertFalse(questionService.updateQuestion(questionId, CreateQuestionDto.getInstance()));
+  }
+
+  @Test
+  void updateQuestion_withIncorrectMentor_throwIllegalArgumentException() {
+    when(questionRepository.findById(anyLong()))
+        .thenReturn(Optional.of(QuestionGenerator.generateQuestion()));
+
+    setAuthentication(UserGenerator.generateStudent());
+
+    Long questionId = 1L;
+    assertThatThrownBy(
+            () -> questionService.updateQuestion(questionId, CreateQuestionDto.getInstance()))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
