@@ -12,6 +12,7 @@ import allMentorsSliceReducer from './Slices/AllMentorsSlice';
 import savedMentorsReducer from './Slices/SavedMentorsSlice';
 import savedCourseReducer from './Slices/SavedLearningPathSlice';
 import homepageMentorListReducer from './Slices/HomepageMentorSlice';
+import homepageCategoriesListReducer from './Slices/HomepageCategoriesSlice';
 import portalStatusReducer from './Slices/PortalOpenStatus';
 
 const rootReducer = combineReducers({
@@ -29,5 +30,6 @@ const rootReducer = combineReducers({
   savedMentors: savedMentorsReducer,
   savedCourse: savedCourseReducer,
   homepageMentorList: homepageMentorListReducer,
+  homepageCategoriesList: homepageCategoriesListReducer,
 });
 export default rootReducer;

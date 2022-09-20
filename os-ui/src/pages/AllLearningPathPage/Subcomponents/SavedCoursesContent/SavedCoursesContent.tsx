@@ -1,13 +1,11 @@
-import React, { useEffect, useContext } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useEffect, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/Store';
 import { SuggestedCourseType } from '../../../../types/SuggestedCourseType';
 import LearningPath from '../../../../component/LearningPath/LearningPath';
 import { getUserSavedCourse } from '../../../../redux/Slices/SavedLearningPathSlice';
-import Loader from '../../../../component/Loader/Loader';
-import { ErrorField } from '../../../../component/ErrorField/ErrorField';
+import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
 import { userContext } from '../../../../contexts/Contexts';
 import styles from './SavedCoursesContent.module.scss';
 
@@ -17,11 +15,9 @@ const SavedCoursesContent = () => {
   const dispatch = useDispatch();
   const savedCourses = useSelector<RootState>((state) => state.savedCourse);
   const { entity, isLoading, errorMessage } = savedCourses as {entity:SuggestedCourseType[], isLoading:boolean, errorMessage:string};
-  const { t } = useTranslation();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const { mainContainer } = styles;
-  const NoDisplayedDataMessage = <h2 data-testid="Error Message">{t('messages.noData.default')}</h2>;
 
   useEffect(() => {
     dispatch(getUserSavedCourse({ userId, token }));
@@ -29,20 +25,20 @@ const SavedCoursesContent = () => {
 
   return (
     <div className={mainContainer}>
-      {isLoading && <Loader />}
-      {errorMessage !== '' && (
-        <ErrorField.MainErrorField className={['allLearningPathErrorStyle']}>
-          {errorMessage}
-        </ErrorField.MainErrorField>
-      )}
-      {entity.length === 0 && !isLoading && errorMessage.length === 0 && NoDisplayedDataMessage }
-      {entity.length > 0 && entity.map((course) => (
-        <React.Fragment key={course.title}>
-          <LearningPath
-            courseInfo={course}
-          />
-        </React.Fragment>
-      ))}
+      <ContentRenderer
+        isLoading={isLoading}
+        errorMessage={errorMessage}
+        entity={entity}
+        errorFieldClassName="allLearningPathErrorStyle"
+        render={(entity) => (
+          entity.map((course) => (
+            <LearningPath
+              key={course.title}
+              courseInfo={course}
+            />
+          ))
+        )}
+      />
     </div>
 
   );
