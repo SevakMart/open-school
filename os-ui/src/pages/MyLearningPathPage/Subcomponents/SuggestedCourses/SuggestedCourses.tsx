@@ -2,10 +2,9 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/Store';
-import Loader from '../../../../component/Loader/Loader';
 import LearningPath from '../../../../component/LearningPath/LearningPath';
-import { ErrorField } from '../../../../component/ErrorField/ErrorField';
 import { getSuggestedCourses } from '../../../../redux/Slices/SuggestedCourseSlice';
+import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
 import styles from './SuggestedCourses.module.scss';
 
 /* eslint-disable max-len */
@@ -19,7 +18,6 @@ const SuggestedCourses = ({ userId, token }:{userId:number, token:string}) => {
     mainContainer, suggestedCoursesContainer, mainTitle, noSuggestedCourses,
   } = styles;
   const Title = <p className={mainTitle}>{t('string.myLearningPaths.suggestedLearningPaths')}</p>;
-  const NoSuggestedCourses = <h2>{t('No courses.suggested')}</h2>;
 
   useEffect(() => {
     dispatch(getSuggestedCourses({ userId, token }));
@@ -29,19 +27,20 @@ const SuggestedCourses = ({ userId, token }:{userId:number, token:string}) => {
     <div className={mainContainer}>
       {Title}
       <div className={entity.length > 0 ? suggestedCoursesContainer : noSuggestedCourses}>
-        {isLoading && <Loader />}
-        {errorMessage !== '' && (
-          <ErrorField.MainErrorField className={['suggestedCourseErrorStyle']}>
-            {errorMessage}
-          </ErrorField.MainErrorField>
-        )}
-        {entity.length === 0 && !isLoading && errorMessage.length === 0 && NoSuggestedCourses }
-        {entity.length > 0 && entity.map((suggestedCourse, index) => (
-          <LearningPath
-            key={index}
-            courseInfo={suggestedCourse}
-          />
-        ))}
+        <ContentRenderer
+          isLoading={isLoading}
+          errorMessage={errorMessage}
+          entity={entity}
+          errorFieldClassName="suggestedCourseErrorStyle"
+          render={(entity) => (
+            entity.map((suggestedCourse, index) => (
+              <LearningPath
+                key={index}
+                courseInfo={suggestedCourse}
+              />
+            ))
+          )}
+        />
       </div>
     </div>
   );
