@@ -39,6 +39,10 @@ const homepageMentorsSlice = createSlice({
       }
       state.isLoading = false;
     });
+    builder.addCase(getHomepageMentorsList.rejected, (state, action) => {
+      state.isLoading = false;
+      state.errorMessage = `${action.error.message}`;
+    });
   },
 });
 export default homepageMentorsSlice.reducer;

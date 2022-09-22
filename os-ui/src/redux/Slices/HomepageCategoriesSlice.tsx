@@ -39,6 +39,10 @@ const homepageCategoriesSlice = createSlice({
       }
       state.isLoading = false;
     });
+    builder.addCase(getHomepageCategoriesList.rejected, (state, action) => {
+      state.isLoading = false;
+      state.errorMessage = `${action.error.message}`;
+    });
   },
 });
 export default homepageCategoriesSlice.reducer;
