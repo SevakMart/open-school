@@ -1,34 +1,32 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { UserCourseType } from '../../../../types/UserCourseType';
-import TimeIcon from '../../../../icons/Time';
-import CalendarIcon from '../../../../icons/CalenderIcon';
+import ClockIcon from '../../../../assets/svg/ClockIcon.svg';
+import CalendarIcon from '../../../../assets/svg/CalendarIcon.svg';
+import Button from '../../../../component/Button/Button';
 import { transformTime } from '../../../../helpers/TimeTransform';
-import {
-  OVERALL_PROGRESS, STATUS, DUE_DATE, RESUME_COURSE, REMAINING_TIME,
-} from '../../../../constants/Strings';
 import styles from './InProgressCourse.module.scss';
 
 const InProgressCourse = ({
   title, courseStatus, percentage, remainingTime, dueDate,
 }:Omit<UserCourseType, 'grade'>) => {
   const {
-    mainContainer, container, progressBar, buttonContainer, courseTitle,
+    mainContainer, titleContainer, container, progressBar, buttonContainer, courseTitle,
     progressPercent, OverallProgress, containerTitle, progressing, progressContainer,
     dueDateContent, remainingTimeContent, statusContent, separator,
-    remainingTimeContainer, dueDateContainer,
+    remainingTimeContainer, dueDateContainer, calenderIcon, timeIcon,
   } = styles;
+  const { t } = useTranslation();
   const time = useState(transformTime(remainingTime))[0];
   return (
     <div className={mainContainer}>
-      <div className={container}>
+      <div className={titleContainer}>
         <p data-testid={title} className={courseTitle}>{title}</p>
         <div className={progressContainer}>
           <div className={progressBar}>
             <div
               className={progressing}
-              style={{
-                width: `${percentage}%`, backgroundColor: '#A0A3BD', height: '100%', borderRadius: '0.406rem',
-              }}
+              style={{ width: `${percentage}%` }}
             />
           </div>
           <p data-testid={percentage} className={progressPercent}>
@@ -36,32 +34,34 @@ const InProgressCourse = ({
             %
           </p>
         </div>
-        <p className={OverallProgress}>{OVERALL_PROGRESS}</p>
+        <p className={OverallProgress}>{t('string.myLearningPaths.inProgressCourse.overallProgress')}</p>
       </div>
       <div className={separator} />
       <div className={container}>
-        <p className={containerTitle}>{REMAINING_TIME}</p>
+        <p className={containerTitle}>{t('string.myLearningPaths.inProgressCourse.remainingTime')}</p>
         <div className={remainingTimeContainer}>
-          <p><TimeIcon /></p>
+          <img src={ClockIcon} className={timeIcon} alt="clockIcon" />
           <p data-testid={remainingTime} className={remainingTimeContent}>{time}</p>
         </div>
       </div>
       <div className={separator} />
       <div className={container}>
-        <p className={containerTitle}>{STATUS}</p>
+        <p className={containerTitle}>{t('string.myLearningPaths.inProgressCourse.status')}</p>
         <p data-testid={courseStatus} className={statusContent}>{courseStatus}</p>
       </div>
       <div className={separator} />
       <div className={container}>
-        <p className={containerTitle}>{DUE_DATE}</p>
+        <p className={containerTitle}>{t('string.myLearningPaths.inProgressCourse.dueDate')}</p>
         <div className={dueDateContainer}>
-          <p><CalendarIcon /></p>
+          <img src={CalendarIcon} className={calenderIcon} alt="calenderIcon" />
           <p data-testid={dueDate} className={dueDateContent}>{dueDate}</p>
         </div>
       </div>
       <div className={separator} />
       <div className={buttonContainer}>
-        <button type="button">{RESUME_COURSE}</button>
+        <Button.MainButton className={['resumeCourse']} onClick={() => null}>
+          {t('button.myLearningPathsPage.resumeCourse')}
+        </Button.MainButton>
       </div>
     </div>
   );

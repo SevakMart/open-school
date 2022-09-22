@@ -71,3 +71,8 @@
     @include fontStyle($primary-font, normal, 500, 1rem, 1.25rem);
     border:none;
 }
+.resumeCourse {
+    @include buttonStyle($secondary-color,$white-text-color,1rem,100%,64px,32px,32px,16px,16px);
+    @include fontStyle($primary-font, normal, 500, 16px, 20px);
+    border:none;
+}

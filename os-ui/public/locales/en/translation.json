@@ -91,7 +91,12 @@
           "status":"Status",
           "grade":"Grade",
           "rateCourse":"Rate Course"
-
+        },
+        "inProgressCourse":{
+          "overallProgress":"Overall Progress",
+          "status":"status",
+          "dueDate":"Due date",
+          "remainingTime":"Remaining Time"
         }
       }
     },
@@ -117,7 +122,8 @@
       },
       "resend":"Resend",
       "myLearningPathsPage":{
-        "exploreCourses":"Explore Courses"
+        "exploreCourses":"Explore Courses",
+        "resumeCourse":"Resume Course"
       }
     },
 

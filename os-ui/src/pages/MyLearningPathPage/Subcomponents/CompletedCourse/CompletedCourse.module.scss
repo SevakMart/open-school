@@ -12,18 +12,18 @@
         @include fontStyle($secondary-font,normal,700,24px,29px);
         text-decoration-line: underline;
         color: $header-main-color;
-        width:284px;
-        margin:54px 89px 54px 48px;
+        margin:54px 284px 54px 48px;
     }
     .container{
         margin:43px 89px;
         .containerTitle{
             @include fontStyle($primary-font,normal,500,14px,17px);
             color: #848A9D;
+            margin:0;
         }
         .gradeContent{
             @include fontStyle($primary-font,normal,500,16px,24px);
-            color: #333941;
+            color: $black-text-color;
         }
         .statusContent{
             background-color: #D9DBE9;
@@ -33,17 +33,6 @@
             padding:0.344rem 1rem 0.344rem 1rem;
         }
     }
-    /*.buttonContainer button{
-        border: 2px solid #848A9D;
-        background-color: transparent;
-        border-radius:1rem;
-        @include fontStyle('Montserrat',normal,500,1rem,1.25rem);
-        color:#848A9D;
-        //padding:1rem 2rem 1rem 2rem;
-        cursor:pointer;
-        display:inline-block;
-        border:2px solid red;
-    }*/
     .buttonContainer {
         margin-left:184px;   
     }
