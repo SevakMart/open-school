@@ -17,8 +17,9 @@
 .navContainer{
   padding:0 6%;
   h2 {
-    @include fontStyle($secondary-font, italic, 700, 1.75rem, 1.5rem);
+    @include fontStyle($secondary-font, italic, 700, 20px,24px);
     color:$header-main-color;
+    cursor:pointer;
   }
   
   .categoriesMentors {
