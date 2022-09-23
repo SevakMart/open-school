@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import chooseSubcategoryReducer from './Slices/ChoosSubcategorySlice';
-import userInfoReducer from './Slices/loginUserSlice';
+// import userInfoReducer from './Slices/loginUserSlice';
 import allLearningPathFilterParamsReducer from './Slices/AllLearningPathFilterParamsSlice';
 import forgotPasswordEmailReducer from './Slices/ForgotPasswordEmailSlice';
 import signedUpUserIdReducer from './Slices/SignedUpUserIdSlice';
@@ -13,6 +13,7 @@ import savedMentorsReducer from './Slices/SavedMentorsSlice';
 import savedCourseReducer from './Slices/SavedLearningPathSlice';
 import homepageMentorListReducer from './Slices/HomepageMentorSlice';
 import homepageCategoriesListReducer from './Slices/HomepageCategoriesSlice';
+import userInfoReducer from './Slices/UserInfoSlice';
 import portalStatusReducer from './Slices/PortalOpenStatus';
 
 const rootReducer = combineReducers({

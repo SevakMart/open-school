@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { validateSignInForm } from '../../../../helpers/SignInFormValidate';
 import authService from '../../../../services/authService';
 import { closeModal } from '../../../../redux/Slices/PortalOpenStatus';
-import { storage } from '../../../../services/storage/storage';
+import { addUserInfoToLocalStorage } from '../../../../redux/Slices/UserInfoSlice';
 import Form, { FormValues } from '../../Form/Form';
 
 const initialErrorFormValues = { fullNameError: '', emailError: '', passwordError: '' };
@@ -24,7 +24,7 @@ const SignInDefault = ({ handleSignIn }:{handleSignIn:()=>void}) => {
           setSignInErrorMessage(response.message);
           setErrorFormValue(initialErrorFormValues);
         } else if (response.status === 200) {
-          storage.addItemToLocalStorage('userInfo', response);
+          dispatch(addUserInfoToLocalStorage(response));
           handleSignIn();
           dispatch(closeModal());
         }

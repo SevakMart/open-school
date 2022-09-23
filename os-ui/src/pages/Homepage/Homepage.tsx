@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
-import HomepageHeader from '../../component/HomepageHeader/HomepageHeader';
+import HomepageHeader from './Subcomponents/Header/Header';
 import Footer from '../../component/Footer/Footer';
 import HomepageCategories from './Subcomponents/Categories/Categories';
 import HomepageMentors from './Subcomponents/Mentors/Mentors';
@@ -26,12 +26,12 @@ const Homepage = ({ userInfo }:{userInfo:any}) => {
   const idAndToken = useMemo(() => ({
     token: userInfo ? (userInfo as any).token : '',
     id: userInfo ? (userInfo as any).id : -1,
-  }), []);
+  }), [{ ...userInfo }]);
 
   return (
     <>
-      <HomepageHeader />
       <userContext.Provider value={idAndToken}>
+        <HomepageHeader />
         <HomepageCategories />
         <HomepageMentors />
       </userContext.Provider>

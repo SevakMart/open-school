@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { storage } from '../../services/storage/storage';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/Store';
 import Loader from '../Loader/Loader';
 import ProtectedRoute from './ProtectedRoute';
 import Homepage from '../../pages/Homepage/Homepage';
@@ -14,7 +15,8 @@ import AfterVerificationPage from '../../pages/AfterVerificationPage/AfterVerifi
 /* eslint-disable max-len */
 
 const AppRoutes = () => {
-  const userInfo = storage.getItemFromLocalStorage('userInfo');
+  const userInfoState = useSelector<RootState>((state) => state.userInfo);
+  const { userInfo } = userInfoState as any;
   return (
     <Suspense fallback={<Loader />}>
       <Routes>

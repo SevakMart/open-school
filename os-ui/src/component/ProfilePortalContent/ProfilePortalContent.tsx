@@ -1,14 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import { storage } from '../../services/storage/storage';
+import { useDispatch } from 'react-redux';
+import { removeUserInfoFromLocalStorage } from '../../redux/Slices/UserInfoSlice';
 import styles from './ProfilePortalContent.module.scss';
 
 const ProfilePortalContent = ({ icon, children, isSignOut }:any) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { mainContent, iconContainer, titleContent } = styles;
 
   const handleClick = () => {
     if (isSignOut) {
-      storage.removeItemFromLocalStorage('userInfo');
+      dispatch(removeUserInfoFromLocalStorage());
       navigate('/');
     }
   };
