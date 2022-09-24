@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/Store';
 import { getSavedMentors } from '../../../../redux/Slices/SavedMentorsSlice';
@@ -16,13 +15,13 @@ const SavedMentors = () => {
   const dispatch = useDispatch();
   const mentorsSendingParams = useSelector<RootState>((state) => state.allMentorsFilterParams) as MentorStateType;
   const savedMentorsState = useSelector<RootState>((state) => state.savedMentors)as {entity:MentorType[], isLoading:boolean, errorMessage:string};
+  const deletedSavedMentorState = useSelector<RootState>((state) => state.deleteUserSavedMentor) as {entity:MentorType[], isLoading:boolean, errorMessage:string};
   const { entity, isLoading, errorMessage } = savedMentorsState;
-  const location = useLocation();
   const { mainContainer } = styles;
 
   useEffect(() => {
     dispatch(getSavedMentors({ userId, token, params: mentorsSendingParams }));
-  }, [location, mentorsSendingParams]);
+  }, [deletedSavedMentorState, mentorsSendingParams]);
 
   return (
     <div className={mainContainer}>

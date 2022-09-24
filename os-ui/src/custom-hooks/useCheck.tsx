@@ -22,11 +22,10 @@ export const useCheck = (queryKey:string, queryValue:any) => {
   useEffect(() => {
     if (isChecked) {
       params.set(queryKey, JSON.stringify(value));
-      navigate(`${location.pathname}?${params}`);
     } else {
       params.delete(queryKey);
-      navigate(`${location.pathname}?${params}`);
     }
+    navigate(`${location.pathname}?${params}`);
   }, [isChecked]);
 
   return [isChecked, handleChecking, dispatch, handleSearchedResult] as const;

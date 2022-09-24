@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userService from '../../services/userService';
-
-export const getUserSavedCourse = createAsyncThunk('savedCourse/getUserSavedCourse', async ({ userId, token }:{userId:number, token:string}, { rejectWithValue }) => {
+/* eslint-disable max-len */
+export const getUserSavedCourse = createAsyncThunk('savedCourse/getUserSavedCourse', async ({ userId, token, params }:{userId:number, token:string, params:object}, { rejectWithValue }) => {
   try {
-    const data = await userService.getUserSavedCourses(userId, token, { page: 0, size: 100 });
+    const data = await userService.getUserSavedCourses(userId, token, { ...params, page: 0, size: 100 });
     return data.content;
   } catch (error:any) {
     return rejectWithValue(error.message);
@@ -30,6 +30,10 @@ const savedCourseSlice = createSlice({
       } else {
         state.entity = action.payload;
       }
+      state.isLoading = false;
+    });
+    builder.addCase(getUserSavedCourse.rejected, (state, action) => {
+      state.errorMessage = `${action.error.message}`;
       state.isLoading = false;
     });
   },

@@ -44,8 +44,10 @@ class UserService {
   }
 
   async deleteUserSavedCourses(userId:number, courseId:number, userToken:string, params = {}) {
-    const data = await (await fetchService.delete(`${this.basePath}/${userId}/courses/${courseId}/saved`, params, userToken)).json();
-    return data;
+    const response = await fetchService.delete(`${this.basePath}/${userId}/courses/${courseId}/saved`, params, userToken);
+    const { status } = response;
+    const data = await response.json();
+    return { data, status };
   }
 
   async saveUserMentor(userId:number, mentorId:number, userToken:string, params = {}) {
@@ -54,8 +56,10 @@ class UserService {
   }
 
   async deleteUserSavedMentor(userId:number, mentorId:number, userToken:string, params = {}) {
-    const data = await (await fetchService.delete(`${this.basePath}/${userId}/mentors/${mentorId}/saved`, params, userToken)).json();
-    return data;
+    const response = await fetchService.delete(`${this.basePath}/${userId}/mentors/${mentorId}/saved`, params, userToken);
+    const { status } = response;
+    const data = await response.json();
+    return { data, status };
   }
 }
 export default new UserService();

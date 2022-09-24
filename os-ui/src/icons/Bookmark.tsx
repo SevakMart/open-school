@@ -5,6 +5,8 @@ import userService from '../services/userService';
 import { useCheck } from '../custom-hooks/useCheck';
 import { Types } from '../types/types';
 import { openModal } from '../redux/Slices/PortalOpenStatus';
+import { deleteUserSavedCourse } from '../redux/Slices/DeleteUserSavedCourse';
+import { deleteUserSavedMentor } from '../redux/Slices/DeleteSavedMentor';
 import { userContext } from '../contexts/Contexts';
 
 /* eslint-disable max-len */
@@ -26,9 +28,9 @@ const BookmarkIcon = ({
       }
     } else if (isChecked) {
       if (courseId) {
-        userService.deleteUserSavedCourses(userId, courseId, token);
+        dispatch(deleteUserSavedCourse({ userId, courseId, token }));
       } else if (mentorId) {
-        userService.deleteUserSavedMentor(userId, mentorId, token);
+        dispatch(deleteUserSavedMentor({ userId, mentorId, token }));
       }
     }handleChecking();
   };
