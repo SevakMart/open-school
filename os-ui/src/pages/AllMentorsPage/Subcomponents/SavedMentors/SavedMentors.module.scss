@@ -1,6 +1,6 @@
+@import "../../../../styles/Mixins/GridMixin.scss";
+
 .mainContainer {
-    display:grid;
-    grid-template-columns: repeat(4,1fr);
-    gap:32px;
+    @include gridStyle(repeat(4,1fr),none,32px,32px);
     margin:32px 88px;
 }

@@ -1,6 +1,7 @@
 @import "../../../../styles/Configs/Colors.scss";
 @import "../../../../styles/Configs/Fonts.scss";
 @import "../../../../styles/Mixins/FontMixin.scss";
+@import "../../../../styles/Mixins/GridMixin.scss";
 
 .mainContainer {
     margin:156px 88px 130px;
@@ -14,10 +15,6 @@
         text-align: center;
     }
     .suggestedCoursesContainer {
-        display:grid;
-        grid-template-columns: repeat(4,1fr);
-        justify-content:center;
-        column-gap: 32px;
-
+        @include gridStyle(repeat(4,1fr),center,0,32px);
     }
 }

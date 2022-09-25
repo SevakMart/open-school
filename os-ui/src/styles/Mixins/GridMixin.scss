@@ -1,0 +1,6 @@
+@mixin gridStyle($gridTemplateColumn,$justifyContent,$rowGap,$columnGap){
+    display:grid;
+    grid-template-columns: $gridTemplateColumn;
+    gap:$rowGap $columnGap;
+    justify-content: $justifyContent;
+}

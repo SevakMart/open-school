@@ -1,8 +1,7 @@
+@import "../../../../styles/Mixins/GridMixin.scss";
+
 .categoriesList {
-    display:grid;
-    grid-template-columns: repeat(4,1fr);
-    justify-content:center;
-    gap:64px 127px;
+    @include gridStyle(repeat(4,1fr),center,64px,127px);
     margin:42px 88px 0;
     box-sizing: border-box;
 }

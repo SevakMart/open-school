@@ -1,12 +1,11 @@
+@import "../../../../styles/Mixins/GridMixin.scss";
+
 .mentorMainContainer {
   margin: 0 2.7%;
   border-radius: 2.5rem;
   background-color: #F9FAFD;
   box-sizing: border-box;
       .gridContent{
-        display:grid;
-        grid-template-columns: repeat(4,1fr);
-        justify-content:center;
-        gap:2rem;
+        @include gridStyle(repeat(4,1fr),center,32px,32px);
       }
 }

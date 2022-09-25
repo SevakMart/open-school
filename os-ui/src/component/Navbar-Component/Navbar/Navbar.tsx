@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Button from '../../Button/Button';
 import { Types } from '../../../types/types';
@@ -11,7 +10,6 @@ import styles from './Navbar.module.scss';
 const Navbar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { navContainer, categoriesMentors, buttonContent } = styles;
 
   const handleSignIn = () => {
@@ -26,7 +24,7 @@ const Navbar = () => {
 
   return (
     <nav className={navContainer}>
-      <h2 onClick={() => navigate('/')}>{t('string.homePage.navBar.logo')}</h2>
+      <h2>{t('string.homePage.navBar.logo')}</h2>
       <div className={categoriesMentors}>
         <p onClick={goToExploreCategoriesPage}>{t('string.homePage.navBar.exploreCategories')}</p>
         <p onClick={goToMentorsPage}>{t('string.homePage.navBar.mentors')}</p>
