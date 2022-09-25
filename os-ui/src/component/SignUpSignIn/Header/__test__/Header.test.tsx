@@ -1,13 +1,18 @@
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from '../../../../redux/Store';
-import Navbar from '../Navbar';
+import Header from '../Header';
 
-describe('Make unit tests of Navbar component', () => {
+describe('Create unit tests for Header component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <Navbar />
+        <Header
+          mainTitle="This is main Title"
+          shouldRemoveIconContent={false}
+          isForgotPasswordContent={false}
+          isVerificationContent={false}
+        />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();

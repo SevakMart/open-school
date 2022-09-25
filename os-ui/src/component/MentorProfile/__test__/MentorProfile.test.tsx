@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import MentorCard from '../MentorProfile';
 
-/* const MentorProfile = {
+const MentorProfile = {
   name: 'John',
   surname: 'Smith',
   professionName: 'JS Developer',
@@ -11,14 +11,14 @@ import MentorCard from '../MentorProfile';
   emailPath: 'fakeEmail.com',
   linkedinPath: 'https://linkedin.com/feed',
 };
-
+/* eslint-disable max-len */
 describe('Make unit tests on Mentor Profile', () => {
   test('Make a snapshot test', () => {
-    const { asFragment } = render(<MentorCard mentor={{ ...MentorProfile }} />);
+    const { asFragment } = render(<MentorCard mentor={{ ...MentorProfile }} isHomepageNotSignedMentorCard />);
     expect(asFragment()).toMatchSnapshot();
   });
   test('Verify if Mentor info is contained in the component', () => {
-    render(<MentorCard mentor={{ ...MentorProfile }} />);
+    render(<MentorCard mentor={{ ...MentorProfile }} isHomepageNotSignedMentorCard />);
     const fullname = screen.queryByTestId('John Smith');
     const professionNameElem = screen.queryByTestId('JS Developer');
     const companyNameElem = screen.queryByTestId('Google');
@@ -33,4 +33,3 @@ describe('Make unit tests on Mentor Profile', () => {
     expect(courseCountElem).toHaveTextContent('5');
   });
 });
-*/

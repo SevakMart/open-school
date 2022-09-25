@@ -2,13 +2,18 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { store } from '../../../../redux/Store';
-import SignUp from '../SignUp';
+import SuccessMessage from '../Success-Message';
 
-describe('Create tests for sign up form', () => {
+describe('Create test case for Successful message component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <SignUp />
+        <SuccessMessage
+          message="You have successfuly registered"
+          isSignUpSuccessfulRegistration
+          isResendVerificationEmailMessage={false}
+          isResetPasswordSuccessfulMessage={false}
+        />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test case for ContentRenderer component It should match the snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <h1>
+      1
+    </h1>
+    <p>
+      React
+    </p>
+  </div>
+  <div>
+    <h1>
+      2
+    </h1>
+    <p>
+      JS
+    </p>
+  </div>
+</DocumentFragment>
+`;

@@ -1,14 +1,17 @@
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
-import { store } from '../../../../../redux/Store';
-import ForgotPassword from '../ForgotPassword';
+import { store } from '../../../../redux/Store';
+import Footer from '../Footer';
 
-describe('Create test cases for ForgotPassword component', () => {
+describe('Create unit tests for Footer component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <ForgotPassword />
+        <Footer
+          mainText="This is main text"
+          buttonType="signIn"
+          buttonText="Sign In"
+        />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();
