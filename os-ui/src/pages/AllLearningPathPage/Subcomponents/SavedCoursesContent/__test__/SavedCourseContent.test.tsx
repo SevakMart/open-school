@@ -48,7 +48,6 @@ describe('Create test cases for SavedCourseContent component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(<Provider store={store}>
       <SavedCoursesContent />
-      {/* eslint-disable-next-line */}
     </Provider>, { wrapper: BrowserRouter });
     expect(asFragment()).toMatchSnapshot();
   });
@@ -57,7 +56,6 @@ describe('Create test cases for SavedCourseContent component', () => {
     jest.spyOn(userService, 'getUserSavedCourses').mockResolvedValue({ content: [] });
     render(<Provider store={store}>
       <SavedCoursesContent />
-      {/* eslint-disable-next-line */}
     </Provider>, { wrapper: BrowserRouter });
     const emptyDataheaderElement = await screen.findByTestId('Empty data Message');
     expect(emptyDataheaderElement).toBeInTheDocument();
@@ -68,7 +66,6 @@ describe('Create test cases for SavedCourseContent component', () => {
     jest.spyOn(userService, 'getUserSavedCourses').mockResolvedValue(data);
     render(<Provider store={store}>
       <SavedCoursesContent />
-      {/* eslint-disable-next-line */}
     </Provider>, { wrapper: BrowserRouter });
     const emptyDataheaderElement = await screen.findByTestId('Empty data Message');
     expect(emptyDataheaderElement).not.toBeInTheDocument();

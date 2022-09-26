@@ -43,15 +43,12 @@ const CourseSummary = ({
         <h2>{t('string.courseDescription.title.summary')}</h2>
         <div className={headerIcons}>
           <ShareIcon iconSize="0.5 rem" />
-          <BookmarkIcon
+          {/* <BookmarkIcon
             iconSize="0.5 rem"
             courseId={courseId}
-            isBookmarked={isBookmarked}
-            /* eslint-disable-next-line max-len */
             saveCourse={saveUserCourse}
-            /* eslint-disable-next-line max-len */
             deleteCourse={deleteUserSavedCourse}
-          />
+  /> */}
         </div>
       </div>
       <div className={courseSummaryItemList}>

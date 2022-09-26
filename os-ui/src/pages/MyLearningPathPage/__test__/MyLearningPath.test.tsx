@@ -66,7 +66,6 @@ describe('Create test case for Learning path component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(<Provider store={store}>
       <MyLearningPathPage />
-      {/* eslint-disable-next-line */}
     </Provider>,{ wrapper: BrowserRouter });
     expect(asFragment()).toMatchSnapshot();
   });
@@ -76,7 +75,6 @@ describe('Create test case for Learning path component', () => {
     jest.spyOn(userService, 'getSuggestedCourses').mockResolvedValue(suggestedCourse);
     render(<Provider store={store}>
       <MyLearningPathPage />
-      {/* eslint-disable-next-line */}
     </Provider>,{ wrapper: BrowserRouter });
 
     const courseTitleElement1 = await screen.findByTestId('React js');
@@ -105,7 +103,6 @@ describe('Create test case for Learning path component', () => {
     jest.spyOn(userService, 'getSuggestedCourses').mockResolvedValue(suggestedCourse);
     render(<Provider store={store}>
       <MyLearningPathPage />
-      {/* eslint-disable-next-line */}
     </Provider>,{ wrapper: BrowserRouter });
 
     const noCourseParagraphElement = await screen.findByTestId('No courses yet');

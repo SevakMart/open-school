@@ -52,7 +52,6 @@ describe('Create test cases for learningPathCoreComponent component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(<Provider store={store}>
       <LearningPathCoreContent />
-      {/* eslint-disable-next-line */}
     </Provider>, { wrapper: BrowserRouter });
     expect(asFragment()).toMatchSnapshot();
   });
@@ -62,7 +61,6 @@ describe('Create test cases for learningPathCoreComponent component', () => {
     jest.spyOn(userService, 'getUserSavedCourses').mockResolvedValue({ content: [] });
     render(<Provider store={store}>
       <LearningPathCoreContent />
-      {/* eslint-disable-next-line */}
     </Provider>, { wrapper: BrowserRouter });
     const ErrorMessageHeaderElement = await screen.findByTestId('Error Message');
     expect(ErrorMessageHeaderElement).toBeInTheDocument();
@@ -74,7 +72,6 @@ describe('Create test cases for learningPathCoreComponent component', () => {
     jest.spyOn(userService, 'getUserSavedCourses').mockResolvedValue({ content: [] });
     render(<Provider store={store}>
       <LearningPathCoreContent />
-      {/* eslint-disable-next-line */}
     </Provider>, { wrapper: BrowserRouter });
     const ErrorMessageHeaderElement = await screen.findByTestId('Error Message');
     const learningPathTitleElement = await screen.findByTestId('React');

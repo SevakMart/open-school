@@ -25,7 +25,6 @@ const SavedCoursesContent = () => {
   }, [sendingParams, deletedSavedCourseState]);
 
   return (
-<<<<<<< HEAD
     <div className={mainContainer}>
       <ContentRenderer
         isLoading={isLoading}
@@ -42,26 +41,6 @@ const SavedCoursesContent = () => {
         )}
       />
     </div>
-
-=======
-    <>
-      <div className={coreContent}>
-        <div className={mainContainer}>
-          {savedCourseList.length ? savedCourseList.map((course) => (
-            <React.Fragment key={course.title}>
-              <LearningPath
-                courseInfo={course}
-                saveCourse={(courseId:number) => {
-                  userService.saveUserPreferredCourses(id, courseId, token);
-                }}
-                deleteCourse={handleCourseDeletion}
-              />
-            </React.Fragment>
-          )) : <h2 data-testid="Empty data Message">{t('messages.noData.default')}</h2>}
-        </div>
-      </div>
-    </>
->>>>>>> main
   );
 };
 export default SavedCoursesContent;

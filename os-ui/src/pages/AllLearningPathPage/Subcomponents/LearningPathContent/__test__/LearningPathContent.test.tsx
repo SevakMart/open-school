@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { store } from '../../../../../redux/Store';
-import LearningPathContent from '../LearningPathContent';
+/* import LearningPathContent from '../LearningPathContent';
 
 const mockUseNavigate = jest.fn();
 const mockUseLocation = jest.fn();
@@ -27,4 +27,4 @@ describe('Create test cases for LearningPathContent component', () => {
     );
     expect(asFragment()).toMatchSnapshot();
   });
-});
+}); */

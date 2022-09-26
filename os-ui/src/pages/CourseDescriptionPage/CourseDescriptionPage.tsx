@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { RootState } from '../../redux/Store';
 import courseService from '../../services/courseService';
 import userService from '../../services/userService';
-import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
+import NavbarOnSignIn from '../../component/Navbar-Component/NavbarOnSignIn/NavbarOnSignIn';
 import CourseMainContent from './Subcomponents/CourseMainContent/CourseMainContent';
 import CourseSummary from './Subcomponents/CourseSummary/CourseSummary';
 import Modal from '../../component/Modal/Modal';
