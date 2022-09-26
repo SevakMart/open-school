@@ -31,9 +31,9 @@ class CategoryRepositoryTest {
     categoryRepository.saveAll(List.of(category1, category2, category3, category4, category5));
 
     List<Category> categoriesStartingJa =
-        categoryRepository.findByTitleIgnoreCaseStartingWith("JA");
+        categoryRepository.findByTitleContainingIgnoreCaseAndParentCategoryIsNull("JA");
     List<Category> categoriesStartingJs =
-        categoryRepository.findByTitleIgnoreCaseStartingWith("Js");
+        categoryRepository.findByTitleContainingIgnoreCaseAndParentCategoryIsNull("Js");
     assertEquals(3, categoriesStartingJa.size());
     assertEquals(2, categoriesStartingJs.size());
   }
@@ -51,7 +51,7 @@ class CategoryRepositoryTest {
   @Test
   void findAllCategoriesCheckIsParentCategory() {
     List<Category> categoryList =
-        categoryRepository.findAllCategories(PageRequest.of(0, 10)).toList();
+        categoryRepository.findByParentCategoryIsNull(PageRequest.of(0, 10)).toList();
     for (Category category : categoryList) {
       assertNull(category.getTitle() + "isn't parent category", category.getParentCategoryId());
     }
@@ -61,28 +61,13 @@ class CategoryRepositoryTest {
   void findAllSubCategories() {
     Category category1 = new Category("JAVA", null);
     Category category2 = new Category("JS", null);
-    Category category3 = new Category("Groovy", 1L);
+    Category category3 = new Category("Groovy", category1);
     category3.setParentCategory(category1);
-    Category category4 = new Category("React", 2L);
+    Category category4 = new Category("React", category2);
     category4.setParentCategory(category2);
     List<Category> categoryList = categoryRepository.findByParentCategoryIsNotNull();
     for (Category category : categoryList) {
       assertNotNull(category.getTitle() + "isn't subcategory", category.getParentCategoryId());
     }
-  }
-
-  @Test
-  @Transactional
-  void findCategoriesByParentCategoryId() {
-    Category parentCategory = new Category();
-    parentCategory.setTitle("Java");
-    categoryRepository.save(parentCategory);
-    Category subCategory = new Category();
-    subCategory.setId(2L);
-    subCategory.setTitle("JS-React");
-    subCategory.setParentCategory(parentCategory);
-    categoryRepository.save(subCategory);
-    List<Category> subcategories = categoryRepository.findCategoriesByParentCategoryId(1L);
-    assertEquals(parentCategory.getId(), subcategories.get(0).getParentCategory().getId());
   }
 }

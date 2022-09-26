@@ -21,8 +21,8 @@ spring:
     clean-on-validation-error: true
 
   mail:
-    username: epam.open.school@gmail.com
-    password: gaqbkpxlbmgjztwm
+    username: openschool.epam@gmail.com
+    password: ueiafqlkvmahqari
     port: 587
     host: smtp.gmail.com
     personal: Open school support
@@ -34,6 +34,11 @@ spring:
             enable: true
     protocol: smtp
     default-encoding: UTF-8
+
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 10MB
 
 verification:
   duration: 3 # minutes
@@ -52,4 +57,19 @@ springdoc:
   swagger-ui:
     path: /open-school-api
     operationsSorter: method
+
+cloud:
+  aws:
+    region:
+      static: eu-central-1
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: open-school-images
+
+
+
+
 

@@ -1,0 +1,31 @@
+@import "../../../../../../styles/Mixins/ButtonMixin.scss";
+@import "../../../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../../../styles/Mixins/FontMixin.scss";
+
+.mainContainer {
+    width:31.75rem;
+    height:29.625rem;
+    background-image: conic-gradient(at 50% 38%,#EEEFF4 0deg,#EEEFF4 60deg,#FFFFFF 60deg,#FFFFFF 300deg,#EEEFF4 300deg,#EEEFF4 360deg);
+    border-radius: 2.5rem;
+    @include flexStyle(column,center,space-evenly);
+    .mainContent {
+        @include flexStyle(column,center,space-between);
+        .textContent {
+            text-align: center;
+            margin-bottom:1.25rem;
+            h2 {
+                @include fontStyle('Helvetica Neue',normal,700,2.25rem,2.75rem);
+                color:#123761;
+            }
+            p{
+                @include fontStyle('Helvetica Neue',normal,400,0.875rem,1.063rem);
+                color:#848A9D;
+            }
+        }
+        button {
+            @include buttonStyle(#848A9D,#FFFFFF,1rem,100%,3.25rem,2rem,2rem,1rem,1rem);
+            @include fontStyle('Montserrat',normal,500,1rem,1.25rem);
+            border:none;
+        }
+    }
+}

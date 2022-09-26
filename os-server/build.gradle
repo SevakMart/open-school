@@ -37,6 +37,7 @@ dependencies {
 
     // apache commons-lang3
     implementation 'org.apache.commons:commons-lang3'
+    implementation 'commons-io:commons-io:2.11.0'
 
     //email support
     implementation "org.springframework.boot:spring-boot-starter-mail"
@@ -47,6 +48,9 @@ dependencies {
     //logging
     implementation 'ch.qos.logback:logback-classic:1.2.11'
 
+    //aws
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
+    implementation 'com.amazonaws:aws-java-sdk-s3'
 }
 
 test {

@@ -54,10 +54,10 @@ public class FeatureServiceImplTest {
     category1.setId(1L);
     Category category2 = new Category("JS", null);
     category2.setId(2L);
-    Category category3 = new Category("Groovy", 1L);
+    Category category3 = new Category("Groovy", category1);
     category3.setId(3L);
     category3.setParentCategory(category1);
-    Category category4 = new Category("React", 2L);
+    Category category4 = new Category("React", category2);
     category4.setId(4L);
     category4.setParentCategory(category2);
     List<Category> subCategories = List.of(category3, category4);

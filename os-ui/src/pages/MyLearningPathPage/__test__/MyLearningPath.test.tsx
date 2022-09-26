@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { store } from '../../../redux/Store';
 import userService from '../../../services/userService';
 import MyLearningPathPage from '../MyLearningPathPage';
@@ -11,6 +13,12 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom') as any,
   useNavigate: () => mockUseNavigate,
   useLocation: () => mockUseLocation,
+}));
+
+jest.mock('redux-state-sync', () => ({
+  createStateSyncMiddleware:
+    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
+  initMessageListener: () => jest.fn(),
 }));
 
 const userAllCourseData = [
@@ -56,14 +64,20 @@ const suggestedCourse = [
 
 describe('Create test case for Learning path component', () => {
   test('Create a snapshot test', () => {
-    const { asFragment } = render(<Provider store={store}><MyLearningPathPage /></Provider>);
+    const { asFragment } = render(<Provider store={store}>
+      <MyLearningPathPage />
+      {/* eslint-disable-next-line */}
+    </Provider>,{ wrapper: BrowserRouter });
     expect(asFragment()).toMatchSnapshot();
   });
   test('Check if the content is displayed as expected', async () => {
     expect.hasAssertions();
     jest.spyOn(userService, 'getUserCourses').mockResolvedValue(userAllCourseData);
     jest.spyOn(userService, 'getSuggestedCourses').mockResolvedValue(suggestedCourse);
-    render(<Provider store={store}><MyLearningPathPage /></Provider>);
+    render(<Provider store={store}>
+      <MyLearningPathPage />
+      {/* eslint-disable-next-line */}
+    </Provider>,{ wrapper: BrowserRouter });
 
     const courseTitleElement1 = await screen.findByTestId('React js');
     const statusContentElement1 = await screen.findByTestId('IN_PROGRESS');
@@ -89,7 +103,10 @@ describe('Create test case for Learning path component', () => {
     expect.hasAssertions();
     jest.spyOn(userService, 'getUserCourses').mockResolvedValue([]);
     jest.spyOn(userService, 'getSuggestedCourses').mockResolvedValue(suggestedCourse);
-    render(<Provider store={store}><MyLearningPathPage /></Provider>);
+    render(<Provider store={store}>
+      <MyLearningPathPage />
+      {/* eslint-disable-next-line */}
+    </Provider>,{ wrapper: BrowserRouter });
 
     const noCourseParagraphElement = await screen.findByTestId('No courses yet');
 

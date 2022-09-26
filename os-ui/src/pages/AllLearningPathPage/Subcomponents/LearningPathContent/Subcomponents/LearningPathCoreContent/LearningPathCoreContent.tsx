@@ -21,7 +21,35 @@ const LearningPathCoreContent = () => {
   const { mainCoreContainer, courseContainer } = styles;
 
   useEffect(() => {
+<<<<<<< HEAD
     dispatch(getAllLearningPathCourses({ token, params: filteredParams }));
+=======
+    const getSearchedCoursesPromise = Object.values(sendingParams as object)[0].length
+    /* eslint-disable-next-line max-len */
+      ? courseService.getSearchedCourses({ page: 0, size: 100, ...(sendingParams as object) }, token)
+      : courseService.getSearchedCourses({ page: 0, size: 100 }, token);
+    Promise.all([
+      userService.getUserSavedCourses(id, token, { page: 0, size: 100 }),
+      getSearchedCoursesPromise,
+    ]).then((combinedData) => {
+      const userSavedCourseContent = combinedData[0].content;
+      const searchedCourseContent = combinedData[1].content;
+      const list = [];
+      if (userSavedCourseContent?.length) {
+        for (const searchedCourse of searchedCourseContent) {
+          const index = userSavedCourseContent
+            .findIndex((savedCourse:CourseListType) => savedCourse.id === searchedCourse.id);
+          if (index !== -1) {
+            userSavedCourseContent[index].isBookMarked = true;
+            list.push(userSavedCourseContent[index]);
+          } else {
+            searchedCourse.isBookMarked = false; list.push(searchedCourse);
+          }
+        }
+        setCourseList([...list]);
+      } else setCourseList(searchedCourseContent);
+    });
+>>>>>>> main
   }, [sendingParams]);
 
   return (

@@ -36,9 +36,6 @@ public class Category {
   @Column(name = "logo_path")
   private String logoPath;
 
-  @Column(name = "sub_category_count")
-  private Integer subCategoryCount;
-
   @OneToMany(mappedBy = "category")
   private List<Course> courses;
 
@@ -58,13 +55,21 @@ public class Category {
 
   public Category() {}
 
-  public Category(Long id) {
-    this.id = id;
+  public Category(String title, Category parentCategory) {
+    this.title = title;
+    this.parentCategory = parentCategory;
   }
 
-  public Category(String title, Long parentCategoryId) {
+  public Category(String title, String logoPath, Category parentCategory) {
     this.title = title;
-    this.parentCategoryId = parentCategoryId;
+    this.logoPath = logoPath;
+    this.parentCategory = parentCategory;
+  }
+
+  public Category(Long id, String title, Category parentCategory) {
+    this.id = id;
+    this.title = title;
+    this.parentCategory = parentCategory;
   }
 
   public Long getId() {
@@ -79,20 +84,12 @@ public class Category {
     return title;
   }
 
-  public Integer getSubCategoryCount() {
-    return subCategoryCount;
-  }
-
   public String getLogoPath() {
     return logoPath;
   }
 
   public List<Course> getCourses() {
     return courses;
-  }
-
-  public void setSubCategoryCount(Integer subCategoryCount) {
-    this.subCategoryCount = subCategoryCount;
   }
 
   public void setTitle(String title) {

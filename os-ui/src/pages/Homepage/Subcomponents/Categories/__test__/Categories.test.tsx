@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 import HomepageCategories from '../Categories';
 import publicService from '../../../../../services/publicService';
 import categoriesService from '../../../../../services/categoriesService';
@@ -37,6 +38,11 @@ const signInData = {
   },
   status: 200,
 };
+jest.mock('redux-state-sync', () => ({
+  createStateSyncMiddleware:
+    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
+  initMessageListener: () => jest.fn(),
+}));
 
 describe('Create test cases for homepage mentors list', () => {
   test('Create a snapshot test', () => {

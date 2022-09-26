@@ -2,8 +2,6 @@ package app.openschool.user;
 
 import app.openschool.category.Category;
 import app.openschool.category.CategoryRepository;
-import app.openschool.category.api.dto.PreferredCategoryDto;
-import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
@@ -92,19 +90,17 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public Set<PreferredCategoryDto> savePreferredCategories(Long userId, Set<Long> categoryIds) {
+  public Set<Category> savePreferredCategories(Long userId, Set<Long> categoryIds) {
     User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
-    Set<PreferredCategoryDto> userCategories = new HashSet<>();
-    Set<Category> categories = CategoryMapper.categoryIdSetToCategorySet(categoryIds);
-    categories.forEach(
-        (category -> {
+    Set<Category> userCategories = new HashSet<>();
+    categoryIds.forEach(
+        (categoryId -> {
           Category fetchedCategory =
-              categoryRepository
-                  .findById(category.getId())
-                  .orElseThrow(IllegalArgumentException::new);
-          userCategories.add(CategoryMapper.toPreferredCategoryDto(fetchedCategory));
+              categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
+          userCategories.add(fetchedCategory);
         }));
-    user.setCategories(categories);
+    user.setCategories(userCategories);
+    userRepository.save(user);
     return userCategories;
   }
 
