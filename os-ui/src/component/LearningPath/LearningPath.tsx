@@ -1,13 +1,19 @@
+import { useNavigate } from 'react-router-dom';
 import BookmarkIcon from '../../icons/Bookmark';
 import StarIcon from '../../icons/Star';
 import { SuggestedCourseType } from '../../types/SuggestedCourseType';
 import styles from './LearningPath.module.scss';
-
+/* eslint-disable max-len */
 const LearningPath = ({ courseInfo }:{courseInfo:SuggestedCourseType}) => {
   const {
     mainContainer, header, mainBody, ratingContent, courseTitle, keywordsContent, difficultyContent,
     ratingValue, keyword, bookmarkIcon, iconStyle,
   } = styles;
+  const navigate = useNavigate();
+
+  const headToCourseDescriptionPage = () => {
+    navigate(`/userCourse/${courseInfo.id}`);
+  };
 
   return (
     <div className={mainContainer}>
@@ -16,7 +22,7 @@ const LearningPath = ({ courseInfo }:{courseInfo:SuggestedCourseType}) => {
         <p data-testid={courseInfo.difficulty} className={difficultyContent}>{courseInfo.difficulty}</p>
         <p className={bookmarkIcon}><BookmarkIcon iconSize="1rem" courseId={courseInfo.id} courseTitle={courseInfo.title} /></p>
       </div>
-      <div className={mainBody}>
+      <div className={mainBody} onClick={headToCourseDescriptionPage}>
         <div className={ratingContent}>
           <p className={iconStyle}><StarIcon /></p>
           <p data-testid={ratingValue} className={ratingValue}>{courseInfo.rating}</p>

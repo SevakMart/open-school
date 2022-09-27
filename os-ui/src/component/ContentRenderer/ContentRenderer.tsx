@@ -8,7 +8,7 @@ import { ErrorField } from '../ErrorField/ErrorField';
 const ContentRenderer = ({
   isLoading, errorMessage, entity, errorFieldClassName, render, isMyLearningPathPage,
 }:
-    {isLoading:boolean, errorMessage:string, entity:any[], errorFieldClassName:string, render:(entity:any[])=>React.ReactElement[], isMyLearningPathPage?:boolean}) => {
+    {isLoading:boolean, errorMessage:string, entity:any[]|any, errorFieldClassName:string, render:(entity:any[]|any)=>React.ReactElement[]|React.ReactElement, isMyLearningPathPage?:boolean}) => {
   const { t } = useTranslation();
   const NoDisplayedDataMessage = <h2 data-testid="emptyMessageHeader">{t('messages.noData.default')}</h2>;
   return (
@@ -19,8 +19,8 @@ const ContentRenderer = ({
         {errorMessage}
       </ErrorField.MainErrorField>
       )}
-      {entity.length === 0 && !isLoading && errorMessage.length === 0 && (isMyLearningPathPage ? <NoCourses /> : NoDisplayedDataMessage) }
-      {!isLoading && entity.length > 0 && render(entity)}
+      {(entity.length === 0 || Object.keys(entity).length === 0) && !isLoading && errorMessage.length === 0 && (isMyLearningPathPage ? <NoCourses /> : NoDisplayedDataMessage) }
+      {!isLoading && (entity.length > 0 || Object.keys(entity).length > 0) && render(entity)}
     </>
   );
 };

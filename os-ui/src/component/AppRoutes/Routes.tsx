@@ -59,8 +59,8 @@ const AppRoutes = () => {
         <Route
           path="/userCourse/:courseId"
           element={(
-            <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
-              <CourseDescriptionPage />
+            <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
+              <CourseDescriptionPage userInfo={userInfo} />
             </ProtectedRoute>
         )}
         />

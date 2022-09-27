@@ -13,8 +13,10 @@ class CourseService {
   }
 
   async requestCourseDescription(courseId:number, params:object = {}, token:string) {
-    const data = await (await fetchService.get(`${this.basePath}/${courseId}`, params, token)).json();
-    return data;
+    const response = (await fetchService.get(`${this.basePath}/${courseId}`, params, token));
+    const { status } = response;
+    const data = await response.json();
+    return { data, status };
   }
 }
 export default new CourseService();

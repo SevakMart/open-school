@@ -6,7 +6,7 @@ import styles from './CourseMainContent.module.scss';
 
 const CourseMainContent = ({
   description, goal, modules, mentorDto,
-}:Omit<CourseDescriptionType, 'title'|'rating'|'enrolled'|'level'|'language'|'duration'>) => {
+}:Omit<CourseDescriptionType, 'rating'|'enrolled'|'level'|'language'|'duration'>) => {
   const { t } = useTranslation();
   const {
     mainContent, subContent, authorInformationContainer, authorInfo,

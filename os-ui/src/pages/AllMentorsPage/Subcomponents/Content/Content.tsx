@@ -6,6 +6,7 @@ import { userContext } from '../../../../contexts/Contexts';
 import { MentorStateType } from '../../../../redux/Slices/AllMentorsFilterParamsSlice';
 import MentorCard from '../../../../component/MentorProfile/MentorProfile';
 import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
+import { MentorType } from '../../../../types/MentorType';
 import styles from './Content.module.scss';
 
 /* eslint-disable max-len */
@@ -14,7 +15,7 @@ const Content = () => {
   const { token } = useContext(userContext);
   const dispatch = useDispatch();
   const mentorsSendingParams = useSelector<RootState>((state) => state.allMentorsFilterParams) as MentorStateType;
-  const mentorsList = useSelector<RootState>((state) => state.allMentorsList) as {entity:any[], isLoading:boolean, errorMessage:string};
+  const mentorsList = useSelector<RootState>((state) => state.allMentorsList) as {entity:MentorType[], isLoading:boolean, errorMessage:string};
   const { entity, isLoading, errorMessage } = mentorsList;
   const { mainContent } = styles;
 

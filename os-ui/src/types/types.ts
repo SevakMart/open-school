@@ -7,6 +7,7 @@ export namespace Types {
         CLOSE = 'closeButton',
         FORGOT_PASSWORD = 'forgotPassword',
         RESET_PASSWORD = 'resetPassword',
-        SUCCESS_MESSAGE= 'successMessage'
+        SUCCESS_MESSAGE= 'successMessage',
+        ENROLL_COURSE='enrollCourse'
     }
 }

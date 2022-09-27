@@ -7,6 +7,7 @@ import { Types } from '../types/types';
 import { openModal } from '../redux/Slices/PortalOpenStatus';
 import { deleteUserSavedCourse } from '../redux/Slices/DeleteUserSavedCourse';
 import { deleteUserSavedMentor } from '../redux/Slices/DeleteSavedMentor';
+import { storage } from '../services/storage/storage';
 import { userContext } from '../contexts/Contexts';
 
 /* eslint-disable max-len */
@@ -23,8 +24,10 @@ const BookmarkIcon = ({
     if (!isChecked) {
       if (courseId) {
         userService.saveUserPreferredCourses(userId, courseId, token);
+        storage.addItemToLocalStorage('savedCourse', { courseTitle, courseId });
       } else if (mentorId) {
         userService.saveUserMentor(userId, mentorId, token);
+        storage.addItemToLocalStorage('savedMentor', { mentorName, mentorId });
       }
     } else if (isChecked) {
       if (courseId) {

@@ -63,8 +63,10 @@ class UserService {
   }
 
   async enrollCourse(userId:number, courseId:number, userToken:string, params = {}) {
-    const data = await (await fetchService.post(`${this.basePath}/${userId}/courses/${courseId}`, null, params, userToken)).json();
-    return data;
+    const response = await fetchService.post(`${this.basePath}/${userId}/courses/${courseId}`, null, params, userToken);
+    const { status } = response;
+    const data = await response.json();
+    return { data, status };
   }
 }
 export default new UserService();

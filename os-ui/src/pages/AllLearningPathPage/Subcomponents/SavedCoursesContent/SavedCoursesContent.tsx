@@ -32,7 +32,7 @@ const SavedCoursesContent = () => {
         entity={entity}
         errorFieldClassName="allLearningPathErrorStyle"
         render={(savedCourses) => (
-          savedCourses.map((course) => (
+          savedCourses.map((course:SuggestedCourseType) => (
             <LearningPath
               key={course.title}
               courseInfo={course}

@@ -1,6 +1,6 @@
 class Storage {
 /* eslint-disable class-methods-use-this */
-  addItemToLocalStorage(key:string, value:string) {
+  addItemToLocalStorage(key:string, value:string|object) {
     if (typeof value === 'object') {
       localStorage.setItem(key, JSON.stringify(value));
     } else {

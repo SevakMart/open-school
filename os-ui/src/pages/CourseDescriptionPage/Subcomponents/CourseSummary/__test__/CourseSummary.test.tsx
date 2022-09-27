@@ -21,8 +21,6 @@ describe('Create test cases for course description page', () => {
           level="Advanced"
           language="French"
           duration={360}
-          enrollInCourse={() => null}
-          isEnrolled={false}
           courseId={2}
           userIdAndToken={{ id: 2, token: 'jksndfkjnskfk' }}
         />

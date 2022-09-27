@@ -15,6 +15,7 @@ describe('Create test cases to learning path component', () => {
     const { asFragment } = render(
       <LearningPath
         courseInfo={props}
+        isUserSavedCourse={false}
       />,
       { wrapper: BrowserRouter },
     );
@@ -24,6 +25,7 @@ describe('Create test cases to learning path component', () => {
     render(
       <LearningPath
         courseInfo={props}
+        isUserSavedCourse={false}
       />,
       { wrapper: BrowserRouter },
     );
@@ -42,6 +44,7 @@ describe('Create test cases to learning path component', () => {
     render(
       <LearningPath
         courseInfo={props}
+        isUserSavedCourse={false}
       />,
       { wrapper: BrowserRouter },
     );
