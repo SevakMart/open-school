@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../../../redux/Store';
 import { userContext } from '../../../../../../contexts/Contexts';
 import LearningPath from '../../../../../../component/LearningPath/LearningPath';
-import { SuggestedCourseType } from '../../../../../../types/SuggestedCourseType';
+import { SuggestedCourseType } from '../../../../../../types/CourseTypes';
 import { filterSendingParams } from '../../../../helpers';
 import ContentRenderer from '../../../../../../component/ContentRenderer/ContentRenderer';
 import { getAllLearningPathCourses } from '../../../../../../redux/Slices/AllLearningPathCourseSlice';
@@ -32,7 +32,7 @@ const LearningPathCoreContent = () => {
         entity={entity}
         errorFieldClassName="allLearningPathErrorStyle"
         render={(entity) => (
-          entity.map((course) => (
+          entity.map((course:SuggestedCourseType) => (
             <div className={courseContainer} key={course.title}>
               <LearningPath
                 courseInfo={course}

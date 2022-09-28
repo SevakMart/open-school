@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import LearningPath from '../LearningPath';
 
 const props = {
+  id: 1,
   title: 'React',
   rating: 5.5,
   difficulty: 'Medium',
@@ -15,7 +16,6 @@ describe('Create test cases to learning path component', () => {
     const { asFragment } = render(
       <LearningPath
         courseInfo={props}
-        isUserSavedCourse={false}
       />,
       { wrapper: BrowserRouter },
     );
@@ -25,7 +25,6 @@ describe('Create test cases to learning path component', () => {
     render(
       <LearningPath
         courseInfo={props}
-        isUserSavedCourse={false}
       />,
       { wrapper: BrowserRouter },
     );
@@ -44,7 +43,6 @@ describe('Create test cases to learning path component', () => {
     render(
       <LearningPath
         courseInfo={props}
-        isUserSavedCourse={false}
       />,
       { wrapper: BrowserRouter },
     );

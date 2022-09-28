@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { UserCourseType } from '../../../../types/UserCourseType';
+import { CompleteCourse } from '../../../../types/CourseTypes';
 import Button from '../../../../component/Button/Button';
 import styles from './CompletedCourse.module.scss';
 
-const CompletedCourse = ({ title, courseStatus, grade }:Pick<UserCourseType, 'title'|'courseStatus'|'grade'>) => {
+const CompletedCourse = ({ title, courseStatus, grade }:CompleteCourse) => {
   const {
     separator, mainContainer, container, courseTitle,
     containerTitle, statusContent, gradeContent, buttonContainer,

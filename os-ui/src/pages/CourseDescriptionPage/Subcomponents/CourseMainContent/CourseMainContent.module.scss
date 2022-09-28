@@ -1,9 +1,24 @@
 @import "../../../../styles/Mixins/FontMixin.scss";
 @import "../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
+@import "../../../../styles/Mixins/GridMixin.scss";
 
 .mainContent{
     width:50%;
-    margin-top:2rem;
+    border:2px solid red;
+    margin-top:16px;
+    align-self: flex-start;
+   .mainTitle {
+    display:inline;
+    @include fontStyle($primary-font,normal,800,48px,59px);
+    color:$header-main-color;
+   }
+   .mainCourseInfoContainer{
+    border:2px solid red;
+    margin:112px 0 56px;
+    @include gridStyle(repeat(1,1fr),none,0,32px);
+   }
     .subContent {
         h2 {
             @include fontStyle('Montserrat',normal,600, 1.25rem,1.5rem);

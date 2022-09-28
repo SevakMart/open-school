@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { UserCourseType } from '../../../../types/UserCourseType';
+import { ProgressedCourse } from '../../../../types/CourseTypes';
 import ClockIcon from '../../../../assets/svg/ClockIcon.svg';
 import CalendarIcon from '../../../../assets/svg/CalendarIcon.svg';
 import Button from '../../../../component/Button/Button';
@@ -9,7 +9,7 @@ import styles from './InProgressCourse.module.scss';
 
 const InProgressCourse = ({
   title, courseStatus, percentage, remainingTime, dueDate,
-}:Omit<UserCourseType, 'grade'>) => {
+}:ProgressedCourse) => {
   const {
     mainContainer, titleContainer, container, progressBar, buttonContainer, courseTitle,
     progressPercent, OverallProgress, containerTitle, progressing, progressContainer,

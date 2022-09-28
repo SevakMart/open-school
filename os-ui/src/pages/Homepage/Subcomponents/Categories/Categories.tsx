@@ -49,7 +49,7 @@ const HomepageCategories = () => {
             entity={entity}
             errorFieldClassName="allLearningPathErrorStyle"
             render={(entity) => (
-              entity.map((category, index) => (
+              entity.map((category:CategoryType, index:number) => (
                 <CategoryCard key={index} category={category} />
               ))
             )}

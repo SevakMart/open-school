@@ -4,7 +4,7 @@ import { userContext, courseContentContext } from '../../../../contexts/Contexts
 import featureService from '../../../../services/featureService';
 import FilteringContent from '../FilteringContent/FilteringContent';
 import { FilteringFeatureType } from '../../../../types/FilteringFeaturesType';
-import { CourseContent } from '../../../../types/CourseContent';
+import { CourseContent } from '../../../../types/CourseTypes';
 import styles from './FilterComponent.module.scss';
 
 const FilterComponent = () => {

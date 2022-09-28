@@ -31,7 +31,7 @@ const Content = () => {
         entity={entity}
         errorFieldClassName="allLearningPathErrorStyle"
         render={(entity) => (
-          entity.map((mentor) => (
+          entity.map((mentor:MentorType) => (
             <MentorCard
               key={`${mentor.name} ${mentor.surname}`}
               mentor={mentor}

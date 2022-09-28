@@ -1,14 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { CourseDescriptionType } from '../../../../types/CourseDescriptionType';
+import { CourseDescriptionType } from '../../../../types/CourseTypes';
 import BookmarkIcon from '../../../../icons/Bookmark';
 import ShareIcon from '../../../../icons/Share';
 import CourseSummaryItem from './Subcomponent/CourseSummaryItem/CourseSummaryItem';
-import { SuggestedCourseType } from '../../../../types/SuggestedCourseType';
 import { useCheck } from '../../../../custom-hooks/useCheck';
 import Button from '../../../../component/Button/Button';
 import styles from './CourseSummary.module.scss';
-
-type CourseListType=SuggestedCourseType & {id:number, isBookMarked?:boolean}
 
 const CourseSummary = ({
   rating, enrolled, level, language, duration, courseId, userIdAndToken,

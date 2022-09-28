@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import BookmarkIcon from '../../icons/Bookmark';
 import StarIcon from '../../icons/Star';
-import { SuggestedCourseType } from '../../types/SuggestedCourseType';
+import { SuggestedCourseType } from '../../types/CourseTypes';
 import styles from './LearningPath.module.scss';
 /* eslint-disable max-len */
 const LearningPath = ({ courseInfo }:{courseInfo:SuggestedCourseType}) => {

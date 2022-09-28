@@ -98,6 +98,14 @@
         "dueDate":"Due date",
         "remainingTime":"Remaining Time"
       }
+    },
+    "courseDescriptionPage":{
+      "title":{
+        "description":"What you will learn",
+        "goal":"Course goal",
+        "modulesList":"Courses in this Program",
+        "authorInfo":"Author Information"
+      }
     }
   },
   "button":{

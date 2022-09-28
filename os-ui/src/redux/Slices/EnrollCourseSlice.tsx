@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userService from '../../services/userService';
-import { CourseDescriptionType } from '../../types/CourseDescriptionType';
+import { CourseDescriptionType } from '../../types/CourseTypes';
 /* eslint-disable max-len */
 export const enrollCourse = createAsyncThunk('enroll/enrollCourse', async ({ userId, courseId, token }:{userId:number, courseId:number, token:string}, { rejectWithValue }) => {
   try {

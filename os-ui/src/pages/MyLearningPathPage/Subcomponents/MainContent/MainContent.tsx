@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/Store';
+import { UserCourseType } from '../../../../types/CourseTypes';
 import InProgressCourse from '../InProgressCourse/InProgressCourse';
 import CompletedCourse from '../CompletedCourse/CompledtedCourse';
 import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
@@ -20,7 +21,7 @@ const MyLearningPathMainContent = () => {
         errorFieldClassName="myLearningPathsErrorStyle"
         isMyLearningPathPage
         render={(entity) => (
-          entity.map((userCourse, index) => {
+          entity.map((userCourse:UserCourseType, index:number) => {
             if (userCourse.courseStatus === 'IN_PROGRESS') {
               return (
                 <InProgressCourse

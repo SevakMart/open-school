@@ -14,11 +14,11 @@ const MentorProfile = {
 /* eslint-disable max-len */
 describe('Make unit tests on Mentor Profile', () => {
   test('Make a snapshot test', () => {
-    const { asFragment } = render(<MentorCard mentor={{ ...MentorProfile }} isHomepageNotSignedMentorCard isUserSavedMentor={false} />);
+    const { asFragment } = render(<MentorCard mentor={{ ...MentorProfile }} isHomepageNotSignedMentorCard />);
     expect(asFragment()).toMatchSnapshot();
   });
   test('Verify if Mentor info is contained in the component', () => {
-    render(<MentorCard mentor={{ ...MentorProfile }} isHomepageNotSignedMentorCard isUserSavedMentor={false} />);
+    render(<MentorCard mentor={{ ...MentorProfile }} isHomepageNotSignedMentorCard />);
     const fullname = screen.queryByTestId('John Smith');
     const professionNameElem = screen.queryByTestId('JS Developer');
     const companyNameElem = screen.queryByTestId('Google');

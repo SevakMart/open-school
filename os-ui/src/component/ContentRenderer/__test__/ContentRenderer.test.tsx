@@ -23,7 +23,7 @@ describe('Create test case for ContentRenderer component', () => {
         isMyLearningPathPage={false}
         errorFieldClassName="courseErrorStyles"
         render={(courseEntity) => (
-          courseEntity.map((course, index) => (
+          courseEntity.map((course:{id:number, title:string}, index:number) => (
             <div key={index}>
               <h1>{course.id}</h1>
               <p>{course.title}</p>

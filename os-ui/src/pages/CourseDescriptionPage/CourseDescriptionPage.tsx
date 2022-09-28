@@ -11,9 +11,8 @@ import { getCourseDescription } from '../../redux/Slices/CourseDescriptionReques
 import { Portal } from '../../component/Portal/Portal';
 import { PortalStatus } from '../../types/PortalStatusType';
 import { Types } from '../../types/types';
-import { SuggestedCourseType } from '../../types/SuggestedCourseType';
 import EnrolledSuccessMessage from './Subcomponents/CourseSummary/Subcomponent/ModalMessageComponent/ModalMessageComponent';
-import { CourseDescriptionType } from '../../types/CourseDescriptionType';
+import { CourseDescriptionType, SuggestedCourseType } from '../../types/CourseTypes';
 import styles from './CourseDescriptionPage.module.scss';
 /* eslint-disable max-len */
 const CourseDescriptionPage = ({ userInfo }:{userInfo:any}) => {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
 import StraightLine from '../../../../assets/svg/Vector.svg';
-import { CourseDescriptionType } from '../../../../types/CourseDescriptionType';
+import { CourseDescriptionType } from '../../../../types/CourseTypes';
 import styles from './ModuleItem.module.scss';
 
 type Module=CourseDescriptionType['modules'][number]

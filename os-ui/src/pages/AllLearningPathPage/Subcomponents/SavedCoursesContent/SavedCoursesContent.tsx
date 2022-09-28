@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/Store';
-import { SuggestedCourseType } from '../../../../types/SuggestedCourseType';
+import { SuggestedCourseType } from '../../../../types/CourseTypes';
 import LearningPath from '../../../../component/LearningPath/LearningPath';
 import { getUserSavedCourse } from '../../../../redux/Slices/SavedLearningPathSlice';
 import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';

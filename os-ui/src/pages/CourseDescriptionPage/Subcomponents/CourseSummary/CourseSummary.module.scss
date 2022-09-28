@@ -3,11 +3,6 @@
 @import "../../../../styles/Mixins/ButtonMixin.scss";
 
 .mainContent {
-    position: absolute;
-    width: 31.75rem;
-    height: 47rem;
-    left: 52.75rem;
-    top: 8rem;
     border-radius: 2.5rem;
     border: 2px solid black;
     .headerContent{
