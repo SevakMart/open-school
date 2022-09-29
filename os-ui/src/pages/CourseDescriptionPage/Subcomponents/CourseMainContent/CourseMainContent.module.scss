@@ -6,7 +6,6 @@
 
 .mainContent{
     width:50%;
-    border:2px solid red;
     margin-top:16px;
     align-self: flex-start;
    .mainTitle {
@@ -15,48 +14,27 @@
     color:$header-main-color;
    }
    .mainCourseInfoContainer{
-    border:2px solid red;
     margin:112px 0 56px;
-    @include gridStyle(repeat(1,1fr),none,0,32px);
-   }
     .subContent {
+        margin-bottom: 32px;
         h2 {
-            @include fontStyle('Montserrat',normal,600, 1.25rem,1.5rem);
-            color: #333941;
+            @include fontStyle($primary-font,normal,600,20px,24px);
+            color:$black-text-color;
+            margin:0 0 16px;
         }
         p{
-            @include fontStyle('Montserrat',normal,400, 1rem,1.5rem);
-            color: #5E617B;
+            @include fontStyle($primary-font,normal,400,16px,24px);
+            color:$main-text-color;
             text-align: justify;
+            margin:0;
         }
         .moduleListContainer {
-            @include flexStyle(column, center, space-between);
-            padding-left:0.625rem;
+            border-radius: 20px;
+            background-color: $white-text-color;
+            @include gridStyle(repeat(1,1fr),none,10px,0);
+            padding:10px 0;
         }
     }
-    .authorInformationContainer {
-        h2 {
-            @include fontStyle('Montserrat',normal,600, 1.25rem,1.5rem);
-            color: #333941;
-        }
-        .authorInfo {
-            @include flexStyle(row,center,space-between);
-            width:30%;
-            .imageAndFullName{
-                @include flexStyle(row,center,space-between);
-                width:60%;  
-            img {
-                border-radius: 50%;
-                width:2rem;
-                height:2rem;
-                border-color: black;
-                color:black;
-            }
-        }
-           a {
-            cursor:pointer;
-           }
-        }
-    }
+   }
 }
 

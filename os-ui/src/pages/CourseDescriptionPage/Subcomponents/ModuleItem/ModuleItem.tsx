@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
-import StraightLine from '../../../../assets/svg/Vector.svg';
+import EllipseIcon from '../../../../assets/svg/Ellipse.svg';
 import { CourseDescriptionType } from '../../../../types/CourseTypes';
 import styles from './ModuleItem.module.scss';
 
 type Module=CourseDescriptionType['modules'][number]
-
+/* eslint-disable max-len */
 const ModuleItem = ({ moduleInfo }:{moduleInfo:Module}) => {
   const [moduleListIsOpen, setModuleListIsOpen] = useState(false);
   const {
-    mainContainer, vector, mainContent, ellipseIcon, titleAndEllipseIcon,
+    mainContainer, mainContent, ellipseIcon, titleAndEllipseIcon, moduleTitle,
     chevronIsOpen, chevronIsClosed, moduleDescriptionIsOpen, moduleDescriptionIsClosed,
   } = styles;
   const openModuleList = () => {
@@ -18,11 +18,10 @@ const ModuleItem = ({ moduleInfo }:{moduleInfo:Module}) => {
 
   return (
     <div className={mainContainer}>
-      <img className={vector} src={StraightLine} alt="vector" />
       <div className={mainContent}>
         <div className={titleAndEllipseIcon}>
-          <div className={ellipseIcon} />
-          <p>{moduleInfo.title}</p>
+          <img className={ellipseIcon} src={EllipseIcon} alt="ellipse icon" />
+          <p className={moduleTitle}>{moduleInfo.title}</p>
         </div>
         <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
       </div>
