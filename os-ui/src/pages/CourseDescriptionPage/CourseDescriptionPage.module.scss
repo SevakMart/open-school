@@ -3,5 +3,4 @@
 .mainContent {
     margin:48px 88px;
     @include flexStyle(row,center, space-between);
-    border:2px solid red;
 }

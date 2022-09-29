@@ -76,3 +76,8 @@
     @include fontStyle($primary-font, normal, 500, 16px, 20px);
     border:none;
 }
+.courseSummaryButton {
+    @include buttonStyle($secondary-color,$white-text-color,1rem,400px,60px,166px,166px,20px,20px);
+    @include fontStyle($primary-font, normal, 500, 16px, 20px);
+    border:none;
+}

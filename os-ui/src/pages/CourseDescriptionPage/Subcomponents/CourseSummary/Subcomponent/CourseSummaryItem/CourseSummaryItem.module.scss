@@ -1,27 +1,22 @@
 @import "../../../../../../styles/Mixins/FlexMixins.scss";
 @import "../../../../../../styles/Mixins/FontMixin.scss";
+@import "../../../../../../styles/Configs/Colors.scss";
+@import "../../../../../../styles/Configs/Fonts.scss";
 
 .mainContainer {
-    padding-left:3rem;
-    .mainSubContainer {
-        @include flexStyle(row,center,space-between);
-        width:28%;
-        .dotNotation {
-            background-color: #FFF;
-            border-radius: 50%;
-            width:3rem;
-            height:3rem;
+    margin-left:48px;
+    .mainContent {
+        display:inline-block;
+        margin-left:16px;
+        h2{
+            @include fontStyle($primary-font,normal,400,14px,17px);
+            color:$main-text-color;
+            margin:0 0 8px;
         }
-        .mainContent {
-            @include flexStyle(column,center, space-between);
-            h2{
-                @include fontStyle('Montserrat',normal,400,0.875rem,1.063rem);
-                color:#5E617B;
-            }
-            p {
-                @include fontStyle('Montserrat',normal,600,1.25rem,1.5rem);
-                color:#333941;
-            }
+        p {
+            @include fontStyle($primary-font,normal,600,20px,24px);
+            color:$black-text-color;
+            margin:0;
         }
     }
 

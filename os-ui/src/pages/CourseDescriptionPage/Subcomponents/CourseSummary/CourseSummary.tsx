@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { CourseDescriptionType } from '../../../../types/CourseTypes';
 import BookmarkIcon from '../../../../icons/Bookmark';
-import ShareIcon from '../../../../icons/Share';
 import CourseSummaryItem from './Subcomponent/CourseSummaryItem/CourseSummaryItem';
-import { useCheck } from '../../../../custom-hooks/useCheck';
+import ShareIcon from '../../../../assets/svg/ShareIcon.svg';
 import Button from '../../../../component/Button/Button';
 import styles from './CourseSummary.module.scss';
 
@@ -11,39 +11,26 @@ const CourseSummary = ({
   rating, enrolled, level, language, duration, courseId, userIdAndToken,
 }:Omit<CourseDescriptionType, 'title'|'description'|'goal'|'modules'|'mentorDto'> & {courseId:number, userIdAndToken:{id:number, token:string}}) => {
   const { t } = useTranslation();
-  const [isChecked] = useCheck('enrolled', 'true');
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const isEnrolled = params.has('enrolled');
   const { id: userId, token } = userIdAndToken;
   const courseSummaryItem = {
     rating, enrolled, level, language, duration,
   };
+
   const {
-    mainContent, headerContent, headerIcons, courseSummaryItemList, buttonContainer,
+    mainContent, headerContent, headerIcons, courseSummaryItemList, buttonContainer, userEnrollText,
+    enrolledButtonContainer,
   } = styles;
-  /* const saveUserCourse = (courseId:number) => {
-    userService.saveUserPreferredCourses(userIdAndToken.id, courseId, userIdAndToken.token);
-    setIsBookmarked(true);
-  };
-  const deleteUserSavedCourse = (courseId:number) => {
-    userService.deleteUserSavedCourses(userIdAndToken.id, courseId, userIdAndToken.token);
-    setIsBookmarked(false);
-  }; */
-  /* useEffect(() => {
-    userService.getUserSavedCourses(userIdAndToken.id, userIdAndToken.token, { page: 0, size: 100 })
-      .then((data) => {
-        setIsBookmarked(data.content.some((savedCourse:CourseListType) => savedCourse.id === courseId));
-      });
-  }, []); */
 
   return (
     <div className={mainContent}>
       <div className={headerContent}>
-        <h2>{t('string.courseDescription.title.summary')}</h2>
+        <h2>{t('string.courseDescriptionPage.title.summary')}</h2>
         <div className={headerIcons}>
-          <ShareIcon iconSize="0.5 rem" />
-          <BookmarkIcon
-            iconSize="0.5 rem"
-            courseId={courseId}
-          />
+          <img src={ShareIcon} alt="Share icon" />
+          <BookmarkIcon iconSize="20px" courseId={courseId} />
         </div>
       </div>
       <div className={courseSummaryItemList}>
@@ -57,17 +44,17 @@ const CourseSummary = ({
           ))
         }
       </div>
-      {isChecked && <p>{t('string.courseDescription.title.userEnrolled')}</p>}
-      <div className={buttonContainer}>
-        {isChecked && <Button.MainButton onClick={() => null} className={['courseSummaryButton']}>{t('button.startLearning') }</Button.MainButton>}
-        {!isChecked && (
+      {isEnrolled && <p className={userEnrollText}>{t('string.courseDescriptionPage.title.userEnrolled')}</p>}
+      <div className={isEnrolled ? enrolledButtonContainer : buttonContainer}>
+        {isEnrolled && <Button.MainButton onClick={() => null} className={['courseSummaryButton']}>{t('button.courseDescriptionPage.startCourse') }</Button.MainButton>}
+        {!isEnrolled && (
         <Button.EnrollButton
           className={['courseSummaryButton']}
           courseId={courseId}
           userId={userId}
           token={token}
         >
-          {t('button.enroll')}
+          {t('button.courseDescriptionPage.enrollInCourse')}
         </Button.EnrollButton>
         )}
       </div>

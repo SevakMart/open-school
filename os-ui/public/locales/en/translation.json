@@ -104,7 +104,9 @@
         "description":"What you will learn",
         "goal":"Course goal",
         "modulesList":"Courses in this Program",
-        "authorInfo":"Author Information"
+        "authorInfo":"Author Information",
+        "summary":"Course Summary",
+        "userEnrolled":"Enrolled"
       }
     }
   },
@@ -132,6 +134,10 @@
     "myLearningPathsPage":{
       "exploreCourses":"Explore Courses",
       "resumeCourse":"Resume Course"
+    },
+    "courseDescriptionPage":{
+      "enrollInCourse":"ENROLL",
+      "startCourse":"START"
     }
   },
 
