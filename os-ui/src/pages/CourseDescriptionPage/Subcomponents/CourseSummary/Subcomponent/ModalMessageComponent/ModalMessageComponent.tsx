@@ -27,12 +27,18 @@ const EnrolledSuccessMessage = () => {
       <div className={mainContent}>
         <img src={EnrollIcon} alt="Enrolled" />
         <div className={textContent}>
-          <h2>{t('string.courseDescription.modal.congratsHeader')}</h2>
-          <p>{t('string.courseDescription.modal.mainMessage')}</p>
+          <h2>
+            {t('string.courseDescriptionPage.title.modalSuccessTitle')}
+            !
+          </h2>
+          <p>
+            {t('string.courseDescriptionPage.text.modalSuccessText')}
+            !
+          </p>
         </div>
         <div className={buttonContainer}>
           <Button.MainButton className={['startEnrolledCourse']} onClick={handleStartEnrolledCourse}>
-            {t('button.startCourse')}
+            {t('button.courseDescriptionPage.modalStartCourse')}
           </Button.MainButton>
         </div>
       </div>

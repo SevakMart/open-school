@@ -106,7 +106,11 @@
         "modulesList":"Courses in this Program",
         "authorInfo":"Author Information",
         "summary":"Course Summary",
-        "userEnrolled":"Enrolled"
+        "userEnrolled":"Enrolled",
+        "modalSuccessTitle":"Congrats"
+      },
+      "text":{
+        "modalSuccessText":"You have Enrolled To The Course"
       }
     }
   },
@@ -137,7 +141,8 @@
     },
     "courseDescriptionPage":{
       "enrollInCourse":"ENROLL",
-      "startCourse":"START"
+      "startCourse":"START",
+      "modalStartCourse":"START COURSE NOW"
     }
   },
 

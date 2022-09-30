@@ -1,31 +1,33 @@
 @import "../../../../../../styles/Mixins/ButtonMixin.scss";
 @import "../../../../../../styles/Mixins/FlexMixins.scss";
 @import "../../../../../../styles/Mixins/FontMixin.scss";
+@import "../../../../../../styles/Configs/Colors.scss";
+@import "../../../../../../styles/Configs/Fonts.scss";
 
 .mainContainer {
-    width:31.75rem;
-    height:29.625rem;
+    width:100%;
+    height:100%;
     background-image: conic-gradient(at 50% 38%,#EEEFF4 0deg,#EEEFF4 60deg,#FFFFFF 60deg,#FFFFFF 300deg,#EEEFF4 300deg,#EEEFF4 360deg);
-    border-radius: 2.5rem;
+    border-radius: 40px;
     @include flexStyle(column,center,space-evenly);
     .mainContent {
-        @include flexStyle(column,center,space-between);
+        @include flexStyle(column,center,none);
         .textContent {
             text-align: center;
-            margin-bottom:1.25rem;
+            margin:31px 0 17px;
             h2 {
-                @include fontStyle('Helvetica Neue',normal,700,2.25rem,2.75rem);
+                @include fontStyle($secondary-font,normal,700,36px,38px);
                 color:#123761;
+                margin:0 0 8px;
             }
             p{
-                @include fontStyle('Helvetica Neue',normal,400,0.875rem,1.063rem);
+                @include fontStyle($secondary-font,normal,400,14px,17px);
                 color:#848A9D;
+                margin:0;
             }
         }
-        button {
-            @include buttonStyle(#848A9D,#FFFFFF,1rem,100%,3.25rem,2rem,2rem,1rem,1rem);
-            @include fontStyle('Montserrat',normal,500,1rem,1.25rem);
-            border:none;
+        .buttonContainer {
+            width:100%;
         }
     }
 }

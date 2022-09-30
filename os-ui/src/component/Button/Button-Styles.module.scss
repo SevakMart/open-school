@@ -81,3 +81,8 @@
     @include fontStyle($primary-font, normal, 500, 16px, 20px);
     border:none;
 }
+.startEnrolledCourse {
+    @include buttonStyle($secondary-color,$white-text-color,16px,100%,52px,32px,32px,16px,16px);
+    @include fontStyle($primary-font,normal,500,16px,20px);
+    border:none;
+}
