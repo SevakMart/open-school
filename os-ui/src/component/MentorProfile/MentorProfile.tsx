@@ -8,7 +8,11 @@ import styles from './MentorProfile.module.scss';
 
 /* eslint-disable max-len */
 
-const MentorCard = ({ mentor, isHomepageNotSignedMentorCard }:{mentor:MentorType, isHomepageNotSignedMentorCard:boolean}) => {
+const MentorCard = ({
+  mentor, isHomepageNotSignedMentorCard, saveMentor, deleteMentor,
+}:
+  {mentor:MentorType, isHomepageNotSignedMentorCard:boolean, saveMentor?:(mentorName:string, mentorId:number)=>void,
+    deleteMentor?:(mentorName:string, mentorId:number)=>void, }) => {
   const {
     mainContainer, headerContainer, MailLinkedinIconsContainer, bodyContainer, mentorInfo,
     mentorAvatar, mentorInfoContainer, mentorExtraInfo,
@@ -27,6 +31,8 @@ const MentorCard = ({ mentor, isHomepageNotSignedMentorCard }:{mentor:MentorType
             mentorId={mentor.id}
             mentorName={`${mentor.name} ${mentor.surname}`}
             isHomepageNotSignedInMentor={isHomepageNotSignedMentorCard}
+            saveMentor={(mentorName:string, mentorId:number) => saveMentor && saveMentor(mentorName, mentorId)}
+            deleteMentor={(mentorName:string, mentorId:number) => deleteMentor && deleteMentor(mentorName, mentorId)}
           />
         </p>
       </div>

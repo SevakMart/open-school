@@ -4,7 +4,8 @@ import StarIcon from '../../icons/Star';
 import { SuggestedCourseType } from '../../types/CourseTypes';
 import styles from './LearningPath.module.scss';
 /* eslint-disable max-len */
-const LearningPath = ({ courseInfo }:{courseInfo:SuggestedCourseType}) => {
+const LearningPath = ({ courseInfo, saveCourse, deleteCourse }:
+  {courseInfo:SuggestedCourseType, saveCourse?:(courseTitle:string, courseId:number)=>void, deleteCourse?:(courseTitle:string, courseId:number)=>void, }) => {
   const {
     mainContainer, header, mainBody, ratingContent, courseTitle, keywordsContent, difficultyContent,
     ratingValue, keyword, bookmarkIcon, iconStyle,
@@ -20,7 +21,15 @@ const LearningPath = ({ courseInfo }:{courseInfo:SuggestedCourseType}) => {
       <div className={header}>
         {/* eslint-disable-next-line max-len */}
         <p data-testid={courseInfo.difficulty} className={difficultyContent}>{courseInfo.difficulty}</p>
-        <p className={bookmarkIcon}><BookmarkIcon iconSize="1rem" courseId={courseInfo.id} courseTitle={courseInfo.title} /></p>
+        <p className={bookmarkIcon}>
+          <BookmarkIcon
+            iconSize="1rem"
+            courseId={courseInfo.id}
+            courseTitle={courseInfo.title}
+            saveCourse={(courseTitle:string, courseId:number) => saveCourse && saveCourse(courseTitle, courseId)}
+            deleteCourse={(courseTitle:string, courseId:number) => deleteCourse && deleteCourse(courseTitle, courseId)}
+          />
+        </p>
       </div>
       <div className={mainBody} onClick={headToCourseDescriptionPage}>
         <div className={ratingContent}>

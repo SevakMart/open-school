@@ -8,7 +8,7 @@ class CategoriesService {
   }
 
   async getCategories(params: object = {}, token:string) {
-    const response = await fetchService.get(`${this.basePath}/categories`, params, token);
+    const response = await fetchService.get(`${this.basePath}/categories/parentCategories`, params, token);
     const { status } = response;
     const data = await response.json();
     return { data, status };

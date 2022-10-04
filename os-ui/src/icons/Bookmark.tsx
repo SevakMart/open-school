@@ -1,41 +1,39 @@
-import { useContext } from 'react';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { FiBookmark } from 'react-icons/fi';
-import userService from '../services/userService';
-import { useCheck } from '../custom-hooks/useCheck';
 import { Types } from '../types/types';
 import { openModal } from '../redux/Slices/PortalOpenStatus';
-import { deleteUserSavedCourse } from '../redux/Slices/DeleteUserSavedCourse';
-import { deleteUserSavedMentor } from '../redux/Slices/DeleteSavedMentor';
-import { storage } from '../services/storage/storage';
-import { userContext } from '../contexts/Contexts';
 
 /* eslint-disable max-len */
 
 const BookmarkIcon = ({
   iconSize, courseId, mentorId, courseTitle, mentorName, isHomepageNotSignedInMentor,
+  saveCourse, deleteCourse, saveMentor, deleteMentor, isCourseSummaryBookmarkIcon,
 }:
-  {iconSize:string, courseId?:number, mentorId?:number, courseTitle?:string, mentorName?:string, isHomepageNotSignedInMentor?:boolean}) => {
-  const { token, id: userId } = useContext(userContext);
-  const [isChecked, handleChecking] = useCheck(mentorName! || courseTitle!, mentorId || courseId);
+  {iconSize:string, courseId?:number, mentorId?:number, courseTitle?:string, mentorName?:string, isHomepageNotSignedInMentor?:boolean,
+    saveCourse?:(courseTitle:string, courseId:number)=>void, deleteCourse?:(courseTitle:string, courseId:number)=>void, saveMentor?:(mentorName:string, mentorId:number)=>void,
+    deleteMentor?:(mentorName:string, mentorId:number)=>void, isCourseSummaryBookmarkIcon?:boolean
+  }) => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const [isChecked, setIsChecked] = useState(params.has(courseTitle!) || params.has(mentorName!));
   const dispatch = useDispatch();
 
   const handleSaving = () => {
     if (!isChecked) {
       if (courseId) {
-        userService.saveUserPreferredCourses(userId, courseId, token);
-        storage.addItemToLocalStorage('savedCourse', { courseTitle, courseId });
+        saveCourse && saveCourse(courseTitle!, courseId);
       } else if (mentorId) {
-        userService.saveUserMentor(userId, mentorId, token);
-        storage.addItemToLocalStorage('savedMentor', { mentorName, mentorId });
+        saveMentor && saveMentor(mentorName!, mentorId);
       }
     } else if (isChecked) {
       if (courseId) {
-        dispatch(deleteUserSavedCourse({ userId, courseId, token }));
+        deleteCourse && deleteCourse(courseTitle!, courseId);
       } else if (mentorId) {
-        dispatch(deleteUserSavedMentor({ userId, mentorId, token }));
+        deleteMentor && deleteMentor(mentorName!, mentorId);
       }
-    }handleChecking();
+    }setIsChecked((prevState) => !prevState);
   };
 
   const handleMentorBookmark = () => {
@@ -48,7 +46,7 @@ const BookmarkIcon = ({
       style={{
         fontSize: `${iconSize}`,
         cursor: 'pointer',
-        fill: isChecked ? 'white' : 'none',
+        fill: isChecked && isCourseSummaryBookmarkIcon ? 'black' : isChecked ? 'white' : 'none',
       }}
     />
   );

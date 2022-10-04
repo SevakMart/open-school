@@ -61,6 +61,7 @@ const CourseDescriptionPage = ({ userInfo }:{userInfo:any}) => {
                 duration={entity.duration}
                 courseId={Number(courseId)}
                 userIdAndToken={idAndToken}
+                title={entity.title}
               />
             </div>
           )}
