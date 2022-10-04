@@ -1,5 +1,6 @@
 package app.openschool.course.api.dto;
 
+import app.openschool.user.company.Company;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class CourseInfoMentorDto {
@@ -16,11 +17,15 @@ public class CourseInfoMentorDto {
   @Schema(description = "Path oh the mentor's linkedin", example = "S3l55")
   private String linkedinPath;
 
-  public CourseInfoMentorDto(String name, String surname, String userImgPath, String linkedinPath) {
+  @Schema(description = "Mentor's company name ",example = "EPAM Systems")
+  private String companyName;
+
+  public CourseInfoMentorDto(String name, String surname, String userImgPath, String linkedinPath, String companyName) {
     this.name = name;
     this.surname = surname;
     this.userImgPath = userImgPath;
     this.linkedinPath = linkedinPath;
+    this.companyName=companyName;
   }
 
   public String getName() {
@@ -37,5 +42,9 @@ public class CourseInfoMentorDto {
 
   public String getLinkedinPath() {
     return linkedinPath;
+  }
+
+  public String getCompanyName() {
+    return companyName;
   }
 }
