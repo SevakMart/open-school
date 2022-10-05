@@ -11,8 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("/api/v1/courses")
@@ -46,9 +45,7 @@ public class CourseController {
   @GetMapping("/{id}")
   public ResponseEntity<CourseInfoDto> getCourseInfo(
       @Parameter(description = "Course id") @PathVariable Long id) {
-     Course courseById = courseService.findCourseById(id).get();
-      System.out.println(courseById.getMentor().toString());
-      return courseService
+    return courseService
         .findCourseById(id)
         .map(course -> ResponseEntity.ok(CourseMapper.toCourseInfoDto(course)))
         .orElseGet(() -> ResponseEntity.notFound().build());
