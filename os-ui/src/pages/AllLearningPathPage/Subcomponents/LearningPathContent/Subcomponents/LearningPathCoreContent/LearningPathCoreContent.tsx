@@ -46,7 +46,7 @@ const LearningPathCoreContent = () => {
           for (const savedCourse of savedCourseList) {
             params.set(savedCourse.title, String(savedCourse.id));
           }
-          navigate(`${location.pathname}?${params}`);
+          navigate(`${location.pathname}?${params}`, { replace: true });
         });
     }
   }, []);

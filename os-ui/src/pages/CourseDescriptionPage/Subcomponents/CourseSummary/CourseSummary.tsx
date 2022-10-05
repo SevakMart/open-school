@@ -36,28 +36,23 @@ const CourseSummary = ({
 
   const saveCourse = (courseTitle:string, courseId:number) => {
     userService.saveUserPreferredCourses(userId, courseId, token);
-    params.set(courseTitle, String(courseId));
-    navigate(`${location.pathname}?${params}`, { replace: true });
+    navigate(`${location.pathname}`, { replace: true, state: { courseIsSaved: true } });
   };
   const deleteCourse = (courseTitle:string, courseId:number) => {
     dispatch(deleteUserSavedCourse({ userId, courseId, token }));
-    params.delete(courseTitle);
-    navigate(`${location.pathname}`);
+    navigate(`${location.pathname}`, { replace: true });
   };
 
   useEffect(() => {
-    // if (!params.toString()) {
     dispatch(getUserSavedCourse({ userId, token, params: {} }))
       .unwrap()
       .then((savedCourseList:SuggestedCourseType[]) => {
         if (savedCourseList.some((savedCourse:SuggestedCourseType) => savedCourse.id === courseId)) {
-          params.set(title, String(courseId));
-          navigate(`${location.pathname}?${params}`);
+          navigate(`${location.pathname}`, { replace: true, state: { courseIsSaved: true } });
         } else {
-          navigate(`${location.pathname}`);
+          navigate(`${location.pathname}`, { replace: true, state: { courseIsSaved: false } });
         }
       });
-    // }
   }, []);
 
   return (
