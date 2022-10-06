@@ -17,7 +17,7 @@ const BookmarkIcon = ({
   }) => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const [isChecked, setIsChecked] = useState(params.has(courseTitle!) || params.has(mentorName!) || (location.state as {courseIsSaved:boolean})?.courseIsSaved);
+  const [isChecked, setIsChecked] = useState(params.has(courseTitle!) || params.has(mentorName!) || params.has('savedCourse'));
   const dispatch = useDispatch();
 
   const handleSaving = () => {

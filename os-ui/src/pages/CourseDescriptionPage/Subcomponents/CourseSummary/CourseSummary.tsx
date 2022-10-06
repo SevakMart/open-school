@@ -36,10 +36,12 @@ const CourseSummary = ({
 
   const saveCourse = (courseTitle:string, courseId:number) => {
     userService.saveUserPreferredCourses(userId, courseId, token);
-    navigate(`${location.pathname}`, { replace: true, state: { courseIsSaved: true } });
+    params.set('savedCourse', courseTitle);
+    navigate(`${location.pathname}?${params}`, { replace: true });
   };
   const deleteCourse = (courseTitle:string, courseId:number) => {
     dispatch(deleteUserSavedCourse({ userId, courseId, token }));
+    params.delete('savedCourse');
     navigate(`${location.pathname}`, { replace: true });
   };
 
@@ -48,9 +50,11 @@ const CourseSummary = ({
       .unwrap()
       .then((savedCourseList:SuggestedCourseType[]) => {
         if (savedCourseList.some((savedCourse:SuggestedCourseType) => savedCourse.id === courseId)) {
-          navigate(`${location.pathname}`, { replace: true, state: { courseIsSaved: true } });
+          params.set('savedCourse', savedCourseList.find((savedCourse:SuggestedCourseType) => savedCourse.id === courseId)!.title);
+          navigate(`${location.pathname}?${params}`, { replace: true });
         } else {
-          navigate(`${location.pathname}`, { replace: true, state: { courseIsSaved: false } });
+          params.delete('savedCourse');
+          navigate(`${location.pathname}`, { replace: true });
         }
       });
   }, []);
