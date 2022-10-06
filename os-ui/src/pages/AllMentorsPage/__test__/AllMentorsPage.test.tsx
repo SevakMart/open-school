@@ -5,7 +5,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { store } from '../../../redux/Store';
 import AllMentorsPage from '../AllMentorsPage';
 
-/* const mockedUseNavigation = jest.fn();
+const mockedUseNavigation = jest.fn();
 const mockedUseLocation = jest.fn();
 
 jest.mock('react-router-dom', () => ({
@@ -18,15 +18,17 @@ jest.mock('redux-state-sync', () => ({
     () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
   initMessageListener: () => jest.fn(),
 }));
-
+const userInfo = {
+  token: '123',
+  id: 1,
+};
 describe('Create test case for AllMentorsPage', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <AllMentorsPage />
+        <AllMentorsPage userInfo={userInfo} />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
 });
-*/

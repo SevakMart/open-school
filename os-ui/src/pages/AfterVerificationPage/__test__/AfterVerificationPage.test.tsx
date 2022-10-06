@@ -1,19 +1,13 @@
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { store } from '../../../redux/Store';
-import Homepage from '../Homepage';
+import AfterVerificationPage from '../AfterVerificationPage';
 
-const userInfo = {
-  token: '123',
-  id: 1,
-};
-
-describe('Create several unit tests for Homepage Component', () => {
-  test('Create a Snapshot test', () => {
+describe('Create test cases for AfterVerification page', () => {
+  test('Make a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <Homepage userInfo={userInfo} />
+        <AfterVerificationPage />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();

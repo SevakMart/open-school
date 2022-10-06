@@ -1,9 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { PayloadAction } from '@reduxjs/toolkit';
 import HomepageCategories from '../Categories';
-import publicService from '../../../../../services/publicService';
-import categoriesService from '../../../../../services/categoriesService';
 import { store } from '../../../../../redux/Store';
 
 const notSignInData = {
@@ -38,13 +35,8 @@ const signInData = {
   },
   status: 200,
 };
-jest.mock('redux-state-sync', () => ({
-  createStateSyncMiddleware:
-    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
-  initMessageListener: () => jest.fn(),
-}));
 
-describe('Create test cases for homepage mentors list', () => {
+describe('Create test cases for homepage categories list', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
@@ -52,37 +44,5 @@ describe('Create test cases for homepage mentors list', () => {
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();
-  });
-  test('Check if the right data is displayed when not signed in', async () => {
-    expect.hasAssertions();
-    jest.spyOn(publicService, 'getPublicCategories').mockResolvedValue(notSignInData);
-    render(
-      <Provider store={store}>
-        <HomepageCategories />
-      </Provider>,
-    );
-    const categoryTitle = await screen.findByTestId('JavaScript');
-    expect(categoryTitle).toBeInTheDocument();
-  });
-  test('Check if the right data is displayed when signed in', async () => {
-    expect.hasAssertions();
-    jest.spyOn(categoriesService, 'getCategories').mockResolvedValue(signInData);
-    render(
-      <Provider store={store}>
-        <HomepageCategories />
-      </Provider>,
-    );
-    const categoryTitle = await screen.findByTestId('Angular');
-    expect(categoryTitle).toBeInTheDocument();
-  });
-  test('Test fetching empty Categories list', async () => {
-    jest.spyOn(publicService, 'getPublicCategories').mockResolvedValue({ data: { content: [], totalPages: 0 }, status: 200 });
-    render(
-      <Provider store={store}>
-        <HomepageCategories />
-      </Provider>,
-    );
-    const emptyCategoryHeading = await screen.findByTestId('emptyCategoryMessage');
-    expect(emptyCategoryHeading).toBeInTheDocument();
   });
 });

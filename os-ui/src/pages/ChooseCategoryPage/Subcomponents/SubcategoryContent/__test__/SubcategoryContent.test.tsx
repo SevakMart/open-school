@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import ChooseCategoryPage from '../ChooseCategoryPage';
-import { store } from '../../../redux/Store';
+import { store } from '../../../../../redux/Store';
+import SubcategoryContent from '../SubcategoryContent';
 
 const mockUseNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -17,16 +17,13 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
-const userInfo = {
-  token: '123',
-  id: 1,
-};
-
-describe('Create test case to ChooSecategoryPage', () => {
+describe('Create test case to SubcategoryContent component', () => {
   test('Create a snapshot test', async () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <ChooseCategoryPage userInfo={userInfo} />
+        <SubcategoryContent
+          subcategoryItem={{ id: 1, title: 'React' }}
+        />
       </Provider>,
     );
     expect(asFragment).toMatchSnapshot();

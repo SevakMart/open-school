@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { addLoggedInUser } from '../../redux/Slices/loginUserSlice';
 import authService from '../../services/authService';
 import { storage } from '../../services/storage/storage';
 import { Portal } from '../../component/Portal/Portal';
@@ -13,16 +11,12 @@ const AfterVerificationPage = () => {
   const { t } = useTranslation();
   const { mainContainer } = styles;
   const [message, setMessage] = useState({ header: t('string.afterVerification.loading'), content: '' });
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userInfo = storage.getItemFromLocalStorage('userInfo');
   useEffect(() => {
     const token = getCookie('verification-token');
     let timer:any;
     authService.redirectUserToAccount({ token }).then((response) => {
       if (response.status === 200) {
-        console.log(response);
-        // dispatch(addLoggedInUser(response));
         storage.addItemToLocalStorage('userInfo', response as any);
         timer = setTimeout(() => navigate('/categories/subcategories'), 3000);
       } else {

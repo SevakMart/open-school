@@ -2,11 +2,10 @@ import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
-import { PayloadAction } from '@reduxjs/toolkit';
 import { store } from '../../../../../redux/Store';
 import CourseMainContent from '../CourseMainContent';
 
-/* const moduleInfo = {
+const moduleInfo = {
   title: 'React js',
   description: 'It talks about React',
   moduleItemSet: [{ title: 'Redux' }],
@@ -18,22 +17,10 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockUseNavigate,
   useLocation: () => mockUseLocation,
 }));
-jest.mock('redux-state-sync', () => ({
-  createStateSyncMiddleware:
-    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
-  initMessageListener: () => jest.fn(),
-}));
+
 describe('Create test cases for CourseMainContent', () => {
   test('Create a snapshot test', () => {
-    const { asFragment } = render(<Provider store={store}>
-      <CourseMainContent
-        description="This course talks about react"
-        goal="The goal is to gain experience."
-        modules={[moduleInfo]}
-        mentorDto={{ name: 'john', surname: 'Smith', linkedinPath: 'myLinkedin.com' }}
-      />
-    </Provider>, { wrapper: BrowserRouter });
+    const { asFragment } = render(<Provider store={store}><CourseMainContent description="This course talks about react" goal="The goal is to gain experience." modules={[moduleInfo]} mentorDto={{ name: 'john', surname: 'Smith', linkedinPath: 'myLinkedin.com' }} title="React" /></Provider>, { wrapper: BrowserRouter });
     expect(asFragment()).toMatchSnapshot();
   });
 });
-*/

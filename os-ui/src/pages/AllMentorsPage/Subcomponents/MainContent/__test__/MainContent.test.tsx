@@ -1,9 +1,8 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
-import { PayloadAction } from '@reduxjs/toolkit';
 import { store } from '../../../../../redux/Store';
-import SavedMentors from '../SavedMentors';
+import MainContent from '../MainContent';
 
 jest.mock('react-i18next', () => ({
   ...jest.requireActual('react-i18next'),
@@ -15,17 +14,11 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
-jest.mock('redux-state-sync', () => ({
-  createStateSyncMiddleware:
-    () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
-  initMessageListener: () => jest.fn(),
-}));
-
-describe('Create test cases for SavedMentors component', () => {
+describe('Create test cases for MainContent component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <SavedMentors />
+        <MainContent />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();

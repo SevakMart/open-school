@@ -1,6 +1,5 @@
 import { render } from '@testing-library/react';
 import ContentRenderer from '../ContentRenderer';
-/* isLoading, errorMessage, entity, errorFieldClassName, render, isMyLearningPathPage */
 
 const courseEntity = [
   {
