@@ -11,6 +11,9 @@ const courseEntity = [
     title: 'JS',
   },
 ];
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
 
 describe('Create test case for ContentRenderer component', () => {
   test('It should match the snapshot', () => {

@@ -1,6 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import InProgressCourse from '../InProgressCourse';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
+
 describe('Create test cases for InProgress component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(

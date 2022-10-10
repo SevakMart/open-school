@@ -140,7 +140,7 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
         class="mainMentorRegistrationButton"
         type="button"
       >
-        button.homePage.registerMentor
+        button.homePage.seeAll
       </button>
     </div>
   </div>

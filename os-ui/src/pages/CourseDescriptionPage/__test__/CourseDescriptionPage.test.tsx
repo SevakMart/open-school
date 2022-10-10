@@ -11,6 +11,9 @@ const userInfo = {
   token: '123',
   id: 1,
 };
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
 
 describe('Create test cases for course description page', () => {
   test('Create a snapshot test', () => {

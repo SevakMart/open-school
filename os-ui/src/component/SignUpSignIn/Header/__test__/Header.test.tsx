@@ -3,6 +3,10 @@ import { Provider } from 'react-redux';
 import { store } from '../../../../redux/Store';
 import Header from '../Header';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
+
 describe('Create unit tests for Header component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(

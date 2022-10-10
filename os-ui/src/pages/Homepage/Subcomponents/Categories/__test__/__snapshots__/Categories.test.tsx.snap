@@ -43,7 +43,7 @@ exports[`Create test cases for homepage categories list Create a snapshot test 1
         class="mainMentorRegistrationButton"
         type="button"
       >
-        button.homePage.registerMentor
+        button.homePage.seeAll
       </button>
     </div>
   </div>

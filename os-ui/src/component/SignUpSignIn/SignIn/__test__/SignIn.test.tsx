@@ -10,6 +10,9 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockNavigate,
 }));
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
 
 describe('Create test cases for SignIn component', () => {
   test('Create a snapshot test', () => {

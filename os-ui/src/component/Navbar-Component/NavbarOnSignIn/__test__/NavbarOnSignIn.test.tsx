@@ -11,6 +11,9 @@ jest.mock('react-router-dom', () => ({
     search: '',
   }),
 }));
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
 
 describe('Make unit tests of NavbarOnSignIn component', () => {
   test('Create a snapshot test', () => {

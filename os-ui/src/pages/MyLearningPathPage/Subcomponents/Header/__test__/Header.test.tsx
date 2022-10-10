@@ -11,6 +11,9 @@ jest.mock('react-router-dom', () => ({
     search: '',
   }),
 }));
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
 
 describe('Create test cases for Header', () => {
   test('Create snapshot test', () => {

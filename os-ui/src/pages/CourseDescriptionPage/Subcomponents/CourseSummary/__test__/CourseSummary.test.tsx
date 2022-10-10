@@ -12,6 +12,9 @@ jest.mock('react-router-dom', () => ({
     search: '',
   }),
 }));
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
 describe('Create test cases for course description page', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(

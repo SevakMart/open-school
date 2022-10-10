@@ -39,7 +39,7 @@ exports[`Create test cases for MainBody component Create a snapshot test 1`] = `
       class="mainMentorRegistrationButton"
       type="button"
     >
-      button.homePage.registerMentor
+      button.homePage.seeAll
     </button>
   </div>
 </DocumentFragment>

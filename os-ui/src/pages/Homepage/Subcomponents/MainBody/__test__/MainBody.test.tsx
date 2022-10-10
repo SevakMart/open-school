@@ -3,6 +3,10 @@ import { Provider } from 'react-redux';
 import { store } from '../../../../../redux/Store';
 import MainBody from '../MainBody';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
+
 describe('Create test cases for MainBody component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(

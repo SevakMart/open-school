@@ -13,6 +13,9 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockedUseNavigation,
   useLocation: () => mockedUseLocation,
 }));
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
 jest.mock('redux-state-sync', () => ({
   createStateSyncMiddleware:
     () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),

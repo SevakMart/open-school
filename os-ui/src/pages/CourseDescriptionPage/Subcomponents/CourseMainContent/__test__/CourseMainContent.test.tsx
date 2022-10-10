@@ -17,6 +17,9 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockUseNavigate,
   useLocation: () => mockUseLocation,
 }));
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
 
 describe('Create test cases for CourseMainContent', () => {
   test('Create a snapshot test', () => {

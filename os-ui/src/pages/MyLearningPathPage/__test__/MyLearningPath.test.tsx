@@ -16,6 +16,9 @@ jest.mock('react-router-dom', () => ({
     search: '',
   }),
 }));
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
 
 describe('Create several unit tests for MyLearningPathPage Component', () => {
   test('Create a Snapshot test', () => {
