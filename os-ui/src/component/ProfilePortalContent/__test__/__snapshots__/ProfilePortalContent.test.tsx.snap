@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create unit tests for ProfilePortalContent component Create a snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="mainContent"
+  >
+    <div
+      class="iconContainer"
+    >
+      <p>
+        &gt;
+      </p>
+    </div>
+    <p
+      class="titleContent"
+    />
+    <h2>
+      Hello world
+    </h2>
+    <p />
+  </div>
+</DocumentFragment>
+`;

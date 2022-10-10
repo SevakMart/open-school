@@ -12,7 +12,7 @@ exports[`Create a snapshot test 1`] = `
     <p
       data-testid="No courses yet"
     >
-      No Courses Yet
+      string.myLearningPaths.noCourseStatus
     </p>
   </div>
 </DocumentFragment>

@@ -13,6 +13,14 @@ jest.mock('react-i18next', () => ({
     },
   }),
 }));
+const mockUseNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom') as any,
+  useNavigate: () => mockUseNavigate,
+  useLocation: () => ({
+    search: '',
+  }),
+}));
 
 describe('Create test cases for MainContent component', () => {
   test('Create a snapshot test', () => {

@@ -5,18 +5,13 @@ exports[`Create test cases for CheckedContent component Create a snapshot test 1
   <div
     class="checkedContentClass"
   >
-    <input
-      data-testid="React"
-      id="1"
-      name="checkbox"
-      type="checkbox"
+    <img
+      alt="logo"
+      src="CategoriesUnchecked.svg"
     />
-    <label
-      data-testid="label of React"
-      for="1"
-    >
+    <p>
       React
-    </label>
+    </p>
   </div>
 </DocumentFragment>
 `;

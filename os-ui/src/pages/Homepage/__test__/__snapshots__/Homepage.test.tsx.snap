@@ -2,161 +2,193 @@
 
 exports[`Create several unit tests for Homepage Component Create a Snapshot test 1`] = `
 <DocumentFragment>
-  <div
-    class="headerContainer"
+  <nav
+    class="mainContent"
   >
-    <nav
-      class="navContainer"
-    >
-      <h2>
-        string.homePage.navBar.logo
-      </h2>
-      <div
-        class="navMainContent"
-      >
-        <div
-          class="categoriesMentors"
-        >
-          <p>
-            string.homePage.navBar.exploreCategories
-          </p>
-          <p>
-            string.homePage.navBar.mentors
-          </p>
-        </div>
-        <div
-          class="buttonContent"
-        >
-          <button
-            type="button"
-          >
-            button.homePage.becomeMentor
-          </button>
-          <button
-            type="button"
-          >
-            button.homePage.signIn
-          </button>
-        </div>
-      </div>
-    </nav>
+    <h2>
+      string.homePage.navBar.logo
+    </h2>
     <div
-      class="mainContent"
+      class="navMainContent"
     >
+      <p>
+        string.homePage.navBar.allLearningPaths
+      </p>
+      <p>
+        string.homePage.navBar.myLearningPaths
+      </p>
+      <p>
+        string.homePage.navBar.mentors
+      </p>
       <div
-        class="leftContent"
+        class="bookmarkIconStyle"
       >
-        <h1>
-          string.homePage.header.educationalPlatform
-        </h1>
-        <p>
-          string.homePage.header.chooseCategories
-        </p>
-        <div
-          class="buttonContainer"
+        <svg
+          fill="none"
+          height="1em"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          style="font-size: 20px; cursor: pointer; fill: none;"
+          viewBox="0 0 24 24"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <button
-            name="signUp"
-            type="button"
-          >
-            button.homePage.signUp
-          </button>
-          <button
-            name="signIn"
-            type="button"
-          >
-            button.homePage.signIn
-          </button>
-        </div>
+          <path
+            d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+          />
+        </svg>
       </div>
+      <img
+        alt="Notification"
+        class="notificationIcon"
+        src="Notification.svg"
+      />
       <div
-        class="rightContent"
+        class="userInfoContent"
       >
         <img
-          alt="Education platform logo"
-          src="https://image.shutterstock.com/image-vector/ebook-logo-design-vector-electronic-260nw-1767373559.jpg"
+          alt="avatar"
+          class="avatarLogo"
+          src="https://reactjs.org/logo-og.png"
+        />
+        <img
+          alt="Arrow down Icon"
+          class="arrowDownIcon"
+          src="Arrow-down.svg"
         />
       </div>
+    </div>
+  </nav>
+  <div
+    class="mainContent"
+  >
+    <div
+      class="leftContent"
+    >
+      <h1>
+        string.homePage.header.educationalPlatform
+      </h1>
+      <p>
+        string.homePage.header.chooseCategories
+      </p>
+      <div
+        class="buttonContainer"
+      >
+        <button
+          class="headerButton headerButton__signUp"
+          type="button"
+        >
+          button.homePage.signUp
+        </button>
+        <button
+          class="headerButton headerButton__signIn"
+          type="button"
+        >
+          button.homePage.signIn
+        </button>
+      </div>
+    </div>
+    <div
+      class="rightContent"
+    >
+      <img
+        alt="Education platform logo"
+        src="HomepageMainImage.svg"
+      />
     </div>
   </div>
   <div
     class="categoriesMainContainer"
   >
-    <h2>
-      string.homePage.categories.exploreCategories
-    </h2>
     <div
-      class="categoriesListContainer"
+      class="main"
     >
-      <h2
-        data-testid="emptyCategoryMessage"
-      >
-        messages.noData.categories
+      <h3>
+        string.homePage.categories.title
+      </h3>
+      <h2>
+        string.homePage.categories.exploreCategories
       </h2>
-      <i
-        data-testid="categoryRightArrow"
-        style="position: absolute; z-index: 1; font-size: 3rem; right: 6%; cursor: pointer;"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 16 16"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
-          />
-        </svg>
-      </i>
     </div>
-    <button
-      type="button"
+    <div
+      class="listContainer"
+      style="background-color: rgb(249, 250, 253); margin: 0px 6%;"
     >
-      button.homePage.seeAll
-    </button>
+      <div
+        class="gridContent"
+      >
+        <div
+          class="mainContent"
+        >
+          <div
+            class="loader"
+          >
+            <span />
+            <span />
+            <span />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="registrationButton"
+      style="margin: 2rem auto 4rem;"
+    >
+      <button
+        class="mainMentorRegistrationButton"
+        type="button"
+      >
+        button.homePage.registerMentor
+      </button>
+    </div>
   </div>
   <div
     class="mentorMainContainer"
   >
-    <h2>
-      string.homePage.mentors.ourMentors
-    </h2>
     <div
-      class="mentorListContainer"
+      class="main"
+      style="padding-top: 5%;"
     >
-      <h2
-        data-testid="emptyMentorMessage"
-      >
-        messages.noData.mentors
+      <h3>
+        string.homePage.mentors.ourMentors
+      </h3>
+      <h2>
+        string.homePage.mentors.learnAboutContributors
       </h2>
-      <i
-        data-testid="mentorRightArrow"
-        style="position: absolute; z-index: 1; font-size: 3rem; right: 6%; cursor: pointer;"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 16 16"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
-          />
-        </svg>
-      </i>
     </div>
-    <button
-      name="signUp"
-      type="button"
+    <div
+      class="listContainer"
+      style="margin: 6%;"
     >
-      button.homePage.registerMentor
-    </button>
+      <div
+        class="gridContent"
+      >
+        <div
+          class="mainContent"
+        >
+          <div
+            class="loader"
+          >
+            <span />
+            <span />
+            <span />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="registrationButton"
+      style="margin: auto; padding: 5% 0px 10%;"
+    >
+      <button
+        class="mainMentorRegistrationButton"
+        type="button"
+      >
+        button.homePage.registerMentor
+      </button>
+    </div>
   </div>
   <div
     class="mainContainer"
@@ -168,69 +200,21 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
       class="buttonContainer"
     >
       <button
-        name="signUp"
+        class="signUpFooter signUpFooter__student"
         type="button"
       >
         button.homePage.signUpStudent
       </button>
       <button
-        name="signUp"
+        class="signUpFooter signUpFooter__mentor"
         type="button"
       >
         button.homePage.signUpMentor
       </button>
     </div>
   </div>
-  <div
-    class="mainContainer"
-  >
-    <button
-      type="button"
-    >
-      string.homePage.navBar.logo
-    </button>
-    <div
-      class="categories"
-    >
-      <h2>
-        string.homePage.footer.categories
-      </h2>
-      <p>
-        string.homePage.footer.softwareEngineering
-      </p>
-      <p>
-        string.homePage.footer.design
-      </p>
-      <p>
-        string.homePage.footer.management
-      </p>
-    </div>
-    <div
-      class="becomeMentor"
-    >
-      <h2>
-        string.homePage.footer.becomeMentor
-      </h2>
-      <p>
-        string.homePage.footer.about
-      </p>
-      <p>
-        string.homePage.footer.help
-      </p>
-    </div>
-    <div
-      class="findUsOn"
-    >
-      <h2>
-        string.homePage.footer.findUs
-      </h2>
-      <p>
-        Facebook
-      </p>
-      <p>
-        Instagram
-      </p>
-    </div>
-  </div>
+  <h2>
+    string.homePage.navBar.logo
+  </h2>
 </DocumentFragment>
 `;

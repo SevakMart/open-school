@@ -3,16 +3,18 @@
 exports[`Create test cases for SavedCourseContent component Create a snapshot test 1`] = `
 <DocumentFragment>
   <div
-    class="coreContent"
+    class="mainContainer"
   >
     <div
-      class="mainContainer"
+      class="mainContent"
     >
-      <h2
-        data-testid="Empty data Message"
+      <div
+        class="loader"
       >
-        No data to display
-      </h2>
+        <span />
+        <span />
+        <span />
+      </div>
     </div>
   </div>
 </DocumentFragment>

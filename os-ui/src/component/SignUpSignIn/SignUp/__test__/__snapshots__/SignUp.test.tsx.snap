@@ -3,211 +3,213 @@
 exports[`Create tests for sign up form Create a snapshot test 1`] = `
 <DocumentFragment>
   <div
-    class="mainContainer"
+    class="closeIcon"
   >
+    <svg
+      fill="currentColor"
+      height="1em"
+      stroke="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M7,7 L17,17 M7,17 L17,7"
+        fill="none"
+        stroke="#000"
+        stroke-width="2"
+      />
+    </svg>
+  </div>
+  <div
+    class="headerContent"
+  >
+    <h2>
+      string.signUp.title
+    </h2>
     <div
-      class="formContainer"
+      class="iconContent"
     >
       <div
-        data-testid="closeButton"
-        style="background-color: transparent; color: rgb(132, 138, 157); cursor: pointer; float: inline-end; margin-right: 3%; font-size: 2rem; padding: 0px;"
+        class="icon"
       >
         <svg
           fill="currentColor"
           height="1em"
           stroke="currentColor"
           stroke-width="0"
-          viewBox="0 0 24 24"
+          style="color: rgb(132, 138, 157); width: 100%; height: 100%;"
+          viewBox="0 0 1024 1024"
           width="1em"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            d="M7,7 L17,17 M7,17 L17,7"
-            fill="none"
-            stroke="#000"
-            stroke-width="2"
+            d="M847.7 112H176.3c-35.5 0-64.3 28.8-64.3 64.3v671.4c0 35.5 28.8 64.3 64.3 64.3h671.4c35.5 0 64.3-28.8 64.3-64.3V176.3c0-35.5-28.8-64.3-64.3-64.3zm0 736c-447.8-.1-671.7-.2-671.7-.3.1-447.8.2-671.7.3-671.7 447.8.1 671.7.2 671.7.3-.1 447.8-.2 671.7-.3 671.7zM230.6 411.9h118.7v381.8H230.6zm59.4-52.2c37.9 0 68.8-30.8 68.8-68.8a68.8 68.8 0 1 0-137.6 0c-.1 38 30.7 68.8 68.8 68.8zm252.3 245.1c0-49.8 9.5-98 71.2-98 60.8 0 61.7 56.9 61.7 101.2v185.7h118.6V584.3c0-102.8-22.2-181.9-142.3-181.9-57.7 0-96.4 31.7-112.3 61.7h-1.6v-52.2H423.7v381.8h118.6V604.8z"
           />
         </svg>
       </div>
       <div
-        class="headerContent"
+        class="icon"
       >
-        <h2>
-          string.signUp.title
-        </h2>
-        <div
-          class="iconContent"
+        <svg
+          fill="currentColor"
+          height="1em"
+          role="img"
+          stroke="currentColor"
+          stroke-width="0"
+          style="color: rgb(132, 138, 157); width: 100%; height: 100%;"
+          viewBox="0 0 24 24"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <button
-            type="button"
-          >
-            <svg
-              fill="currentColor"
-              height="1em"
-              stroke="currentColor"
-              stroke-width="0"
-              style="color: rgb(132, 138, 157);"
-              viewBox="0 0 1024 1024"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M847.7 112H176.3c-35.5 0-64.3 28.8-64.3 64.3v671.4c0 35.5 28.8 64.3 64.3 64.3h671.4c35.5 0 64.3-28.8 64.3-64.3V176.3c0-35.5-28.8-64.3-64.3-64.3zm0 736c-447.8-.1-671.7-.2-671.7-.3.1-447.8.2-671.7.3-671.7 447.8.1 671.7.2 671.7.3-.1 447.8-.2 671.7-.3 671.7zM230.6 411.9h118.7v381.8H230.6zm59.4-52.2c37.9 0 68.8-30.8 68.8-68.8a68.8 68.8 0 1 0-137.6 0c-.1 38 30.7 68.8 68.8 68.8zm252.3 245.1c0-49.8 9.5-98 71.2-98 60.8 0 61.7 56.9 61.7 101.2v185.7h118.6V584.3c0-102.8-22.2-181.9-142.3-181.9-57.7 0-96.4 31.7-112.3 61.7h-1.6v-52.2H423.7v381.8h118.6V604.8z"
-              />
-            </svg>
-          </button>
-          <button
-            type="button"
-          >
-            <svg
-              fill="currentColor"
-              height="1em"
-              role="img"
-              stroke="currentColor"
-              stroke-width="0"
-              style="color: rgb(132, 138, 157);"
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title />
-              <path
-                d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"
-              />
-            </svg>
-          </button>
-        </div>
-        <p>
-          string.signIn.or
-        </p>
+          <title />
+          <path
+            d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"
+          />
+        </svg>
       </div>
-      <form
-        class="inputContent"
-      >
-        <div>
-          <label
-            for="firstName"
-          >
-            form.labels.name
-            <span
-              style="color: red;"
-            >
-              *
-            </span>
-          </label>
-          <input
-            data-testid="firstNameInput"
-            id="firstName"
-            name="firstName"
-            placeholder="form.placeholder.name"
-            required=""
-            type="text"
-            value=""
-          />
-        </div>
-        <div>
-          <label
-            for="lastName"
-          >
-            form.labels.surname
-            <span
-              style="color: red;"
-            >
-              *
-            </span>
-          </label>
-          <input
-            data-testid="lastNameInput"
-            id="lastName"
-            name="lastName"
-            placeholder="form.placeholder.surname"
-            required=""
-            type="text"
-            value=""
-          />
-        </div>
-        <div>
-          <label
-            for="email"
-          >
-            form.labels.email
-            <span
-              style="color: red;"
-            >
-              *
-            </span>
-          </label>
-          <input
-            data-testid="emailInput"
-            id="email"
-            name="email"
-            placeholder="form.placeholder.email"
-            required=""
-            type="email"
-            value=""
-          />
-        </div>
-        <div>
-          <label
-            for="psd"
-          >
-            form.labels.psd.default
-            <span
-              style="color: red;"
-            >
-              *
-            </span>
-          </label>
-          <input
-            data-testid="psdInput"
-            id="psd"
-            name="psd"
-            placeholder="form.placeholder.psd.default"
-            required=""
-            type="password"
-            value=""
-          />
-          <i
-            style="position: absolute; right: 3%; margin-top: 9%; cursor: pointer;"
-          >
-            <svg
-              fill="currentColor"
-              height="1em"
-              stroke="currentColor"
-              stroke-width="0"
-              viewBox="0 0 1024 1024"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M942.2 486.2Q889.47 375.11 816.7 305l-50.88 50.88C807.31 395.53 843.45 447.4 874.7 512 791.5 684.2 673.4 766 512 766q-72.67 0-133.87-22.38L323 798.75Q408 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 0 0 0-51.5zm-63.57-320.64L836 122.88a8 8 0 0 0-11.32 0L715.31 232.2Q624.86 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 0 0 0 51.5q56.69 119.4 136.5 191.41L112.48 835a8 8 0 0 0 0 11.31L155.17 889a8 8 0 0 0 11.31 0l712.15-712.12a8 8 0 0 0 0-11.32zM149.3 512C232.6 339.8 350.7 258 512 258c54.54 0 104.13 9.36 149.12 28.39l-70.3 70.3a176 176 0 0 0-238.13 238.13l-83.42 83.42C223.1 637.49 183.3 582.28 149.3 512zm246.7 0a112.11 112.11 0 0 1 146.2-106.69L401.31 546.2A112 112 0 0 1 396 512z"
-              />
-              <path
-                d="M508 624c-3.46 0-6.87-.16-10.25-.47l-52.82 52.82a176.09 176.09 0 0 0 227.42-227.42l-52.82 52.82c.31 3.38.47 6.79.47 10.25a111.94 111.94 0 0 1-112 112z"
-              />
-            </svg>
-          </i>
-        </div>
-        <button
-          data-testid="signUpButton"
-          type="button"
-        >
-          button.homePage.signUp
-        </button>
-      </form>
-      <p
-        class="alreadyHaveAccount"
-      >
-        string.signUp.haveAccount
-        <span>
-          <button
-            type="button"
-          >
-            button.homePage.signIn
-          </button>
-        </span>
-      </p>
     </div>
+    <p>
+      string.signIn.or
+    </p>
   </div>
+  <form
+    class="inputContent"
+  >
+    <div
+      class="textInputContainer"
+    >
+      <label
+        for="firstName"
+      >
+        form.labels.name
+        <span
+          style="color: red;"
+        >
+          *
+        </span>
+      </label>
+      <input
+        data-testid="lastNameInput"
+        id="firstName"
+        name="firstName"
+        placeholder="form.placeholder.name"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="textInputContainer"
+    >
+      <label
+        for="lastName"
+      >
+        form.labels.surname
+        <span
+          style="color: red;"
+        >
+          *
+        </span>
+      </label>
+      <input
+        data-testid="lastNameInput"
+        id="lastName"
+        name="lastName"
+        placeholder="form.placeholder.surname"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="EmailInputContainer"
+    >
+      <label
+        for="email"
+      >
+        form.labels.email
+        <span
+          style="color: red;"
+        >
+          *
+        </span>
+      </label>
+      <input
+        data-testid="emailInput"
+        id="email"
+        name="email"
+        placeholder="form.placeholder.email"
+        required=""
+        type="email"
+        value=""
+      />
+    </div>
+    <div
+      class="PasswordInputContainer"
+    >
+      <label
+        for="psd"
+      >
+        form.labels.psd.default
+        <span
+          style="color: red;"
+        >
+          *
+        </span>
+      </label>
+      <div
+        class="PasswordInputFieldWithIcon"
+      >
+        <input
+          data-testid="psdInput"
+          id="psd"
+          name="psd"
+          placeholder="form.placeholder.psd.default"
+          required=""
+          type="password"
+          value=""
+        />
+        <i>
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 1024 1024"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M942.2 486.2Q889.47 375.11 816.7 305l-50.88 50.88C807.31 395.53 843.45 447.4 874.7 512 791.5 684.2 673.4 766 512 766q-72.67 0-133.87-22.38L323 798.75Q408 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 0 0 0-51.5zm-63.57-320.64L836 122.88a8 8 0 0 0-11.32 0L715.31 232.2Q624.86 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 0 0 0 51.5q56.69 119.4 136.5 191.41L112.48 835a8 8 0 0 0 0 11.31L155.17 889a8 8 0 0 0 11.31 0l712.15-712.12a8 8 0 0 0 0-11.32zM149.3 512C232.6 339.8 350.7 258 512 258c54.54 0 104.13 9.36 149.12 28.39l-70.3 70.3a176 176 0 0 0-238.13 238.13l-83.42 83.42C223.1 637.49 183.3 582.28 149.3 512zm246.7 0a112.11 112.11 0 0 1 146.2-106.69L401.31 546.2A112 112 0 0 1 396 512z"
+            />
+            <path
+              d="M508 624c-3.46 0-6.87-.16-10.25-.47l-52.82 52.82a176.09 176.09 0 0 0 227.42-227.42l-52.82 52.82c.31 3.38.47 6.79.47 10.25a111.94 111.94 0 0 1-112 112z"
+            />
+          </svg>
+        </i>
+      </div>
+    </div>
+    <button
+      class="formButton"
+      type="button"
+    >
+      button.homePage.signUp
+    </button>
+  </form>
+  <p
+    class="alreadyHaveAccount"
+  >
+    string.signUp.haveAccount
+    <span>
+      <button
+        class="account"
+        type="button"
+      >
+        button.homePage.signIn
+      </button>
+    </span>
+  </p>
 </DocumentFragment>
 `;

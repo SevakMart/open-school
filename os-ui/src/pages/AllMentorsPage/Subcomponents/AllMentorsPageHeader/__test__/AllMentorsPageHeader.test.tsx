@@ -5,6 +5,15 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { store } from '../../../../../redux/Store';
 import AllMentorsPageHeader from '../AllMentorsPageHeader';
 
+const mockUseNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom') as any,
+  useNavigate: () => mockUseNavigate,
+  useLocation: () => ({
+    search: '',
+  }),
+}));
+
 jest.mock('react-i18next', () => ({
   ...jest.requireActual('react-i18next'),
   useTranslation: () => ({

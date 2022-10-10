@@ -5,21 +5,20 @@ exports[`Create test cases for ModuleItem component Create a snapshot test 1`] =
   <div
     class="mainContainer"
   >
-    <img
-      alt="vector"
-      class="vector"
-      src="Vector.svg"
-    />
     <div
       class="mainContent"
     >
       <div
         class="titleAndEllipseIcon"
       >
-        <div
+        <img
+          alt="ellipse icon"
           class="ellipseIcon"
+          src="Ellipse.svg"
         />
-        <p>
+        <p
+          class="moduleTitle"
+        >
           React js
         </p>
       </div>

@@ -5,11 +5,17 @@ exports[`Create test cases for SavedMentors component Create a snapshot test 1`]
   <div
     class="mainContainer"
   >
-    <h2
-      data-testid="emptyMessageHeader"
+    <div
+      class="mainContent"
     >
-      No data to display
-    </h2>
+      <div
+        class="loader"
+      >
+        <span />
+        <span />
+        <span />
+      </div>
+    </div>
   </div>
 </DocumentFragment>
 `;

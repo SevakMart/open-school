@@ -14,50 +14,35 @@ exports[`Create test cases for filteringcontent component where the content is o
     <div
       class="checkedContentClass"
     >
-      <input
-        data-testid="French"
-        id="1"
-        name="checkbox"
-        type="checkbox"
+      <img
+        alt="logo"
+        src="CategoriesUnchecked.svg"
       />
-      <label
-        data-testid="label of French"
-        for="1"
-      >
+      <p>
         French
-      </label>
+      </p>
     </div>
     <div
       class="checkedContentClass"
     >
-      <input
-        data-testid="English"
-        id="2"
-        name="checkbox"
-        type="checkbox"
+      <img
+        alt="logo"
+        src="CategoriesUnchecked.svg"
       />
-      <label
-        data-testid="label of English"
-        for="2"
-      >
+      <p>
         English
-      </label>
+      </p>
     </div>
     <div
       class="checkedContentClass"
     >
-      <input
-        data-testid="Arabic"
-        id="3"
-        name="checkbox"
-        type="checkbox"
+      <img
+        alt="logo"
+        src="CategoriesUnchecked.svg"
       />
-      <label
-        data-testid="label of Arabic"
-        for="3"
-      >
+      <p>
         Arabic
-      </label>
+      </p>
     </div>
   </div>
 </DocumentFragment>
@@ -86,50 +71,35 @@ exports[`Create test cases where the content element is of type object Create a 
       <div
         class="checkedContentClass"
       >
-        <input
-          data-testid="React"
-          id="1"
-          name="checkbox"
-          type="checkbox"
+        <img
+          alt="logo"
+          src="CategoriesUnchecked.svg"
         />
-        <label
-          data-testid="label of React"
-          for="1"
-        >
+        <p>
           React
-        </label>
+        </p>
       </div>
       <div
         class="checkedContentClass"
       >
-        <input
-          data-testid="Angular"
-          id="2"
-          name="checkbox"
-          type="checkbox"
+        <img
+          alt="logo"
+          src="CategoriesUnchecked.svg"
         />
-        <label
-          data-testid="label of Angular"
-          for="2"
-        >
+        <p>
           Angular
-        </label>
+        </p>
       </div>
       <div
         class="checkedContentClass"
       >
-        <input
-          data-testid="Vue Js"
-          id="3"
-          name="checkbox"
-          type="checkbox"
+        <img
+          alt="logo"
+          src="CategoriesUnchecked.svg"
         />
-        <label
-          data-testid="label of Vue Js"
-          for="3"
-        >
+        <p>
           Vue Js
-        </label>
+        </p>
       </div>
     </div>
     <div
@@ -144,34 +114,24 @@ exports[`Create test cases where the content element is of type object Create a 
       <div
         class="checkedContentClass"
       >
-        <input
-          data-testid="Java"
-          id="1"
-          name="checkbox"
-          type="checkbox"
+        <img
+          alt="logo"
+          src="CategoriesUnchecked.svg"
         />
-        <label
-          data-testid="label of Java"
-          for="1"
-        >
+        <p>
           Java
-        </label>
+        </p>
       </div>
       <div
         class="checkedContentClass"
       >
-        <input
-          data-testid="Kotlin"
-          id="2"
-          name="checkbox"
-          type="checkbox"
+        <img
+          alt="logo"
+          src="CategoriesUnchecked.svg"
         />
-        <label
-          data-testid="label of Kotlin"
-          for="2"
-        >
+        <p>
           Kotlin
-        </label>
+        </p>
       </div>
     </div>
   </div>

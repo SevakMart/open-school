@@ -5,22 +5,30 @@ exports[`Create unit tests of category profile Make a snapshot tests 1`] = `
   <div
     class="mainContainer"
   >
+    <img
+      alt="JavaScript"
+      src="CategoryIcon.svg"
+    />
     <div
       class="categoryInfoContainer"
     >
-      <div
-        class="logoContainer"
-      >
-        <img
-          alt="JavaScript"
-          src="https://reactjs.org/logo-og.png"
-        />
+      <div>
+        <p
+          class="categoryTitle"
+          data-testid="JavaScript"
+        >
+          JavaScript
+        </p>
+        <p
+          class="numberOfSubcategories"
+        >
+          3
+        </p>
       </div>
-      <p
-        data-testid="JavaScript"
-      >
-        JavaScript
-      </p>
+      <img
+        alt="JavaScript"
+        src="RightArrow.svg"
+      />
     </div>
   </div>
 </DocumentFragment>

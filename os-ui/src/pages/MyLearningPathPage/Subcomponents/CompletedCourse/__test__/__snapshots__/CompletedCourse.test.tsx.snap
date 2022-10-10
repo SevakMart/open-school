@@ -5,16 +5,12 @@ exports[`Create test cases for the Completed course component Create a snapshot 
   <div
     class="mainContainer"
   >
-    <div
-      class="container"
+    <p
+      class="courseTitle"
+      data-testid="React js"
     >
-      <p
-        class="courseTitle"
-        data-testid="React js"
-      >
-        React js
-      </p>
-    </div>
+      React js
+    </p>
     <div
       class="separator"
     />
@@ -24,7 +20,7 @@ exports[`Create test cases for the Completed course component Create a snapshot 
       <p
         class="containerTitle"
       >
-        Status
+        string.myLearningPaths.completedCourse.status
       </p>
       <p
         class="statusContent"
@@ -42,7 +38,7 @@ exports[`Create test cases for the Completed course component Create a snapshot 
       <p
         class="containerTitle"
       >
-        Grade
+        string.myLearningPaths.completedCourse.grade
       </p>
       <p
         class="gradeContent"
@@ -58,9 +54,10 @@ exports[`Create test cases for the Completed course component Create a snapshot 
       class="buttonContainer"
     >
       <button
+        class="rateCourse"
         type="button"
       >
-        Rate Course
+        string.myLearningPaths.completedCourse.rateCourse
       </button>
     </div>
   </div>

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for title component Create a snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="main"
+    style="padding-top: 5%;"
+  >
+    <h3>
+      Mentors
+    </h3>
+    <h2>
+      Saved Mentors
+    </h2>
+  </div>
+</DocumentFragment>
+`;
