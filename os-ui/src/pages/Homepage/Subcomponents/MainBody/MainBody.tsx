@@ -40,7 +40,7 @@ const MainBody = ({
       </div>
       <div className={registrationButton} style={isMentor ? { margin: 'auto', padding: '5% 0 10%' } : { margin: '2rem auto 4rem' }}>
         <Button.SignUpButton className={['mainMentorRegistrationButton']} onClick={handleSignUp}>
-          {t('button.homePage.registerMentor')}
+          {isMentor ? t('button.homePage.registerMentor') : t('button.homePage.seeAll')}
         </Button.SignUpButton>
       </div>
     </>
