@@ -4,17 +4,15 @@ import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.module.api.dto.CreateModuleRequest;
 import app.openschool.course.module.api.dto.UpdateModuleRequest;
-import app.openschool.course.module.item.ModuleItem;
-import app.openschool.course.module.item.api.dto.CreateModuleItemRequest;
-import app.openschool.course.module.item.type.ModuleItemTypeRepository;
+import app.openschool.course.module.item.api.mapper.ModuleItemMapper;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.util.Locale;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class ModuleServiceImpl implements ModuleService {
@@ -22,20 +20,19 @@ public class ModuleServiceImpl implements ModuleService {
   private final CourseRepository courseRepository;
   private final ModuleRepository moduleRepository;
   private final UserRepository userRepository;
-  private final ModuleItemTypeRepository moduleItemTypeRepository;
   private final MessageSource messageSource;
+  private  final ModuleItemMapper moduleItemMapper;
 
   public ModuleServiceImpl(
-      CourseRepository courseRepository,
-      ModuleRepository moduleRepository,
-      UserRepository userRepository,
-      ModuleItemTypeRepository moduleItemTypeRepository,
-      MessageSource messageSource) {
+          CourseRepository courseRepository,
+          ModuleRepository moduleRepository,
+          UserRepository userRepository,
+          MessageSource messageSource, ModuleItemMapper moduleItemMapper) {
     this.courseRepository = courseRepository;
     this.moduleRepository = moduleRepository;
     this.userRepository = userRepository;
-    this.moduleItemTypeRepository = moduleItemTypeRepository;
     this.messageSource = messageSource;
+    this.moduleItemMapper = moduleItemMapper;
   }
 
   @Override
@@ -53,30 +50,9 @@ public class ModuleServiceImpl implements ModuleService {
     module.setTitle(request.getTitle());
     module.setDescription(request.getDescription());
     module.setCourse(course);
-    module.setModuleItems(createModuleItems(request.getCreateModuleItemRequests(), module));
+    module.setModuleItems(moduleItemMapper.toModuleItems(request.getCreateModuleItemRequests(),
+            module));
     return moduleRepository.save(module);
-  }
-
-  private Set<ModuleItem> createModuleItems(Set<CreateModuleItemRequest> requests, Module module) {
-    Set<ModuleItem> createdModuleItems =
-        requests.stream()
-            .map(
-                createModuleItemRequest -> {
-                  ModuleItem moduleItem = new ModuleItem();
-                  moduleItem.setTitle(createModuleItemRequest.getTitle());
-                  moduleItem.setEstimatedTime(createModuleItemRequest.getEstimatedTime());
-                  moduleItem.setLink(createModuleItemRequest.getLink());
-                  moduleItem.setModuleItemType(
-                      moduleItemTypeRepository
-                          .findById(createModuleItemRequest.getModuleItemTypeId())
-                          .orElseThrow(IllegalArgumentException::new));
-                  moduleItem.setModule(module);
-                  return moduleItem;
-                })
-            .collect(Collectors.toSet());
-    Set<ModuleItem> moduleItems = module.getModuleItems();
-    moduleItems.addAll(createdModuleItems);
-    return moduleItems;
   }
 
   @Override

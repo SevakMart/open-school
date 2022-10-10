@@ -11,7 +11,6 @@ public class CreateModuleRequest {
 
   @NotNull(message = "{argument.required}")
   private Long courseId;
-
   @NotBlank(message = "{argument.required}")
   @Length(max = 45, message = "{length.max.string}")
   private String title;

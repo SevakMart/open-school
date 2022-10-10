@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @RequestMapping("/api/v1/modules")
 public class ModuleController {
@@ -102,7 +103,7 @@ public class ModuleController {
             description = "Only users with ADMIN or MENTOR role have access to this method",
             content = @Content(schema = @Schema()))
       })
-  @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
+  @PreAuthorize("hasAnyAuthority('MENTOR')")
   @DeleteMapping("/{moduleId}")
   public ResponseEntity<HttpStatus> delete(
       @Parameter(description = "Id of the module which will be deleted") @PathVariable
