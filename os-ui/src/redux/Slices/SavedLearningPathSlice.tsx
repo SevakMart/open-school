@@ -25,15 +25,11 @@ const savedCourseSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getUserSavedCourse.fulfilled, (state, action) => {
-      if (action.payload.errorMessage) {
-        state.errorMessage = action.payload.errorMessage;
-      } else {
-        state.entity = action.payload;
-      }
+      state.entity = action.payload;
       state.isLoading = false;
     });
     builder.addCase(getUserSavedCourse.rejected, (state, action) => {
-      state.errorMessage = `${action.error.message}`;
+      state.errorMessage = `${action.payload}`;
       state.isLoading = false;
     });
   },

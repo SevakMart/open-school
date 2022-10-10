@@ -32,15 +32,12 @@ const courseByCourseStatusSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getUserEnrolledCourseByCourseStatus.fulfilled, (state, action) => {
-      if (action.payload.errorMessage) {
-        state.errorMessage = action.payload.errorMessage;
-      } else {
-        state.entity = action.payload;
-      }
+      state.entity = action.payload;
       state.isLoading = false;
     });
     builder.addCase(getUserEnrolledCourseByCourseStatus.rejected, (state, action) => {
-      state.errorMessage = `Code ${action.error.code}: ${action.error.message}`;
+      state.errorMessage = `${action.payload}`;
+      state.isLoading = false;
     });
   },
 

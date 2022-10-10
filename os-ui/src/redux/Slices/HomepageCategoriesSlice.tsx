@@ -6,10 +6,18 @@ export const getHomepageCategoriesList = createAsyncThunk('homepageMentorsList/g
   try {
     if (token) {
       const response = await categoriesService.getCategories({ page, size: 6 }, token);
-      return response.data;
+      if (response.status === 200) {
+        return response.data;
+      }
+
+      throw new Error('An error occurred while fetching categories please refresh the page');
     }
     const response = await publicService.getPublicCategories({ page, size: 6 });
-    return response.data;
+    if (response.status === 200) {
+      return response.data;
+    }
+
+    throw new Error('An error occurred while fetching categories please refresh the page');
   } catch (error:any) {
     return rejectWithValue(error.message);
   }
@@ -31,17 +39,13 @@ const homepageCategoriesSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getHomepageCategoriesList.fulfilled, (state, action) => {
-      if (action.payload.errorMessage) {
-        state.errorMessage = action.payload.errorMessage;
-      } else {
-        state.entity = action.payload.content;
-        state.totalPages = action.payload.totalPages - 1;
-      }
+      state.entity = action.payload.content;
+      state.totalPages = action.payload.totalPages - 1;
       state.isLoading = false;
     });
     builder.addCase(getHomepageCategoriesList.rejected, (state, action) => {
       state.isLoading = false;
-      state.errorMessage = `${action.error.message}`;
+      state.errorMessage = `${action.payload}`;
     });
   },
 });

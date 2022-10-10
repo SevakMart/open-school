@@ -30,12 +30,12 @@ const savedMentorsSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getSavedMentors.fulfilled, (state, action) => {
-      if (action.payload.errorMessage) {
-        state.errorMessage = action.payload.errorMessage;
-      } else {
-        state.entity = action.payload;
-      }
+      state.entity = action.payload;
       state.isLoading = false;
+    });
+    builder.addCase(getSavedMentors.rejected, (state, action) => {
+      state.isLoading = false;
+      state.errorMessage = `${action.payload}`;
     });
   },
 });

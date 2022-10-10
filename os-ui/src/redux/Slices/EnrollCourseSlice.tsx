@@ -31,16 +31,17 @@ const enrollCourseSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(enrollCourse.fulfilled, (state, action) => {
-      if (action.payload.errorMessage) {
+      /* if (action.payload.errorMessage) {
         state.errorMessage = action.payload.errorMessage;
       } else {
         state.entity = action.payload;
-      }
+      } */
+      state.entity = action.payload;
       state.isLoading = false;
     });
     builder.addCase(enrollCourse.rejected, (state, action) => {
-      state.errorMessage = `${action.error.message}`;
       state.isLoading = false;
+      state.errorMessage = `${action.payload}`;
     });
   },
 });

@@ -8,8 +8,10 @@ class MentorService {
   }
 
   async requestAllMentors(userToken:string, params = {}) {
-    const data = await (await fetchService.get(`${this.basePath}`, params, userToken)).json();
-    return data;
+    const response = await (await fetchService.get(`${this.basePath}`, params, userToken));
+    const { status } = response;
+    const data = await response.json();
+    return { data, status };
   }
 
   async requestUserSavedMentors(userId:number, userToken:string, params = {}) {
