@@ -1,4 +1,3 @@
-import { RegistrationFormType } from '../types/RegistartionFormType';
 import { FormValues } from '../component/SignUpSignIn/Form/Form';
 import {
   emailRegex, passwordRegex, EMAIL_REQUIRED, EMAIL_TOO_LONG, INVALID_EMAIL_ERROR_MESSAGE,
