@@ -13,6 +13,7 @@ import app.openschool.course.module.Module;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.status.CourseStatus;
 import app.openschool.user.User;
+import app.openschool.user.company.Company;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,11 +86,17 @@ public class CourseMapper {
   }
 
   private static CourseInfoMentorDto getCourseInfoMentorDto(Course course) {
+    String companyName = null;
+    Company company = course.getMentor().getCompany();
+    if (company != null) {
+      companyName = company.getCompanyName();
+    }
     return new CourseInfoMentorDto(
         course.getMentor().getName(),
         course.getMentor().getSurname(),
         course.getMentor().getUserImgPath(),
-        course.getMentor().getLinkedinPath());
+        course.getMentor().getLinkedinPath(),
+        companyName);
   }
 
   private static long getCourseDuration(Course course) {

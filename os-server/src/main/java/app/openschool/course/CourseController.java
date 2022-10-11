@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @RequestMapping("/api/v1/courses")
 public class CourseController {
@@ -41,7 +42,7 @@ public class CourseController {
             description = "Invalid courseId supplied",
             content = @Content(schema = @Schema()))
       })
-  @GetMapping("{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<CourseInfoDto> getCourseInfo(
       @Parameter(description = "Course id") @PathVariable Long id) {
     return courseService
