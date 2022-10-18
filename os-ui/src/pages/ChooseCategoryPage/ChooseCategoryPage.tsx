@@ -1,38 +1,25 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { RootState } from '../../redux/Store';
-import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
-import Search from '../../component/Search/Search';
-import Loader from '../../component/Loader/Loader';
-import userService from '../../services/userService';
+import Header from './Subcomponents/Header/Header';
+import MainContent from './Subcomponents/MainContent/MainContent';
+import Button from '../../component/Button/Button';
 import categoriesService from '../../services/categoriesService';
 import { SearchedCategoryType } from '../../types/SearchedCategoryType';
-import CategoryWithSubcategoriesProfile from '../../component/CategoryWithSubcategoriesProfile/CategoryWithSubcategoriesProfile';
 import styles from './ChooseCategoryPage.module.scss';
 
-const ChooseCategoryPage = () => {
-  const userInfo = useSelector<RootState>((state) => state.userInfo);
-  const subcategoryIdArray = useSelector<RootState>((state) => state.chooseSubcategories);
+/* eslint-disable max-len */
+
+const ChooseCategoryPage = ({ userInfo }:{userInfo:object}) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [searchedCategories, setSearchedCategories] = useState<SearchedCategoryType>({});
   const [isLoading, setIsLoading] = useState(true);
-  const { mainHeader, categoriesList, nextButton } = styles;
-
+  const { buttonContainer } = styles;
   const handleChangeUrlTitleParam = (titleParam:string) => {
     setTitle(titleParam);
   };
-  const handleSavingCategories = () => {
-    userService.savePreferredCategories(
-      (userInfo as any).id,
-      (userInfo as any).token,
-      subcategoryIdArray as Array<number>,
-    ).then(() => navigate('/myLearningPath'));
-  };
+
   useEffect(() => {
     let cancel = false;
     categoriesService.getSearchedCategories({ title }, (userInfo as any).token)
@@ -54,24 +41,17 @@ const ChooseCategoryPage = () => {
   }, [title]);
   return (
     <>
-      <NavbarOnSignIn />
-      <div className={mainHeader}>
-        <h1>{t('string.homePage.header.chooseCategories')}</h1>
-        <Search changeUrlQueries={handleChangeUrlTitleParam} />
+      <Header changeUrlQueries={handleChangeUrlTitleParam} />
+      <MainContent
+        isLoading={isLoading}
+        errorMessage={errorMessage}
+        searchedCategories={searchedCategories}
+      />
+      <div className={buttonContainer}>
+        <Button.NextButton userInfoId={(userInfo as any).id} userInfoToken={(userInfo as any).token} className={['nextButton']}>
+          {t('button.chooseCategories.next')}
+        </Button.NextButton>
       </div>
-      <div className={categoriesList}>
-        {
-          isLoading ? <Loader />
-            : !errorMessage ? Object.entries(searchedCategories).map((category) => (
-              <CategoryWithSubcategoriesProfile
-                key={category[0]}
-                parentCategory={category[0]}
-                subcategories={category[1]}
-              />
-            )) : <h2 data-testid="chooseSubcategoriesErrorMessage">{errorMessage}</h2>
-      }
-      </div>
-      <button className={nextButton} type="button" onClick={handleSavingCategories}>{t('button.chooseCategories.next')}</button>
     </>
   );
 };

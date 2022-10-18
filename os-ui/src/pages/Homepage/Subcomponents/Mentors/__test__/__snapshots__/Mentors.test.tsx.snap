@@ -5,42 +5,48 @@ exports[`Create test cases for homepage mentors list Create a snapshot test 1`] 
   <div
     class="mentorMainContainer"
   >
-    <h2>
-      string.homePage.mentors.ourMentors
-    </h2>
     <div
-      class="mentorListContainer"
+      class="main"
+      style="padding-top: 5%;"
     >
-      <h2
-        data-testid="emptyMentorMessage"
-      >
-        messages.noData.mentors
+      <h3>
+        string.homePage.mentors.ourMentors
+      </h3>
+      <h2>
+        string.homePage.mentors.learnAboutContributors
       </h2>
-      <i
-        data-testid="mentorRightArrow"
-        style="position: absolute; z-index: 1; font-size: 3rem; right: 6%; cursor: pointer;"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 16 16"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
-          />
-        </svg>
-      </i>
     </div>
-    <button
-      name="signUp"
-      type="button"
+    <div
+      class="listContainer"
+      style="margin: 6%;"
     >
-      button.homePage.registerMentor
-    </button>
+      <div
+        class="gridContent"
+      >
+        <div
+          class="mainContent"
+        >
+          <div
+            class="loader"
+          >
+            <span />
+            <span />
+            <span />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="registrationButton"
+      style="margin: auto; padding: 5% 0px 10%;"
+    >
+      <button
+        class="mainMentorRegistrationButton"
+        type="button"
+      >
+        button.homePage.registerMentor
+      </button>
+    </div>
   </div>
 </DocumentFragment>
 `;

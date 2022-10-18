@@ -1,40 +1,52 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { FiBookmark } from 'react-icons/fi';
+import { Types } from '../types/types';
+import { openModal } from '../redux/Slices/PortalOpenStatus';
 
-const BookmarkIcon = (
-  {
-    iconSize, isBookmarked, courseId, saveCourse, deleteCourse, mentorId, saveMentor, deleteMentor,
-  }:
-  {iconSize:string, isBookmarked?:boolean, courseId?:number, mentorId?:number
-  saveCourse?:(courseId:number)=>void,
-  deleteCourse?:(courseId:number)=>void,
-  saveMentor?:(mentorId:number)=>void,
-  deleteMentor?:(mentorId:number)=>void
-  },
-) => {
-  const [isClicked, setIsClicked] = useState(isBookmarked);
+/* eslint-disable max-len */
 
-  const handleCourseSaving = () => {
-    setIsClicked((prevState) => !prevState);
+const BookmarkIcon = ({
+  iconSize, courseId, mentorId, courseTitle, mentorName, isHomepageNotSignedInMentor,
+  saveCourse, deleteCourse, saveMentor, deleteMentor, isCourseSummaryBookmarkIcon,
+}:
+  {iconSize:string, courseId?:number, mentorId?:number, courseTitle?:string, mentorName?:string, isHomepageNotSignedInMentor?:boolean,
+    saveCourse?:(courseTitle:string, courseId:number)=>void, deleteCourse?:(courseTitle:string, courseId:number)=>void, saveMentor?:(mentorName:string, mentorId:number)=>void,
+    deleteMentor?:(mentorName:string, mentorId:number)=>void, isCourseSummaryBookmarkIcon?:boolean
+  }) => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const [isChecked, setIsChecked] = useState(params.has(courseTitle!) || params.has(mentorName!) || params.has('savedCourse'));
+  const dispatch = useDispatch();
+
+  const handleSaving = () => {
+    if (!isChecked) {
+      if (courseId) {
+        saveCourse && saveCourse(courseTitle!, courseId);
+      } else if (mentorId) {
+        saveMentor && saveMentor(mentorName!, mentorId);
+      }
+    } else if (isChecked) {
+      if (courseId) {
+        deleteCourse && deleteCourse(courseTitle!, courseId);
+      } else if (mentorId) {
+        deleteMentor && deleteMentor(mentorName!, mentorId);
+      }
+    }setIsChecked((prevState) => !prevState);
   };
-  useEffect(() => {
-    if (isClicked) {
-      courseId && saveCourse && saveCourse(courseId!);
-      mentorId && saveMentor && saveMentor(mentorId!);
-    } else if (!isClicked && isBookmarked) {
-      courseId && deleteCourse && deleteCourse(courseId!);
-      mentorId && deleteMentor && deleteMentor(mentorId!);
-    }
-  }, [isClicked]);
+
+  const handleMentorBookmark = () => {
+    dispatch(openModal({ buttonType: Types.Button.SIGN_IN, isRequestForMentorsPage: true }));
+  };
 
   return (
     <FiBookmark
-      onClick={handleCourseSaving}
+      onClick={isHomepageNotSignedInMentor ? handleMentorBookmark : handleSaving}
       style={{
         fontSize: `${iconSize}`,
         cursor: 'pointer',
-        color: '#5E617B',
-        fill: (isClicked || isBookmarked) ? 'black' : 'none',
+        fill: isChecked && isCourseSummaryBookmarkIcon ? 'black' : isChecked ? 'white' : 'none',
       }}
     />
   );

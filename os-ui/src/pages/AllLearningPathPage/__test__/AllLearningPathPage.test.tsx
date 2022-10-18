@@ -17,12 +17,18 @@ jest.mock('redux-state-sync', () => ({
     () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
   initMessageListener: () => jest.fn(),
 }));
-
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
+const userInfo = {
+  token: '123',
+  id: 1,
+};
 describe('Create test cases for AllLearningPathPage component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <AllLearningPathPage />
+        <AllLearningPathPage userInfo={userInfo} />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();

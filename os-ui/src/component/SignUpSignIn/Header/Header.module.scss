@@ -1,0 +1,43 @@
+@import "../../../styles/Configs/Colors.scss";
+@import "../../../styles/Configs/Fonts.scss";
+@import "../../../styles/Mixins/FlexMixins.scss";
+@import "../../../styles/Mixins/ButtonMixin.scss";
+@import "../../../styles/Mixins/FontMixin.scss";
+
+.closeIcon {
+    position: absolute;
+    top:24px;
+    right:24px;
+    box-sizing: border-box;
+    width:24px;
+    height:24px;
+    @include flexStyle(row,center,center);
+    cursor: pointer;
+    &:hover {
+        background-color: $secondary-color;
+    }
+}
+.headerContent {
+    margin:80px 80px 32px 80px;
+    box-sizing: border-box;
+    @include flexStyle(column,center,space-between);
+    h2 {
+        @include fontStyle($primary-font, normal, 800, 2.25rem, 2.75rem);
+        color:$header-main-color;
+    }
+    .iconContent {
+        height:36px;
+        width:35%;
+        @include flexStyle(row,center,space-evenly);
+        .icon {
+            display:inline-block;
+            width:36px;
+            height:36px;
+            cursor: pointer;
+        }
+    }
+}
+p {
+    @include fontStyle($primary-font, normal, 600, 1.25rem, 2.5rem);
+    color:$main-text-color;
+}

@@ -1,6 +1,6 @@
 import { GrFormClose } from 'react-icons/gr';
 
-const styles = {
+/* const styles = {
   backgroundColor: 'transparent',
   color: '#848a9d',
   cursor: 'pointer',
@@ -9,11 +9,10 @@ const styles = {
   marginRight: '3%',
   fontSize: '2rem',
   padding: '0',
-} as React.CSSProperties;
+} as React.CSSProperties; */
 
-const CloseIcon = ({ handleClosing }:{handleClosing():void}) => (
-  <div data-testid="closeButton" style={styles}>
-    <GrFormClose onClick={() => handleClosing()} />
-  </div>
+const CloseIcon = () => (
+  <GrFormClose />
 );
 export default CloseIcon;
+/* <div data-testid="closeButton" style={styles}> */

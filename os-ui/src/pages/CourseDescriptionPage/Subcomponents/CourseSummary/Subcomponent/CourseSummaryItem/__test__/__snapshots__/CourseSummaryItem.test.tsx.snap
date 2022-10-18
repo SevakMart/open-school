@@ -5,22 +5,19 @@ exports[`Create test cases for CourseSummaryItem Create a snapshot test 1`] = `
   <div
     class="mainContainer"
   >
+    <img
+      alt="Ellipse"
+      src="Course-Summary-Ellipse.svg"
+    />
     <div
-      class="mainSubContainer"
+      class="mainContent"
     >
-      <div
-        class="dotNotation"
-      />
-      <div
-        class="mainContent"
-      >
-        <h2>
-          Rating
-        </h2>
-        <p>
-          5
-        </p>
-      </div>
+      <h2>
+        Rating
+      </h2>
+      <p>
+        5
+      </p>
     </div>
   </div>
 </DocumentFragment>

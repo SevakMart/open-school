@@ -16,17 +16,22 @@ exports[`Create test cases for ModalMessageComponent Create a snapshot test 1`] 
         class="textContent"
       >
         <h2>
-          string.courseDescription.modal.congratsHeader
+          string.courseDescriptionPage.title.modalSuccessTitle!
         </h2>
         <p>
-          string.courseDescription.modal.mainMessage
+          string.courseDescriptionPage.text.modalSuccessText!
         </p>
       </div>
-      <button
-        type="button"
+      <div
+        class="buttonContainer"
       >
-        button.startCourse
-      </button>
+        <button
+          class="startEnrolledCourse"
+          type="button"
+        >
+          button.courseDescriptionPage.modalStartCourse
+        </button>
+      </div>
     </div>
   </div>
 </DocumentFragment>

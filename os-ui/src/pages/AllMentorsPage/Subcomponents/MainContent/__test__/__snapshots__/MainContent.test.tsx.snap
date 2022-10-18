@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for MainContent component Create a snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="mainContentContainer"
+  >
+    <div
+      class="mentorHeaderMainContainer"
+    >
+      <div
+        class="navContent"
+      >
+        <nav>
+          <p
+            class="activeNav"
+          >
+            Something went wrong please refresh the page
+          </p>
+          <p
+            class="nonActiveNav"
+          >
+            Something went wrong please refresh the page
+          </p>
+        </nav>
+      </div>
+      <div
+        class="search search__allMentorsSearch"
+      >
+        <div
+          style="color: rgb(132, 138, 157); margin-left: 16px;"
+        >
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 16 16"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+            />
+          </svg>
+        </div>
+        <input
+          data-testid="searchInput"
+          placeholder="Something went wrong please refresh the page"
+          type="text"
+        />
+      </div>
+    </div>
+    <div
+      class="mainContent"
+    >
+      <div
+        class="mainContent"
+      >
+        <div
+          class="loader"
+        >
+          <span />
+          <span />
+          <span />
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

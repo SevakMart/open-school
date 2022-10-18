@@ -1,56 +1,77 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CourseDescriptionType } from '../../../../types/CourseDescriptionType';
-import BookmarkIcon from '../../../../icons/Bookmark';
-import ShareIcon from '../../../../icons/Share';
-import CourseSummaryItem from './Subcomponent/CourseSummaryItem/CourseSummaryItem';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { DispatchType } from '../../../../redux/Store';
+import { CourseDescriptionType, SuggestedCourseType } from '../../../../types/CourseTypes';
+import { getUserSavedCourse } from '../../../../redux/Slices/SavedLearningPathSlice';
+import { deleteUserSavedCourse } from '../../../../redux/Slices/DeleteUserSavedCourse';
 import userService from '../../../../services/userService';
-import { SuggestedCourseType } from '../../../../types/SuggestedCourseType';
+import BookmarkIcon from '../../../../icons/Bookmark';
+import CourseSummaryItem from './Subcomponent/CourseSummaryItem/CourseSummaryItem';
+import ShareIcon from '../../../../assets/svg/ShareIcon.svg';
+import Button from '../../../../component/Button/Button';
 import styles from './CourseSummary.module.scss';
 
-type CourseListType=SuggestedCourseType & {id:number, isBookMarked?:boolean}
+/* eslint-disable max-len */
 
 const CourseSummary = ({
-  rating, enrolled, level, language, duration, enrollInCourse, isEnrolled, courseId, userIdAndToken,
-}:Omit<CourseDescriptionType, 'title'|'description'|'goal'|'modules'|'mentorDto'> & {enrollInCourse:()=>void, isEnrolled:boolean, courseId:number, userIdAndToken:{id:number, token:string}}) => {
+  rating, enrolled, level, language, duration, courseId, userIdAndToken, title,
+}:Omit<CourseDescriptionType, 'description'|'goal'|'modules'|'mentorDto'> & {courseId:number, userIdAndToken:{id:number, token:string}}) => {
   const { t } = useTranslation();
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = new URLSearchParams(location.search);
+  const isEnrolled = params.has('enrolled');
+  const { id: userId, token } = userIdAndToken;
   const courseSummaryItem = {
     rating, enrolled, level, language, duration,
   };
+  const dispatch = useDispatch<DispatchType>();
+
   const {
-    mainContent, headerContent, headerIcons, courseSummaryItemList, buttonContainer,
+    mainContent, headerContent, headerIcons, courseSummaryItemList, buttonContainer, userEnrollText,
+    enrolledButtonContainer,
   } = styles;
-  const saveUserCourse = (courseId:number) => {
-    userService.saveUserPreferredCourses(userIdAndToken.id, courseId, userIdAndToken.token);
-    setIsBookmarked(true);
+
+  const saveCourse = (courseTitle:string, courseId:number) => {
+    userService.saveUserPreferredCourses(userId, courseId, token);
+    params.set('savedCourse', courseTitle);
+    navigate(`${location.pathname}?${params}`, { replace: true });
   };
-  const deleteUserSavedCourse = (courseId:number) => {
-    userService.deleteUserSavedCourses(userIdAndToken.id, courseId, userIdAndToken.token);
-    setIsBookmarked(false);
+  const deleteCourse = (courseTitle:string, courseId:number) => {
+    dispatch(deleteUserSavedCourse({ userId, courseId, token }));
+    params.delete('savedCourse');
+    navigate(`${location.pathname}`, { replace: true });
   };
+
   useEffect(() => {
-    userService.getUserSavedCourses(userIdAndToken.id, userIdAndToken.token, { page: 0, size: 100 })
-      .then((data) => {
-        /* eslint-disable-next-line max-len */
-        setIsBookmarked(data.content.some((savedCourse:CourseListType) => savedCourse.id === courseId));
+    dispatch(getUserSavedCourse({ userId, token, params: {} }))
+      .unwrap()
+      .then((savedCourseList:SuggestedCourseType[]) => {
+        if (savedCourseList.some((savedCourse:SuggestedCourseType) => savedCourse.id === courseId)) {
+          params.set('savedCourse', savedCourseList.find((savedCourse:SuggestedCourseType) => savedCourse.id === courseId)!.title);
+          navigate(`${location.pathname}?${params}`, { replace: true });
+        } else {
+          params.delete('savedCourse');
+          navigate(`${location.pathname}`, { replace: true });
+        }
       });
   }, []);
 
   return (
     <div className={mainContent}>
       <div className={headerContent}>
-        <h2>{t('string.courseDescription.title.summary')}</h2>
+        <h2>{t('string.courseDescriptionPage.title.summary')}</h2>
         <div className={headerIcons}>
-          <ShareIcon iconSize="0.5 rem" />
+          <img src={ShareIcon} alt="Share icon" />
           <BookmarkIcon
-            iconSize="0.5 rem"
+            iconSize="20px"
+            courseTitle={title}
             courseId={courseId}
-            isBookmarked={isBookmarked}
-            /* eslint-disable-next-line max-len */
-            saveCourse={saveUserCourse}
-            /* eslint-disable-next-line max-len */
-            deleteCourse={deleteUserSavedCourse}
+            saveCourse={saveCourse}
+            deleteCourse={deleteCourse}
+            isCourseSummaryBookmarkIcon
           />
         </div>
       </div>
@@ -65,9 +86,19 @@ const CourseSummary = ({
           ))
         }
       </div>
-      <div className={buttonContainer}>
-        {isEnrolled && <p>{t('string.courseDescription.title.userEnrolled')}</p>}
-        <button type="button" onClick={() => enrollInCourse()}>{isEnrolled ? t('button.startLearning') : t('button.enroll')}</button>
+      {isEnrolled && <p className={userEnrollText}>{t('string.courseDescriptionPage.title.userEnrolled')}</p>}
+      <div className={isEnrolled ? enrolledButtonContainer : buttonContainer}>
+        {isEnrolled && <Button.MainButton onClick={() => null} className={['courseSummaryButton']}>{t('button.courseDescriptionPage.startCourse') }</Button.MainButton>}
+        {!isEnrolled && (
+        <Button.EnrollButton
+          className={['courseSummaryButton']}
+          courseId={courseId}
+          userId={userId}
+          token={token}
+        >
+          {t('button.courseDescriptionPage.enrollInCourse')}
+        </Button.EnrollButton>
+        )}
       </div>
     </div>
   );

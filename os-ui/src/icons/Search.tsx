@@ -2,8 +2,8 @@ import React from 'react';
 import { BsSearch } from 'react-icons/bs';
 
 const styles = {
-  zIndex: '1',
   color: '#848A9D',
+  marginLeft: '16px',
 } as React.CSSProperties;
 
 const SearchIcon = () => (

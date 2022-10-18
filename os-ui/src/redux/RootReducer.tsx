@@ -1,28 +1,44 @@
 import { combineReducers } from 'redux';
-import storage from 'redux-persist/lib/storage';
-import storageSession from 'redux-persist/lib/storage/session';
-import persistReducer from 'redux-persist/lib/persistReducer';
 import chooseSubcategoryReducer from './Slices/ChoosSubcategorySlice';
-import userInfoReducer from './Slices/loginUserSlice';
+// import userInfoReducer from './Slices/loginUserSlice';
 import allLearningPathFilterParamsReducer from './Slices/AllLearningPathFilterParamsSlice';
-
-const loggedInUserPersistConfig = {
-  key: 'loggedInUser',
-  storage,
-};
-const persistConfig = {
-  key: 'root',
-  storage: storageSession,
-  blackList: ['userInfoReducer', 'allLearningPathFilterParamsReducer'],
-};
-
-const persistedLoggedInUserReducer = persistReducer(loggedInUserPersistConfig, userInfoReducer);
+import forgotPasswordEmailReducer from './Slices/ForgotPasswordEmailSlice';
+import signedUpUserIdReducer from './Slices/SignedUpUserIdSlice';
+import suggestedCourseReducer from './Slices/SuggestedCourseSlice';
+import userEnrolledCourseByCourseStatusReducer from './Slices/UserEnrolledCourseByCourseStatus';
+import allLearningPathCoursesReducer from './Slices/AllLearningPathCourseSlice';
+import allMentorsFilterParamsReducer from './Slices/AllMentorsFilterParamsSlice';
+import allMentorsSliceReducer from './Slices/AllMentorsSlice';
+import savedMentorsReducer from './Slices/SavedMentorsSlice';
+import savedCourseReducer from './Slices/SavedLearningPathSlice';
+import homepageMentorListReducer from './Slices/HomepageMentorSlice';
+import homepageCategoriesListReducer from './Slices/HomepageCategoriesSlice';
+import userInfoReducer from './Slices/UserInfoSlice';
+import deleteUserSavedCourseReducer from './Slices/DeleteUserSavedCourse';
+import deleteUserSavedMentorReducer from './Slices/DeleteSavedMentor';
+import courseDescriptionRequestReducer from './Slices/CourseDescriptionRequestSlice';
+import enrollCourseReducer from './Slices/EnrollCourseSlice';
+import portalStatusReducer from './Slices/PortalOpenStatus';
 
 const rootReducer = combineReducers({
+  portalStatus: portalStatusReducer,
+  userInfo: userInfoReducer,
   chooseSubcategories: chooseSubcategoryReducer,
-  userInfo: persistedLoggedInUserReducer,
   filterParams: allLearningPathFilterParamsReducer,
+  forgotPasswordEmail: forgotPasswordEmailReducer,
+  signedUpUserId: signedUpUserIdReducer,
+  suggestedCourse: suggestedCourseReducer,
+  userEnrolledCourseByCourseStatus: userEnrolledCourseByCourseStatusReducer,
+  allLearningPathCourses: allLearningPathCoursesReducer,
+  allMentorsFilterParams: allMentorsFilterParamsReducer,
+  allMentorsList: allMentorsSliceReducer,
+  savedMentors: savedMentorsReducer,
+  savedCourse: savedCourseReducer,
+  homepageMentorList: homepageMentorListReducer,
+  homepageCategoriesList: homepageCategoriesListReducer,
+  deleteUserSavedCourse: deleteUserSavedCourseReducer,
+  deleteUserSavedMentor: deleteUserSavedMentorReducer,
+  courseDescriptionRequest: courseDescriptionRequestReducer,
+  enrollCourse: enrollCourseReducer,
 });
-
-const persistedRootReducer = persistReducer(persistConfig, rootReducer);
-export default persistedRootReducer;
+export default rootReducer;

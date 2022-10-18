@@ -1,0 +1,10 @@
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+
+.mainContent {
+   h3 {
+    @include fontStyle($primary-font,normal,700,24px,29px);
+    color:$header-main-color;
+   }
+}

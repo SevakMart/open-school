@@ -5,68 +5,76 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
   <div
     class="mainContent"
   >
-    <div
-      class="subContent"
+    <h1
+      class="mainTitle"
     >
-      <h2>
-        string.courseDescription.title.description
-      </h2>
-      <p>
-        This course talks about react
-      </p>
-    </div>
+      React
+    </h1>
     <div
-      class="subContent"
+      class="mainCourseInfoContainer"
     >
-      <h2>
-        string.courseDescription.title.goal
-      </h2>
-      <p>
-        The goal is to gain experience.
-      </p>
-    </div>
-    <div
-      class="subContent"
-    >
-      <h2>
-        string.courseDescription.title.modulesList
-      </h2>
       <div
-        class="moduleListContainer"
+        class="subContent"
       >
+        <h2>
+          string.courseDescriptionPage.title.description
+        </h2>
+        <p>
+          This course talks about react
+        </p>
+      </div>
+      <div
+        class="subContent"
+      >
+        <h2>
+          string.courseDescriptionPage.title.goal
+        </h2>
+        <p>
+          The goal is to gain experience.
+        </p>
+      </div>
+      <div
+        class="subContent"
+      >
+        <h2>
+          string.courseDescriptionPage.title.modulesList
+        </h2>
         <div
-          class="mainContainer"
+          class="moduleListContainer"
         >
-          <img
-            alt="vector"
-            class="vector"
-            src="Vector.svg"
-          />
           <div
-            class="mainContent"
+            class="mainContainer"
           >
             <div
-              class="titleAndEllipseIcon"
+              class="mainContent"
             >
               <div
-                class="ellipseIcon"
+                class="titleAndEllipseIcon"
+              >
+                <img
+                  alt="ellipse icon"
+                  class="ellipseIcon"
+                  src="Ellipse.svg"
+                />
+                <p
+                  class="moduleTitle"
+                >
+                  React js
+                </p>
+              </div>
+              <img
+                alt="chevron"
+                class="chevronIsClosed"
+                src="ArrowRight.svg"
               />
+            </div>
+            <div
+              class="moduleDescriptionIsClosed"
+            >
               <p>
-                React js
+                It talks about React
               </p>
             </div>
-            <img
-              alt="chevron"
-              class="chevronIsClosed"
-              src="ArrowRight.svg"
-            />
-          </div>
-          <div
-            class="moduleDescriptionIsClosed"
-          >
-            <p>
-              It talks about React
-            </p>
           </div>
         </div>
       </div>
@@ -75,39 +83,26 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
       class="authorInformationContainer"
     >
       <h2>
-        string.courseDescription.title.authorInfo
+        string.courseDescriptionPage.title.authorInfo
       </h2>
       <div
         class="authorInfo"
       >
-        <div
-          class="imageAndFullName"
-        >
-          <img
-            alt="john Smith"
-            src="https://reactjs.org/logo-og.png"
-          />
-          <p>
-            john Smith
-          </p>
-        </div>
+        <img
+          alt="john Smith"
+          class="mentorProfileImage"
+          src="https://reactjs.org/logo-og.png"
+        />
+        <p>
+          john Smith
+        </p>
         <a
           href="myLinkedin.com"
         >
-          <svg
-            fill="currentColor"
-            height="1em"
-            stroke="currentColor"
-            stroke-width="0"
-            style="font-size: 1.25rem;"
-            viewBox="0 0 448 512"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"
-            />
-          </svg>
+          <img
+            alt="LinkedIn icon"
+            src="LinkedIn.svg"
+          />
         </a>
       </div>
     </div>

@@ -1,97 +1,85 @@
-import { useEffect, useState, useMemo } from 'react';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-
+import { useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/Store';
-import courseService from '../../services/courseService';
-import userService from '../../services/userService';
-import NavbarOnSignIn from '../../component/NavbarOnSignIn/NavbarOnSignIn';
+import { userContext } from '../../contexts/Contexts';
+import NavbarOnSignIn from '../../component/Navbar-Component/NavbarOnSignIn/NavbarOnSignIn';
 import CourseMainContent from './Subcomponents/CourseMainContent/CourseMainContent';
 import CourseSummary from './Subcomponents/CourseSummary/CourseSummary';
-import Modal from '../../component/Modal/Modal';
-import ModalMessageComponent from './Subcomponents/CourseSummary/Subcomponent/ModalMessageComponent/ModalMessageComponent';
-import { CourseDescriptionType } from '../../types/CourseDescriptionType';
+import ContentRenderer from '../../component/ContentRenderer/ContentRenderer';
+import { getCourseDescription } from '../../redux/Slices/CourseDescriptionRequestSlice';
+import { Portal } from '../../component/Portal/Portal';
+import { PortalStatus } from '../../types/PortalStatusType';
+import { Types } from '../../types/types';
+import EnrolledSuccessMessage from './Subcomponents/CourseSummary/Subcomponent/ModalMessageComponent/ModalMessageComponent';
+import { CourseDescriptionType, SuggestedCourseType } from '../../types/CourseTypes';
 import styles from './CourseDescriptionPage.module.scss';
-
-const CourseDescriptionPage = () => {
-  const userInfo = useSelector<RootState>((state) => state.userInfo);
-  const [courseInfo, setCourseInfo] = useState({});
-  const [errorMessage, setErrorMessage] = useState('');
-  const [enrollmentErrorMessage, setEnrollmentErrorMessage] = useState('');
-  const [showEnrollmentMessage, setShowEnrollmentMessage] = useState(false);
-  const [isEnrolled, setIsEnrolled] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
+/* eslint-disable max-len */
+const CourseDescriptionPage = ({ userInfo }:{userInfo:any}) => {
+  const portalStatus = useSelector<RootState>((state) => state.portalStatus) as PortalStatus;
+  const { isOpen, buttonType } = portalStatus;
+  const enrollCourseState = useSelector<RootState>((state) => state.enrollCourse) as {entity:SuggestedCourseType, isLoading:boolean, errorMessage:string};
+  const { entity: enrolledCourseEntity, isLoading: enrolledCourseLoading, errorMessage: enrolledCourseErrorMessage } = enrollCourseState;
   const { courseId } = useParams();
-  const params = new URLSearchParams(location.search);
   const idAndToken = useMemo(() => ({
     token: (userInfo as any).token,
     id: (userInfo as any).id,
   }), []);
-  const {
-    title, description, goal, modules, mentorDto, rating, enrolled, level, language, duration,
-  } = courseInfo as CourseDescriptionType;
-  const { mainContent, navAndMainTitle } = styles;
-
-  const enrollInCourse = () => {
-    userService.enrollCourse(idAndToken.id, Number(courseId), idAndToken.token)
-      .then(() => setShowEnrollmentMessage(true))
-      .catch(() => setEnrollmentErrorMessage(t('messages.error')));
-  };
-
-  const removeModalMessageAfterCourseEnrollment = () => {
-    params.set('enrolled', 'true');
-    setIsEnrolled(true);
-    setShowEnrollmentMessage(false);
-    navigate(`${location.pathname}?${params}`);
-  };
+  const dispatch = useDispatch();
+  const courseDescriptionState = useSelector<RootState>((state) => state.courseDescriptionRequest) as {entity:CourseDescriptionType, isLoading:boolean, errorMessage:string};
+  const { entity, isLoading, errorMessage } = courseDescriptionState;
+  const { mainContent } = styles;
 
   useEffect(() => {
-    if (params.has('enrolled')) setIsEnrolled(true);
-    courseService.requestCourseDescription(Number(courseId), {}, idAndToken.token)
-      .then((courseDescriptionData) => setCourseInfo({ ...courseDescriptionData }))
-      .catch(() => setErrorMessage(t('messages.error')));
+    dispatch(getCourseDescription({ courseId: Number(courseId), token: idAndToken.token }));
   }, []);
+
   return (
     <>
-      <div className={navAndMainTitle}>
-        <NavbarOnSignIn />
-        <h1>{title}</h1>
-      </div>
-      {!errorMessage && Object.keys(courseInfo).length ? (
-        <div className={mainContent}>
-          <CourseMainContent
-            description={description}
-            goal={goal}
-            mentorDto={mentorDto}
-            modules={modules}
-          />
-          <CourseSummary
-            rating={rating}
-            enrolled={enrolled}
-            level={level}
-            language={language}
-            duration={duration}
-            enrollInCourse={enrollInCourse}
-            isEnrolled={isEnrolled}
-            courseId={Number(courseId)}
-            userIdAndToken={idAndToken}
-          />
-        </div>
-      ) : <h2>{errorMessage}</h2>}
-      {
-        !enrollmentErrorMessage && showEnrollmentMessage
-          ? (
-            <Modal>
-              <ModalMessageComponent
-                enrollInCourse={removeModalMessageAfterCourseEnrollment}
+      <NavbarOnSignIn />
+      <userContext.Provider value={idAndToken}>
+        <ContentRenderer
+          isLoading={isLoading}
+          errorMessage={errorMessage}
+          entity={entity}
+          errorFieldClassName="courseDescriptionError"
+          isMyLearningPathPage={false}
+          render={(entity) => (
+            <div className={mainContent}>
+              <CourseMainContent
+                description={entity.description}
+                goal={entity.goal}
+                mentorDto={entity.mentorDto}
+                modules={entity.modules}
+                title={entity.title}
               />
-            </Modal>
-          )
-          : <h2>{enrollmentErrorMessage}</h2>
-      }
+              <CourseSummary
+                rating={entity.rating}
+                enrolled={entity.enrolled}
+                level={entity.level}
+                language={entity.language}
+                duration={entity.duration}
+                courseId={Number(courseId)}
+                userIdAndToken={idAndToken}
+                title={entity.title}
+              />
+            </div>
+          )}
+        />
+      </userContext.Provider>
+      <Portal.FormPortal isOpen={isOpen}>
+        {isOpen && buttonType === Types.Button.ENROLL_COURSE
+        && (
+        <ContentRenderer
+          isLoading={enrolledCourseLoading}
+          errorMessage={enrolledCourseErrorMessage}
+          entity={enrolledCourseEntity}
+          errorFieldClassName="enrolmentError"
+          isMyLearningPathPage={false}
+          render={() => <EnrolledSuccessMessage />}
+        />
+        )}
+      </Portal.FormPortal>
     </>
   );
 };

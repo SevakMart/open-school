@@ -1,32 +1,31 @@
 @import "../../styles/Mixins/FlexMixins.scss";
 @import "../../styles/Mixins/FontMixin.scss";
+@import "../../styles/Configs/Colors.scss";
+@import "../../styles/Configs/Fonts.scss";
 
 .mainContainer {
-  background-image: linear-gradient(
-    #eeeff4 0%,
-    #eeeff4 40%,
-    #ffffff 40%,
-    #ffffff 100%
-  );
-  border-radius: 40px;
-  width: 30%;
-  margin-bottom: 4%;
+  background-color: $white-text-color;
+  border-radius: 2.5rem;
+  padding-left:10%;
+  padding-top:5%;
+  box-sizing: border-box;
+
   .categoryInfoContainer {
-    @include flexStyle(column, center, space-evenly);
-    width: 100%;
-    padding-top: 4%;
-    .logoContainer {
-      width: 4.5rem;
-      height: 4rem;
+    @include flexStyle(row, center, space-between);
+    box-sizing: border-box;
+    padding-right:10%;
+
+    .categoryTitle {
+      @include fontStyle($primary-font,normal,700,1.5rem,1.75rem);
+      color:$header-main-color;
     }
+    .numberOfSubcategories {
+      @include fontStyle($primary-font,normal,500,0.875rem,1.063rem);
+      color:$main-text-color;
+    }
+
     img {
-      border-radius: 50%;
-      width: 100%;
-      height: 100%;
-    }
-    p {
-      @include fontStyle("Montserrat", normal, 700, 1.5rem, 1.813rem);
-      color: #333941;
+      cursor:pointer;
     }
   }
 }

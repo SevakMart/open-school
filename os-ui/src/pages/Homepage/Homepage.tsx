@@ -1,79 +1,50 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
-import HomepageHeader from '../../component/HomepageHeader/HomepageHeader';
+import HomepageHeader from './Subcomponents/Header/Header';
 import Footer from '../../component/Footer/Footer';
-import Button from '../../component/Button/Button';
-import styles from './Homepage.module.scss';
-import { removeLoggedInUser } from '../../redux/Slices/loginUserSlice';
-import categoriesService from '../../services/categoriesService';
 import HomepageCategories from './Subcomponents/Categories/Categories';
 import HomepageMentors from './Subcomponents/Mentors/Mentors';
-import SignUp from '../../component/SignUp/SignUp';
-import SignIn from '../../component/SignIn/SignIn';
-import VerifyMessage from '../VerifyMessage/VerifyMessage';
+import SignUp from '../../component/SignUpSignIn/SignUp/SignUp';
+import SignIn from '../../component/SignUpSignIn/SignIn/SignIn';
+import ForgotPassword from '../../component/SignUpSignIn/SignIn/ForgotPassword/ForgotPassword';
+import SuccessMessage from '../../component/SignUpSignIn/Success-Message/Success-Message';
+import ResetPassword from '../../component/SignUpSignIn/SignIn/ResetPassword/ResetPassword';
+import Verification from '../../component/SignUpSignIn/Verification/Verification';
+import { userContext } from '../../contexts/Contexts';
+import { Portal } from '../../component/Portal/Portal';
 import { Types } from '../../types/types';
+import { PortalStatus } from '../../types/PortalStatusType';
 
-const Homepage = () => {
-  const dispatch = useDispatch();
-  const userInfo = useSelector<RootState>((state) => state.userInfo);
-  const { t } = useTranslation();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [clickedButtonType, setClickedButtonType] = useState('');
-  const { mainContainer, buttonContainer } = styles;
+/* eslint-disable max-len */
 
-  const manipulateByButtonType = (buttonType: string) => {
-    setIsOpen(true);
-    setClickedButtonType(buttonType);
-  };
-
-  const handleButtonClick = (buttonType:string) => {
-    const isTrue = (buttonType === Types.Button.SIGN_IN
-      || Types.Button.SIGN_UP || Types.Button.VERIFY);
-    if (isTrue) {
-      manipulateByButtonType(buttonType);
-    } else {
-      setIsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    let cancel = false;
-    if ((userInfo as any).token) {
-      categoriesService.getCategories({ page: 0, size: 6 }, (userInfo as any).token).then((res) => {
-        const { status } = res;
-        if (cancel) return;
-        if (status === 401) {
-          dispatch(removeLoggedInUser());
-          setIsLoggedIn(false);
-        } else setIsLoggedIn(true);
-      });
-    }
-    // The return is to prevent memory leackage
-    return () => { cancel = true; };
-  }, []);
+const Homepage = ({ userInfo }:{userInfo:any}) => {
+  const portalStatus = useSelector<RootState>((state) => state.portalStatus);
+  const {
+    isOpen, buttonType, withSuccessMessage, isSignUpSuccessfulRegistration, isResetPasswordSuccessfulMessage, isResendVerificationEmailMessage,
+  } = portalStatus as PortalStatus;
+  const idAndToken = useMemo(() => ({
+    token: userInfo ? (userInfo as any).token : '',
+    id: userInfo ? (userInfo as any).id : -1,
+  }), [{ ...userInfo }]);
 
   return (
     <>
-      <HomepageHeader
-        handleFormVisibility={handleButtonClick}
-      />
-      <HomepageCategories isLoggedIn={isLoggedIn} />
-      <HomepageMentors isLoggedIn={isLoggedIn} handleButtonClick={handleButtonClick} />
-      <div className={mainContainer}>
-        <h2>{t('string.homePage.footer.startJourney')}</h2>
-        <div className={buttonContainer}>
-          <Button buttonType="signUp" buttonClick={handleButtonClick}>{t('button.homePage.signUpStudent')}</Button>
-          <Button buttonType="signUp" buttonClick={handleButtonClick}>{t('button.homePage.signUpMentor')}</Button>
-        </div>
-      </div>
+      <userContext.Provider value={idAndToken}>
+        <HomepageHeader />
+        <HomepageCategories />
+        <HomepageMentors />
+      </userContext.Provider>
       <Footer />
-      {isOpen && clickedButtonType === 'signUp' ? <SignUp handleSignUpClicks={handleButtonClick} />
-        : isOpen && clickedButtonType === 'verify' ? <VerifyMessage />
-          : isOpen && clickedButtonType === 'signIn' ? <SignIn handleSignInClicks={handleButtonClick} />
-            : null}
+      <Portal.FormPortal isOpen={isOpen}>
+        {/* eslint-disable max-len */}
+        {isOpen && buttonType === Types.Button.SIGN_UP && <SignUp />}
+        {isOpen && buttonType === Types.Button.VERIFY && <Verification />}
+        {isOpen && buttonType === Types.Button.SIGN_IN && <SignIn />}
+        {isOpen && buttonType === Types.Button.RESET_PASSWORD && <ResetPassword />}
+        {isOpen && buttonType === Types.Button.FORGOT_PASSWORD && <ForgotPassword />}
+        {isOpen && buttonType === Types.Button.SUCCESS_MESSAGE && <SuccessMessage message={withSuccessMessage} isSignUpSuccessfulRegistration={isSignUpSuccessfulRegistration} isResetPasswordSuccessfulMessage={isResetPasswordSuccessfulMessage} isResendVerificationEmailMessage={isResendVerificationEmailMessage} />}
+      </Portal.FormPortal>
     </>
   );
 };

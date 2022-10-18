@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create a snapshot test 1`] = `
+<DocumentFragment>
+  <div>
+    <div>
+      <div
+        class="mainContainer"
+      >
+        <div>
+          <h4>
+            Go to in your registered email and verify
+          </h4>
+        </div>
+        <div
+          class="buttonContainer"
+        />
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

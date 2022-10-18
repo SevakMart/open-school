@@ -1,5 +1,16 @@
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { store } from '../../../redux/Store';
 import MentorCard from '../MentorProfile';
+
+const mockUseNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom') as any,
+  useNavigate: () => mockUseNavigate,
+  useLocation: () => ({
+    search: '',
+  }),
+}));
 
 const MentorProfile = {
   name: 'John',
@@ -11,14 +22,14 @@ const MentorProfile = {
   emailPath: 'fakeEmail.com',
   linkedinPath: 'https://linkedin.com/feed',
 };
-
+/* eslint-disable max-len */
 describe('Make unit tests on Mentor Profile', () => {
   test('Make a snapshot test', () => {
-    const { asFragment } = render(<MentorCard mentor={{ ...MentorProfile }} />);
+    const { asFragment } = render(<Provider store={store}><MentorCard mentor={{ ...MentorProfile }} isHomepageNotSignedMentorCard /></Provider>);
     expect(asFragment()).toMatchSnapshot();
   });
   test('Verify if Mentor info is contained in the component', () => {
-    render(<MentorCard mentor={{ ...MentorProfile }} />);
+    render(<Provider store={store}><MentorCard mentor={{ ...MentorProfile }} isHomepageNotSignedMentorCard /></Provider>);
     const fullname = screen.queryByTestId('John Smith');
     const professionNameElem = screen.queryByTestId('JS Developer');
     const companyNameElem = screen.queryByTestId('Google');

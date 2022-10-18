@@ -1,19 +1,18 @@
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
 @import "../../../../styles/Mixins/FlexMixins.scss";
 @import "../../../../styles/Mixins/FontMixin.scss";
 
-.mainContainer,.hiddenContainer{
-    @include flexStyle(row,center,space-between);
-    width:15%;
-    align-self:flex-start;
+.mainContainer {
+    width:358px;
+    background-color:$white-text-color;
     .filterMainContent{
-        background-color:#FFFFFF;
-        border-radius:1.125rem;
-        padding-left:0.5rem;
-        width:100%;
+        border-radius:18px;
+        margin:64px 26px 64px 48px;
         .mainTitle{
-            @include fontStyle('Montserrat',normal,600,1.25rem,1.5rem);
-            color:#222427;
+            @include fontStyle($primary-font,normal,600,28px,24px);
+            color:$header-main-color;
+            margin:0;
         }
     }
-
 }

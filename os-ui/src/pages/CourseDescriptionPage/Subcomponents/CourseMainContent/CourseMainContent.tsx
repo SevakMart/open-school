@@ -1,51 +1,37 @@
 import { useTranslation } from 'react-i18next';
-import { CourseDescriptionType } from '../../../../types/CourseDescriptionType';
-import LinkedinIcon from '../../../../icons/Linkedin';
+import { CourseDescriptionType } from '../../../../types/CourseTypes';
 import ModuleItem from '../ModuleItem/ModuleItem';
+import AuthorInfo from '../AuthorInfo/AuthorInfo';
 import styles from './CourseMainContent.module.scss';
-
+/* eslint-disable max-len */
 const CourseMainContent = ({
-  description, goal, modules, mentorDto,
-}:Omit<CourseDescriptionType, 'title'|'rating'|'enrolled'|'level'|'language'|'duration'>) => {
+  description, goal, modules, mentorDto, title,
+}:Omit<CourseDescriptionType, 'rating'|'enrolled'|'level'|'language'|'duration'>) => {
   const { t } = useTranslation();
   const {
-    mainContent, subContent, authorInformationContainer, authorInfo,
-    imageAndFullName, moduleListContainer,
+    mainContent, subContent, moduleListContainer, mainTitle, mainCourseInfoContainer,
   } = styles;
 
   return (
     <div className={mainContent}>
-      <div className={subContent}>
-        <h2>{t('string.courseDescription.title.description')}</h2>
-        <p>{description}</p>
-      </div>
-      <div className={subContent}>
-        <h2>{t('string.courseDescription.title.goal')}</h2>
-        <p>{goal}</p>
-      </div>
-      <div className={subContent}>
-        <h2>{t('string.courseDescription.title.modulesList')}</h2>
-        <div className={moduleListContainer}>
-          {
-              modules.map((module, index) => (
-                <ModuleItem
-                  key={index}
-                  moduleInfo={module}
-                />
-              ))
-            }
+      <h1 className={mainTitle}>{title}</h1>
+      <div className={mainCourseInfoContainer}>
+        <div className={subContent}>
+          <h2>{t('string.courseDescriptionPage.title.description')}</h2>
+          <p>{description}</p>
         </div>
-      </div>
-      <div className={authorInformationContainer}>
-        <h2>{t('string.courseDescription.title.authorInfo')}</h2>
-        <div className={authorInfo}>
-          <div className={imageAndFullName}>
-            <img src="https://reactjs.org/logo-og.png" alt={`${mentorDto.name} ${mentorDto.surname}`} />
-            <p>{`${mentorDto.name} ${mentorDto.surname}`}</p>
+        <div className={subContent}>
+          <h2>{t('string.courseDescriptionPage.title.goal')}</h2>
+          <p>{goal}</p>
+        </div>
+        <div className={subContent}>
+          <h2>{t('string.courseDescriptionPage.title.modulesList')}</h2>
+          <div className={moduleListContainer}>
+            {modules.map((module, index) => (<ModuleItem key={index} moduleInfo={module} />))}
           </div>
-          <a href={mentorDto.linkedinPath}><LinkedinIcon size="1.25rem" /></a>
         </div>
       </div>
+      <AuthorInfo mentorName={mentorDto.name} mentorSurname={mentorDto.surname} mentorLinkedIn={mentorDto.linkedinPath} />
     </div>
   );
 };

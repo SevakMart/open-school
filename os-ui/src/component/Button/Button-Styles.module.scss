@@ -1,0 +1,88 @@
+@import "../../styles/Mixins/ButtonMixin.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+@import "../../styles/Configs/Fonts.scss";
+@import "../../styles/Configs/Colors.scss";
+
+.headerButton{
+    @include fontStyle($primary-font, normal, 500, 1rem, 1.25rem);
+    text-transform: uppercase;
+    border:none;
+    &__signUp {
+        @include buttonStyle($secondary-color, $white-text-color, 1rem, none, 4rem, 2rem, 2rem, 1.375rem, 1.375rem);
+    }
+    &__signIn {
+        @include buttonStyle(transparent, $header-main-color, 1rem, none, 4rem, 2rem, 2rem, 1.375rem, 1.375rem);
+          &:hover {
+            background-color: $secondary-color;
+            color: $white-text-color;
+          }
+    }
+}
+.signUpFooter {
+    @include fontStyle($primary-font, normal, 500, 1rem, 1.25rem);
+    text-transform: uppercase;
+    margin-right:5%;
+    border:none;
+    &__student {
+        @include buttonStyle($secondary-color, $white-text-color, 1rem, none, 4rem, 2rem, 2rem, 1.375rem, 1.375rem);
+    }
+    &__mentor {
+        @include buttonStyle(transparent, $white-text-color, 1rem, none, 4rem, 2rem, 2rem, 1.375rem, 1.375rem);
+        &:hover {
+          background-color: $secondary-color;
+          color: $white-text-color;
+        }
+    }
+}
+
+.mainMentorRegistrationButton,.exploreCourseButton,.rateCourse {
+    @include buttonStyle(transparent, $main-text-color, 1rem, none, 4rem, 2rem, 2rem, 1.375rem, 1.375rem);
+    @include fontStyle($primary-font, normal, 500, 1rem, 1.5rem);
+    border: 1px solid $main-text-color;
+    text-transform: uppercase;
+}
+
+.navbarSignInButton {
+    @include buttonStyle(#333941, $white-text-color, 1.25rem, none, 2.2rem, 1rem, 1rem, 0.625rem, 0.625rem);
+    @include fontStyle($primary-font, normal, 500, 0.75rem, 0.938rem);
+    text-transform: uppercase;
+}
+.formButton {
+    @include buttonStyle($secondary-color,$white-text-color,1rem,100%,4.5rem,none,none,none,none);
+    @include fontStyle($primary-font, normal, 500, 1rem, 1.25rem);
+    display: block;
+    text-align: center;
+    box-sizing: border-box;
+    border:none;
+    margin-top:24px;
+    &__resendEmail {
+        margin-bottom: 24px;
+    }
+}
+.account {
+    background-color: transparent;
+    border:none;
+    color:$black-text-color;
+    cursor:pointer;
+}
+
+.nextButton {
+    @include buttonStyle($secondary-color,$white-text-color,1rem,100%,64px,32px,32px,22px,22px);
+    @include fontStyle($primary-font, normal, 500, 1rem, 1.25rem);
+    border:none;
+}
+.resumeCourse {
+    @include buttonStyle($secondary-color,$white-text-color,1rem,100%,64px,32px,32px,16px,16px);
+    @include fontStyle($primary-font, normal, 500, 16px, 20px);
+    border:none;
+}
+.courseSummaryButton {
+    @include buttonStyle($secondary-color,$white-text-color,1rem,400px,60px,166px,166px,20px,20px);
+    @include fontStyle($primary-font, normal, 500, 16px, 20px);
+    border:none;
+}
+.startEnrolledCourse {
+    @include buttonStyle($secondary-color,$white-text-color,16px,100%,52px,32px,32px,16px,16px);
+    @include fontStyle($primary-font,normal,500,16px,20px);
+    border:none;
+}

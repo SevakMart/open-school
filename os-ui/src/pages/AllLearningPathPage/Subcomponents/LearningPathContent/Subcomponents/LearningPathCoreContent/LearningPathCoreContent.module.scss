@@ -1,10 +1,6 @@
 @import "../../../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../../../styles/Mixins/GridMixin.scss";
 
 .mainCoreContainer {
-    @include flexStyle(row,center,flex-start);
-    flex-wrap:wrap;
-    margin-top:2rem;
-    .courseContainer {
-        margin-right: 4rem;
-    }
+    @include gridStyle(repeat(3,1fr),none,32px,32px);
 }

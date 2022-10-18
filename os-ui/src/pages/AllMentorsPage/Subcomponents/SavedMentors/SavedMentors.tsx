@@ -1,46 +1,57 @@
-import { useEffect, useState, useContext } from 'react';
-import { useTranslation } from 'react-i18next';
-import mentorService from '../../../../services/mentorService';
-import userService from '../../../../services/userService';
+import React, { useEffect, useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, DispatchType } from '../../../../redux/Store';
+import { getSavedMentors } from '../../../../redux/Slices/SavedMentorsSlice';
 import { userContext } from '../../../../contexts/Contexts';
-import MentorCard from '../../../../component/MentorProfile/MentorProfile';
 import { MentorType } from '../../../../types/MentorType';
+import MentorCard from '../../../../component/MentorProfile/MentorProfile';
+import { MentorStateType } from '../../../../redux/Slices/AllMentorsFilterParamsSlice';
+import { deleteUserSavedMentor } from '../../../../redux/Slices/DeleteSavedMentor';
+import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
 import styles from './SavedMentors.module.scss';
+/* eslint-disable max-len */
 
 const SavedMentors = () => {
-  const [savedMentorList, setSavedMentorList] = useState<MentorType[]>([]);
-  const [errorMessage, setErrorMessage] = useState('');
-  const { token, id } = useContext(userContext);
-  const { t } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = new URLSearchParams(location.search);
+  const { token, id: userId } = useContext(userContext);
+  const dispatch = useDispatch<DispatchType>();
+  const mentorsSendingParams = useSelector<RootState>((state) => state.allMentorsFilterParams) as MentorStateType;
+  const savedMentorsState = useSelector<RootState>((state) => state.savedMentors)as {entity:MentorType[], isLoading:boolean, errorMessage:string};
+  const deletedSavedMentorState = useSelector<RootState>((state) => state.deleteUserSavedMentor) as {entity:string, isLoading:boolean, errorMessage:string};
+  const { entity, isLoading, errorMessage } = savedMentorsState;
   const { mainContainer } = styles;
 
-  const handleMentorDeletion = (mentorId:number) => {
-    const mentorIndex = savedMentorList.findIndex((savedMentor) => savedMentor.id === mentorId);
-    const mentorList = [...savedMentorList];
-    mentorList.splice(mentorIndex, 1);
-    userService.deleteUserSavedMentor(id, mentorId, token);
-    setSavedMentorList(mentorList);
+  const deleteMentor = (mentorName:string, mentorId:number) => {
+    dispatch(deleteUserSavedMentor({ userId, mentorId, token }));
+    params.delete(mentorName);
+    navigate(`${location.pathname}?${params}`);
   };
 
   useEffect(() => {
-    mentorService.requestUserSavedMentors(id, token, { page: 0, size: 100 })
-      .then((data) => {
-        /* eslint-disable-next-line max-len */
-        setSavedMentorList([...data.content.map((savedMentor:MentorType) => ({ ...savedMentor, isBookMarked: true }))]);
-      }).catch(() => setErrorMessage(t('Error Message')));
-  }, []);
+    dispatch(getSavedMentors({ userId, token, params: mentorsSendingParams }));
+  }, [deletedSavedMentorState, mentorsSendingParams]);
 
   return (
     <div className={mainContainer}>
-      { /* eslint-disable-next-line max-len */
-        errorMessage ? <h2 data-testid="errorMessageHeader">{errorMessage}</h2> : savedMentorList.length ? savedMentorList.map((savedMentor) => (
-          <MentorCard
-            key={savedMentor.id}
-            mentor={savedMentor}
-            deleteMentor={handleMentorDeletion}
-          />
-        )) : <h2 data-testid="emptyMessageHeader">{t('Empty Data Error Message')}</h2>
-        }
+      <ContentRenderer
+        isLoading={isLoading}
+        errorMessage={errorMessage}
+        entity={entity}
+        errorFieldClassName="allLearningPathErrorStyle"
+        render={(entity) => (
+          entity.map((mentor:MentorType) => (
+            <MentorCard
+              key={`${mentor.name} ${mentor.surname}`}
+              mentor={mentor}
+              isHomepageNotSignedMentorCard={false}
+              deleteMentor={deleteMentor}
+            />
+          ))
+        )}
+      />
     </div>
   );
 };

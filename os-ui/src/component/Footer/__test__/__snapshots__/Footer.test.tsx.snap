@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create test cases for Footer component It should match the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="mainContainer"
+  >
+    <h2>
+      string.homePage.footer.startJourney
+    </h2>
+    <div
+      class="buttonContainer"
+    >
+      <button
+        class="signUpFooter signUpFooter__student"
+        type="button"
+      >
+        button.homePage.signUpStudent
+      </button>
+      <button
+        class="signUpFooter signUpFooter__mentor"
+        type="button"
+      >
+        button.homePage.signUpMentor
+      </button>
+    </div>
+  </div>
+  <h2>
+    string.homePage.navBar.logo
+  </h2>
+</DocumentFragment>
+`;

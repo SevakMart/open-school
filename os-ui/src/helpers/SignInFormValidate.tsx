@@ -1,9 +1,9 @@
-import { RegistrationFormType } from '../types/RegistartionFormType';
+import { FormValues } from '../component/SignUpSignIn/Form/Form';
 import {
   PASSWORD_REQUIRED, EMAIL_REQUIRED, INVALID_EMAIL_ERROR_MESSAGE, emailRegex,
 } from '../constants/Strings';
 
-export const validateSignInForm = (formValues:RegistrationFormType) => {
+export const validateSignInForm = (formValues:FormValues) => {
   const errorFormValue = { fullNameError: '', emailError: '', passwordError: '' };
   const { email, psd } = formValues;
 

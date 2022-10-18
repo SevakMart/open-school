@@ -1,0 +1,38 @@
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+@import "../../../../styles/Mixins/FlexMixins.scss";
+
+.headerMainContainer {
+    margin-bottom: 32px;
+    .navAndSortContent {
+        @include flexStyle(row,center,space-between);
+        nav {
+            .activeNav,.nonActiveNav{
+                display:inline-block;
+                margin-right:24px;
+                margin-top:0;
+                cursor:pointer;
+                @include fontStyle($primary-font,normal,600,20px,24px);
+                color:$header-main-color;
+                border-bottom: 4px solid $header-main-color;
+            }
+            .nonActiveNav {
+                border:none;
+                color:$main-text-color;
+            }
+        }
+        .sortingContainer{
+            @include fontStyle($primary-font,normal,400,14px,17px);
+            label {
+                color:#848A9D;
+            };
+            select {
+                background-color: transparent;
+                outline: none;
+                border:0px;
+                cursor:pointer;
+            }
+        }
+    }
+}

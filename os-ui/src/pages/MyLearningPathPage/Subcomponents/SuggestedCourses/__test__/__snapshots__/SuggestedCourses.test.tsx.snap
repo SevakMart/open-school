@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create several unit tests for SuggestedCourses Component Create a Snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="mainContainer"
+  >
+    <p
+      class="mainTitle"
+    >
+      string.myLearningPaths.suggestedLearningPaths
+    </p>
+    <div
+      class="noSuggestedCourses"
+    >
+      <div
+        class="mainContent"
+      >
+        <div
+          class="loader"
+        >
+          <span />
+          <span />
+          <span />
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

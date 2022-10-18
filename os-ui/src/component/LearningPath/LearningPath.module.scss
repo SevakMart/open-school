@@ -1,52 +1,59 @@
+@import "../../styles/Configs/Colors.scss";
+@import "../../styles/Configs/Fonts.scss";
 @import "../../styles/Mixins/ButtonMixin.scss";
 @import "../../styles/Mixins/FlexMixins.scss";
 @import "../../styles/Mixins/FontMixin.scss";
 
 .mainContainer{
-    width:18.25rem;
     .header{
-        background-color:#EEEFF4;
-        border-radius:2.5rem 2.5rem 0 0;
-        padding-left:10%;
-        padding-right:10%;
+        background-color:$primary-color;
+        border-radius:40px 40px 0 0;
+        padding:26.5px 32px;
         @include flexStyle(row, center,space-between);
 
         .difficultyContent{
-            @include fontStyle('Montserrat',normal,500,0.75rem,0.938rem);
-            color:#848A9D;
+            @include fontStyle($primary-font,normal,500,12px,15px);
+            color:$white-text-color;
+            margin:0;
+        }
+        .bookmarkIcon {
+            margin:0;
+            color:$white-text-color;
         }
     }
     .mainBody{
-        background-color:#FFFFFF;
-        border-radius:0 0 2.5rem 2.5rem;
-        padding-left:10%;
-        padding-right:10%;
-        margin-bottom:10%;
+        background-color:$white-text-color;
+        border-radius:0 0 40px 40px;
+        padding:24px 24px 32px;
 
         .ratingContent{
             @include flexStyle(row,center,space-between);
-            width:20%;
-            color:#5E617B;
+            width:47px;
+            color:$main-text-color;
+            .iconStyle {
+                margin:0;
+            }
             .ratingValue{
-                @include fontStyle('Montserrat',normal,500,0.75rem,0.938rem);
+                margin:0;
+                @include fontStyle($primary-font,normal,500,12px,15px);
             }
         }
         .courseTitle{
             display:inline;
-            @include fontStyle('Montserrat',normal,600,1.25rem,1.5rem);
-            color:#333941;
+            @include fontStyle($primary-font,normal,600,20px,24px);
+            color:$header-main-color;
         }
         .keywordsContent {
-            @include flexStyle(row,center,space-between);
-            width:70%;
-            margin-top:4%;
+            margin-top:34px;
             .keyword {
+                display:inline-block;
                 background-color: #EEEFF4;
-                border-radius: 1.25rem;
-                padding:0.156rem 0.5rem 0.156rem 0.5rem;
+                border-radius: 20px;
+                padding:2.5px 8px;
+                margin-right:8px;
             }
             .keyword,p{
-                @include fontStyle('Montserrat',normal,400,0.75rem,0.938rem);
+                @include fontStyle($primary-font,normal,400,12px,15px);
                 color: #848A9D;
             }
 

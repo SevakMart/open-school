@@ -1,17 +1,6 @@
 @import "../../styles/Mixins/FlexMixins.scss";
-@import "../../styles/Mixins/FontMixin.scss";
-
-.navAndMainTitle {
-    height:15rem;
-    h1 {
-        padding-left:6%;
-        position:absolute;
-        top:7rem;
-    }
-}
 
 .mainContent {
-    padding-left:6%;
-    padding-right:6%;
-    @include flexStyle(row,none, space-between);
+    margin:48px 88px;
+    @include flexStyle(row,center, space-between);
 }

@@ -1,55 +1,45 @@
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
 @import "../../../../styles/Mixins/FlexMixins.scss";
 @import "../../../../styles/Mixins/FontMixin.scss";
 
 .mainContainer{
-    @include flexStyle(row,center,space-between);
-    background-color: #FFFFFF;
-    border-radius:1.25rem;
-    width:100%;
-    margin-bottom:7%;
-    padding-left:3rem;
-    padding-right:3rem;
-
+    @include flexStyle(row,center,none);
+    background-color: $white-text-color;
+    border-radius:20px;
+    margin:0 88px;
+    .courseTitle{
+        @include fontStyle($secondary-font,normal,700,24px,29px);
+        text-decoration-line: underline;
+        color: $header-main-color;
+        margin:54px 284px 54px 48px;
+    }
     .container{
-        @include flexStyle(column,center,space-between);
-        .courseTitle{
-            @include fontStyle('Helvetica Neue',normal,700,1.5rem,1.813rem);
-            text-decoration-line: underline;
-            color: #222427;
-        }
+        margin:43px 89px;
         .containerTitle{
-            @include fontStyle('Montserrat',normal,500,0.875rem,1.063rem);
+            @include fontStyle($primary-font,normal,500,14px,17px);
             color: #848A9D;
+            margin:0;
         }
         .gradeContent{
-            @include fontStyle('Montserrat',normal,500,1rem,1.5rem);
-            color: #333941;
+            @include fontStyle($primary-font,normal,500,16px,24px);
+            color: $black-text-color;
         }
         .statusContent{
             background-color: #D9DBE9;
-            border-radius:1rem;
-            @include fontStyle('Montserrat',normal,500,0.75rem,0.938rem);
-            color: #5E617B;
+            border-radius:16px;
+            @include fontStyle($primary-font,normal,500,12px,15px);
+            color: $main-text-color;
             padding:0.344rem 1rem 0.344rem 1rem;
         }
-        &:nth-child(1){
-            width:25%;
-            border:none;
-        }
     }
-    .buttonContainer button{
-        border: 2px solid #848A9D;
-        background-color: transparent;
-        border-radius:1rem;
-        @include fontStyle('Montserrat',normal,500,1rem,1.25rem);
-        color:#848A9D;
-        padding:1rem 2rem 1rem 2rem;
-        cursor:pointer;
+    .buttonContainer {
+        margin-left:184px;   
     }
     .separator{
         background-color:#EEEFF4;
-        border-radius: 0.469rem;
-        width:0.125rem;
-        height:5rem;
+        border-radius: 7px;
+        width:2px;
+        height:73px;
     }
 }

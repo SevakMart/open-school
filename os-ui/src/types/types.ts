@@ -4,6 +4,10 @@ export namespace Types {
         SIGN_IN = 'signIn',
         SIGN_UP = 'signUp',
         VERIFY = 'verify',
-        CLOSE = 'closeButton'
+        CLOSE = 'closeButton',
+        FORGOT_PASSWORD = 'forgotPassword',
+        RESET_PASSWORD = 'resetPassword',
+        SUCCESS_MESSAGE= 'successMessage',
+        ENROLL_COURSE='enrollCourse'
     }
 }

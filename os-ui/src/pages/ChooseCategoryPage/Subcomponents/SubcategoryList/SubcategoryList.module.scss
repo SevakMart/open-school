@@ -1,0 +1,7 @@
+@import "../../../../styles/Mixins/FlexMixins.scss";
+
+.subMainContent {
+    @include flexStyle(column,none,space-between);
+    box-sizing: border-box;
+    margin-top:24px;
+}

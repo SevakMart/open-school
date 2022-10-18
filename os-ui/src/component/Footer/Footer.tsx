@@ -1,31 +1,34 @@
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import Button from '../Button/Button';
+import { Types } from '../../types/types';
+import { openModal } from '../../redux/Slices/PortalOpenStatus';
 import styles from './Footer.module.scss';
 
 const Footer = () => {
   const { t } = useTranslation();
-  const {
-    mainContainer, categories, becomeMentor, findUsOn,
-  } = styles;
+  const dispatch = useDispatch();
+  const { mainContainer, buttonContainer } = styles;
+
+  const handleSignUp = () => {
+    dispatch(openModal({ buttonType: Types.Button.SIGN_UP }));
+  };
+
   return (
-    <div className={mainContainer}>
-      <button type="button">{t('string.homePage.navBar.logo')}</button>
-      <div className={categories}>
-        <h2>{t('string.homePage.footer.categories')}</h2>
-        <p>{t('string.homePage.footer.softwareEngineering')}</p>
-        <p>{t('string.homePage.footer.design')}</p>
-        <p>{t('string.homePage.footer.management')}</p>
+    <>
+      <div className={mainContainer}>
+        <h2>{t('string.homePage.footer.startJourney')}</h2>
+        <div className={buttonContainer}>
+          <Button.SignUpButton className={['signUpFooter', 'signUpFooter__student']} onClick={handleSignUp}>
+            {t('button.homePage.signUpStudent')}
+          </Button.SignUpButton>
+          <Button.SignUpButton className={['signUpFooter', 'signUpFooter__mentor']} onClick={handleSignUp}>
+            {t('button.homePage.signUpMentor')}
+          </Button.SignUpButton>
+        </div>
       </div>
-      <div className={becomeMentor}>
-        <h2>{t('string.homePage.footer.becomeMentor')}</h2>
-        <p>{t('string.homePage.footer.about')}</p>
-        <p>{t('string.homePage.footer.help')}</p>
-      </div>
-      <div className={findUsOn}>
-        <h2>{t('string.homePage.footer.findUs')}</h2>
-        <p>Facebook</p>
-        <p>Instagram</p>
-      </div>
-    </div>
+      <h2>{t('string.homePage.navBar.logo')}</h2>
+    </>
   );
 };
 export default Footer;

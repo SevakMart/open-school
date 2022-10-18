@@ -14,7 +14,9 @@ exports[`Create test cases to learning path component Create a snapshot test 1`]
       >
         Medium
       </p>
-      <p>
+      <p
+        class="bookmarkIcon"
+      >
         <svg
           fill="none"
           height="1em"
@@ -22,7 +24,7 @@ exports[`Create test cases to learning path component Create a snapshot test 1`]
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-width="2"
-          style="color: rgb(94, 97, 123); font-size: 1rem; cursor: pointer; fill: none;"
+          style="font-size: 1rem; cursor: pointer; fill: none;"
           viewBox="0 0 24 24"
           width="1em"
           xmlns="http://www.w3.org/2000/svg"
@@ -33,66 +35,64 @@ exports[`Create test cases to learning path component Create a snapshot test 1`]
         </svg>
       </p>
     </div>
-    <a
-      href="/userCourse/undefined"
+    <div
+      class="mainBody"
     >
       <div
-        class="mainBody"
+        class="ratingContent"
+      >
+        <p
+          class="iconStyle"
+        >
+          <svg
+            fill="none"
+            height="1em"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <polygon
+              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+            />
+          </svg>
+        </p>
+        <p
+          class="ratingValue"
+          data-testid="ratingValue"
+        >
+          5.5
+        </p>
+      </div>
+      <p
+        class="courseTitle"
+        data-testid="React"
+      >
+        React
+      </p>
+      <div
+        class="keywordsContent"
       >
         <div
-          class="ratingContent"
+          class="keyword"
         >
-          <p>
-            <svg
-              fill="none"
-              height="1em"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <polygon
-                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
-              />
-            </svg>
-          </p>
-          <p
-            class="ratingValue"
-            data-testid="ratingValue"
-          >
-            5.5
-          </p>
+          Testing
+        </div>
+        <div
+          class="keyword"
+        >
+          database
         </div>
         <p
-          class="courseTitle"
-          data-testid="React"
+          data-testid="remainingKeywordNumber of React"
         >
-          React
+          +1
         </p>
-        <div
-          class="keywordsContent"
-        >
-          <div
-            class="keyword"
-          >
-            Testing
-          </div>
-          <div
-            class="keyword"
-          >
-            database
-          </div>
-          <p
-            data-testid="remainingKeywordNumber of React"
-          >
-            +1
-          </p>
-        </div>
       </div>
-    </a>
+    </div>
   </div>
 </DocumentFragment>
 `;

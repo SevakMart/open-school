@@ -1,0 +1,10 @@
+@import "../../styles/Mixins/FlexMixins.scss";
+
+.mainContent {
+    @include flexStyle(row,center,none);
+    border:solid;
+    cursor:pointer;
+    .iconContainer, .titleContent{
+        margin:0 24px 0;
+    }
+}

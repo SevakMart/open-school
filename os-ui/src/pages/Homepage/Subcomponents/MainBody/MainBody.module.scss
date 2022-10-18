@@ -1,0 +1,26 @@
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+
+.listContainer{
+    position:relative;
+
+    .icon {
+      position:absolute;
+      z-index:2;
+      top:45%;
+      font-size: 3rem;
+      cursor:pointer;
+
+      &__left {
+        left:0;
+      }
+      &__right {
+        right:0;
+      }
+    }
+  }
+  .registrationButton{
+    width:40%;
+    text-align: center;
+  }

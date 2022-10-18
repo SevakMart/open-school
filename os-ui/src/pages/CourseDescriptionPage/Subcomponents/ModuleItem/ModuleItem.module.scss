@@ -1,31 +1,25 @@
 @import "../../../../styles/Mixins/FlexMixins.scss";
 @import "../../../../styles/Mixins/FontMixin.scss";
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
 
 .mainContainer {
-    width:100%;
     background-color: #F9F9FD;
-    border-radius: 0.5rem;
-    margin-bottom:0.625rem;
-    position:relative;
-    .vector{
-       margin-left:1.5rem;
-       position:absolute;
-       height:100%;
-       z-index:0;
-    }
+    border-radius: 8px;
+    margin-right:10px;
+    margin-left:10px;
     .mainContent {
-        margin-right: 1.5rem;
-        margin-left:1.5rem;
+        margin:24px 16px;
         @include flexStyle(row,center, space-between);
         .titleAndEllipseIcon {
-            @include flexStyle(row,center, space-between);
-            width:10%;
-            .ellipseIcon{
-                border-radius: 50%;
-                width:1rem;
-                height:1rem;
-                background-color:  #D9DBE9;;
+            display:inline-block;
+            .moduleTitle {
+                display:inline;
+                margin-left:16px;
+                @include fontStyle($primary-font,normal,600,20px,24px);
+                color:$black-text-color;
             }
+            
         }
         .chevronIsOpen {
             cursor:pointer;
@@ -39,10 +33,10 @@
         }
     }
     .moduleDescriptionIsOpen{
-        background-color: #F9F9FD;
-        border-radius: 0.5rem;
-        margin-bottom:0.625rem;
-        margin-left:2rem;
+        margin:24px 16px;
+        text-align: justify;
+        @include fontStyle($primary-font,normal,400,16px,24px);
+        color:$main-text-color;
     }
     .moduleDescriptionIsClosed {
         display:none;

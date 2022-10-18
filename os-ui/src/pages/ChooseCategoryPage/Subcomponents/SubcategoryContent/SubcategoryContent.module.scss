@@ -1,0 +1,29 @@
+@import "../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
+
+.mainContent {
+    @include flexStyle(row,center,none);
+    box-sizing: border-box;
+    margin-bottom: 18px;
+    .checkboxContent {
+        display:inline-block;
+        box-sizing: border-box;
+        margin-right: 8px;
+        padding:0;
+        cursor: pointer;
+        img {
+           display:block;
+           height:100%;
+           margin:0;
+        }
+    }
+    p {
+        display:inline-block;
+        text-align: center;
+        margin:0;
+        @include fontStyle($primary-font,normal,600,20px,24px);
+        color:$main-text-color;
+    }
+}

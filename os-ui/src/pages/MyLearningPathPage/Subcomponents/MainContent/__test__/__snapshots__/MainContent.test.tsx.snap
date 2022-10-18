@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create several unit tests for MyLearningPathMainContent Component Create a Snapshot test 1`] = `
+<DocumentFragment>
+  <div
+    class="courseContainer"
+  >
+    <div
+      class="mainContainer"
+    >
+      <img
+        alt="No Courses Yet"
+        src="NoCoursesYet.svg"
+      />
+      <p
+        data-testid="No courses yet"
+      >
+        string.myLearningPaths.noCourseStatus
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;

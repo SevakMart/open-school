@@ -1,79 +1,61 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState, useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../../redux/Store';
-import RightArrowIcon from '../../../../icons/RightArrow';
-import LeftArrowIcon from '../../../../icons/LeftArrow';
+import { getHomepageCategoriesList } from '../../../../redux/Slices/HomepageCategoriesSlice';
 import CategoryCard from '../../../../component/CategoryProfile/CategoryProfile';
+import { userContext } from '../../../../contexts/Contexts';
 import { CategoryType } from '../../../../types/CategoryType';
-import publicService from '../../../../services/publicService';
-import categoriesService from '../../../../services/categoriesService';
+import Title from '../Title/Title';
+import MainBody from '../MainBody/MainBody';
+import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
 import styles from './Categories.module.scss';
 
-const HomepageCategories = ({ isLoggedIn }:{isLoggedIn:boolean}) => {
-  const userInfo = useSelector<RootState>((state) => state.userInfo);
+/* eslint-disable max-len */
+
+const HomepageCategories = () => {
+  const { token } = useContext(userContext);
+  const dispatch = useDispatch();
+  const homepageCategoriesListState = useSelector<RootState>((state) => state.homepageCategoriesList) as {entity:CategoryType[], isLoading:boolean, errorMessage:string, totalPages:number};
+  const {
+    entity, isLoading, errorMessage, totalPages,
+  } = homepageCategoriesListState;
   const { t } = useTranslation();
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [categoryPage, setCategoryPage] = useState(0);
-  const [maxCategoryPage, setMaxCategoryPage] = useState(10);
-  const { categoriesMainContainer, categoriesListContainer } = styles;
+  const [page, setPage] = useState(0);
+  const { categoriesMainContainer, gridContent } = styles;
 
   useEffect(() => {
-    let cancel = false;
-    let categoryPromise;
-    if (isLoggedIn) {
-      categoryPromise = categoriesService.getCategories(
-        { page: categoryPage, size: 6 },
-        (userInfo as any).token,
-      );
-    } else {
-      categoryPromise = publicService.getPublicCategories({ page: categoryPage, size: 6 });
-    }
-
-    categoryPromise.then((res) => {
-      if (cancel) return;
-      const { data } = res;
-      if (!data.errorMessage && data.content.length > 0) {
-        setCategories(data.content);
-        setMaxCategoryPage(data.totalPages - 1);
-      } else if (data.errorMessage) setErrorMessage(data.errorMessage);
-    });
-    return () => { cancel = true; };
-  }, [isLoggedIn, categoryPage]);
+    dispatch(getHomepageCategoriesList({ page, token: token || '' }));
+  }, [page]);
 
   return (
     <div className={categoriesMainContainer}>
-      <h2>{t('string.homePage.categories.exploreCategories')}</h2>
-      <div className={categoriesListContainer}>
-        {categoryPage > 0 ? (
-          <LeftArrowIcon
-            testId="categoryLeftArrow"
-            handleArrowClick={() => {
-              setCategoryPage((prevPage) => prevPage - 1);
-            }}
+      <Title
+        mainTitle={t('string.homePage.categories.title')}
+        subTitle={t('string.homePage.categories.exploreCategories')}
+        isMentor={false}
+      />
+      <MainBody
+        page={page}
+        maxPage={totalPages}
+        isMentor={false}
+        clickPrevious={() => setPage((prevPage) => prevPage - 1)}
+        clickNext={() => setPage((prevPage) => prevPage + 1)}
+      >
+        <div className={gridContent}>
+          <ContentRenderer
+            isLoading={isLoading}
+            errorMessage={errorMessage}
+            entity={entity}
+            errorFieldClassName="allLearningPathErrorStyle"
+            render={(entity) => (
+              entity.map((category:CategoryType, index:number) => (
+                <CategoryCard key={index} category={category} />
+              ))
+            )}
           />
-        ) : null}
-        {
-            categories.length > 0 && !errorMessage ? categories.map((category, index) => (
-              <CategoryCard
-                key={index}
-                title={category.title}
-                logoPath={category.logoPath}
-              />
-            )) : errorMessage ? <h2 data-testid="categoriesErrorMessage">{errorMessage}</h2>
-              : <h2 data-testid="emptyCategoryMessage">{t('messages.noData.categories')}</h2>
-          }
-        {categoryPage < maxCategoryPage ? (
-          <RightArrowIcon
-            testId="categoryRightArrow"
-            handleArrowClick={() => {
-              setCategoryPage((prevPage) => prevPage + 1);
-            }}
-          />
-        ) : null}
-      </div>
-      <button type="button">{t('button.homePage.seeAll')}</button>
+        </div>
+      </MainBody>
     </div>
   );
 };

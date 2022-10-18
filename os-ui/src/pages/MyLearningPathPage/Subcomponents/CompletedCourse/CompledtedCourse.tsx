@@ -1,25 +1,25 @@
-import { GRADE, RATE_COURSE, STATUS } from '../../../../constants/Strings';
-import { UserCourseType } from '../../../../types/UserCourseType';
+import { useTranslation } from 'react-i18next';
+import { CompleteCourse } from '../../../../types/CourseTypes';
+import Button from '../../../../component/Button/Button';
 import styles from './CompletedCourse.module.scss';
 
-const CompletedCourse = ({ title, courseStatus, grade }:Pick<UserCourseType, 'title'|'courseStatus'|'grade'>) => {
+const CompletedCourse = ({ title, courseStatus, grade }:CompleteCourse) => {
   const {
     separator, mainContainer, container, courseTitle,
     containerTitle, statusContent, gradeContent, buttonContainer,
   } = styles;
+  const { t } = useTranslation();
   return (
     <div className={mainContainer}>
-      <div className={container}>
-        <p data-testid={title} className={courseTitle}>{title}</p>
-      </div>
+      <p data-testid={title} className={courseTitle}>{title}</p>
       <div className={separator} />
       <div className={container}>
-        <p className={containerTitle}>{STATUS}</p>
+        <p className={containerTitle}>{t('string.myLearningPaths.completedCourse.status')}</p>
         <p data-testid={courseStatus} className={statusContent}>{courseStatus}</p>
       </div>
       <div className={separator} />
       <div className={container}>
-        <p className={containerTitle}>{GRADE}</p>
+        <p className={containerTitle}>{t('string.myLearningPaths.completedCourse.grade')}</p>
         <p data-testid={grade} className={gradeContent}>
           {grade}
           /100
@@ -27,7 +27,9 @@ const CompletedCourse = ({ title, courseStatus, grade }:Pick<UserCourseType, 'ti
       </div>
       <div className={separator} />
       <div className={buttonContainer}>
-        <button type="button">{RATE_COURSE}</button>
+        <Button.MainButton className={['rateCourse']} onClick={() => null}>
+          {t('string.myLearningPaths.completedCourse.rateCourse')}
+        </Button.MainButton>
       </div>
     </div>
   );

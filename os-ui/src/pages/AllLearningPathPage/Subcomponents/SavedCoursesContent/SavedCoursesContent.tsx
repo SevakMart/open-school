@@ -1,55 +1,58 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useTranslation } from 'react-i18next';
-import userService from '../../../../services/userService';
-import { SuggestedCourseType } from '../../../../types/SuggestedCourseType';
+import { useEffect, useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../../redux/Store';
+import { SuggestedCourseType } from '../../../../types/CourseTypes';
 import LearningPath from '../../../../component/LearningPath/LearningPath';
+import { getUserSavedCourse } from '../../../../redux/Slices/SavedLearningPathSlice';
+import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
+import { filterSendingParams } from '../../helpers';
 import { userContext } from '../../../../contexts/Contexts';
+import { deleteUserSavedCourse } from '../../../../redux/Slices/DeleteUserSavedCourse';
 import styles from './SavedCoursesContent.module.scss';
 
-type CourseListType=SuggestedCourseType & {id:number, isBookMarked?:boolean}
-
+/* eslint-disable max-len */
 const SavedCoursesContent = () => {
-  const { token, id } = useContext(userContext);
-  const [savedCourseList, setSavedCourseList] = useState<CourseListType[]>([]);
-  const { t } = useTranslation();
-  const { mainContainer, coreContent } = styles;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = new URLSearchParams(location.search);
+  const { token, id: userId } = useContext(userContext);
+  const dispatch = useDispatch();
+  const savedCoursesState = useSelector<RootState>((state) => state.savedCourse);
+  const sendingParams = useSelector<RootState>((state) => state.filterParams);
+  const deletedSavedCourseState = useSelector<RootState>((state) => state.deleteUserSavedCourse) as {entity:SuggestedCourseType, isLoading:boolean, errorMessage:string};
+  const filteredParams = filterSendingParams(sendingParams as object);
+  const { entity, isLoading, errorMessage } = savedCoursesState as {entity:SuggestedCourseType[], isLoading:boolean, errorMessage:string};
+  const { mainContainer } = styles;
 
-  const handleCourseDeletion = (courseId:number) => {
-    userService.deleteUserSavedCourses(id, courseId, token);
-    const index = savedCourseList.findIndex((course) => course.id === courseId);
-    const savedCourses = savedCourseList;
-    savedCourses.splice(index, 1);
-    const bookmarkedCourses = savedCourses.map(
-      (course:CourseListType) => ({ ...course, isBookMarked: true }),
-    );
-    setSavedCourseList([...bookmarkedCourses]);
+  const deleteSavedCourse = (courseTitle:string, courseId:number) => {
+    dispatch(deleteUserSavedCourse({ userId, courseId, token }));
+    params.delete(courseTitle);
+    navigate(`${location.pathname}?${params}`);
   };
 
   useEffect(() => {
-    userService.getUserSavedCourses(id, token, { page: 0, size: 100 })
-      .then((data) => setSavedCourseList([...data.content.map((
-        course:CourseListType,
-      ) => ({ ...course, isBookMarked: true }))]));
-  }, []);
+    dispatch(getUserSavedCourse({ userId, token, params: filteredParams }));
+  }, [sendingParams, deletedSavedCourseState]);
 
   return (
-    <>
-      <div className={coreContent}>
-        <div className={mainContainer}>
-          {savedCourseList.length ? savedCourseList.map((course) => (
-            <React.Fragment key={course.title}>
-              <LearningPath
-                courseInfo={course}
-                saveCourse={(courseId:number) => {
-                  userService.saveUserPreferredCourses(id, courseId, token);
-                }}
-                deleteCourse={handleCourseDeletion}
-              />
-            </React.Fragment>
-          )) : <h2 data-testid="Empty data Message">{t('messages.noData.default')}</h2>}
-        </div>
-      </div>
-    </>
+    <div className={mainContainer}>
+      <ContentRenderer
+        isLoading={isLoading}
+        errorMessage={errorMessage}
+        entity={entity}
+        errorFieldClassName="allLearningPathErrorStyle"
+        render={(savedCourses) => (
+          savedCourses.map((course:SuggestedCourseType) => (
+            <LearningPath
+              key={course.title}
+              courseInfo={course}
+              deleteCourse={deleteSavedCourse}
+            />
+          ))
+        )}
+      />
+    </div>
   );
 };
 export default SavedCoursesContent;

@@ -13,51 +13,54 @@ import NotFoundPage from '../../pages/NotFoundPage/NotFoundPage';
 import AfterVerificationPage from '../../pages/AfterVerificationPage/AfterVerificationPage';
 import CourseDescriptionPage from '../../pages/CourseDescriptionPage/CourseDescriptionPage';
 
+/* eslint-disable max-len */
+
 const AppRoutes = () => {
-  const userInfo = useSelector<RootState>((state) => state.userInfo);
+  const userInfoState = useSelector<RootState>((state) => state.userInfo);
+  const { userInfo } = userInfoState as any;
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        <Route path="/homepage" element={<Homepage />} />
+        <Route path="/homepage" element={<Homepage userInfo={userInfo} />} />
         <Route path="/homepage/account" element={<AfterVerificationPage />} />
         <Route path="/" element={<Navigate replace to="/homepage" />} />
         <Route
           path="/categories/subcategories"
           element={(
-            <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
-              <ChooseCategoryPage />
+            <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
+              <ChooseCategoryPage userInfo={userInfo} />
             </ProtectedRoute>
      )}
         />
         <Route
           path="/myLearningPath"
           element={(
-            <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
-              <MyLearningPathPage />
+            <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
+              <MyLearningPathPage userInfo={userInfo} />
             </ProtectedRoute>
    )}
         />
         <Route
           path="/exploreLearningPaths"
           element={(
-            <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
-              <AllLearningPathPage />
+            <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
+              <AllLearningPathPage userInfo={userInfo} />
             </ProtectedRoute>
         )}
         />
         <Route
           path="/mentors"
           element={(
-            <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
-              <AllMentorsPage />
+            <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
+              <AllMentorsPage userInfo={userInfo} />
             </ProtectedRoute>
         )}
         />
         <Route
           path="/userCourse/:courseId"
           element={(
-            <ProtectedRoute token={(userInfo as any).token ? (userInfo as any).token : null}>
-              <CourseDescriptionPage />
+            <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
+              <CourseDescriptionPage userInfo={userInfo} />
             </ProtectedRoute>
         )}
         />

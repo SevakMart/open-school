@@ -1,70 +1,80 @@
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
 @import "../../../../styles/Mixins/ButtonMixin.scss";
 @import "../../../../styles/Mixins/FlexMixins.scss";
 @import "../../../../styles/Mixins/FontMixin.scss";
 
 .mainContainer{
-    @include flexStyle(row,center,space-between);
-    background-color: #FFFFFF;
-    border-radius:1.25rem;
-    width:100%;
-    margin-bottom:7%;
-    padding-left:3rem;
-    padding-right:3rem;
-    .container{
-        @include flexStyle(column,center,space-between);
-        .courseTitle{
-            @include fontStyle('Helvetica Neue',normal,700,1.5rem,1.813rem);
+    @include flexStyle(row,center,none);
+    background-color: $white-text-color;
+    border-radius:20px;
+    margin:0 88px;
+    .titleContainer {
+        margin:32px 32px 32px 48px;
+        box-sizing: border-box;
+        .courseTitle {
+            @include fontStyle($secondary-font,normal,700,24px,29px);
             text-decoration-line: underline;
-            color: #222427;
+            color: $header-main-color;
+            margin:0;
         }
-        .progressContainer{
-            @include flexStyle(row,center,space-between);
-            width:80%;
-        .progressBar{
-            background-color: #EEEFF4;
-            border-radius:0.406rem;
-            width:100%;
-            height:0.813rem;
+        .progressContainer {
+            margin:25px 0 9px 0;
+           .progressBar{
+              background-color: #EEEFF4;
+              border-radius:6.5px;
+              width:345px;
+              height:13px;
+              margin-right:16px;
+              box-sizing: border-box;
+              display:inline-block;
+              .progressing {
+                background-color: $secondary-color;
+                height:100%;
+                border-radius:6.5px;
+            }
+           }
+            .progressPercent{
+              @include fontStyle($secondary-font,normal,500,12px,15px);
+              color: $black-text-color;
+              display:inline;
+            }
         }
-        .progressPercent{
-            @include fontStyle('Helvetica Neue',normal,500,0.75rem,0.938rem);
-            color: #333941;
+            .OverallProgress{
+              @include fontStyle($primary-font,normal,400,12px,15px);
+              color:$main-text-color;
+              margin:0;
         }
-      }
-        .OverallProgress{
-            @include fontStyle('Montserrat',normal,400,0.75rem,0.938rem);
-            color: #5E617B;
-       }
+    }
+    .container{
+        margin:43px; 
        .containerTitle{
-        @include fontStyle('Montserrat',normal,500,0.875rem,1.063rem);
-        color: #848A9D;
+          @include fontStyle($primary-font,normal,500,14px,17px);
+          color: #848A9D;
+          margin:0 0 8px;
+          box-sizing: border-box;
        }
        .remainingTimeContainer,.dueDateContainer{
-        @include flexStyle(row,center,space-between);
+          @include flexStyle(row,center,none);
        }
        .dueDateContent,.remainingTimeContent{
-        @include fontStyle('Montserrat',normal,500,1rem,1.5rem);
-        color: #333941;
+        @include fontStyle($primary-font,normal,500,16px,24px);
+        color: $black-text-color;
+        margin:0 0 0 10px;
+        display:inline;
        }
+       
        .statusContent{
            background-color: #D9DBE9;
-           border-radius:1rem;
-           @include fontStyle('Montserrat',normal,500,0.75rem,0.938rem);
-           color: #5E617B;
+           border-radius:16px;
+           @include fontStyle($primary-font,normal,500,12px,15px);
+           color:$main-text-color;
            padding:0.344rem 1rem 0.344rem 1rem;
-       }
-       &:nth-child(1){
-           width:25%;
-           border:none;
+           margin:8px 0 0 ;
        }
     }
-    .buttonContainer button{
-        background-color: #848A9D;
-        border-radius:1rem;
-        @include fontStyle('Montserrat',normal,500,1rem,1.25rem);
-        color:#FFFFFF;
-        padding:1rem 2rem 1rem 2rem;
-        cursor:pointer;
+    .buttonContainer {
+        margin-left:43px;   
     }
     .separator{
         background-color:#EEEFF4;

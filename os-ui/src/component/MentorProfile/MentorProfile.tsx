@@ -3,11 +3,16 @@ import EmailIcon from '../../icons/Email';
 import LinkedinIcon from '../../icons/Linkedin';
 import BookmarkIcon from '../../icons/Bookmark';
 import BookIcon from '../../icons/Book';
+import Separator from '../../assets/svg/Separator.svg';
 import styles from './MentorProfile.module.scss';
-/* eslint-disable-next-line max-len */
-const MentorCard = ({ mentor, saveMentor, deleteMentor }:
-  {mentor:MentorType, saveMentor?:(mentorid:number)=>void,
-    deleteMentor?:(mentorid:number)=>void}) => {
+
+/* eslint-disable max-len */
+
+const MentorCard = ({
+  mentor, isHomepageNotSignedMentorCard, saveMentor, deleteMentor,
+}:
+  {mentor:MentorType, isHomepageNotSignedMentorCard:boolean, saveMentor?:(mentorName:string, mentorId:number)=>void,
+    deleteMentor?:(mentorName:string, mentorId:number)=>void, }) => {
   const {
     mainContainer, headerContainer, MailLinkedinIconsContainer, bodyContainer, mentorInfo,
     mentorAvatar, mentorInfoContainer, mentorExtraInfo,
@@ -17,18 +22,18 @@ const MentorCard = ({ mentor, saveMentor, deleteMentor }:
       <div className={headerContainer}>
         <div className={MailLinkedinIconsContainer}>
           <p onClick={() => { window.location.href = mentor.emailPath; }}><EmailIcon /></p>
-          <p>|</p>
+          <img src={Separator} alt="Separator" />
           <p onClick={() => { window.location.href = mentor.linkedinPath; }}><LinkedinIcon /></p>
         </div>
         <p>
           <BookmarkIcon
             iconSize="1rem"
-            isBookmarked={mentor.isBookMarked}
             mentorId={mentor.id}
-            saveMentor={(mentorId) => saveMentor && saveMentor(mentorId)}
-            deleteMentor={(mentorId) => deleteMentor && deleteMentor(mentorId)}
+            mentorName={`${mentor.name} ${mentor.surname}`}
+            isHomepageNotSignedInMentor={isHomepageNotSignedMentorCard}
+            saveMentor={(mentorName:string, mentorId:number) => saveMentor && saveMentor(mentorName, mentorId)}
+            deleteMentor={(mentorName:string, mentorId:number) => deleteMentor && deleteMentor(mentorName, mentorId)}
           />
-
         </p>
       </div>
       <div className={bodyContainer}>

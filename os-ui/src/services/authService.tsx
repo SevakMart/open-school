@@ -1,5 +1,6 @@
 import fetchService from './fetchData';
 import { RegistrationFormType } from '../types/RegistartionFormType';
+import { FormValues } from '../component/SignUpSignIn/Form/Form';
 import { ResetPasswordType } from '../types/ResetPasswordType';
 
 class AuthService {
@@ -9,7 +10,7 @@ class AuthService {
     this.basePath = 'auth';
   }
 
-  async register(content:RegistrationFormType) {
+  async register(content:FormValues) {
     const response = await fetchService.post(`${this.basePath}/register`, content, {});
     const { status } = response;
     const data = await response.json();
@@ -55,8 +56,10 @@ class AuthService {
     return { data, status };
   }
 
-  async resendVerificationEmail(userId:number) {
-    fetchService.get(`${this.basePath}/${userId}/account/verification`);
+  async resendVerificationEmail(userId:number, params: object = {}) {
+    /* Talk with backend to sen success message when successful resend email */
+    const response = await (await fetchService.get(`${this.basePath}/${userId}/account/verification`, params)).json();
+    return response;
   }
 }
 

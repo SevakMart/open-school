@@ -1,151 +1,188 @@
 {
-    "string":{
-      "homePage":{
-        "navBar":{
-          "logo":"Open-School",
-          "exploreCategories":"Explore Categories",
-          "mentors":"Mentors"
-        },
-        "header":{
-          "educationalPlatform":"Educational Platform",
-          "chooseCategories":"Choose Categories You Are Interested In"
-        },
-        "categories":{
-          "exploreCategories":"Explore Categories You Are Interested In"
-        },
-        "mentors":{
-          "ourMentors":"Our Mentors"
-        },
-        "footer":{
-          "startJourney":"Start Your Journey Now!",
-          "categories":"Categories",
-          "softwareEngineering":"Software Engineering",
-          "design":"Design",
-          "management":"Management",
-          "becomeMentor":"Become a Mentor",
-          "about":"About",
-          "help":"Help",
-          "findUs":"Find Us On"
-        }
-      },
+  "string":{
+    "homePage":{
       "navBar":{
-        "logout": "Logout"
+        "logo":"Open-School",
+        "exploreCategories":"Explore Categories",
+        "mentors":"Mentors",
+        "allLearningPaths":"All Learning Paths",
+        "myLearningPaths":"My Learning Paths"
       },
-      "afterVerification":{
-        "verificationTokenNotValidMessageHeader": "The verification token is expired or not valid",
-        "verificationTokenNotValidMessageContent":"Please check your email and verify your account with the email you received recently, otherwise click the \"Resend\" button on the app's home page to receive a new email."
+      "header":{
+        "educationalPlatform":"Free Educational Platform",
+        "chooseCategories":"Choose Categories You Are Interested In"
       },
-      "signIn":{
-        "title":"Sign In!",
-        "forgotPsd":"Forgot Password?",
-        "dontHaveAccount":"Don't Have An Account?",
-        "or":"Or"
-      },
-      "signUp":{
-        "title":"Sign Up!",
-        "haveAccount":"Have An Account?"
-      },
-      "forgotPsd":{
-        "title":"Forgot password",
-        "enterEmail":"Enter your email for the verification process.",
-        "sendNotification":"We will send 4 digits code to your email."
-      },
-      "resetPsd":{
-        "title":"Reset password"
-      },
-      "learningPath":{
-        "all":"All Learning Paths",
-        "saved":"Saved Learning Paths",
-        "rating":"Rating",
-        "difficulty":"difficulty_id",
-        "title":"Title",
-        "sortBy":"Sort By",
-        "category":"Category",
-        "language":"Language",
-        "courseLevel":"Course Level",
-        "filter":"Filter"
+      "categories":{
+        "title": "Categories",
+        "exploreCategories":"Explore Categories You Are Interested In"
       },
       "mentors":{
-        "all":"All Mentors",
-        "saved":"Saved Mentors"
+        "ourMentors":"Our Mentors",
+        "learnAboutContributors":"Learn More About Our Contributors"
       },
-      "search":"Search name",
-      "courseDescription":{
-        "title":{
-          "description":"What you will learn",
-          "goal":"Course Goal",
-          "modulesList":"Courses In This Program",
-          "summary":"Course Summary",
-          "authorInfo":"Author Information",
-          "userEnrolled":"Enrolled"
-        },
-        "modal":{
-          "congratsHeader":"Congrats!",
-          "mainMessage":"You have enrolled to the course!"
-        }
+      "footer":{
+        "startJourney":"Start Your Journey Now!",
+        "categories":"Categories",
+        "softwareEngineering":"Software Engineering",
+        "design":"Design",
+        "management":"Management",
+        "becomeMentor":"Become a Mentor",
+        "about":"About",
+        "help":"Help",
+        "findUs":"Find Us On"
       }
     },
-    "button":{
-      "homePage":{
-        "becomeMentor":"Become a mentor",
-        "signIn":"SIGN IN",
-        "signUp":"SIGN UP",
-        "seeAll":"SEE ALL",
-        "registerMentor":"REGISTER AS A MENTOR",
-        "signUpStudent":"SIGN UP AS ASTUDENT",
-        "signUpMentor":"SIGN UP AS A MENTOR"
-        },
-      "forgotPsd":{
-        "continue":"Continue"
-      },
-      "resetPsd":{
-      "submit":"Reset Password",
-      "resendEmail":"Resend Email"
-      },
-      "chooseCategories":{
-      "next": "NEXT"
-      },
-      "enroll":"Enroll",
-      "startCourse":"Start Course Now",
-      "startLearning":"Start"
+    "onAccountVerification":{
+      "title":"Verify Account"
     },
-
-    "messages":{
-      "verificationPageHint": "Go to in your registered email and verify, If you haven't received a verification email within a few minutes, click the \"Resend\" button to receive another one.",
-      "noData":{
-        "default":"No data to display",
-        "categories":"We dont have categories yet",
-        "mentors":"We do not have mentors yet",
-        "courses": {
-          "registered":"We do not have courses yet",
-          "suggested":"There are no suggested courses yet"
-        }
-      }, 
-      "successfullSignUp":"You have successfully registered",
-      "error":"Something went wrong please refresh the page"
+    "afterVerification":{
+      "verificationTokenNotValidMessageHeader": "The verification token is expired or not valid",
+      "verificationTokenNotValidMessageContent":"Please check your email and verify your account with the email you received recently, otherwise click the \"Resend\" button on the app's home page to receive a new email.",
+      "loading":"Please Wait"
     },
-
-    "form": {
-      "labels" : {
-        "name":"First Name", 
-        "surname":"Last Name",
-        "resetPsdToken":"Verification code",
-        "email": "Email",
-        "psd":{
-          "default":"Password", 
-          "reset":"New Password", 
-          "confirm":"Confirm Password"}
+    "signIn":{
+      "title":"Sign In!",
+      "forgotPsd":"Forgot Password?",
+      "dontHaveAccount":"Don't Have An Account?",
+      "or":"Or"
+    },
+    "signUp":{
+      "title":"Sign Up!",
+      "haveAccount":"Have An Account?"
+    },
+    "forgotPsd":{
+      "title":"Forgot password",
+      "enterEmail":"Enter your email for the verification process.",
+      "sendNotification":"We will send 4 digits code to your email."
+    },
+    "resetPsd":{
+      "title":"Reset password"
+    },
+    "learningPath":{
+      "all":"All Learning Paths",
+      "saved":"Saved Learning Paths",
+      "rating":"Rating",
+      "difficulty":"difficulty_id",
+      "title":"Title",
+      "sortBy":"Sort By: ",
+      "category":"Category",
+      "language":"Language",
+      "courseLevel":"Course Level",
+      "filter":"Filter"
+    },
+    "mentors":{
+      "all":"All Mentors",
+      "saved":"Saved Mentors"
+    },
+    "search":"Search name",
+    "profilePortal":{
+      "signOut":"Sign out"
+    },
+    "myLearningPaths":{
+      "suggestedLearningPaths":"Suggested Learning Paths",
+      "mainHeaderTitle":"My Learning Paths",
+      "courseStatus":{
+        "all":"All",
+        "inProgress":"InProgress",
+        "completed":"Completed"
       },
-      "placeholder":{
-        "name":"Fill in first name",
-        "surname":"Fill in last name",
-        "resetPsdToken":"Enter the 4 digits code that you received on your email",
-        "email":"ex: namesurname@gmail.com",
-        "psd":{
-          "default":"Enter your password",
-          "reset":"Enter the new password",
-          "confirm":"Confirm password"
-        }
+      "noCourseStatus":"No Courses Yet",
+      "completedCourse":{
+        "status":"Status",
+        "grade":"Grade",
+        "rateCourse":"Rate Course"
+      },
+      "inProgressCourse":{
+        "overallProgress":"Overall Progress",
+        "status":"status",
+        "dueDate":"Due date",
+        "remainingTime":"Remaining Time"
+      }
+    },
+    "courseDescriptionPage":{
+      "title":{
+        "description":"What you will learn",
+        "goal":"Course goal",
+        "modulesList":"Courses in this Program",
+        "authorInfo":"Author Information",
+        "summary":"Course Summary",
+        "userEnrolled":"Enrolled",
+        "modalSuccessTitle":"Congrats"
+      },
+      "text":{
+        "modalSuccessText":"You have Enrolled To The Course"
+      }
+    }
+  },
+  "button":{
+    "homePage":{
+      "becomeMentor":"Become a mentor",
+      "signIn":"SIGN IN",
+      "signUp":"SIGN UP",
+      "seeAll":"SEE ALL",
+      "registerMentor":"REGISTER AS A MENTOR",
+      "signUpStudent":"SIGN UP AS ASTUDENT",
+      "signUpMentor":"SIGN UP AS A MENTOR"
+      },
+    "forgotPsd":{
+      "continue":"Continue"
+    },
+    "resetPsd":{
+    "submit":"Reset Password",
+    "resendEmail":"Resend Email"
+    },
+    "chooseCategories":{
+    "next": "NEXT"
+    },
+    "resend":"Resend",
+    "myLearningPathsPage":{
+      "exploreCourses":"Explore Courses",
+      "resumeCourse":"Resume Course"
+    },
+    "courseDescriptionPage":{
+      "enrollInCourse":"ENROLL",
+      "startCourse":"START",
+      "modalStartCourse":"START COURSE NOW"
+    }
+  },
+
+  "messages":{
+    "verificationPageHint": "Please verify your account, If you haven't received a verification email within a few minutes, click the \"Resend\" button to receive another one.",
+    "noData":{
+      "default":"No data to display",
+      "categories":"We dont have categories yet",
+      "mentors":"We do not have mentors yet",
+      "courses": {
+        "registered":"We do not have courses yet",
+        "suggested":"There are no suggested courses yet"
+      }
+    }, 
+    "successfullSignUp":"You have successfully registered",
+    "successHeader":"Success!",
+    "error":"Something went wrong please refresh the page"
+  },
+
+  "form": {
+    "labels" : {
+      "name":"First Name", 
+      "surname":"Last Name",
+      "resetPsdToken":"Verification code",
+      "email": "Email",
+      "psd":{
+        "default":"Password", 
+        "reset":"New Password", 
+        "confirm":"Confirm Password"}
+    },
+    "placeholder":{
+      "name":"Fill in first name",
+      "surname":"Fill in last name",
+      "resetPsdToken":"Enter the 4 digits code that you received on your email",
+      "email":"ex: namesurname@gmail.com",
+      "psd":{
+        "default":"Enter your password",
+        "reset":"Enter the new password",
+        "confirm":"Confirm password"
       }
     }
   }
+}

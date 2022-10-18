@@ -1,14 +1,19 @@
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
 @import "../../../../styles/Mixins/FlexMixins.scss";
 @import "../../../../styles/Mixins/FontMixin.scss";
 
-.filteringContent .filteringSubContent{
-    @include flexStyle(column,flex-start,space-evenly);
+.filteringContent {
+    margin-top:18px;
+}
+.filteringSubContent {
+    margin-top:16px;
 }
 .mainFilteringContentTitle{
-    @include fontStyle('Montserrat',normal,500,1rem,1.5rem);
-    color:#333941;
+    @include fontStyle($primary-font,normal,500,16px,24px);
+    color:$black-text-color;
 }
 .filteringSubContentTitle{
-    @include fontStyle('Montserrat',normal,500,0.75rem,1rem);
-    color:#333941;
+    @include fontStyle($primary-font,normal,500,14px,17px);
+    color:$black-text-color;
 }

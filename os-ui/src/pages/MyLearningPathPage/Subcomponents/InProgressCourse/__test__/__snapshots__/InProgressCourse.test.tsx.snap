@@ -6,7 +6,7 @@ exports[`Create test cases for InProgress component Create a snapshot test 1`] =
     class="mainContainer"
   >
     <div
-      class="container"
+      class="titleContainer"
     >
       <p
         class="courseTitle"
@@ -22,7 +22,7 @@ exports[`Create test cases for InProgress component Create a snapshot test 1`] =
         >
           <div
             class="progressing"
-            style="width: 47%; background-color: rgb(160, 163, 189); height: 100%; border-radius: 0.406rem;"
+            style="width: 47%;"
           />
         </div>
         <p
@@ -35,7 +35,7 @@ exports[`Create test cases for InProgress component Create a snapshot test 1`] =
       <p
         class="OverallProgress"
       >
-        Overall Progress
+        string.myLearningPaths.inProgressCourse.overallProgress
       </p>
     </div>
     <div
@@ -47,29 +47,16 @@ exports[`Create test cases for InProgress component Create a snapshot test 1`] =
       <p
         class="containerTitle"
       >
-        Remaining Time
+        string.myLearningPaths.inProgressCourse.remainingTime
       </p>
       <div
         class="remainingTimeContainer"
       >
-        <p>
-          <svg
-            fill="currentColor"
-            height="1em"
-            stroke="currentColor"
-            stroke-width="0"
-            viewBox="0 0 24 24"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"
-            />
-            <path
-              d="M13 7h-2v6h6v-2h-4z"
-            />
-          </svg>
-        </p>
+        <img
+          alt="clockIcon"
+          class="timeIcon"
+          src="ClockIcon.svg"
+        />
         <p
           class="remainingTimeContent"
           data-testid="540000"
@@ -87,7 +74,7 @@ exports[`Create test cases for InProgress component Create a snapshot test 1`] =
       <p
         class="containerTitle"
       >
-        Status
+        string.myLearningPaths.inProgressCourse.status
       </p>
       <p
         class="statusContent"
@@ -105,29 +92,16 @@ exports[`Create test cases for InProgress component Create a snapshot test 1`] =
       <p
         class="containerTitle"
       >
-        Due Date
+        string.myLearningPaths.inProgressCourse.dueDate
       </p>
       <div
         class="dueDateContainer"
       >
-        <p>
-          <svg
-            fill="currentColor"
-            height="1em"
-            stroke="currentColor"
-            stroke-width="0"
-            viewBox="0 0 16 16"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"
-            />
-            <path
-              d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z"
-            />
-          </svg>
-        </p>
+        <img
+          alt="calenderIcon"
+          class="calenderIcon"
+          src="CalendarIcon.svg"
+        />
         <p
           class="dueDateContent"
           data-testid="2022-05-07"
@@ -143,9 +117,10 @@ exports[`Create test cases for InProgress component Create a snapshot test 1`] =
       class="buttonContainer"
     >
       <button
+        class="resumeCourse"
         type="button"
       >
-        Resume Course
+        button.myLearningPathsPage.resumeCourse
       </button>
     </div>
   </div>

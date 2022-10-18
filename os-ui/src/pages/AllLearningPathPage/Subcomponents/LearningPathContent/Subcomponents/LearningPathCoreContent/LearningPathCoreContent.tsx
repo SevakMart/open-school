@@ -1,66 +1,79 @@
-import { useState, useEffect, useContext } from 'react';
-import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { RootState } from '../../../../../../redux/Store';
+import { useEffect, useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { DispatchType, RootState } from '../../../../../../redux/Store';
 import { userContext } from '../../../../../../contexts/Contexts';
 import LearningPath from '../../../../../../component/LearningPath/LearningPath';
-import courseService from '../../../../../../services/courseService';
 import userService from '../../../../../../services/userService';
-import { SuggestedCourseType } from '../../../../../../types/SuggestedCourseType';
+import { SuggestedCourseType } from '../../../../../../types/CourseTypes';
+import { filterSendingParams } from '../../../../helpers';
+import ContentRenderer from '../../../../../../component/ContentRenderer/ContentRenderer';
+import { getAllLearningPathCourses } from '../../../../../../redux/Slices/AllLearningPathCourseSlice';
+import { getUserSavedCourse } from '../../../../../../redux/Slices/SavedLearningPathSlice';
+import { deleteUserSavedCourse } from '../../../../../../redux/Slices/DeleteUserSavedCourse';
 import styles from './LearningPathCoreContent.module.scss';
 
-type CourseListType=SuggestedCourseType & {id:number, isBookMarked?:boolean}
+/* eslint-disable max-len */
 
 const LearningPathCoreContent = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = new URLSearchParams(location.search);
   const sendingParams = useSelector<RootState>((state) => state.filterParams);
-  const { token, id } = useContext(userContext);
-  const [courseList, setCourseList] = useState<CourseListType[]>([]);
-  const { t } = useTranslation();
+  const allLearningPathCourseState = useSelector<RootState>((state) => state.allLearningPathCourses);
+  const { entity, isLoading, errorMessage } = allLearningPathCourseState as {entity:SuggestedCourseType[], isLoading:boolean, errorMessage:string};
+  const filteredParams = filterSendingParams(sendingParams as object);
+  const { token, id: userId } = useContext(userContext);
+  const dispatch = useDispatch<DispatchType>();
   const { mainCoreContainer, courseContainer } = styles;
 
+  const saveCourse = (courseTitle:string, courseId:number) => {
+    userService.saveUserPreferredCourses(userId, courseId, token);
+    params.set(courseTitle, String(courseId));
+    navigate(`${location.pathname}?${params}`);
+  };
+  const deleteCourse = (courseTitle:string, courseId:number) => {
+    dispatch(deleteUserSavedCourse({ userId, courseId, token }));
+    params.delete(courseTitle);
+    navigate(`${location.pathname}?${params}`);
+  };
+
   useEffect(() => {
-    const getSearchedCoursesPromise = Object.values(sendingParams as object)[0].length
-    /* eslint-disable-next-line max-len */
-      ? courseService.getSearchedCourses({ page: 0, size: 100, ...(sendingParams as object) }, token)
-      : courseService.getSearchedCourses({ page: 0, size: 100 }, token);
-    Promise.all([
-      userService.getUserSavedCourses(id, token, { page: 0, size: 100 }),
-      getSearchedCoursesPromise,
-    ]).then((combinedData) => {
-      const userSavedCourseContent = combinedData[0].content;
-      const searchedCourseContent = combinedData[1].content;
-      const list = [];
-      if (userSavedCourseContent?.length) {
-        for (const searchedCourse of searchedCourseContent) {
-          const index = userSavedCourseContent
-            .findIndex((savedCourse:CourseListType) => savedCourse.id === searchedCourse.id);
-          if (index !== -1) {
-            userSavedCourseContent[index].isBookMarked = true;
-            list.push(userSavedCourseContent[index]);
-          } else {
-            searchedCourse.isBookMarked = false; list.push(searchedCourse);
+    if (!params.toString()) {
+      dispatch(getUserSavedCourse({ userId, token, params: filteredParams }))
+        .unwrap()
+        .then((savedCourseList:SuggestedCourseType[]) => {
+          for (const savedCourse of savedCourseList) {
+            params.set(savedCourse.title, String(savedCourse.id));
           }
-        }
-        setCourseList([...list]);
-      } else setCourseList(searchedCourseContent);
-    });
+          navigate(`${location.pathname}?${params}`, { replace: true });
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    dispatch(getAllLearningPathCourses({ token, params: filteredParams }));
   }, [sendingParams]);
 
   return (
     <div className={mainCoreContainer}>
-      {courseList.length ? courseList.map((course) => (
-        <div className={courseContainer} key={course.title}>
-          <LearningPath
-            courseInfo={course}
-            saveCourse={
-              (courseId:number) => userService.saveUserPreferredCourses(id, courseId, token)
-            }
-            deleteCourse={
-              (courseId:number) => userService.deleteUserSavedCourses(id, courseId, token)
-            }
-          />
-        </div>
-      )) : <h2 data-testid="Error Message">{t('messages.noData.default')}</h2>}
+      <ContentRenderer
+        isLoading={isLoading}
+        errorMessage={errorMessage}
+        entity={entity}
+        errorFieldClassName="allLearningPathErrorStyle"
+        render={(entity) => (
+          entity.map((course:SuggestedCourseType) => (
+            <div className={courseContainer} key={course.title}>
+              <LearningPath
+                courseInfo={course}
+                saveCourse={saveCourse}
+                deleteCourse={deleteCourse}
+              />
+            </div>
+          ))
+        )}
+      />
     </div>
   );
 };

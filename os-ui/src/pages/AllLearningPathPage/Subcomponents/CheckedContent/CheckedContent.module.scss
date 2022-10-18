@@ -1,15 +1,18 @@
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
 @import "../../../../styles/Mixins/FlexMixins.scss";
 @import "../../../../styles/Mixins/FontMixin.scss";
 
 .checkedContentClass {
-    @include flexStyle(row,flex-start,space-between);
-    width:40%;
-    label {
-        @include fontStyle('Montserrat',normal,400,0.875rem,1.063rem);
-        color:#5E617B;
-    };
-    input {
-        border: 3px solid #F7F7FC;
-    }
+   @include flexStyle(row, center,none);
+    
+   img {
+    margin-right:12px;
+   }
+   p {
+    display:inline;
+    @include fontStyle($primary-font,normal,400,14px,17px);
+    color:$main-text-color;
+   }
 }
 

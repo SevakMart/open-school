@@ -1,6 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import CompletedCourse from '../CompledtedCourse';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
+
 describe('Create test cases for the Completed course component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(

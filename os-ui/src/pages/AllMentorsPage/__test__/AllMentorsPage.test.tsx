@@ -13,17 +13,23 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockedUseNavigation,
   useLocation: () => mockedUseLocation,
 }));
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key:string) => key }),
+}));
 jest.mock('redux-state-sync', () => ({
   createStateSyncMiddleware:
     () => () => (next: (action: PayloadAction) => void) => (action: PayloadAction) => next(action),
   initMessageListener: () => jest.fn(),
 }));
-
+const userInfo = {
+  token: '123',
+  id: 1,
+};
 describe('Create test case for AllMentorsPage', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <AllMentorsPage />
+        <AllMentorsPage userInfo={userInfo} />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();

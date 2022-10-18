@@ -1,15 +1,21 @@
 import styles from './CategoryProfile.module.scss';
+import CategoryIcon from '../../assets/svg/CategoryIcon.svg';
+import RightArrow from '../../assets/svg/RightArrow.svg';
 import { CategoryType } from '../../types/CategoryType';
 
-const CategoryCard = ({ title, logoPath }:CategoryType) => {
-  const { mainContainer, categoryInfoContainer, logoContainer } = styles;
+const CategoryCard = ({ category }:{category:CategoryType}) => {
+  const {
+    mainContainer, categoryInfoContainer, categoryTitle, numberOfSubcategories,
+  } = styles;
   return (
     <div className={mainContainer}>
+      <img src={CategoryIcon} alt={category.title} />
       <div className={categoryInfoContainer}>
-        <div className={logoContainer}>
-          <img src={logoPath} alt={title} />
+        <div>
+          <p className={categoryTitle} data-testid={category.title}>{category.title}</p>
+          <p className={numberOfSubcategories}>{category.subCategoryCount}</p>
         </div>
-        <p data-testid={title}>{title}</p>
+        <img src={RightArrow} alt={category.title} />
       </div>
     </div>
   );
