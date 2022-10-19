@@ -21,7 +21,7 @@ public class ModuleServiceImpl implements ModuleService {
   private final ModuleRepository moduleRepository;
   private final UserRepository userRepository;
   private final MessageSource messageSource;
-  private  final ModuleItemMapper moduleItemMapper;
+
 
   public ModuleServiceImpl(
           CourseRepository courseRepository,
@@ -32,7 +32,6 @@ public class ModuleServiceImpl implements ModuleService {
     this.moduleRepository = moduleRepository;
     this.userRepository = userRepository;
     this.messageSource = messageSource;
-    this.moduleItemMapper = moduleItemMapper;
   }
 
   @Override
@@ -50,7 +49,7 @@ public class ModuleServiceImpl implements ModuleService {
     module.setTitle(request.getTitle());
     module.setDescription(request.getDescription());
     module.setCourse(course);
-    module.setModuleItems(moduleItemMapper.toModuleItems(request.getCreateModuleItemRequests(),
+    module.setModuleItems(ModuleItemMapper.toModuleItem(request.getCreateModuleItemRequests(),
             module));
     return moduleRepository.save(module);
   }

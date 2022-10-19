@@ -115,7 +115,7 @@ public class CourseController {
               description = "Request object for creating new course")
           @Valid
           @RequestBody
-          CreateCourseRequest request) {
+      CreateCourseRequest request) {
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(CourseMapper.toCourseDto(courseService.add(request)));
   }

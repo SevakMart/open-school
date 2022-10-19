@@ -1,6 +1,6 @@
 package app.openschool.course.api.mapper;
 
-import app.openschool.category.CategoryRepository;
+import app.openschool.category.Category;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.dto.CourseDto;
@@ -9,16 +9,14 @@ import app.openschool.course.api.dto.CourseInfoMentorDto;
 import app.openschool.course.api.dto.CourseInfoModuleDto;
 import app.openschool.course.api.dto.CourseInfoModuleItemDto;
 import app.openschool.course.api.dto.CreateCourseRequest;
-import app.openschool.course.difficulty.DifficultyRepository;
+import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
-import app.openschool.course.keyword.KeywordRepository;
-import app.openschool.course.language.LanguageRepository;
+import app.openschool.course.language.Language;
 import app.openschool.course.module.EnrolledModule;
 import app.openschool.course.module.Module;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.status.CourseStatus;
 import app.openschool.user.User;
-import app.openschool.user.UserRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,30 +24,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 
-@Component
+
 public class CourseMapper {
-
-  private final UserRepository userRepository;
-  private final CategoryRepository categoryRepository;
-  private final DifficultyRepository difficultyRepository;
-  private final LanguageRepository languageRepository;
-  private final KeywordRepository keywordRepository;
-  private final app.openschool.course.module.api.mapper.ModuleMapper moduleMapper;
-
-  public CourseMapper(UserRepository userRepository, CategoryRepository categoryRepository,
-                      DifficultyRepository difficultyRepository,
-                      LanguageRepository languageRepository, KeywordRepository keywordRepository,
-                      app.openschool.course.module.api.mapper.ModuleMapper moduleMapper) {
-    this.userRepository = userRepository;
-    this.categoryRepository = categoryRepository;
-    this.difficultyRepository = difficultyRepository;
-    this.languageRepository = languageRepository;
-    this.keywordRepository = keywordRepository;
-    this.moduleMapper = moduleMapper;
-  }
 
   public static List<CourseDto> toCourseDtoList(List<Course> courseList) {
     List<CourseDto> courseDtoList = new ArrayList<>();
@@ -101,38 +78,34 @@ public class CourseMapper {
     return enrolledCourse;
   }
 
-  public Course toCourse(CreateCourseRequest request) {
+  public static Course toCourse(CreateCourseRequest request, User mentor) {
     Course course = new Course();
     course.setTitle(request.getTitle());
     course.setDescription(request.getDescription());
     course.setGoal(request.getGoal());
-    course.setCategory(
-            categoryRepository
-                    .findById(request.getCategoryId())
-                    .orElseThrow(IllegalArgumentException::new));
-    course.setDifficulty(
-            difficultyRepository
-                    .findById(request.getDifficultyId())
-                    .orElseThrow(IllegalArgumentException::new));
-    course.setLanguage(
-            languageRepository
-                    .findById(request.getLanguageId())
-                    .orElseThrow(IllegalArgumentException::new));
-    course.setMentor(
-            userRepository.findUserByEmail(
-                    SecurityContextHolder.getContext().getAuthentication().getName()));
+    Category category = new Category();
+    category.setId(request.getCategoryId());
+    course.setCategory(category);
+    Difficulty difficulty = new Difficulty();
+    difficulty.setId(request.getDifficultyId());
+    course.setDifficulty(difficulty);
+    Language language = new Language();
+    language.setId(request.getLanguageId());
+    course.setLanguage(language);
+    course.setMentor(mentor);
     Set<Keyword> keywords =
-            request.getKeywordIds().stream()
-                    .map(
-                            keywordId ->
-                                    keywordRepository
-                                            .findById(keywordId)
-                                            .orElseThrow(IllegalArgumentException::new))
-                    .collect(Collectors.toSet());
-    course.getKeywords().addAll(keywords);
-
-    Set<Module> modules = moduleMapper.toModules(request.getCreateModuleRequests(), course);
-    course.setModules(modules);
+        request.getKeywordIds().stream()
+            .map(
+                x -> {
+                  Keyword keyword = new Keyword();
+                  keyword.setId(x);
+                  return keyword;
+                })
+            .collect(Collectors.toSet());
+    course.setKeywords(keywords);
+    course.setModules(
+        app.openschool.course.module.api.mapper.ModuleMapper.toModules(
+            request.getCreateModuleRequests(), course));
     return course;
   }
 

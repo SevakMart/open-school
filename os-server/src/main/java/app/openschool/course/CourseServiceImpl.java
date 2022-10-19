@@ -21,8 +21,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 
-
-
 @Service
 public class CourseServiceImpl implements CourseService {
 
@@ -33,16 +31,15 @@ public class CourseServiceImpl implements CourseService {
   private final KeywordRepository keywordRepository;
   private final UserRepository userRepository;
   private final ModuleItemTypeRepository moduleItemTypeRepository;
-  private CourseMapper courseMapper;
 
   public CourseServiceImpl(
-            CourseRepository courseRepository,
-            CategoryRepository categoryRepository,
-            DifficultyRepository difficultyRepository,
-            LanguageRepository languageRepository,
-            KeywordRepository keywordRepository,
-            UserRepository userRepository,
-            ModuleItemTypeRepository moduleItemTypeRepository, CourseMapper courseMapper) {
+      CourseRepository courseRepository,
+      CategoryRepository categoryRepository,
+      DifficultyRepository difficultyRepository,
+      LanguageRepository languageRepository,
+      KeywordRepository keywordRepository,
+      UserRepository userRepository,
+      ModuleItemTypeRepository moduleItemTypeRepository) {
     this.courseRepository = courseRepository;
     this.categoryRepository = categoryRepository;
     this.difficultyRepository = difficultyRepository;
@@ -50,9 +47,6 @@ public class CourseServiceImpl implements CourseService {
     this.keywordRepository = keywordRepository;
     this.userRepository = userRepository;
     this.moduleItemTypeRepository = moduleItemTypeRepository;
-    this.courseMapper = courseMapper;
-
-
   }
 
   @Override
@@ -62,68 +56,68 @@ public class CourseServiceImpl implements CourseService {
 
   @Override
   public Page<Course> findAll(
-            String courseTitle,
-            List<Long> subCategoryIds,
-            List<Long> languageIds,
-            List<Long> difficultyIds,
-            Pageable pageable) {
+      String courseTitle,
+      List<Long> subCategoryIds,
+      List<Long> languageIds,
+      List<Long> difficultyIds,
+      Pageable pageable) {
     return courseRepository.findAll(
-                courseTitle, subCategoryIds, languageIds, difficultyIds, pageable);
+        courseTitle, subCategoryIds, languageIds, difficultyIds, pageable);
   }
 
   @Override
   public Course add(CreateCourseRequest request) {
-    Course course = courseMapper.toCourse(request);
-    return courseRepository.save(course);
+    User userByEmail =
+        userRepository.findUserByEmail(
+            SecurityContextHolder.getContext().getAuthentication().getName());
+    return courseRepository.save(CourseMapper.toCourse(request, userByEmail));
   }
 
   @Override
   public Course update(Long courseId, UpdateCourseRequest request) {
-    Course course = courseRepository.findById(courseId)
-            .orElseThrow(IllegalArgumentException::new);
+    Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
     User authenticatedUser =
-                userRepository.findUserByEmail(
-                        SecurityContextHolder.getContext().getAuthentication().getName());
+        userRepository.findUserByEmail(
+            SecurityContextHolder.getContext().getAuthentication().getName());
     if (authenticatedUser.getRole().getType().equals("MENTOR")
-                && !course.getMentor().getEmail().equals(authenticatedUser.getEmail())) {
+        && !course.getMentor().getEmail().equals(authenticatedUser.getEmail())) {
       throw new IllegalArgumentException();
     }
     course.setTitle(request.getTitle());
     course.setDescription(request.getDescription());
     course.setGoal(request.getGoal());
     course.setCategory(
-                categoryRepository
-                        .findById(request.getCategoryId())
-                        .orElseThrow(IllegalArgumentException::new));
+        categoryRepository
+            .findById(request.getCategoryId())
+            .orElseThrow(IllegalArgumentException::new));
     course.setDifficulty(
-                difficultyRepository
-                        .findById(request.getDifficultyId())
-                        .orElseThrow(IllegalArgumentException::new));
+        difficultyRepository
+            .findById(request.getDifficultyId())
+            .orElseThrow(IllegalArgumentException::new));
     course.setLanguage(
-                languageRepository
-                        .findById(request.getLanguageId())
-                        .orElseThrow(IllegalArgumentException::new));
+        languageRepository
+            .findById(request.getLanguageId())
+            .orElseThrow(IllegalArgumentException::new));
     Set<Keyword> keywords =
-                request.getKeywordIds().stream()
-                        .map(
-                                keywordId ->
-                                        keywordRepository
-                                                .findById(keywordId)
-                                                .orElseThrow(IllegalArgumentException::new))
-                        .collect(Collectors.toSet());
+        request.getKeywordIds().stream()
+            .map(
+                keywordId ->
+                    keywordRepository
+                        .findById(keywordId)
+                        .orElseThrow(IllegalArgumentException::new))
+            .collect(Collectors.toSet());
     course.setKeywords(keywords);
     return courseRepository.save(course);
   }
 
   @Override
   public void delete(Long courseId) {
-    Course course = courseRepository.findById(courseId)
-            .orElseThrow(IllegalArgumentException::new);
+    Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
     User authenticatedUser =
-                userRepository.findUserByEmail(
-                        SecurityContextHolder.getContext().getAuthentication().getName());
+        userRepository.findUserByEmail(
+            SecurityContextHolder.getContext().getAuthentication().getName());
     if (authenticatedUser.getRole().getType().equals("MENTOR")
-                && !course.getMentor().getEmail().equals(authenticatedUser.getEmail())) {
+        && !course.getMentor().getEmail().equals(authenticatedUser.getEmail())) {
       throw new IllegalArgumentException();
     }
     courseRepository.delete(course);
