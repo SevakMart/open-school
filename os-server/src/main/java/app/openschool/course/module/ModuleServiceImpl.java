@@ -38,13 +38,6 @@ public class ModuleServiceImpl implements ModuleService {
   public Module add(CreateModuleRequest request) {
     Course course =
         courseRepository.findById(request.getCourseId()).orElseThrow(IllegalArgumentException::new);
-    User authenticatedUser =
-        userRepository.findUserByEmail(
-            SecurityContextHolder.getContext().getAuthentication().getName());
-    if (authenticatedUser.getRole().getType().equals("MENTOR")
-        && !course.getMentor().getEmail().equals(authenticatedUser.getEmail())) {
-      throw new IllegalArgumentException();
-    }
     Module module = new Module();
     module.setTitle(request.getTitle());
     module.setDescription(request.getDescription());

@@ -1,10 +1,13 @@
 package app.openschool.course.module;
 
 import app.openschool.common.response.ResponseMessage;
+import app.openschool.course.Course;
+import app.openschool.course.CourseRepository;
 import app.openschool.course.module.api.dto.CreateModuleRequest;
 import app.openschool.course.module.api.dto.ModuleDto;
 import app.openschool.course.module.api.dto.UpdateModuleRequest;
 import app.openschool.course.module.api.mapper.ModuleMapper;
+import app.openschool.user.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,6 +15,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import java.security.Principal;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,15 +29,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api/v1/modules")
 public class ModuleController {
 
   private final ModuleService moduleService;
+  private final UserRepository userRepository;
+  private final CourseRepository courseRepository;
 
-  public ModuleController(ModuleService moduleService) {
+  public ModuleController(
+      ModuleService moduleService,
+      UserRepository userRepository,
+      CourseRepository courseRepository) {
     this.moduleService = moduleService;
+    this.userRepository = userRepository;
+    this.courseRepository = courseRepository;
   }
 
   @Operation(summary = "add module", security = @SecurityRequirement(name = "bearerAuth"))
@@ -55,7 +66,13 @@ public class ModuleController {
               description = "Request object for creating new module")
           @Valid
           @RequestBody
-          CreateModuleRequest request) {
+          CreateModuleRequest request,
+      Principal principal) {
+    Course courseById =
+        courseRepository.findById(request.getCourseId()).orElseThrow(IllegalArgumentException::new);
+    if (!principal.getName().equals(courseById.getMentor().getEmail())) {
+      throw new IllegalArgumentException();
+    }
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(ModuleMapper.toModuleDto(moduleService.add(request)));
   }

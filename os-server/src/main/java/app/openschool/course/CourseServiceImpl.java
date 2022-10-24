@@ -76,13 +76,6 @@ public class CourseServiceImpl implements CourseService {
   @Override
   public Course update(Long courseId, UpdateCourseRequest request) {
     Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
-    User authenticatedUser =
-        userRepository.findUserByEmail(
-            SecurityContextHolder.getContext().getAuthentication().getName());
-    if (authenticatedUser.getRole().getType().equals("MENTOR")
-        && !course.getMentor().getEmail().equals(authenticatedUser.getEmail())) {
-      throw new IllegalArgumentException();
-    }
     course.setTitle(request.getTitle());
     course.setDescription(request.getDescription());
     course.setGoal(request.getGoal());
