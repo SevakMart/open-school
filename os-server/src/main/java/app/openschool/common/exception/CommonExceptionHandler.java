@@ -14,6 +14,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 @RestControllerAdvice
 public class CommonExceptionHandler implements ErrorController {
@@ -24,8 +25,14 @@ public class CommonExceptionHandler implements ErrorController {
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<ResponseMessage> handleIncorrectArgumentException(Locale locale) {
-    String message = messageSource.getMessage("incorrect.argument", null, locale);
+  public ResponseEntity<ResponseMessage> handleIncorrectArgumentException(IllegalArgumentException ex,Locale locale) {
+
+    String message;
+    if (ex.getMessage() == null) {
+      message = messageSource.getMessage("incorrect.argument", null, locale);
+    } else {
+      message = ex.getMessage();
+    }
     return ResponseEntity.badRequest().body(new ResponseMessage(message));
   }
 

@@ -102,6 +102,7 @@ public class CategoryServiceImpl implements CategoryService {
   public Category add(CreateCategoryRequest request) {
     String title = request.getTitle();
     String logoPath = fileStorageService.uploadFile(request.getImage());
+    trowExceptionWhenTitleIsPresent(title);
     Long parentCategoryId = request.getParentCategoryId();
     if (parentCategoryId == null) {
       return categoryRepository.save(new Category(title, logoPath, null));
@@ -115,6 +116,7 @@ public class CategoryServiceImpl implements CategoryService {
   public Category updateData(Long categoryId, ModifyCategoryDataRequest request) {
     Category category =
         categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
+    trowExceptionWhenTitleIsPresent(request.getTitle());
     String newTitle = request.getTitle();
     if (newTitle != null) {
       if (newTitle.isBlank()) {
@@ -138,9 +140,13 @@ public class CategoryServiceImpl implements CategoryService {
     Category category =
         categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
     MultipartFile image = request.getImage();
-    String oldImageName = category.getLogoPath().substring(57);
-    category.setLogoPath(fileStorageService.uploadFile(image));
-    fileStorageService.deleteFile(oldImageName);
+    if (category.getLogoPath() != null) {
+      String oldImageName = category.getLogoPath().substring(57);
+      category.setLogoPath(fileStorageService.uploadFile(image));
+      fileStorageService.deleteFile(oldImageName);
+    } else {
+      category.setLogoPath(fileStorageService.uploadFile(image));
+    }
     return categoryRepository.save(category);
   }
 
@@ -155,5 +161,12 @@ public class CategoryServiceImpl implements CategoryService {
     String oldFileName = category.getLogoPath().substring(57);
     fileStorageService.deleteFile(oldFileName);
     categoryRepository.deleteById(categoryId);
+  }
+
+  private void trowExceptionWhenTitleIsPresent(String title) {
+    boolean present = categoryRepository.findByTitle(title).isPresent();
+    if (present) {
+      throw new IllegalArgumentException("Title already exist");
+    }
   }
 }
