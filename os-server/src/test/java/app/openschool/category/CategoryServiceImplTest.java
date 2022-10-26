@@ -134,6 +134,7 @@ public class CategoryServiceImplTest {
     given(fileStorageService.uploadFile(multipartFile)).willReturn(logoPath);
     Category expected = new Category("Java", logoPath, null);
     given(categoryRepository.save(any())).willReturn(expected);
+    given(categoryRepository.findByTitle(anyString())).willReturn(Optional.empty());
     CreateCategoryRequest createCategoryRequest =
         new CreateCategoryRequest("Java", null, multipartFile);
 
@@ -161,10 +162,21 @@ public class CategoryServiceImplTest {
   }
 
   @Test
+  public void add_withExistingTitle_throwsIllegalArgumentException() {
+    MockMultipartFile multipartFile = new MockMultipartFile("Java.png", "Java".getBytes());
+    given(fileStorageService.uploadFile(any())).willReturn("C/user");
+    given(categoryRepository.findByTitle(any())).willReturn(Optional.of(new Category()));
+    CreateCategoryRequest createCategoryRequest =
+        new CreateCategoryRequest("c++", 3L, multipartFile);
+    assertThatThrownBy(() -> categoryService.add(createCategoryRequest))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
   public void updateData_withCorrectArguments_returnsUpdatedCategory() {
     Category updatingCategory = new Category("Java", "Aws/S3/Js.png", null);
     given(categoryRepository.findById(1L)).willReturn(Optional.of(updatingCategory));
-
+    given(categoryRepository.findByTitle(any())).willReturn(Optional.empty());
     Category expected = new Category("Js", "Aws/S3/Js.png", null);
     given(categoryRepository.save(any())).willReturn(expected);
     ModifyCategoryDataRequest request = new ModifyCategoryDataRequest("Js", null);

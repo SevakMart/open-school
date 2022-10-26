@@ -25,7 +25,8 @@ public class CommonExceptionHandler implements ErrorController {
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<ResponseMessage> handleIncorrectArgumentException(IllegalArgumentException ex,Locale locale) {
+  public ResponseEntity<ResponseMessage> handleIncorrectArgumentException(
+      IllegalArgumentException ex, Locale locale) {
 
     String message;
     if (ex.getMessage() == null) {

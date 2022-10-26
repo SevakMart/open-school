@@ -131,7 +131,8 @@ public class CategoryController {
   public ResponseEntity<CategoryDto> add(
       @Parameter(
               description =
-                  "Request object for creating new category, which includes title that must be unique, "
+                  "Request object for creating new category,"
+                      +  " which includes title that must be unique, "
                       + "id of parent category, which is necessary to pass only when"
                       + " will be created a subcategory and image of category")
           @Valid
@@ -169,7 +170,8 @@ public class CategoryController {
           Long categoryId,
       @Parameter(
               description =
-                  "Request object for modifying category, which includes new title that must be unique and "
+                  "Request object for modifying category, "
+                      + "which includes new title that must be unique and "
                       + "id of new parent category. Both parameters are not required")
           @Valid
           @RequestBody
