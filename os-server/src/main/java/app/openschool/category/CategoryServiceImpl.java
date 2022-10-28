@@ -11,6 +11,7 @@ import app.openschool.category.api.dto.ModifyCategoryImageRequest;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
 import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.category.api.mapper.CategoryMapper;
+import app.openschool.common.exceptionhandler.exception.DuplicateEntityException;
 import app.openschool.common.services.aws.FileStorageService;
 import java.util.List;
 import java.util.Locale;
@@ -99,10 +100,10 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public Category add(CreateCategoryRequest request) {
+  public Category add(CreateCategoryRequest request, Locale locale) {
     String title = request.getTitle();
     String logoPath = fileStorageService.uploadFile(request.getImage());
-    trowExceptionWhenTitleIsPresent(title);
+    trowExceptionWhenTitleIsPresent(title, locale);
     Long parentCategoryId = request.getParentCategoryId();
     if (parentCategoryId == null) {
       return categoryRepository.save(new Category(title, logoPath, null));
@@ -113,10 +114,10 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public Category updateData(Long categoryId, ModifyCategoryDataRequest request) {
+  public Category updateData(Long categoryId, ModifyCategoryDataRequest request, Locale locale) {
     Category category =
         categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
-    trowExceptionWhenTitleIsPresent(request.getTitle());
+    trowExceptionWhenTitleIsPresent(request.getTitle(), locale);
     String newTitle = request.getTitle();
     if (newTitle != null) {
       if (newTitle.isBlank()) {
@@ -163,10 +164,13 @@ public class CategoryServiceImpl implements CategoryService {
     categoryRepository.deleteById(categoryId);
   }
 
-  private void trowExceptionWhenTitleIsPresent(String title) {
-    boolean present = categoryRepository.findByTitle(title).isPresent();
-    if (present) {
-      throw new IllegalArgumentException("Title already exist");
-    }
+  private void trowExceptionWhenTitleIsPresent(String title, Locale locale) {
+    categoryRepository
+        .findByTitle(title)
+        .ifPresent(
+            foundedCategory -> {
+              throw new DuplicateEntityException(
+                  messageSource.getMessage("validation.title.duplicate", null, locale));
+            });
   }
 }

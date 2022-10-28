@@ -22,9 +22,9 @@ public interface CategoryService {
 
   Category findById(Long categoryId);
 
-  Category add(CreateCategoryRequest createCategoryRequest);
+  Category add(CreateCategoryRequest createCategoryRequest, Locale locale);
 
-  Category updateData(Long categoryId, ModifyCategoryDataRequest request);
+  Category updateData(Long categoryId, ModifyCategoryDataRequest request, Locale locale);
 
   Category updateImage(Long categoryId, ModifyCategoryImageRequest request);
 

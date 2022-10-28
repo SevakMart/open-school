@@ -1,5 +1,6 @@
-package app.openschool.common.exception;
+package app.openschool.common.exceptionhandler;
 
+import app.openschool.common.exceptionhandler.exception.DuplicateEntityException;
 import app.openschool.common.response.ResponseMessage;
 import java.util.HashMap;
 import java.util.Locale;
@@ -14,7 +15,6 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 @RestControllerAdvice
 public class CommonExceptionHandler implements ErrorController {
@@ -25,16 +25,14 @@ public class CommonExceptionHandler implements ErrorController {
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<ResponseMessage> handleIncorrectArgumentException(
-      IllegalArgumentException ex, Locale locale) {
-
-    String message;
-    if (ex.getMessage() == null) {
-      message = messageSource.getMessage("incorrect.argument", null, locale);
-    } else {
-      message = ex.getMessage();
-    }
+  public ResponseEntity<ResponseMessage> handleIncorrectArgumentException(Locale locale) {
+    String message = messageSource.getMessage("incorrect.argument", null, locale);
     return ResponseEntity.badRequest().body(new ResponseMessage(message));
+  }
+
+  @ExceptionHandler(DuplicateEntityException.class)
+  public ResponseEntity<ResponseMessage> handleValidationException(DuplicateEntityException ex) {
+    return ResponseEntity.badRequest().body(new ResponseMessage(ex.getMessage()));
   }
 
   @ExceptionHandler(MissingPathVariableException.class)

@@ -132,14 +132,15 @@ public class CategoryController {
       @Parameter(
               description =
                   "Request object for creating new category,"
-                      +  " which includes title that must be unique, "
+                      + " which includes title that must be unique, "
                       + "id of parent category, which is necessary to pass only when"
                       + " will be created a subcategory and image of category")
           @Valid
           @ModelAttribute
-          CreateCategoryRequest createCategoryRequest) {
+          CreateCategoryRequest createCategoryRequest,
+      Locale locale) {
     return ResponseEntity.status(CREATED)
-        .body(CategoryMapper.toCategoryDto(categoryService.add(createCategoryRequest)));
+        .body(CategoryMapper.toCategoryDto(categoryService.add(createCategoryRequest, locale)));
   }
 
   @Operation(
@@ -175,9 +176,11 @@ public class CategoryController {
                       + "id of new parent category. Both parameters are not required")
           @Valid
           @RequestBody
-          ModifyCategoryDataRequest request) {
+          ModifyCategoryDataRequest request,
+      Locale locale) {
     return ResponseEntity.ok()
-        .body(CategoryMapper.toCategoryDto(categoryService.updateData(categoryId, request)));
+        .body(
+            CategoryMapper.toCategoryDto(categoryService.updateData(categoryId, request, locale)));
   }
 
   @Operation(
