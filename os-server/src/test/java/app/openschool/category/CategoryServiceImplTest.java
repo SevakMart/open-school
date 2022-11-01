@@ -20,6 +20,7 @@ import app.openschool.category.api.dto.CreateCategoryRequest;
 import app.openschool.category.api.dto.ModifyCategoryDataRequest;
 import app.openschool.category.api.dto.ModifyCategoryImageRequest;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
+import app.openschool.category.api.exception.CategoryNestingException;
 import app.openschool.common.exceptionhandler.exception.DuplicateEntityException;
 import app.openschool.common.services.aws.FileStorageService;
 import java.util.ArrayList;
@@ -171,6 +172,26 @@ public class CategoryServiceImplTest {
         new CreateCategoryRequest("c++", 3L, multipartFile);
     assertThatThrownBy(() -> categoryService.add(createCategoryRequest, Locale.ROOT))
         .isInstanceOf(DuplicateEntityException.class);
+  }
+
+  @Test
+  public void add_withNestedParentCategory_throwsCategoryNestedException() {
+    String logoPath = "Aws/S3/Java.png";
+    MockMultipartFile multipartFile = new MockMultipartFile("Java.png", "Java".getBytes());
+    given(fileStorageService.uploadFile(multipartFile)).willReturn(logoPath);
+
+    Category parentCategory = new Category(1L, "Parent_Category", null);
+    Category subCategory = new Category(2L, "SubCategory", parentCategory);
+    subCategory.setParentCategoryId(parentCategory.getId());
+
+    CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest();
+    createCategoryRequest.setTitle("SubCategory_Level_Two");
+    createCategoryRequest.setImage(multipartFile);
+    createCategoryRequest.setParentCategoryId(subCategory.getId());
+
+    given(categoryRepository.findById(anyLong())).willReturn(Optional.of(subCategory));
+    assertThatThrownBy(() -> categoryService.add(createCategoryRequest, Locale.ROOT))
+        .isInstanceOf(CategoryNestingException.class);
   }
 
   @Test

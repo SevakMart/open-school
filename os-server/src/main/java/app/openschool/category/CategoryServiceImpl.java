@@ -10,6 +10,7 @@ import app.openschool.category.api.dto.ModifyCategoryDataRequest;
 import app.openschool.category.api.dto.ModifyCategoryImageRequest;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
 import app.openschool.category.api.dto.PreferredCategoryDto;
+import app.openschool.category.api.exception.CategoryNestingException;
 import app.openschool.category.api.mapper.CategoryMapper;
 import app.openschool.common.exceptionhandler.exception.DuplicateEntityException;
 import app.openschool.common.services.aws.FileStorageService;
@@ -110,6 +111,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
     Category parent =
         categoryRepository.findById(parentCategoryId).orElseThrow(IllegalArgumentException::new);
+
+    nestingLevelCheck(parent, locale);
     return categoryRepository.save(new Category(title, logoPath, parent));
   }
 
@@ -172,5 +175,12 @@ public class CategoryServiceImpl implements CategoryService {
               throw new DuplicateEntityException(
                   messageSource.getMessage("validation.title.duplicate", null, locale));
             });
+  }
+
+  private void nestingLevelCheck(Category parentCategory, Locale locale) {
+    if (parentCategory.getParentCategoryId() != null) {
+      throw new CategoryNestingException(
+          messageSource.getMessage("exception.category.nesting", null, locale));
+    }
   }
 }
