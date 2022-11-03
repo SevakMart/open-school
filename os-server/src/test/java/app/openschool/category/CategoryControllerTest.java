@@ -115,7 +115,7 @@ public class CategoryControllerTest {
     try (MockedStatic<CategoryMapper> mapper = Mockito.mockStatic(CategoryMapper.class)) {
       mapper.when(() -> CategoryMapper.toCategoryDto(any())).thenReturn(new CategoryDto());
     }
-    given(categoryService.updateData(anyLong(), any())).willReturn(new Category());
+    given(categoryService.updateData(anyLong(), any(), any())).willReturn(new Category());
     String jwt = generateJwtToken(new Role("ADMIN"));
     String requestBody = "{ \"title\": \"Java\", \"parentCategoryId\": 1}";
 
@@ -131,7 +131,7 @@ public class CategoryControllerTest {
   @Test
   void updateData_withIncorrectCategoryIdOrBlankTitleOrParentCategoryId_returnsStatusBadRequest()
       throws Exception {
-    doThrow(IllegalArgumentException.class).when(categoryService).updateData(any(), any());
+    doThrow(IllegalArgumentException.class).when(categoryService).updateData(any(), any(), any());
     String jwt = generateJwtToken(new Role("ADMIN"));
     String requestBody = "{ \"title\": \" \", \"parentCategoryId\": 31}";
 

@@ -10,7 +10,9 @@ import app.openschool.category.api.dto.ModifyCategoryDataRequest;
 import app.openschool.category.api.dto.ModifyCategoryImageRequest;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
 import app.openschool.category.api.dto.PreferredCategoryDto;
+import app.openschool.category.api.exception.CategoryNestingException;
 import app.openschool.category.api.mapper.CategoryMapper;
+import app.openschool.common.exceptionhandler.exception.DuplicateEntityException;
 import app.openschool.common.services.aws.FileStorageService;
 import java.util.List;
 import java.util.Locale;
@@ -99,22 +101,26 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public Category add(CreateCategoryRequest request) {
+  public Category add(CreateCategoryRequest request, Locale locale) {
     String title = request.getTitle();
     String logoPath = fileStorageService.uploadFile(request.getImage());
+    trowExceptionWhenTitleIsPresent(title, locale);
     Long parentCategoryId = request.getParentCategoryId();
     if (parentCategoryId == null) {
       return categoryRepository.save(new Category(title, logoPath, null));
     }
     Category parent =
         categoryRepository.findById(parentCategoryId).orElseThrow(IllegalArgumentException::new);
+
+    nestingLevelCheck(parent, locale);
     return categoryRepository.save(new Category(title, logoPath, parent));
   }
 
   @Override
-  public Category updateData(Long categoryId, ModifyCategoryDataRequest request) {
+  public Category updateData(Long categoryId, ModifyCategoryDataRequest request, Locale locale) {
     Category category =
         categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
+    trowExceptionWhenTitleIsPresent(request.getTitle(), locale);
     String newTitle = request.getTitle();
     if (newTitle != null) {
       if (newTitle.isBlank()) {
@@ -138,9 +144,13 @@ public class CategoryServiceImpl implements CategoryService {
     Category category =
         categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
     MultipartFile image = request.getImage();
-    String oldImageName = category.getLogoPath().substring(57);
-    category.setLogoPath(fileStorageService.uploadFile(image));
-    fileStorageService.deleteFile(oldImageName);
+    if (category.getLogoPath() != null) {
+      String oldImageName = category.getLogoPath().substring(57);
+      category.setLogoPath(fileStorageService.uploadFile(image));
+      fileStorageService.deleteFile(oldImageName);
+    } else {
+      category.setLogoPath(fileStorageService.uploadFile(image));
+    }
     return categoryRepository.save(category);
   }
 
@@ -155,5 +165,23 @@ public class CategoryServiceImpl implements CategoryService {
     String oldFileName = category.getLogoPath().substring(57);
     fileStorageService.deleteFile(oldFileName);
     categoryRepository.deleteById(categoryId);
+  }
+
+  private void trowExceptionWhenTitleIsPresent(String title, Locale locale) {
+    categoryRepository
+        .findByTitle(title)
+        .ifPresent(
+            foundedCategory -> {
+              throw new DuplicateEntityException(
+                  messageSource.getMessage(
+                      "validation.category.title.duplicate.message", null, locale));
+            });
+  }
+
+  private void nestingLevelCheck(Category parentCategory, Locale locale) {
+    if (parentCategory.getParentCategoryId() != null) {
+      throw new CategoryNestingException(
+          messageSource.getMessage("exception.category.nesting", null, locale));
+    }
   }
 }
