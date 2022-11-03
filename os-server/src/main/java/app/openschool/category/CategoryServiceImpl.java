@@ -170,7 +170,8 @@ public class CategoryServiceImpl implements CategoryService {
         .ifPresent(
             foundedCategory -> {
               throw new DuplicateEntityException(
-                  messageSource.getMessage("validation.title.duplicate", null, locale));
+                  messageSource.getMessage(
+                      "validation.category.title.duplicate.message", null, locale));
             });
   }
 }
