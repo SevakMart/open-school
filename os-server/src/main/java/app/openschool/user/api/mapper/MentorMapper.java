@@ -19,12 +19,16 @@ public class MentorMapper {
   }
 
   public static MentorDto toMentorDto(User user) {
+    String companyName = null;
+    if (user.getCompany() != null) {
+      companyName = user.getCompany().getCompanyName();
+    }
     return new MentorDto(
         user.getId(),
         user.getName(),
         user.getSurname(),
         user.getProfessionName(),
-        user.getCompany().getCompanyName(),
+        companyName,
         user.getCourseCount(),
         user.getUserImgPath(),
         user.getEmailPath(),

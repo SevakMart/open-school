@@ -21,12 +21,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   @Query(
       value =
-          "SELECT * FROM user WHERE "
-              + "(role_id = 3) AND "
-              + "(?1 IS NULL OR LOWER(CONCAT(first_name,' ',last_name)) "
-              + "LIKE LOWER(CONCAT('%', ?1, '%')))",
+          "SELECT * FROM user WHERE user.role_id = 3 "
+              + "AND (LOWER(CONCAT(first_name,' ',last_name))) "
+              + "LIKE LOWER(CONCAT('%', ?1, '%'))",
       nativeQuery = true)
-  Page<User> findMentorsByName(String name, Pageable pageable);
+  Optional<Page<User>> findMentorsByName(String name, Pageable pageable);
 
   @Query(
       value =

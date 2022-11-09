@@ -125,7 +125,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Page<User> findMentorsByName(String name, Pageable pageable) {
-    return userRepository.findMentorsByName(name, pageable);
+    return userRepository
+        .findMentorsByName(name, pageable)
+        .orElseThrow(IllegalArgumentException::new);
   }
 
   @Override
