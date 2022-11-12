@@ -20,6 +20,8 @@ import app.openschool.category.api.dto.CreateCategoryRequest;
 import app.openschool.category.api.dto.ModifyCategoryDataRequest;
 import app.openschool.category.api.dto.ModifyCategoryImageRequest;
 import app.openschool.category.api.dto.ParentAndSubCategoriesDto;
+import app.openschool.category.api.exception.CategoryNestingException;
+import app.openschool.common.exceptionhandler.exception.DuplicateEntityException;
 import app.openschool.common.services.aws.FileStorageService;
 import java.util.ArrayList;
 import java.util.List;
@@ -134,10 +136,11 @@ public class CategoryServiceImplTest {
     given(fileStorageService.uploadFile(multipartFile)).willReturn(logoPath);
     Category expected = new Category("Java", logoPath, null);
     given(categoryRepository.save(any())).willReturn(expected);
+    given(categoryRepository.findByTitle(anyString())).willReturn(Optional.empty());
     CreateCategoryRequest createCategoryRequest =
         new CreateCategoryRequest("Java", null, multipartFile);
 
-    Category actual = categoryService.add(createCategoryRequest);
+    Category actual = categoryService.add(createCategoryRequest, Locale.ROOT);
 
     assertEquals(actual.getTitle(), expected.getTitle());
     assertEquals(actual.getLogoPath(), expected.getLogoPath());
@@ -156,20 +159,51 @@ public class CategoryServiceImplTest {
     CreateCategoryRequest createCategoryRequest =
         new CreateCategoryRequest("Java", 3L, multipartFile);
 
-    assertThatThrownBy(() -> categoryService.add(createCategoryRequest))
+    assertThatThrownBy(() -> categoryService.add(createCategoryRequest, Locale.ROOT))
         .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  public void add_withExistingTitle_throwsValidationException() {
+    MockMultipartFile multipartFile = new MockMultipartFile("Java.png", "Java".getBytes());
+    given(fileStorageService.uploadFile(any())).willReturn("C/user");
+    given(categoryRepository.findByTitle(any())).willReturn(Optional.of(new Category()));
+    CreateCategoryRequest createCategoryRequest =
+        new CreateCategoryRequest("c++", 3L, multipartFile);
+    assertThatThrownBy(() -> categoryService.add(createCategoryRequest, Locale.ROOT))
+        .isInstanceOf(DuplicateEntityException.class);
+  }
+
+  @Test
+  public void add_withNestedParentCategory_throwsCategoryNestedException() {
+    String logoPath = "Aws/S3/Java.png";
+    MockMultipartFile multipartFile = new MockMultipartFile("Java.png", "Java".getBytes());
+    given(fileStorageService.uploadFile(multipartFile)).willReturn(logoPath);
+
+    Category parentCategory = new Category(1L, "Parent_Category", null);
+    Category subCategory = new Category(2L, "SubCategory", parentCategory);
+    subCategory.setParentCategoryId(parentCategory.getId());
+
+    CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest();
+    createCategoryRequest.setTitle("SubCategory_Level_Two");
+    createCategoryRequest.setImage(multipartFile);
+    createCategoryRequest.setParentCategoryId(subCategory.getId());
+
+    given(categoryRepository.findById(anyLong())).willReturn(Optional.of(subCategory));
+    assertThatThrownBy(() -> categoryService.add(createCategoryRequest, Locale.ROOT))
+        .isInstanceOf(CategoryNestingException.class);
   }
 
   @Test
   public void updateData_withCorrectArguments_returnsUpdatedCategory() {
     Category updatingCategory = new Category("Java", "Aws/S3/Js.png", null);
     given(categoryRepository.findById(1L)).willReturn(Optional.of(updatingCategory));
-
+    given(categoryRepository.findByTitle(any())).willReturn(Optional.empty());
     Category expected = new Category("Js", "Aws/S3/Js.png", null);
     given(categoryRepository.save(any())).willReturn(expected);
     ModifyCategoryDataRequest request = new ModifyCategoryDataRequest("Js", null);
 
-    Category actual = categoryService.updateData(1L, request);
+    Category actual = categoryService.updateData(1L, request, Locale.ROOT);
 
     assertEquals(actual.getTitle(), expected.getTitle());
     assertNull(actual.getParentCategoryId());
@@ -183,7 +217,7 @@ public class CategoryServiceImplTest {
     given(categoryRepository.findById(1L)).willReturn(Optional.empty());
     ModifyCategoryDataRequest request = new ModifyCategoryDataRequest("Js", null);
 
-    assertThatThrownBy(() -> categoryService.updateData(1L, request))
+    assertThatThrownBy(() -> categoryService.updateData(1L, request, Locale.ROOT))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -201,7 +235,7 @@ public class CategoryServiceImplTest {
         new Category("Java", "Amazon/S3/open-school/eu-central-1/Java.png", null);
     given(categoryRepository.findById(1L)).willReturn(Optional.of(updatingCategory));
 
-    assertThatThrownBy(() -> categoryService.updateData(categoryId, request))
+    assertThatThrownBy(() -> categoryService.updateData(categoryId, request, Locale.ROOT))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -213,7 +247,7 @@ public class CategoryServiceImplTest {
     given(categoryRepository.findById(2L)).willReturn(Optional.empty());
     ModifyCategoryDataRequest request = new ModifyCategoryDataRequest("Js", 2L);
 
-    assertThatThrownBy(() -> categoryService.updateData(1L, request))
+    assertThatThrownBy(() -> categoryService.updateData(1L, request, Locale.ROOT))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
