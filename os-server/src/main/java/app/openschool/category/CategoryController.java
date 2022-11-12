@@ -119,7 +119,7 @@ public class CategoryController {
         @ApiResponse(responseCode = "201", description = "Creates new category and returns that"),
         @ApiResponse(
             responseCode = "400",
-            description = "Invalid category title supplied or image not provided",
+            description = "Invalid or existing category title supplied or image not provided",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
             responseCode = "403",
@@ -131,14 +131,16 @@ public class CategoryController {
   public ResponseEntity<CategoryDto> add(
       @Parameter(
               description =
-                  "Request object for creating new category, which includes title, "
+                  "Request object for creating new category,"
+                      + " which includes title that must be unique, "
                       + "id of parent category, which is necessary to pass only when"
                       + " will be created a subcategory and image of category")
           @Valid
           @ModelAttribute
-          CreateCategoryRequest createCategoryRequest) {
+          CreateCategoryRequest createCategoryRequest,
+      Locale locale) {
     return ResponseEntity.status(CREATED)
-        .body(CategoryMapper.toCategoryDto(categoryService.add(createCategoryRequest)));
+        .body(CategoryMapper.toCategoryDto(categoryService.add(createCategoryRequest, locale)));
   }
 
   @Operation(
@@ -154,7 +156,7 @@ public class CategoryController {
             responseCode = "400",
             description =
                 "Invalid category id, invalid new parent category id or"
-                    + " invalid category title supplied",
+                    + " invalid or existing category title supplied",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
             responseCode = "403",
@@ -169,13 +171,16 @@ public class CategoryController {
           Long categoryId,
       @Parameter(
               description =
-                  "Request object for modifying category, which includes new title and "
+                  "Request object for modifying category, "
+                      + "which includes new title that must be unique and "
                       + "id of new parent category. Both parameters are not required")
           @Valid
           @RequestBody
-          ModifyCategoryDataRequest request) {
+          ModifyCategoryDataRequest request,
+      Locale locale) {
     return ResponseEntity.ok()
-        .body(CategoryMapper.toCategoryDto(categoryService.updateData(categoryId, request)));
+        .body(
+            CategoryMapper.toCategoryDto(categoryService.updateData(categoryId, request, locale)));
   }
 
   @Operation(

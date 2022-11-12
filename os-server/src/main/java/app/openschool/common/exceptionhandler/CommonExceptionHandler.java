@@ -1,5 +1,7 @@
-package app.openschool.common.exception;
+package app.openschool.common.exceptionhandler;
 
+import app.openschool.category.api.exception.CategoryNestingException;
+import app.openschool.common.exceptionhandler.exception.DuplicateEntityException;
 import app.openschool.common.response.ResponseMessage;
 import java.util.HashMap;
 import java.util.Locale;
@@ -27,6 +29,17 @@ public class CommonExceptionHandler implements ErrorController {
   public ResponseEntity<ResponseMessage> handleIncorrectArgumentException(Locale locale) {
     String message = messageSource.getMessage("incorrect.argument", null, locale);
     return ResponseEntity.badRequest().body(new ResponseMessage(message));
+  }
+
+  @ExceptionHandler(DuplicateEntityException.class)
+  public ResponseEntity<ResponseMessage> handleValidationException(DuplicateEntityException ex) {
+    return ResponseEntity.badRequest().body(new ResponseMessage(ex.getMessage()));
+  }
+
+  @ExceptionHandler(CategoryNestingException.class)
+  public ResponseEntity<ResponseMessage> handleCategoryNestingException(
+      CategoryNestingException ex) {
+    return ResponseEntity.badRequest().body(new ResponseMessage(ex.getMessage()));
   }
 
   @ExceptionHandler(MissingPathVariableException.class)
