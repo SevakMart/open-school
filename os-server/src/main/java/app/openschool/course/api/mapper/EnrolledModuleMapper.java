@@ -9,7 +9,7 @@ import app.openschool.course.module.status.ModuleStatus;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ModuleMapper {
+public class EnrolledModuleMapper {
 
   public static Set<EnrolledModule> toEnrolledModules(
       Course course, EnrolledCourse enrolledCourse) {

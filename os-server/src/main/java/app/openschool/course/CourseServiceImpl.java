@@ -30,7 +30,6 @@ public class CourseServiceImpl implements CourseService {
   private final LanguageRepository languageRepository;
   private final KeywordRepository keywordRepository;
   private final UserRepository userRepository;
-  private final ModuleItemTypeRepository moduleItemTypeRepository;
 
   public CourseServiceImpl(
       CourseRepository courseRepository,
@@ -38,15 +37,13 @@ public class CourseServiceImpl implements CourseService {
       DifficultyRepository difficultyRepository,
       LanguageRepository languageRepository,
       KeywordRepository keywordRepository,
-      UserRepository userRepository,
-      ModuleItemTypeRepository moduleItemTypeRepository) {
+      UserRepository userRepository) {
     this.courseRepository = courseRepository;
     this.categoryRepository = categoryRepository;
     this.difficultyRepository = difficultyRepository;
     this.languageRepository = languageRepository;
     this.keywordRepository = keywordRepository;
     this.userRepository = userRepository;
-    this.moduleItemTypeRepository = moduleItemTypeRepository;
   }
 
   @Override
@@ -106,13 +103,6 @@ public class CourseServiceImpl implements CourseService {
   @Override
   public void delete(Long courseId) {
     Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
-    User authenticatedUser =
-        userRepository.findUserByEmail(
-            SecurityContextHolder.getContext().getAuthentication().getName());
-    if (authenticatedUser.getRole().getType().equals("MENTOR")
-        && !course.getMentor().getEmail().equals(authenticatedUser.getEmail())) {
-      throw new IllegalArgumentException();
-    }
     courseRepository.delete(course);
   }
 }

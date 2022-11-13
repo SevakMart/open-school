@@ -5,14 +5,11 @@ import app.openschool.course.CourseRepository;
 import app.openschool.course.module.api.dto.CreateModuleRequest;
 import app.openschool.course.module.api.dto.UpdateModuleRequest;
 import app.openschool.course.module.item.api.mapper.ModuleItemMapper;
-import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.util.Locale;
 import java.util.Set;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class ModuleServiceImpl implements ModuleService {
@@ -22,16 +19,20 @@ public class ModuleServiceImpl implements ModuleService {
   private final UserRepository userRepository;
   private final MessageSource messageSource;
 
-
   public ModuleServiceImpl(
-          CourseRepository courseRepository,
-          ModuleRepository moduleRepository,
-          UserRepository userRepository,
-          MessageSource messageSource, ModuleItemMapper moduleItemMapper) {
+      CourseRepository courseRepository,
+      ModuleRepository moduleRepository,
+      UserRepository userRepository,
+      MessageSource messageSource) {
     this.courseRepository = courseRepository;
     this.moduleRepository = moduleRepository;
     this.userRepository = userRepository;
     this.messageSource = messageSource;
+  }
+
+  @Override
+  public Module findModuleById(Long moduleId) {
+    return moduleRepository.findById(moduleId).orElseThrow(IllegalArgumentException::new);
   }
 
   @Override
@@ -42,21 +43,14 @@ public class ModuleServiceImpl implements ModuleService {
     module.setTitle(request.getTitle());
     module.setDescription(request.getDescription());
     module.setCourse(course);
-    module.setModuleItems(ModuleItemMapper.toModuleItem(request.getCreateModuleItemRequests(),
-            module));
+    module.setModuleItems(
+        ModuleItemMapper.toModuleItem(request.getCreateModuleItemRequests(), module));
     return moduleRepository.save(module);
   }
 
   @Override
   public Module update(Long moduleId, UpdateModuleRequest request) {
     Module module = moduleRepository.findById(moduleId).orElseThrow(IllegalArgumentException::new);
-    User authenticatedUser =
-        userRepository.findUserByEmail(
-            SecurityContextHolder.getContext().getAuthentication().getName());
-    if (authenticatedUser.getRole().getType().equals("MENTOR")
-        && !module.getCourse().getMentor().getEmail().equals(authenticatedUser.getEmail())) {
-      throw new IllegalArgumentException();
-    }
     module.setTitle(request.getTitle());
     module.setDescription(request.getDescription());
     return moduleRepository.save(module);
@@ -65,13 +59,6 @@ public class ModuleServiceImpl implements ModuleService {
   @Override
   public void delete(Long moduleId) {
     Module module = moduleRepository.findById(moduleId).orElseThrow(IllegalArgumentException::new);
-    User authenticatedUser =
-        userRepository.findUserByEmail(
-            SecurityContextHolder.getContext().getAuthentication().getName());
-    if (authenticatedUser.getRole().getType().equals("MENTOR")
-        && !module.getCourse().getMentor().getEmail().equals(authenticatedUser.getEmail())) {
-      throw new IllegalArgumentException();
-    }
     Set<Module> modules = module.getCourse().getModules();
     if (modules.size() == 1) {
       throw new UnsupportedOperationException(

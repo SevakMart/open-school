@@ -7,7 +7,6 @@ import app.openschool.course.module.api.dto.CreateModuleRequest;
 import app.openschool.course.module.api.dto.ModuleDto;
 import app.openschool.course.module.api.dto.UpdateModuleRequest;
 import app.openschool.course.module.api.mapper.ModuleMapper;
-import app.openschool.user.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,7 +15,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.security.Principal;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,15 +32,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ModuleController {
 
   private final ModuleService moduleService;
-  private final UserRepository userRepository;
   private final CourseRepository courseRepository;
 
-  public ModuleController(
-      ModuleService moduleService,
-      UserRepository userRepository,
-      CourseRepository courseRepository) {
+  public ModuleController(ModuleService moduleService, CourseRepository courseRepository) {
     this.moduleService = moduleService;
-    this.userRepository = userRepository;
     this.courseRepository = courseRepository;
   }
 
@@ -99,7 +92,16 @@ public class ModuleController {
               description = "Request object for modifying module")
           @Valid
           @RequestBody
-          UpdateModuleRequest request) {
+          UpdateModuleRequest request,
+      Principal principal) {
+    if (!moduleService
+        .findModuleById(moduleId)
+        .getCourse()
+        .getMentor()
+        .getEmail()
+        .equals(principal.getName())) {
+      throw new IllegalArgumentException();
+    }
     return ResponseEntity.ok()
         .body(ModuleMapper.toModuleDto(moduleService.update(moduleId, request)));
   }
@@ -124,7 +126,16 @@ public class ModuleController {
   @DeleteMapping("/{moduleId}")
   public ResponseEntity<HttpStatus> delete(
       @Parameter(description = "Id of the module which will be deleted") @PathVariable
-          Long moduleId) {
+          Long moduleId,
+      Principal principal) {
+    if (!moduleService
+        .findModuleById(moduleId)
+        .getCourse()
+        .getMentor()
+        .getEmail()
+        .equals(principal.getName())) {
+      throw new IllegalArgumentException();
+    }
     moduleService.delete(moduleId);
     return ResponseEntity.noContent().build();
   }

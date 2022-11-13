@@ -14,6 +14,7 @@ import app.openschool.course.keyword.Keyword;
 import app.openschool.course.language.Language;
 import app.openschool.course.module.EnrolledModule;
 import app.openschool.course.module.Module;
+import app.openschool.course.module.api.mapper.ModuleMapper;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.status.CourseStatus;
 import app.openschool.user.User;
@@ -25,7 +26,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-
 
 public class CourseMapper {
 
@@ -74,7 +74,8 @@ public class CourseMapper {
   public static EnrolledCourse toEnrolledCourse(Course course, User user) {
     EnrolledCourse enrolledCourse =
         new EnrolledCourse(LocalDate.now(), course, user, CourseStatus.inProgress());
-    Set<EnrolledModule> enrolledModules = ModuleMapper.toEnrolledModules(course, enrolledCourse);
+    Set<EnrolledModule> enrolledModules =
+        EnrolledModuleMapper.toEnrolledModules(course, enrolledCourse);
     enrolledCourse.setEnrolledModules(enrolledModules);
     return enrolledCourse;
   }
@@ -97,16 +98,14 @@ public class CourseMapper {
     Set<Keyword> keywords =
         request.getKeywordIds().stream()
             .map(
-                x -> {
+                requestKeyword -> {
                   Keyword keyword = new Keyword();
-                  keyword.setId(x);
+                  keyword.setId(requestKeyword);
                   return keyword;
                 })
             .collect(Collectors.toSet());
     course.setKeywords(keywords);
-    course.setModules(
-        app.openschool.course.module.api.mapper.ModuleMapper.toModules(
-            request.getCreateModuleRequests(), course));
+    course.setModules(ModuleMapper.toModules(request.getCreateModuleRequests(), course));
     return course;
   }
 
