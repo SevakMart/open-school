@@ -1,15 +1,18 @@
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import { useContext } from 'react';
 import Button from '../../Button/Button';
 import { Types } from '../../../types/types';
 import { openModal } from '../../../redux/Slices/PortalOpenStatus';
 import styles from './Navbar.module.scss';
+import { signInContext } from '../../../contexts/Contexts';
 
 /* eslint-disable max-len */
 
 const Navbar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { signIn, setSignIn } = useContext(signInContext);
   const { navContainer, categoriesMentors, buttonContent } = styles;
 
   const handleSignIn = () => {

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/Store';
 import HomepageHeader from './Subcomponents/Header/Header';
@@ -11,7 +11,7 @@ import ForgotPassword from '../../component/SignUpSignIn/SignIn/ForgotPassword/F
 import SuccessMessage from '../../component/SignUpSignIn/Success-Message/Success-Message';
 import ResetPassword from '../../component/SignUpSignIn/SignIn/ResetPassword/ResetPassword';
 import Verification from '../../component/SignUpSignIn/Verification/Verification';
-import { userContext } from '../../contexts/Contexts';
+import { userContext, signInContext } from '../../contexts/Contexts';
 import { Portal } from '../../component/Portal/Portal';
 import { Types } from '../../types/types';
 import { PortalStatus } from '../../types/PortalStatusType';
@@ -20,6 +20,12 @@ import { PortalStatus } from '../../types/PortalStatusType';
 
 const Homepage = ({ userInfo }:{userInfo:any}) => {
   const portalStatus = useSelector<RootState>((state) => state.portalStatus);
+  // const [signIn, setSignIn] = useState<boolean>(false);
+  // const [signIn, setSignIn] = useState<boolean>(false);
+  // const mainState = useSelector<RootState>((state) => state.allMentorsList);
+  // const userIF = useSelector<RootState>((state) => state.userInfo);
+  // eslint-disable-next-line no-lone-blocks
+  // { console.log(userIF); }
   const {
     isOpen, buttonType, withSuccessMessage, isSignUpSuccessfulRegistration, isResetPasswordSuccessfulMessage, isResendVerificationEmailMessage,
   } = portalStatus as PortalStatus;
@@ -28,9 +34,16 @@ const Homepage = ({ userInfo }:{userInfo:any}) => {
     id: userInfo ? (userInfo as any).id : -1,
   }), [{ ...userInfo }]);
 
+  // const signInInfo: any = useMemo(
+  //   () => ({ signIn, setSignIn }),
+  //   [signIn],
+  // );
   return (
     <>
+      {/* <signInContext.Provider value={signInInfo}> */}
+      {/* {console.log(`HOMEPAGE SIGNIN+++++ ${signIn}`)} */}
       <userContext.Provider value={idAndToken}>
+        {/* {console.log(`IS OPEN--> ${isOpen}`)} */}
         <HomepageHeader />
         <HomepageCategories />
         <HomepageMentors />
@@ -45,6 +58,7 @@ const Homepage = ({ userInfo }:{userInfo:any}) => {
         {isOpen && buttonType === Types.Button.FORGOT_PASSWORD && <ForgotPassword />}
         {isOpen && buttonType === Types.Button.SUCCESS_MESSAGE && <SuccessMessage message={withSuccessMessage} isSignUpSuccessfulRegistration={isSignUpSuccessfulRegistration} isResetPasswordSuccessfulMessage={isResetPasswordSuccessfulMessage} isResendVerificationEmailMessage={isResendVerificationEmailMessage} />}
       </Portal.FormPortal>
+      {/* </signInContext.Provider> */}
     </>
   );
 };
