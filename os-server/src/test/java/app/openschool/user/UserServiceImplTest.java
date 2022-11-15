@@ -421,8 +421,7 @@ class UserServiceImplTest {
     String username = "username";
     Pageable pageable = PageRequest.of(0, 2);
     Page<User> userPage = generateUserPage(pageable);
-    when(userRepository.findMentorsByName(username, pageable)).thenReturn(userPage);
-
+    when(userRepository.findMentorsByName(username, pageable)).thenReturn(Optional.of(userPage));
     assertEquals(3, userService.findMentorsByName(username, pageable).getTotalPages());
     assertEquals(5, userService.findMentorsByName(username, pageable).getTotalElements());
     verify(userRepository, Mockito.times(2)).findMentorsByName(username, pageable);
