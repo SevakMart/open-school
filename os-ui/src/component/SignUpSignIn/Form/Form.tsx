@@ -1,4 +1,4 @@
-import { SetStateAction, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { Input } from '../../Input/Input';
@@ -23,7 +23,7 @@ const Form = ({
 }:
     {isSignUpForm:boolean, isResetPasswordForm:boolean, formButtonText:string, errorFormValue:ErrorFormValues, unAuthorizedSignInError?:string, handleForm:(formValue:FormValues)=>void, resendEmail?:()=>void }) => {
   const [formValues, setFormValues] = useState(initialFormValues);
-  const { signIn, setSignIn } = useContext(signInContext);
+  const { setSignIn } = useContext(signInContext);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { inputContent, forgotPassword, unAuthorizedSignInErrorStyle } = styles;
@@ -43,17 +43,6 @@ const Form = ({
     handleForm(formValues);
     setSignIn(true);
   };
-
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-
-  // const handlePasswordChange = (e: { target: { value: SetStateAction<undefined>; }; }) => {
-  //   setEmail(e.target.value);
-  // };
-
-  // const handleEmailChange = (e: { target: { value: SetStateAction<undefined>; }; }) => {
-  //   setPassword(e.target.value);
-  // };
 
   return (
     <form className={inputContent}>
@@ -96,7 +85,6 @@ const Form = ({
         placeholderText={t('form.placeholder.email')}
         value={formValues.email}
         handleInputChange={handleInputChange}
-        // onChange={(e: any) => { handleEmailChange(e); }}
       />
       )}
       <Input.PasswordInput
@@ -106,7 +94,6 @@ const Form = ({
         placeholderText={isResetPasswordForm ? t('form.placeholder.psd.reset') : t('form.placeholder.psd.default')}
         value={isResetPasswordForm ? formValues.newPassword : formValues.psd}
         handleInputChange={handleInputChange}
-        // onChange={(e: any) => { handlePasswordChange(e); }}
       />
       {isResetPasswordForm
         && (
@@ -133,10 +120,3 @@ const Form = ({
   );
 };
 export default Form;
-function handleEmailChange(e: any) {
-  throw new Error('Function not implemented.');
-}
-
-function handlePasswordChange(e: any) {
-  throw new Error('Function not implemented.');
-}

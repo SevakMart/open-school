@@ -8,7 +8,7 @@ import { signInContext } from '../../contexts/Contexts';
 const ProfilePortalContent = ({ icon, children, isSignOut }:any) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { signIn, setSignIn } = useContext(signInContext);
+  const { setSignIn } = useContext(signInContext);
   const { mainContent, iconContainer, titleContent } = styles;
 
   const handleClick = () => {

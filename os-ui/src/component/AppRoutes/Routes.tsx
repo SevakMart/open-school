@@ -20,13 +20,14 @@ const AppRoutes = () => {
   const userInfoState = useSelector<RootState>((state) => state.userInfo);
   const { userInfo } = userInfoState as any;
   const [signIn, setSignIn] = useState<boolean>(false);
+
   const signInInfo: any = useMemo(
     () => ({ signIn, setSignIn }),
     [signIn],
   );
+
   return (
     <signInContext.Provider value={signInInfo}>
-
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/homepage" element={<Homepage userInfo={userInfo} />} />

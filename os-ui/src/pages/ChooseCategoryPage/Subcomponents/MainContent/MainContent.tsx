@@ -11,7 +11,6 @@ const MainContent = ({ isLoading, errorMessage, searchedCategories }:{isLoading:
   return (
     <>
       <div className={categoriesList}>
-        {/* {console.log(errorMessage)} */}
         {isLoading && <Loader />}
         {errorMessage !== '' && <ErrorField.MainErrorField className={['subcategoriesErrorField']}>{errorMessage}</ErrorField.MainErrorField>}
         {errorMessage === '' && (
