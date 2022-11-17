@@ -11,10 +11,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@Profile("default")
 public class S3Service implements FileStorageService {
 
   private final String bucketName;
@@ -35,7 +37,8 @@ public class S3Service implements FileStorageService {
         new PutObjectRequest(bucketName, convertedFile.getName(), convertedFile)
             .withCannedAcl(CannedAccessControlList.PublicRead));
     boolean deletedFile = convertedFile.delete();
-    return amazonS3.getUrl(bucketName, convertedFile.getName()).toString();
+
+    return convertedFile.getName();
   }
 
   @Override

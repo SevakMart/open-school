@@ -162,8 +162,7 @@ public class CategoryServiceImpl implements CategoryService {
       throw new UnsupportedOperationException(
           messageSource.getMessage("category.delete.not.allowed", null, locale));
     }
-    String oldFileName = category.getLogoPath().substring(57);
-    fileStorageService.deleteFile(oldFileName);
+    fileStorageService.deleteFile(category.getLogoPath());
     categoryRepository.deleteById(categoryId);
   }
 
