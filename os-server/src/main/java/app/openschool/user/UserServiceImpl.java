@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService {
   private final CourseStatusRepository courseStatusRepository;
   private final ModuleStatusRepository moduleStatusRepository;
   private final ModuleItemStatusRepository moduleItemStatusRepository;
+  private static final Pattern CLEAR_PATTERN = Pattern.compile("\\s+");
 
   public UserServiceImpl(
       UserRepository userRepository,
@@ -125,6 +127,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Page<User> findMentorsByName(String name, Pageable pageable) {
+    if (name != null) {
+      name = CLEAR_PATTERN.matcher(name).replaceAll(" ").trim();
+    }
+
     return userRepository
         .findMentorsByName(name, pageable)
         .orElseThrow(IllegalArgumentException::new);
