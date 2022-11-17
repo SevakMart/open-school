@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './NavbarOnSignIn.module.scss';
 import ArrowDownIcon from '../../../assets/svg/Arrow-down.svg';
 import NotificationIcon from '../../../assets/svg/Notification.svg';
@@ -25,9 +25,7 @@ const NavbarOnSignIn = () => {
 
   return (
     <nav className={mainContent}>
-      <Link to="/">
-        <h2>{t('string.homePage.navBar.logo')}</h2>
-      </Link>
+      <h2 onClick={() => navigate('/')}>{t('string.homePage.navBar.logo')}</h2>
       <div className={navMainContent}>
         <p onClick={() => navigate('/exploreLearningPaths')}>{t('string.homePage.navBar.allLearningPaths')}</p>
         <p onClick={() => navigate('/myLearningPath')}>{t('string.homePage.navBar.myLearningPaths')}</p>

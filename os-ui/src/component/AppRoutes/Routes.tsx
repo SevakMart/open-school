@@ -19,7 +19,7 @@ import { signInContext } from '../../contexts/Contexts';
 const AppRoutes = () => {
   const userInfoState = useSelector<RootState>((state) => state.userInfo);
   const { userInfo } = userInfoState as any;
-  const [signIn, setSignIn] = useState<boolean>(false);
+  const [signIn, setSignIn] = useState(false);
 
   const signInInfo: any = useMemo(
     () => ({ signIn, setSignIn }),
