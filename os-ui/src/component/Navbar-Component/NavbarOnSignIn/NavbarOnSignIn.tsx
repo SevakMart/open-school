@@ -26,14 +26,11 @@ const NavbarOnSignIn = () => {
 
   useEffect(() => {
     const closeDropDown = (e:any) => {
-      console.log(e);
-      console.log(arrowRef.current);
       if (e.path[0] !== arrowRef.current) {
         setIsOpen(false);
       }
     };
     document.body.addEventListener('click', closeDropDown);
-
     return () => document.body.removeEventListener('click', closeDropDown);
   }, []);
 
