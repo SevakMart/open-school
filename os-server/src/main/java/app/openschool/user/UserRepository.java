@@ -14,19 +14,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   @Query(
       value =
-          "SELECT * FROM user u JOIN user_role r ON u.role_id = r.id JOIN company c "
-              + "ON u.company_id = c.id WHERE r.role_type = 'MENTOR'",
+          "SELECT * FROM user u "
+              + "JOIN user_role r ON u.role_id = r.id "
+              + "LEFT JOIN company c ON u.company_id = c.id "
+              + "WHERE r.role_type = 'MENTOR'",
       nativeQuery = true)
   Page<User> findAllMentors(Pageable page);
 
   @Query(
       value =
-          "SELECT * FROM user WHERE "
-              + "(role_id = 3) AND "
-              + "(?1 IS NULL OR LOWER(CONCAT(first_name,' ',last_name)) "
-              + "LIKE LOWER(CONCAT('%', ?1, '%')))",
+          "SELECT * FROM user WHERE user.role_id = 3 "
+              + "AND (LOWER(CONCAT(first_name,' ',last_name))) "
+              + "LIKE LOWER(CONCAT('%', ?1, '%'))",
       nativeQuery = true)
-  Page<User> findMentorsByName(String name, Pageable pageable);
+  Optional<Page<User>> findMentorsByName(String name, Pageable pageable);
 
   @Query(
       value =
