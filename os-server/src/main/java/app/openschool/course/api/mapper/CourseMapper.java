@@ -98,11 +98,7 @@ public class CourseMapper {
     Set<Keyword> keywords =
         request.getKeywordIds().stream()
             .map(
-                requestKeyword -> {
-                  Keyword keyword = new Keyword();
-                  keyword.setId(requestKeyword);
-                  return keyword;
-                })
+                    Keyword::new)
             .collect(Collectors.toSet());
     course.setKeywords(keywords);
     course.setModules(ModuleMapper.toModules(request.getCreateModuleRequests(), course));

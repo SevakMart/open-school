@@ -1,5 +1,6 @@
 package app.openschool.course;
 
+import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.common.response.ResponseMessage;
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.CourseInfoDto;
@@ -15,7 +16,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.security.Principal;
 import java.util.List;
+import java.util.Locale;
 import javax.validation.Valid;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -36,9 +39,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class CourseController {
 
   private final CourseService courseService;
+  private final MessageSource messageSource;
 
-  public CourseController(CourseService courseService) {
+  public CourseController(CourseService courseService, MessageSource messageSource) {
     this.courseService = courseService;
+    this.messageSource = messageSource;
   }
 
   @Operation(summary = "get course info", security = @SecurityRequirement(name = "bearerAuth"))
@@ -145,10 +150,7 @@ public class CourseController {
           @RequestBody
           UpdateCourseRequest request,
       Principal principal) {
-    Course course = courseService.findCourseById(courseId).orElseThrow(IllegalAccessError::new);
-    if (!principal.getName().equals(course.getMentor().getEmail())) {
-      throw new IllegalArgumentException();
-    }
+    courseAffiliationVerification(principal, courseId);
     return ResponseEntity.ok()
         .body(CourseMapper.toCourseDto(courseService.update(courseId, request)));
   }
@@ -175,12 +177,17 @@ public class CourseController {
       @Parameter(description = "Id of course which will be deleted") @PathVariable(value = "id")
           Long courseId,
       Principal principal) {
+    courseAffiliationVerification(principal, courseId);
+    courseService.delete(courseId);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  private void courseAffiliationVerification(Principal principal, Long courseId) {
     Course course =
         courseService.findCourseById(courseId).orElseThrow(IllegalArgumentException::new);
     if (!course.getMentor().getEmail().equals(principal.getName())) {
-      throw new IllegalArgumentException();
+      throw new PermissionDeniedException(
+          messageSource.getMessage("permission.denied", null, Locale.ROOT));
     }
-    courseService.delete(courseId);
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }

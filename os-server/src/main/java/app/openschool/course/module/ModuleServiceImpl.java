@@ -5,7 +5,6 @@ import app.openschool.course.CourseRepository;
 import app.openschool.course.module.api.dto.CreateModuleRequest;
 import app.openschool.course.module.api.dto.UpdateModuleRequest;
 import app.openschool.course.module.item.api.mapper.ModuleItemMapper;
-import app.openschool.user.UserRepository;
 import java.util.Locale;
 import java.util.Set;
 import org.springframework.context.MessageSource;
@@ -16,17 +15,14 @@ public class ModuleServiceImpl implements ModuleService {
 
   private final CourseRepository courseRepository;
   private final ModuleRepository moduleRepository;
-  private final UserRepository userRepository;
   private final MessageSource messageSource;
 
   public ModuleServiceImpl(
       CourseRepository courseRepository,
       ModuleRepository moduleRepository,
-      UserRepository userRepository,
       MessageSource messageSource) {
     this.courseRepository = courseRepository;
     this.moduleRepository = moduleRepository;
-    this.userRepository = userRepository;
     this.messageSource = messageSource;
   }
 

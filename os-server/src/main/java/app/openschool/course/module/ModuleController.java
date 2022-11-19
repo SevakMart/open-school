@@ -1,8 +1,9 @@
 package app.openschool.course.module;
 
+import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.common.response.ResponseMessage;
 import app.openschool.course.Course;
-import app.openschool.course.CourseRepository;
+import app.openschool.course.CourseService;
 import app.openschool.course.module.api.dto.CreateModuleRequest;
 import app.openschool.course.module.api.dto.ModuleDto;
 import app.openschool.course.module.api.dto.UpdateModuleRequest;
@@ -15,7 +16,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.security.Principal;
+import java.util.Locale;
 import javax.validation.Valid;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,11 +35,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class ModuleController {
 
   private final ModuleService moduleService;
-  private final CourseRepository courseRepository;
+  private final CourseService courseService;
+  private final MessageSource messageSource;
 
-  public ModuleController(ModuleService moduleService, CourseRepository courseRepository) {
+  public ModuleController(
+      ModuleService moduleService, CourseService courseService, MessageSource messageSource) {
     this.moduleService = moduleService;
-    this.courseRepository = courseRepository;
+    this.courseService = courseService;
+
+    this.messageSource = messageSource;
   }
 
   @Operation(summary = "add module", security = @SecurityRequirement(name = "bearerAuth"))
@@ -62,9 +69,12 @@ public class ModuleController {
           CreateModuleRequest request,
       Principal principal) {
     Course courseById =
-        courseRepository.findById(request.getCourseId()).orElseThrow(IllegalArgumentException::new);
+        courseService
+            .findCourseById(request.getCourseId())
+            .orElseThrow(IllegalArgumentException::new);
     if (!principal.getName().equals(courseById.getMentor().getEmail())) {
-      throw new IllegalArgumentException();
+      throw new PermissionDeniedException(
+          messageSource.getMessage("permission.denied", null, Locale.ROOT));
     }
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(ModuleMapper.toModuleDto(moduleService.add(request)));
@@ -94,14 +104,7 @@ public class ModuleController {
           @RequestBody
           UpdateModuleRequest request,
       Principal principal) {
-    if (!moduleService
-        .findModuleById(moduleId)
-        .getCourse()
-        .getMentor()
-        .getEmail()
-        .equals(principal.getName())) {
-      throw new IllegalArgumentException();
-    }
+    moduleAffiliationVerification(principal, moduleId);
     return ResponseEntity.ok()
         .body(ModuleMapper.toModuleDto(moduleService.update(moduleId, request)));
   }
@@ -128,15 +131,20 @@ public class ModuleController {
       @Parameter(description = "Id of the module which will be deleted") @PathVariable
           Long moduleId,
       Principal principal) {
-    if (!moduleService
-        .findModuleById(moduleId)
-        .getCourse()
-        .getMentor()
-        .getEmail()
-        .equals(principal.getName())) {
-      throw new IllegalArgumentException();
-    }
+    moduleAffiliationVerification(principal, moduleId);
     moduleService.delete(moduleId);
     return ResponseEntity.noContent().build();
+  }
+
+  private void moduleAffiliationVerification(Principal principal, Long moduleId) {
+    Module moduleById = moduleService.findModuleById(moduleId);
+    Course courseById =
+        courseService
+            .findCourseById(moduleById.getCourse().getId())
+            .orElseThrow(IllegalArgumentException::new);
+    if (!principal.getName().equals(courseById.getMentor().getEmail())) {
+      throw new PermissionDeniedException(
+          messageSource.getMessage("permission.denied", null, Locale.ROOT));
+    }
   }
 }

@@ -8,7 +8,6 @@ import app.openschool.course.difficulty.DifficultyRepository;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.keyword.KeywordRepository;
 import app.openschool.course.language.LanguageRepository;
-import app.openschool.course.module.item.type.ModuleItemTypeRepository;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.util.List;
