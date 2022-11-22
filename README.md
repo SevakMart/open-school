@@ -9,7 +9,13 @@ Steps before running Open school backend on Windows:
   * Follow steps in the article to install docker https://docs.docker.com/desktop/install/windows-install/
   * In root folder of the application run the following command `docker-compose up -d` this will create a container with MySQL instance. 
 * Set property ```-Dspring.profiles.active=local``` in Intellij Idea Run/Debug Configuration VM Options\
-  If you run via Gradle-based Run Configuration, add `SPRING_PROFILES_ACTIVE=local` to Intellij Idea Run/Debug Configuration Environment Variables instead.
+  If you run via Gradle-based Run Configuration, add `SPRING_PROFILES_ACTIVE=local` to Intellij Idea Run/Debug Configuration Environment Variables instead.\
+
+### If you use terminal to run:
+* after `install Docker` step
+  * In root folder of the application run the following command ```gradlew clean bootRun --args='--spring.profiles.active=local'```.
+  * Enter the command ```CTRL + C``` to stop the application ( ``Terminate batch job (Y/N)?`` ->
+      enter ```Y``` ).
 
 ## Running locally without Docker (using H2 database)
 
