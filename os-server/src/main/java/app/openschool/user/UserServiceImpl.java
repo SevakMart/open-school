@@ -15,10 +15,8 @@ import app.openschool.course.module.item.EnrolledModuleItemRepository;
 import app.openschool.course.module.item.status.ModuleItemStatusRepository;
 import app.openschool.course.module.status.ModuleStatusRepository;
 import app.openschool.course.status.CourseStatusRepository;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
@@ -127,12 +125,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Page<User> findMentorsByName(String name, Pageable pageable) {
-    if (name != null) {
-      name = CLEAR_PATTERN.matcher(name).replaceAll(" ").trim();
-    }
+    String normalizeName = Objects.nonNull(name) ? removeRedundantSpaces(name) : null;
 
     return userRepository
-        .findMentorsByName(name, pageable)
+        .findMentorsByName(normalizeName, pageable)
         .orElseThrow(IllegalArgumentException::new);
   }
 
@@ -267,5 +263,9 @@ public class UserServiceImpl implements UserService {
   private boolean allModulesInCourseAreCompleted(EnrolledCourse enrolledCourse) {
     return enrolledCourse.getEnrolledModules().stream()
         .noneMatch(enrolledModule -> enrolledModule.getModuleStatus().isInProgress());
+  }
+
+  private String removeRedundantSpaces(String name) {
+    return CLEAR_PATTERN.matcher(name).replaceAll(" ").trim();
   }
 }
