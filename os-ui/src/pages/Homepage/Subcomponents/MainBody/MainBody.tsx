@@ -1,10 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Button from '../../../../component/Button/Button';
 import LeftArrowIcon from '../../../../icons/LeftArrow';
 import RightArrowIcon from '../../../../icons/RightArrow';
-import { Types } from '../../../../types/types';
-import { openModal } from '../../../../redux/Slices/PortalOpenStatus';
 import styles from './MainBody.module.scss';
 
 const MainBody = ({
@@ -16,11 +14,6 @@ const MainBody = ({
     listContainer, icon, icon__left, icon__right, registrationButton,
   } = styles;
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const handleSignUp = () => {
-    dispatch(openModal({ buttonType: Types.Button.SIGN_UP }));
-  };
 
   return (
     <>
@@ -39,9 +32,11 @@ const MainBody = ({
         )}
       </div>
       <div className={registrationButton} style={isMentor ? { margin: 'auto', padding: '5% 0 10%' } : { margin: '2rem auto 4rem' }}>
-        <Button.SignUpButton className={['mainMentorRegistrationButton']} onClick={handleSignUp}>
-          {isMentor ? t('button.homePage.registerMentor') : t('button.homePage.seeAll')}
-        </Button.SignUpButton>
+        <Link to="/categories/subcategories">
+          <Button.MainButton className={['mainMentorRegistrationButton']}>
+            {isMentor ? t('button.homePage.registerMentor') : t('button.homePage.seeAll')}
+          </Button.MainButton>
+        </Link>
       </div>
     </>
   );

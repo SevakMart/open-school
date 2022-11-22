@@ -16,12 +16,12 @@ import { Portal } from '../../component/Portal/Portal';
 import { Types } from '../../types/types';
 import { PortalStatus } from '../../types/PortalStatusType';
 
-/* eslint-disable max-len */
-
 const Homepage = ({ userInfo }:{userInfo:any}) => {
   const portalStatus = useSelector<RootState>((state) => state.portalStatus);
+
   const {
-    isOpen, buttonType, withSuccessMessage, isSignUpSuccessfulRegistration, isResetPasswordSuccessfulMessage, isResendVerificationEmailMessage,
+    isOpen, buttonType, withSuccessMessage, isSignUpSuccessfulRegistration,
+    isResetPasswordSuccessfulMessage, isResendVerificationEmailMessage,
   } = portalStatus as PortalStatus;
   const idAndToken = useMemo(() => ({
     token: userInfo ? (userInfo as any).token : '',
@@ -37,13 +37,19 @@ const Homepage = ({ userInfo }:{userInfo:any}) => {
       </userContext.Provider>
       <Footer />
       <Portal.FormPortal isOpen={isOpen}>
-        {/* eslint-disable max-len */}
         {isOpen && buttonType === Types.Button.SIGN_UP && <SignUp />}
         {isOpen && buttonType === Types.Button.VERIFY && <Verification />}
         {isOpen && buttonType === Types.Button.SIGN_IN && <SignIn />}
         {isOpen && buttonType === Types.Button.RESET_PASSWORD && <ResetPassword />}
         {isOpen && buttonType === Types.Button.FORGOT_PASSWORD && <ForgotPassword />}
-        {isOpen && buttonType === Types.Button.SUCCESS_MESSAGE && <SuccessMessage message={withSuccessMessage} isSignUpSuccessfulRegistration={isSignUpSuccessfulRegistration} isResetPasswordSuccessfulMessage={isResetPasswordSuccessfulMessage} isResendVerificationEmailMessage={isResendVerificationEmailMessage} />}
+        {isOpen && buttonType === Types.Button.SUCCESS_MESSAGE && (
+        <SuccessMessage
+          message={withSuccessMessage}
+          isSignUpSuccessfulRegistration={isSignUpSuccessfulRegistration}
+          isResetPasswordSuccessfulMessage={isResetPasswordSuccessfulMessage}
+          isResendVerificationEmailMessage={isResendVerificationEmailMessage}
+        />
+        )}
       </Portal.FormPortal>
     </>
   );

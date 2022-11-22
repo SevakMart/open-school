@@ -5,8 +5,6 @@ import { Types } from '../../../types/types';
 import { openModal } from '../../../redux/Slices/PortalOpenStatus';
 import styles from './Navbar.module.scss';
 
-/* eslint-disable max-len */
-
 const Navbar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

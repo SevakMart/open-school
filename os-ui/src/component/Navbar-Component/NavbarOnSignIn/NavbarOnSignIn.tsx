@@ -9,14 +9,14 @@ import { SignoutIcon } from '../../../icons/Signout/Signout';
 import ProfilePortalContent from '../../ProfilePortalContent/ProfilePortalContent';
 import { Portal } from '../../Portal/Portal';
 
-/* eslint-disable max-len */
-
 const NavbarOnSignIn = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
+
   const {
-    mainContent, navMainContent, userInfoContent, bookmarkIconStyle, notificationIcon, avatarLogo, arrowDownIcon,
+    mainContent, navMainContent, userInfoContent,
+    bookmarkIconStyle, notificationIcon, avatarLogo, arrowDownIcon,
   } = styles;
 
   const handleProfilePortal = () => {
