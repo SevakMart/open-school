@@ -18,7 +18,9 @@ import app.openschool.course.status.CourseStatusRepository;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,6 +40,7 @@ public class UserServiceImpl implements UserService {
   private final CourseStatusRepository courseStatusRepository;
   private final ModuleStatusRepository moduleStatusRepository;
   private final ModuleItemStatusRepository moduleItemStatusRepository;
+  private static final Pattern CLEAR_PATTERN = Pattern.compile("\\s+");
 
   public UserServiceImpl(
       UserRepository userRepository,
@@ -125,8 +128,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Page<User> findMentorsByName(String name, Pageable pageable) {
+    String normalizeName = Objects.nonNull(name) ? removeRedundantSpaces(name) : null;
+
     return userRepository
-        .findMentorsByName(name, pageable)
+        .findMentorsByName(normalizeName, pageable)
         .orElseThrow(IllegalArgumentException::new);
   }
 
@@ -261,5 +266,9 @@ public class UserServiceImpl implements UserService {
   private boolean allModulesInCourseAreCompleted(EnrolledCourse enrolledCourse) {
     return enrolledCourse.getEnrolledModules().stream()
         .noneMatch(enrolledModule -> enrolledModule.getModuleStatus().isInProgress());
+  }
+
+  private String removeRedundantSpaces(String name) {
+    return CLEAR_PATTERN.matcher(name).replaceAll(" ").trim();
   }
 }
