@@ -1,4 +1,4 @@
-package app.openschool.course.module.item.api;
+package app.openschool.course.module.item.api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

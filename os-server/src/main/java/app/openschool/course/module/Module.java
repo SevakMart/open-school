@@ -2,7 +2,9 @@ package app.openschool.course.module;
 
 import app.openschool.course.Course;
 import app.openschool.course.module.item.ModuleItem;
+import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,8 +34,8 @@ public class Module {
   @JoinColumn(name = "learning_path_id")
   private Course course;
 
-  @OneToMany(mappedBy = "module")
-  private Set<ModuleItem> moduleItems;
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
+  private Set<ModuleItem> moduleItems = new HashSet<>();
 
   public Module() {}
 
