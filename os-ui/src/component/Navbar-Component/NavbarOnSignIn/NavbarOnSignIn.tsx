@@ -43,9 +43,6 @@ const NavbarOnSignIn = () => {
             <ProfilePortalContent icon={<SignoutIcon />} isSignOut>
               {t('string.profilePortal.signOut')}
             </ProfilePortalContent>
-            <ProfilePortalContent icon={<SignoutIcon />}>
-              {t('string.profilePortal.signOut')}
-            </ProfilePortalContent>
           </>
         </Portal.ProfilePortal>
       </div>
