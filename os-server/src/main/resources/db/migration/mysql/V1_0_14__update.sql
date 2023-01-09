@@ -1,1 +1,1 @@
-ALTER TABLE `open_school_db`.`learning_path` MODIFY COLUMN rating FLOAT DEFAULT 0.0;
+ALTER TABLE learning_path ALTER COLUMN rating FLOAT DEFAULT 0.0;

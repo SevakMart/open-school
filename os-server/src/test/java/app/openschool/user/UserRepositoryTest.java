@@ -76,7 +76,8 @@ class UserRepositoryTest {
     userRepository.save(
         new User("Doe", "John", "testEmail3", "testPass", new Role(1, roleStudent)));
 
-    List<User> mentorsList = userRepository.findMentorsByName("jo", PageRequest.of(0, 5)).toList();
+    Optional<Page<User>> jo = userRepository.findMentorsByName("jo", PageRequest.of(0, 5));
+    List<User> mentorsList = jo.get().toList();
 
     assertEquals(2, mentorsList.size());
     mentorsList.forEach(mentor -> assertEquals(roleMentor, mentor.getRole().getType()));
