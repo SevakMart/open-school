@@ -4,7 +4,7 @@ import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.dto.EnrolledCourseOverviewDto;
 import app.openschool.course.module.Module;
-import app.openschool.course.module.api.EnrolledModuleMapper;
+import app.openschool.course.module.api.mapper.EnrolledModuleMapper;
 import app.openschool.course.module.item.ModuleItem;
 import java.util.Collection;
 
