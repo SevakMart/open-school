@@ -21,7 +21,7 @@ public class S3Service implements FileStorageService {
 
   private final String bucketName;
 
-  private final Logger logger = LoggerFactory.getLogger("S3Service");
+  private static final Logger logger = LoggerFactory.getLogger("S3Service");
 
   private final AmazonS3 amazonS3;
 
