@@ -19,14 +19,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
-@Profile(value = {"local", "test"})
+@Conditional(NotDefaultProfile.class)
 public class FileStorageLocalService implements FileStorageService {
   @Value("${file-pictures-dir}")
   private String picturesDir;
