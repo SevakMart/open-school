@@ -12,6 +12,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "keyword")
 public class Keyword {
@@ -37,8 +38,16 @@ public class Keyword {
     this.title = title;
   }
 
+  public Keyword(Long id) {
+    this.id = id;
+  }
+
   public Long getId() {
     return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getTitle() {
@@ -55,9 +64,5 @@ public class Keyword {
 
   public void setCourses(Set<Course> courses) {
     this.courses = courses;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 }

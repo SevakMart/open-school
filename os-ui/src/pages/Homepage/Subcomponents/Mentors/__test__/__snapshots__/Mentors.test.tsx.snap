@@ -40,12 +40,16 @@ exports[`Create test cases for homepage mentors list Create a snapshot test 1`] 
       class="registrationButton"
       style="margin: auto; padding: 5% 0px 10%;"
     >
-      <button
-        class="mainMentorRegistrationButton"
-        type="button"
+      <a
+        href="/categories/subcategories"
       >
-        button.homePage.registerMentor
-      </button>
+        <button
+          class="mainMentorRegistrationButton"
+          type="button"
+        >
+          button.homePage.registerMentor
+        </button>
+      </a>
     </div>
   </div>
 </DocumentFragment>

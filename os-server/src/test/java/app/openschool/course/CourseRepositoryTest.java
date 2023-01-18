@@ -10,9 +10,7 @@ import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.difficulty.DifficultyRepository;
 import app.openschool.course.language.Language;
 import app.openschool.course.language.LanguageRepository;
-import app.openschool.course.module.Module;
 import app.openschool.course.module.ModuleRepository;
-import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.ModuleItemRepository;
 import app.openschool.course.module.item.type.ModuleItemTypeRepository;
 import app.openschool.user.User;
@@ -81,58 +79,6 @@ public class CourseRepositoryTest {
       courseRepository.save(course);
     }
 
-    Set<Module> moduleSet = new HashSet<>();
-    for (long i = 1L; i < 5L; i++) {
-      Module module = new Module();
-      module.setId(i);
-      module.setCourse(courseRepository.getById(1L));
-      module.setDescription("description");
-      moduleSet.add(module);
-      moduleRepository.save(module);
-    }
-    courseRepository.getById(1L).setModules(moduleSet);
-
-    Set<ModuleItem> moduleItemsModule1 = new HashSet<>();
-    for (long i = 1L; i < 3L; i++) {
-      ModuleItem moduleItem = new ModuleItem();
-      moduleItem.setId(i);
-      moduleItem.setTitle("AAA");
-      ;
-      moduleItem.setModuleItemType(moduleItemTypeRepository.getById(1L));
-      moduleItem.setEstimatedTime(35L);
-      moduleItem.setModule(moduleRepository.getById(1L));
-      moduleItemsModule1.add(moduleItem);
-      moduleItemRepository.save(moduleItem);
-    }
-
-    Module module1 =
-        courseRepository.getById(1L).getModules().stream()
-            .filter(module -> module.getId().equals(1L))
-            .findFirst()
-            .get();
-    module1.setModuleItems(moduleItemsModule1);
-    moduleRepository.save(module1);
-
-    Set<ModuleItem> moduleItemsModule2 = new HashSet<>();
-    for (long i = 1L; i < 3L; i++) {
-      ModuleItem moduleItem = new ModuleItem();
-      moduleItem.setId(i + 2);
-      moduleItem.setTitle("BBB");
-      moduleItem.setModuleItemType(moduleItemTypeRepository.getById(2L));
-      moduleItem.setEstimatedTime(25L);
-      moduleItem.setModule(moduleRepository.getById(2L));
-      moduleItemsModule2.add(moduleItem);
-      moduleItemRepository.save(moduleItem);
-    }
-
-    Module module2 =
-        courseRepository.getById(1L).getModules().stream()
-            .filter(module -> module.getId().equals(2L))
-            .findFirst()
-            .get();
-    module2.setModuleItems(moduleItemsModule2);
-    moduleRepository.save(module2);
-
     User user = new User();
     user.setId(2L);
     user.setName("John");
@@ -173,6 +119,7 @@ public class CourseRepositoryTest {
     assertEquals(title, courseRepository.findById(1L).get().getTitle());
   }
 
+  @Test
   public void searchCourses() {
     List<Course> searchedCourses =
         courseRepository

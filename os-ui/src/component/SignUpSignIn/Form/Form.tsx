@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { Input } from '../../Input/Input';
@@ -6,6 +6,7 @@ import { Types } from '../../../types/types';
 import { openModal } from '../../../redux/Slices/PortalOpenStatus';
 import Button from '../../Button/Button';
 import styles from './Form.module.scss';
+import { signInContext } from '../../../contexts/Contexts';
 
 export interface FormValues {
     [index:string]:string
@@ -22,6 +23,7 @@ const Form = ({
 }:
     {isSignUpForm:boolean, isResetPasswordForm:boolean, formButtonText:string, errorFormValue:ErrorFormValues, unAuthorizedSignInError?:string, handleForm:(formValue:FormValues)=>void, resendEmail?:()=>void }) => {
   const [formValues, setFormValues] = useState(initialFormValues);
+  const { setSignIn } = useContext(signInContext);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { inputContent, forgotPassword, unAuthorizedSignInErrorStyle } = styles;
@@ -39,6 +41,7 @@ const Form = ({
 
   const handleFormOnClick = () => {
     handleForm(formValues);
+    setSignIn(true);
   };
 
   return (

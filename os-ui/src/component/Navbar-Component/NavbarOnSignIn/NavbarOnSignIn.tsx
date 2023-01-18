@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import styles from './NavbarOnSignIn.module.scss';
@@ -9,19 +9,30 @@ import { SignoutIcon } from '../../../icons/Signout/Signout';
 import ProfilePortalContent from '../../ProfilePortalContent/ProfilePortalContent';
 import { Portal } from '../../Portal/Portal';
 
-/* eslint-disable max-len */
-
 const NavbarOnSignIn = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const arrowRef = useRef(null);
   const { t } = useTranslation();
+
   const {
-    mainContent, navMainContent, userInfoContent, bookmarkIconStyle, notificationIcon, avatarLogo, arrowDownIcon,
+    mainContent, navMainContent, userInfoContent,
+    bookmarkIconStyle, notificationIcon, avatarLogo, arrowDownIcon,
   } = styles;
 
   const handleProfilePortal = () => {
     setIsOpen((prevState) => !prevState);
   };
+
+  useEffect(() => {
+    const closeDropDown = (e:any) => {
+      if (e.path[0] !== arrowRef.current) {
+        setIsOpen(false);
+      }
+    };
+    document.body.addEventListener('click', closeDropDown);
+    return () => document.body.removeEventListener('click', closeDropDown);
+  }, []);
 
   return (
     <nav className={mainContent}>
@@ -36,14 +47,11 @@ const NavbarOnSignIn = () => {
         <img className={notificationIcon} src={NotificationIcon} alt="Notification" />
         <div className={userInfoContent}>
           <img className={avatarLogo} src="https://reactjs.org/logo-og.png" alt="avatar" />
-          <img className={arrowDownIcon} style={isOpen ? { transform: 'rotate(180deg)' } : undefined} src={ArrowDownIcon} alt="Arrow down Icon" onClick={handleProfilePortal} />
+          <img ref={arrowRef} className={arrowDownIcon} style={isOpen ? { transform: 'rotate(180deg)' } : undefined} src={ArrowDownIcon} alt="Arrow down Icon" onClick={handleProfilePortal} />
         </div>
         <Portal.ProfilePortal isOpen={isOpen}>
           <>
             <ProfilePortalContent icon={<SignoutIcon />} isSignOut>
-              {t('string.profilePortal.signOut')}
-            </ProfilePortalContent>
-            <ProfilePortalContent icon={<SignoutIcon />}>
               {t('string.profilePortal.signOut')}
             </ProfilePortalContent>
           </>

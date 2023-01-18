@@ -1,6 +1,7 @@
-package app.openschool.course.module.item.api;
+package app.openschool.course.module.item.api.mapper;
 
 import app.openschool.course.module.item.EnrolledModuleItem;
+import app.openschool.course.module.item.api.dto.EnrolledModuleItemOverviewDto;
 import java.util.HashSet;
 import java.util.Set;
 

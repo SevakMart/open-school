@@ -35,12 +35,16 @@ exports[`Create test cases for MainBody component Create a snapshot test 1`] = `
     class="registrationButton"
     style="margin: 2rem auto 4rem;"
   >
-    <button
-      class="mainMentorRegistrationButton"
-      type="button"
+    <a
+      href="/categories/subcategories"
     >
-      button.homePage.seeAll
-    </button>
+      <button
+        class="mainMentorRegistrationButton"
+        type="button"
+      >
+        button.homePage.seeAll
+      </button>
+    </a>
   </div>
 </DocumentFragment>
 `;

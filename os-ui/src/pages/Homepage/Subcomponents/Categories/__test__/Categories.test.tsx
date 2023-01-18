@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import HomepageCategories from '../Categories';
 import { store } from '../../../../../redux/Store';
 
@@ -10,9 +11,11 @@ jest.mock('react-i18next', () => ({
 describe('Create test cases for homepage categories list', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
-      <Provider store={store}>
-        <HomepageCategories />
-      </Provider>,
+      <Router>
+        <Provider store={store}>
+          <HomepageCategories />
+        </Provider>
+      </Router>,
     );
     expect(asFragment()).toMatchSnapshot();
   });

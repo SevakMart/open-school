@@ -32,7 +32,6 @@ public class ModuleItem {
 
   @Column(name = "estimated_time")
   private Long estimatedTime;
-
   @ManyToOne
   @JoinColumn(name = "module_id")
   private Module module;
