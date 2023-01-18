@@ -25,9 +25,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @Service
-@Profile({"test","local"})
+@Profile({"test", "local"})
 public class FileStorageLocalService implements FileStorageService {
   @Value("${file-pictures-dir}")
   private String picturesDir;
@@ -84,7 +83,7 @@ public class FileStorageLocalService implements FileStorageService {
       boolean isCreatedFolders = file.mkdirs();
       if (!isCreatedFolders) {
         throw new FileNotFoundException(
-                messageSource.getMessage("exception.file.not.found", null, Locale.ROOT));
+            messageSource.getMessage("exception.file.not.found", null, Locale.ROOT));
       }
     }
 
