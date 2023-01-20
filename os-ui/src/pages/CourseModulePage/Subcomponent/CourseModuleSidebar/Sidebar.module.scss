@@ -1,0 +1,71 @@
+@import "../../../../styles/Configs/Colors.scss";
+
+.Sidebar_container {
+    background: $white-text-color;
+    height: 992px;
+    padding-left: 48px;
+
+    .Sidebar_courseName {
+      color: $main-text-color;
+      font-weight: 600;
+      font-size: 20px;
+    }
+    .SidebarOverview_button {
+      margin-top: 32px;
+      color: $black-text-color;
+      font-size: 16px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+    .SidebarOverview_button:active {
+        color: $header-main-color;
+        font-weight: 700;
+    }
+    .Checkbox_container {
+      display: block;
+      position: relative;
+      padding-left: 35px;
+      margin-bottom: 36px;
+      cursor: pointer;
+      font-weight: 400;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      color: $main-text-color;
+
+        .Checkbox_checkmark {
+          position: absolute;
+          left: 0;
+          height: 24px;
+          width: 24px;
+          background-color: $main-course-color;
+          border-radius: 15px;
+        }
+        .Checkbox_checkmark:after {
+          content: "";
+          position: absolute;
+          display: none;
+        }
+    }
+    .Checkbox_container input {
+      height: 0;
+      width: 0;
+    }
+    .Checkbox_container input:checked ~ .Checkbox_checkmark {
+      background-color: $checkbox-checked-color;
+    }
+    .Checkbox_container input:checked ~ .Checkbox_checkmark:after {
+      display: block;
+    }
+    .Checkbox_container .Checkbox_checkmark:after {
+      left: 9px;
+      top: 6px;
+      width: 4px;
+      height: 8px;
+      border: solid $white-text-color;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+    }
+}

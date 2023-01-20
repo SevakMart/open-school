@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from 'react';
 import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
 import EllipseIcon from '../../../../assets/svg/Ellipse.svg';
@@ -5,7 +6,6 @@ import { CourseDescriptionType } from '../../../../types/CourseTypes';
 import styles from './ModuleItem.module.scss';
 
 type Module=CourseDescriptionType['modules'][number]
-/* eslint-disable max-len */
 const ModuleItem = ({ moduleInfo }:{moduleInfo:Module}) => {
   const [moduleListIsOpen, setModuleListIsOpen] = useState(false);
   const {
@@ -27,6 +27,7 @@ const ModuleItem = ({ moduleInfo }:{moduleInfo:Module}) => {
       </div>
       <div className={moduleListIsOpen ? moduleDescriptionIsOpen : moduleDescriptionIsClosed}>
         <p>{moduleInfo.description}</p>
+        <a>{moduleInfo.link}</a>
       </div>
     </div>
   );

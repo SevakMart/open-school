@@ -9,7 +9,7 @@
     margin-right:10px;
     margin-left:10px;
     .mainContent {
-        margin:24px 16px;
+        margin:10px 8px;
         @include flexStyle(row,center, space-between);
         .titleAndEllipseIcon {
             display:inline-block;
