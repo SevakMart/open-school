@@ -4,6 +4,7 @@ import app.openschool.category.api.exception.CategoryNestingException;
 import app.openschool.common.exceptionhandler.exception.DuplicateEntityException;
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.common.response.ResponseMessage;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -77,5 +78,12 @@ public class CommonExceptionHandler implements ErrorController {
   public ResponseEntity<ResponseMessage> handlePermissionDeniedException(
       PermissionDeniedException ex) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(ex.getMessage()));
+  }
+
+  @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+  public ResponseEntity<ResponseMessage> handleSqlIntegrityConstraintViolationException(
+      SQLIntegrityConstraintViolationException ex) {
+    String message = messageSource.getMessage("exception.persist", null, Locale.ROOT);
+    return ResponseEntity.badRequest().body(new ResponseMessage(message));
   }
 }

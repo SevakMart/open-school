@@ -7,6 +7,11 @@ import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.dto.CreateCourseRequest;
 import app.openschool.course.api.dto.UpdateCourseRequest;
 import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.faq.FaqService;
+import app.openschool.faq.api.dto.CreateFaqRequest;
+import app.openschool.faq.api.dto.FaqDto;
+import app.openschool.faq.api.dto.UpdateFaqDtoRequest;
+import app.openschool.faq.api.mapper.FaqMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,6 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.security.Principal;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Locale;
 import javax.validation.Valid;
@@ -39,11 +45,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class CourseController {
 
   private final CourseService courseService;
+  private final FaqService faqService;
   private final MessageSource messageSource;
 
-  public CourseController(CourseService courseService, MessageSource messageSource) {
+  public CourseController(
+      CourseService courseService, MessageSource messageSource, FaqService faqService) {
     this.courseService = courseService;
     this.messageSource = messageSource;
+    this.faqService = faqService;
   }
 
   @Operation(summary = "get course info", security = @SecurityRequirement(name = "bearerAuth"))
@@ -179,6 +188,118 @@ public class CourseController {
       Principal principal) {
     courseAffiliationVerification(principal, courseId);
     courseService.delete(courseId);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  @Operation(summary = "find all FAQs", security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponse(
+      responseCode = "200",
+      description =
+          "Returns paginated list of FAQs depending on passed filtering parameters "
+              + "(by default returns all FAQs with size of pagination), "
+              + "or empty list if no FAQ have been found")
+  @GetMapping("/faqs")
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
+  public ResponseEntity<Page<FaqDto>> findAllFaqs(Pageable pageable) {
+    return ResponseEntity.ok().body(FaqMapper.toFaqDtoPage(faqService.findAll(pageable)));
+  }
+
+  @Operation(
+      summary = "find FAQs related to the selected course",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponse(
+      responseCode = "200",
+      description =
+          "Returns paginated list of faqs depending on passed filtering parameters "
+              + "(by default returns all faqs with size of pagination), "
+              + "or empty list if no faqs have been found.")
+  @ApiResponse(
+      responseCode = "403",
+      description = "Only users with ADMIN or MENTOR role have access to this method")
+  @GetMapping("/faqs/{courseId}")
+  public ResponseEntity<Page<FaqDto>> findFaqsByCourseId(
+      @PathVariable(value = "courseId") Long courseId, Pageable pageable) {
+    return ResponseEntity.ok()
+        .body(FaqMapper.toFaqDtoPage(faqService.findFaqsByCourseId(courseId, pageable)));
+  }
+
+  @Operation(summary = "update FAQs", security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Modifies the FAQ and returns that"),
+        @ApiResponse(
+            responseCode = "400",
+            description =
+                "Invalid request arguments provided or User is not a mentor of this course")
+      })
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
+  @PutMapping("/faqs/{faqId}")
+  public ResponseEntity<FaqDto> updateFaq(
+      @Parameter(description = "FAQ ID to be updated") @PathVariable(value = "faqId") Long faqId,
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description = "Request object for updating the FAQ")
+          @RequestBody
+          UpdateFaqDtoRequest request,
+      Principal principal) {
+
+    return ResponseEntity.ok()
+        .body(FaqMapper.toFaqDto(faqService.update(request, faqId, principal.getName())));
+  }
+
+  @Operation(summary = "add FAQ", security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "201", description = "Creates a new FAQ and returns it"),
+        @ApiResponse(
+            responseCode = "400",
+            description =
+                "Invalid request arguments supplied "
+                       + "or User is not a mentor of the specified course",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Only users with ADMIN or MENTOR role have access to this method",
+            content = @Content(schema = @Schema()))
+      })
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
+  @PostMapping("/faqs")
+  public ResponseEntity<FaqDto> addFaq(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+              description = "Request object for creating new course")
+          @Valid
+          @RequestBody
+          CreateFaqRequest request,
+      Principal principal)
+      throws SQLIntegrityConstraintViolationException {
+
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(FaqMapper.toFaqDto(faqService.add(request, principal.getName())));
+  }
+
+  @Operation(summary = "delete FAQ", security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "204",
+            description = "The FAQ was deleted",
+            content = @Content(schema = @Schema())),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid FAQ_ID provided or User is not a mentor of this course",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Only users with ADMIN or MENTOR role have access to this method",
+            content = @Content(schema = @Schema()))
+      })
+  @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
+  @DeleteMapping("/faqs/{faqId}")
+  public ResponseEntity<HttpStatus> deleteFaq(
+      @Parameter(description = "Id of FAQ which will be deleted") @PathVariable(value = "faqId")
+          Long faqId,
+      Principal principal) {
+
+    faqService.delete(faqId, principal.getName());
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
