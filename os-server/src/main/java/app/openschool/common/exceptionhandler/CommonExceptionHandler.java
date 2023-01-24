@@ -1,12 +1,12 @@
 package app.openschool.common.exceptionhandler;
 
 import app.openschool.category.api.exception.CategoryNestingException;
-import app.openschool.common.exceptionhandler.exception.CustomIoException;
 import app.openschool.common.exceptionhandler.exception.DuplicateEntityException;
 import app.openschool.common.exceptionhandler.exception.FileDeleteException;
 import app.openschool.common.exceptionhandler.exception.FileNotFoundException;
 import app.openschool.common.exceptionhandler.exception.FileSaveException;
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
+import app.openschool.common.exceptionhandler.exception.TemporaryStorageFailsException;
 import app.openschool.common.response.ResponseMessage;
 import java.util.HashMap;
 import java.util.Locale;
@@ -21,8 +21,6 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-
 
 @RestControllerAdvice
 public class CommonExceptionHandler implements ErrorController {
@@ -94,8 +92,9 @@ public class CommonExceptionHandler implements ErrorController {
     return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage(ex.getMessage()));
   }
 
-  @ExceptionHandler(CustomIoException.class)
-  public ResponseEntity<ResponseMessage> handleCustomIoException(CustomIoException ex) {
+  @ExceptionHandler(TemporaryStorageFailsException.class)
+  public ResponseEntity<ResponseMessage> handleCustomIoException(
+      TemporaryStorageFailsException ex) {
     return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage(ex.getMessage()));
   }
 

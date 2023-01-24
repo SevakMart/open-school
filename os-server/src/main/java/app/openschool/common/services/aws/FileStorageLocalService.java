@@ -1,9 +1,9 @@
 package app.openschool.common.services.aws;
 
-import app.openschool.common.exceptionhandler.exception.CustomIoException;
 import app.openschool.common.exceptionhandler.exception.FileDeleteException;
 import app.openschool.common.exceptionhandler.exception.FileNotFoundException;
 import app.openschool.common.exceptionhandler.exception.FileSaveException;
+import app.openschool.common.exceptionhandler.exception.TemporaryStorageFailsException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -57,7 +56,8 @@ public class FileStorageLocalService implements FileStorageService {
             messageSource.getMessage("exception.file.not.save", null, Locale.ROOT));
       }
     } catch (IOException ex) {
-      throw new CustomIoException(messageSource.getMessage(ex.getMessage(), null, Locale.ROOT));
+      throw new TemporaryStorageFailsException(
+          messageSource.getMessage(ex.getMessage(), null, Locale.ROOT));
     }
     return resolve.getFileName().toString();
   }

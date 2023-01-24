@@ -7,10 +7,10 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 
-import app.openschool.common.exceptionhandler.exception.CustomIoException;
 import app.openschool.common.exceptionhandler.exception.FileDeleteException;
 import app.openschool.common.exceptionhandler.exception.FileNotFoundException;
 import app.openschool.common.exceptionhandler.exception.FileSaveException;
+import app.openschool.common.exceptionhandler.exception.TemporaryStorageFailsException;
 import app.openschool.common.services.aws.FileStorageLocalService;
 import app.openschool.common.services.aws.FileStorageService;
 import java.io.File;
@@ -32,7 +32,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @ExtendWith(MockitoExtension.class)
 class FileStorageLocalServiceTest {
   @Spy FileStorageService fileStorageService;
@@ -42,12 +41,10 @@ class FileStorageLocalServiceTest {
   File tmpFile;
 
   @BeforeEach
-  void setUp() {
-    try {
-      tmpFile = File.createTempFile("image", ".pnj");
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+  void setUp() throws IOException {
+
+    tmpFile = File.createTempFile("image", ".pnj");
+
     fileStorageService = new FileStorageLocalService(messageSource);
     String picturesDir =
         System.getProperty("user.home")
@@ -100,10 +97,11 @@ class FileStorageLocalServiceTest {
     try {
       Mockito.when(multipartFile.getInputStream()).thenThrow(new IOException());
     } catch (IOException e) {
-      throw new CustomIoException(messageSource.getMessage(e.getMessage(), null, Locale.ROOT));
+      throw new TemporaryStorageFailsException(
+          messageSource.getMessage(e.getMessage(), null, Locale.ROOT));
     }
     assertThatThrownBy(() -> fileStorageService.uploadFile(multipartFile))
-        .isInstanceOf(CustomIoException.class);
+        .isInstanceOf(TemporaryStorageFailsException.class);
   }
 
   @Test
