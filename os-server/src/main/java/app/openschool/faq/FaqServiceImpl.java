@@ -26,7 +26,6 @@ public class FaqServiceImpl implements FaqService {
   }
 
   @Override
-  @Transactional
   public Page<Faq> findFaqsByCourseId(Long courseId, Pageable pageable) {
     courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
     return faqRepository.findFaqsByCourseId(courseId, pageable);
