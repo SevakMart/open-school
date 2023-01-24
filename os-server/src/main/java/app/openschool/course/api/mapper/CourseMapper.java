@@ -1,6 +1,5 @@
 package app.openschool.course.api.mapper;
 
-import app.openschool.category.Category;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.dto.CourseDto;
@@ -8,13 +7,9 @@ import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.dto.CourseInfoMentorDto;
 import app.openschool.course.api.dto.CourseInfoModuleDto;
 import app.openschool.course.api.dto.CourseInfoModuleItemDto;
-import app.openschool.course.api.dto.CreateCourseRequest;
-import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
-import app.openschool.course.language.Language;
 import app.openschool.course.module.EnrolledModule;
 import app.openschool.course.module.Module;
-import app.openschool.course.module.api.mapper.ModuleMapper;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.status.CourseStatus;
 import app.openschool.user.User;
@@ -78,31 +73,6 @@ public class CourseMapper {
         EnrolledModuleMapper.toEnrolledModules(course, enrolledCourse);
     enrolledCourse.setEnrolledModules(enrolledModules);
     return enrolledCourse;
-  }
-
-  public static Course toCourse(CreateCourseRequest request, User mentor) {
-    Course course = new Course();
-    course.setTitle(request.getTitle());
-    course.setDescription(request.getDescription());
-    course.setGoal(request.getGoal());
-    Category category = new Category();
-    category.setId(request.getCategoryId());
-    course.setCategory(category);
-    Difficulty difficulty = new Difficulty();
-    difficulty.setId(request.getDifficultyId());
-    course.setDifficulty(difficulty);
-    Language language = new Language();
-    language.setId(request.getLanguageId());
-    course.setLanguage(language);
-    course.setMentor(mentor);
-    Set<Keyword> keywords =
-        request.getKeywordIds().stream()
-            .map(
-                    Keyword::new)
-            .collect(Collectors.toSet());
-    course.setKeywords(keywords);
-    course.setModules(ModuleMapper.toModules(request.getCreateModuleRequests(), course));
-    return course;
   }
 
   private static Set<CourseInfoModuleDto> getCourseInfoModuleDtoSet(Course course) {

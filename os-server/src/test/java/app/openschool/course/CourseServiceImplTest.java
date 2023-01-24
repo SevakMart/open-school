@@ -1,9 +1,10 @@
 package app.openschool.course;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -22,7 +23,6 @@ import app.openschool.course.language.Language;
 import app.openschool.course.language.LanguageRepository;
 import app.openschool.course.module.Module;
 import app.openschool.course.module.api.dto.CreateModuleRequest;
-import app.openschool.course.module.api.mapper.ModuleMapper;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.api.dto.CreateModuleItemRequest;
 import app.openschool.course.module.item.type.ModuleItemType;
@@ -38,12 +38,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+
 
 @ExtendWith(MockitoExtension.class)
 class CourseServiceImplTest {
@@ -129,6 +128,10 @@ class CourseServiceImplTest {
 
     Set<Module> modules = Set.of(module, module2);
     expectedCourse.setModules(modules);
+    given(categoryRepository.findById(any())).willReturn(Optional.of(parentCategory));
+    given(difficultyRepository.findById(any())).willReturn(Optional.of(difficulty));
+    given(languageRepository.findById(any())).willReturn(Optional.of(language));
+    given(keywordRepository.findById(any())).willReturn(Optional.of(new Keyword(1L)));
     given(courseRepository.save(any())).willReturn(expectedCourse);
     CreateModuleItemRequest createModuleItemRequest1 =
         new CreateModuleItemRequest(1L, "Stream", 1L, "https://861", 370L);
@@ -180,43 +183,10 @@ class CourseServiceImplTest {
         .thenReturn("Test@gmail.com");
     User user = new User("John", "Smith", "Test@gmail.com", "Test858#", new Role("MENTOR"));
     given(userRepository.findUserByEmail(anyString())).willReturn(user);
-
-    Category parentCategory = new Category("Software engineering", "S3/images/22124", null);
-    Category subCategory = new Category("Java", "S3/images/686451", parentCategory);
-    Difficulty difficulty = new Difficulty("Advanced");
-    Language language = new Language("English");
-    var keywords = createKeywords();
-    Course expectedCourse = new Course();
-    expectedCourse.setKeywords(keywords);
-    expectedCourse.setTitle("Spring");
-    String courseDescription =
-        "Through this course, get a theoretical overview of the Spring framework";
-    expectedCourse.setDescription(courseDescription);
-    expectedCourse.setGoal("Improving skills");
-    expectedCourse.setRating(0.0);
-    expectedCourse.setCategory(subCategory);
-    expectedCourse.setDifficulty(difficulty);
-    expectedCourse.setLanguage(language);
-    expectedCourse.setMentor(user);
-    Set<CreateModuleRequest> createCourseRequests = new HashSet<>();
-    createCourseRequests.add(createModuleRequest());
-    ModuleItem moduleItem = new ModuleItem();
-    moduleItem.setId(1L);
-    moduleItem.setTitle("java");
-    ModuleItemType moduleItemType = new ModuleItemType();
-    moduleItemType.setType("java");
-    moduleItem.setModuleItemType(moduleItemType);
-    Set<ModuleItem> moduleItems = new HashSet<>();
-    moduleItems.add(moduleItem);
-    Course course = new Course(1L, "any");
-    when(courseRepository.save(any())).thenReturn(course);
-    Module module = new Module(1L, expectedCourse, moduleItems);
-    Set<Module> modules = new HashSet<>();
-    modules.add(module);
-    try (MockedStatic<ModuleMapper> utilities = Mockito.mockStatic(ModuleMapper.class)) {
-      utilities.when(() -> ModuleMapper.toModules(any(), any())).thenReturn(modules);
-    }
-    assertDoesNotThrow(() -> courseService.add(createCourseRequest()));
+    given(categoryRepository.findById(1L)).willReturn(Optional.empty());
+    CreateCourseRequest course = createCourseRequest();
+    assertThatThrownBy(() -> courseService.add(course))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
@@ -228,9 +198,11 @@ class CourseServiceImplTest {
     when(SecurityContextHolder.getContext().getAuthentication().getName())
         .thenReturn("Test@gmail.com");
     User user = new User("John", "Smith", "Test@gmail.com", "Test858#", new Role("MENTOR"));
+    CreateCourseRequest course = createCourseRequest();
     given(userRepository.findUserByEmail(anyString())).willReturn(user);
-    given(courseRepository.save(any())).willThrow(new IllegalArgumentException());
-    assertThatThrownBy(() -> courseService.add(createCourseRequest()))
+    given(categoryRepository.findById(anyLong())).willReturn(Optional.of(createCategory()));
+    given(difficultyRepository.findById(1)).willReturn(Optional.empty());
+    assertThatThrownBy(() -> courseService.add(course))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -244,8 +216,13 @@ class CourseServiceImplTest {
     when(SecurityContextHolder.getContext().getAuthentication().getName())
         .thenReturn("Test@gmail.com");
     User user = new User("John", "Smith", "Test@gmail.com", "Test858#", new Role("MENTOR"));
+    CreateCourseRequest courseRequest = createCourseRequest();
     given(userRepository.findUserByEmail(anyString())).willReturn(user);
-    assertDoesNotThrow(() -> courseService.add(createCourseRequest()));
+    given(categoryRepository.findById(anyLong())).willReturn(Optional.of(createCategory()));
+    given(difficultyRepository.findById(anyInt())).willReturn(Optional.of(createDifficulty()));
+
+    assertThatThrownBy(() -> courseService.add(createCourseRequest()))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
@@ -257,7 +234,12 @@ class CourseServiceImplTest {
     when(SecurityContextHolder.getContext().getAuthentication().getName())
         .thenReturn("Test@gmail.com");
     given(userRepository.findUserByEmail(anyString())).willReturn(new User());
-    assertDoesNotThrow(() -> courseService.add(createCourseRequest()));
+    given(categoryRepository.findById(anyLong())).willReturn(Optional.of(createCategory()));
+    given(difficultyRepository.findById(anyInt())).willReturn(Optional.of(createDifficulty()));
+    given(languageRepository.findById(anyInt())).willReturn(Optional.of(new Language("title")));
+    given(keywordRepository.findById(1L)).willReturn(Optional.empty());
+    assertThatThrownBy(() -> courseService.add(createCourseRequest()))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   private Set<Keyword> createKeywords() {
@@ -275,10 +257,10 @@ class CourseServiceImplTest {
         "Spring",
         "Spring course",
         "Improving skills",
-        2L,
-        3,
+        1L,
         1,
-        Set.of(1L, 2L),
+        1,
+        Set.of(1L),
         Set.of(createModuleRequest()));
   }
 
@@ -326,5 +308,19 @@ class CourseServiceImplTest {
     moduleItem.setModuleItemType(moduleItemType);
 
     return moduleItem;
+  }
+
+  private Category createCategory() {
+    Category category = new Category();
+    category.setId(1L);
+    category.setTitle("title");
+    return category;
+  }
+
+  private Difficulty createDifficulty() {
+    Difficulty difficulty = new Difficulty();
+    difficulty.setId(1);
+    difficulty.setTitle("title");
+    return difficulty;
   }
 }
