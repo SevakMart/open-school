@@ -6,6 +6,7 @@ module.exports = {
       jsx: true,
     },
   },
+
   parser: '@typescript-eslint/parser',
   extends: [
     'airbnb',
@@ -17,6 +18,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
   ],
   rules: {
+
     '@typescript-eslint/no-unused-vars': ['warn'],
     '@typescript-eslint/no-var-requires': 'off',
     'consistent-return': 'off',

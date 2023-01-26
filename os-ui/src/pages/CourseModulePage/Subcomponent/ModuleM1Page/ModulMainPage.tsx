@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/button-has-type */
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Dropdown from '../../../../component/Dropdown/Dropdown';
 import styles from './ModuleM1Page.module.scss';
 import ModuleItem from '../../../CourseDescriptionPage/Subcomponents/ModuleItem/ModuleItem';
 import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
-import courseService from '../../../../services/courseService';
+
+// import courseService from '../../../../services/courseService';
 
 interface ModuleM1MainPage {
   value: string,
@@ -28,7 +29,7 @@ const ModuleMainPage = ({ value, handleChangeValue }:ModuleM1MainPage) => {
   return (
     <>
       <div className={styles.Main_container}>
-        <h1 className={styles.Main_M1_header}> Module 1 Overviuw </h1>
+        <h1 className={styles.Main_M1_header}> Module 1 Overview </h1>
         <p className={styles.Main_SumTime}>Estimated Time: </p>
         <div>
           <Dropdown
@@ -52,8 +53,8 @@ const ModuleMainPage = ({ value, handleChangeValue }:ModuleM1MainPage) => {
                 }}
                 />
                 <ModuleItem moduleInfo={{
-                  title: 'Reading: Here goes the video name',
-                  description: 'Here is the Video Link...',
+                  title: 'Reading: Here goes book name',
+                  description: 'Here is documentation...',
                   moduleItemSet: [],
                 }}
                 />
