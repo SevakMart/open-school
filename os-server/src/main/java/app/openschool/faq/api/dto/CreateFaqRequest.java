@@ -1,13 +1,16 @@
 package app.openschool.faq.api.dto;
 
 import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 
 public class CreateFaqRequest {
 
   @NotNull(message = "{argument.required}")
+  @Length(max = 500, message = "{faq.length.max}")
   private String question;
 
   @NotNull(message = "{argument.required}")
+  @Length(max = 500, message = "{faq.length.max}")
   private String answer;
 
   @NotNull(message = "{argument.required}")

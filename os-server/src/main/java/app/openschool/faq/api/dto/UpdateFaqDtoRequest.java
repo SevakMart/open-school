@@ -1,13 +1,16 @@
 package app.openschool.faq.api.dto;
 
 import javax.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.Length;
 
 public class UpdateFaqDtoRequest {
 
   @NotBlank(message = "{argument.required}")
+  @Length(max = 500, message = "{faq.length.max}")
   private String question;
 
   @NotBlank(message = "{argument.required}")
+  @Length(max = 500, message = "{faq.length.max}")
   private String answer;
 
   public UpdateFaqDtoRequest() {}
