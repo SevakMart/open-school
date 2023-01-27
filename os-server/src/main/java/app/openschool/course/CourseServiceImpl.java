@@ -3,11 +3,11 @@ package app.openschool.course;
 import app.openschool.category.CategoryRepository;
 import app.openschool.course.api.dto.CreateCourseRequest;
 import app.openschool.course.api.dto.UpdateCourseRequest;
-import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.course.difficulty.DifficultyRepository;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.keyword.KeywordRepository;
 import app.openschool.course.language.LanguageRepository;
+import app.openschool.course.module.api.mapper.ModuleMapper;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.util.List;
@@ -19,10 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class CourseServiceImpl implements CourseService {
-
   private final CourseRepository courseRepository;
   private final CategoryRepository categoryRepository;
   private final DifficultyRepository difficultyRepository;
@@ -66,7 +64,7 @@ public class CourseServiceImpl implements CourseService {
     User userByEmail =
         userRepository.findUserByEmail(
             SecurityContextHolder.getContext().getAuthentication().getName());
-    return courseRepository.save(CourseMapper.toCourse(request, userByEmail));
+    return courseRepository.save(storeCourseData(request, userByEmail));
   }
 
   @Override
@@ -103,5 +101,32 @@ public class CourseServiceImpl implements CourseService {
   public void delete(Long courseId) {
     Course course = courseRepository.findById(courseId).orElseThrow(IllegalArgumentException::new);
     courseRepository.delete(course);
+  }
+
+  private Course storeCourseData(CreateCourseRequest request, User mentor) {
+    Course course = new Course();
+    course.setTitle(request.getTitle());
+    course.setDescription(request.getDescription());
+    course.setGoal(request.getGoal());
+    course.setCategory(
+        categoryRepository
+            .findById(request.getCategoryId())
+            .orElseThrow(IllegalArgumentException::new));
+    course.setDifficulty(
+        difficultyRepository
+            .findById(request.getDifficultyId())
+            .orElseThrow(IllegalArgumentException::new));
+    course.setLanguage(
+        languageRepository
+            .findById(request.getLanguageId())
+            .orElseThrow(IllegalArgumentException::new));
+    course.setMentor(mentor);
+    Set<Keyword> keywords =
+        request.getKeywordIds().stream()
+            .map(id -> keywordRepository.findById(id).orElseThrow(IllegalArgumentException::new))
+            .collect(Collectors.toSet());
+    course.setKeywords(keywords);
+    course.setModules(ModuleMapper.toModules(request.getCreateModuleRequests(), course));
+    return course;
   }
 }
