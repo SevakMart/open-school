@@ -95,24 +95,6 @@ class CourseControllerTest {
   }
 
   @Test
-  void findAllFaqs_authorized() throws Exception {
-
-    Pageable pageable = PageRequest.of(0, 5);
-    PageImpl<Faq> faqs = FaqGenerator.generateFaqPage(pageable);
-    when(faqService.findAll(pageable)).thenReturn(faqs);
-
-    String jwt = generateJwtToken();
-    mockMvc
-        .perform(
-            get("/api/v1/courses/faqs")
-                .queryParam("page", "o")
-                .queryParam("size", "5")
-                .header("Authorization", jwt)
-                .contentType(APPLICATION_JSON))
-        .andExpect(status().isOk());
-  }
-
-  @Test
   void findAllFaqs_unauthorized() throws Exception {
 
     Pageable pageable = PageRequest.of(0, 5);
@@ -126,6 +108,25 @@ class CourseControllerTest {
                 .queryParam("size", "5")
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void findAllFaqs_withoutAdminRole() throws Exception {
+
+    Pageable pageable = PageRequest.of(0, 5);
+    PageImpl<Faq> faqs = FaqGenerator.generateFaqPage(pageable);
+    when(faqService.findAll(pageable)).thenReturn(faqs);
+
+    // Role- MENTOR
+    String jwt = generateJwtToken();
+    mockMvc
+        .perform(
+            get("/api/v1/courses/faqs")
+                .queryParam("page", "o")
+                .queryParam("size", "5")
+                .header("Authorization", jwt)
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isForbidden());
   }
 
   @Test

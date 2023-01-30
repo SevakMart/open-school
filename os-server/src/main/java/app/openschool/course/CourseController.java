@@ -191,15 +191,22 @@ public class CourseController {
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
-  @Operation(summary = "find all FAQs", security = @SecurityRequirement(name = "bearerAuth"))
-  @ApiResponse(
-      responseCode = "200",
-      description =
-          "Returns paginated list of FAQs depending on passed filtering parameters "
-              + "(by default returns all FAQs with size of pagination), "
-              + "or empty list if no FAQ have been found")
+  @Operation(summary = "find all FAQ", security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description =
+                "Returns a paginated list of FAQs, depending on the "
+                    + "sort parameters passed (by default, all FAQs are sorted by FAQ_ID,"
+                    + "or an empty list if the answers to FAQs are not found."),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Only users with ADMIN role have access to this method",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
+  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   @GetMapping("/faqs")
-  @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
   public ResponseEntity<Page<FaqDto>> findAllFaqs(Pageable pageable) {
     return ResponseEntity.ok().body(FaqMapper.toFaqDtoPage(faqService.findAll(pageable)));
   }
@@ -215,7 +222,8 @@ public class CourseController {
               + "or empty list if no faqs have been found.")
   @ApiResponse(
       responseCode = "403",
-      description = "Only users with ADMIN or MENTOR role have access to this method")
+      description = "Only registered users have access to this method.",
+      content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
   @GetMapping("/faqs/{courseId}")
   public ResponseEntity<Page<FaqDto>> findFaqsByCourseId(
       @PathVariable(value = "courseId") Long courseId, Pageable pageable) {
@@ -230,7 +238,8 @@ public class CourseController {
         @ApiResponse(
             responseCode = "400",
             description =
-                "Invalid request arguments provided or User is not a mentor of this course")
+                "Invalid request arguments provided or User is not a mentor of this course",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
   @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
   @PutMapping("/faqs/{faqId}")
@@ -254,7 +263,7 @@ public class CourseController {
             responseCode = "400",
             description =
                 "Invalid request arguments supplied "
-                       + "or User is not a mentor of the specified course",
+                    + "or User is not a mentor of the specified course",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
             responseCode = "403",
@@ -290,7 +299,7 @@ public class CourseController {
         @ApiResponse(
             responseCode = "403",
             description = "Only users with ADMIN or MENTOR role have access to this method",
-            content = @Content(schema = @Schema()))
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
   @PreAuthorize("hasAnyAuthority('ADMIN', 'MENTOR')")
   @DeleteMapping("/faqs/{faqId}")

@@ -12,6 +12,7 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -85,5 +86,10 @@ public class CommonExceptionHandler implements ErrorController {
       SQLIntegrityConstraintViolationException ex) {
     String message = messageSource.getMessage("exception.persist", null, Locale.ROOT);
     return ResponseEntity.badRequest().body(new ResponseMessage(message));
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<ResponseMessage> handleAccessDeniedException(AccessDeniedException ex) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(ex.getMessage()));
   }
 }

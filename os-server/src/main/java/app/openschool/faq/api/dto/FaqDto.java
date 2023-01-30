@@ -1,12 +1,19 @@
 package app.openschool.faq.api.dto;
 
 import app.openschool.course.api.dto.CourseInfoDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class FaqDto {
 
+  @Schema(description = "id", example = "1")
   private Long id;
+
+  @Schema(description = "Question", example = "Any question")
   private String question;
+
+  @Schema(description = "Answer", example = "Any answer")
   private String answer;
+
   private CourseInfoDto courseInfoDto;
 
   public FaqDto(Long id, String question, String answer, CourseInfoDto courseInfoDto) {
