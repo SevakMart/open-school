@@ -51,7 +51,7 @@ const NavbarOnSignIn = () => {
         </div>
         <Portal.ProfilePortal isOpen={isOpen}>
           <>
-            <ProfilePortalContent icon={<SignoutIcon />}>
+            <ProfilePortalContent icon={<SignoutIcon />} isSignOut>
               {t('string.profilePortal.signOut')}
             </ProfilePortalContent>
           </>

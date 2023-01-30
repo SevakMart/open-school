@@ -40,7 +40,7 @@ public class Course {
   private String goal;
 
   @Column(name = "rating")
-  private Double rating;
+  private Double rating = 0.0;
 
   @ManyToOne
   @JoinColumn(name = "category_id")

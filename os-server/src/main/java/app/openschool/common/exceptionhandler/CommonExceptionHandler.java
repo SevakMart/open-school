@@ -2,7 +2,11 @@ package app.openschool.common.exceptionhandler;
 
 import app.openschool.category.api.exception.CategoryNestingException;
 import app.openschool.common.exceptionhandler.exception.DuplicateEntityException;
+import app.openschool.common.exceptionhandler.exception.FileDeleteException;
+import app.openschool.common.exceptionhandler.exception.FileNotFoundException;
+import app.openschool.common.exceptionhandler.exception.FileSaveException;
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
+import app.openschool.common.exceptionhandler.exception.TemporaryStorageFailsException;
 import app.openschool.common.response.ResponseMessage;
 import java.util.HashMap;
 import java.util.Locale;
@@ -71,6 +75,27 @@ public class CommonExceptionHandler implements ErrorController {
   public ResponseEntity<HttpStatus> handleHttpRequestMethodNotSupportedException(
       HttpRequestMethodNotSupportedException ex) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+  }
+
+  @ExceptionHandler(FileSaveException.class)
+  public ResponseEntity<ResponseMessage> handleFileSaveException(FileSaveException ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage(ex.getMessage()));
+  }
+
+  @ExceptionHandler
+  public ResponseEntity<ResponseMessage> handleFileDeleteException(FileDeleteException ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage(ex.getMessage()));
+  }
+
+  @ExceptionHandler(FileNotFoundException.class)
+  public ResponseEntity<ResponseMessage> handleFileNotFoundException(FileNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage(ex.getMessage()));
+  }
+
+  @ExceptionHandler(TemporaryStorageFailsException.class)
+  public ResponseEntity<ResponseMessage> handleCustomIoException(
+      TemporaryStorageFailsException ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage(ex.getMessage()));
   }
 
   @ExceptionHandler(PermissionDeniedException.class)
