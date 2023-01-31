@@ -20,26 +20,26 @@ public interface FaqRepository extends JpaRepository<Faq, Long> {
   @Transactional
   @Query(
       value =
-          "INSERT INTO FAQ(QUESTION, ANSWER, LEARNING_PATH_ID) "
+          "INSERT INTO faq(question, answer, learning_path_id) "
               + "  VALUES ( :#{#req.question} , :#{#req.answer} , "
-              + "  (SELECT LEARNING_PATH.ID FROM LEARNING_PATH "
-              + "  INNER JOIN USER ON "
-              + "  (USER.ID = LEARNING_PATH.MENTOR_ID "
-              + "  AND USER.EMAIL =:email AND LEARNING_PATH.ID = :#{#req.courseId})));",
+              + "  (SELECT learning_path.id FROM learning_path "
+              + "  INNER JOIN user ON "
+              + "  (user.id = learning_path.mentor_id "
+              + "  AND user.email =:email AND learning_path.id = :#{#req.courseId})));",
       nativeQuery = true)
   int saveFaq(@Param("req") CreateFaqRequest request, @Param("email") String mentorEmail);
 
-  @Query(value = "SELECT * FROM FAQ ORDER BY FAQ.ID DESC LIMIT 1;", nativeQuery = true)
+  @Query(value = "SELECT * FROM faq ORDER BY faq.id DESC LIMIT 1;", nativeQuery = true)
   Optional<Faq> getLastInsertData();
 
   @Modifying
   @Transactional
   @Query(
       value =
-          "UPDATE FAQ SET FAQ.QUESTION = :#{#update.question} , FAQ.ANSWER = :#{#update.answer} "
-              + "WHERE FAQ.ID = :id AND FAQ.LEARNING_PATH_ID IN "
-              + "(SELECT LEARNING_PATH.ID FROM LEARNING_PATH "
-              + "INNER JOIN USER ON (USER.ID = LEARNING_PATH.MENTOR_ID AND USER.EMAIL = :email ));",
+          "UPDATE faq SET faq.question = :#{#update.question} , faq.answer = :#{#update.answer} "
+              + "WHERE faq.id = :id AND faq.learning_path_id IN "
+              + "(SELECT learning_path.id FROM learning_path "
+              + "INNER JOIN user ON (user.id = learning_path.mentor_id AND user.email = :email ));",
       nativeQuery = true)
   int updateFaq(
       @Param("update") UpdateFaqDtoRequest update,
@@ -50,10 +50,10 @@ public interface FaqRepository extends JpaRepository<Faq, Long> {
   @Transactional
   @Query(
       value =
-          "DELETE FROM FAQ "
-              + "WHERE FAQ.ID = :id AND FAQ.LEARNING_PATH_ID IN "
-              + "(SELECT LEARNING_PATH.ID FROM LEARNING_PATH "
-              + "INNER JOIN USER ON (USER.ID = LEARNING_PATH.MENTOR_ID AND USER.EMAIL = :email ));",
+          "DELETE FROM faq "
+              + "WHERE faq.id = :id AND faq.learning_path_id IN "
+              + "(SELECT learning_path.id FROM learning_path "
+              + "INNER JOIN user ON (user.id = learning_path.mentor_id AND user.email = :email ));",
       nativeQuery = true)
   int deleteFaq(@Param("id") Long faqId, @Param("email") String mentorEmail);
 }
