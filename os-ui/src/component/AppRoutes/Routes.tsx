@@ -14,6 +14,7 @@ import AfterVerificationPage from '../../pages/AfterVerificationPage/AfterVerifi
 import CourseDescriptionPage from '../../pages/CourseDescriptionPage/CourseDescriptionPage';
 import { signInContext } from '../../contexts/Contexts';
 import CourseModulePage from '../../pages/CourseModulePage/CourseModulePage';
+import HomepageWhenSignIn from '../../pages/HomepageWhenSignIn/HomepageWhenSignIn';
 
 /* eslint-disable max-len */
 
@@ -79,6 +80,14 @@ const AppRoutes = () => {
             element={(
               <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
                 <CourseModulePage />
+              </ProtectedRoute>
+        )}
+          />
+          <Route
+            path="/homepage/WhenSignin"
+            element={(
+              <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
+                <HomepageWhenSignIn />
               </ProtectedRoute>
         )}
           />
