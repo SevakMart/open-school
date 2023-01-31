@@ -205,7 +205,7 @@ public class CourseController {
             description = "Only users with ADMIN role have access to this method",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
-  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+  @PreAuthorize("hasAuthority('ADMIN')")
   @GetMapping("/faqs")
   public ResponseEntity<Page<FaqDto>> findAllFaqs(Pageable pageable) {
     return ResponseEntity.ok().body(FaqMapper.toFaqDtoPage(faqService.findAll(pageable)));
