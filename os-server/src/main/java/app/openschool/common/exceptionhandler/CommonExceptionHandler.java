@@ -8,6 +8,7 @@ import app.openschool.common.exceptionhandler.exception.FileSaveException;
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.common.exceptionhandler.exception.TemporaryStorageFailsException;
 import app.openschool.common.response.ResponseMessage;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -101,6 +103,18 @@ public class CommonExceptionHandler implements ErrorController {
   @ExceptionHandler(PermissionDeniedException.class)
   public ResponseEntity<ResponseMessage> handlePermissionDeniedException(
       PermissionDeniedException ex) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(ex.getMessage()));
+  }
+
+  @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+  public ResponseEntity<ResponseMessage> handleSqlIntegrityConstraintViolationException(
+      SQLIntegrityConstraintViolationException ex) {
+    String message = messageSource.getMessage("exception.persist", null, Locale.ROOT);
+    return ResponseEntity.badRequest().body(new ResponseMessage(message));
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<ResponseMessage> handleAccessDeniedException(AccessDeniedException ex) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(ex.getMessage()));
   }
 }
