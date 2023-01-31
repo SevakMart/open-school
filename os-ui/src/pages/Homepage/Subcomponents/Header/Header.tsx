@@ -49,7 +49,7 @@ const HomepageHeader = () => {
             ) : (
               <Link to="/categories/subcategories">
                 <Button.MainButton className={['headerButton', 'headerButton__signUp']}>
-                  Categories
+                  {t('Categories')}
                 </Button.MainButton>
               </Link>
             )}
