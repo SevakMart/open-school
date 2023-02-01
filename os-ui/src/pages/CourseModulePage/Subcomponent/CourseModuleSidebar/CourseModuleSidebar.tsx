@@ -11,9 +11,10 @@ import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
 interface SidebarDropdownProps {
   value: string,
   handleChangeValue: (a:string) => void
+  setDisBtnPosition: (value:string) => void
 }
 
-const CourseModuleSidebar = ({ value, handleChangeValue }: SidebarDropdownProps) => {
+const CourseModuleSidebar = ({ value, handleChangeValue, setDisBtnPosition }: SidebarDropdownProps) => {
   const [moduleListIsOpen, setModuleListIsOpen] = useState(true);
   const openModuleList = () => {
     setModuleListIsOpen((prevState) => !prevState);
@@ -46,6 +47,7 @@ const CourseModuleSidebar = ({ value, handleChangeValue }: SidebarDropdownProps)
           <div
             className={styles.SidebarOverview_button}
             key={button.id}
+            onClick={() => setDisBtnPosition(button.desc)}
           >
             {button.desc}
           </div>

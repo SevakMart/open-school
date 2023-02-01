@@ -25,10 +25,9 @@ const CourseSummary = ({
   const isEnrolled = params.has('enrolled');
   const { id: userId, token } = userIdAndToken;
   const courseSummaryItem = {
-    rating, enrolled, level, language, duration,
+    rating, enrolled, level, language, duration, title,
   };
   const dispatch = useDispatch<DispatchType>();
-
   const {
     mainContent, headerContent, headerIcons, courseSummaryItemList, buttonContainer, userEnrollText,
     enrolledButtonContainer,
@@ -45,6 +44,12 @@ const CourseSummary = ({
     navigate(`${location.pathname}`, { replace: true });
   };
 
+  //   console.log('start');
+  //   const isEnrolled = enrolled !== 0 ? true : false;
+
+  //   const [isEnrolled, setIsEnrolled] = useState(isEnrolled1);
+  console.log(enrolled, isEnrolled);
+
   useEffect(() => {
     dispatch(getUserSavedCourse({ userId, token, params: {} }))
       .unwrap()
@@ -57,6 +62,7 @@ const CourseSummary = ({
           navigate(`${location.pathname}`, { replace: true });
         }
       });
+  //     setIsEnrolled(isEnrolled);
   }, []);
 
   return (
