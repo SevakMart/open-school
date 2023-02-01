@@ -1,0 +1,21 @@
+.Question_item {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 40px 5px 0;
+  padding:0 10px 0 10px;
+  background-color: #F9F9FD;
+}
+
+.Question_item:hover {
+  background-color: #b4b4c5;
+}
+
+.Question_text {
+  color: #86888b;
+  font-weight: 500;
+}
+
+.Question_inner {
+  color: #3D3F42;
+  font-weight: 600;
+}

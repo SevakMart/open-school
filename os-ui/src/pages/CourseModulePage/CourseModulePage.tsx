@@ -15,7 +15,12 @@ const CourseModulePage = ({ userInfo }: { userInfo: any }) => {
   const [value, setValue] = useState<string>(entity?.modules?.[0]?.title || '');
   const { courseId } = useParams();
   const dispatch = useDispatch();
-
+  const [isDiscBtnpressed, setDiscBtnpressed] = useState<boolean>(false);
+  const setDisBtnPosition = (value:string):void => {
+    if (value === 'Discussion Form') {
+      setDiscBtnpressed(() => !isDiscBtnpressed);
+    }
+  };
   useEffect(() => {
     setValue(entity?.modules?.[0]?.title);
   }, [entity]);
@@ -37,7 +42,12 @@ const CourseModulePage = ({ userInfo }: { userInfo: any }) => {
         <userContext.Provider value={userInfo}>
           <div className={styles.ModuleOverviuw_container}>
             <CourseModuleSidebar value={value} handleChangeValue={handleChangeValue} title={entity.title} modules={entity.modules} />
-            <ModuleMainPage value={value} handleChangeValue={handleChangeValue} modules={entity.modules} duration={entity.duration} />
+            { isDiscBtnpressed === false
+              ? (
+                <ModuleMainPage value={value} handleChangeValue={handleChangeValue} modules={entity.modules} duration={entity.duration} />
+              )
+              : (<DiscussionForm />
+              )}
           </div>
         </userContext.Provider>
       </>
