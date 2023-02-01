@@ -14,7 +14,8 @@ interface SidebarDropdownProps {
   setDisBtnPosition: (value:string) => void
 }
 
-const CourseModuleSidebar = ({ value, handleChangeValue, setDisBtnPosition }: SidebarDropdownProps) => {
+const CourseModuleSidebar = (props: SidebarDropdownProps) => {
+  const { value, handleChangeValue, setDisBtnPosition } = props;
   const [moduleListIsOpen, setModuleListIsOpen] = useState(true);
   const openModuleList = () => {
     setModuleListIsOpen((prevState) => !prevState);

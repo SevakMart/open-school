@@ -25,7 +25,11 @@ const CourseModulePage = ():JSX.Element => {
     <>
       <NavbarOnSignIn />
       <div className={styles.ModuleOverviuw_container}>
-        <CourseModuleSidebar value={value} handleChangeValue={handleChangeValue} setDisBtnPosition={setDisBtnPosition} />
+        <CourseModuleSidebar
+          value={value}
+          handleChangeValue={handleChangeValue}
+          setDisBtnPosition={setDisBtnPosition}
+        />
         { isDiscBtnpressed === false
           ? (
             <ModuleMainPage value={value} handleChangeValue={handleChangeValue} />
@@ -33,7 +37,7 @@ const CourseModulePage = ():JSX.Element => {
           : (<DiscussionForm />
           )}
         {COURSE_CATEGORIES.map((module) => {
-          const choosenModule = COURSE_CATEGORIES.filter((item) => item.id === module.value);
+          COURSE_CATEGORIES.filter((item) => item.id === module.value);
         })}
       </div>
     </>

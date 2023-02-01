@@ -48,7 +48,6 @@ const CourseSummary = ({
   //   const isEnrolled = enrolled !== 0 ? true : false;
 
   //   const [isEnrolled, setIsEnrolled] = useState(isEnrolled1);
-  console.log(enrolled, isEnrolled);
 
   useEffect(() => {
     dispatch(getUserSavedCourse({ userId, token, params: {} }))
