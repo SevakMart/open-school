@@ -145,7 +145,7 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
     MultipartFile image = request.getImage();
     if (category.getLogoPath() != null) {
-      String oldImageName = category.getLogoPath().substring(57);
+      String oldImageName = category.getLogoPath();
       category.setLogoPath(fileStorageService.uploadFile(image));
       fileStorageService.deleteFile(oldImageName);
     } else {
