@@ -13,6 +13,7 @@ import app.openschool.course.module.Module;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.status.CourseStatus;
 import app.openschool.user.User;
+import app.openschool.user.api.mapper.MentorMapper;
 import app.openschool.user.company.Company;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class CourseMapper {
         course.getDescription(),
         course.getGoal(),
         getCourseInfoModuleDtoSet(course),
-        getCourseInfoMentorDto(course),
+        MentorMapper.toMentorDto(course.getMentor()),
         course.getRating(),
         course.getEnrolledCourses().size(),
         course.getDifficulty().getTitle(),
