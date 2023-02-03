@@ -5,8 +5,10 @@ import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.language.Language;
 import app.openschool.course.module.Module;
+import app.openschool.discussion.api.DiscussionQuestion;
 import app.openschool.user.User;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -77,6 +79,9 @@ public class Course {
 
   @OneToMany(mappedBy = "course")
   private Set<EnrolledCourse> enrolledCourses = new HashSet<>();
+
+  @OneToMany(mappedBy = "course")
+  private List<DiscussionQuestion> discussionQuestion;
 
   public Course() {}
 

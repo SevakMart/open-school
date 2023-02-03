@@ -4,9 +4,12 @@ import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.category.Category;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
+import app.openschool.discussion.api.DiscussionQuestion;
+import app.openschool.discussion.api.DiscussionAnswer;
 import app.openschool.user.company.Company;
 import app.openschool.user.role.Role;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,7 +41,6 @@ public class User {
 
   @Column(name = "last_name")
   private String surname;
-
   @Column(name = "phone_number")
   private String phoneNumber;
 
@@ -90,7 +92,6 @@ public class User {
 
   @OneToMany(cascade = CascadeType.MERGE, mappedBy = "user")
   private Set<EnrolledCourse> enrolledCourses = new HashSet<>();
-
   @OneToOne(mappedBy = "user")
   private ResetPasswordToken resetPasswordToken;
 
@@ -100,6 +101,11 @@ public class User {
       joinColumns = @JoinColumn(name = "user_id"),
       inverseJoinColumns = @JoinColumn(name = "mentor_id"))
   private Set<User> mentors = new HashSet<>();
+  @OneToMany(mappedBy = "user")
+  private List<DiscussionQuestion> discussionQuestion;
+
+  @OneToMany(mappedBy = "user")
+  private List<DiscussionAnswer> discussionAnswers;
 
   public User() {}
 
@@ -308,5 +314,13 @@ public class User {
 
   public void setMentors(Set<User> mentors) {
     this.mentors = mentors;
+  }
+
+  public List<DiscussionQuestion> getDiscussionQuestion() {
+    return discussionQuestion;
+  }
+
+  public void setDiscussionQuestion(List<DiscussionQuestion> discussionQuestion) {
+    this.discussionQuestion = discussionQuestion;
   }
 }
