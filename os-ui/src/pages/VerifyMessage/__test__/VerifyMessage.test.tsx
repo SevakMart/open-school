@@ -6,7 +6,7 @@ import VerifyMessage from '../VerifyMessage';
 test('Create a snapshot test', () => {
   const { asFragment } = render(
     <Provider store={store}>
-      <VerifyMessage handleSignInClicks={jest.fn()} />
+      <VerifyMessage />
     </Provider>,
   );
   expect(asFragment()).toMatchSnapshot();

@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import fetchService from './fetchData';
 
 class CourseService {
@@ -17,6 +18,12 @@ class CourseService {
     const { status } = response;
     const data = await response.json();
     return { data, status };
+  }
+
+  async getCourseVideoLink(id: any) {
+    const response = await fetchService.get(id);
+    const data = await response.json();
+    return data;
   }
 }
 export default new CourseService();

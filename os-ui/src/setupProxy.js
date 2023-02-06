@@ -4,6 +4,6 @@ const proxy = createProxyMiddleware({
   target: 'http://localhost:5000',
 });
 
-module.exports = function (app) {
+module.exports = (app) => {
   app.use(['/api'], proxy);
 };
