@@ -4,7 +4,6 @@ import { useState } from 'react';
 import CourseModuleSidebar from './Subcomponent/CourseModuleSidebar/CourseModuleSidebar';
 import styles from './CourseModulePage.module.scss';
 import ModuleMainPage from './Subcomponent/ModuleM1Page/ModulMainPage';
-import { COURSE_CATEGORIES } from '../../constants/CourseModuleCategories';
 import NavbarOnSignIn from '../../component/Navbar-Component/NavbarOnSignIn/NavbarOnSignIn';
 
 const CourseModulePage = ():JSX.Element => {
@@ -20,10 +19,6 @@ const CourseModulePage = ():JSX.Element => {
       <div className={styles.ModuleOverviuw_container}>
         <CourseModuleSidebar value={value} handleChangeValue={handleChangeValue} />
         <ModuleMainPage value={value} handleChangeValue={handleChangeValue} />
-        {COURSE_CATEGORIES.map((module) => {
-          const choosenModule = COURSE_CATEGORIES.filter((item) => item.id === module.value);
-          console.log(`IN FILTER${choosenModule[0].id}`);
-        })}
       </div>
     </>
   );

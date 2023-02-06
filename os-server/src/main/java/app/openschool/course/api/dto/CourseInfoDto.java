@@ -1,5 +1,6 @@
 package app.openschool.course.api.dto;
 
+import app.openschool.user.api.dto.MentorDto;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Set;
@@ -22,7 +23,7 @@ public class CourseInfoDto {
   private Set<CourseInfoModuleDto> modules;
 
   @Schema(description = "Object containing the information of course mentor")
-  private CourseInfoMentorDto mentorDto;
+  private MentorDto mentorDto;
 
   @Schema(description = "Rating of the course", example = "5.5")
   private double rating;
@@ -45,7 +46,7 @@ public class CourseInfoDto {
       String description,
       String goal,
       Set<CourseInfoModuleDto> modules,
-      CourseInfoMentorDto mentorDto,
+      MentorDto mentorDto,
       double rating,
       int enrolled,
       String level,
@@ -79,7 +80,7 @@ public class CourseInfoDto {
     return modules;
   }
 
-  public CourseInfoMentorDto getMentorDto() {
+  public MentorDto getMentorDto() {
     return mentorDto;
   }
 

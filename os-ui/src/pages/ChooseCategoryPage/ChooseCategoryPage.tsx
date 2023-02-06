@@ -6,6 +6,7 @@ import Button from '../../component/Button/Button';
 import categoriesService from '../../services/categoriesService';
 import { SearchedCategoryType } from '../../types/SearchedCategoryType';
 import styles from './ChooseCategoryPage.module.scss';
+import NavbarOnSignIn from '../../component/Navbar-Component/NavbarOnSignIn/NavbarOnSignIn';
 
 /* eslint-disable max-len */
 
@@ -41,6 +42,7 @@ const ChooseCategoryPage = ({ userInfo }:{userInfo:object}) => {
   }, [title]);
   return (
     <>
+      <NavbarOnSignIn />
       <Header changeUrlQueries={handleChangeUrlTitleParam} />
       <MainContent
         isLoading={isLoading}

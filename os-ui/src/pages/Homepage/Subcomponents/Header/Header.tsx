@@ -1,20 +1,15 @@
-import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { Types } from '../../../../types/types';
+import { openModal } from '../../../../redux/Slices/PortalOpenStatus';
 import Navbar from '../../../../component/Navbar-Component/Navbar/Navbar';
 import HomepageMainImage from '../../../../assets/svg/HomepageMainImage.svg';
 import Button from '../../../../component/Button/Button';
-import { Types } from '../../../../types/types';
-import { signInContext, userContext } from '../../../../contexts/Contexts';
-import { openModal } from '../../../../redux/Slices/PortalOpenStatus';
 import styles from './Header.module.scss';
-import { RootState } from '../../../../redux/Store';
 
 const HomepageHeader = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const userInfoState = useSelector<RootState>((state) => state.userInfo);
-  const { userInfo } = userInfoState as any;
 
   const {
     mainContent, leftContent, rightContent, buttonContainer,

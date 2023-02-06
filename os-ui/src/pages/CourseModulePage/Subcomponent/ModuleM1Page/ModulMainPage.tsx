@@ -2,12 +2,11 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/button-has-type */
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Dropdown from '../../../../component/Dropdown/Dropdown';
 import styles from './ModuleM1Page.module.scss';
 import ModuleItem from '../../../CourseDescriptionPage/Subcomponents/ModuleItem/ModuleItem';
 import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
-
-// import courseService from '../../../../services/courseService';
 
 interface ModuleM1MainPage {
   value: string,
@@ -16,6 +15,7 @@ interface ModuleM1MainPage {
 
 const ModuleMainPage = ({ value, handleChangeValue }:ModuleM1MainPage) => {
   const [moduleListIsOpen, setModuleListIsOpen] = useState(false);
+  const { t } = useTranslation();
   const openModuleList = () => {
     setModuleListIsOpen((prevState) => !prevState);
   };
@@ -23,20 +23,17 @@ const ModuleMainPage = ({ value, handleChangeValue }:ModuleM1MainPage) => {
     chevronIsOpen, chevronIsClosed, moduleDescriptionIsOpen, moduleDescriptionIsClosed,
   } = styles;
 
-  // useEffect(() => {
-  //   courseService.getCourseVideoLink(courseName);//there should be Course Name
-  // });
   return (
     <>
       <div className={styles.Main_container}>
-        <h1 className={styles.Main_M1_header}> Module 1 Overview </h1>
-        <p className={styles.Main_SumTime}>Estimated Time: </p>
+        <h1 className={styles.Main_M1_header}>{t('Module 1 Overview')}</h1>
+        <p className={styles.Main_SumTime}>{t('Estimated Time: ')}</p>
         <div>
           <Dropdown
             open={value}
             trigger={(
               <button className={styles.Course_Material} onChange={() => handleChangeValue(value)}>
-                Course Materials
+                {t('Course Materials')}
                 <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
                 {' '}
               </button>
@@ -65,7 +62,7 @@ const ModuleMainPage = ({ value, handleChangeValue }:ModuleM1MainPage) => {
             open={value}
             trigger={(
               <button className={styles.Course_Material}>
-                Exercises and Practice Sessions
+                {t('Exercises and Practice Sessions')}
                 <img className={chevronIsClosed} src={ArrowRightIcon} alt="chevron" />
                 {' '}
               </button>
@@ -77,7 +74,7 @@ const ModuleMainPage = ({ value, handleChangeValue }:ModuleM1MainPage) => {
             open={value}
             trigger={(
               <button className={styles.Course_Material}>
-                Course Description
+                {t('Course Description')}
                 <img className={chevronIsClosed} src={ArrowRightIcon} alt="chevron" />
                 {' '}
               </button>

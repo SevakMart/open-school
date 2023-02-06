@@ -3,62 +3,33 @@
 exports[`Create several unit tests for Homepage Component Create a Snapshot test 1`] = `
 <DocumentFragment>
   <nav
-    class="mainContent"
+    class="navContainer"
   >
     <h2>
       string.homePage.navBar.logo
     </h2>
     <div
-      class="navMainContent"
+      class="categoriesMentors"
     >
       <p>
-        string.homePage.navBar.allLearningPaths
-      </p>
-      <p>
-        string.homePage.navBar.myLearningPaths
+        string.homePage.navBar.exploreCategories
       </p>
       <p>
         string.homePage.navBar.mentors
       </p>
-      <div
-        class="bookmarkIconStyle"
+    </div>
+    <div
+      class="buttonContent"
+    >
+      <p>
+        button.homePage.becomeMentor
+      </p>
+      <button
+        class="navbarSignInButton"
+        type="button"
       >
-        <svg
-          fill="none"
-          height="1em"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          style="font-size: 20px; cursor: pointer; fill: none;"
-          viewBox="0 0 24 24"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
-          />
-        </svg>
-      </div>
-      <img
-        alt="Notification"
-        class="notificationIcon"
-        src="Notification.svg"
-      />
-      <div
-        class="userInfoContent"
-      >
-        <img
-          alt="avatar"
-          class="avatarLogo"
-          src="https://reactjs.org/logo-og.png"
-        />
-        <img
-          alt="Arrow down Icon"
-          class="arrowDownIcon"
-          src="Arrow-down.svg"
-        />
-      </div>
+        button.homePage.signIn
+      </button>
     </div>
   </nav>
   <div

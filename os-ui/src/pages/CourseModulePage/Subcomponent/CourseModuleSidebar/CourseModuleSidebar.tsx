@@ -10,7 +10,7 @@ import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
 
 interface SidebarDropdownProps {
   value: string,
-  handleChangeValue: (a:string) => void
+  handleChangeValue: (a:string) => void,
 }
 
 const CourseModuleSidebar = ({ value, handleChangeValue }: SidebarDropdownProps) => {
@@ -55,6 +55,3 @@ const CourseModuleSidebar = ({ value, handleChangeValue }: SidebarDropdownProps)
   );
 };
 export default CourseModuleSidebar;
-// function handleChangeValue(a: string): void {
-//   throw new Error('Function not implemented.');
-// }
