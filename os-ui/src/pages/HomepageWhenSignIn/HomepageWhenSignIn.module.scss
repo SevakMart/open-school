@@ -1,0 +1,40 @@
+@import "../../styles/Configs/Colors.scss";
+@import "../../styles/Configs/Fonts.scss";
+@import "../../styles/Mixins/FlexMixins.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+
+  .mainContent {
+    @include flexStyle(row, center, space-between);
+    margin: 0 2.7%;
+	margin-top: 10px;
+    border-radius: 2.5rem;
+    background-color: #F9FAFD;
+    box-sizing: border-box;
+    .leftContent {
+      padding:11% 0 11% 11%;
+      width: 40%;
+      h1 {
+        @include fontStyle($primary-font, normal, 800, 3rem, 3.6rem);
+        color: $header-main-color;
+      }
+      p {
+        @include fontStyle($primary-font, normal, 400, 1rem, 1.5rem);
+        color: $main-text-color;
+      }
+      .buttonContainer {
+        width: 50%;
+        margin-top:8%;
+        @include flexStyle(row, center, space-between);
+      }
+    }
+    .rightContent {
+      width: 50%;
+      text-align: center;
+    }
+  }
+  .buttonContainer {
+    margin:24px 88px;
+    box-sizing: border-box;
+    width:108px;
+    float:right;
+}
