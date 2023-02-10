@@ -108,21 +108,21 @@ public class CommonExceptionHandler implements ErrorController {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(ex.getMessage()));
   }
 
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<ResponseMessage> handleConstraintViolationException(
+      ConstraintViolationException ex) {
+    return ResponseEntity.badRequest().body(new ResponseMessage(ex.getMessage()));
+  }
+  
   @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
   public ResponseEntity<ResponseMessage> handleSqlIntegrityConstraintViolationException(
       SQLIntegrityConstraintViolationException ex) {
     String message = messageSource.getMessage("exception.persist", null, Locale.ROOT);
     return ResponseEntity.badRequest().body(new ResponseMessage(message));
   }
-
+  
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<ResponseMessage> handleAccessDeniedException(AccessDeniedException ex) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(ex.getMessage()));
-  }
-
-  @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<ResponseMessage> handleConstraintViolationException(
-      ConstraintViolationException ex) {
-    return ResponseEntity.badRequest().body(new ResponseMessage(ex.getMessage()));
   }
 }
