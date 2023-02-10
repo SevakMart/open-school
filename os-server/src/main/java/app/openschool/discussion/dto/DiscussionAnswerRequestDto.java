@@ -1,8 +1,11 @@
-package app.openschool.discussion.api.dto;
+package app.openschool.discussion.dto;
+
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Objects;
 
 public class DiscussionAnswerRequestDto {
+  @Length(max = 500, message = "answer.title.long")
   private String text;
 
   private Long questionId;

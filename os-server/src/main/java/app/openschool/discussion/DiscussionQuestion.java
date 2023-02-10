@@ -1,7 +1,9 @@
-package app.openschool.discussion.api;
+package app.openschool.discussion;
 
+import app.openschool.course.Course;
 import app.openschool.user.User;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,17 +12,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "discussion_answer")
-public class DiscussionAnswer {
+@Table(name = "discussion_question_ask_peers")
+public class DiscussionQuestion {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "text")
+  @NotBlank(message = "validation.notBlank")
+  @Column(name = "text", nullable = false)
   private String text;
 
   @ManyToOne
@@ -28,20 +32,29 @@ public class DiscussionAnswer {
   private User user;
 
   @ManyToOne
-  @JoinColumn(name = "discussion_question_id")
-  private DiscussionQuestion discussionQuestion;
+  @JoinColumn(name = "learning_path_id")
+  private Course course;
+
+  @OneToMany(mappedBy = "discussionQuestion")
+  private List<DiscussionAnswer> discussionAnswers;
 
   @Column(name = "create_date", nullable = false)
   private Instant createdDate;
 
-  public DiscussionAnswer() {}
+  public DiscussionQuestion() {}
 
-  public DiscussionAnswer(
-      Long id, String text, User user, DiscussionQuestion discussionQuestion, Instant createdDate) {
+  public DiscussionQuestion(
+      Long id,
+      String text,
+      User user,
+      Course course,
+      List<DiscussionAnswer> discussionAnswers,
+      Instant createdDate) {
     this.id = id;
     this.text = text;
     this.user = user;
-    this.discussionQuestion = discussionQuestion;
+    this.course = course;
+    this.discussionAnswers = discussionAnswers;
     this.createdDate = createdDate;
   }
 
@@ -69,12 +82,20 @@ public class DiscussionAnswer {
     this.user = user;
   }
 
-  public DiscussionQuestion getDiscussionQuestion() {
-    return discussionQuestion;
+  public Course getCourse() {
+    return course;
   }
 
-  public void setDiscussionQuestion(DiscussionQuestion discussionQuestion) {
-    this.discussionQuestion = discussionQuestion;
+  public void setCourse(Course course) {
+    this.course = course;
+  }
+
+  public List<DiscussionAnswer> getDiscussionAnswers() {
+    return discussionAnswers;
+  }
+
+  public void setDiscussionAnswers(List<DiscussionAnswer> discussionAnswers) {
+    this.discussionAnswers = discussionAnswers;
   }
 
   public Instant getCreatedDate() {
@@ -93,16 +114,17 @@ public class DiscussionAnswer {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    DiscussionAnswer that = (DiscussionAnswer) o;
+    DiscussionQuestion that = (DiscussionQuestion) o;
     return Objects.equals(id, that.id)
         && Objects.equals(text, that.text)
         && Objects.equals(user, that.user)
-        && Objects.equals(discussionQuestion, that.discussionQuestion)
+        && Objects.equals(course, that.course)
+        && Objects.equals(discussionAnswers, that.discussionAnswers)
         && Objects.equals(createdDate, that.createdDate);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, text, user, discussionQuestion, createdDate);
+    return Objects.hash(id, text, user, course, discussionAnswers, createdDate);
   }
 }

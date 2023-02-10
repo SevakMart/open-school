@@ -1,4 +1,4 @@
-package app.openschool.discussion.api.dto;
+package app.openschool.discussion.dto;
 
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.user.api.dto.UserDto;
@@ -47,7 +47,6 @@ public class DiscussionQuestionResponseDto {
   public void setUserDto(UserDto userDto) {
     this.userDto = userDto;
   }
-
 
   public CourseDto getCourseDto() {
     return courseDto;

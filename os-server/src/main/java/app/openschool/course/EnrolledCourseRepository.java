@@ -2,4 +2,9 @@ package app.openschool.course;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EnrolledCourseRepository extends JpaRepository<EnrolledCourse, Long> {}
+import java.util.Optional;
+
+public interface EnrolledCourseRepository extends JpaRepository<EnrolledCourse, Long> {
+
+  Optional<EnrolledCourse> findByCourseId(Long id);
+}

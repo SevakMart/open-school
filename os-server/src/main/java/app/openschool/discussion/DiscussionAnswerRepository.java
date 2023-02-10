@@ -1,4 +1,4 @@
-package app.openschool.discussion.api;
+package app.openschool.discussion;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

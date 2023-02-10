@@ -1,29 +1,22 @@
-package app.openschool.discussion.api;
+package app.openschool.discussion;
 
 import app.openschool.course.Course;
 import app.openschool.user.User;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-
 
 @Entity
-@Table(name = "discussion_question")
-public class DiscussionQuestion {
+@Table(name = "discussion_question_ask_mentor")
+public class DiscussionQuestionMentor {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @NotBlank(message = "validation.notBlank")
   @Column(name = "text", nullable = false)
   private String text;
 
@@ -35,27 +28,26 @@ public class DiscussionQuestion {
   @JoinColumn(name = "learning_path_id")
   private Course course;
 
-  @OneToMany
-  @JoinColumn(name = "discussion_answer")
-  private List<DiscussionAnswer> discussionAnswers;
+  @OneToMany(mappedBy = "discussionQuestionMentor")
+  private List<DiscussionAnswerMentor> discussionAnswerMentorList;
 
   @Column(name = "create_date", nullable = false)
   private Instant createdDate;
 
-  public DiscussionQuestion() {}
+  public DiscussionQuestionMentor() {}
 
-  public DiscussionQuestion(
+  public DiscussionQuestionMentor(
       Long id,
-      String text,
+      @NotBlank(message = "validation.notBlank") String text,
       User user,
       Course course,
-      List<DiscussionAnswer> discussionAnswers,
+      List<DiscussionAnswerMentor> discussionAnswerMentorList,
       Instant createdDate) {
     this.id = id;
     this.text = text;
     this.user = user;
     this.course = course;
-    this.discussionAnswers = discussionAnswers;
+    this.discussionAnswerMentorList = discussionAnswerMentorList;
     this.createdDate = createdDate;
   }
 
@@ -91,12 +83,13 @@ public class DiscussionQuestion {
     this.course = course;
   }
 
-  public List<DiscussionAnswer> getDiscussionAnswers() {
-    return discussionAnswers;
+  public List<DiscussionAnswerMentor> getDiscussionAnswerMentorList() {
+    return discussionAnswerMentorList;
   }
 
-  public void setDiscussionAnswers(List<DiscussionAnswer> discussionAnswers) {
-    this.discussionAnswers = discussionAnswers;
+  public void setDiscussionAnswerMentorList(
+      List<DiscussionAnswerMentor> discussionAnswerMentorList) {
+    this.discussionAnswerMentorList = discussionAnswerMentorList;
   }
 
   public Instant getCreatedDate() {
@@ -109,23 +102,19 @@ public class DiscussionQuestion {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    DiscussionQuestion that = (DiscussionQuestion) o;
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    DiscussionQuestionMentor that = (DiscussionQuestionMentor) o;
     return Objects.equals(id, that.id)
         && Objects.equals(text, that.text)
         && Objects.equals(user, that.user)
         && Objects.equals(course, that.course)
-        && Objects.equals(discussionAnswers, that.discussionAnswers)
+        && Objects.equals(discussionAnswerMentorList, that.discussionAnswerMentorList)
         && Objects.equals(createdDate, that.createdDate);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, text, user, course, discussionAnswers, createdDate);
+    return Objects.hash(id, text, user, course, discussionAnswerMentorList, createdDate);
   }
 }

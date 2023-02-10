@@ -18,6 +18,8 @@ import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
+
 @RestControllerAdvice
 public class CommonExceptionHandler implements ErrorController {
   private final MessageSource messageSource;
@@ -77,5 +79,11 @@ public class CommonExceptionHandler implements ErrorController {
   public ResponseEntity<ResponseMessage> handlePermissionDeniedException(
       PermissionDeniedException ex) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(ex.getMessage()));
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<ResponseMessage> handleConstraintViolationException(
+      ConstraintViolationException ex) {
+    return ResponseEntity.badRequest().body(new ResponseMessage(ex.getMessage()));
   }
 }

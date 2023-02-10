@@ -1,4 +1,4 @@
-package app.openschool.discussion.api.dto;
+package app.openschool.discussion.dto;
 
 import java.util.Objects;
 

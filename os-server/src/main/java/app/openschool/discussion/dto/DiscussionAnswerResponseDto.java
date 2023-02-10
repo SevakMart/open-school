@@ -1,4 +1,4 @@
-package app.openschool.discussion.api.dto;
+package app.openschool.discussion.dto;
 
 import app.openschool.user.api.dto.UserDto;
 import java.time.Instant;
@@ -60,7 +60,10 @@ public class DiscussionAnswerResponseDto {
       return false;
     }
     DiscussionAnswerResponseDto that = (DiscussionAnswerResponseDto) o;
-    return Objects.equals(id, that.id) && Objects.equals(text, that.text) && Objects.equals(userDto, that.userDto) && Objects.equals(createdDate, that.createdDate);
+    return Objects.equals(id, that.id)
+        && Objects.equals(text, that.text)
+        && Objects.equals(userDto, that.userDto)
+        && Objects.equals(createdDate, that.createdDate);
   }
 
   @Override
