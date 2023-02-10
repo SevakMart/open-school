@@ -12,6 +12,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import javax.validation.ConstraintViolationException;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class CommonExceptionHandler implements ErrorController {
