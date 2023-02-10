@@ -10,6 +10,7 @@ import Title from '../Title/Title';
 import MainBody from '../MainBody/MainBody';
 import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
 import styles from './Categories.module.scss';
+import CourseMainContent from '../../../CourseDescriptionPage/Subcomponents/CourseMainContent/CourseMainContent';
 
 /* eslint-disable max-len */
 
@@ -49,9 +50,17 @@ const HomepageCategories = () => {
             entity={entity}
             errorFieldClassName="allLearningPathErrorStyle"
             render={(entity) => (
-              entity.map((category:CategoryType, index:number) => (
-                <CategoryCard key={index} category={category} />
-              ))
+              // eslint-disable-next-line array-callback-return
+              entity.map((category:CategoryType, index:number) => {
+                <CategoryCard key={index} category={category} />;
+                  <CourseMainContent
+                    description={entity.description}
+                    goal={entity.goal}
+                    mentorDto={entity.mentorDto}
+                    modules={entity.modules}
+                    title={entity.title}
+                  />;
+              })
             )}
           />
         </div>

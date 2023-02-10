@@ -31,7 +31,7 @@ public class MentorMapper {
         companyName,
         user.getCourseCount(),
         user.getUserImgPath(),
-        user.getEmailPath(),
+        user.getEmail(),
         user.getLinkedinPath());
   }
 }

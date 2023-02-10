@@ -145,7 +145,7 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.findById(categoryId).orElseThrow(IllegalArgumentException::new);
     MultipartFile image = request.getImage();
     if (category.getLogoPath() != null) {
-      String oldImageName = category.getLogoPath().substring(57);
+      String oldImageName = category.getLogoPath();
       category.setLogoPath(fileStorageService.uploadFile(image));
       fileStorageService.deleteFile(oldImageName);
     } else {
@@ -162,8 +162,7 @@ public class CategoryServiceImpl implements CategoryService {
       throw new UnsupportedOperationException(
           messageSource.getMessage("category.delete.not.allowed", null, locale));
     }
-    String oldFileName = category.getLogoPath().substring(57);
-    fileStorageService.deleteFile(oldFileName);
+    fileStorageService.deleteFile(category.getLogoPath());
     categoryRepository.deleteById(categoryId);
   }
 
