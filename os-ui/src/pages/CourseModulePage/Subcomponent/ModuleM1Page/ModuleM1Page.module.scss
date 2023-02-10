@@ -1,0 +1,47 @@
+@import "../../../../styles/Mixins/FlexMixins.scss";
+@import "../../../../styles/Mixins/FontMixin.scss";
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
+
+.Main_container {
+    background: $main-course-color;
+
+    .Main_M1_header {
+        font-size: 36px;
+        line-height: 44px;
+        color: $black-text-color;
+        margin: 64px 0 0 24px;
+    }
+    .Main_SumTime {
+        margin: 8px 0 45px 24px;
+        color: $main-text-color;
+    }
+    .Course_Material {
+        background-color: transparent;
+        border: none;
+        font-weight: 600;
+        font-size: 20px;
+        color: $black-text-color;
+        margin-left: 17px;
+    }
+    .chevronIsOpen {
+        cursor:pointer;
+        transform:rotate(90deg);
+        transition: 0.5s;
+        margin-left: 15px;
+    }
+    .chevronIsClosed {
+        cursor:pointer;
+        transform:rotate(0deg);
+        transition: 0.5s;
+        margin-left: 15px;
+    }
+    .moduleDescriptionIsOpen{
+        margin-left: 25px;
+        width: 90%;
+        @include fontStyle($primary-font,normal,400,15px,70px);
+    }
+    .moduleDescriptionIsClosed {
+        display:none;
+    }
+}

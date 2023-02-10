@@ -1,0 +1,13 @@
+.dropdownList {
+    list-style: none;
+}
+.dropdownList {
+    padding: 0;
+    // justify-self: start;
+}
+.dropdownItem {
+    display: grid;
+    grid-template-columns: auto;
+    // justify-self: start;
+    // justify-items: start;
+}

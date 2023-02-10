@@ -36,7 +36,7 @@ const NavbarOnSignIn = () => {
 
   return (
     <nav className={mainContent}>
-      <h2 onClick={() => navigate('/')}>{t('string.homePage.navBar.logo')}</h2>
+      <h2 onClick={() => navigate('/homepage/WhenSignin')}>{t('string.homePage.navBar.logo')}</h2>
       <div className={navMainContent}>
         <p onClick={() => navigate('/exploreLearningPaths')}>{t('string.homePage.navBar.allLearningPaths')}</p>
         <p onClick={() => navigate('/myLearningPath')}>{t('string.homePage.navBar.myLearningPaths')}</p>

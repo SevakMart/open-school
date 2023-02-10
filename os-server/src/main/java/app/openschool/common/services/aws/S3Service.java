@@ -11,15 +11,19 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+
+
 @Service
+@ConditionalOnMissingBean(value = FileStorageLocalService.class)
 public class S3Service implements FileStorageService {
 
   private final String bucketName;
 
-  private final Logger logger = LoggerFactory.getLogger("S3Service");
+  private static final Logger logger = LoggerFactory.getLogger("S3Service");
 
   private final AmazonS3 amazonS3;
 
@@ -35,7 +39,8 @@ public class S3Service implements FileStorageService {
         new PutObjectRequest(bucketName, convertedFile.getName(), convertedFile)
             .withCannedAcl(CannedAccessControlList.PublicRead));
     boolean deletedFile = convertedFile.delete();
-    return amazonS3.getUrl(bucketName, convertedFile.getName()).toString();
+
+    return convertedFile.getName();
   }
 
   @Override

@@ -69,7 +69,7 @@ application:
   bucket:
     name: open-school-images
 
-
+file-pictures-dir: ${user.home}${file.separator}data${file.separator}categories${file.separator}images${file.separator}
 
 
 

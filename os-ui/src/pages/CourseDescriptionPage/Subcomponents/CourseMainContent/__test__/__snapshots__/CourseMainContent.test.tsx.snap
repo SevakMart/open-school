@@ -74,6 +74,10 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
               <p>
                 It talks about React
               </p>
+              <button
+                style="background-color: transparent; color: blue; text-decoration: underline; cursor: pointer;"
+                type="button"
+              />
             </div>
           </div>
         </div>
