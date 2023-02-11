@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
-
 @RestControllerAdvice
 public class CommonExceptionHandler implements ErrorController {
   private final MessageSource messageSource;
