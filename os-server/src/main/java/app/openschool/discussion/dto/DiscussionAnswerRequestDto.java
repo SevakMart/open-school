@@ -1,8 +1,7 @@
 package app.openschool.discussion.dto;
 
-import org.hibernate.validator.constraints.Length;
-
 import java.util.Objects;
+import org.hibernate.validator.constraints.Length;
 
 public class DiscussionAnswerRequestDto {
   @Length(max = 500, message = "answer.title.long")
@@ -35,8 +34,12 @@ public class DiscussionAnswerRequestDto {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     DiscussionAnswerRequestDto that = (DiscussionAnswerRequestDto) o;
     return Objects.equals(text, that.text) && Objects.equals(questionId, that.questionId);
   }

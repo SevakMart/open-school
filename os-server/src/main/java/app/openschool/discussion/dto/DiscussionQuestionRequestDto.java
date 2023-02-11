@@ -31,8 +31,12 @@ public class DiscussionQuestionRequestDto {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     DiscussionQuestionRequestDto that = (DiscussionQuestionRequestDto) o;
     return Objects.equals(text, that.text) && Objects.equals(courseId, that.courseId);
   }

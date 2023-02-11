@@ -10,10 +10,8 @@ import app.openschool.discussion.dto.DiscussionQuestionResponseDto;
 import app.openschool.discussion.mapper.DiscussionQuestionMapper;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
-
 import java.security.Principal;
 import java.time.Instant;
-
 import org.springframework.stereotype.Service;
 
 @Service("discussionQuestion")

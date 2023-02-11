@@ -5,11 +5,10 @@ import app.openschool.course.EnrolledCourse;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.user.User;
-import org.apache.http.auth.BasicUserPrincipal;
-
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.http.auth.BasicUserPrincipal;
 
 public class TestHelper {
   static Principal createPrincipal() {

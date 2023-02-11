@@ -2,12 +2,19 @@ package app.openschool.discussion;
 
 import app.openschool.course.Course;
 import app.openschool.user.User;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "discussion_question_ask_mentor")
@@ -102,8 +109,12 @@ public class DiscussionQuestionMentor {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     DiscussionQuestionMentor that = (DiscussionQuestionMentor) o;
     return Objects.equals(id, that.id)
         && Objects.equals(text, that.text)

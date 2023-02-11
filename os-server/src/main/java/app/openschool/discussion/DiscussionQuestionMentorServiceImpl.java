@@ -10,10 +10,10 @@ import app.openschool.discussion.dto.DiscussionQuestionResponseDto;
 import app.openschool.discussion.mapper.DiscussionQuestionMentorMapper;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
-import org.springframework.stereotype.Service;
-
 import java.security.Principal;
 import java.time.Instant;
+import org.springframework.stereotype.Service;
+
 
 @Service("discussionQuestionMentor")
 public class DiscussionQuestionMentorServiceImpl implements DiscussionQuestionService {
