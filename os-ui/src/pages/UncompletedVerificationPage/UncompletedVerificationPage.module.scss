@@ -1,0 +1,25 @@
+.mainContainer {
+	background-color: #f0f0f0;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.error {
+	  color: red;
+	  margin-bottom: 20px;
+	}
+	.loading {
+	  margin-bottom: 20px;
+	}
+	.message {
+	  margin-bottom: 20px;
+	}
+	button {
+	  background-color: blue;
+	  color: white;
+	  padding: 10px 20px;
+	  border: none;
+	  border-radius: 5px;
+	}
+  }
+  
