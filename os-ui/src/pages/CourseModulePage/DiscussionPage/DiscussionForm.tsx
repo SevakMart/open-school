@@ -1,13 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import fetchData from '../../../services/fetchData';
 import './discussionForm.scss';
 import './discussionForm_media.scss';
 import QuestionItem from './subcomponents/QuestionItem/QuestionItem';
 
-function DiscussionForm():JSX.Element {
+function DiscussionForm(): JSX.Element {
   const questions = ['Title Of the question3', 'Title Of the question3', 'Title Of the question3'];
   const [buttonType, setButtonType] = useState<boolean>(false);
-  const BtnName:string = buttonType ? 'Send' : 'Ask Question'; // "ASK Question" or Send
+  const BtnName: string = buttonType ? 'Send' : 'Ask Question'; // "ASK Question" or Send
   const [value, setValue] = useState<string>('ask question');
+
+  const postQuestion = async () => {
+    const body = {
+      text: value,
+      courceId: 0,
+    };
+    const response = await fetchData.post('discussionQuestions', body, {}, 'e65abc20-e264-4a1c-ae1c-28c010533c9f6');
+    console.log(response);
+    console.log(body);
+    return response;
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -17,6 +29,9 @@ function DiscussionForm():JSX.Element {
     setButtonType(() => !buttonType);
     if (BtnName === 'Ask Question') {
       setValue('');
+    }
+    if (BtnName === 'Send') {
+      postQuestion();
     }
   };
 
@@ -33,11 +48,11 @@ function DiscussionForm():JSX.Element {
             {
               buttonType === true
               && (
-              <div>
-                <input className="question_input" type="text" id="fname" name="fname" value={value} onChange={handleChange} />
-              </div>
+                <div>
+                  <input className="question_input" type="text" id="fname" name="fname" value={value} onChange={handleChange} />
+                </div>
               )
-              }
+            }
             <button type="button" onClick={handleAskquestion} disabled={!value} className="btn">{BtnName}</button>
           </div>
         </div>
