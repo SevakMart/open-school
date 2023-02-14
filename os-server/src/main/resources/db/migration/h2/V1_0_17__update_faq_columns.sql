@@ -1,0 +1,5 @@
+ALTER TABLE faq
+ALTER COLUMN answer TEXT;
+
+ALTER TABLE faq
+ALTER COLUMN question TEXT;
