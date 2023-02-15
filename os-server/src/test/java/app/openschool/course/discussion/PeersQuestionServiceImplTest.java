@@ -63,7 +63,7 @@ public class PeersQuestionServiceImplTest {
     given(courseRepository.findById(anyLong())).willReturn(Optional.of(course));
     QuestionResponseDto questionResponseDto =
         questionService.create(
-            crateDiscussionQuestionRequestDto(), TestHelper.createPrincipal());
+            crateDiscussionQuestionRequestDto(), TestHelper.createPrincipal().getName());
     assertEquals(peersQuestion.getId(), questionResponseDto.getId());
     assertEquals(peersQuestion.getText(), questionResponseDto.getText());
     assertEquals(
@@ -91,7 +91,7 @@ public class PeersQuestionServiceImplTest {
     assertThatThrownBy(
             () ->
                 questionService.create(
-                    crateDiscussionQuestionRequestDto(), TestHelper.createPrincipal()))
+                    crateDiscussionQuestionRequestDto(), TestHelper.createPrincipal().getName()))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -106,7 +106,7 @@ public class PeersQuestionServiceImplTest {
     assertThatThrownBy(
             () ->
                 questionService.create(
-                    crateDiscussionQuestionRequestDto(), TestHelper.createPrincipal()))
+                    crateDiscussionQuestionRequestDto(), TestHelper.createPrincipal().getName()))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -121,7 +121,7 @@ public class PeersQuestionServiceImplTest {
     assertThatThrownBy(
             () ->
                 questionService.create(
-                    crateDiscussionQuestionRequestDto(), TestHelper.createPrincipal()))
+                    crateDiscussionQuestionRequestDto(), TestHelper.createPrincipal().getName()))
         .isInstanceOf(PermissionDeniedException.class);
   }
 

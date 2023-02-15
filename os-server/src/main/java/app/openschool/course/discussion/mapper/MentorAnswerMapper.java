@@ -1,7 +1,7 @@
 package app.openschool.course.discussion.mapper;
 
-import app.openschool.course.discussion.mentor.answer.MentorAnswer;
 import app.openschool.course.discussion.dto.AnswerResponseDto;
+import app.openschool.course.discussion.mentor.answer.MentorAnswer;
 import app.openschool.user.api.mapper.UserMapper;
 
 public class MentorAnswerMapper {

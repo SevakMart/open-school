@@ -16,9 +16,9 @@ import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.discussion.dto.AnswerRequestDto;
 import app.openschool.course.discussion.dto.AnswerResponseDto;
 import app.openschool.course.discussion.peers.answer.PeersAnswer;
-import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
 import app.openschool.course.discussion.peers.answer.PeersAnswerRepository;
 import app.openschool.course.discussion.peers.answer.PeersAnswerServiceImpl;
+import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.util.Optional;
@@ -63,7 +63,7 @@ public class PeersAnswerServiceImplTesl {
         .willReturn(Optional.of(TestHelper.createEnrolledCourse(user, TestHelper.crateCourse())));
     AnswerResponseDto answerResponseDto =
         answerService.create(
-            createDiscussionAnswerRequestDto(), TestHelper.createPrincipal());
+            createDiscussionAnswerRequestDto(), TestHelper.createPrincipal().getName());
     assertEquals(peersAnswer.getId(), answerResponseDto.getId());
     assertEquals(peersAnswer.getText(), answerResponseDto.getText());
     assertEquals(
@@ -83,7 +83,7 @@ public class PeersAnswerServiceImplTesl {
     assertThatThrownBy(
             () ->
                 answerService.create(
-                    createDiscussionAnswerRequestDto(), TestHelper.createPrincipal()))
+                    createDiscussionAnswerRequestDto(), TestHelper.createPrincipal().getName()))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -95,7 +95,7 @@ public class PeersAnswerServiceImplTesl {
     assertThatThrownBy(
             () ->
                 answerService.create(
-                    createDiscussionAnswerRequestDto(), TestHelper.createPrincipal()))
+                    createDiscussionAnswerRequestDto(), TestHelper.createPrincipal().getName()))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -111,7 +111,7 @@ public class PeersAnswerServiceImplTesl {
     assertThatThrownBy(
             () ->
                 answerService.create(
-                    createDiscussionAnswerRequestDto(), TestHelper.createPrincipal()))
+                    createDiscussionAnswerRequestDto(), TestHelper.createPrincipal().getName()))
         .isInstanceOf(PermissionDeniedException.class);
   }
 
