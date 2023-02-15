@@ -1,0 +1,51 @@
+package app.openschool.course.discussion.dto;
+
+import java.util.Objects;
+import org.hibernate.validator.constraints.Length;
+
+public class AnswerRequestDto {
+  @Length(max = 500, message = "answer.title.long")
+  private String text;
+
+  private Long questionId;
+
+  public AnswerRequestDto() {}
+
+  public AnswerRequestDto(String text, Long questionId) {
+    this.text = text;
+    this.questionId = questionId;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public void setText(String text) {
+    this.text = text;
+  }
+
+  public Long getQuestionId() {
+    return questionId;
+  }
+
+  public void setQuestionId(Long questionId) {
+    this.questionId = questionId;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    AnswerRequestDto that = (AnswerRequestDto) o;
+    return Objects.equals(text, that.text) && Objects.equals(questionId, that.questionId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(text, questionId);
+  }
+}

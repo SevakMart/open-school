@@ -4,12 +4,9 @@ import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.category.Category;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
-import app.openschool.discussion.DiscussionAnswer;
-import app.openschool.discussion.DiscussionQuestion;
 import app.openschool.user.company.Company;
 import app.openschool.user.role.Role;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -103,12 +100,6 @@ public class User {
       joinColumns = @JoinColumn(name = "user_id"),
       inverseJoinColumns = @JoinColumn(name = "mentor_id"))
   private Set<User> mentors = new HashSet<>();
-
-  @OneToMany(mappedBy = "user")
-  private List<DiscussionQuestion> discussionQuestionAskPeers;
-
-  @OneToMany(mappedBy = "user")
-  private List<DiscussionAnswer> discussionAnswers;
 
   public User() {}
 
@@ -317,13 +308,5 @@ public class User {
 
   public void setMentors(Set<User> mentors) {
     this.mentors = mentors;
-  }
-
-  public List<DiscussionQuestion> getDiscussionQuestion() {
-    return discussionQuestionAskPeers;
-  }
-
-  public void setDiscussionQuestion(List<DiscussionQuestion> discussionQuestionAskPeers) {
-    this.discussionQuestionAskPeers = discussionQuestionAskPeers;
   }
 }

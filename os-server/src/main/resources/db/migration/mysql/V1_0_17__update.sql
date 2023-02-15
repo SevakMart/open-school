@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `open_school_db`.`discussion_question_ask_peers`(
+CREATE TABLE IF NOT EXISTS `open_school_db`.`peers_question`(
 `id` BIGINT NOT NULL AUTO_INCREMENT,
 `text` TEXT NOT NULL,
 `user_id` BIGINT,
@@ -15,24 +15,24 @@ ON DELETE CASCADE
 ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS `open_school_db`.`discussion_answer_peers`(
+CREATE TABLE IF NOT EXISTS `open_school_db`.`peers_answer`(
 `id` BIGINT NOT NULL AUTO_INCREMENT,
 `text` TEXT NOT NULL,
-`user_id` BIGINT  UNIQUE,
-`discussion_question_id` BIGINT  UNIQUE,
+`user_id` BIGINT,
+`peers_question_id` BIGINT,
 `create_date` TIMESTAMP NOT NULL,
 PRIMARY KEY(`id`),
-CONSTRAINT `discussion_answer_user_id_fk`
+CONSTRAINT `peers_answer_user_id_fk`
 FOREIGN KEY(`user_id`) REFERENCES `open_school_db`.`user`(`id`)
 ON DELETE CASCADE
 ON UPDATE CASCADE,
-CONSTRAINT `discussion_answer_discussion_question_id_fk`
-FOREIGN KEY(`discussion_question_id`) REFERENCES `open_school_db`.`discussion_question_ask_peers`(`id`)
+CONSTRAINT `peers_answer_discussion_question_id_fk`
+FOREIGN KEY(`peers_question_id`) REFERENCES `open_school_db`.`peers_question`(`id`)
 ON DELETE CASCADE
 ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS `open_school_db`.`discussion_question_ask_mentor`(
+CREATE TABLE IF NOT EXISTS `open_school_db`.`mentor_question`(
 `id` BIGINT NOT NULL AUTO_INCREMENT,
 `text` TEXT NOT NULL,
 `user_id` BIGINT,
@@ -49,19 +49,19 @@ ON DELETE CASCADE
 ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS `open_school_db`.`discussion_answer_mentor`(
+CREATE TABLE IF NOT EXISTS `open_school_db`.`mentor_answer`(
 `id` BIGINT NOT NULL AUTO_INCREMENT,
 `text` TEXT NOT NULL,
-`user_id` BIGINT  UNIQUE,
-`discussion_question_id` BIGINT  UNIQUE,
+`user_id` BIGINT,
+`mentor_question_id` BIGINT,
 `create_date` TIMESTAMP NOT NULL,
 PRIMARY KEY(`id`),
-CONSTRAINT `discussion_answer_mentor_user_id_fk`
+CONSTRAINT `mentor_question_id_user_id_fk`
 FOREIGN KEY(`user_id`) REFERENCES `open_school_db`.`user`(`id`)
 ON DELETE CASCADE
 ON UPDATE CASCADE,
-CONSTRAINT `discussion_answer_mentor_discussion_question_id_fk`
-FOREIGN KEY(`discussion_question_id`) REFERENCES `open_school_db`.`discussion_question_ask_mentor`(`id`)
+CONSTRAINT `mentor_question_id_discussion_question_id_fk`
+FOREIGN KEY(`mentor_question_id`) REFERENCES `open_school_db`.`mentor_question`(`id`)
 ON DELETE CASCADE
 ON UPDATE CASCADE
 );

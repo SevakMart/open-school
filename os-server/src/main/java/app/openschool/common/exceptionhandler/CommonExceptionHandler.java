@@ -12,7 +12,6 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import javax.validation.ConstraintViolationException;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,6 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 
 @RestControllerAdvice
 public class CommonExceptionHandler implements ErrorController {
@@ -108,19 +106,13 @@ public class CommonExceptionHandler implements ErrorController {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(ex.getMessage()));
   }
 
-  @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<ResponseMessage> handleConstraintViolationException(
-      ConstraintViolationException ex) {
-    return ResponseEntity.badRequest().body(new ResponseMessage(ex.getMessage()));
-  }
-  
   @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
   public ResponseEntity<ResponseMessage> handleSqlIntegrityConstraintViolationException(
       SQLIntegrityConstraintViolationException ex) {
     String message = messageSource.getMessage("exception.persist", null, Locale.ROOT);
     return ResponseEntity.badRequest().body(new ResponseMessage(message));
   }
-  
+
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<ResponseMessage> handleAccessDeniedException(AccessDeniedException ex) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(ex.getMessage()));
