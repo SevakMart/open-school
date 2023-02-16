@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { ProgressedCourse } from '../../../../types/CourseTypes';
 import ClockIcon from '../../../../assets/svg/ClockIcon.svg';
 import CalendarIcon from '../../../../assets/svg/CalendarIcon.svg';
@@ -8,8 +9,8 @@ import { transformTime } from '../../../../helpers/TimeTransform';
 import styles from './InProgressCourse.module.scss';
 
 const InProgressCourse = ({
-  title, courseStatus, percentage, remainingTime, dueDate,
-}:ProgressedCourse) => {
+  title, courseStatus, percentage, remainingTime, dueDate, courseId,
+}:ProgressedCourse & { courseId: number }) => {
   const {
     mainContainer, titleContainer, container, progressBar, buttonContainer, courseTitle,
     progressPercent, OverallProgress, containerTitle, progressing, progressContainer,
@@ -17,6 +18,7 @@ const InProgressCourse = ({
     remainingTimeContainer, dueDateContainer, calenderIcon, timeIcon,
   } = styles;
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const time = useState(transformTime(remainingTime))[0];
   return (
     <div className={mainContainer}>
@@ -53,13 +55,13 @@ const InProgressCourse = ({
       <div className={container}>
         <p className={containerTitle}>{t('string.myLearningPaths.inProgressCourse.dueDate')}</p>
         <div className={dueDateContainer}>
-          <img src={CalendarIcon} className={calenderIcon} alt="calenderIcon" />
+          <img src={CalendarIcon} className={calenderIcon} alt="calendarIcon" />
           <p data-testid={dueDate} className={dueDateContent}>{dueDate}</p>
         </div>
       </div>
       <div className={separator} />
       <div className={buttonContainer}>
-        <Button.MainButton className={['resumeCourse']} onClick={() => null}>
+        <Button.MainButton className={['resumeCourse']} onClick={() => navigate(`/userCourse/modulOverview/${courseId}`)}>
           {t('button.myLearningPathsPage.resumeCourse')}
         </Button.MainButton>
       </div>

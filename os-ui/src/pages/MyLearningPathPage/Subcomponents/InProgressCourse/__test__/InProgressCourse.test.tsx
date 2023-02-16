@@ -4,6 +4,12 @@ import InProgressCourse from '../InProgressCourse';
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key:string) => key }),
 }));
+const mockedUsedNavigate = jest.fn();
+
+jest.mock("react-router-dom", () => ({
+  ...(jest.requireActual("react-router-dom") as any),
+  useNavigate: () => mockedUsedNavigate
+}));
 
 describe('Create test cases for InProgress component', () => {
   test('Create a snapshot test', () => {
@@ -14,6 +20,8 @@ describe('Create test cases for InProgress component', () => {
         percentage={47}
         remainingTime={540000}
         dueDate="2022-05-07"
+        courseId={0}
+        id={0}
       />,
     );
     expect(asFragment()).toMatchSnapshot();
@@ -26,6 +34,8 @@ describe('Create test cases for InProgress component', () => {
         percentage={47}
         remainingTime={5400000}
         dueDate="2022-05-07"
+        courseId={0}
+        id={0}
       />,
     );
     const courseTitleElement = screen.queryByTestId('React js');
