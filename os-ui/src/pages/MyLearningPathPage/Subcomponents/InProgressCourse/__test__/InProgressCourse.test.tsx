@@ -14,6 +14,8 @@ describe('Create test cases for InProgress component', () => {
         percentage={47}
         remainingTime={540000}
         dueDate="2022-05-07"
+        courseId={0}
+        id={0}
       />,
     );
     expect(asFragment()).toMatchSnapshot();
@@ -26,6 +28,8 @@ describe('Create test cases for InProgress component', () => {
         percentage={47}
         remainingTime={5400000}
         dueDate="2022-05-07"
+        courseId={0}
+        id={0}
       />,
     );
     const courseTitleElement = screen.queryByTestId('React js');

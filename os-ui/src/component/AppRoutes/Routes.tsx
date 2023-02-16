@@ -76,13 +76,14 @@ const AppRoutes = () => {
         )}
           />
           <Route
-            path="/userCourse/moduleOverview"
+            path="/userCourse/modulOverview/:courseId"
             element={(
               <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
-                <CourseModulePage />
+                <CourseModulePage userInfo={userInfo} />
               </ProtectedRoute>
         )}
           />
+
           <Route
             path="/homepage/WhenSignin"
             element={(
