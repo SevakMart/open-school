@@ -4,6 +4,7 @@ import app.openschool.auth.api.dto.ResetPasswordRequest;
 import app.openschool.auth.api.dto.UserLoginDto;
 import app.openschool.auth.api.dto.UserRegistrationDto;
 import app.openschool.auth.api.exception.EmailNotFoundException;
+import app.openschool.auth.api.exception.TokenValidationException;
 import app.openschool.auth.api.mapper.UserLoginMapper;
 import app.openschool.auth.api.mapper.UserRegistrationMapper;
 import app.openschool.auth.entity.ResetPasswordToken;
@@ -70,28 +71,23 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   }
 
   @Override
-  public Optional<User> verifyAccount(String token) {
-    Optional<VerificationToken> fetchedToken =
-        verificationTokenRepository.findVerificationTokenByToken(token);
-
-    if (fetchedToken.isPresent()) {
-      if (!VerificationToken.isTokenExpired(fetchedToken.get().getCreatedAt(), expiresAt)) {
-        User user = fetchedToken.get().getUser();
-        user.setEnabled(true);
-        return Optional.of(userRepository.save(user));
-      } else {
-        applicationEventPublisher.publishEvent(
-            new SendVerificationEmailEvent(this, fetchedToken.get().getUser()));
-        return Optional.empty();
-      }
-    }
-    return Optional.empty();
-  }
-
-  @Override
   public void sendVerificationEmail(Long userId) {
     User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
     applicationEventPublisher.publishEvent(new SendVerificationEmailEvent(this, user));
+  }
+
+  @Override
+  public Optional<User> verifyAccount(String token) {
+    VerificationToken fetchedToken =
+        verificationTokenRepository
+            .findVerificationTokenByToken(token)
+            .orElseThrow(TokenValidationException::new);
+
+    checkTokenCondition(fetchedToken);
+
+    User user = fetchedToken.getUser();
+    user.setEnabled(true);
+    return Optional.of(userRepository.save(user));
   }
 
   @Override
@@ -146,5 +142,11 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   @Override
   public boolean emailAlreadyExist(String email) {
     return findByEmail(email).isPresent();
+  }
+
+  private void checkTokenCondition(VerificationToken verificationToken) {
+    if (VerificationToken.isTokenExpired(verificationToken.getCreatedAt(), expiresAt)) {
+      throw new TokenValidationException();
+    }
   }
 }

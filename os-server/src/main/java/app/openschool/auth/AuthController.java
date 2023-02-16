@@ -178,7 +178,7 @@ public class AuthController {
         @ApiResponse(
             responseCode = "400",
             description = "The verification token is expired or not valid",
-            content = @Content(schema = @Schema()))
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
   public ResponseEntity<UserLoginDto> forwardUserToAccount(
       @io.swagger.v3.oas.annotations.parameters.RequestBody(
