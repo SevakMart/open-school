@@ -98,7 +98,7 @@ exports[`Create test cases for InProgress component Create a snapshot test 1`] =
         class="dueDateContainer"
       >
         <img
-          alt="calenderIcon"
+          alt="calendarIcon"
           class="calenderIcon"
           src="CalendarIcon.svg"
         />
