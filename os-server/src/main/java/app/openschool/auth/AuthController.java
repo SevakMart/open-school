@@ -44,10 +44,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -206,14 +206,17 @@ public class AuthController {
             content = @Content(schema = @Schema())),
         @ApiResponse(
             responseCode = "400",
-            description = "Invalid userId supplied",
+            description = "Invalid email supplied",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
-  @GetMapping("/{userId}/account/verification")
+  @GetMapping("/account/verification/resend")
   public ResponseEntity<Void> resendVerificationEmail(
-      @Parameter(description = "User's id whom will be sent a verification email") @PathVariable
-          Long userId) {
-    authService.sendVerificationEmail(userId);
+      @Parameter(
+              description =
+                  "The email address of the user to whom will be sent a verification email")
+          @RequestParam
+          String email) {
+    authService.sendVerificationEmail(email);
     return ResponseEntity.ok().build();
   }
 

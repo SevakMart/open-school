@@ -95,11 +95,10 @@ public class AuthServiceImplTest {
   }
 
   @Test
-  void sendVerificationEmailWithWrongUserId() {
-    long userId = 1L;
-    given(userRepository.findById(userId)).willReturn(Optional.empty());
+  void sendVerificationEmailWithWrongUserEmail() {
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
 
-    assertThatThrownBy(() -> authService.sendVerificationEmail(userId))
+    assertThatThrownBy(() -> authService.sendVerificationEmail(anyString()))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
