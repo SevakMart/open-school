@@ -20,7 +20,7 @@ describe('Create test cases for ModalMessageComponent', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <ModalMessageComponent />
+        <ModalMessageComponent courseId={0} />
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();
