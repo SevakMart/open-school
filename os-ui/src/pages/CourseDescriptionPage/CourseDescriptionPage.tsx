@@ -76,7 +76,7 @@ const CourseDescriptionPage = ({ userInfo }:{userInfo:any}) => {
           entity={enrolledCourseEntity}
           errorFieldClassName="enrolmentError"
           isMyLearningPathPage={false}
-          render={() => <EnrolledSuccessMessage />}
+          render={() => <EnrolledSuccessMessage courseId={Number(courseId)} />}
         />
         )}
       </Portal.FormPortal>

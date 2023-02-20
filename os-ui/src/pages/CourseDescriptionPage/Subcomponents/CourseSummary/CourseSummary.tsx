@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -22,12 +22,15 @@ const CourseSummary = ({
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
-  const isEnrolled = params.has('enrolled');
+  const isEnrolled = localStorage.getItem(`enrolled-${courseId}`) === 'true';
   const { id: userId, token } = userIdAndToken;
   const courseSummaryItem = {
     rating, enrolled, level, language, duration,
   };
   const dispatch = useDispatch<DispatchType>();
+
+  const [enrolledInCourse, setEnrolledInCourse] = useState<boolean>(isEnrolled);
+  const [enrollButtonDisabled, setEnrollButtonDisabled] = useState<boolean>(false);
 
   const {
     mainContent, headerContent, headerIcons, courseSummaryItemList, buttonContainer, userEnrollText,
@@ -59,6 +62,11 @@ const CourseSummary = ({
       });
   }, []);
 
+  const handleEnrollButtonClick = () => {
+    setEnrolledInCourse(true);
+    setEnrollButtonDisabled(true);
+    localStorage.setItem(`enrolled-${courseId}`, 'true');
+  };
   return (
     <div className={mainContent}>
       <div className={headerContent}>
@@ -88,16 +96,24 @@ const CourseSummary = ({
       </div>
       {isEnrolled && <p className={userEnrollText}>{t('string.courseDescriptionPage.title.userEnrolled')}</p>}
       <div className={isEnrolled ? enrolledButtonContainer : buttonContainer}>
-        {isEnrolled && <Button.MainButton onClick={() => null} className={['courseSummaryButton']}>{t('button.courseDescriptionPage.startCourse') }</Button.MainButton>}
-        {!isEnrolled && (
-        <Button.EnrollButton
-          className={['courseSummaryButton']}
-          courseId={courseId}
-          userId={userId}
-          token={token}
-        >
-          {t('button.courseDescriptionPage.enrollInCourse')}
-        </Button.EnrollButton>
+        {enrolledInCourse ? (
+          <Button.MainButton
+            onClick={() => navigate(`/userCourse/modulOverview/${courseId}`)}
+            className={['courseSummaryButton']}
+          >
+            {t('button.courseDescriptionPage.startCourse')}
+          </Button.MainButton>
+        ) : (
+          <Button.EnrollButton
+            className={['courseSummaryButton']}
+            courseId={courseId}
+            userId={userId}
+            token={token}
+            onEnroll={handleEnrollButtonClick}
+            disabled={enrollButtonDisabled}
+          >
+            {t('button.courseDescriptionPage.enrollInCourse')}
+          </Button.EnrollButton>
         )}
       </div>
     </div>

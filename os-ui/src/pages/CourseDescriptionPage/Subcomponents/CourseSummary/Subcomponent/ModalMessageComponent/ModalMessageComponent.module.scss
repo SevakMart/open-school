@@ -10,6 +10,19 @@
     background-image: conic-gradient(at 50% 38%,#EEEFF4 0deg,#EEEFF4 60deg,#FFFFFF 60deg,#FFFFFF 300deg,#EEEFF4 300deg,#EEEFF4 360deg);
     border-radius: 40px;
     @include flexStyle(column,center,space-evenly);
+	.closeIcon {
+		position: absolute;
+		top:24px;
+		right:24px;
+		box-sizing: border-box;
+		width:24px;
+		height:24px;
+		@include flexStyle(row,center,center);
+		cursor: pointer;
+		&:hover {
+			background-color: $secondary-color;
+		}
+	}
     .mainContent {
         @include flexStyle(column,center,none);
         .textContent {
