@@ -35,6 +35,20 @@ public class MentorAnswerServiceImpl implements AnswerService {
         mentorAnswerRepository.save(creteAnswer(requestDto, email)));
   }
 
+  @Override
+  public AnswerResponseDto update(Long id, String text) {
+    MentorAnswer mentorAnswer =
+        mentorAnswerRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    mentorAnswer.setText(text);
+    return MentorAnswerMapper.toAnswerDto(mentorAnswerRepository.save(mentorAnswer));
+  }
+
+  @Override
+  public void delete(Long id) {
+    MentorAnswer mentorAnswer =
+        mentorAnswerRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    mentorAnswerRepository.delete(mentorAnswer);
+  }
 
   private MentorAnswer creteAnswer(AnswerRequestDto requestDto, String email) {
     User userByEmail = userRepository.findUserByEmail(email);

@@ -9,6 +9,7 @@ import app.openschool.course.discussion.QuestionService;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
 import app.openschool.course.discussion.dto.QuestionResponseDto;
 import app.openschool.course.discussion.mapper.MentorQuestionMapper;
+import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.time.Instant;
@@ -46,6 +47,21 @@ public class MentorQuestionServiceImpl implements QuestionService {
 
     return MentorQuestionMapper.toResponseDto(
         mentorQuestionRepository.save(creteQuestion(requestDto, email)));
+  }
+
+  @Override
+  public QuestionResponseDto update(Long id, String text) {
+    MentorQuestion mentorQuestion =
+        mentorQuestionRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    mentorQuestion.setText(text);
+    return MentorQuestionMapper.toResponseDto(mentorQuestionRepository.save(mentorQuestion));
+  }
+
+  @Override
+  public void delete(Long id) {
+    MentorQuestion mentorQuestion =
+        mentorQuestionRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    mentorQuestionRepository.delete(mentorQuestion);
   }
 
   private MentorQuestion creteQuestion(QuestionRequestDto requestDto, String email) {

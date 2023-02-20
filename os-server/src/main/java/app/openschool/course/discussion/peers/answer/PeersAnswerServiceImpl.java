@@ -49,6 +49,21 @@ public class PeersAnswerServiceImpl implements AnswerService {
         peersAnswerRepository.save(creteAnswer(requestDto, email, peersQuestion)));
   }
 
+  @Override
+  public AnswerResponseDto update(Long id, String text) {
+    PeersAnswer peersAnswer =
+        peersAnswerRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    peersAnswer.setText(text);
+    return AnswerMapper.toAnswerDto(peersAnswerRepository.save(peersAnswer));
+  }
+
+  @Override
+  public void delete(Long id) {
+    PeersAnswer peersAnswer =
+        peersAnswerRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    peersAnswerRepository.delete(peersAnswer);
+  }
+
   private PeersAnswer creteAnswer(
       AnswerRequestDto requestDto, String email, PeersQuestion peersQuestion) {
     User userByEmail = userRepository.findUserByEmail(email);

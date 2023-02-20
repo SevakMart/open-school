@@ -47,6 +47,21 @@ public class PeersQuestionServiceImpl implements QuestionService {
         peersQuestionRepository.save(creteQuestion(requestDto, email)));
   }
 
+  @Override
+  public QuestionResponseDto update(Long id, String text) {
+    PeersQuestion questionById =
+        peersQuestionRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    questionById.setText(text);
+    return QuestionMapper.toResponseDto(peersQuestionRepository.save(questionById));
+  }
+
+  @Override
+    public void delete(Long id) {
+    PeersQuestion byId =
+        peersQuestionRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    peersQuestionRepository.delete(byId);
+  }
+
   private PeersQuestion creteQuestion(QuestionRequestDto requestDto, String email) {
     User userByEmail = userRepository.findUserByEmail(email);
     Course courseById =
