@@ -88,7 +88,7 @@ const CourseSummary = ({
       </div>
       {isEnrolled && <p className={userEnrollText}>{t('string.courseDescriptionPage.title.userEnrolled')}</p>}
       <div className={isEnrolled ? enrolledButtonContainer : buttonContainer}>
-        {isEnrolled && <Button.MainButton onClick={() => null} className={['courseSummaryButton']}>{t('button.courseDescriptionPage.startCourse') }</Button.MainButton>}
+        {isEnrolled && <Button.MainButton onClick={() => navigate(`/userCourse/modulOverview/${courseId}`)} className={['courseSummaryButton']}>{t('button.courseDescriptionPage.startCourse') }</Button.MainButton>}
         {!isEnrolled && (
         <Button.EnrollButton
           className={['courseSummaryButton']}
