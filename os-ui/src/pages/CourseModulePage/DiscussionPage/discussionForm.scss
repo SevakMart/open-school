@@ -21,7 +21,7 @@
 }
 
 .forum_header-inner {
-  display:flex;
+  display: flex;
   justify-content: space-between;
   margin-top: 5px;
 }
@@ -65,9 +65,19 @@
   right: -1px;
 }
 
-.question_input {
-  margin-top: 14px;
-  width: 400px;
-  margin-left: 150px;
+.question_textArea-div {
+  margin: 0 40px 5px 0;
+  padding: 0 10px 0 10px;
+  background-color: #F9F9FD;
 }
 
+.question_textArea {
+  padding-bottom: 25px;
+  margin-top: 19px;
+  width: 100%;
+  color: #3D3F42;
+  background-color: #F9F9FD;
+  resize: none;
+  outline: none;
+  border: none;
+}

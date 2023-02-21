@@ -1,20 +1,17 @@
 /* eslint-disable react/prop-types */
 import './questionItem.scss';
+import ArrowRightIcon from '../../../../../assets/svg/ArrowRight.svg';
 
 interface QuestionItemProps {
-  text: string,
-  num: number,
+  text: string
 }
 
-const QuestionItem: React.FC<QuestionItemProps> = ({ text, num }) => (
+const QuestionItem: React.FC<QuestionItemProps> = ({ text }) => (
   <div className="Question_item">
     <p className="Question_text">
-      Question
-      {num}
-      :
       <span className="Question_inner">{text}</span>
     </p>
-    <p>&#62;</p>
+    <img src={ArrowRightIcon} alt="chevron" />
   </div>
 );
 

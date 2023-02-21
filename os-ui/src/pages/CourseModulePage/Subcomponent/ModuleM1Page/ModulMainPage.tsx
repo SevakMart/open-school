@@ -7,7 +7,7 @@ import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
 
 interface ModuleM1MainPage {
   value: string,
-  handleChangeValue: (a:string) => void,
+  handleChangeValue: (a: string) => void,
 }
 
 interface ModuleMainPageProps {
@@ -47,7 +47,7 @@ const ModuleMainPage = ({
                 <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
                 {' '}
               </button>
-)}
+            )}
             menu={[
               <div className={moduleListIsOpen ? moduleDescriptionIsOpen : moduleDescriptionIsClosed} key={modules[0].title}>
                 {modules && modules.map((module) => (module.title === value ? <ModuleItem key={module.title} moduleInfo={module} /> : null))}
@@ -62,7 +62,7 @@ const ModuleMainPage = ({
                 <img className={chevronIsClosed} src={ArrowRightIcon} alt="chevron" />
                 {' '}
               </button>
-)}
+            )}
             menu={[
             ]}
           />
@@ -74,7 +74,7 @@ const ModuleMainPage = ({
                 <img className={chevronIsClosed} src={ArrowRightIcon} alt="chevron" />
                 {' '}
               </button>
-)}
+            )}
             menu={[
             ]}
           />

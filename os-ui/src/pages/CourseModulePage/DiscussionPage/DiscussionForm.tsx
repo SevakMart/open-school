@@ -1,14 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import fetchData from '../../../services/fetchData';
 import './discussionForm.scss';
 import './discussionForm_media.scss';
 import QuestionItem from './subcomponents/QuestionItem/QuestionItem';
 
 function DiscussionForm(): JSX.Element {
-  const questions = ['Title Of the question3', 'Title Of the question3', 'Title Of the question3'];
   const [buttonType, setButtonType] = useState<boolean>(false);
   const BtnName: string = buttonType ? 'Send' : 'Ask Question'; // "ASK Question" or Send
   const [value, setValue] = useState<string>('ask question');
+  const [questions, setAddStrings] = useState<string[]>([]);
+
+  const addQuestion = (val: string): void => {
+    setAddStrings([val, ...questions]); // add a new string to the beginning of the array
+  };
+
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const postQuestion = async () => {
     const body = {
@@ -21,9 +27,15 @@ function DiscussionForm(): JSX.Element {
     return response;
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(event.target.value);
   };
+
+  useEffect(() => {
+    if (buttonType && textAreaRef.current) {
+      textAreaRef.current.focus();
+    }
+  }, [buttonType]);
 
   const handleAskquestion = (): void => {
     setButtonType(() => !buttonType);
@@ -32,6 +44,7 @@ function DiscussionForm(): JSX.Element {
     }
     if (BtnName === 'Send') {
       postQuestion();
+      addQuestion(value);
     }
   };
 
@@ -45,18 +58,18 @@ function DiscussionForm(): JSX.Element {
               <li className="forum_header-list">Ask Peeps</li>
               <li className="forum_header-list">Ask Mentor</li>
             </ul>
-            {
-              buttonType === true
-              && (
-                <div>
-                  <input className="question_input" type="text" id="fname" name="fname" value={value} onChange={handleChange} />
-                </div>
-              )
-            }
             <button type="button" onClick={handleAskquestion} disabled={!value} className="btn">{BtnName}</button>
           </div>
         </div>
-        {questions.map((val, i) => <QuestionItem text={val} num={i + 1} key={i} />)}
+        {
+          buttonType === true
+          && (
+            <div className="question_textArea-div">
+              <textarea ref={textAreaRef} className="question_textArea" id="fname" name="fname" value={value} onChange={handleChange} />
+            </div>
+          )
+        }
+        {questions.map((val, i) => <QuestionItem text={val} key={i} />)}
       </div>
     </div>
   );
