@@ -16,57 +16,79 @@ import styles from './CourseSummary.module.scss';
 /* eslint-disable max-len */
 
 const CourseSummary = ({
-  rating, enrolled, level, language, duration, courseId, userIdAndToken, title,
-}:Omit<CourseDescriptionType, 'description'|'goal'|'modules'|'mentorDto'> & {courseId:number, userIdAndToken:{id:number, token:string}}) => {
-  const { t } = useTranslation();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const params = new URLSearchParams(location.search);
-  const isEnrolled = localStorage.getItem(`enrolled-${courseId}`) === 'true';
-  const { id: userId, token } = userIdAndToken;
-  const courseSummaryItem = {
-    rating, enrolled, level, language, duration,
-  };
-  const dispatch = useDispatch<DispatchType>();
-
-  const [enrolledInCourse, setEnrolledInCourse] = useState<boolean>(isEnrolled);
-  const [enrollButtonDisabled, setEnrollButtonDisabled] = useState<boolean>(false);
-
-  const {
-    mainContent, headerContent, headerIcons, courseSummaryItemList, buttonContainer, userEnrollText,
-    enrolledButtonContainer,
-  } = styles;
-
-  const saveCourse = (courseTitle:string, courseId:number) => {
-    userService.saveUserPreferredCourses(userId, courseId, token);
-    params.set('savedCourse', courseTitle);
-    navigate(`${location.pathname}?${params}`, { replace: true });
-  };
-  const deleteCourse = (courseTitle:string, courseId:number) => {
-    dispatch(deleteUserSavedCourse({ userId, courseId, token }));
-    params.delete('savedCourse');
-    navigate(`${location.pathname}`, { replace: true });
-  };
-
-  useEffect(() => {
-    dispatch(getUserSavedCourse({ userId, token, params: {} }))
-      .unwrap()
-      .then((savedCourseList:SuggestedCourseType[]) => {
-        if (savedCourseList.some((savedCourse:SuggestedCourseType) => savedCourse.id === courseId)) {
-          params.set('savedCourse', savedCourseList.find((savedCourse:SuggestedCourseType) => savedCourse.id === courseId)!.title);
-          navigate(`${location.pathname}?${params}`, { replace: true });
-        } else {
-          params.delete('savedCourse');
-          navigate(`${location.pathname}`, { replace: true });
-        }
-      });
-  }, []);
-
-  const handleEnrollButtonClick = () => {
-    setEnrolledInCourse(true);
-    setEnrollButtonDisabled(true);
-    localStorage.setItem(`enrolled-${courseId}`, 'true');
-  };
+	rating,
+	enrolled,
+	level,
+	language,
+	duration,
+	courseId,
+	userIdAndToken,
+	title,
+	
+  }: Omit<CourseDescriptionType, 'description' | 'goal' | 'modules' | 'mentorDto'> & {
+	courseId: number;
+	userIdAndToken: { id: number; token: string };
+	
+  }) => {
+	const { t } = useTranslation();
+	const location = useLocation();
+	const navigate = useNavigate();
+	const params = new URLSearchParams(location.search);
+	const { id: userId, token } = userIdAndToken;
+	const courseSummaryItem = {
+	  rating,
+	  enrolled,
+	  level,
+	  language,
+	  duration,
+	};
+	const dispatch = useDispatch<DispatchType>();
+    
+	const [enrolledInCourse, setEnrolledInCourse] = useState<boolean>(!!enrolled);
+	const [enrollButtonDisabled, setEnrollButtonDisabled] = useState<boolean>(false);
+  
+	const {
+	  mainContent,
+	  headerContent,
+	  headerIcons,
+	  courseSummaryItemList,
+	  buttonContainer,
+	  userEnrollText,
+	  enrolledButtonContainer,
+	} = styles;
+  
+	const saveCourse = (courseTitle: string, courseId: number) => {
+	  userService.saveUserPreferredCourses(userId, courseId, token);
+	  params.set('savedCourse', courseTitle);
+	  navigate(`${location.pathname}?${params}`, { replace: true });
+	};
+	const deleteCourse = (courseTitle: string, courseId: number) => {
+	  dispatch(deleteUserSavedCourse({ userId, courseId, token }));
+	  params.delete('savedCourse');
+	  navigate(`${location.pathname}`, { replace: true });
+	};
+  
+	useEffect(() => {
+	  dispatch(getUserSavedCourse({ userId, token, params: {} }))
+		.unwrap()
+		.then((savedCourseList: SuggestedCourseType[]) => {
+		  if (savedCourseList.some((savedCourse: SuggestedCourseType) => savedCourse.id === courseId)) {
+			params.set(
+			  'savedCourse',
+			  savedCourseList.find((savedCourse: SuggestedCourseType) => savedCourse.id === courseId)!.title,
+			);
+			navigate(`${location.pathname}?${params}`, { replace: true });
+		  } else {
+			params.delete('savedCourse');
+			navigate(`${location.pathname}`, { replace: true });
+		  }
+		});
+	}, []);
+  
+	const handleEnrollButtonClick = () => {
+	  setEnrolledInCourse(true);
+	  setEnrollButtonDisabled(true);
+	};
   return (
     <div className={mainContent}>
       <div className={headerContent}>
@@ -94,8 +116,8 @@ const CourseSummary = ({
           ))
         }
       </div>
-      {isEnrolled && <p className={userEnrollText}>{t('string.courseDescriptionPage.title.userEnrolled')}</p>}
-      <div className={isEnrolled ? enrolledButtonContainer : buttonContainer}>
+      {enrolled && <p className={userEnrollText}>{t('string.courseDescriptionPage.title.userEnrolled')}</p>}
+      <div className={enrolled ? enrolledButtonContainer : buttonContainer}>
         {enrolledInCourse ? (
           <Button.MainButton
             onClick={() => navigate(`/userCourse/modulOverview/${courseId}`)}
