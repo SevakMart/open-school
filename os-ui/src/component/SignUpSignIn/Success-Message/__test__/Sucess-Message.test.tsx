@@ -17,6 +17,7 @@ describe('Create test case for Successful message component', () => {
           isSignUpSuccessfulRegistration
           isResendVerificationEmailMessage={false}
           isResetPasswordSuccessfulMessage={false}
+          isForgotVerificationMessage={false}
         />
       </Provider>,
     );

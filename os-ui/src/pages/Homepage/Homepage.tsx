@@ -15,6 +15,7 @@ import { userContext } from '../../contexts/Contexts';
 import { Portal } from '../../component/Portal/Portal';
 import { Types } from '../../types/types';
 import { PortalStatus } from '../../types/PortalStatusType';
+import ForgotVerification from '../../component/SignUpSignIn/SignIn/ForgotVerification';
 
 const Homepage = ({ userInfo }:{userInfo:any}) => {
   const portalStatus = useSelector<RootState>((state) => state.portalStatus);
@@ -42,12 +43,14 @@ const Homepage = ({ userInfo }:{userInfo:any}) => {
         {isOpen && buttonType === Types.Button.SIGN_IN && <SignIn />}
         {isOpen && buttonType === Types.Button.RESET_PASSWORD && <ResetPassword />}
         {isOpen && buttonType === Types.Button.FORGOT_PASSWORD && <ForgotPassword />}
+        {isOpen && buttonType === Types.Button.FORGOT_VERIFICATION && <ForgotVerification />}
         {isOpen && buttonType === Types.Button.SUCCESS_MESSAGE && (
         <SuccessMessage
           message={withSuccessMessage}
           isSignUpSuccessfulRegistration={isSignUpSuccessfulRegistration}
           isResetPasswordSuccessfulMessage={isResetPasswordSuccessfulMessage}
           isResendVerificationEmailMessage={isResendVerificationEmailMessage}
+          isForgotVerificationMessage={false}
         />
         )}
       </Portal.FormPortal>
