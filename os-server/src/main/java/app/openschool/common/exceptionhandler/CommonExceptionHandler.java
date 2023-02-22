@@ -1,5 +1,6 @@
 package app.openschool.common.exceptionhandler;
 
+import app.openschool.auth.api.exception.TokenValidationException;
 import app.openschool.category.api.exception.CategoryNestingException;
 import app.openschool.common.exceptionhandler.exception.DuplicateEntityException;
 import app.openschool.common.exceptionhandler.exception.FileDeleteException;
@@ -116,5 +117,12 @@ public class CommonExceptionHandler implements ErrorController {
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<ResponseMessage> handleAccessDeniedException(AccessDeniedException ex) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseMessage(ex.getMessage()));
+  }
+
+  @ExceptionHandler(TokenValidationException.class)
+  public ResponseEntity<ResponseMessage> handleTokenValidationException(
+          TokenValidationException ex) {
+    String message = messageSource.getMessage("exception.token.verification", null, Locale.ROOT);
+    return ResponseEntity.badRequest().body(new ResponseMessage(message));
   }
 }
