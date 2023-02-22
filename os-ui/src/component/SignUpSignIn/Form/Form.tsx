@@ -106,16 +106,31 @@ const Form = ({
           handleInputChange={handleInputChange}
         />
         )}
-      {unAuthorizedSignInError ? <p className={unAuthorizedSignInErrorStyle}>{unAuthorizedSignInError}</p> : null}
-      {!isSignUpForm && !isResetPasswordForm && <p className={forgotPassword} onClick={handleForgotPassword}>{t('string.signIn.forgotPsd')}</p>}
-      <Button.FormButton className={['formButton']} onClick={handleFormOnClick}>
-        {formButtonText}
-      </Button.FormButton>
-      {isResetPasswordForm && (
-        <Button.FormButton className={['formButton', 'formButton__resendEmail']} onClick={resendEmail}>
-          {t('button.resetPsd.resendEmail')}
-        </Button.FormButton>
+      {unAuthorizedSignInError ? (
+        <div>
+          <p className={unAuthorizedSignInErrorStyle}>{unAuthorizedSignInError}</p>
+          <Button.FormButton className={['formButton', 'formButton__resendEmail']} onClick={() => dispatch(openModal({ buttonType: Types.Button.FORGOT_VERIFICATION }))}>
+            {t('Resend Verification Mail')}
+          </Button.FormButton>
+        </div>
+      ) : (
+        <div>
+          {!isResetPasswordForm && (
+            <p className={forgotPassword} onClick={handleForgotPassword}>
+              {t('string.signIn.forgotPsd')}
+            </p>
+          )}
+          <Button.FormButton className={['formButton']} onClick={handleFormOnClick}>
+            {formButtonText}
+          </Button.FormButton>
+          {isResetPasswordForm && (
+            <Button.FormButton className={['formButton', 'formButton__resendEmail']} onClick={resendEmail}>
+              {t('button.resetPsd.resendEmail')}
+            </Button.FormButton>
+          )}
+        </div>
       )}
+
     </form>
   );
 };

@@ -2,6 +2,7 @@ import fetchService from './fetchData';
 import { RegistrationFormType } from '../types/RegistartionFormType';
 import { FormValues } from '../component/SignUpSignIn/Form/Form';
 import { ResetPasswordType } from '../types/ResetPasswordType';
+// import { ForgotVerificationType } from '../types/ForgotVerificationType';
 
 class AuthService {
   readonly basePath: string;
@@ -56,8 +57,13 @@ class AuthService {
     return { data, status };
   }
 
+  async sendForgotVerificationRequest(params: object = {}) {
+    const response = await fetchService.get(`${this.basePath}/account/verification/resend`, params);
+    return response;
+  }
+
   async resendVerificationEmail(userId:number, params: object = {}) {
-    /* Talk with backend to sen success message when successful resend email */
+    /* Talk with backend to send success message when successful resend email */
     const response = await (await fetchService.get(`${this.basePath}/${userId}/account/verification`, params)).json();
     return response;
   }
