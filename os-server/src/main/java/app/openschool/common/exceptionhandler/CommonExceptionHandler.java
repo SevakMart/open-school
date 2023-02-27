@@ -1,6 +1,7 @@
 package app.openschool.common.exceptionhandler;
 
 import app.openschool.auth.api.exception.TokenValidationException;
+import app.openschool.auth.api.exception.UserVerificationException;
 import app.openschool.category.api.exception.CategoryNestingException;
 import app.openschool.common.exceptionhandler.exception.DuplicateEntityException;
 import app.openschool.common.exceptionhandler.exception.FileDeleteException;
@@ -121,8 +122,15 @@ public class CommonExceptionHandler implements ErrorController {
 
   @ExceptionHandler(TokenValidationException.class)
   public ResponseEntity<ResponseMessage> handleTokenValidationException(
-          TokenValidationException ex) {
+      TokenValidationException ex) {
     String message = messageSource.getMessage("exception.token.verification", null, Locale.ROOT);
+    return ResponseEntity.badRequest().body(new ResponseMessage(message));
+  }
+
+  @ExceptionHandler(UserVerificationException.class)
+  public ResponseEntity<ResponseMessage> handleUserVerificationException(
+      UserVerificationException ex) {
+    String message = messageSource.getMessage("exception.user.verification", null, Locale.ROOT);
     return ResponseEntity.badRequest().body(new ResponseMessage(message));
   }
 }
