@@ -2,8 +2,9 @@
   display: flex;
   justify-content: space-between;
   margin: 0 40px 5px 0;
-  padding: 0 10px 0 10px;
+  padding-left: 10px;
   background-color: #F9F9FD;
+  z-index: 1;
 }
 
 .Question_item:hover {
@@ -15,7 +16,70 @@
   font-weight: 500;
 }
 
-.Question_inner {
+.Question__text_inner {
   color: #3D3F42;
   font-weight: 600;
+}
+
+.Question_item {
+  position: relative;
+}
+
+.icons {
+  position: absolute;
+  bottom: 35px;
+  right: 10px;
+}
+
+.changeQuestion {
+  margin-bottom: -15px;
+}
+
+.edit {
+  margin-right: 10px;
+}
+
+.arrowRightIcon {
+  float: right;
+  position: relative;
+  right: 4px;
+  top: 24px;
+}
+
+.trash {
+  margin: 2px 0;
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+}
+
+.trash:hover {
+  width: 22px;
+  height: 22px;
+}
+
+.edit {
+  margin: 2px 8px;
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+}
+
+.edit:hover {
+  width: 22px;
+  height: 22px;
+}
+
+.edit_question_textArea {
+  margin-left: -10px;
+  margin-right: -10px;
+  padding-left: 10px;
+  padding-bottom: 31px;
+  padding-top: 19px;
+  width: 100%;
+  color: #3D3F42;
+  background-color: #F9F9FD;
+  resize: none;
+  outline: none;
+  border: none;
 }

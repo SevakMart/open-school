@@ -40,7 +40,7 @@ const CourseModuleSidebar = ({
             <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
             {' '}
           </button>
-)}
+        )}
         menu={[
           <div
             key={modules[0].title}

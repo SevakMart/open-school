@@ -9,6 +9,7 @@ import NavbarOnSignIn from '../../component/Navbar-Component/NavbarOnSignIn/Navb
 import { getCourseDescription } from '../../redux/Slices/CourseDescriptionRequestSlice';
 import { RootState } from '../../redux/Store';
 import { CourseDescriptionType } from '../../types/CourseTypes';
+import DiscussionForum from './DiscussionPage/DiscussionForum';
 
 const CourseModulePage = ({ userInfo }: { userInfo: any }) => {
   const { entity } = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType };
@@ -16,7 +17,7 @@ const CourseModulePage = ({ userInfo }: { userInfo: any }) => {
   const { courseId } = useParams();
   const dispatch = useDispatch();
   const [isDiscBtnpressed, setDiscBtnpressed] = useState<boolean>(false);
-  const setDisBtnPosition = (value:string):void => {
+  const setDisBtnPosition = (value: string): void => {
     if (value === 'Discussion Form') {
       setDiscBtnpressed(() => !isDiscBtnpressed);
     }
