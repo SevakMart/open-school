@@ -206,11 +206,7 @@ public class AuthController {
             content = @Content(schema = @Schema())),
         @ApiResponse(
             responseCode = "400",
-            description = "Invalid email supplied",
-            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
-        @ApiResponse(
-            responseCode = "400",
-            description = "User already verified",
+            description = "Invalid email supplied or User already verified",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
   @GetMapping("/account/verification/resend")

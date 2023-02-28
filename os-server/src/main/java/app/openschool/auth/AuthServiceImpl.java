@@ -74,6 +74,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   @Override
   public void sendVerificationEmail(String email) {
     User user = userRepository.findByEmail(email).orElseThrow(IllegalArgumentException::new);
+    checkingUserCondition(user);
     applicationEventPublisher.publishEvent(new SendVerificationEmailEvent(this, user));
   }
 
