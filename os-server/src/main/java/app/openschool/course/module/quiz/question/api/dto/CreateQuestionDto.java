@@ -13,7 +13,7 @@ public class CreateQuestionDto {
   private String question;
 
   @Schema(description = "The right answers count", example = "3")
-  private int rightAnswersCount;
+  private int rightAnswersCount = -1;
 
   @ArraySchema(schema = @Schema(implementation = CreateAnswerOptionDto.class))
   private Set<CreateAnswerOptionDto> answerOptions;

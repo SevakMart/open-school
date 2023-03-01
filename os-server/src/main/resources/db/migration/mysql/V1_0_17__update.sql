@@ -42,23 +42,29 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `open_school_db`.`enrolled_quiz` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `student_grade` INT NOT NULL,
-  `quiz_status_id` BIGINT NOT NULL,
+  `student_grade` INT NULL,
   `quiz_id` BIGINT NOT NULL,
   `enrolled_module_id` BIGINT NOT NULL,
+  `quiz_status_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
-INDEX `fk_enrolled_quiz_quiz_status_idx` (`quiz_status_id` ASC) VISIBLE,
-INDEX `fk_enrolled_quiz_quiz_idx` (`quiz_id` ASC) VISIBLE,
-INDEX `fk_enrolled_quiz_enrolled_module_idx` (`enrolled_module_id` ASC) VISIBLE,
-CONSTRAINT `fk_enrolled_quiz_quiz_status`
-FOREIGN KEY (`quiz_status_id`)
-REFERENCES `open_school_db`.`quiz_status` (`id`),
-CONSTRAINT `fk_enrolled_quiz_quiz`
-FOREIGN KEY (`quiz_id`)
-REFERENCES `open_school_db`.`quiz` (`id`),
-CONSTRAINT `fk_enrolled_quiz_enrolled_module`
-FOREIGN KEY (`enrolled_module_id`)
-REFERENCES `open_school_db`.`enrolled_module` (`id`)
+  INDEX `fk_enrolled_quiz_quiz_idx` (`quiz_id` ASC) VISIBLE,
+  INDEX `fk_enrolled_quiz_enrolled_module_idx` (`enrolled_module_id` ASC) VISIBLE,
+  INDEX `fk_enrolled_quiz_quiz_status_idx` (`quiz_status_id` ASC) VISIBLE,
+  CONSTRAINT `fk_enrolled_quiz_quiz`
+   FOREIGN KEY (`quiz_id`)
+   REFERENCES `open_school_db`.`quiz` (`id`)
+   ON DELETE CASCADE
+   ON UPDATE CASCADE,
+  CONSTRAINT `fk_enrolled_quiz_enrolled_module`
+   FOREIGN KEY (`enrolled_module_id`)
+   REFERENCES `open_school_db`.`enrolled_module` (`id`)
+   ON DELETE CASCADE
+   ON UPDATE CASCADE,
+ CONSTRAINT `fk_enrolled_quiz_quiz_status`
+  FOREIGN KEY (`quiz_status_id`)
+  REFERENCES `open_school_db`.`quiz_status` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
 )
 ENGINE = InnoDB;
 

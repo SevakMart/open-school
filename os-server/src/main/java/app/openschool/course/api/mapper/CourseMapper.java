@@ -11,6 +11,7 @@ import app.openschool.course.keyword.Keyword;
 import app.openschool.course.module.EnrolledModule;
 import app.openschool.course.module.Module;
 import app.openschool.course.module.item.ModuleItem;
+import app.openschool.course.module.quiz.EnrolledQuiz;
 import app.openschool.course.status.CourseStatus;
 import app.openschool.user.User;
 import app.openschool.user.api.mapper.MentorMapper;

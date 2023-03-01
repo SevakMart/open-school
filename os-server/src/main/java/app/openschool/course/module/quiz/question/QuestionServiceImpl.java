@@ -23,7 +23,6 @@ public class QuestionServiceImpl implements QuestionService {
         .findById(questionId)
         .map(
             question -> {
-              checkIfQuestionBelongsToCurrentMentor(question);
               questionRepository.delete(question);
               return true;
             })
@@ -36,7 +35,6 @@ public class QuestionServiceImpl implements QuestionService {
         .findById(questionId)
         .map(
             question -> {
-              checkIfQuestionBelongsToCurrentMentor(question);
               Question updatedQuestion =
                   QuestionMapper.createQuestionDtoToQuestion(createQuestionDto, question.getQuiz());
               updatedQuestion.setId(question.getId());
@@ -50,12 +48,5 @@ public class QuestionServiceImpl implements QuestionService {
   public Page<QuestionDto> findAllByQuizId(Long id, Pageable pageable) {
     return QuestionMapper.toQuestionDtoPage(
         questionRepository.findAllQuestionsByQuizId(id, pageable));
-  }
-
-  private void checkIfQuestionBelongsToCurrentMentor(Question question) {
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-    if (!question.getQuiz().getModule().getCourse().getMentor().getEmail().equals(username)) {
-      throw new IllegalArgumentException();
-    }
   }
 }

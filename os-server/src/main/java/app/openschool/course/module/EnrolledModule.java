@@ -2,6 +2,7 @@ package app.openschool.course.module;
 
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.module.item.EnrolledModuleItem;
+import app.openschool.course.module.quiz.EnrolledQuiz;
 import app.openschool.course.module.status.ModuleStatus;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -39,6 +40,9 @@ public class EnrolledModule {
   @OneToMany(cascade = CascadeType.MERGE, mappedBy = "enrolledModule")
   private Set<EnrolledModuleItem> enrolledModuleItems;
 
+  @OneToMany(cascade = CascadeType.MERGE, mappedBy = "enrolledModule")
+  private Set<EnrolledQuiz> enrolledQuizzes;
+
   public EnrolledModule() {}
 
   public EnrolledModule(Module module, ModuleStatus moduleStatus, EnrolledCourse enrolledCourse) {
@@ -52,12 +56,14 @@ public class EnrolledModule {
       Module module,
       EnrolledCourse enrolledCourse,
       ModuleStatus moduleStatus,
-      Set<EnrolledModuleItem> enrolledModuleItems) {
+      Set<EnrolledModuleItem> enrolledModuleItems,
+      Set<EnrolledQuiz> enrolledQuizzes) {
     this.id = id;
     this.module = module;
     this.enrolledCourse = enrolledCourse;
     this.moduleStatus = moduleStatus;
     this.enrolledModuleItems = enrolledModuleItems;
+    this.enrolledQuizzes = enrolledQuizzes;
   }
 
   public Long getId() {
@@ -86,6 +92,14 @@ public class EnrolledModule {
 
   public ModuleStatus getModuleStatus() {
     return moduleStatus;
+  }
+
+  public Set<EnrolledQuiz> getEnrolledQuizzes() {
+    return enrolledQuizzes;
+  }
+
+  public void setEnrolledQuizzes(Set<EnrolledQuiz> enrolledQuizzes) {
+    this.enrolledQuizzes = enrolledQuizzes;
   }
 
   public void setModuleStatus(ModuleStatus moduleStatus) {

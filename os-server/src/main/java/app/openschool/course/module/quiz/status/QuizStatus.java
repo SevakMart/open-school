@@ -21,9 +21,17 @@ public class QuizStatus {
 
   public QuizStatus() {}
 
+  public QuizStatus(Long id) {
+    this.id = id;
+  }
+
   public QuizStatus(Long id, String type) {
     this.id = id;
     this.type = type;
+  }
+
+  public static QuizStatus inProgress() {
+    return new QuizStatus(1L);
   }
 
   public static QuizStatus isInProgress() {

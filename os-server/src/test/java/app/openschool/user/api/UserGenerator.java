@@ -34,4 +34,27 @@ public class UserGenerator {
     user.getMentors().add(generateUser());
     return user;
   }
+  public static User generateMentor() {
+
+    String email = "mentor";
+    String password = "pass";
+    User mentor = new User(email, password);
+    mentor.setName("Jon");
+    mentor.setSurname("Smith");
+    Role role = new Role();
+    role.setId(3);
+    role.setType("MENTOR");
+    mentor.setRole(role);
+    return mentor;
+  }
+  public static User generateStudent() {
+    String email = "student";
+    String password = "pass";
+    User mentor = new User(email, password);
+    Role role = new Role();
+    role.setId(1);
+    role.setType("STUDENT");
+    mentor.setRole(role);
+    return mentor;
+  }
 }

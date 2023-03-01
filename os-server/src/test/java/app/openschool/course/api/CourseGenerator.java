@@ -1,5 +1,6 @@
 package app.openschool.course.api;
 
+import app.openschool.category.Category;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.difficulty.Difficulty;
@@ -7,6 +8,7 @@ import app.openschool.course.language.Language;
 import app.openschool.course.module.Module;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.type.ModuleItemType;
+import app.openschool.course.module.quiz.Quiz;
 import app.openschool.user.User;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +19,7 @@ public class CourseGenerator {
     Course course = new Course();
     Set<Module> modules = new HashSet<>();
     Set<ModuleItem> moduleItems = new HashSet<>();
-    Module module = new Module(1L, course, moduleItems);
+    Module module = new Module(1L, course, moduleItems, new HashSet<>());
     ModuleItemType moduleItemType = new ModuleItemType();
     moduleItemType.setType("TheType");
     ModuleItem moduleItem = new ModuleItem(1L, "String", moduleItemType, "kkk", 100L, module);
@@ -44,7 +46,7 @@ public class CourseGenerator {
     Course course = new Course();
     Set<Module> modules = new HashSet<>();
     Set<ModuleItem> moduleItems = new HashSet<>();
-    Module module = new Module(1L, course, moduleItems);
+    Module module = new Module(1L, course, moduleItems, new HashSet<>());
     ModuleItemType moduleItemType = new ModuleItemType();
     moduleItemType.setType("TheType");
     ModuleItem moduleItem = new ModuleItem(1L, "String", moduleItemType, "kkk", 100L, module);
@@ -57,8 +59,16 @@ public class CourseGenerator {
     course.setModules(modules);
     course.setMentor(new User(1L));
     course.setRating(5.0);
-    course.setDifficulty(new Difficulty("Basic"));
-    course.setLanguage(new Language("English"));
+    Category category = new Category();
+    category.setId(1L);
+    category.setTitle("category");
+    course.setCategory(category);
+    Difficulty basic = new Difficulty("Basic");
+    basic.setId(1);
+    course.setDifficulty(basic);
+    Language english = new Language("English");
+    english.setId(1);
+    course.setLanguage(english);
 
     return course;
   }

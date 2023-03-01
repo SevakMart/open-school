@@ -48,13 +48,19 @@ CREATE TABLE IF NOT EXISTS enrolled_quiz (
     PRIMARY KEY (id),
 CONSTRAINT fk_enrolled_quiz_quiz_status
 FOREIGN KEY (quiz_status_id)
-REFERENCES quiz_status (id),
+REFERENCES quiz_status (id)
+ON DELETE CASCADE
+ON UPDATE CASCADE,
 CONSTRAINT fk_enrolled_quiz_quiz
 FOREIGN KEY (quiz_id)
-REFERENCES quiz (id),
+REFERENCES quiz (id)
+ON DELETE CASCADE
+ON UPDATE CASCADE,
 CONSTRAINT fk_enrolled_quiz_enrolled_module
 FOREIGN KEY (enrolled_module_id)
 REFERENCES enrolled_module (id)
+ON DELETE CASCADE
+ON UPDATE CASCADE
 );
 
 CREATE INDEX fk_enrolled_quiz_quiz_status_idx ON enrolled_quiz (quiz_status_id ASC);

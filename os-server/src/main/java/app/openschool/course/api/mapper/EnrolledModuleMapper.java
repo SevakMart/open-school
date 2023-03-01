@@ -5,6 +5,8 @@ import app.openschool.course.EnrolledCourse;
 import app.openschool.course.module.EnrolledModule;
 import app.openschool.course.module.item.EnrolledModuleItem;
 import app.openschool.course.module.item.status.ModuleItemStatus;
+import app.openschool.course.module.quiz.EnrolledQuiz;
+import app.openschool.course.module.quiz.status.QuizStatus;
 import app.openschool.course.module.status.ModuleStatus;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,10 +21,10 @@ public class EnrolledModuleMapper {
             .collect(Collectors.toSet());
 
     return enrolledModules.stream()
-        .map(
+        .peek(
             enrolledModule -> {
               enrolledModule.setEnrolledModuleItems(getEnrolledModuleItems(enrolledModule));
-              return enrolledModule;
+              enrolledModule.setEnrolledQuizzes(getEnrolledQuiz(enrolledModule));
             })
         .collect(Collectors.toSet());
   }
@@ -32,6 +34,12 @@ public class EnrolledModuleMapper {
         .map(
             moduleItem ->
                 new EnrolledModuleItem(moduleItem, enrolledModule, ModuleItemStatus.inProgress()))
+        .collect(Collectors.toSet());
+  }
+
+  private static Set<EnrolledQuiz> getEnrolledQuiz(EnrolledModule enrolledModule) {
+    return enrolledModule.getModule().getQuizzes().stream()
+        .map(quiz -> new EnrolledQuiz(QuizStatus.inProgress(), quiz, enrolledModule))
         .collect(Collectors.toSet());
   }
 }

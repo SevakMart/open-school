@@ -25,7 +25,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class QuizServiceImpl implements QuizService {
 
@@ -51,7 +50,6 @@ public class QuizServiceImpl implements QuizService {
         .findById(moduleId)
         .map(
             module -> {
-              checkIfTheModuleBelongsToCurrentMentor(module);
               Quiz quiz = QuizMapper.createQuizDtoToQuiz(createQuizDto, module);
               return quizRepository.save(quiz);
             });
@@ -63,7 +61,6 @@ public class QuizServiceImpl implements QuizService {
         .findById(quizId)
         .map(
             quiz -> {
-              checkIfTheQuizBelongsToCurrentMentor(quiz);
               quizRepository.delete(quiz);
               return true;
             })
@@ -95,10 +92,10 @@ public class QuizServiceImpl implements QuizService {
   @Override
   public Quiz updateQuiz(Long id, ModifyQuizDataRequest request) {
     Quiz quiz = quizRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-    if (request.getTitle() != null) {
+    if (Objects.nonNull(request.getTitle())) {
       quiz.setTitle(request.getTitle());
     }
-    if (request.getTitle() != null) {
+    if (Objects.nonNull(request.getDescription())) {
       quiz.setDescription(request.getDescription());
     }
     if (request.getPassingScore() != -1) {
@@ -184,19 +181,5 @@ public class QuizServiceImpl implements QuizService {
               }
             });
     return rightAnswers.get() == question.getRightAnswersCount();
-  }
-
-  private void checkIfTheQuizBelongsToCurrentMentor(Quiz quiz) {
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-    if (!quiz.getModule().getCourse().getMentor().getEmail().equals(username)) {
-      throw new IllegalArgumentException();
-    }
-  }
-
-  private void checkIfTheModuleBelongsToCurrentMentor(Module module) {
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-    if (!module.getCourse().getMentor().getEmail().equals(username)) {
-      throw new PermissionDeniedException("permission.denied");
-    }
   }
 }
