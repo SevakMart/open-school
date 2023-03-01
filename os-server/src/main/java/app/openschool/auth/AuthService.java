@@ -17,7 +17,7 @@ public interface AuthService {
 
   Optional<User> verifyAccount(String token);
 
-  void sendVerificationEmail(Long userId);
+  void sendVerificationEmail(String email);
 
   void updateResetPasswordToken(String email, User user);
 

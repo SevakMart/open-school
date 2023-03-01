@@ -221,7 +221,7 @@ public class CourseController {
               + "(by default returns all faqs with size of pagination), "
               + "or empty list if no faqs have been found.")
   @ApiResponse(
-      responseCode = "403",
+      responseCode = "401",
       description = "Only registered users have access to this method.",
       content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
   @GetMapping("/faqs/{courseId}")

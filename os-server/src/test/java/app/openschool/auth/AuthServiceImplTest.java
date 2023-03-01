@@ -1,7 +1,6 @@
 package app.openschool.auth;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -13,6 +12,7 @@ import static org.mockito.Mockito.when;
 import app.openschool.auth.api.dto.ResetPasswordRequest;
 import app.openschool.auth.api.dto.UserRegistrationDto;
 import app.openschool.auth.api.exception.EmailNotFoundException;
+import app.openschool.auth.api.exception.TokenValidationException;
 import app.openschool.auth.entity.ResetPasswordToken;
 import app.openschool.auth.repository.ResetPasswordTokenRepository;
 import app.openschool.auth.verification.VerificationTokenRepository;
@@ -90,15 +90,15 @@ public class AuthServiceImplTest {
     given(verificationTokenRepository.findVerificationTokenByToken(anyString()))
         .willReturn(Optional.empty());
 
-    assertEquals(authService.verifyAccount(anyString()), Optional.empty());
+    assertThatThrownBy(() -> authService.verifyAccount(anyString()))
+        .isInstanceOf(TokenValidationException.class);
   }
 
   @Test
-  void sendVerificationEmailWithWrongUserId() {
-    long userId = 1L;
-    given(userRepository.findById(userId)).willReturn(Optional.empty());
+  void sendVerificationEmailWithWrongUserEmail() {
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
 
-    assertThatThrownBy(() -> authService.sendVerificationEmail(userId))
+    assertThatThrownBy(() -> authService.sendVerificationEmail(anyString()))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
