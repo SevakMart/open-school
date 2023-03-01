@@ -7,8 +7,8 @@ INSERT INTO category (title) VALUES ('Development');
 INSERT INTO difficulty (title) VALUES ('Basic');
 INSERT INTO language (language_name) VALUES ('English');
 
-INSERT INTO learning_path (title, description, rating, mentor_id, category_id, language_id, difficulty_id)
-VALUES ('Java core', 'Java ', 4.7, 1, 1, 1, 1);
+INSERT INTO learning_path (title, description, rating, mentor_id, category_id, language_id, difficulty_id,is_current_user_enrolled)
+VALUES ('Java core', 'Java ', 4.7, 1, 1, 1, 1,0);
 
 INSERT INTO faq (id, question, answer, learning_path_id)
 VALUES (1, 'question1', 'answer1', 1),(2, 'question2', 'answer2', 1);

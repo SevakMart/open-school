@@ -27,6 +27,7 @@ public class CourseServiceImpl implements CourseService {
   private final LanguageRepository languageRepository;
   private final KeywordRepository keywordRepository;
   private final UserRepository userRepository;
+  private final EnrolledCourseRepository enrolledCourseRepository;
 
   public CourseServiceImpl(
       CourseRepository courseRepository,
@@ -34,18 +35,26 @@ public class CourseServiceImpl implements CourseService {
       DifficultyRepository difficultyRepository,
       LanguageRepository languageRepository,
       KeywordRepository keywordRepository,
-      UserRepository userRepository) {
+      UserRepository userRepository,
+      EnrolledCourseRepository enrolledCourseRepository) {
     this.courseRepository = courseRepository;
     this.categoryRepository = categoryRepository;
     this.difficultyRepository = difficultyRepository;
     this.languageRepository = languageRepository;
     this.keywordRepository = keywordRepository;
     this.userRepository = userRepository;
+    this.enrolledCourseRepository = enrolledCourseRepository;
   }
 
   @Override
   public Optional<Course> findCourseById(Long id) {
-    return courseRepository.findById(id);
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    Optional<Course> byId = courseRepository.findById(id);
+    if (enrolledCourseRepository.findByUserEmailAndCourseId(email, id).isPresent()) {
+      byId.ifPresent(course -> course.setCurrentUserEnrolled(true));
+    }
+    return byId;
   }
 
   @Override

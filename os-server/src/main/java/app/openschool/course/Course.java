@@ -58,6 +58,9 @@ public class Course {
   @JoinColumn(name = "mentor_id")
   private User mentor;
 
+  @Column(name = "is_current_user_enrolled")
+  private boolean isCurrentUserEnrolled;
+
   @ManyToMany
   @JoinTable(
       name = "keyword_learning_path",
@@ -177,6 +180,14 @@ public class Course {
 
   public void setMentor(User mentor) {
     this.mentor = mentor;
+  }
+
+  public boolean isCurrentUserEnrolled() {
+    return isCurrentUserEnrolled;
+  }
+
+  public void setCurrentUserEnrolled(boolean currentUserEnrolled) {
+    isCurrentUserEnrolled = currentUserEnrolled;
   }
 
   public String getGoal() {

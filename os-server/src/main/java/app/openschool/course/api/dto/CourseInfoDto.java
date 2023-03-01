@@ -25,6 +25,10 @@ public class CourseInfoDto {
   @Schema(description = "Object containing the information of course mentor")
   private MentorDto mentorDto;
 
+  @Schema(
+      description = "Object containing the information of user is enrolled or no in this course")
+  private boolean isCurrentUserEnrolled;
+
   @Schema(description = "Rating of the course", example = "5.5")
   private double rating;
 
@@ -51,7 +55,8 @@ public class CourseInfoDto {
       int enrolled,
       String level,
       String language,
-      double duration) {
+      double duration,
+      boolean isCurrentUserEnrolled) {
     this.title = title;
     this.description = description;
     this.goal = goal;
@@ -62,6 +67,7 @@ public class CourseInfoDto {
     this.level = level;
     this.language = language;
     this.duration = duration;
+    this.isCurrentUserEnrolled = isCurrentUserEnrolled;
   }
 
   public String getTitle() {
@@ -94,6 +100,14 @@ public class CourseInfoDto {
 
   public String getLevel() {
     return level;
+  }
+
+  public boolean isCurrentUserEnrolled() {
+    return isCurrentUserEnrolled;
+  }
+
+  public void setCurrentUserEnrolled(boolean currentUserEnrolled) {
+    isCurrentUserEnrolled = currentUserEnrolled;
   }
 
   public String getLanguage() {

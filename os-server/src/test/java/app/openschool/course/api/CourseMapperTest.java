@@ -70,7 +70,8 @@ public class CourseMapperTest {
             "enrolled",
             "level",
             "language",
-            "duration");
+            "duration",
+            "isCurrentUserEnrolled");
   }
 
   @Test
