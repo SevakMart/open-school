@@ -109,7 +109,7 @@ const Form = ({
       {unAuthorizedSignInError ? (
         <div>
           <p className={unAuthorizedSignInErrorStyle}>{unAuthorizedSignInError}</p>
-          <Button.FormButton className={['formButton', 'formButton__resendEmail']} onClick={() => dispatch(openModal({ buttonType: Types.Button.FORGOT_VERIFICATION }))}>
+          <Button.FormButton className={['formButton', 'formButton__resendEmail']} onClick={() => dispatch(openModal({ buttonType: Types.Button.FORGOT_VERIFICATION, forgotVerficationEmail: formValues.email }))}>
             {t('Resend Verification Mail')}
           </Button.FormButton>
         </div>

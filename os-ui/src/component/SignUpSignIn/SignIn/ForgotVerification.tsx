@@ -10,10 +10,16 @@ import Button from '../../Button/Button';
 import { Input } from '../../Input/Input';
 import Header from '../Header/Header';
 
-const ForgotVerification = () => {
+type ForgotVerificationProps = {
+	forgotVerficationEmail?: string
+}
+
+const ForgotVerification = (props: ForgotVerificationProps) => {
+  const { forgotVerficationEmail } = props;
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(forgotVerficationEmail || '');
   const [emailError, setEmailError] = useState('');
 
   const handleInputChange = (e:React.SyntheticEvent) => {

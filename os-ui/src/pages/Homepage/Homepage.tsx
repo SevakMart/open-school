@@ -22,7 +22,7 @@ const Homepage = ({ userInfo }:{userInfo:any}) => {
 
   const {
     isOpen, buttonType, withSuccessMessage, isSignUpSuccessfulRegistration,
-    isResetPasswordSuccessfulMessage, isResendVerificationEmailMessage,
+    isResetPasswordSuccessfulMessage, isResendVerificationEmailMessage, forgotVerficationEmail,
   } = portalStatus as PortalStatus;
   const idAndToken = useMemo(() => ({
     token: userInfo ? (userInfo as any).token : '',
@@ -39,11 +39,11 @@ const Homepage = ({ userInfo }:{userInfo:any}) => {
       <Footer />
       <Portal.FormPortal isOpen={isOpen}>
         {isOpen && buttonType === Types.Button.SIGN_UP && <SignUp />}
-        {isOpen && buttonType === Types.Button.VERIFY && <Verification />}
+        {isOpen && buttonType === Types.Button.VERIFY && <Verification forgotVerficationEmail={forgotVerficationEmail} />}
         {isOpen && buttonType === Types.Button.SIGN_IN && <SignIn />}
         {isOpen && buttonType === Types.Button.RESET_PASSWORD && <ResetPassword />}
         {isOpen && buttonType === Types.Button.FORGOT_PASSWORD && <ForgotPassword />}
-        {isOpen && buttonType === Types.Button.FORGOT_VERIFICATION && <ForgotVerification />}
+        {isOpen && buttonType === Types.Button.FORGOT_VERIFICATION && <ForgotVerification forgotVerficationEmail={forgotVerficationEmail} />}
         {isOpen && buttonType === Types.Button.SUCCESS_MESSAGE && (
         <SuccessMessage
           message={withSuccessMessage}
@@ -51,6 +51,7 @@ const Homepage = ({ userInfo }:{userInfo:any}) => {
           isResetPasswordSuccessfulMessage={isResetPasswordSuccessfulMessage}
           isResendVerificationEmailMessage={isResendVerificationEmailMessage}
           isForgotVerificationMessage={false}
+          forgotVerficationEmail={forgotVerficationEmail}
         />
         )}
       </Portal.FormPortal>

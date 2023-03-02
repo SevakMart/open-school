@@ -14,12 +14,14 @@ const SuccessMessage = ({
   isResetPasswordSuccessfulMessage,
   isResendVerificationEmailMessage,
   isForgotVerificationMessage,
+  forgotVerficationEmail,
 }: {
 	message: string;
 	isSignUpSuccessfulRegistration: boolean;
 	isResetPasswordSuccessfulMessage: boolean;
 	isResendVerificationEmailMessage: boolean;
 	isForgotVerificationMessage: boolean;
+	forgotVerficationEmail?: string
   }) => {
   const { mainContainer, closeIcon } = styles;
   const dispatch = useDispatch();
@@ -33,7 +35,7 @@ const SuccessMessage = ({
 	  let timer: any;
 	  if (isSignUpSuccessfulRegistration || isResendVerificationEmailMessage) {
       timer = setTimeout(
-		  () => dispatch(openModal({ buttonType: Types.Button.VERIFY })),
+		  () => dispatch(openModal({ buttonType: Types.Button.VERIFY, forgotVerficationEmail })),
 		  3000,
       );
 	  } else if (isForgotVerificationMessage) {
