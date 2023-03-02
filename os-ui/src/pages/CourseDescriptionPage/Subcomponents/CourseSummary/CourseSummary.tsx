@@ -116,8 +116,12 @@ const CourseSummary = ({
           ))
         }
       </div>
-      {currentUserEnrolled && <p className={userEnrollText}>{t('string.courseDescriptionPage.title.userEnrolled')}</p>}
-      <div className={currentUserEnrolled ? enrolledButtonContainer : buttonContainer}>
+      {enrolledInCourse && (
+      <p className={userEnrollText}>
+        {t('string.courseDescriptionPage.title.userEnrolled')}
+      </p>
+	  )}
+      <div className={enrolledInCourse ? enrolledButtonContainer : buttonContainer}>
         {enrolledInCourse ? (
           <Button.MainButton
             onClick={() => navigate(`/userCourse/modulOverview/${courseId}`)}
