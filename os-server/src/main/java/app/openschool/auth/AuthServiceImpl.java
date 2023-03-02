@@ -85,8 +85,8 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
             .findVerificationTokenByToken(token)
             .orElseThrow(TokenValidationException::new);
 
+    checkingConditionsBeforeVerification(fetchedToken);
     User user = fetchedToken.getUser();
-    checkingConditionsBeforeVerification(fetchedToken, user);
 
     user.setEnabled(true);
     return Optional.of(userRepository.save(user));
@@ -146,10 +146,9 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     return findByEmail(email).isPresent();
   }
 
-  private void checkingConditionsBeforeVerification(
-      VerificationToken verifiableToken, User verifiableUser) {
-    checkingUserCondition(verifiableUser);
-    checkingTokenCondition(verifiableToken);
+  private void checkingConditionsBeforeVerification(VerificationToken token) {
+    checkingUserCondition(token.getUser());
+    checkingTokenCondition(token);
   }
 
   private void checkingTokenCondition(VerificationToken verifiableToken) {
