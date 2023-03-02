@@ -48,7 +48,7 @@ public class VerificationToken {
 
   public static boolean isTokenExpired(Instant createdAt, long expiresAt) {
     Duration difference = Duration.between(createdAt, Instant.now());
-    return difference.toMinutes() > expiresAt;
+    return difference.toMinutes() >= expiresAt;
   }
 
   public Instant getCreatedAt() {

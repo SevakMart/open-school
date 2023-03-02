@@ -36,7 +36,7 @@ public class CourseInfoDto {
   @Schema(description = "Course language", example = "English")
   private String language;
 
-  @Schema(description = "Duration of the course", example = "360.5")
+  @Schema(description = "Duration of the course (in hours)", example = "2.5")
   private double duration;
 
   public CourseInfoDto() {}
