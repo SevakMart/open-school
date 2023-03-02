@@ -6,9 +6,9 @@ jest.mock('react-i18next', () => ({
 }));
 const mockedUsedNavigate = jest.fn();
 
-jest.mock("react-router-dom", () => ({
-  ...(jest.requireActual("react-router-dom") as any),
-  useNavigate: () => mockedUsedNavigate
+jest.mock('react-router-dom', () => ({
+  ...(jest.requireActual('react-router-dom') as any),
+  useNavigate: () => mockedUsedNavigate,
 }));
 
 describe('Create test cases for InProgress component', () => {
