@@ -2,8 +2,6 @@ package app.openschool.course;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -17,6 +15,7 @@ import static org.mockito.Mockito.when;
 import app.openschool.category.Category;
 import app.openschool.category.CategoryRepository;
 import app.openschool.course.api.CourseGenerator;
+import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.dto.CreateCourseRequest;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.difficulty.DifficultyRepository;
@@ -73,12 +72,6 @@ class CourseServiceImplTest {
             enrolledCourseRepository);
   }
 
-  @Test
-  public void findCourseByNonexistentId() {
-    long wrongId = 999L;
-    when(courseRepository.findById(wrongId)).thenReturn(Optional.empty());
-    assertEquals(Optional.empty(), courseService.findCourseById(wrongId));
-  }
 
   @Test
   public void add_withCorrectArguments_returnsCreatedCourse() {
@@ -254,47 +247,22 @@ class CourseServiceImplTest {
         .willReturn(Optional.of(CourseGenerator.generateEnrolledCourse()));
     setAuthenticationToMockedAuth();
     Course expectedCourse = CourseGenerator.generateCourse();
-    Course actualCourse = courseService.findCourseById(1L).orElse(new Course());
+    CourseInfoDto actualCourse = courseService.findCourseById(1L);
+
     assertEquals(actualCourse.getTitle(), expectedCourse.getTitle());
     assertEquals(actualCourse.getDescription(), expectedCourse.getDescription());
     assertEquals(actualCourse.getGoal(), expectedCourse.getGoal());
-    assertEquals(actualCourse.getLanguage().getTitle(), expectedCourse.getLanguage().getTitle());
-    assertEquals(actualCourse.getMentor().getEmail(), expectedCourse.getMentor().getEmail());
+    assertEquals(actualCourse.getLanguage(), expectedCourse.getLanguage().getTitle());
+    assertEquals(actualCourse.getMentorDto().getEmailPath(), expectedCourse.getMentor().getEmail());
     assertEquals(actualCourse.getRating(), expectedCourse.getRating());
-    assertEquals(actualCourse.getCategory(), expectedCourse.getCategory());
   }
 
   @Test
-  void findCourseById_withInCorrectCourseId_returnOptionalEmpty() {
+  void findCourseById_withInCorrectCourseId_returnThrowIllegalArgumentException() {
 
-    setAuthenticationToMockedAuth();
     given(courseRepository.findById(anyLong())).willReturn(Optional.empty());
-    given(enrolledCourseRepository.findByUserEmailAndCourseId(anyString(), anyLong()))
-        .willReturn(Optional.of(CourseGenerator.generateEnrolledCourse()));
-    Optional<Course> actualCourse = courseService.findCourseById(1L);
-    assertEquals(actualCourse, Optional.empty());
-  }
-
-  @Test
-  void findCourseById_withInCorrectEnrolledCourseIdOrInCorrectUserId() {
-    setAuthenticationToMockedAuth();
-    given(courseRepository.findById(anyLong()))
-        .willReturn(Optional.of(CourseGenerator.generateCourse()));
-    given(enrolledCourseRepository.findByUserEmailAndCourseId(anyString(), anyLong()))
-        .willReturn(Optional.empty());
-    Course course = courseService.findCourseById(1L).orElse(new Course());
-    assertFalse(course.isCurrentUserEnrolled());
-  }
-
-  @Test
-  void findCourseById_withCorrectEnrolledCourseIdAndUserId() {
-    setAuthenticationToMockedAuth();
-    given(courseRepository.findById(anyLong()))
-        .willReturn(Optional.of(CourseGenerator.generateCourse()));
-    given(enrolledCourseRepository.findByUserEmailAndCourseId(anyString(), anyLong()))
-        .willReturn(Optional.of(CourseGenerator.generateEnrolledCourse()));
-    Course course = courseService.findCourseById(1L).orElse(new Course());
-    assertTrue(course.isCurrentUserEnrolled());
+    assertThatThrownBy(() -> courseService.findCourseById(1L))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   private Set<Keyword> createKeywords() {

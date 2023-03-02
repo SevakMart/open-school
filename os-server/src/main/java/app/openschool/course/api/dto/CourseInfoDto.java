@@ -55,8 +55,7 @@ public class CourseInfoDto {
       int enrolled,
       String level,
       String language,
-      double duration,
-      boolean isCurrentUserEnrolled) {
+      double duration) {
     this.title = title;
     this.description = description;
     this.goal = goal;
@@ -67,7 +66,6 @@ public class CourseInfoDto {
     this.level = level;
     this.language = language;
     this.duration = duration;
-    this.isCurrentUserEnrolled = isCurrentUserEnrolled;
   }
 
   public String getTitle() {

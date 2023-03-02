@@ -1,8 +1,10 @@
 package app.openschool.course;
 
 import app.openschool.category.CategoryRepository;
+import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.dto.CreateCourseRequest;
 import app.openschool.course.api.dto.UpdateCourseRequest;
+import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.course.difficulty.DifficultyRepository;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.keyword.KeywordRepository;
@@ -47,14 +49,15 @@ public class CourseServiceImpl implements CourseService {
   }
 
   @Override
-  public Optional<Course> findCourseById(Long id) {
+  public CourseInfoDto findCourseById(Long id) {
+    Course course = courseRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
-
-    Optional<Course> byId = courseRepository.findById(id);
+    CourseInfoDto courseInfoDto = CourseMapper.toCourseInfoDto(course);
     if (enrolledCourseRepository.findByUserEmailAndCourseId(email, id).isPresent()) {
-      byId.ifPresent(course -> course.setCurrentUserEnrolled(true));
+      courseInfoDto.setCurrentUserEnrolled(true);
     }
-    return byId;
+
+    return courseInfoDto;
   }
 
   @Override

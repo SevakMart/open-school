@@ -20,7 +20,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "learning_path")
@@ -58,8 +57,6 @@ public class Course {
   @ManyToOne
   @JoinColumn(name = "mentor_id")
   private User mentor;
-  @Transient
-  private boolean isCurrentUserEnrolled;
 
   @ManyToMany
   @JoinTable(
@@ -180,14 +177,6 @@ public class Course {
 
   public void setMentor(User mentor) {
     this.mentor = mentor;
-  }
-
-  public boolean isCurrentUserEnrolled() {
-    return isCurrentUserEnrolled;
-  }
-
-  public void setCurrentUserEnrolled(boolean currentUserEnrolled) {
-    isCurrentUserEnrolled = currentUserEnrolled;
   }
 
   public String getGoal() {

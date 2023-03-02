@@ -67,8 +67,7 @@ public class CourseMapper {
         course.getEnrolledCourses().size(),
         course.getDifficulty().getTitle(),
         course.getLanguage().getTitle(),
-        getCourseDurationInHours(course),
-        course.isCurrentUserEnrolled());
+        getCourseDurationInHours(course));
   }
 
   public static EnrolledCourse toEnrolledCourse(Course course, User user) {
