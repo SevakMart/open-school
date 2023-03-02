@@ -50,7 +50,7 @@ module.exports = {
 	'react/no-children-prop': 'off',
 	'react/require-default-props': 'off',
 	'react/no-array-index-key': 'off',
-	'max-len': ['warn'],
+	'max-len': 'off',
 	'import/prefer-default-export': 'off',
 	'react/destructuring-assignment': 'off',
 	'import/extensions': [
