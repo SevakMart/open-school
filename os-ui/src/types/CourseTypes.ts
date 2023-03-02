@@ -10,6 +10,7 @@ export interface CourseDescriptionType {
     level:string;
     language:string;
     duration:number;
+	currentUserEnrolled: boolean;
 }
 export interface UserCourseType{
     title:string;
