@@ -13,8 +13,6 @@ import ShareIcon from '../../../../assets/svg/ShareIcon.svg';
 import Button from '../../../../component/Button/Button';
 import styles from './CourseSummary.module.scss';
 
-/* eslint-disable max-len */
-
 const CourseSummary = ({
   rating,
   enrolled,
@@ -24,65 +22,67 @@ const CourseSummary = ({
   courseId,
   userIdAndToken,
   title,
-
+  currentUserEnrolled,
 }: Omit<CourseDescriptionType, 'description' | 'goal' | 'modules' | 'mentorDto'> & {
-	courseId: number;
-	userIdAndToken: { id: number; token: string };
+  courseId: number;
+  userIdAndToken: { id: number; token: string };
 
-  }) => {
+}) => {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const { id: userId, token } = userIdAndToken;
+
   const courseSummaryItem = {
-	  rating,
-	  enrolled,
-	  level,
-	  language,
-	  duration,
+    rating,
+    enrolled,
+    level,
+    language,
+    duration,
   };
   const dispatch = useDispatch<DispatchType>();
 
-  const [enrolledInCourse, setEnrolledInCourse] = useState<boolean>(!!enrolled);
+  const [enrolledInCourse, setEnrolledInCourse] = useState<boolean>(Boolean(currentUserEnrolled));
   const [enrollButtonDisabled, setEnrollButtonDisabled] = useState<boolean>(false);
 
   const {
-	  mainContent,
-	  headerContent,
-	  headerIcons,
-	  courseSummaryItemList,
-	  buttonContainer,
-	  userEnrollText,
-	  enrolledButtonContainer,
+    mainContent,
+    headerContent,
+    headerIcons,
+    courseSummaryItemList,
+    buttonContainer,
+    userEnrollText,
+    enrolledButtonContainer,
   } = styles;
 
   const saveCourse = (courseTitle: string, courseId: number) => {
-	  userService.saveUserPreferredCourses(userId, courseId, token);
-	  params.set('savedCourse', courseTitle);
-	  navigate(`${location.pathname}?${params}`, { replace: true });
+    userService.saveUserPreferredCourses(userId, courseId, token);
+    params.set('savedCourse', courseTitle);
+    navigate(`${location.pathname}?${params}`, { replace: true });
   };
   const deleteCourse = (courseTitle: string, courseId: number) => {
-	  dispatch(deleteUserSavedCourse({ userId, courseId, token }));
-	  params.delete('savedCourse');
-	  navigate(`${location.pathname}`, { replace: true });
+    dispatch(deleteUserSavedCourse({ userId, courseId, token }));
+    params.delete('savedCourse');
+    navigate(`${location.pathname}`, { replace: true });
   };
 
   useEffect(() => {
-	  dispatch(getUserSavedCourse({ userId, token, params: {} }))
-      .unwrap()
-      .then((savedCourseList: SuggestedCourseType[]) => {
-		  if (savedCourseList.some((savedCourse: SuggestedCourseType) => savedCourse.id === courseId)) {
-          params.set(
-			  'savedCourse',
-			  savedCourseList.find((savedCourse: SuggestedCourseType) => savedCourse.id === courseId)!.title,
-          );
-          navigate(`${location.pathname}?${params}`, { replace: true });
-		  } else {
-          params.delete('savedCourse');
-          navigate(`${location.pathname}`, { replace: true });
-		  }
-      });
+    setEnrolledInCourse(Boolean(currentUserEnrolled));
+    dispatch(getUserSavedCourse({ userId, token, params: {} }))
+	  .unwrap()
+	  .then((savedCourseList: SuggestedCourseType[]) => {
+        if (savedCourseList.some((savedCourse: SuggestedCourseType) => savedCourse.id === courseId)) {
+		  params.set(
+            'savedCourse',
+			savedCourseList.find((savedCourse: SuggestedCourseType) => savedCourse.id === courseId)!.title,
+		  );
+		  navigate(`${location.pathname}?${params}`, { replace: true });
+        } else {
+		  params.delete('savedCourse');
+		  navigate(`${location.pathname}`, { replace: true });
+        }
+	  });
   }, []);
 
   const handleEnrollButtonClick = () => {
@@ -116,8 +116,8 @@ const CourseSummary = ({
           ))
         }
       </div>
-      {enrolled && <p className={userEnrollText}>{t('string.courseDescriptionPage.title.userEnrolled')}</p>}
-      <div className={enrolled ? enrolledButtonContainer : buttonContainer}>
+      {currentUserEnrolled && <p className={userEnrollText}>{t('string.courseDescriptionPage.title.userEnrolled')}</p>}
+      <div className={currentUserEnrolled ? enrolledButtonContainer : buttonContainer}>
         {enrolledInCourse ? (
           <Button.MainButton
             onClick={() => navigate(`/userCourse/modulOverview/${courseId}`)}
