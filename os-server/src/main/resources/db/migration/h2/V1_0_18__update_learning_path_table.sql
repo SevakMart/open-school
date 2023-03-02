@@ -1,2 +1,0 @@
-ALTER TABLE learning_path
-ADD COLUMN is_current_user_enrolled BOOLEAN;
