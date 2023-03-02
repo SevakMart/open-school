@@ -34,6 +34,7 @@ public class UserGenerator {
     user.getMentors().add(generateUser());
     return user;
   }
+
   public static User generateMentor() {
 
     String email = "mentor";
@@ -47,6 +48,7 @@ public class UserGenerator {
     mentor.setRole(role);
     return mentor;
   }
+
   public static User generateStudent() {
     String email = "student";
     String password = "pass";

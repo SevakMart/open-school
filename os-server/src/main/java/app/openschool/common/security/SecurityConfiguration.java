@@ -31,7 +31,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/api/v1/categories/**",
     "/api/v1/mentors/**",
     "/api/v1/courses/**",
-    "/api/v1/*/quizzes/**"
+    "/api/v1/*/quizzes/**",
+    "/api/v1/*/questions/**"
   };
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;

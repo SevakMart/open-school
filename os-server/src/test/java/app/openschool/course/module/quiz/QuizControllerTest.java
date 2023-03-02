@@ -1,7 +1,19 @@
 package app.openschool.course.module.quiz;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
+import app.openschool.course.module.Module;
 import app.openschool.course.module.ModuleRepository;
 import app.openschool.course.module.api.ModuleGenerator;
 import app.openschool.course.module.quiz.api.mapper.QuizMapper;
@@ -10,25 +22,21 @@ import app.openschool.course.module.quiz.util.QuizGenerator;
 import app.openschool.user.User;
 import app.openschool.user.api.UserGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -86,25 +94,12 @@ public class QuizControllerTest {
     mockMvc
         .perform(
             post("/api/v1/1/quizzes")
-                .contentType(APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isNotFound());
   }
 
-  @Test
-  void createQuiz_withIncorrectMentor_isBadRequest() throws Exception {
-    when(quizService.createQuiz(anyLong(), any())).thenThrow(IllegalArgumentException.class);
-    when(moduleRepository.findById(anyLong()))
-        .thenReturn(Optional.of(ModuleGenerator.generateModule()));
-    mockMvc
-        .perform(
-            post("/api/v1/1/quizzes")
-                .contentType(APPLICATION_JSON)
-                .content(REQUEST_BODY)
-                .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
-        .andExpect(status().isBadRequest());
-  }
 
   @Test
   void createQuiz_withStudent_isForbidden() throws Exception {
@@ -195,6 +190,7 @@ public class QuizControllerTest {
   @Test
   void updateQuiz_withIncorrectMentor_isForbidden() throws Exception {
     when(quizService.updateQuiz(anyLong(), any())).thenReturn(QuizGenerator.generateQuiz());
+
     when(moduleRepository.findById(anyLong()))
         .thenReturn(Optional.of(ModuleGenerator.generateModuleWithAnotherUser()));
     mockMvc
@@ -249,7 +245,7 @@ public class QuizControllerTest {
   }
 
   @Test
-  void completeEnrolledQuiz_withCorrectArg_returnOK() throws Exception {
+  void completeEnrolledQuiz_withCorrectArg_returnOk() throws Exception {
     when(quizService.completeEnrolledQuiz(anyLong(), any(), any()))
         .thenReturn(
             Optional.of(

@@ -1,11 +1,27 @@
 package app.openschool.course.module.quiz;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import app.openschool.course.module.ModuleRepository;
 import app.openschool.course.module.api.ModuleGenerator;
 import app.openschool.course.module.quiz.api.dto.QuizDto;
-import app.openschool.course.module.quiz.util.*;
+import app.openschool.course.module.quiz.util.EnrolledQuizAssessmentRequestDtoGenerator;
+import app.openschool.course.module.quiz.util.EnrolledQuizAssessmentResponseDtoGenerator;
+import app.openschool.course.module.quiz.util.EnrolledQuizGenerator;
+import app.openschool.course.module.quiz.util.QuizDtoGenerator;
+import app.openschool.course.module.quiz.util.QuizGenerator;
 import app.openschool.user.User;
 import app.openschool.user.api.UserGenerator;
+import java.util.Locale;
+import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,16 +35,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 
-import java.util.Locale;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
- class QuizServiceImplTest {
+class QuizServiceImplTest {
   @Mock ModuleRepository moduleRepository;
 
   @Mock QuizRepository quizRepository;
@@ -146,7 +154,7 @@ import static org.mockito.Mockito.*;
     doReturn(QuizGenerator.generateQuizPage())
         .when(quizRepository)
         .findAllByModuleId(anyLong(), any());
-    PageRequest pageRequest = PageRequest.of(1, 1);
+    PageRequest pageRequest = PageRequest.of(0, 1);
     Page<QuizDto> actualPageQuizDto = quizService.findAllByModuleId(1L, pageRequest);
     Page<QuizDto> quizDtoPage = QuizGenerator.generateQuizDtoPage();
     assertEquals(

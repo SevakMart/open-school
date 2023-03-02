@@ -15,7 +15,7 @@ public class ModuleGenerator {
     return module;
   }
 
-  public static Module generateModuleWithAnotherUser(){
+  public static Module generateModuleWithAnotherUser() {
     Module module = ModuleGenerator.generateModule();
     module.getCourse().getMentor().setEmail("another@gmail");
     return module;

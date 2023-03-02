@@ -2,7 +2,6 @@ package app.openschool.course.module.quiz.util;
 
 import app.openschool.course.module.quiz.api.dto.EnrolledQuizAssessmentRequestDto;
 import app.openschool.course.module.quiz.api.dto.QuestionWithChosenAnswerDto;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

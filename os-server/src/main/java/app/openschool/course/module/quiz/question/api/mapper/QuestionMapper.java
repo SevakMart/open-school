@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
-
-
 public final class QuestionMapper {
 
   private static final String MULTIPLE_CHOICE = "MULTIPLE_CHOICE";
@@ -57,19 +55,5 @@ public final class QuestionMapper {
     return questionType.equals(MULTIPLE_CHOICE)
         ? QuestionType.isMultipleChoice()
         : QuestionType.isMatching();
-  }
-
-  private static Set<AnswerOption> createAnswerOptionDtoToAnswerOptions(
-      Set<CreateAnswerOptionDto> answerOptions, Question question) {
-    return answerOptions.stream()
-        .map(
-            createAnswerOptionDto -> {
-              AnswerOption answerOption = AnswerOption.getInstance();
-              answerOption.setAnswerOption(createAnswerOptionDto.getAnswerOption());
-              answerOption.setRightAnswer(createAnswerOptionDto.getRightAnswer());
-              answerOption.setQuestion(question);
-              return answerOption;
-            })
-        .collect(Collectors.toSet());
   }
 }

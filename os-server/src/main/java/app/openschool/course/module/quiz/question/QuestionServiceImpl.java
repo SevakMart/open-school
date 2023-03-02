@@ -5,7 +5,6 @@ import app.openschool.course.module.quiz.question.api.dto.QuestionDto;
 import app.openschool.course.module.quiz.question.api.mapper.QuestionMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -47,6 +46,8 @@ public class QuestionServiceImpl implements QuestionService {
   @Override
   public Page<QuestionDto> findAllByQuizId(Long id, Pageable pageable) {
     return QuestionMapper.toQuestionDtoPage(
-        questionRepository.findAllQuestionsByQuizId(id, pageable));
+        questionRepository
+            .findAllQuestionsByQuizId(id, pageable)
+            .orElseThrow(IllegalArgumentException::new));
   }
 }
