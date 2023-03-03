@@ -6,4 +6,6 @@ export interface PortalStatus {
     isResetPasswordSuccessfulMessage:boolean;
     isResendVerificationEmailMessage:boolean;
     isRequestForMentorsPage:boolean,
+	forgotVerficationEmail?: string,
+	signUpEmail?: string
 }
