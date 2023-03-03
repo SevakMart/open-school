@@ -69,10 +69,7 @@ public class CourseController {
   @GetMapping("/{id}")
   public ResponseEntity<CourseInfoDto> getCourseInfo(
       @Parameter(description = "Course id") @PathVariable Long id) {
-    return courseService
-        .findCourseById(id)
-        .map(course -> ResponseEntity.ok(CourseMapper.toCourseInfoDto(course)))
-        .orElseGet(() -> ResponseEntity.notFound().build());
+    return ResponseEntity.ok(courseService.findCourseById(id));
   }
 
   @Operation(summary = "find all courses", security = @SecurityRequirement(name = "bearerAuth"))
@@ -221,7 +218,7 @@ public class CourseController {
               + "(by default returns all faqs with size of pagination), "
               + "or empty list if no faqs have been found.")
   @ApiResponse(
-      responseCode = "401",
+      responseCode = "403",
       description = "Only registered users have access to this method.",
       content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
   @GetMapping("/faqs/{courseId}")
@@ -313,9 +310,9 @@ public class CourseController {
   }
 
   private void courseAffiliationVerification(Principal principal, Long courseId) {
-    Course course =
-        courseService.findCourseById(courseId).orElseThrow(IllegalArgumentException::new);
-    if (!course.getMentor().getEmail().equals(principal.getName())) {
+
+    CourseInfoDto course = courseService.findCourseById(courseId);
+    if (!course.getMentorDto().getEmailPath().equals(principal.getName())) {
       throw new PermissionDeniedException(
           messageSource.getMessage("permission.denied", null, Locale.ROOT));
     }

@@ -1,5 +1,6 @@
 package app.openschool.course;
 
+import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.dto.CreateCourseRequest;
 import app.openschool.course.api.dto.UpdateCourseRequest;
 import java.util.List;
@@ -9,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface CourseService {
 
-  Optional<Course> findCourseById(Long id);
+  CourseInfoDto findCourseById(Long id);
 
   Page<Course> findAll(
       String courseTitle,
