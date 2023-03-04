@@ -3,7 +3,6 @@ package app.openschool.course.module.quiz;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -34,38 +33,36 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-
-
-
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 public class QuizControllerTest {
+
+  private static final String REQUEST_BODY =
+          "{\n"
+                  + "  \"maxGrade\": \"10\",\n"
+                  + "  \"passingScore\": \"7\",\n"
+                  + "  \"questions\": [\n"
+                  + "    {\n"
+                  + "      \"question\": \"What is Java bytecode\",\n"
+                  + "      \"answerOptions\": [\n"
+                  + "        {\n"
+                  + "          \"answerOption\": \"Java bytecode is the instruction set for the JVM\",\n"
+                  + "          \"rightAnswer\": \"true\"\n"
+                  + "        }\n"
+                  + "      ],\n"
+                  + "      \"questionType\": \"MULTIPLE_CHOICE\"\n"
+                  + "    }\n"
+                  + "  ]\n"
+                  + "}";
+
   @Autowired private MockMvc mockMvc;
 
   @Autowired private JwtTokenProvider jwtTokenProvider;
 
   @MockBean private QuizServiceImpl quizService;
-  @MockBean ModuleRepository moduleRepository;
-  private static final String REQUEST_BODY =
-      "{\n"
-          + "  \"maxGrade\": \"10\",\n"
-          + "  \"passingScore\": \"7\",\n"
-          + "  \"questions\": [\n"
-          + "    {\n"
-          + "      \"question\": \"What is Java bytecode\",\n"
-          + "      \"answerOptions\": [\n"
-          + "        {\n"
-          + "          \"answerOption\": \"Java bytecode is the instruction set for the JVM\",\n"
-          + "          \"rightAnswer\": \"true\"\n"
-          + "        }\n"
-          + "      ],\n"
-          + "      \"questionType\": \"MULTIPLE_CHOICE\"\n"
-          + "    }\n"
-          + "  ]\n"
-          + "}";
+  @MockBean private ModuleRepository moduleRepository;
 
   private static final String AUTHORIZATION = "Authorization";
 
@@ -78,7 +75,7 @@ public class QuizControllerTest {
     mockMvc
         .perform(
             post("/api/v1/1/quizzes")
-                .contentType(APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isCreated())
@@ -100,13 +97,27 @@ public class QuizControllerTest {
         .andExpect(status().isNotFound());
   }
 
+  @Test
+  void createQuiz_withIncorrectMentor_isForbidden() throws Exception {
+    when(quizService.createQuiz(anyLong(), any())).thenThrow(IllegalArgumentException.class);
+    Module module = ModuleGenerator.generateModule();
+    module.getCourse().getMentor().setEmail("anotherEmail");
+    when(moduleRepository.findById(anyLong())).thenReturn(Optional.of(module));
+    mockMvc
+        .perform(
+            post("/api/v1/1/quizzes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(REQUEST_BODY)
+                .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
+        .andExpect(status().isForbidden());
+  }
 
   @Test
   void createQuiz_withStudent_isForbidden() throws Exception {
     mockMvc
         .perform(
             post("/api/v1/1/quizzes/1")
-                .contentType(APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateStudent())))
         .andExpect(status().isForbidden());
@@ -116,7 +127,8 @@ public class QuizControllerTest {
   void createQuiz_withoutJwtToken_isUnauthorized() throws Exception {
 
     mockMvc
-        .perform(post("/api/v1/1/quizzes").contentType(APPLICATION_JSON).content(REQUEST_BODY))
+        .perform(
+            post("/api/v1/1/quizzes").contentType(MediaType.APPLICATION_JSON).content(REQUEST_BODY))
         .andExpect(status().isUnauthorized());
   }
 
@@ -147,10 +159,9 @@ public class QuizControllerTest {
 
   @Test
   void deleteQuiz_withIncorrectMentor_isForbidden() throws Exception {
-    when(quizService.deleteQuiz(anyLong())).thenThrow(IllegalArgumentException.class);
-
-    when(moduleRepository.findById(anyLong()))
-        .thenReturn(Optional.of(ModuleGenerator.generateModuleWithAnotherUser()));
+    Module module = ModuleGenerator.generateModule();
+    module.getCourse().getMentor().setEmail("anotherEmail@gmail.com");
+    when(moduleRepository.findById(anyLong())).thenReturn(Optional.of(module));
 
     mockMvc
         .perform(
@@ -181,7 +192,7 @@ public class QuizControllerTest {
     mockMvc
         .perform(
             patch("/api/v1/1/quizzes/1")
-                .contentType(APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isOk());
@@ -196,7 +207,7 @@ public class QuizControllerTest {
     mockMvc
         .perform(
             patch("/api/v1/1/quizzes/1")
-                .contentType(APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isForbidden());
@@ -215,7 +226,7 @@ public class QuizControllerTest {
     mockMvc
         .perform(
             get("/api/v1/1/quizzes/1")
-                .contentType(APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isOk());
@@ -233,7 +244,7 @@ public class QuizControllerTest {
     mockMvc
         .perform(
             get("/api/v1/1/quizzes")
-                .contentType(APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isOk());
@@ -254,7 +265,7 @@ public class QuizControllerTest {
     mockMvc
         .perform(
             get("/api/v1/1/quizzes/enrolledQuizzes/1")
-                .contentType(APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isOk());

@@ -149,6 +149,7 @@ public class QuizController {
       @Parameter(description = "Id of the module to which this quiz belongs") @PathVariable
           Long moduleId,
       Principal principal) {
+    System.out.println(principal.getName());
     checkPermission(moduleId, principal);
     if (quizService.deleteQuiz(quizId)) {
       return ResponseEntity.noContent().build();
@@ -247,8 +248,10 @@ public class QuizController {
   }
 
   private void checkPermission(Long moduleId, Principal principal) {
+    System.out.println("started");
     Module module = moduleRepository.findById(moduleId).orElseThrow(IllegalArgumentException::new);
     if (!module.getCourse().getMentor().getEmail().equals(principal.getName())) {
+      System.out.println(principal.getName());
       throw new PermissionDeniedException("permission.denied");
     }
   }

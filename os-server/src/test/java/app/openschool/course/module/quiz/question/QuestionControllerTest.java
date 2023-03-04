@@ -3,7 +3,6 @@ package app.openschool.course.module.quiz.question;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -52,8 +51,8 @@ public class QuestionControllerTest {
 
   @Autowired private JwtTokenProvider jwtTokenProvider;
 
-  @MockBean QuestionServiceImpl questionService;
-  @MockBean QuizRepository quizRepository;
+  @MockBean private QuestionServiceImpl questionService;
+  @MockBean private QuizRepository quizRepository;
   private static final String AUTHORIZATION = "Authorization";
 
   @Test
@@ -80,8 +79,7 @@ public class QuestionControllerTest {
   }
 
   @Test
-  void deleteQuestion_withIncorrectMentor_isBadRequest() throws Exception {
-    when(questionService.deleteQuestion(anyLong())).thenThrow(IllegalArgumentException.class);
+  void deleteQuestion_withIncorrectMentor_isForbidden() throws Exception {
     Quiz quiz = QuizGenerator.generateQuiz();
     quiz.getModule().getCourse().getMentor().setEmail("anotherEmail");
     when(quizRepository.findById(anyLong())).thenReturn(Optional.of(quiz));
@@ -136,9 +134,7 @@ public class QuestionControllerTest {
   }
 
   @Test
-  void updateQuestion_withIncorrectMentor_isBadRequest() throws Exception {
-    when(questionService.updateQuestion(anyLong(), any()))
-        .thenThrow(IllegalArgumentException.class);
+  void updateQuestion_withIncorrectMentor_isForbidden() throws Exception {
     Quiz quiz = QuizGenerator.generateQuiz();
     quiz.getModule().getCourse().getMentor().setEmail("anotherEmail");
     when(quizRepository.findById(anyLong())).thenReturn(Optional.of(quiz));
@@ -179,7 +175,7 @@ public class QuestionControllerTest {
     mockMvc
         .perform(
             get("/api/v1/1/questions")
-                .contentType(APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(UPDATE_QUESTION_REQUEST)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isOk());
