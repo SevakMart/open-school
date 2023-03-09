@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/{moduleId}/quizzes")
+@RequestMapping("/api/v1/module/{moduleId}/quizzes")
 public class QuizController {
 
   private final QuizService quizService;

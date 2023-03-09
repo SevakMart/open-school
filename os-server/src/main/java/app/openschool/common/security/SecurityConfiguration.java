@@ -18,11 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-        securedEnabled = true,
-        jsr250Enabled = true,
-        prePostEnabled = true
-)
+@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private static final String[] PRIVATE_URLS = {
@@ -31,8 +27,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     "/api/v1/categories/**",
     "/api/v1/mentors/**",
     "/api/v1/courses/**",
-    "/api/v1/*/quizzes/**",
-    "/api/v1/*/questions/**"
+    "/api/v1/module/*/quizzes/**",
+    "/api/v1/quiz/*/questions/**"
   };
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
