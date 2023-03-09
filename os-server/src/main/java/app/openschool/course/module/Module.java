@@ -38,8 +38,8 @@ public class Module {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
   private Set<ModuleItem> moduleItems = new HashSet<>();
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
-  private Set<Quiz> quizzes = new HashSet<>();
+  @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+  private Set<Quiz> quizzes;
 
   public Module() {}
 
