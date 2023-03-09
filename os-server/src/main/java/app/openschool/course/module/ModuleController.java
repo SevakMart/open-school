@@ -4,6 +4,7 @@ import app.openschool.common.exceptionhandler.exception.PermissionDeniedExceptio
 import app.openschool.common.response.ResponseMessage;
 import app.openschool.course.Course;
 import app.openschool.course.CourseService;
+import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.module.api.dto.CreateModuleRequest;
 import app.openschool.course.module.api.dto.ModuleDto;
 import app.openschool.course.module.api.dto.UpdateModuleRequest;
@@ -68,11 +69,9 @@ public class ModuleController {
           @RequestBody
           CreateModuleRequest request,
       Principal principal) {
-    Course courseById =
-        courseService
-            .findCourseById(request.getCourseId())
-            .orElseThrow(IllegalArgumentException::new);
-    if (!principal.getName().equals(courseById.getMentor().getEmail())) {
+    CourseInfoDto courseById = courseService.findCourseById(request.getCourseId());
+
+    if (!principal.getName().equals(courseById.getMentorDto().getEmailPath())) {
       throw new PermissionDeniedException(
           messageSource.getMessage("permission.denied", null, Locale.ROOT));
     }
@@ -138,11 +137,9 @@ public class ModuleController {
 
   private void moduleAffiliationVerification(Principal principal, Long moduleId) {
     Module moduleById = moduleService.findModuleById(moduleId);
-    Course courseById =
-        courseService
-            .findCourseById(moduleById.getCourse().getId())
-            .orElseThrow(IllegalArgumentException::new);
-    if (!principal.getName().equals(courseById.getMentor().getEmail())) {
+    CourseInfoDto courseById = courseService.findCourseById(moduleById.getCourse().getId());
+
+    if (!principal.getName().equals(courseById.getMentorDto().getEmailPath())) {
       throw new PermissionDeniedException(
           messageSource.getMessage("permission.denied", null, Locale.ROOT));
     }

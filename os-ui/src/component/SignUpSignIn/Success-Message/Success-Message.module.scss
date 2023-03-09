@@ -1,8 +1,29 @@
-.mainContainer {
-    text-align: center;
-    width:100%;
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform: translate(-50%,-50%);
-}
+@import "../../../styles/Configs/Colors.scss";
+@import "../../../styles/Configs/Fonts.scss";
+@import "../../../styles/Mixins/FlexMixins.scss";
+@import "../../../styles/Mixins/ButtonMixin.scss";
+@import "../../../styles/Mixins/FontMixin.scss";
+
+  .mainContainer {
+	text-align: center;
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+  }
+  .closeIcon {
+	position: absolute;
+	top: 24px;
+	right: 24px;
+	box-sizing: border-box;
+	width: 24px;
+	height: 24px;
+	margin-bottom: 20px;
+	@include flexStyle(row, center, center);
+	cursor: pointer;
+	&:hover {
+	  background-color: $secondary-color;
+	}
+  }
+  

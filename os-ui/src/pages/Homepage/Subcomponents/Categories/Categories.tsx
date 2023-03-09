@@ -59,6 +59,7 @@ const HomepageCategories = () => {
                     mentorDto={entity.mentorDto}
                     modules={entity.modules}
                     title={entity.title}
+                    currentUserEnrolled={entity.currentUserEnrolled}
                   />;
               })
             )}

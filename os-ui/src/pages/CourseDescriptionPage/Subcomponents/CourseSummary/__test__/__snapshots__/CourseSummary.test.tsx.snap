@@ -130,19 +130,14 @@ exports[`Create test cases for course description page Create a snapshot test 1`
         </div>
       </div>
     </div>
-    <p
-      class="userEnrollText"
-    >
-      string.courseDescriptionPage.title.userEnrolled
-    </p>
     <div
-      class="enrolledButtonContainer"
+      class="buttonContainer"
     >
       <button
         class="courseSummaryButton"
         type="button"
       >
-        button.courseDescriptionPage.startCourse
+        button.courseDescriptionPage.enrollInCourse
       </button>
     </div>
   </div>
