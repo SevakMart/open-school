@@ -61,7 +61,7 @@ public class QuestionControllerTest {
     when(quizRepository.findById(anyLong())).thenReturn(Optional.of(QuizGenerator.generateQuiz()));
     mockMvc
         .perform(
-            delete("/api/v1/1/questions/1")
+            delete("/api/v1/quiz/1/questions/1")
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isNoContent());
   }
@@ -73,7 +73,7 @@ public class QuestionControllerTest {
 
     mockMvc
         .perform(
-            delete("/api/v1/1/questions/1")
+            delete("/api/v1/quiz/1/questions/1")
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isNotFound());
   }
@@ -86,7 +86,7 @@ public class QuestionControllerTest {
 
     mockMvc
         .perform(
-            delete("/api/v1/1/questions/1")
+            delete("/api/v1/quiz/1/questions/1")
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isForbidden());
   }
@@ -95,14 +95,14 @@ public class QuestionControllerTest {
   void deleteQuestion_withStudent_isForbidden() throws Exception {
     mockMvc
         .perform(
-            delete("/api/v1/1/questions/1")
+            delete("/api/v1/quiz/1/questions/1")
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateStudent())))
         .andExpect(status().isForbidden());
   }
 
   @Test
   void deleteQuestion_withoutJwtToken_isUnauthorized() throws Exception {
-    mockMvc.perform(delete("/api/v1/1/questions/1")).andExpect(status().isUnauthorized());
+    mockMvc.perform(delete("/api/v1/quiz/1/questions/1")).andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -112,7 +112,7 @@ public class QuestionControllerTest {
 
     mockMvc
         .perform(
-            put("/api/v1/1/questions/1")
+            put("/api/v1/quiz/1/questions/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(UPDATE_QUESTION_REQUEST)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
@@ -126,7 +126,7 @@ public class QuestionControllerTest {
 
     mockMvc
         .perform(
-            put("/api/v1/1/questions/1")
+            put("/api/v1/quiz/1/questions/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(UPDATE_QUESTION_REQUEST)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
@@ -140,7 +140,7 @@ public class QuestionControllerTest {
     when(quizRepository.findById(anyLong())).thenReturn(Optional.of(quiz));
     mockMvc
         .perform(
-            put("/api/v1/1/questions/1")
+            put("/api/v1/quiz/1/questions/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(UPDATE_QUESTION_REQUEST)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
@@ -151,7 +151,7 @@ public class QuestionControllerTest {
   void updateQuestion_withStudent_isForbidden() throws Exception {
     mockMvc
         .perform(
-            put("/api/v1/1/questions/1")
+            put("/api/v1/quiz/1/questions/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(UPDATE_QUESTION_REQUEST)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateStudent())))
@@ -162,7 +162,7 @@ public class QuestionControllerTest {
   void updateQuestion_withoutJwtToken_isUnauthorized() throws Exception {
     mockMvc
         .perform(
-            put("/api/v1/1/questions/1")
+            put("/api/v1/quiz/1/questions/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(UPDATE_QUESTION_REQUEST))
         .andExpect(status().isUnauthorized());
@@ -174,7 +174,7 @@ public class QuestionControllerTest {
         .thenReturn(QuestionGenerator.generateQuestionDtoPage());
     mockMvc
         .perform(
-            get("/api/v1/1/questions")
+            get("/api/v1/quiz/1/questions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(UPDATE_QUESTION_REQUEST)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
@@ -183,7 +183,7 @@ public class QuestionControllerTest {
 
   @Test
   void findAllByQuizId_withoutJwtToken_isUnauthorized() throws Exception {
-    mockMvc.perform(get("/api/v1/1/questions")).andExpect(status().isUnauthorized());
+    mockMvc.perform(get("/api/v1/quiz/1/questions")).andExpect(status().isUnauthorized());
   }
 
   private String generateJwtToken(User user) {

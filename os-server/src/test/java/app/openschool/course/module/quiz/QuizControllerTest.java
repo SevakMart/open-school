@@ -76,7 +76,7 @@ public class QuizControllerTest {
         .thenReturn(Optional.of(ModuleGenerator.generateModule()));
     mockMvc
         .perform(
-            post("/api/v1/1/quizzes")
+            post("/api/v1/module/1/quizzes")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
@@ -92,7 +92,7 @@ public class QuizControllerTest {
         .thenReturn(Optional.of(ModuleGenerator.generateModule()));
     mockMvc
         .perform(
-            post("/api/v1/1/quizzes")
+            post("/api/v1/module/1/quizzes")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
@@ -107,7 +107,7 @@ public class QuizControllerTest {
     when(moduleRepository.findById(anyLong())).thenReturn(Optional.of(module));
     mockMvc
         .perform(
-            post("/api/v1/1/quizzes")
+            post("/api/v1/module/1/quizzes")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
@@ -118,7 +118,7 @@ public class QuizControllerTest {
   void createQuiz_withStudent_isForbidden() throws Exception {
     mockMvc
         .perform(
-            post("/api/v1/1/quizzes/1")
+            post("/api/v1/module/1/quizzes/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateStudent())))
@@ -130,7 +130,9 @@ public class QuizControllerTest {
 
     mockMvc
         .perform(
-            post("/api/v1/1/quizzes").contentType(MediaType.APPLICATION_JSON).content(REQUEST_BODY))
+            post("/api/v1/module/1/quizzes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(REQUEST_BODY))
         .andExpect(status().isUnauthorized());
   }
 
@@ -141,7 +143,7 @@ public class QuizControllerTest {
         .thenReturn(Optional.of(ModuleGenerator.generateModule()));
     mockMvc
         .perform(
-            delete("/api/v1/1/quizzes/1")
+            delete("/api/v1/module/1/quizzes/1")
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isNoContent());
   }
@@ -154,7 +156,7 @@ public class QuizControllerTest {
 
     mockMvc
         .perform(
-            delete("/api/v1/1/quizzes/1")
+            delete("/api/v1/module/1/quizzes/1")
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isNotFound());
   }
@@ -167,7 +169,7 @@ public class QuizControllerTest {
 
     mockMvc
         .perform(
-            delete("/api/v1/1/quizzes/1")
+            delete("/api/v1/module/1/quizzes/1")
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
         .andExpect(status().isForbidden());
   }
@@ -176,14 +178,14 @@ public class QuizControllerTest {
   void deleteQuiz_withStudent_isForbidden() throws Exception {
     mockMvc
         .perform(
-            delete("/api/v1/1/quizzes/1")
+            delete("/api/v1/module/1/quizzes/1")
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateStudent())))
         .andExpect(status().isForbidden());
   }
 
   @Test
   void deleteQuiz_withoutJwtToken_isUnauthorized() throws Exception {
-    mockMvc.perform(delete("/api/v1/1/quizzes/1")).andExpect(status().isUnauthorized());
+    mockMvc.perform(delete("/api/v1/module/1/quizzes/1")).andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -193,7 +195,7 @@ public class QuizControllerTest {
         .thenReturn(Optional.of(ModuleGenerator.generateModule()));
     mockMvc
         .perform(
-            patch("/api/v1/1/quizzes/1")
+            patch("/api/v1/module/1/quizzes/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
@@ -208,7 +210,7 @@ public class QuizControllerTest {
         .thenReturn(Optional.of(ModuleGenerator.generateModuleWithAnotherUser()));
     mockMvc
         .perform(
-            patch("/api/v1/1/quizzes/1")
+            patch("/api/v1/module/1/quizzes/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
@@ -217,7 +219,7 @@ public class QuizControllerTest {
 
   @Test
   void updateQuiz_withoutJwtToken_isUnauthorized() throws Exception {
-    mockMvc.perform(patch("/api/v1/1/quizzes/1")).andExpect(status().isUnauthorized());
+    mockMvc.perform(patch("/api/v1/module/1/quizzes/1")).andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -227,7 +229,7 @@ public class QuizControllerTest {
 
     mockMvc
         .perform(
-            get("/api/v1/1/quizzes/1")
+            get("/api/v1/module/1/quizzes/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
@@ -236,7 +238,7 @@ public class QuizControllerTest {
 
   @Test
   void findById_withoutJwtToken_isUnauthorized() throws Exception {
-    mockMvc.perform(get("/api/v1/1/quizzes/1")).andExpect(status().isUnauthorized());
+    mockMvc.perform(get("/api/v1/module/1/quizzes/1")).andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -245,7 +247,7 @@ public class QuizControllerTest {
         .thenReturn(QuizGenerator.generateQuizDtoPage());
     mockMvc
         .perform(
-            get("/api/v1/1/quizzes")
+            get("/api/v1/module/1/quizzes")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
@@ -254,7 +256,7 @@ public class QuizControllerTest {
 
   @Test
   void findByModuleId_withoutJwtToken_isUnauthorized() throws Exception {
-    mockMvc.perform(get("/api/v1/1/quizzes")).andExpect(status().isUnauthorized());
+    mockMvc.perform(get("/api/v1/module/1/quizzes")).andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -266,7 +268,7 @@ public class QuizControllerTest {
                     .generateEnrolledQuizAssessmentResponseDto("FAILED")));
     mockMvc
         .perform(
-            get("/api/v1/1/quizzes/enrolledQuizzes/1")
+            get("/api/v1/module/1/quizzes/enrolledQuizzes/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(REQUEST_BODY)
                 .header(AUTHORIZATION, generateJwtToken(UserGenerator.generateMentor())))
@@ -276,7 +278,7 @@ public class QuizControllerTest {
   @Test
   void completeEnrolledQuiz_withoutJwtToken_isUnauthorized() throws Exception {
     mockMvc
-        .perform(get("/api/v1/1/quizzes/enrolledQuizzes/1"))
+        .perform(get("/api/v1/module/1/quizzes/enrolledQuizzes/1"))
         .andExpect(status().isUnauthorized());
   }
 
