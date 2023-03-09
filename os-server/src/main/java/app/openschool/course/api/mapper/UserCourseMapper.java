@@ -28,6 +28,7 @@ public class UserCourseMapper {
           enrolledCourse.getCourseStatus().getType(),
           100);
     }
+    Long id = enrolledCourse.getCourse().getId();
     long courseRemainingTime = getCourseReamingTime(enrolledCourse);
     long courseTotalEstimatedTime = getCourseTotalEstimatedTime(enrolledCourse.getCourse());
     long percentage = 100L - ((courseRemainingTime * 100L) / courseTotalEstimatedTime);
@@ -37,7 +38,8 @@ public class UserCourseMapper {
         enrolledCourse.getCourseStatus().getType(),
         percentage,
         courseRemainingTime,
-        enrolledCourse.getDueDate());
+        enrolledCourse.getDueDate(),
+        id);
   }
 
   private static long getCourseReamingTime(EnrolledCourse enrolledCourse) {
