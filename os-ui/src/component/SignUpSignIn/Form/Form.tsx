@@ -44,59 +44,73 @@ const Form = ({
     setSignIn(true);
   };
 
+  const handleForgotVerification = () => {
+    dispatch(openModal({ buttonType: Types.Button.FORGOT_VERIFICATION, forgotVerficationEmail: formValues.email }));
+  };
+
   return (
     <form className={inputContent}>
-      {isSignUpForm
-    && (
-    <>
-      <Input.TextInput
-        textName="firstName"
-        labelText={t('form.labels.name')}
-        errorMessage={errorFormValue.firstNameError}
-        placeholderText={t('form.placeholder.name')}
-        value={formValues.firstName}
-        handleInputChange={handleInputChange}
-      />
-      <Input.TextInput
-        textName="lastName"
-        labelText={t('form.labels.surname')}
-        errorMessage={errorFormValue.lastNameError}
-        placeholderText={t('form.placeholder.surname')}
-        value={formValues.lastName}
-        handleInputChange={handleInputChange}
-      />
-    </>
-    )}
+      {isSignUpForm && (
+        <>
+          <Input.TextInput
+            textName="firstName"
+            labelText={t('form.labels.name')}
+            errorMessage={errorFormValue.firstNameError}
+            placeholderText={t('form.placeholder.name')}
+            value={formValues.firstName}
+            handleInputChange={handleInputChange}
+          />
+          <Input.TextInput
+            textName="lastName"
+            labelText={t('form.labels.surname')}
+            errorMessage={errorFormValue.lastNameError}
+            placeholderText={t('form.placeholder.surname')}
+            value={formValues.lastName}
+            handleInputChange={handleInputChange}
+          />
+        </>
+      )}
       {isResetPasswordForm && (
-      <Input.TextInput
-        textName="token"
-        labelText={t('form.labels.resetPsdToken')}
-        errorMessage={errorFormValue.tokenError}
-        placeholderText={t('form.placeholder.resetPsdToken')}
-        value={formValues.token}
-        handleInputChange={handleInputChange}
-      />
+        <Input.TextInput
+          textName="token"
+          labelText={t('form.labels.resetPsdToken')}
+          errorMessage={errorFormValue.tokenError}
+          placeholderText={t('form.placeholder.resetPsdToken')}
+          value={formValues.token}
+          handleInputChange={handleInputChange}
+        />
       )}
       {!isResetPasswordForm && (
-      <Input.EmailInput
-        textName="email"
-        labelText={t('form.labels.email')}
-        errorMessage={errorFormValue.emailError}
-        placeholderText={t('form.placeholder.email')}
-        value={formValues.email}
-        handleInputChange={handleInputChange}
-      />
+        <Input.EmailInput
+          textName="email"
+          labelText={t('form.labels.email')}
+          errorMessage={errorFormValue.emailError}
+          placeholderText={t('form.placeholder.email')}
+          value={formValues.email}
+          handleInputChange={handleInputChange}
+        />
       )}
       <Input.PasswordInput
         textName={isResetPasswordForm ? 'newPassword' : 'psd'}
-        labelText={isResetPasswordForm ? t('form.labels.psd.reset') : t('form.labels.psd.default')}
-        errorMessage={isResetPasswordForm ? errorFormValue.newPasswordError : errorFormValue.psdError}
-        placeholderText={isResetPasswordForm ? t('form.placeholder.psd.reset') : t('form.placeholder.psd.default')}
+        labelText={
+          isResetPasswordForm
+            ? t('form.labels.psd.reset')
+            : t('form.labels.psd.default')
+        }
+        errorMessage={
+          isResetPasswordForm
+            ? errorFormValue.newPasswordError
+            : errorFormValue.psdError
+        }
+        placeholderText={
+          isResetPasswordForm
+            ? t('form.placeholder.psd.reset')
+            : t('form.placeholder.psd.default')
+        }
         value={isResetPasswordForm ? formValues.newPassword : formValues.psd}
         handleInputChange={handleInputChange}
       />
-      {isResetPasswordForm
-        && (
+      {isResetPasswordForm && (
         <Input.PasswordInput
           textName="confirmedPassword"
           labelText={t('form.labels.psd.confirm')}
@@ -105,32 +119,42 @@ const Form = ({
           value={formValues.confirmedPassword}
           handleInputChange={handleInputChange}
         />
-        )}
+      )}
       {unAuthorizedSignInError ? (
-        <div>
-          <p className={unAuthorizedSignInErrorStyle}>{unAuthorizedSignInError}</p>
-          <Button.FormButton className={['formButton', 'formButton__resendEmail']} onClick={() => dispatch(openModal({ buttonType: Types.Button.FORGOT_VERIFICATION, forgotVerficationEmail: formValues.email }))}>
-            {t('Resend Verification Mail')}
-          </Button.FormButton>
-        </div>
+        <p className={unAuthorizedSignInErrorStyle}>
+          {unAuthorizedSignInError}
+        </p>
+      ) : null}
+      {unAuthorizedSignInError === 'User is disabled' ? (
+        <Button.FormButton
+          className={['formButton', 'formButton__resendEmail']}
+          onClick={handleForgotVerification}
+        >
+          {t('Resend Verification Mail')}
+        </Button.FormButton>
       ) : (
-        <div>
+        <>
           {!isResetPasswordForm && (
             <p className={forgotPassword} onClick={handleForgotPassword}>
               {t('string.signIn.forgotPsd')}
             </p>
           )}
-          <Button.FormButton className={['formButton']} onClick={handleFormOnClick}>
+          <Button.FormButton
+            className={['formButton']}
+            onClick={handleFormOnClick}
+          >
             {formButtonText}
           </Button.FormButton>
-          {isResetPasswordForm && (
-            <Button.FormButton className={['formButton', 'formButton__resendEmail']} onClick={resendEmail}>
-              {t('button.resetPsd.resendEmail')}
-            </Button.FormButton>
-          )}
-        </div>
+        </>
       )}
-
+      {isResetPasswordForm && (
+        <Button.FormButton
+          className={['formButton', 'formButton__resendEmail']}
+          onClick={resendEmail}
+        >
+          {t('button.resetPsd.resendEmail')}
+        </Button.FormButton>
+      )}
     </form>
   );
 };
