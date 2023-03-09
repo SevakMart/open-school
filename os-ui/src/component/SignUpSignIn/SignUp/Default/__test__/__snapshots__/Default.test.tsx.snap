@@ -119,19 +119,17 @@ exports[`Create test case for Default Sign up component Create a snapshot test 1
         </i>
       </div>
     </div>
-    <div>
-      <p
-        class="forgotPassword"
-      >
-        string.signIn.forgotPsd
-      </p>
-      <button
-        class="formButton"
-        type="button"
-      >
-        button.homePage.signUp
-      </button>
-    </div>
+    <p
+      class="forgotPassword"
+    >
+      string.signIn.forgotPsd
+    </p>
+    <button
+      class="formButton"
+      type="button"
+    >
+      button.homePage.signUp
+    </button>
   </form>
 </DocumentFragment>
 `;
