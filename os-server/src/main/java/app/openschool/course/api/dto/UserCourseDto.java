@@ -23,7 +23,7 @@ public class UserCourseDto {
   @Schema(description = "Grade of course", example = "100")
   private Integer grade;
 
-  @Schema(description = "Enrolled course id", example = "1")
+  @Schema(description = "Course id in which you are enrolled user", example = "1")
   private Long courseId;
 
   @Schema(
