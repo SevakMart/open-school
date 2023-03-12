@@ -16,6 +16,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "mentor_answer")
 public class MentorAnswer {
+
+  // ToDo this class and the components used in it will be changed in the future
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

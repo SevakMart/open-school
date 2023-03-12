@@ -9,55 +9,74 @@ import app.openschool.course.discussion.dto.AnswerResponseDto;
 import app.openschool.course.discussion.mapper.AnswerMapper;
 import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
-import app.openschool.user.User;
-import app.openschool.user.UserRepository;
 import java.time.Instant;
+import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 @Service("discussionAnswer")
 public class PeersAnswerServiceImpl implements AnswerService {
   private final PeersAnswerRepository peersAnswerRepository;
   private final PeersQuestionRepository peersQuestionRepository;
-  private final UserRepository userRepository;
   private final EnrolledCourseRepository enrolledCourseRepository;
 
   public PeersAnswerServiceImpl(
       PeersAnswerRepository peersAnswerRepository,
       PeersQuestionRepository peersQuestionRepository,
-      UserRepository userRepository,
       EnrolledCourseRepository enrolledCourseRepository) {
     this.peersAnswerRepository = peersAnswerRepository;
     this.peersQuestionRepository = peersQuestionRepository;
-    this.userRepository = userRepository;
     this.enrolledCourseRepository = enrolledCourseRepository;
   }
 
   @Override
-  public AnswerResponseDto create(AnswerRequestDto requestDto, String email) {
-    PeersQuestion peersQuestion =
+  public AnswerResponseDto create(
+      Long enrolledCourseId, AnswerRequestDto requestDto, String email) {
+
+    EnrolledCourse extractedEnrolledCourse =
+        enrolledCourseRepository
+            .findById(enrolledCourseId)
+            .orElseThrow(IllegalArgumentException::new);
+
+    PeersQuestion extractedPeersQuestion =
         peersQuestionRepository
             .findById(requestDto.getQuestionId())
             .orElseThrow(IllegalArgumentException::new);
-    EnrolledCourse enrolledCourse =
-        enrolledCourseRepository
-            .findByCourseId(peersQuestion.getCourse().getId())
-            .orElseThrow(IllegalArgumentException::new);
-    if (!enrolledCourse.getUser().getEmail().equals(email)) {
-      throw new PermissionDeniedException("permission.denied");
-    }
+
+    checkingDataConsistency(
+        extractedPeersQuestion, extractedEnrolledCourse, email, requestDto.getQuestionId());
+
     return AnswerMapper.toAnswerDto(
-        peersAnswerRepository.save(creteAnswer(requestDto, email, peersQuestion)));
+        peersAnswerRepository.save(
+            prepareAnswer(extractedEnrolledCourse, requestDto, extractedPeersQuestion)));
   }
 
-  private PeersAnswer creteAnswer(
-      AnswerRequestDto requestDto, String email, PeersQuestion peersQuestion) {
-    User userByEmail = userRepository.findUserByEmail(email);
+  private PeersAnswer prepareAnswer(
+      EnrolledCourse enrolledCourse, AnswerRequestDto requestDto, PeersQuestion peersQuestion) {
+
     PeersAnswer peersAnswer = new PeersAnswer();
     peersAnswer.setText(requestDto.getText());
     peersAnswer.setDiscussionQuestion(peersQuestion);
-    peersAnswer.setUser(userByEmail);
+    peersAnswer.setUser(enrolledCourse.getUser());
     peersAnswer.setCreatedDate(Instant.now());
 
     return peersAnswer;
+  }
+
+  private void checkingDataConsistency(
+      PeersQuestion extractedPeersQuestion,
+      EnrolledCourse enrolledCourse,
+      String currentUserEmail,
+      Long questionId) {
+
+    String emailFromEnrolledCourse = enrolledCourse.getUser().getEmail();
+    Long questionIdFromExtractedQuestion = extractedPeersQuestion.getId();
+    Long courseIdFromExtractedQuestion = extractedPeersQuestion.getCourse().getId();
+
+    if (!Objects.equals(emailFromEnrolledCourse, currentUserEmail)
+        || !Objects.equals(questionIdFromExtractedQuestion, questionId)
+        || !Objects.equals(enrolledCourse.getCourse().getId(), courseIdFromExtractedQuestion)) {
+
+      throw new PermissionDeniedException("permission.denied");
+    }
   }
 }

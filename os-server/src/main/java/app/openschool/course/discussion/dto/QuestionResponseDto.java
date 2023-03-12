@@ -2,15 +2,27 @@ package app.openschool.course.discussion.dto;
 
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.user.api.dto.UserDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
 import java.util.Objects;
 
 public class QuestionResponseDto {
 
+  @Schema(description = "id", example = "1")
   private Long id;
+
+  @Schema(description = "Question", example = "Any question")
   private String text;
+
+  @Schema(description = "An object containing information about the user who gave the question")
   private UserDto userDto;
+
+  @Schema(
+      description =
+          "An object containing information about the course to which the question relates")
   private CourseDto courseDto;
+
+  @Schema(description = "Date of creation")
   private Instant createdDate;
 
   public QuestionResponseDto() {}

@@ -20,6 +20,8 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "mentor_question")
 public class MentorQuestion {
+
+  // ToDo this class and the components used in it will be changed in the future
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

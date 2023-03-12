@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Service("discussionAnswerMentor")
 public class MentorAnswerServiceImpl implements AnswerService {
 
+  // ToDo this class and the components used in it will be changed in the future
   private final UserRepository userRepository;
   private final MentorAnswerRepository mentorAnswerRepository;
   private final MentorQuestionRepository mentorQuestionRepository;
@@ -29,12 +30,12 @@ public class MentorAnswerServiceImpl implements AnswerService {
   }
 
   @Override
-  public AnswerResponseDto create(AnswerRequestDto requestDto, String email) {
+  public AnswerResponseDto create(
+      Long enrolledCourseId, AnswerRequestDto requestDto, String email) {
 
     return MentorAnswerMapper.toAnswerDto(
         mentorAnswerRepository.save(creteAnswer(requestDto, email)));
   }
-
 
   private MentorAnswer creteAnswer(AnswerRequestDto requestDto, String email) {
     User userByEmail = userRepository.findUserByEmail(email);

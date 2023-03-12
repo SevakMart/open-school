@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Service("discussionQuestionMentor")
 public class MentorQuestionServiceImpl implements QuestionService {
 
+  // ToDo this class and the components used in it will be changed in the future
   private final UserRepository userRepository;
   private final EnrolledCourseRepository enrolledCourseRepository;
   private final CourseRepository courseRepository;
@@ -34,11 +35,12 @@ public class MentorQuestionServiceImpl implements QuestionService {
   }
 
   @Override
-  public QuestionResponseDto create(QuestionRequestDto requestDto, String email) {
+  public QuestionResponseDto create(
+      Long enrolledCourseId, QuestionRequestDto requestDto, String email) {
     User user = userRepository.findUserByEmail(email);
     EnrolledCourse enrolledCourse =
         enrolledCourseRepository
-            .findByCourseId(requestDto.getCourseId())
+            .findById(enrolledCourseId)
             .orElseThrow(IllegalArgumentException::new);
     if (enrolledCourse.getUser().getId() != user.getId()) {
       throw new PermissionDeniedException("permission.denied");
@@ -50,13 +52,13 @@ public class MentorQuestionServiceImpl implements QuestionService {
 
   private MentorQuestion creteQuestion(QuestionRequestDto requestDto, String email) {
     User userByEmail = userRepository.findUserByEmail(email);
-    Course courseById =
-        courseRepository.findById(requestDto.getCourseId()).orElseThrow(IllegalAccessError::new);
+    //    Course courseById =
+    // courseRepository.findById(requestDto.getCourseId()).orElseThrow(IllegalAccessError::new);
     MentorQuestion mentorQuestion = new MentorQuestion();
     mentorQuestion.setText(requestDto.getText());
     mentorQuestion.setUser(userByEmail);
     mentorQuestion.setCreatedDate(Instant.now());
-    mentorQuestion.setCourse(courseById);
+    //    mentorQuestion.setCourse(courseById);
 
     return mentorQuestion;
   }

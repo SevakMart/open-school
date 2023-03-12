@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
@@ -20,7 +19,6 @@ import app.openschool.course.discussion.peers.answer.PeersAnswerRepository;
 import app.openschool.course.discussion.peers.answer.PeersAnswerServiceImpl;
 import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
 import app.openschool.user.User;
-import app.openschool.user.UserRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,15 +26,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
-
 @ExtendWith(MockitoExtension.class)
-public class PeersAnswerServiceImplTesl {
-  @Mock
-  PeersAnswerRepository peersAnswerRepository;
-  @Mock UserRepository userRepository;
-  @Mock
-  PeersQuestionRepository peersQuestionRepository;
+public class PeersAnswerServiceImplTest {
+  @Mock PeersAnswerRepository peersAnswerRepository;
+  @Mock PeersQuestionRepository peersQuestionRepository;
   @Mock EnrolledCourseRepository enrolledCourseRepository;
   AnswerService answerService;
 
@@ -44,10 +37,7 @@ public class PeersAnswerServiceImplTesl {
   void setUp() {
     answerService =
         new PeersAnswerServiceImpl(
-                peersAnswerRepository,
-                peersQuestionRepository,
-            userRepository,
-            enrolledCourseRepository);
+            peersAnswerRepository, peersQuestionRepository, enrolledCourseRepository);
   }
 
   @Test
@@ -56,46 +46,41 @@ public class PeersAnswerServiceImplTesl {
     PeersAnswer peersAnswer = createDiscussionAnswer();
     given(peersAnswerRepository.save(any())).willReturn(peersAnswer);
     User user = TestHelper.createUser();
-    given(userRepository.findUserByEmail(anyString())).willReturn(user);
     given(peersQuestionRepository.findById(anyLong()))
         .willReturn(Optional.of(TestHelper.createDiscussionQuestion()));
-    given(enrolledCourseRepository.findByCourseId(anyLong()))
-        .willReturn(Optional.of(TestHelper.createEnrolledCourse(user, TestHelper.crateCourse())));
+    EnrolledCourse enrolledCourse = TestHelper.createEnrolledCourse(user, TestHelper.crateCourse());
+    given(enrolledCourseRepository.findById(anyLong())).willReturn(Optional.of(enrolledCourse));
     AnswerResponseDto answerResponseDto =
         answerService.create(
-            createDiscussionAnswerRequestDto(), TestHelper.createPrincipal().getName());
+            enrolledCourse.getId(),
+            createDiscussionAnswerRequestDto(),
+            TestHelper.createPrincipal().getName());
     assertEquals(peersAnswer.getId(), answerResponseDto.getId());
     assertEquals(peersAnswer.getText(), answerResponseDto.getText());
-    assertEquals(
-        peersAnswer.getUser().getId(), answerResponseDto.getUserDto().getId());
-    assertEquals(
-        peersAnswer.getUser().getName(), answerResponseDto.getUserDto().getName());
-    assertEquals(
-        peersAnswer.getUser().getEmail(), answerResponseDto.getUserDto().getEmail());
+    assertEquals(peersAnswer.getUser().getId(), answerResponseDto.getUserDto().getId());
+    assertEquals(peersAnswer.getUser().getName(), answerResponseDto.getUserDto().getName());
+    assertEquals(peersAnswer.getUser().getEmail(), answerResponseDto.getUserDto().getEmail());
     verify(peersAnswerRepository, times(1)).save(any());
   }
 
   @Test
-  void addAnswer_withIncorrectEnrolledDiscussionQuestionId() {
+  void addAnswer_withIncorrectQuestionId() {
 
+    EnrolledCourse enrolledCourse =
+        TestHelper.createEnrolledCourse(TestHelper.createUser(), TestHelper.crateCourse());
+
+    given(enrolledCourseRepository.findById(anyLong())).willReturn(Optional.of(enrolledCourse));
     given(peersQuestionRepository.findById(anyLong())).willReturn(Optional.empty());
 
-    assertThatThrownBy(
-            () ->
-                answerService.create(
-                    createDiscussionAnswerRequestDto(), TestHelper.createPrincipal().getName()))
-        .isInstanceOf(IllegalArgumentException.class);
-  }
+    AnswerRequestDto answerRequestDto = createDiscussionAnswerRequestDto();
+    answerRequestDto.setQuestionId(999L);
 
-  @Test
-  void addAnswer_withIncorrectCourseId() {
-    given(peersQuestionRepository.findById(anyLong()))
-        .willReturn(Optional.of(TestHelper.createDiscussionQuestion()));
-    given(enrolledCourseRepository.findByCourseId(anyLong())).willReturn(Optional.empty());
     assertThatThrownBy(
             () ->
                 answerService.create(
-                    createDiscussionAnswerRequestDto(), TestHelper.createPrincipal().getName()))
+                    enrolledCourse.getId(),
+                    answerRequestDto,
+                    TestHelper.createPrincipal().getName()))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -107,11 +92,15 @@ public class PeersAnswerServiceImplTesl {
     enrolledCourse.setUser(anotherUser);
     given(peersQuestionRepository.findById(anyLong()))
         .willReturn(Optional.of(TestHelper.createDiscussionQuestion()));
-    doReturn(Optional.of(enrolledCourse)).when(enrolledCourseRepository).findByCourseId(anyLong());
+    doReturn(Optional.of(enrolledCourse))
+        .when(enrolledCourseRepository)
+        .findById(enrolledCourse.getId());
     assertThatThrownBy(
             () ->
                 answerService.create(
-                    createDiscussionAnswerRequestDto(), TestHelper.createPrincipal().getName()))
+                    enrolledCourse.getId(),
+                    createDiscussionAnswerRequestDto(),
+                    TestHelper.createPrincipal().getName()))
         .isInstanceOf(PermissionDeniedException.class);
   }
 
@@ -126,6 +115,9 @@ public class PeersAnswerServiceImplTesl {
   }
 
   AnswerRequestDto createDiscussionAnswerRequestDto() {
-    return new AnswerRequestDto("text", 1L);
+    AnswerRequestDto answerRequestDto = new AnswerRequestDto();
+    answerRequestDto.setText("text");
+    answerRequestDto.setQuestionId(1L);
+    return answerRequestDto;
   }
 }

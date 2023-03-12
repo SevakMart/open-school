@@ -5,5 +5,5 @@ import app.openschool.course.discussion.dto.AnswerResponseDto;
 
 public interface AnswerService {
 
-  AnswerResponseDto create(AnswerRequestDto requestDto, String email);
+  AnswerResponseDto create(Long enrolledCourseId, AnswerRequestDto requestDto, String email);
 }

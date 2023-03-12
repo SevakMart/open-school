@@ -7,6 +7,12 @@ import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.dto.CreateCourseRequest;
 import app.openschool.course.api.dto.UpdateCourseRequest;
 import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.discussion.AnswerService;
+import app.openschool.course.discussion.QuestionService;
+import app.openschool.course.discussion.dto.AnswerRequestDto;
+import app.openschool.course.discussion.dto.AnswerResponseDto;
+import app.openschool.course.discussion.dto.QuestionRequestDto;
+import app.openschool.course.discussion.dto.QuestionResponseDto;
 import app.openschool.faq.FaqService;
 import app.openschool.faq.api.dto.CreateFaqRequest;
 import app.openschool.faq.api.dto.FaqDto;
@@ -24,12 +30,14 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Locale;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,12 +55,20 @@ public class CourseController {
   private final CourseService courseService;
   private final FaqService faqService;
   private final MessageSource messageSource;
+  private final QuestionService questionService;
+  private final AnswerService answerService;
 
   public CourseController(
-      CourseService courseService, MessageSource messageSource, FaqService faqService) {
+      CourseService courseService,
+      MessageSource messageSource,
+      FaqService faqService,
+      @Qualifier("discussionQuestion") QuestionService questionService,
+      @Qualifier("discussionAnswer") AnswerService answerService) {
     this.courseService = courseService;
     this.messageSource = messageSource;
     this.faqService = faqService;
+    this.questionService = questionService;
+    this.answerService = answerService;
   }
 
   @Operation(summary = "get course info", security = @SecurityRequirement(name = "bearerAuth"))
@@ -310,6 +326,53 @@ public class CourseController {
 
     faqService.delete(faqId, principal.getName());
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  @Operation(summary = "add question", security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "201", description = "Creates new question and returns that"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid request arguments supplied or not provided",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "User has not enrolled in the course provided",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
+  @PostMapping("/enrolled/{enrolledCourseId}/peers-questions")
+  public ResponseEntity<QuestionResponseDto> createQuestion(
+      @Parameter(description = "ID of the enrolled course") @PathVariable Long enrolledCourseId,
+      @Valid @RequestBody QuestionRequestDto requestDto,
+      Principal principal) {
+    QuestionResponseDto questionResponseDto =
+        questionService.create(enrolledCourseId, requestDto, principal.getName());
+    return ResponseEntity.status(HttpStatus.CREATED).body(questionResponseDto);
+  }
+
+  @Operation(summary = "add answer", security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "201", description = "Creates new answer and returns that"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid request arguments supplied or not provided",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "User has not enrolled in the course provided",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
+  @PostMapping("/enrolled/{enrolledCourseId}/peers-answer")
+  public ResponseEntity<AnswerResponseDto> createAnswer(
+      @Parameter(description = "ID of the enrolled course") @PathVariable Long enrolledCourseId,
+      @Valid @RequestBody AnswerRequestDto requestDto,
+      Principal principal) {
+
+    AnswerResponseDto answerResponseDto =
+        answerService.create(enrolledCourseId, requestDto, principal.getName());
+    return ResponseEntity.status(HttpStatus.CREATED).body(answerResponseDto);
   }
 
   private void courseAffiliationVerification(Principal principal, Long courseId) {

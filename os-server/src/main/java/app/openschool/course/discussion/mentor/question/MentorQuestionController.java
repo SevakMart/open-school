@@ -14,6 +14,7 @@ import java.security.Principal;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/courses/mentor-questions")
 public class MentorQuestionController {
+
+  // ToDo this class and the components used in it will be changed in the future
 
   private final QuestionService questionService;
 
@@ -40,14 +43,14 @@ public class MentorQuestionController {
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
       })
   @PostMapping
-  public ResponseEntity<QuestionResponseDto> create(
+  public ResponseEntity<QuestionResponseDto> create(@PathVariable Long enrolledCourseId,
       @io.swagger.v3.oas.annotations.parameters.RequestBody(
               description = "Request object for creating new question")
           @RequestBody
           QuestionRequestDto requestDto,
       Principal principal) {
     QuestionResponseDto questionResponseDto =
-        questionService.create(requestDto, principal.getName());
+        questionService.create(enrolledCourseId, requestDto, principal.getName());
     return ResponseEntity.status(HttpStatus.CREATED).body(questionResponseDto);
   }
 }

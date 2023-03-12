@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/courses/mentor-questions/answer")
 public class MentorAnswerController {
 
+  // ToDo this class and the components used in it will be changed in the future
   private final AnswerService answerService;
 
   public MentorAnswerController(@Qualifier("discussionAnswerMentor") AnswerService answerService) {
@@ -39,15 +41,16 @@ public class MentorAnswerController {
             description = "Invalid request arguments supplied or not provided",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
       })
-  @PostMapping
+  @PostMapping("/{enrolledCourseId}")
   @PreAuthorize("hasAnyAuthority('MENTOR')")
-  public ResponseEntity<AnswerResponseDto> create(
+  public ResponseEntity<AnswerResponseDto> create(@PathVariable Long enrolledCourseId,
       @io.swagger.v3.oas.annotations.parameters.RequestBody(
               description = "Request object for creating new question")
           @RequestBody
           AnswerRequestDto requestDto,
       Principal principal) {
-    AnswerResponseDto answerResponseDto = answerService.create(requestDto, principal.getName());
+    AnswerResponseDto answerResponseDto =
+        answerService.create(enrolledCourseId, requestDto, principal.getName());
     return ResponseEntity.status(HttpStatus.CREATED).body(answerResponseDto);
   }
 }
