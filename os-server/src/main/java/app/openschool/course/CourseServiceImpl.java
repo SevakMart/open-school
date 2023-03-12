@@ -1,8 +1,10 @@
 package app.openschool.course;
 
 import app.openschool.category.CategoryRepository;
+import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.dto.CreateCourseRequest;
 import app.openschool.course.api.dto.UpdateCourseRequest;
+import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.course.difficulty.DifficultyRepository;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.keyword.KeywordRepository;
@@ -27,6 +29,7 @@ public class CourseServiceImpl implements CourseService {
   private final LanguageRepository languageRepository;
   private final KeywordRepository keywordRepository;
   private final UserRepository userRepository;
+  private final EnrolledCourseRepository enrolledCourseRepository;
 
   public CourseServiceImpl(
       CourseRepository courseRepository,
@@ -34,18 +37,27 @@ public class CourseServiceImpl implements CourseService {
       DifficultyRepository difficultyRepository,
       LanguageRepository languageRepository,
       KeywordRepository keywordRepository,
-      UserRepository userRepository) {
+      UserRepository userRepository,
+      EnrolledCourseRepository enrolledCourseRepository) {
     this.courseRepository = courseRepository;
     this.categoryRepository = categoryRepository;
     this.difficultyRepository = difficultyRepository;
     this.languageRepository = languageRepository;
     this.keywordRepository = keywordRepository;
     this.userRepository = userRepository;
+    this.enrolledCourseRepository = enrolledCourseRepository;
   }
 
   @Override
-  public Optional<Course> findCourseById(Long id) {
-    return courseRepository.findById(id);
+  public CourseInfoDto findCourseById(Long id) {
+    Course course = courseRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    CourseInfoDto courseInfoDto = CourseMapper.toCourseInfoDto(course);
+    if (enrolledCourseRepository.findByUserEmailAndCourseId(email, id).isPresent()) {
+      courseInfoDto.setCurrentUserEnrolled(true);
+    }
+
+    return courseInfoDto;
   }
 
   @Override

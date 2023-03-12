@@ -7,7 +7,9 @@ import app.openschool.course.language.Language;
 import app.openschool.course.module.Module;
 import app.openschool.course.module.item.ModuleItem;
 import app.openschool.course.module.item.type.ModuleItemType;
+import app.openschool.course.status.CourseStatus;
 import app.openschool.user.User;
+import app.openschool.user.api.UserGenerator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -61,5 +63,17 @@ public class CourseGenerator {
     course.setLanguage(new Language("English"));
 
     return course;
+  }
+
+  public static EnrolledCourse generateEnrolledCourse() {
+    EnrolledCourse enrolledCourse = new EnrolledCourse();
+    enrolledCourse.setCourse(generateCourse());
+    enrolledCourse.setUser(UserGenerator.generateUser());
+    CourseStatus courseStatus = new CourseStatus();
+    courseStatus.setId(1L);
+    courseStatus.setType("IN_PROGRESS");
+    enrolledCourse.setCourseStatus(courseStatus);
+
+    return enrolledCourse;
   }
 }

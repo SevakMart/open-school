@@ -191,6 +191,11 @@ exports[`Create tests for sign up form Create a snapshot test 1`] = `
         </i>
       </div>
     </div>
+    <p
+      class="forgotPassword"
+    >
+      string.signIn.forgotPsd
+    </p>
     <button
       class="formButton"
       type="button"

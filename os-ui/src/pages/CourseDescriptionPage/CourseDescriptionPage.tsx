@@ -14,11 +14,12 @@ import { Types } from '../../types/types';
 import EnrolledSuccessMessage from './Subcomponents/CourseSummary/Subcomponent/ModalMessageComponent/ModalMessageComponent';
 import { CourseDescriptionType, SuggestedCourseType } from '../../types/CourseTypes';
 import styles from './CourseDescriptionPage.module.scss';
+
 /* eslint-disable max-len */
-const CourseDescriptionPage = ({ userInfo }:{userInfo:any}) => {
+const CourseDescriptionPage = ({ userInfo }: { userInfo: any }) => {
   const portalStatus = useSelector<RootState>((state) => state.portalStatus) as PortalStatus;
   const { isOpen, buttonType } = portalStatus;
-  const enrollCourseState = useSelector<RootState>((state) => state.enrollCourse) as {entity:SuggestedCourseType, isLoading:boolean, errorMessage:string};
+  const enrollCourseState = useSelector<RootState>((state) => state.enrollCourse) as { entity: SuggestedCourseType, isLoading: boolean, errorMessage: string };
   const { entity: enrolledCourseEntity, isLoading: enrolledCourseLoading, errorMessage: enrolledCourseErrorMessage } = enrollCourseState;
   const { courseId } = useParams();
   const idAndToken = useMemo(() => ({
@@ -26,13 +27,15 @@ const CourseDescriptionPage = ({ userInfo }:{userInfo:any}) => {
     id: (userInfo as any).id,
   }), []);
   const dispatch = useDispatch();
-  const courseDescriptionState = useSelector<RootState>((state) => state.courseDescriptionRequest) as {entity:CourseDescriptionType, isLoading:boolean, errorMessage:string};
+  const courseDescriptionState = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType, isLoading: boolean, errorMessage: string };
   const { entity, isLoading, errorMessage } = courseDescriptionState;
   const { mainContent } = styles;
 
   useEffect(() => {
     dispatch(getCourseDescription({ courseId: Number(courseId), token: idAndToken.token }));
   }, []);
+
+  const currentUserEnrolled = entity && entity.currentUserEnrolled;
 
   return (
     <>
@@ -52,6 +55,7 @@ const CourseDescriptionPage = ({ userInfo }:{userInfo:any}) => {
                 mentorDto={entity.mentorDto}
                 modules={entity.modules}
                 title={entity.title}
+                currentUserEnrolled={currentUserEnrolled}
               />
               <CourseSummary
                 rating={entity.rating}
@@ -62,6 +66,7 @@ const CourseDescriptionPage = ({ userInfo }:{userInfo:any}) => {
                 courseId={Number(courseId)}
                 userIdAndToken={idAndToken}
                 title={entity.title}
+                currentUserEnrolled={currentUserEnrolled}
               />
             </div>
           )}
@@ -76,7 +81,7 @@ const CourseDescriptionPage = ({ userInfo }:{userInfo:any}) => {
           entity={enrolledCourseEntity}
           errorFieldClassName="enrolmentError"
           isMyLearningPathPage={false}
-          render={() => <EnrolledSuccessMessage />}
+          render={() => <EnrolledSuccessMessage courseId={Number(courseId)} />}
         />
         )}
       </Portal.FormPortal>

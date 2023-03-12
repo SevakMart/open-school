@@ -10,6 +10,7 @@ export interface CourseDescriptionType {
     level:string;
     language:string;
     duration:number;
+	currentUserEnrolled: boolean;
 }
 export interface UserCourseType{
     title:string;
@@ -18,7 +19,9 @@ export interface UserCourseType{
     remainingTime:number;
     grade:number;
     dueDate:string;
-}
+	courseId:number;
+	id:number;
+  }
 export type CompleteCourse = Pick<UserCourseType, 'title'|'courseStatus'|'grade'>
 export type ProgressedCourse = Omit<UserCourseType, 'grade'>
 

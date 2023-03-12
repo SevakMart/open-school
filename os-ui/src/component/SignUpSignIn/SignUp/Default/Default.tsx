@@ -26,7 +26,9 @@ const SignUpDefault = () => {
         if (response.status === 201) {
           setErrorFormValue(initialErrorFormValues);
           dispatch(addSignedUpUserId(response.userId));
-          dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: t('messages.successfullSignUp'), isSignUpSuccessfulRegistration: true }));
+          dispatch(openModalWithSuccessMessage({
+            buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: t('messages.successfullSignUp'), isSignUpSuccessfulRegistration: true, forgotVerficationEmail: formValues.email,
+          }));
         } else {
           setErrorFormValue({ ...initialErrorFormValues, emailError: response[0] });
         }

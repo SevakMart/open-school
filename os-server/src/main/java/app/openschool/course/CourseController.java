@@ -85,10 +85,7 @@ public class CourseController {
   @GetMapping("/{id}")
   public ResponseEntity<CourseInfoDto> getCourseInfo(
       @Parameter(description = "Course id") @PathVariable Long id) {
-    return courseService
-        .findCourseById(id)
-        .map(course -> ResponseEntity.ok(CourseMapper.toCourseInfoDto(course)))
-        .orElseGet(() -> ResponseEntity.notFound().build());
+    return ResponseEntity.ok(courseService.findCourseById(id));
   }
 
   @Operation(summary = "find all courses", security = @SecurityRequirement(name = "bearerAuth"))
@@ -376,9 +373,9 @@ public class CourseController {
   }
 
   private void courseAffiliationVerification(Principal principal, Long courseId) {
-    Course course =
-        courseService.findCourseById(courseId).orElseThrow(IllegalArgumentException::new);
-    if (!course.getMentor().getEmail().equals(principal.getName())) {
+
+    CourseInfoDto course = courseService.findCourseById(courseId);
+    if (!course.getMentorDto().getEmailPath().equals(principal.getName())) {
       throw new PermissionDeniedException(
           messageSource.getMessage("permission.denied", null, Locale.ROOT));
     }

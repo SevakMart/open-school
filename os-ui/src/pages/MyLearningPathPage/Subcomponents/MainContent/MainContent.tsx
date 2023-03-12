@@ -31,6 +31,8 @@ const MyLearningPathMainContent = () => {
                   percentage={userCourse.percentage}
                   remainingTime={userCourse.remainingTime}
                   dueDate={userCourse.dueDate}
+                  courseId={userCourse.id}
+                  id={userCourse.courseId}
                 />
               );
             }

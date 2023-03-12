@@ -14,6 +14,8 @@ import static org.mockito.Mockito.when;
 
 import app.openschool.category.Category;
 import app.openschool.category.CategoryRepository;
+import app.openschool.course.api.CourseGenerator;
+import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.dto.CreateCourseRequest;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.difficulty.DifficultyRepository;
@@ -43,7 +45,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-
 @ExtendWith(MockitoExtension.class)
 class CourseServiceImplTest {
 
@@ -53,7 +54,8 @@ class CourseServiceImplTest {
   @Mock private LanguageRepository languageRepository;
   @Mock private KeywordRepository keywordRepository;
   @Mock private UserRepository userRepository;
-
+  @Mock private EnrolledCourseRepository enrolledCourseRepository;
+  @Mock Authentication authentication;
   //  @InjectMocks
   private CourseServiceImpl courseService;
 
@@ -66,15 +68,10 @@ class CourseServiceImplTest {
             difficultyRepository,
             languageRepository,
             keywordRepository,
-            userRepository);
+            userRepository,
+            enrolledCourseRepository);
   }
 
-  @Test
-  public void findCourseByNonexistentId() {
-    long wrongId = 999L;
-    when(courseRepository.findById(wrongId)).thenReturn(Optional.empty());
-    assertEquals(Optional.empty(), courseService.findCourseById(wrongId));
-  }
 
   @Test
   public void add_withCorrectArguments_returnsCreatedCourse() {
@@ -242,6 +239,32 @@ class CourseServiceImplTest {
         .isInstanceOf(IllegalArgumentException.class);
   }
 
+  @Test
+  void findCourseById_withCorrectCourseId_returnOptionalCourse() {
+    given(courseRepository.findById(anyLong()))
+        .willReturn(Optional.of(CourseGenerator.generateCourse()));
+    given(enrolledCourseRepository.findByUserEmailAndCourseId(anyString(), anyLong()))
+        .willReturn(Optional.of(CourseGenerator.generateEnrolledCourse()));
+    setAuthenticationToMockedAuth();
+    Course expectedCourse = CourseGenerator.generateCourse();
+    CourseInfoDto actualCourse = courseService.findCourseById(1L);
+
+    assertEquals(actualCourse.getTitle(), expectedCourse.getTitle());
+    assertEquals(actualCourse.getDescription(), expectedCourse.getDescription());
+    assertEquals(actualCourse.getGoal(), expectedCourse.getGoal());
+    assertEquals(actualCourse.getLanguage(), expectedCourse.getLanguage().getTitle());
+    assertEquals(actualCourse.getMentorDto().getEmailPath(), expectedCourse.getMentor().getEmail());
+    assertEquals(actualCourse.getRating(), expectedCourse.getRating());
+  }
+
+  @Test
+  void findCourseById_withInCorrectCourseId_returnThrowIllegalArgumentException() {
+
+    given(courseRepository.findById(anyLong())).willReturn(Optional.empty());
+    assertThatThrownBy(() -> courseService.findCourseById(1L))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
   private Set<Keyword> createKeywords() {
     Keyword keyword1 = new Keyword("Programming");
     Keyword keyword2 = new Keyword("Java");
@@ -297,6 +320,11 @@ class CourseServiceImplTest {
     ModuleItemType moduleItemType = new ModuleItemType();
     moduleItemType.setType(type);
     return moduleItemType;
+  }
+
+  private void setAuthenticationToMockedAuth() {
+    given(authentication.getName()).willReturn("mockedEmail");
+    SecurityContextHolder.getContext().setAuthentication(authentication);
   }
 
   private ModuleItem createModuleItem(

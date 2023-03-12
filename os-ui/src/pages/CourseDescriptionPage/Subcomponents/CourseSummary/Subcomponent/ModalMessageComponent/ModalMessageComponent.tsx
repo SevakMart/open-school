@@ -1,30 +1,36 @@
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../../../../../redux/Slices/PortalOpenStatus';
 import EnrollIcon from '../../../../../../assets/svg/Enroll.svg';
 import Button from '../../../../../../component/Button/Button';
 import styles from './ModalMessageComponent.module.scss';
+import CloseIcon from '../../../../../../icons/Close';
 
-const EnrolledSuccessMessage = () => {
+type Props = {
+	courseId: number;
+  };
+
+const EnrolledSuccessMessage = ({ courseId }: Props) => {
   const {
-    mainContainer, mainContent, textContent, buttonContainer,
+    mainContainer, mainContent, textContent, buttonContainer, closeIcon,
   } = styles;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
+  const handleClosePortal = () => {
+    dispatch(closeModal());
+  };
 
   const handleStartEnrolledCourse = () => {
     dispatch(closeModal());
-    params.set('enrolled', 'true');
-    navigate(`${location.pathname}?${params}`);
+    navigate(`/userCourse/modulOverview/${courseId}`);
   };
 
   return (
     <div className={mainContainer}>
       <div className={mainContent}>
+        <div className={closeIcon} onClick={handleClosePortal}><CloseIcon /></div>
         <img src={EnrollIcon} alt="Enrolled" />
         <div className={textContent}>
           <h2>

@@ -15,6 +15,9 @@ import app.openschool.course.status.CourseStatus;
 import app.openschool.user.User;
 import app.openschool.user.api.mapper.MentorMapper;
 import app.openschool.user.company.Company;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +67,7 @@ public class CourseMapper {
         course.getEnrolledCourses().size(),
         course.getDifficulty().getTitle(),
         course.getLanguage().getTitle(),
-        getCourseDuration(course));
+        getCourseDurationInHours(course));
   }
 
   public static EnrolledCourse toEnrolledCourse(Course course, User user) {
@@ -101,11 +104,15 @@ public class CourseMapper {
         companyName);
   }
 
-  private static long getCourseDuration(Course course) {
-    return course.getModules().stream()
-        .flatMapToLong(
-            module -> module.getModuleItems().stream().mapToLong(ModuleItem::getEstimatedTime))
-        .sum();
+  private static double getCourseDurationInHours(Course course) {
+
+    double estimatedHours = course.getModules().stream()
+            .flatMapToDouble(
+                    module -> module.getModuleItems()
+                            .stream().mapToDouble(ModuleItem::getEstimatedTime))
+            .sum() / 60;
+
+    return Math.round(estimatedHours * 10.0) / 10.0;
   }
 
   private static Set<CourseInfoModuleItemDto> getCourseInfoModuleItemDtoSet(Module module) {

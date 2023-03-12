@@ -28,6 +28,7 @@ describe('Create test cases for course description page', () => {
           courseId={2}
           userIdAndToken={{ id: 2, token: 'jksndfkjnskfk' }}
           title="React"
+          currentUserEnrolled={false}
         />
       </Provider>,
     );
