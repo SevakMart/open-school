@@ -23,6 +23,9 @@ public class UserCourseDto {
   @Schema(description = "Grade of course", example = "100")
   private Integer grade;
 
+  @Schema(description = "Course id in which you are enrolled user", example = "1")
+  private Long courseId;
+
   @Schema(
       description = "By the specified date the course must be completed",
       example = "2022-07-11")
@@ -43,13 +46,15 @@ public class UserCourseDto {
       String courseStatus,
       long percentage,
       long remainingTime,
-      LocalDate dueDate) {
+      LocalDate dueDate,
+      Long courseId) {
     this.id = id;
     this.title = title;
     this.courseStatus = courseStatus;
     this.percentage = percentage;
     this.remainingTime = remainingTime;
     this.dueDate = dueDate;
+    this.courseId = courseId;
   }
 
   public UserCourseDto(
@@ -111,6 +116,14 @@ public class UserCourseDto {
 
   public Integer getGrade() {
     return grade;
+  }
+
+  public Long getCourseId() {
+    return courseId;
+  }
+
+  public void setCourseId(Long courseId) {
+    this.courseId = courseId;
   }
 
   public void setGrade(Integer grade) {
