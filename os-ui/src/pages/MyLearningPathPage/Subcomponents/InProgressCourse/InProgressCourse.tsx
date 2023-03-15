@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { ProgressedCourse } from '../../../../types/CourseTypes';
+import { getCourseDescription } from '../../../../redux/Slices/CourseDescriptionRequestSlice';
+import { RootState } from '../../../../redux/Store';
+import { CourseDescriptionType, ProgressedCourse } from '../../../../types/CourseTypes';
 import ClockIcon from '../../../../assets/svg/ClockIcon.svg';
 import CalendarIcon from '../../../../assets/svg/CalendarIcon.svg';
 import Button from '../../../../component/Button/Button';
-import { transformTime } from '../../../../helpers/TimeTransform';
 import styles from './InProgressCourse.module.scss';
 
 const InProgressCourse = ({
@@ -17,9 +19,31 @@ const InProgressCourse = ({
     dueDateContent, remainingTimeContent, statusContent, separator,
     remainingTimeContainer, dueDateContainer, calenderIcon, timeIcon,
   } = styles;
+  const userInfoState = useSelector<RootState>((state) => state.userInfo);
+  const { userInfo } = userInfoState as any;
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const time = useState(transformTime(remainingTime))[0];
+  const idAndToken = useMemo(() => ({
+    token: (userInfo as any)?.token,
+    id: (userInfo as any)?.id,
+  }), []);
+
+  const courseDescriptionState = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType };
+  const { entity } = courseDescriptionState;
+  const [value, setValue] = useState<string>(entity?.modules?.[0]?.title || '');
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCourseDescription({
+      courseId: Number(courseId), token: idAndToken.token,
+    }));
+  }, []);
+
+  const handleChangeValue = () => {
+    navigate(`/userCourse/modulOverview/${courseId}`);
+    setValue(value);
+  };
+
   return (
     <div className={mainContainer}>
       <div className={titleContainer}>
@@ -43,7 +67,7 @@ const InProgressCourse = ({
         <p className={containerTitle}>{t('string.myLearningPaths.inProgressCourse.remainingTime')}</p>
         <div className={remainingTimeContainer}>
           <img src={ClockIcon} className={timeIcon} alt="clockIcon" />
-          <p data-testid={remainingTime} className={remainingTimeContent}>{time}</p>
+          <p data-testid={remainingTime} className={remainingTimeContent}>{t(`${remainingTime} minutes`)}</p>
         </div>
       </div>
       <div className={separator} />
@@ -61,7 +85,7 @@ const InProgressCourse = ({
       </div>
       <div className={separator} />
       <div className={buttonContainer}>
-        <Button.MainButton className={['resumeCourse']} onClick={() => navigate(`/userCourse/modulOverview/${courseId}`)}>
+        <Button.MainButton className={['resumeCourse']} onClick={handleChangeValue}>
           {t('button.myLearningPathsPage.resumeCourse')}
         </Button.MainButton>
       </div>

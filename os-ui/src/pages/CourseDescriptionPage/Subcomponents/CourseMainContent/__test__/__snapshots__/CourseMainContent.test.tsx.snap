@@ -59,7 +59,7 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
                 <p
                   class="moduleTitle"
                 >
-                  React js
+                  It talks about React
                 </p>
               </div>
               <img
@@ -72,12 +72,12 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
               class="moduleDescriptionIsClosed"
             >
               <p>
-                It talks about React
+                undefined : 
+                <button
+                  class="moduleItemLink"
+                  type="button"
+                />
               </p>
-              <button
-                style="background-color: transparent; color: blue; text-decoration: underline; cursor: pointer;"
-                type="button"
-              />
             </div>
           </div>
         </div>

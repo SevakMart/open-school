@@ -32,6 +32,10 @@ export const COURSE_NAME = [
   },
   {
     id: '3',
-    desc: 'Discussion Form',
+    desc: 'Discussion Forum',
+  },
+  {
+    id: '4',
+    desc: 'FAQ',
   },
 ];

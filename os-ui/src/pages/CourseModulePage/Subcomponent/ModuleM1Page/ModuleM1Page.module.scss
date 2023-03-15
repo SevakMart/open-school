@@ -39,7 +39,7 @@
     .moduleDescriptionIsOpen{
         margin-left: 25px;
         width: 90%;
-        @include fontStyle($primary-font,normal,400,15px,70px);
+        @include fontStyle($primary-font,normal,400,15px,25px);
     }
     .moduleDescriptionIsClosed {
         display:none;

@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-key */
-/* eslint-disable react/button-has-type */
-import { t } from 'i18next';
 import { useState } from 'react';
 import Dropdown from '../../../../component/Dropdown/Dropdown';
 import SidebarDropdown from './SidebarDropdown';
@@ -11,9 +8,18 @@ import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
 interface SidebarDropdownProps {
   value: string,
   handleChangeValue: (a:string) => void,
+  title:string,
+  modules: {
+    link?: any,
+    title: string,
+    description: string,
+    moduleItemSet: { [index: string]: string }[]
+  }[];
 }
 
-const CourseModuleSidebar = ({ value, handleChangeValue }: SidebarDropdownProps) => {
+const CourseModuleSidebar = ({
+  value, title, handleChangeValue, modules,
+}: SidebarDropdownProps) => {
   const [moduleListIsOpen, setModuleListIsOpen] = useState(true);
   const openModuleList = () => {
     setModuleListIsOpen((prevState) => !prevState);
@@ -21,13 +27,14 @@ const CourseModuleSidebar = ({ value, handleChangeValue }: SidebarDropdownProps)
   const {
     chevronIsOpen, chevronIsClosed, moduleDescriptionIsOpen, moduleDescriptionIsClosed,
   } = styles;
+
   return (
     <div className={styles.Sidebar_container}>
-      <h4 className={styles.Sidebar_courseName}>{t('Course Name')}</h4>
+      <h4 className={styles.Sidebar_courseName}>{title}</h4>
       <Dropdown
         open={value}
         trigger={(
-          <button className={styles.ArrowRightIcon} onChange={() => handleChangeValue(value)}>
+          <button type="button" className={styles.ArrowRightIcon} onChange={() => handleChangeValue(value)}>
             Overview
             <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
             {' '}
@@ -35,9 +42,10 @@ const CourseModuleSidebar = ({ value, handleChangeValue }: SidebarDropdownProps)
 )}
         menu={[
           <div
+            key={modules[0].title}
             className={moduleListIsOpen ? moduleDescriptionIsOpen : moduleDescriptionIsClosed}
           >
-            <SidebarDropdown handleChangeValue={handleChangeValue} />
+            <SidebarDropdown handleChangeValue={handleChangeValue} modules={modules} value={value} />
           </div>,
         ]}
       />

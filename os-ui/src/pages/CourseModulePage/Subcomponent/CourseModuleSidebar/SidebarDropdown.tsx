@@ -1,22 +1,34 @@
 import { t } from 'i18next';
-import { COURSE_CATEGORIES } from '../../../../constants/CourseModuleCategories';
 import styles from './Sidebar.module.scss';
 
 interface Props {
-handleChangeValue: (a:string) => void,
-  }
+	value:string,
+  handleChangeValue: (a: string) => void,
+  modules: {
+    link?: any,
+    title: string,
+    description: string,
+    moduleItemSet: { [index: string]: string }[]
+  }[];
+}
 
-const SidebarDropdown = ({ handleChangeValue }: Props) => (
+const SidebarDropdown = ({ handleChangeValue, value, modules }: Props) => (
   <>
     {
-		COURSE_CATEGORIES.map((button: { value: string, id: string, title: string }) => (
-  <label key={button.id} className={styles.Checkbox_container}>
-    {t(`${button.title}`)}
-    <input type="checkbox" onChange={() => handleChangeValue(button.value)} />
-    <span className={styles.Checkbox_checkmark} />
-  </label>
-		))
-	  }
+        modules.map((module) => (
+          <label key={module.title} className={styles.Checkbox_container}>
+            {t(`${module.title}`)}
+            <input
+              type="radio"
+              name="category"
+              value={module.title}
+              checked={value === module.title}
+              onChange={() => handleChangeValue(module.title)}
+            />
+            <span className={styles.Checkbox_checkmark} />
+          </label>
+        ))
+      }
   </>
 );
 
