@@ -2,11 +2,13 @@ package app.openschool.course;
 
 import app.openschool.category.Category;
 import app.openschool.course.difficulty.Difficulty;
+import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.course.keyword.Keyword;
 import app.openschool.course.language.Language;
 import app.openschool.course.module.Module;
 import app.openschool.user.User;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -77,6 +79,9 @@ public class Course {
 
   @OneToMany(mappedBy = "course")
   private Set<EnrolledCourse> enrolledCourses = new HashSet<>();
+
+  @OneToMany(mappedBy = "course")
+  private List<PeersQuestion> peersQuestionAskPeers;
 
   public Course() {}
 

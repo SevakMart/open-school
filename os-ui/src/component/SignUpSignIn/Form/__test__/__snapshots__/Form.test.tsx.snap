@@ -131,19 +131,17 @@ exports[`Create unit tests for Form component Make snapshot test 1`] = `
         class="inputErrorField"
       />
     </div>
-    <div>
-      <p
-        class="forgotPassword"
-      >
-        string.signIn.forgotPsd
-      </p>
-      <button
-        class="formButton"
-        type="button"
-      >
-        Sign Up
-      </button>
-    </div>
+    <p
+      class="forgotPassword"
+    >
+      string.signIn.forgotPsd
+    </p>
+    <button
+      class="formButton"
+      type="button"
+    >
+      Sign Up
+    </button>
   </form>
 </DocumentFragment>
 `;
