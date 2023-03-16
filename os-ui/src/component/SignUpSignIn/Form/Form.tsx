@@ -7,22 +7,45 @@ import { openModal } from '../../../redux/Slices/PortalOpenStatus';
 import Button from '../../Button/Button';
 import styles from './Form.module.scss';
 import { signInContext } from '../../../contexts/Contexts';
+import { PASSWORD_REQUIRED } from '../../../constants/Strings';
 
 export interface FormValues {
-    [index:string]:string
+  [index:string]:string;
 }
+
 interface ErrorFormValues {
-    [index:string]:string
+  [index:string]:string;
 }
+
 const initialFormValues = {
-  firstName: '', lastName: '', email: '', psd: '', token: '', newPassword: '', confirmedPassword: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  psd: '',
+  token: '',
+  newPassword: '',
+  confirmedPassword: '',
 };
-/* eslint-disable max-len */
+
 const Form = ({
-  isSignUpForm, isResetPasswordForm, formButtonText, errorFormValue, handleForm, resendEmail, unAuthorizedSignInError,
-}:
-    {isSignUpForm:boolean, isResetPasswordForm:boolean, formButtonText:string, errorFormValue:ErrorFormValues, unAuthorizedSignInError?:string, handleForm:(formValue:FormValues)=>void, resendEmail?:()=>void }) => {
+  isSignUpForm,
+  isResetPasswordForm,
+  formButtonText,
+  errorFormValue,
+  handleForm,
+  resendEmail,
+  unAuthorizedSignInError,
+}: {
+  isSignUpForm:boolean,
+  isResetPasswordForm:boolean,
+  formButtonText:string,
+  errorFormValue:ErrorFormValues,
+  unAuthorizedSignInError?:string,
+  handleForm:(formValue:FormValues)=>void,
+  resendEmail?:()=>void
+}) => {
   const [formValues, setFormValues] = useState(initialFormValues);
+  const [errorMessage, setErrorMessage] = useState('');
   const { setSignIn } = useContext(signInContext);
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -40,6 +63,10 @@ const Form = ({
   };
 
   const handleFormOnClick = () => {
+    if (formValues.psd === '') {
+      setErrorMessage(PASSWORD_REQUIRED);
+      return;
+    }
     handleForm(formValues);
     setSignIn(true);
   };
@@ -120,11 +147,15 @@ const Form = ({
           handleInputChange={handleInputChange}
         />
       )}
-      {unAuthorizedSignInError ? (
+      {errorMessage ? (
+        <p className={unAuthorizedSignInErrorStyle}>
+          {PASSWORD_REQUIRED}
+        </p>
+      ) : (unAuthorizedSignInError ? (
         <p className={unAuthorizedSignInErrorStyle}>
           {unAuthorizedSignInError}
         </p>
-      ) : null}
+      ) : null)}
       {unAuthorizedSignInError === 'User is disabled' ? (
         <Button.FormButton
           className={['formButton', 'formButton__resendEmail']}
