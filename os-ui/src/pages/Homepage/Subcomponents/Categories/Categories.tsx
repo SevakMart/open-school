@@ -33,7 +33,6 @@ const HomepageCategories = () => {
       <Title
         mainTitle={t('string.homePage.categories.title')}
         subTitle={t('string.homePage.categories.exploreCategories')}
-        isMentor={false}
       />
       <MainBody
         page={page}

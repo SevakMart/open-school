@@ -75,7 +75,6 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
   >
     <div
       class="main"
-      style="padding-top: 5%;"
     >
       <h3>
         string.homePage.categories.title
@@ -125,7 +124,6 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
   >
     <div
       class="main"
-      style="padding-top: 5%;"
     >
       <h3>
         string.homePage.mentors.ourMentors

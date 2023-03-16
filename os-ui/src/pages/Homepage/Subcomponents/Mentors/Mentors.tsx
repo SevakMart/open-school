@@ -33,7 +33,6 @@ const HomepageMentors = () => {
       <Title
         mainTitle={t('string.homePage.mentors.ourMentors')}
         subTitle={t('string.homePage.mentors.learnAboutContributors')}
-        isMentor
       />
       <MainBody
         page={page}

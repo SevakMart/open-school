@@ -14,7 +14,6 @@ describe('Create test cases for title component', () => {
         <Title
           mainTitle="Mentors"
           subTitle="Saved Mentors"
-          isMentor
         />
       </Provider>,
     );

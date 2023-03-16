@@ -7,7 +7,6 @@ exports[`Create test cases for homepage mentors list Create a snapshot test 1`] 
   >
     <div
       class="main"
-      style="padding-top: 5%;"
     >
       <h3>
         string.homePage.mentors.ourMentors
