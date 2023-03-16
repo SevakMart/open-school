@@ -23,7 +23,7 @@
     }
   }
   .bodyContainer {
-    background-color:$white-text-color;
+    background-color:#EEEFF4;
     border-radius: 0 0 1.25rem 1.25rem;
     .mentorInfoContainer {
       @include flexStyle(row, center, space-evenly);

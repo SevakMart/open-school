@@ -4,7 +4,7 @@ exports[`Create test cases for MainBody component Create a snapshot test 1`] = `
 <DocumentFragment>
   <div
     class="listContainer"
-    style="background-color: rgb(249, 250, 253); margin: 0px 6%;"
+    style="background-color: rgb(223, 243, 255); margin: 0px 6%;"
   >
     <p>
       Hello world
@@ -33,7 +33,7 @@ exports[`Create test cases for MainBody component Create a snapshot test 1`] = `
   </div>
   <div
     class="registrationButton"
-    style="margin: 2rem auto 4rem;"
+    style="margin: auto; padding: 5% 0px 4%;"
   >
     <a
       href="/categories/subcategories"

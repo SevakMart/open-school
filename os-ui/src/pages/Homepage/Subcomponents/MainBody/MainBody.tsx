@@ -17,7 +17,7 @@ const MainBody = ({
 
   return (
     <>
-      <div className={listContainer} style={isMentor ? { margin: '6%' } : { backgroundColor: '#F9FAFD', margin: '0 6%' }}>
+      <div className={listContainer} style={isMentor ? { margin: '6%' } : { backgroundColor: '#DFF3FF', margin: '0 6%' }}>
         {page > 0 && (
         <div className={`${icon} ${icon__left}`}>
           <LeftArrowIcon testId="categoryLeftArrow" handleArrowClick={() => { clickPrevious(); }} />
@@ -31,7 +31,7 @@ const MainBody = ({
         </div>
         )}
       </div>
-      <div className={registrationButton} style={isMentor ? { margin: 'auto', padding: '5% 0 10%' } : { margin: '2rem auto 4rem' }}>
+      <div className={registrationButton} style={isMentor ? { margin: 'auto', padding: '5% 0 10%' } : { margin: 'auto', padding: '5% 0 4%' }}>
         <Link to="/categories/subcategories">
           <Button.MainButton className={['mainMentorRegistrationButton']}>
             {isMentor ? t('button.homePage.registerMentor') : t('button.homePage.seeAll')}

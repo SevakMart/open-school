@@ -1,9 +1,10 @@
 @import "../../../../styles/Mixins/GridMixin.scss";
+@import "../../../../styles/Configs/Colors.scss";
 
 .mentorMainContainer {
   margin: 0 2.7%;
   border-radius: 2.5rem;
-  background-color: #F9FAFD;
+  background-color: $mentor-card-backgraund-color;
   box-sizing: border-box;
       .gridContent{
         @include gridStyle(repeat(4,1fr),center,32px,32px);
