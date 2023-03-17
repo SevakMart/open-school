@@ -6,6 +6,7 @@ import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.discussion.QuestionService;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
 import app.openschool.course.discussion.dto.QuestionResponseDto;
+import app.openschool.course.discussion.dto.UpdateQuestionRequest;
 import app.openschool.course.discussion.mapper.QuestionMapper;
 import java.time.Instant;
 import java.util.Objects;
@@ -37,6 +38,35 @@ public class PeersQuestionServiceImpl implements QuestionService {
 
     return QuestionMapper.toResponseDto(
         peersQuestionRepository.save(prepareQuestion(requestDto, extractedEnrolledCourse)));
+  }
+
+  @Override
+  public PeersQuestion update(
+      UpdateQuestionRequest request,
+      Long questionId,
+      Long enrolledCourseId,
+      String currentUserEmail) {
+
+    PeersQuestion peersQuestion =
+        peersQuestionRepository
+            .findPeersQuestionByIdAndUserEmailAndEnrolledCourseId(
+                questionId, currentUserEmail, enrolledCourseId)
+            .orElseThrow(IllegalArgumentException::new);
+
+    peersQuestion.setText(request.getText());
+    peersQuestion.setCreatedDate(Instant.now());
+
+    return peersQuestionRepository.save(peersQuestion);
+  }
+
+  @Override
+  public void delete(Long questionId, Long enrolledCourseId, String currentUserEmail) {
+
+    int updatedRows =
+        peersQuestionRepository.delete(questionId, currentUserEmail, enrolledCourseId);
+    if (updatedRows == 0) {
+      throw new IllegalArgumentException();
+    }
   }
 
   private PeersQuestion prepareQuestion(
