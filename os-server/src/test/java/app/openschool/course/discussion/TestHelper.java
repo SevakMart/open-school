@@ -51,10 +51,6 @@ public class TestHelper {
     Difficulty difficulty = new Difficulty("Difficulty title");
     course.setDifficulty(difficulty);
     course.setRating(1d);
-    //    Set<Keyword> keywords = new HashSet<>();
-    //    keywords.add(new Keyword(1L));
-    //    keywords.add(new Keyword(1L));
-    //    course.setKeywords(keywords);
     return course;
   }
 
