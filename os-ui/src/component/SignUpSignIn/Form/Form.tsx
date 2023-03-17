@@ -63,11 +63,13 @@ const Form = ({
   };
 
   const handleFormOnClick = () => {
-    if (formValues.psd === '') {
-      setErrorMessage(PASSWORD_REQUIRED);
-      return;
+    const trimmedPassword = formValues.psd.trim();
+    if (trimmedPassword === '') {
+	  setErrorMessage(PASSWORD_REQUIRED);
+	  return;
     }
-    handleForm(formValues);
+    setErrorMessage('');
+    handleForm({ ...formValues, psd: trimmedPassword });
     setSignIn(true);
   };
 
@@ -149,7 +151,7 @@ const Form = ({
       )}
       {errorMessage ? (
         <p className={unAuthorizedSignInErrorStyle}>
-          {PASSWORD_REQUIRED}
+          {errorMessage}
         </p>
       ) : (unAuthorizedSignInError ? (
         <p className={unAuthorizedSignInErrorStyle}>
@@ -165,7 +167,7 @@ const Form = ({
         </Button.FormButton>
       ) : (
         <>
-          {!isResetPasswordForm && (
+          {!isSignUpForm && !isResetPasswordForm && (
             <p className={forgotPassword} onClick={handleForgotPassword}>
               {t('string.signIn.forgotPsd')}
             </p>
