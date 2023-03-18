@@ -1,11 +1,9 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ProgressedCourse } from '../../../../types/CourseTypes';
 import ClockIcon from '../../../../assets/svg/ClockIcon.svg';
 import CalendarIcon from '../../../../assets/svg/CalendarIcon.svg';
 import Button from '../../../../component/Button/Button';
-import { transformTime } from '../../../../helpers/TimeTransform';
 import styles from './InProgressCourse.module.scss';
 
 const InProgressCourse = ({
@@ -19,7 +17,11 @@ const InProgressCourse = ({
   } = styles;
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const time = useState(transformTime(remainingTime))[0];
+
+  const handleChangeValue = () => {
+    navigate(`/userCourse/modulOverview/${courseId}`);
+  };
+
   return (
     <div className={mainContainer}>
       <div className={titleContainer}>
@@ -43,7 +45,7 @@ const InProgressCourse = ({
         <p className={containerTitle}>{t('string.myLearningPaths.inProgressCourse.remainingTime')}</p>
         <div className={remainingTimeContainer}>
           <img src={ClockIcon} className={timeIcon} alt="clockIcon" />
-          <p data-testid={remainingTime} className={remainingTimeContent}>{time}</p>
+          <p data-testid={remainingTime} className={remainingTimeContent}>{t(`${remainingTime} minutes`)}</p>
         </div>
       </div>
       <div className={separator} />
@@ -61,7 +63,7 @@ const InProgressCourse = ({
       </div>
       <div className={separator} />
       <div className={buttonContainer}>
-        <Button.MainButton className={['resumeCourse']} onClick={() => navigate(`/userCourse/modulOverview/${courseId}`)}>
+        <Button.MainButton className={['resumeCourse']} onClick={handleChangeValue}>
           {t('button.myLearningPathsPage.resumeCourse')}
         </Button.MainButton>
       </div>

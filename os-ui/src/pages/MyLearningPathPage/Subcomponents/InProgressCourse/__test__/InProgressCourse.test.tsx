@@ -1,58 +1,66 @@
+import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
+import { debug } from 'console';
 import InProgressCourse from '../InProgressCourse';
+import { store } from '../../../../../redux/Store';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key:string) => key }),
 }));
-const mockedUsedNavigate = jest.fn();
+
+const mockedUseNavigate = jest.fn();
 
 jest.mock('react-router-dom', () => ({
   ...(jest.requireActual('react-router-dom') as any),
-  useNavigate: () => mockedUsedNavigate,
+  useNavigate: () => mockedUseNavigate,
 }));
 
 describe('Create test cases for InProgress component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
-      <InProgressCourse
-        title="React js"
-        courseStatus="In_Progress"
-        percentage={47}
-        remainingTime={540000}
-        dueDate="2022-05-07"
-        courseId={0}
-        id={0}
-      />,
+      <Provider store={store}>
+        <InProgressCourse
+          title="React js"
+          courseStatus="In_Progress"
+          percentage={47}
+          remainingTime={90}
+          dueDate="2022-05-07"
+          courseId={0}
+          id={0}
+        />
+      </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
+
   test('Check if the content is as expected', () => {
     render(
-      <InProgressCourse
-        title="React js"
-        courseStatus="In_Progress"
-        percentage={47}
-        remainingTime={5400000}
-        dueDate="2022-05-07"
-        courseId={0}
-        id={0}
-      />,
+      <Provider store={store}>
+        <InProgressCourse
+          title="React js"
+          courseStatus="In_Progress"
+          percentage={47}
+          remainingTime={90}
+          dueDate="2022-05-07"
+          courseId={0}
+          id={0}
+        />
+      </Provider>,
     );
-    const courseTitleElement = screen.queryByTestId('React js');
-    const statusContentElement = screen.queryByTestId('In_Progress');
-    const percentageContentElement = screen.queryByTestId(47);
-    const remainingTimeContentElement = screen.queryByTestId(5400000);
-    const dueDateContentElement = screen.queryByTestId('2022-05-07');
+
+    const courseTitleElement = screen.getByText('React js');
+    const statusContentElement = screen.getByText('In_Progress');
+    const percentageContentElement = screen.getByText('47%');
+
+    debug();
+
+    const remainingTimeContentElement = screen.getByText('90 minutes');
+    const dueDateContentElement = screen.getByText('2022-05-07');
 
     expect(courseTitleElement).toBeInTheDocument();
-    expect(courseTitleElement).toHaveTextContent('React js');
     expect(statusContentElement).toBeInTheDocument();
-    expect(statusContentElement).toHaveTextContent('In_Progress');
     expect(percentageContentElement).toBeInTheDocument();
-    expect(percentageContentElement).toHaveTextContent('47%');
     expect(remainingTimeContentElement).toBeInTheDocument();
-    expect(remainingTimeContentElement).toHaveTextContent('1h 30m');
     expect(dueDateContentElement).toBeInTheDocument();
-    expect(dueDateContentElement).toHaveTextContent('2022-05-07');
   });
 });
