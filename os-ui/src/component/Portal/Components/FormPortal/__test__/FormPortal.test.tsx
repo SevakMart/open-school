@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
 import { store } from '../../../../../redux/Store';
 import { FormPortal } from '../FormPortal';
 
@@ -14,7 +15,9 @@ describe('Create unit tests for FormPortal component', () => {
   test('Create a snapshot test', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <FormPortal isOpen children={<h2>Hello world</h2>} />
+        <MemoryRouter>
+          <FormPortal isOpen children={<h2>Hello world</h2>} />
+        </MemoryRouter>
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();

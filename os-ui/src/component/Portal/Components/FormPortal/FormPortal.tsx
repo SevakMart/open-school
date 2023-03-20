@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { closeModal } from '../../../../redux/Slices/PortalOpenStatus';
 import styles from './FormPortal.module.scss';
 
@@ -13,9 +13,14 @@ export const FormPortal = ({ isOpen, children }:{isOpen:boolean, children:any}) 
   const { overlayStyles, modalStyles } = styles;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const handleOverlayClick = () => {
-    dispatch(closeModal());
-    navigate('/homepage');
+    if (location.pathname === '/homepage/account') {
+      dispatch(closeModal());
+      navigate('/homepage');
+    } else {
+      dispatch(closeModal());
+    }
   };
 
   return createPortal(
