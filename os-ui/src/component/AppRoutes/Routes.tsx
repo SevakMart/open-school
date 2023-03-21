@@ -79,7 +79,7 @@ const AppRoutes = () => {
             path="/userCourse/modulOverview/:courseId"
             element={(
               <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
-                <CourseModulePage />
+                <CourseModulePage userInfo={userInfo} />
               </ProtectedRoute>
             )}
           />

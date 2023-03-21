@@ -45,12 +45,21 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
           {
             isEditPressed
               ? (
-                <textarea className="edit_question_textArea" value={editValue} onChange={editValueChange} id="fname" name="fname" />
+                <textarea
+                  className="edit_question_textArea"
+                  value={editValue}
+                  onChange={editValueChange}
+                  id="fname"
+                  name="fname"
+                  style={{ wordWrap: 'break-word', overflow: 'auto' }}
+                />
               )
               : (
-                <p className="Question_text">
-                  <span className="Question__text_inner">{text}</span>
-                </p>
+                <div className="question_text_container">
+                  <p className="Question_text">
+                    <span className="Question__text_inner" style={{ wordWrap: 'break-word', overflow: 'auto' }}>{text}</span>
+                  </p>
+                </div>
               )
           }
         </div>

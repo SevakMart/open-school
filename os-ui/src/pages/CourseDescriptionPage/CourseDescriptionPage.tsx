@@ -26,6 +26,7 @@ const CourseDescriptionPage = ({ userInfo }: { userInfo: any }) => {
     token: (userInfo as any).token,
     id: (userInfo as any).id,
   }), []);
+
   const dispatch = useDispatch();
   const courseDescriptionState = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType, isLoading: boolean, errorMessage: string };
   const { entity, isLoading, errorMessage } = courseDescriptionState;
@@ -36,6 +37,7 @@ const CourseDescriptionPage = ({ userInfo }: { userInfo: any }) => {
   }, []);
 
   const currentUserEnrolled = entity && entity.currentUserEnrolled;
+  console.log('enrolled', enrolledCourseEntity);
 
   return (
     <>

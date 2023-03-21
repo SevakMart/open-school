@@ -29,6 +29,7 @@
   position: absolute;
   bottom: 35px;
   right: 10px;
+  margin-right: 20px;
 }
 
 .changeQuestion {
@@ -68,6 +69,12 @@
 .edit:hover {
   width: 22px;
   height: 22px;
+}
+
+.question_text_container {
+  padding-right: 70px;  
+  max-height: 80px;
+  overflow-y: auto;
 }
 
 .edit_question_textArea {

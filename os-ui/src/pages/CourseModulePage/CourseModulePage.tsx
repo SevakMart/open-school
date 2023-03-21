@@ -12,19 +12,27 @@ import { CourseDescriptionType } from '../../types/CourseTypes';
 import DiscussionForum from './DiscussionPage/DiscussionForum';
 
 const CourseModulePage = ({ userInfo }: { userInfo: any }) => {
+  const [isDiscBtnpressed, setDiscBtnpressed] = useState<boolean>(
+    localStorage.getItem('isDiscBtnpressed') === 'true', // Checking the value in localStorage and transforming it into boolean
+  );
   const { entity } = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType };
   const [value, setValue] = useState<string>(entity?.modules?.[0]?.title || '');
   const { courseId } = useParams();
   const dispatch = useDispatch();
   const [isDiscBtnpressed, setDiscBtnpressed] = useState<boolean>(false);
   const setDisBtnPosition = (value: string): void => {
-    if (value === 'Discussion Form') {
+    if (value === 'Discussion Forum') {
       setDiscBtnpressed(() => !isDiscBtnpressed);
     }
   };
   useEffect(() => {
     setValue(entity?.modules?.[0]?.title);
   }, [entity]);
+
+  // saving the value isDiscBtnpressed in localStorage, if it changes
+  useEffect(() => {
+    localStorage.setItem('isDiscBtnpressed', isDiscBtnpressed.toString()); // transforming boolean into string for saving it into localStorage
+  }, [isDiscBtnpressed]);
 
   useEffect(() => {
     dispatch(getCourseDescription({

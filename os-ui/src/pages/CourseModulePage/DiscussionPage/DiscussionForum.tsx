@@ -1,14 +1,23 @@
-import { useEffect, useState, useRef } from 'react';
+import {
+  useEffect, useState, useRef, useMemo,
+} from 'react';
+import { useParams } from 'react-router-dom';
 import fetchData from '../../../services/fetchData';
 import './DiscussionForum.scss';
 import { Question } from './interfaces/interfaces';
 import QuestionItem from './subcomponents/QuestionItem/QuestionItem';
 
-function DiscussionForum(): JSX.Element {
+function DiscussionForum({ userInfo }:{userInfo:object}): JSX.Element {
+  const { courseId } = useParams();
   const [buttonType, setButtonType] = useState<boolean>(false);
   const BtnName: string = buttonType ? 'Send' : 'Ask Question'; // "ASK Question" or Send
   const [value, setValue] = useState<string>('ask question');
   const [questionsWithId, setQuestionsWithId] = useState<Question[]>([]);
+
+  const idAndToken = useMemo(() => ({
+    token: (userInfo as any).token,
+    id: (userInfo as any).id,
+  }), []);
 
   const addToQuestionObjArr = (val: string): void => {
     const newQuestion: Question = {
@@ -33,12 +42,35 @@ function DiscussionForum(): JSX.Element {
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
+  const findEnrId = (arr: any) => {
+    let courseEnrolledId = 0;
+    for (let i = 0; i < arr.length; i += 1) {
+      const current = Number(arr[i].courseId);
+      console.log(arr[i].courseId);
+      console.log(courseId, 'courseId');
+      if (current && courseId === current) {
+        courseEnrolledId = arr[i].id;
+        console.log('courceEnrolledId', courseEnrolledId);
+        return courseEnrolledId;
+      }
+    }
+    return "didn't work correctly";
+  };
+
+  const getAllEnrolledCources = async () => {
+    const response = await (await fetchData.get(`users/${idAndToken.id}/courses/enrolled?courseStatusId=1`, {}, idAndToken.token)).json();
+    console.log('response', response);
+    return findEnrId(response); // Return the enrolled course ID from the function
+  };
+
   const postQuestion = async () => {
     const body = {
       text: value,
-      courceId: 0,
     };
-    const response = await fetchData.post('discussionQuestions', body, {}, 'e65abc20-e264-4a1c-ae1c-28c010533c9f6');
+    const eId = await getAllEnrolledCources();
+    const response = await (await fetchData.post(`courses/enrolled/${eId}/peers-question`, body, {}, idAndToken.token)).json();
+    console.log(response);
+    console.log('id', idAndToken.id || null, 'token', idAndToken.token);
     return response;
   };
 
@@ -67,7 +99,7 @@ function DiscussionForum(): JSX.Element {
     <div className="inner">
       <div className="container">
         <div className="forum_header">
-          <h1 className="forum_header-title">Discussion Form</h1>
+          <h1 className="forum_header-title">Discussion Forum</h1>
           <div className="forum_header-inner">
             <ul className="forum_header-menu">
               <li className="forum_header-list">Ask Peeps</li>
