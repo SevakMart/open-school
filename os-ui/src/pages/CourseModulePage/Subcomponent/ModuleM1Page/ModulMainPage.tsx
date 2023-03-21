@@ -70,7 +70,7 @@ const ModuleMainPage = ({
             open={value}
             trigger={(
               <button type="button" className={styles.Course_Material}>
-                {t('Quizes and Assignments')}
+                {t('Quizzes and Assignments')}
                 <img className={chevronIsClosed} src={ArrowRightIcon} alt="chevron" />
                 {' '}
               </button>
