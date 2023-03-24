@@ -1,11 +1,14 @@
 @import "../../../../styles/Mixins/FlexMixins.scss";
 
+.mainContainer {
+    @include flexStyle(row, center, space-between);
+    width: 100%;
 
-.mainContainer{
-    @include flexStyle(row,center,space-between);
     .learningPathContainer {
-    width:75%;
-    align-self: flex-start;
-    margin:56px 88px 56px 54px;
-   }
+        position: absolute;
+        top: 100px;
+        left: 400px;
+        width: 65%;
+        overflow: hidden;
+    }
 }
