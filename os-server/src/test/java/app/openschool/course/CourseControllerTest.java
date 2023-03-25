@@ -13,17 +13,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.course.api.CourseGenerator;
+import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.mapper.CourseMapper;
 import app.openschool.faq.Faq;
 import app.openschool.faq.FaqServiceImpl;
 import app.openschool.faq.api.FaqGenerator;
 import app.openschool.faq.api.dto.CreateFaqRequest;
 import app.openschool.user.User;
+import app.openschool.user.api.UserGenerator;
 import app.openschool.user.role.Role;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +36,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -71,11 +78,27 @@ class CourseControllerTest {
 
   @Test
   void getCourseWithRightCourseId() throws Exception {
-    when(courseService.findCourseById(1L))
-        .thenReturn(
-            CourseMapper.toCourseInfoDto(CourseGenerator.generateCourseWithEnrolledCourses()));
-    User user = new User("Test", "pass");
-    user.setRole(new Role("STUDENT"));
+
+    final User user = UserGenerator.generateUser();
+    Course course = CourseGenerator.generateCourseWithEnrolledCourses();
+    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    course.setEnrolledCourses(Set.of(enrolledCourse));
+    enrolledCourse.setCourse(course);
+
+    Authentication authentication = Mockito.mock(Authentication.class);
+    SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+    SecurityContextHolder.setContext(securityContext);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(authentication);
+    when(SecurityContextHolder.getContext().getAuthentication().getName())
+        .thenReturn(user.getEmail());
+
+    CourseInfoDto courseInfoDto = CourseMapper.toCourseInfoDto(course);
+
+    when(courseService.findCourseById(1L)).thenReturn(courseInfoDto);
+
+    SecurityContextHolder.clearContext();
     String jwt = "Bearer " + jwtTokenProvider.generateJwtToken(new UserPrincipal(user));
     mockMvc
         .perform(

@@ -17,6 +17,7 @@ public class CourseGenerator {
 
   public static Course generateCourseWithEnrolledCourses() {
     Course course = new Course();
+    course.setId(1L);
     Set<Module> modules = new HashSet<>();
     Set<ModuleItem> moduleItems = new HashSet<>();
     Module module = new Module(1L, course, moduleItems);
@@ -27,6 +28,7 @@ public class CourseGenerator {
     modules.add(module);
     Set<EnrolledCourse> enrolledCourses = new HashSet<>();
     EnrolledCourse enrolledCourse = new EnrolledCourse(1L);
+    enrolledCourse.setUser(UserGenerator.generateUser());
     enrolledCourses.add(enrolledCourse);
 
     course.setTitle("TheCourse");
@@ -67,6 +69,7 @@ public class CourseGenerator {
 
   public static EnrolledCourse generateEnrolledCourse() {
     EnrolledCourse enrolledCourse = new EnrolledCourse();
+    enrolledCourse.setId(1L);
     enrolledCourse.setCourse(generateCourse());
     enrolledCourse.setUser(UserGenerator.generateUser());
     CourseStatus courseStatus = new CourseStatus();

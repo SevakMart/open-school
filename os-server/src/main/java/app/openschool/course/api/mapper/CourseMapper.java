@@ -21,10 +21,12 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public class CourseMapper {
 
@@ -58,6 +60,7 @@ public class CourseMapper {
 
   public static CourseInfoDto toCourseInfoDto(Course course) {
     return new CourseInfoDto(
+        getEnrolledCourseId(course),
         course.getTitle(),
         course.getDescription(),
         course.getGoal(),
@@ -122,5 +125,20 @@ public class CourseMapper {
                 new CourseInfoModuleItemDto(
                     moduleItem.getModuleItemType().getType(), moduleItem.getLink()))
         .collect(Collectors.toSet());
+  }
+
+  private static Long getEnrolledCourseId(Course course) {
+
+    String currentUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    Optional<EnrolledCourse> optionalEnrolledCourse =
+        course.getEnrolledCourses().stream()
+            .filter(
+                enrolledCourse ->
+                    enrolledCourse.getUser().getEmail().equals(currentUserEmail)
+                        && enrolledCourse.getCourse().getId().equals(course.getId()))
+            .findFirst();
+
+    return optionalEnrolledCourse.map(EnrolledCourse::getId).orElse(null);
   }
 }
