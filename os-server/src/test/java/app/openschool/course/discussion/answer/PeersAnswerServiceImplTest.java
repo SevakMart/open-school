@@ -1,4 +1,4 @@
-package app.openschool.course.discussion;
+package app.openschool.course.discussion.answer;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,6 +12,8 @@ import static org.mockito.Mockito.verify;
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
+import app.openschool.course.discussion.AnswerService;
+import app.openschool.course.discussion.TestHelper;
 import app.openschool.course.discussion.dto.AnswerRequestDto;
 import app.openschool.course.discussion.dto.AnswerResponseDto;
 import app.openschool.course.discussion.peers.answer.PeersAnswer;
@@ -47,7 +49,7 @@ public class PeersAnswerServiceImplTest {
     given(peersAnswerRepository.save(any())).willReturn(peersAnswer);
     User user = TestHelper.createUser();
     given(peersQuestionRepository.findById(anyLong()))
-        .willReturn(Optional.of(TestHelper.createDiscussionQuestion()));
+        .willReturn(Optional.of(TestHelper.createDiscussionPeersQuestion()));
     EnrolledCourse enrolledCourse = TestHelper.createEnrolledCourse(user, TestHelper.crateCourse());
     given(enrolledCourseRepository.findById(anyLong())).willReturn(Optional.of(enrolledCourse));
     AnswerResponseDto answerResponseDto =
@@ -91,7 +93,7 @@ public class PeersAnswerServiceImplTest {
     anotherUser.setEmail("anotherEmail@gmail.com");
     enrolledCourse.setUser(anotherUser);
     given(peersQuestionRepository.findById(anyLong()))
-        .willReturn(Optional.of(TestHelper.createDiscussionQuestion()));
+        .willReturn(Optional.of(TestHelper.createDiscussionPeersQuestion()));
     doReturn(Optional.of(enrolledCourse))
         .when(enrolledCourseRepository)
         .findById(enrolledCourse.getId());
@@ -109,7 +111,7 @@ public class PeersAnswerServiceImplTest {
     peersAnswer.setId(1L);
     peersAnswer.setText("text");
     peersAnswer.setUser(TestHelper.createUser());
-    peersAnswer.setDiscussionQuestion(TestHelper.createDiscussionQuestion());
+    peersAnswer.setDiscussionQuestion(TestHelper.createDiscussionPeersQuestion());
 
     return peersAnswer;
   }
