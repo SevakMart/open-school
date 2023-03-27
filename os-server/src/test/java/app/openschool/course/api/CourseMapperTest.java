@@ -1,66 +1,52 @@
 package app.openschool.course.api;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.when;
 
-import app.openschool.category.Category;
-import app.openschool.category.api.CategoryGenerator;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.mapper.CourseMapper;
-import app.openschool.course.difficulty.Difficulty;
-import app.openschool.course.keyword.Keyword;
-import app.openschool.course.language.Language;
 import app.openschool.user.User;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public class CourseMapperTest {
-  List<Course> courseList = new ArrayList<>();
+  Course course;
 
   @BeforeEach
   public void setUp() {
-    for (long i = 1L; i < 7L; i++) {
-      Course course = new Course();
-      course.setId(i);
-      course.setTitle("Medium");
-      course.setDescription("AAA");
-      course.setRating(5.5);
-      Difficulty difficulty = new Difficulty();
-      difficulty.setTitle("Initial");
-      Language language = new Language();
-      language.setTitle("English");
-      Category category = CategoryGenerator.generateCategory();
-      course.setDifficulty(difficulty);
-      course.setLanguage(language);
-      course.setCategory(category);
-      Keyword keyword = new Keyword();
-      keyword.setId(1L);
-      keyword.setTitle("Programming");
-      Set<Keyword> keywordSet = new HashSet<>();
-      keywordSet.add(keyword);
-      course.setKeywords(keywordSet);
-      courseList.add(course);
-    }
+    course = CourseGenerator.generateCourseWithEnrolledCourses();
   }
 
   @Test
   public void toCourseDtoTest() {
-    CourseDto actual = CourseMapper.toCourseDto(courseList.get(0));
+    CourseDto actual = CourseMapper.toCourseDto(course);
     assertThat(actual).hasOnlyFields("id", "title", "rating", "difficulty", "keywords");
   }
 
   @Test
   public void toCourseInfoDto() {
+
+    Authentication authentication = Mockito.mock(Authentication.class);
+    SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+    SecurityContextHolder.setContext(securityContext);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(authentication);
+    when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn("email");
+
+
     CourseInfoDto actual =
         CourseMapper.toCourseInfoDto(CourseGenerator.generateCourseWithEnrolledCourses());
     assertThat(actual)
         .hasOnlyFields(
+            "enrolledCourseId",
             "title",
             "description",
             "goal",

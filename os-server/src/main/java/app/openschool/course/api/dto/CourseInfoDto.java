@@ -7,6 +7,8 @@ import java.util.Set;
 
 public class CourseInfoDto {
 
+  @Schema(description = "EnrolledCourseID if current user enrolled otherwise null", example = "122")
+  private Long enrolledCourseId;
   @Schema(description = "Course title", example = "Java")
   private String title;
 
@@ -46,6 +48,7 @@ public class CourseInfoDto {
   public CourseInfoDto() {}
 
   public CourseInfoDto(
+      Long enrolledCourseId,
       String title,
       String description,
       String goal,
@@ -56,6 +59,7 @@ public class CourseInfoDto {
       String level,
       String language,
       double duration) {
+    this.enrolledCourseId = enrolledCourseId;
     this.title = title;
     this.description = description;
     this.goal = goal;
@@ -66,6 +70,14 @@ public class CourseInfoDto {
     this.level = level;
     this.language = language;
     this.duration = duration;
+  }
+
+  public Long getEnrolledCourseId() {
+    return enrolledCourseId;
+  }
+
+  public void setEnrolledCourseId(Long enrolledCourseId) {
+    this.enrolledCourseId = enrolledCourseId;
   }
 
   public String getTitle() {
