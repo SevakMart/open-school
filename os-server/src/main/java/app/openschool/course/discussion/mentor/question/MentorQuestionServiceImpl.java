@@ -8,7 +8,9 @@ import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.discussion.QuestionService;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
 import app.openschool.course.discussion.dto.QuestionResponseDto;
+import app.openschool.course.discussion.dto.UpdateQuestionRequest;
 import app.openschool.course.discussion.mapper.MentorQuestionMapper;
+import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.time.Instant;
@@ -49,6 +51,18 @@ public class MentorQuestionServiceImpl implements QuestionService {
     return MentorQuestionMapper.toResponseDto(
         mentorQuestionRepository.save(creteQuestion(requestDto, email)));
   }
+
+  @Override
+  public PeersQuestion update(
+      UpdateQuestionRequest request,
+      Long questionId,
+      Long enrolledCourseId,
+      String currentUserEmail) {
+    return null;
+  }
+
+  @Override
+  public void delete(Long questionId, Long enrolledCourseId, String currentUserEmail) {}
 
   private MentorQuestion creteQuestion(QuestionRequestDto requestDto, String email) {
     User userByEmail = userRepository.findUserByEmail(email);

@@ -6,6 +6,7 @@ import app.openschool.user.User;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "peers_question")
@@ -24,19 +24,18 @@ public class PeersQuestion {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank(message = "validation.notBlank")
   @Column(name = "text", nullable = false)
   private String text;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "user_id")
   private User user;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "learning_path_id")
   private Course course;
 
-  @OneToMany(mappedBy = "peersQuestion")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "peersQuestion")
   private List<PeersAnswer> peersAnswers;
 
   @Column(name = "create_date", nullable = false)
