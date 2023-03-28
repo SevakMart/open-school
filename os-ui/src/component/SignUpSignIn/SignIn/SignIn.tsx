@@ -22,7 +22,7 @@ const SignIn = () => {
     if (isSignedIn) {
       if (isRequestForMentorsPage) {
         navigate('/mentors');
-      } else navigate('/categories/subcategories');
+      } else navigate('/myLearningPath');
     }
   }, [isSignedIn]);
 

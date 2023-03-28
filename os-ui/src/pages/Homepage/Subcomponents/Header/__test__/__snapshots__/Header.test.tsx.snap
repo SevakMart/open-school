@@ -2,73 +2,8 @@
 
 exports[`Create tests for HomepageHeader Create snapshot test 1`] = `
 <DocumentFragment>
-  <nav
-    class="navContainer"
-  >
-    <h2>
-      string.homePage.navBar.logo
-    </h2>
-    <div
-      class="categoriesMentors"
-    >
-      <p>
-        string.homePage.navBar.exploreCategories
-      </p>
-      <p>
-        string.homePage.navBar.mentors
-      </p>
-    </div>
-    <div
-      class="buttonContent"
-    >
-      <p>
-        button.homePage.becomeMentor
-      </p>
-      <button
-        class="navbarSignInButton"
-        type="button"
-      >
-        button.homePage.signIn
-      </button>
-    </div>
-  </nav>
-  <div
-    class="mainContent"
-  >
-    <div
-      class="leftContent"
-    >
-      <h1>
-        string.homePage.header.educationalPlatform
-      </h1>
-      <p>
-        string.homePage.header.chooseCategories
-      </p>
-      <div
-        class="buttonContainer"
-      >
-        <button
-          class="headerButton headerButton__signUp"
-          type="button"
-        >
-          button.homePage.signUp
-        </button>
-        <button
-          class="headerButton headerButton__signIn"
-          type="button"
-        >
-          button.homePage.signIn
-        </button>
-      </div>
-    </div>
-    <div
-      class="rightContent"
-    >
-      <img
-        alt="Education platform logo"
-        src="HomepageMainImage.svg"
-      />
-    </div>
+  <div>
+    Loading...
   </div>
 </DocumentFragment>
 `;

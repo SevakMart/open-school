@@ -4,118 +4,18 @@ exports[`Create test cases for CourseContentHeader Make a snapshot test 1`] = `
 <DocumentFragment>
   <div
     class="mainContainer"
+    style="display: none;"
   >
-    <div
-      class="mainContainer"
-      style="display: flex;"
-    >
-      <div
-        class="filterMainContent"
-      >
-        <p
-          class="mainTitle"
-        >
-          string.learningPath.filter
-        </p>
-      </div>
-    </div>
     <div
       class="learningPathContainer"
     >
       <div
-        class="headerMainContainer"
-      >
-        <div
-          class="navAndSortContent"
-        >
-          <nav>
-            <p
-              class="activeNav"
-              data-testid="All learning Path"
-            >
-              string.learningPath.all
-            </p>
-            <p
-              class="nonActiveNav"
-              data-testid="Saved Learning Path"
-            >
-              string.learningPath.saved
-            </p>
-          </nav>
-          <div
-            class="sortingContainer"
-          >
-            <label
-              data-testid="sorting"
-              for="sorting"
-            >
-              string.learningPath.sortBy
-            </label>
-            <select
-              id="sorting"
-              name="sorting"
-            >
-              <option
-                value="Rating"
-              >
-                string.learningPath.rating
-              </option>
-              <option
-                value="difficulty_id"
-              >
-                string.learningPath.difficulty
-              </option>
-              <option
-                value="Title"
-              >
-                string.learningPath.title
-              </option>
-            </select>
-          </div>
-        </div>
-        <div
-          class="search search__allLearningPathSearch"
-        >
-          <div
-            style="color: rgb(132, 138, 157); margin-left: 16px;"
-          >
-            <svg
-              fill="currentColor"
-              height="1em"
-              stroke="currentColor"
-              stroke-width="0"
-              viewBox="0 0 16 16"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-              />
-            </svg>
-          </div>
-          <input
-            data-testid="searchInput"
-            placeholder="string.search"
-            type="text"
-          />
-        </div>
-      </div>
-      <div
         class="mainCoreContainer"
-      >
-        <div
-          class="mainContent"
-        >
-          <div
-            class="loader"
-          >
-            <span />
-            <span />
-            <span />
-          </div>
-        </div>
-      </div>
+      />
     </div>
+  </div>
+  <div>
+    Loading...
   </div>
 </DocumentFragment>
 `;
