@@ -1,18 +1,31 @@
-import {
-  useEffect, useState, useRef, useMemo,
-} from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useMemo } from 'react';
+// import { useParams } from 'react-router-dom';
 import fetchData from '../../../services/fetchData';
 import './DiscussionForum.scss';
 import { Question } from './interfaces/interfaces';
+import AskQuestionPopup from './subcomponents/askQuestionPopup/AskQuestionPopup';
 import QuestionItem from './subcomponents/QuestionItem/QuestionItem';
 
 function DiscussionForum({ userInfo }:{userInfo:object}): JSX.Element {
-  const { courseId } = useParams();
-  const [buttonType, setButtonType] = useState<boolean>(false);
-  const BtnName: string = buttonType ? 'Send' : 'Ask Question'; // "ASK Question" or Send
-  const [value, setValue] = useState<string>('ask question');
+  // const { courseId } = useParams();
+  const [value, setValue] = useState<string>('');
   const [questionsWithId, setQuestionsWithId] = useState<Question[]>([]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setValue(event.target.value);
+  };
+
+  // Popup
+  const [isOpen, setPopupState] = useState<boolean>(false);
+
+  const onOpen = () => {
+    setPopupState(true);
+  };
+
+  const onClose = () => {
+    setPopupState(false);
+    setValue('');
+  };
 
   const idAndToken = useMemo(() => ({
     token: (userInfo as any).token,
@@ -32,67 +45,25 @@ function DiscussionForum({ userInfo }:{userInfo:object}): JSX.Element {
       .map((q) => (q.id === id ? { ...q, text: newText } : q)));
   };
 
-  const addQuestion = (val: string): void => {
-    addToQuestionObjArr(val);
-  };
-
-  const removeQusetion = (questionId: string): void => {
-    setQuestionsWithId((prevQuestions) => prevQuestions.filter((q) => q.id !== questionId));
-  };
-
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-
-  const findEnrId = (arr: any) => {
-    let courseEnrolledId = 0;
-    for (let i = 0; i < arr.length; i += 1) {
-      const current = Number(arr[i].courseId);
-      console.log(arr[i].courseId);
-      console.log(courseId, 'courseId');
-      if (current && courseId === current) {
-        courseEnrolledId = arr[i].id;
-        console.log('courceEnrolledId', courseEnrolledId);
-        return courseEnrolledId;
-      }
-    }
-    return "didn't work correctly";
-  };
-
-  const getAllEnrolledCources = async () => {
-    const response = await (await fetchData.get(`users/${idAndToken.id}/courses/enrolled?courseStatusId=1`, {}, idAndToken.token)).json();
-    console.log('response', response);
-    return findEnrId(response); // Return the enrolled course ID from the function
-  };
-
   const postQuestion = async () => {
     const body = {
       text: value,
     };
-    const eId = await getAllEnrolledCources();
-    const response = await (await fetchData.post(`courses/enrolled/${eId}/peers-question`, body, {}, idAndToken.token)).json();
+
+    const response = await (await fetchData.post('courses/enrolled/42/peers-question', body, {}, idAndToken.token)).json();
     console.log(response);
     console.log('id', idAndToken.id || null, 'token', idAndToken.token);
     return response;
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(event.target.value);
+  const addQuestion = (val: string): void => {
+    val && addToQuestionObjArr(val);
+    postQuestion();
+    onClose();
   };
 
-  useEffect(() => {
-    if (buttonType && textAreaRef.current) {
-      textAreaRef.current.focus();
-    }
-  }, [buttonType]);
-
-  const handleAskquestion = (): void => {
-    setButtonType(() => !buttonType);
-    if (BtnName === 'Ask Question') {
-      setValue('');
-    }
-    if (BtnName === 'Send') {
-      postQuestion();
-      addQuestion(value);
-    }
+  const removeQusetion = (questionId: string): void => {
+    setQuestionsWithId((prevQuestions) => prevQuestions.filter((q) => q.id !== questionId));
   };
 
   return (
@@ -105,17 +76,9 @@ function DiscussionForum({ userInfo }:{userInfo:object}): JSX.Element {
               <li className="forum_header-list">Ask Peeps</li>
               <li className="forum_header-list">Ask Mentor</li>
             </ul>
-            <button type="button" onClick={handleAskquestion} disabled={!value} className="btn">{BtnName}</button>
+            <button type="button" onClick={onOpen} className="btn">Ask Question</button>
           </div>
         </div>
-        {
-          buttonType === true
-          && (
-            <div className="question_textArea-div">
-              <textarea ref={textAreaRef} className="question_textArea" id="fname" name="fname" value={value} onChange={handleChange} />
-            </div>
-          )
-        }
         {questionsWithId.map((val) => (
           <QuestionItem
             removeQ={removeQusetion}
@@ -126,6 +89,12 @@ function DiscussionForum({ userInfo }:{userInfo:object}): JSX.Element {
           />
         ))}
       </div>
+      {
+          isOpen
+          && (
+            <AskQuestionPopup value={value} isOpen={isOpen} onClose={onClose} handleChange={handleChange} addQuestion={addQuestion} />
+          )
+        }
     </div>
   );
 }

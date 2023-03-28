@@ -1,6 +1,7 @@
 .Question_item {
   display: flex;
   justify-content: space-between;
+  border-radius: 8px;
   margin: 0 40px 5px 0;
   padding-left: 10px;
   background-color: #F9F9FD;
@@ -8,7 +9,8 @@
 }
 
 .Question_item:hover {
-  background-color: #b4b4c5;
+  background-color: #e1e1eb;
+  opacity: 0.8;
 }
 
 .Question_text {

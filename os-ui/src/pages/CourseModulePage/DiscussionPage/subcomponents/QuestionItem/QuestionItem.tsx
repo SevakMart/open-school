@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import './questionItem.scss';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ArrowRightIcon from '../../../../../assets/svg/ArrowRight.svg';
 import edit from '../../../../../assets/svg/edit.svg';
 import save from '../../../../../assets/svg/save.svg';
@@ -31,6 +31,15 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     }
   };
 
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (isEditPressed && textAreaRef.current) {
+      textAreaRef.current.focus();
+      textAreaRef.current.setSelectionRange(editValue.length, editValue.length);
+    }
+  }, [isEditPressed]);
+
   return (
     <div className="Questions_page">
       <div className="Questions_inner">
@@ -48,6 +57,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
                 <textarea
                   className="edit_question_textArea"
                   value={editValue}
+                  ref={textAreaRef}
                   onChange={editValueChange}
                   id="fname"
                   name="fname"
