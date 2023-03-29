@@ -18,7 +18,7 @@ describe('Create unit tests for ProfilePortalContent component', () => {
       <Provider store={store}>
         <ProfilePortalContent
           isSignOut={false}
-          children={<h2>Hello world</h2>}
+          children={<p><span>Hello world</span></p>}
           icon={<p>{'>'}</p>}
         />
       </Provider>,
