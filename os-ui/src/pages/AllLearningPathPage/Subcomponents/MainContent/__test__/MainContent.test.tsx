@@ -1,11 +1,12 @@
 import { render } from '@testing-library/react';
+import i18next from 'i18next';
+import { Suspense } from 'react';
+import { initReactI18next } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { store as myStore } from '../../../../../redux/Store';
 import { reactRouterDomMock } from '../../../../AllMentorsPage/Subcomponents/MainContent/__test__/react-router-dom-mock';
-
 import MainContent from '../MainContent';
-import { store } from '../../../../../redux/Store';
 
 jest.doMock('react-router-dom', () => reactRouterDomMock);
 
@@ -22,7 +23,9 @@ describe('Create test cases for CourseContentHeader', () => {
     const { asFragment } = render(
       <Provider store={myStore}>
         <MemoryRouter>
-          <MainContent />
+          <Suspense fallback={<div>Loading...</div>}>
+            <MainContent />
+          </Suspense>
         </MemoryRouter>
       </Provider>,
     );
