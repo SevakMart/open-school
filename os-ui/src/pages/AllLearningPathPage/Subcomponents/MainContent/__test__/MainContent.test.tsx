@@ -1,19 +1,14 @@
 import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
 import i18next from 'i18next';
-import { initReactI18next, I18nextProvider } from 'react-i18next';
 import { Suspense } from 'react';
+import { initReactI18next } from 'react-i18next';
+import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
+import { store as myStore } from '../../../../../redux/Store';
+import { reactRouterDomMock } from '../../../../AllMentorsPage/Subcomponents/MainContent/__test__/react-router-dom-mock';
 import MainContent from '../MainContent';
-import { store } from '../../../../../redux/Store';
 
-const mockUseNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom') as any,
-  useNavigate: () => mockUseNavigate,
-  useLocation: () => ({
-    search: '',
-  }),
-}));
+jest.doMock('react-router-dom', () => reactRouterDomMock);
 
 i18next.use(initReactI18next).init({
   lng: 'en',
@@ -26,12 +21,12 @@ i18next.use(initReactI18next).init({
 describe('Create test cases for CourseContentHeader', () => {
   test('Make a snapshot test', () => {
     const { asFragment } = render(
-      <Provider store={store}>
-        <I18nextProvider i18n={i18next}>
+      <Provider store={myStore}>
+        <MemoryRouter>
           <Suspense fallback={<div>Loading...</div>}>
             <MainContent />
           </Suspense>
-        </I18nextProvider>
+        </MemoryRouter>
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();

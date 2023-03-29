@@ -64,7 +64,7 @@ const LearningPathCoreContent = () => {
         errorFieldClassName="allLearningPathErrorStyle"
         render={(entity) => (
           entity.map((course:SuggestedCourseType) => (
-            <div className={courseContainer} key={course.title}>
+            <div className={courseContainer} key={course.id}>
               <LearningPath
                 courseInfo={course}
                 saveCourse={saveCourse}
