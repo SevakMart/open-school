@@ -12,13 +12,15 @@ exports[`Create unit tests for ProfilePortalContent component Create a snapshot 
         &gt;
       </p>
     </div>
-    <p
+    <span
       class="titleContent"
-    />
-    <h2>
-      Hello world
-    </h2>
-    <p />
+    >
+      <p>
+        <span>
+          Hello world
+        </span>
+      </p>
+    </span>
   </div>
 </DocumentFragment>
 `;

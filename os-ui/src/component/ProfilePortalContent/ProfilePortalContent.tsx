@@ -24,7 +24,7 @@ const ProfilePortalContent = ({ icon, children, isSignOut }:any) => {
       <div className={iconContainer}>
         {icon}
       </div>
-      <p className={titleContent}>{children}</p>
+      <span className={titleContent}>{children}</span>
     </div>
   );
 };
