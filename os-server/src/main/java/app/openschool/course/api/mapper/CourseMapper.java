@@ -109,13 +109,19 @@ public class CourseMapper {
 
   private static double getCourseDurationInHours(Course course) {
 
-    double estimatedHours = course.getModules().stream()
+    double estimatedTime =
+        course.getModules().stream()
             .flatMapToDouble(
-                    module -> module.getModuleItems()
-                            .stream().mapToDouble(ModuleItem::getEstimatedTime))
-            .sum() / 60;
+                module ->
+                    module.getModuleItems().stream().mapToDouble(ModuleItem::getEstimatedTime))
+            .sum();
 
-    return Math.round(estimatedHours * 10.0) / 10.0;
+    return getRoundedHours(estimatedTime);
+  }
+
+  private static double getRoundedHours(double minutes) {
+
+    return minutes == 0.0 ? 0.0 : Math.round((minutes / 60) * 10.0) / 10.0;
   }
 
   private static Set<CourseInfoModuleItemDto> getCourseInfoModuleItemDtoSet(Module module) {
@@ -123,7 +129,9 @@ public class CourseMapper {
         .map(
             moduleItem ->
                 new CourseInfoModuleItemDto(
-                    moduleItem.getModuleItemType().getType(), moduleItem.getLink()))
+                    moduleItem.getModuleItemType().getType(),
+                    moduleItem.getLink(),
+                    getRoundedHours(moduleItem.getEstimatedTime())))
         .collect(Collectors.toSet());
   }
 

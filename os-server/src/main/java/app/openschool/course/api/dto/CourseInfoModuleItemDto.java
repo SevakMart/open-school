@@ -10,9 +10,13 @@ public class CourseInfoModuleItemDto {
   @Schema(description = "Link of the module item", example = "S3ds8")
   private final String link;
 
-  public CourseInfoModuleItemDto(String moduleItemType, String link) {
+  @Schema(description = "Duration of the moduleItem (in hours)", example = "2.5")
+  private double estimatedTime;
+
+  public CourseInfoModuleItemDto(String moduleItemType, String link, double estimatedTime) {
     this.moduleItemType = moduleItemType;
     this.link = link;
+    this.estimatedTime = estimatedTime;
   }
 
   public String getModuleItemType() {
@@ -21,5 +25,13 @@ public class CourseInfoModuleItemDto {
 
   public String getLink() {
     return link;
+  }
+
+  public double getEstimatedTime() {
+    return estimatedTime;
+  }
+
+  public void setEstimatedTime(double estimatedTime) {
+    this.estimatedTime = estimatedTime;
   }
 }
