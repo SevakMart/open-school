@@ -105,7 +105,7 @@ class FileStorageLocalServiceTest {
   }
 
   @Test
-  public void deleteFileSuccessfully() {
+  void deleteFileSuccessfully() {
     utilities.when(() -> Files.deleteIfExists(any())).thenReturn(true);
     fileStorageService.deleteFile(anyString());
     utilities.verify(() -> Files.deleteIfExists(any()), times(1));

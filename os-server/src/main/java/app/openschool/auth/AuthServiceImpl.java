@@ -158,7 +158,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
   }
 
   private void checkingUserCondition(User verifiableUser) {
-    if (verifiableUser.isEnabled()) {
+    if (Boolean.TRUE.equals(verifiableUser.isEnabled())) {
       throw new UserVerificationException();
     }
   }

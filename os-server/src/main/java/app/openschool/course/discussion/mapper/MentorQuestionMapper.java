@@ -6,6 +6,10 @@ import app.openschool.course.discussion.mentor.question.MentorQuestion;
 import app.openschool.user.api.mapper.UserMapper;
 
 public class MentorQuestionMapper {
+
+  // ToDo this class and the components used in it will be changed in the future
+  private MentorQuestionMapper(){}
+
   public static QuestionResponseDto toResponseDto(MentorQuestion mentorQuestion) {
     return new QuestionResponseDto(
         mentorQuestion.getId(),

@@ -5,12 +5,9 @@ import app.openschool.course.module.ModuleRepository;
 import app.openschool.course.module.item.api.dto.CreateModuleItemRequest;
 import app.openschool.course.module.item.api.dto.UpdateModuleItemRequest;
 import app.openschool.course.module.item.type.ModuleItemTypeRepository;
-import app.openschool.user.User;
-import app.openschool.user.UserRepository;
 import java.util.Locale;
 import java.util.Set;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class FeatureServiceImplTest {
+class FeatureServiceImplTest {
 
   @Mock private CategoryRepository categoryRepository;
   @Mock private LanguageRepository languageRepository;
@@ -33,7 +33,7 @@ public class FeatureServiceImplTest {
   }
 
   @Test
-  public void getCourseSearchingFeatures() {
+  void getCourseSearchingFeatures() {
     Difficulty difficulty1 = new Difficulty();
     difficulty1.setId(1);
     difficulty1.setTitle("Basic");

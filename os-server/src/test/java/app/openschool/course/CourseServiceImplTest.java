@@ -74,7 +74,7 @@ class CourseServiceImplTest {
 
 
   @Test
-  public void add_withCorrectArguments_returnsCreatedCourse() {
+  void add_withCorrectArguments_returnsCreatedCourse() {
 
     // given
     Authentication authentication = mock(Authentication.class);
@@ -143,16 +143,17 @@ class CourseServiceImplTest {
             "Collections",
             module2Description,
             Set.of(createModuleItemRequest2, createModuleItemRequest3));
-    CreateCourseRequest createCourseRequest =
-        new CreateCourseRequest(
-            "Spring",
-            courseDescription,
-            "Improving skills",
-            1L,
-            3,
-            1,
-            Set.of(1L, 2L),
-            Set.of(createModuleRequest1, createModuleRequest2));
+    CreateCourseRequest createCourseRequest = createCourseRequest();
+    createCourseRequest.setCreateModuleRequests(Set.of(createModuleRequest1, createModuleRequest2));
+    //        new CreateCourseRequest(
+    //            "Spring",
+    //            courseDescription,
+    //            "Improving skills",
+    //            1L,
+    //            3,
+    //            1,
+    //            Set.of(1L, 2L),
+    //            Set.of(createModuleRequest1, createModuleRequest2));
 
     // when
     Course actualCourse = courseService.add(createCourseRequest);
@@ -171,7 +172,7 @@ class CourseServiceImplTest {
   }
 
   @Test
-  public void add_withIncorrectCategoryId_throwsIllegalArgumentException() {
+  void add_withIncorrectCategoryId_throwsIllegalArgumentException() {
     Authentication authentication = mock(Authentication.class);
     SecurityContext securityContext = mock(SecurityContext.class);
     when(securityContext.getAuthentication()).thenReturn(authentication);
@@ -187,7 +188,7 @@ class CourseServiceImplTest {
   }
 
   @Test
-  public void add_withIncorrectDifficultyId_throwsIllegalArgumentException() {
+  void add_withIncorrectDifficultyId_throwsIllegalArgumentException() {
     Authentication authentication = mock(Authentication.class);
     SecurityContext securityContext = mock(SecurityContext.class);
     when(securityContext.getAuthentication()).thenReturn(authentication);
@@ -204,7 +205,7 @@ class CourseServiceImplTest {
   }
 
   @Test
-  public void add_withIncorrectLanguageId_throwsIllegalArgumentException() {
+  void add_withIncorrectLanguageId_throwsIllegalArgumentException() {
 
     Authentication authentication = mock(Authentication.class);
     SecurityContext securityContext = mock(SecurityContext.class);
@@ -218,16 +219,17 @@ class CourseServiceImplTest {
     given(categoryRepository.findById(anyLong())).willReturn(Optional.of(createCategory()));
     given(difficultyRepository.findById(anyInt())).willReturn(Optional.of(createDifficulty()));
 
-    assertThatThrownBy(() -> courseService.add(createCourseRequest()))
+    assertThatThrownBy(() -> courseService.add(courseRequest))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
-  public void add_withIncorrectKeywordIds_throwsIllegalArgumentException() {
+  void add_withIncorrectKeywordIds_throwsIllegalArgumentException() {
     Authentication authentication = mock(Authentication.class);
     SecurityContext securityContext = mock(SecurityContext.class);
     when(securityContext.getAuthentication()).thenReturn(authentication);
     SecurityContextHolder.setContext(securityContext);
+    CreateCourseRequest courseRequest = createCourseRequest();
     when(SecurityContextHolder.getContext().getAuthentication().getName())
         .thenReturn("Test@gmail.com");
     given(userRepository.findUserByEmail(anyString())).willReturn(new User());
@@ -235,7 +237,7 @@ class CourseServiceImplTest {
     given(difficultyRepository.findById(anyInt())).willReturn(Optional.of(createDifficulty()));
     given(languageRepository.findById(anyInt())).willReturn(Optional.of(new Language("title")));
     given(keywordRepository.findById(1L)).willReturn(Optional.empty());
-    assertThatThrownBy(() -> courseService.add(createCourseRequest()))
+    assertThatThrownBy(() -> courseService.add(courseRequest))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -276,15 +278,26 @@ class CourseServiceImplTest {
   }
 
   private CreateCourseRequest createCourseRequest() {
-    return new CreateCourseRequest(
-        "Spring",
-        "Spring course",
-        "Improving skills",
-        1L,
-        1,
-        1,
-        Set.of(1L),
-        Set.of(createModuleRequest()));
+    //    return new CreateCourseRequest(
+    //        "Spring",
+    //        "Spring course",
+    //        "Improving skills",
+    //        1L,
+    //        1,
+    //        1,
+    //        Set.of(1L),
+    //        Set.of(createModuleRequest()));
+    CreateCourseRequest request = new CreateCourseRequest();
+    request.setTitle("Spring");
+    request.setDescription("Spring course");
+    request.setGoal("Improving skills");
+    request.setCategoryId(1L);
+    request.setDifficultyId(1);
+    request.setLanguageId(1);
+    request.setKeywordIds(Set.of(1L));
+    request.setCreateModuleRequests(Set.of(createModuleRequest()));
+
+    return request;
   }
 
   private Set<CreateModuleItemRequest> moduleItemRequests() {
