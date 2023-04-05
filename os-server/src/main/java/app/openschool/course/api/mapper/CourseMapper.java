@@ -1,5 +1,7 @@
 package app.openschool.course.api.mapper;
 
+import static app.openschool.common.utils.MathUtil.getRoundedHours;
+
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.dto.CourseDto;
@@ -117,11 +119,6 @@ public class CourseMapper {
             .sum();
 
     return getRoundedHours(estimatedTime);
-  }
-
-  private static double getRoundedHours(double minutes) {
-
-    return minutes == 0.0 ? 0.0 : Math.round((minutes / 60) * 10.0) / 10.0;
   }
 
   private static Set<CourseInfoModuleItemDto> getCourseInfoModuleItemDtoSet(Module module) {
