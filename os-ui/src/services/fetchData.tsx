@@ -11,15 +11,15 @@ class FetchService {
     return request(`${this.baseUrl}/${path}`, 'GET', params, token);
   }
 
-  async post(path: string, body:object|null, params: object, token = '') {
+  async post(path: string, body: object | null, params: object, token = '') {
     return request(`${this.baseUrl}/${path}`, 'POST', params, token, body);
   }
 
-  async delete(path:string, params:object = {}, token = '') {
+  async delete(path: string, params: object = {}, token = '') {
     return request(`${this.baseUrl}/${path}`, 'DELETE', params, token);
   }
 
-  async put(path:string, params:object = {}, token = '') {
+  async put(path: string, params: object = {}, token = '') {
     return request(`${this.baseUrl}/${path}`, 'PUT', params, token);
   }
 }

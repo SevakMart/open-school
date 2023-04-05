@@ -1,6 +1,7 @@
 export interface CourseDescriptionType {
     title:string;
     description:string;
+    enrolledCourseId: number;
     goal:string;
     modules:{link?:any, title:string,
          description:string, moduleItemSet:{[index:string]:string}[]}[];

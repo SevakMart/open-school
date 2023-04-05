@@ -26,6 +26,7 @@ const CourseDescriptionPage = ({ userInfo }: { userInfo: any }) => {
     token: (userInfo as any).token,
     id: (userInfo as any).id,
   }), []);
+
   const dispatch = useDispatch();
   const courseDescriptionState = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType, isLoading: boolean, errorMessage: string };
   const { entity, isLoading, errorMessage } = courseDescriptionState;
@@ -56,6 +57,7 @@ const CourseDescriptionPage = ({ userInfo }: { userInfo: any }) => {
                 modules={entity.modules}
                 title={entity.title}
                 currentUserEnrolled={currentUserEnrolled}
+                enrolledCourseId={entity.enrolledCourseId}
               />
               <CourseSummary
                 rating={entity.rating}
@@ -67,6 +69,7 @@ const CourseDescriptionPage = ({ userInfo }: { userInfo: any }) => {
                 userIdAndToken={idAndToken}
                 title={entity.title}
                 currentUserEnrolled={currentUserEnrolled}
+                enrolledCourseId={entity.enrolledCourseId}
               />
             </div>
           )}
