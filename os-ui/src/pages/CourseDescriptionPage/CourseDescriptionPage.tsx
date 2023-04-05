@@ -37,7 +37,6 @@ const CourseDescriptionPage = ({ userInfo }: { userInfo: any }) => {
   }, []);
 
   const currentUserEnrolled = entity && entity.currentUserEnrolled;
-  console.log('enrolled', enrolledCourseEntity);
 
   return (
     <>
@@ -58,6 +57,7 @@ const CourseDescriptionPage = ({ userInfo }: { userInfo: any }) => {
                 modules={entity.modules}
                 title={entity.title}
                 currentUserEnrolled={currentUserEnrolled}
+                enrolledCourseId={entity.enrolledCourseId}
               />
               <CourseSummary
                 rating={entity.rating}
@@ -69,6 +69,7 @@ const CourseDescriptionPage = ({ userInfo }: { userInfo: any }) => {
                 userIdAndToken={idAndToken}
                 title={entity.title}
                 currentUserEnrolled={currentUserEnrolled}
+                enrolledCourseId={entity.enrolledCourseId}
               />
             </div>
           )}

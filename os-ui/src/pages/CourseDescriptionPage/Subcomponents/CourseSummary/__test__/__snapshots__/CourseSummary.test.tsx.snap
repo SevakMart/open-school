@@ -129,24 +129,6 @@ exports[`Create test cases for course description page Create a snapshot test 1`
           </p>
         </div>
       </div>
-      <div
-        class="mainContainer"
-      >
-        <img
-          alt="Ellipse"
-          src="Course-Summary-Ellipse.svg"
-        />
-        <div
-          class="mainContent"
-        >
-          <h2>
-            title
-          </h2>
-          <p>
-            React
-          </p>
-        </div>
-      </div>
     </div>
     <div
       class="buttonContainer"

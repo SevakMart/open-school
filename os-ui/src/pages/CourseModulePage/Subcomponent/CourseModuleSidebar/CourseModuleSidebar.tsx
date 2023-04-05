@@ -19,7 +19,7 @@ interface SidebarDropdownProps {
 }
 
 const CourseModuleSidebar = ({
-  value, title, handleChangeValue, modules,
+  value, title, handleChangeValue, modules, setDisBtnPosition,
 }: SidebarDropdownProps) => {
   const [moduleListIsOpen, setModuleListIsOpen] = useState(true);
   const openModuleList = () => {

@@ -26,6 +26,7 @@ describe('Create test cases for course description page', () => {
           language="French"
           duration={360}
           courseId={2}
+          enrolledCourseId={2}
           userIdAndToken={{ id: 2, token: 'jksndfkjnskfk' }}
           title="React"
           currentUserEnrolled={false}

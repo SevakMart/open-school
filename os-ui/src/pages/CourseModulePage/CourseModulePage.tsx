@@ -11,7 +11,7 @@ import { RootState } from '../../redux/Store';
 import { CourseDescriptionType } from '../../types/CourseTypes';
 import DiscussionForum from './DiscussionPage/DiscussionForum';
 
-const CourseModulePage = ({ userInfo }: { userInfo: any }) => {
+const CourseModulePage = ({ userInfo }:{userInfo:any}) => {
   const [isDiscBtnpressed, setDiscBtnpressed] = useState<boolean>(
     localStorage.getItem('isDiscBtnpressed') === 'true', // Checking the value in localStorage and transforming it into boolean
   );
@@ -19,7 +19,6 @@ const CourseModulePage = ({ userInfo }: { userInfo: any }) => {
   const [value, setValue] = useState<string>(entity?.modules?.[0]?.title || '');
   const { courseId } = useParams();
   const dispatch = useDispatch();
-  const [isDiscBtnpressed, setDiscBtnpressed] = useState<boolean>(false);
   const setDisBtnPosition = (value: string): void => {
     if (value === 'Discussion Forum') {
       setDiscBtnpressed(() => !isDiscBtnpressed);
@@ -50,12 +49,12 @@ const CourseModulePage = ({ userInfo }: { userInfo: any }) => {
         <NavbarOnSignIn />
         <userContext.Provider value={userInfo}>
           <div className={styles.ModuleOverviuw_container}>
-            <CourseModuleSidebar value={value} handleChangeValue={handleChangeValue} title={entity.title} modules={entity.modules} />
+            <CourseModuleSidebar value={value} handleChangeValue={handleChangeValue} title={entity.title} modules={entity.modules} setDisBtnPosition={setDisBtnPosition} />
             { isDiscBtnpressed === false
               ? (
                 <ModuleMainPage value={value} handleChangeValue={handleChangeValue} modules={entity.modules} duration={entity.duration} />
               )
-              : (<DiscussionForm />
+              : (<DiscussionForum userInfo={userInfo} />
               )}
           </div>
         </userContext.Provider>

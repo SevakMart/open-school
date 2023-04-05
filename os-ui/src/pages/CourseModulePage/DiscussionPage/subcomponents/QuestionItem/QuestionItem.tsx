@@ -5,13 +5,7 @@ import ArrowRightIcon from '../../../../../assets/svg/ArrowRight.svg';
 import edit from '../../../../../assets/svg/edit.svg';
 import save from '../../../../../assets/svg/save.svg';
 import trash from '../../../../../assets/svg/trash.svg';
-
-interface QuestionItemProps {
-  removeQ(questionId: string): void;
-  questionChanged(id: string, val: string): void;
-  text: string;
-  id: string;
-}
+import { QuestionItemProps } from '../../interfaces/interfaces';
 
 const QuestionItem: React.FC<QuestionItemProps> = ({
   removeQ, questionChanged, text, id,
@@ -31,6 +25,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     }
   };
 
+  // for focus editInput
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
