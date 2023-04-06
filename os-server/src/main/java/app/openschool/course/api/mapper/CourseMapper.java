@@ -1,5 +1,7 @@
 package app.openschool.course.api.mapper;
 
+import static app.openschool.common.utils.MathUtil.getRoundedHours;
+
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.dto.CourseDto;
@@ -106,13 +108,14 @@ public class CourseMapper {
 
   private static double getCourseDurationInHours(Course course) {
 
-    double estimatedHours = course.getModules().stream()
+    double estimatedTime =
+        course.getModules().stream()
             .flatMapToDouble(
-                    module -> module.getModuleItems()
-                            .stream().mapToDouble(ModuleItem::getEstimatedTime))
-            .sum() / 60;
+                module ->
+                    module.getModuleItems().stream().mapToDouble(ModuleItem::getEstimatedTime))
+            .sum();
 
-    return Math.round(estimatedHours * 10.0) / 10.0;
+    return getRoundedHours(estimatedTime);
   }
 
   private static Set<CourseInfoModuleItemDto> getCourseInfoModuleItemDtoSet(Module module) {
@@ -120,7 +123,9 @@ public class CourseMapper {
         .map(
             moduleItem ->
                 new CourseInfoModuleItemDto(
-                    moduleItem.getModuleItemType().getType(), moduleItem.getLink()))
+                    moduleItem.getModuleItemType().getType(),
+                    moduleItem.getLink(),
+                    getRoundedHours(moduleItem.getEstimatedTime())))
         .collect(Collectors.toSet());
   }
 
