@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 public class ModuleMapper {
 
+  private ModuleMapper() {}
+
   public static ModuleDto toModuleDto(Module module) {
     return new ModuleDto(
         module.getId(), module.getTitle(),

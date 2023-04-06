@@ -10,7 +10,7 @@ import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.user.api.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 
-public class QuestionMapperTest {
+class QuestionMapperTest {
 
   @Test
   void toResponseDto() {

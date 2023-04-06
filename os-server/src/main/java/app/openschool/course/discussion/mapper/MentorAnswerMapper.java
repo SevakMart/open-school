@@ -6,6 +6,9 @@ import app.openschool.user.api.mapper.UserMapper;
 
 public class MentorAnswerMapper {
 
+  // ToDo this class and the components used in it will be changed in the future
+  private MentorAnswerMapper(){}
+
   public static AnswerResponseDto toAnswerDto(MentorAnswer mentorAnswer) {
     return new AnswerResponseDto(
         mentorAnswer.getId(),

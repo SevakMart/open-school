@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-public class EnrolledUserCourseMapperTest {
+class EnrolledUserCourseMapperTest {
 
   @Test
-  public void toEnrolledUserCourseDto() {
+  void toEnrolledUserCourseDto() {
 
     Difficulty difficulty = new Difficulty();
     difficulty.setTitle("Medium");

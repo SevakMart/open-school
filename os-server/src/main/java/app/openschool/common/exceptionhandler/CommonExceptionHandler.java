@@ -68,10 +68,8 @@ public class CommonExceptionHandler implements ErrorController {
     Map<String, String> errorMap = new HashMap<>();
     bindException
         .getAllErrors()
-        .forEach(
-            objectError -> {
-              errorMap.put(((FieldError) objectError).getField(), objectError.getDefaultMessage());
-            });
+        .forEach(objectError ->
+              errorMap.put(((FieldError) objectError).getField(), objectError.getDefaultMessage()));
     return ResponseEntity.badRequest().body(errorMap);
   }
 

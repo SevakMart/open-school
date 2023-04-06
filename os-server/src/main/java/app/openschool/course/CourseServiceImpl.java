@@ -13,7 +13,6 @@ import app.openschool.course.module.api.mapper.ModuleMapper;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;

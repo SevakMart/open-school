@@ -1,7 +1,6 @@
 package app.openschool.user;
 
 import app.openschool.category.Category;
-import app.openschool.category.api.dto.PreferredCategoryDto;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import java.util.List;

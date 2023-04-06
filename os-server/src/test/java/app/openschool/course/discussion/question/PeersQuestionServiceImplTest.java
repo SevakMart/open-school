@@ -32,7 +32,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class PeersQuestionServiceImplTest {
+class PeersQuestionServiceImplTest {
   @Mock PeersQuestionRepository peersQuestionRepository;
   @Mock EnrolledCourseRepository enrolledCourseRepository;
 
@@ -71,32 +71,28 @@ public class PeersQuestionServiceImplTest {
   @Test
   void addQuestion_withInCorrectEnrolledCourseId() {
 
-    given(enrolledCourseRepository.findById(anyLong())).willReturn(Optional.empty());
+    String email = TestHelper.createPrincipal().getName();
+    QuestionRequestDto requestDto = crateDiscussionQuestionRequestDto();
+    long wrongEnrolledCourseId = 999L;
 
-    assertThatThrownBy(
-            () ->
-                questionService.create(
-                    anyLong(),
-                    crateDiscussionQuestionRequestDto(),
-                    TestHelper.createPrincipal().getName()))
+    given(enrolledCourseRepository.findById(wrongEnrolledCourseId)).willReturn(Optional.empty());
+
+    assertThatThrownBy(() -> questionService.create(wrongEnrolledCourseId, requestDto, email))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
   void addQuestion_catchPermissionDeniedException() {
-    User user = TestHelper.createUser();
+
     EnrolledCourse enrolledCourse = new EnrolledCourse();
     enrolledCourse.setUser(new User(2L));
-    doReturn(Optional.of(enrolledCourse))
-        .when(enrolledCourseRepository)
-        .findById(enrolledCourse.getId());
+    long enrolledCourseId = 1L;
+    QuestionRequestDto requestDto = crateDiscussionQuestionRequestDto();
+    String email = TestHelper.createPrincipal().getName();
 
-    assertThatThrownBy(
-            () ->
-                questionService.create(
-                    enrolledCourse.getId(),
-                    crateDiscussionQuestionRequestDto(),
-                    TestHelper.createPrincipal().getName()))
+    doReturn(Optional.of(enrolledCourse)).when(enrolledCourseRepository).findById(enrolledCourseId);
+
+    assertThatThrownBy(() -> questionService.create(enrolledCourseId, requestDto, email))
         .isInstanceOf(PermissionDeniedException.class);
   }
 
@@ -149,12 +145,12 @@ public class PeersQuestionServiceImplTest {
   @Test
   void update_withIncorrectData_wrongUserEmail() {
 
-    PeersQuestion peersQuestion = TestHelper.createDiscussionPeersQuestion();
+    long peersQuestionId = TestHelper.createDiscussionPeersQuestion().getId();
 
     UpdateQuestionRequest request = new UpdateQuestionRequest();
     String wrongEmail = "wrongEmail";
 
-    assertThatThrownBy(() -> questionService.update(request, peersQuestion.getId(), 1L, wrongEmail))
+    assertThatThrownBy(() -> questionService.update(request, peersQuestionId, 1L, wrongEmail))
         .isInstanceOf(IllegalArgumentException.class);
 
     verify(peersQuestionRepository, times(0)).save(any());
@@ -188,10 +184,11 @@ public class PeersQuestionServiceImplTest {
     EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
     peersQuestion.setCourse(enrolledCourse.getCourse());
 
+    long peersQuestionId = peersQuestion.getId();
+    long enrolledCourseId = enrolledCourse.getId();
     String wrongEmail = "wrongEmail";
 
-    assertThatThrownBy(
-            () -> questionService.delete(peersQuestion.getId(), enrolledCourse.getId(), wrongEmail))
+    assertThatThrownBy(() -> questionService.delete(peersQuestionId, enrolledCourseId, wrongEmail))
         .isInstanceOf(IllegalArgumentException.class);
     verify(peersQuestionRepository, times(1)).delete(any(), any(), any());
   }
@@ -203,12 +200,11 @@ public class PeersQuestionServiceImplTest {
     EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
     peersQuestion.setCourse(enrolledCourse.getCourse());
 
+    String userEmail = peersQuestion.getUser().getEmail();
+    long enrolledCourseId = enrolledCourse.getId();
     long wrongQuestionId = 999L;
 
-    assertThatThrownBy(
-            () ->
-                questionService.delete(
-                    wrongQuestionId, enrolledCourse.getId(), peersQuestion.getUser().getEmail()))
+    assertThatThrownBy(() -> questionService.delete(wrongQuestionId, enrolledCourseId, userEmail))
         .isInstanceOf(IllegalArgumentException.class);
     verify(peersQuestionRepository, times(1)).delete(any(), any(), any());
   }
@@ -219,15 +215,11 @@ public class PeersQuestionServiceImplTest {
     PeersQuestion peersQuestion = TestHelper.createDiscussionPeersQuestion();
     EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
     peersQuestion.setCourse(enrolledCourse.getCourse());
-
+    String userEmail = peersQuestion.getUser().getEmail();
+    long questionId = peersQuestion.getId();
     long wrongEnrolledCourseId = 999L;
 
-    assertThatThrownBy(
-            () ->
-                questionService.delete(
-                    peersQuestion.getId(),
-                    wrongEnrolledCourseId,
-                    peersQuestion.getUser().getEmail()))
+    assertThatThrownBy(() -> questionService.delete(questionId, wrongEnrolledCourseId, userEmail))
         .isInstanceOf(IllegalArgumentException.class);
     verify(peersQuestionRepository, times(1)).delete(any(), any(), any());
   }

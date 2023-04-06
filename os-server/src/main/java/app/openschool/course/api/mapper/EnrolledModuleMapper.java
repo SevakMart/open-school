@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 public class EnrolledModuleMapper {
 
+  private EnrolledModuleMapper() {}
+
   public static Set<EnrolledModule> toEnrolledModules(
       Course course, EnrolledCourse enrolledCourse) {
     Set<EnrolledModule> enrolledModules =

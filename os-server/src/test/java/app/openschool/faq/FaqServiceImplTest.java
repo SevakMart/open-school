@@ -2,6 +2,7 @@ package app.openschool.faq;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import app.openschool.course.Course;
@@ -31,7 +32,7 @@ import org.springframework.test.context.jdbc.Sql;
 @ExtendWith(MockitoExtension.class)
 @Sql(scripts = {"/insertData.sql"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class FaqServiceImplTest {
+class FaqServiceImplTest {
 
   @Autowired FaqRepository faqRepository;
   @Autowired CourseRepository courseRepository;
@@ -158,9 +159,9 @@ public class FaqServiceImplTest {
   @Test
   void delete_withIncorrectEmail() {
 
-    Faq toDelete = faqRepository.findById(1L).orElseThrow();
+    long faqIdToDelete = faqRepository.findById(1L).orElseThrow().getId();
     String wrongEmail = "wrong@gm.com";
-    assertThatThrownBy(() -> faqService.delete(toDelete.getId(), wrongEmail))
+    assertThatThrownBy(() -> faqService.delete(faqIdToDelete, wrongEmail))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -202,6 +203,6 @@ public class FaqServiceImplTest {
   void findAllFaqs() {
     Pageable pageable = PageRequest.of(0, 2);
     Page<Faq> all = faqService.findAll(pageable);
-    assertTrue(all.getTotalElements() != 0);
+    assertNotEquals(0, all.getTotalElements());
   }
 }
