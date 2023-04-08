@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @DataJpaTest
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
-public class FaqRepositoryTest {
+class FaqRepositoryTest {
 
   @Autowired FaqRepository faqRepository;
   @Autowired UserRepository userRepository;

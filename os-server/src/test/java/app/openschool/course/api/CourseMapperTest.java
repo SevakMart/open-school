@@ -16,7 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-public class CourseMapperTest {
+class CourseMapperTest {
   Course course;
 
   @BeforeEach
@@ -25,13 +25,13 @@ public class CourseMapperTest {
   }
 
   @Test
-  public void toCourseDtoTest() {
+  void toCourseDtoTest() {
     CourseDto actual = CourseMapper.toCourseDto(course);
     assertThat(actual).hasOnlyFields("id", "title", "rating", "difficulty", "keywords");
   }
 
   @Test
-  public void toCourseInfoDto() {
+  void toCourseInfoDto() {
 
     Authentication authentication = Mockito.mock(Authentication.class);
     SecurityContext securityContext = Mockito.mock(SecurityContext.class);
@@ -61,7 +61,7 @@ public class CourseMapperTest {
   }
 
   @Test
-  public void toEnrolledCourse() {
+  void toEnrolledCourse() {
     EnrolledCourse actual =
         CourseMapper.toEnrolledCourse(CourseGenerator.generateCourse(), new User(1L));
 

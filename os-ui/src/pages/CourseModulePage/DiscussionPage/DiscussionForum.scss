@@ -1,0 +1,83 @@
+.inner {
+  box-sizing: border-box;
+  background-color: #eeeff3;
+  margin: 0;
+  padding-top: 50px;
+}
+
+.container {
+  margin-left: 20px;
+}
+
+.forum_header-title {
+  margin: 0;
+  color: #333941;
+}
+
+.forum_header-menu {
+  display: flex;
+  justify-content: space-between;
+  margin-left: -50px;
+}
+
+.forum_header-inner {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.forum_header-list {
+  width: 90px;
+  text-align: center;
+  list-style: none;
+  margin-left: 5px;
+  padding: 1.5px;
+  color: #717685;
+}
+
+.forum_header-list:hover {
+  border-bottom: 3px solid #52719e;
+  color: #3d3f42;
+  padding: 0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn {
+  background-color: #F0866F;
+  border-style: none;
+  color: #f4f8f7;
+  border-radius: 10px;
+  width: 111px;
+  height: 30px;
+  margin-top: 10px;
+  margin-right: 40px;
+  cursor: pointer;
+}
+
+.btn:active {
+  background-color: #ff9982;
+  color: #f4f8f7;
+  width: 112px;
+  height: 32px;
+  position: relative;
+  top: -1px;
+  right: -1px;
+}
+
+.question_textArea-div {
+  margin: 0 40px 5px 0;
+  padding: 0 10px 0 10px;
+  background-color: #f9f9fd;
+}
+
+.question_textArea {
+  padding-bottom: 25px;
+  margin-top: 19px;
+  width: 100%;
+  color: #3d3f42;
+  background-color: #f9f9fd;
+  resize: none;
+  outline: none;
+  border: none;
+}

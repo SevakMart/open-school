@@ -32,7 +32,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MentorControllerTest {
+class MentorControllerTest {
 
   @Autowired private MockMvc mockMvc;
 

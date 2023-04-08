@@ -12,19 +12,6 @@ public class CreateCourseRequest extends CourseRequestDto {
 
   public CreateCourseRequest() {}
 
-  public CreateCourseRequest(
-      String title,
-      String description,
-      String goal,
-      Long categoryId,
-      Integer difficultyId,
-      Integer languageId,
-      Set<Long> keywordIds,
-      Set<CreateModuleRequest> createModuleRequests) {
-    super(title, description, goal, categoryId, difficultyId, languageId, keywordIds);
-    this.createModuleRequests = createModuleRequests;
-  }
-
   public Set<CreateModuleRequest> getCreateModuleRequests() {
     return createModuleRequests;
   }

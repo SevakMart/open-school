@@ -8,6 +8,7 @@ import SidebarDropdown from './SidebarDropdown/SidebarDropdown';
 interface SidebarDropdownProps {
   value: string,
   handleChangeValue: (a:string) => void,
+  setDisBtnPosition: (value:string) => void,
   title:string,
   modules: {
     link?: any,
@@ -18,7 +19,7 @@ interface SidebarDropdownProps {
 }
 
 const CourseModuleSidebar = ({
-  value, title, handleChangeValue, modules,
+  value, title, handleChangeValue, modules, setDisBtnPosition,
 }: SidebarDropdownProps) => {
   const [moduleListIsOpen, setModuleListIsOpen] = useState(true);
   const openModuleList = () => {
@@ -39,7 +40,7 @@ const CourseModuleSidebar = ({
             <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
             {' '}
           </button>
-)}
+        )}
         menu={[
           <div
             key={title}
@@ -55,6 +56,7 @@ const CourseModuleSidebar = ({
           <div
             className={styles.SidebarOverview_button}
             key={button.id}
+            onClick={() => setDisBtnPosition(button.desc)}
           >
             {button.desc}
           </div>

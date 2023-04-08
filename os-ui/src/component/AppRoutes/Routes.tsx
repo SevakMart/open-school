@@ -41,7 +41,7 @@ const AppRoutes = () => {
               <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
                 <ChooseCategoryPage userInfo={userInfo} />
               </ProtectedRoute>
-     )}
+            )}
           />
           <Route
             path="/myLearningPath"
@@ -49,7 +49,7 @@ const AppRoutes = () => {
               <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
                 <MyLearningPathPage userInfo={userInfo} />
               </ProtectedRoute>
-   )}
+            )}
           />
           <Route
             path="/exploreLearningPaths"
@@ -57,7 +57,7 @@ const AppRoutes = () => {
               <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
                 <AllLearningPathPage userInfo={userInfo} />
               </ProtectedRoute>
-        )}
+            )}
           />
           <Route
             path="/mentors"
@@ -65,7 +65,7 @@ const AppRoutes = () => {
               <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
                 <AllMentorsPage userInfo={userInfo} />
               </ProtectedRoute>
-        )}
+            )}
           />
           <Route
             path="/userCourse/:courseId"
@@ -73,7 +73,7 @@ const AppRoutes = () => {
               <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
                 <CourseDescriptionPage userInfo={userInfo} />
               </ProtectedRoute>
-        )}
+            )}
           />
           <Route
             path="/userCourse/modulOverview/:courseId"
@@ -81,7 +81,7 @@ const AppRoutes = () => {
               <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
                 <CourseModulePage userInfo={userInfo} />
               </ProtectedRoute>
-        )}
+            )}
           />
 
           <Route
@@ -90,7 +90,7 @@ const AppRoutes = () => {
               <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
                 <HomepageWhenSignIn />
               </ProtectedRoute>
-        )}
+            )}
           />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

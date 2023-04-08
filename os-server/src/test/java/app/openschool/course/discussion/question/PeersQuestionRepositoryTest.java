@@ -30,7 +30,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @DataJpaTest
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
-public class PeersQuestionRepositoryTest {
+class PeersQuestionRepositoryTest {
 
   @Autowired PeersQuestionRepository peersQuestionRepository;
   @Autowired CourseRepository courseRepository;

@@ -394,7 +394,9 @@ class UserServiceImplTest {
   void enrollCourse_WithIncorrectCourseId_throwsIllegalArgumentException() {
     when(courseRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> userService.enrollCourse(new User(), 1L))
+    User user = new User();
+    long courseId = 1L;
+    assertThatThrownBy(() -> userService.enrollCourse(user, courseId))
         .isInstanceOf(IllegalArgumentException.class);
 
     verifyNoInteractions(userRepository);

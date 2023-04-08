@@ -10,6 +10,8 @@ import java.util.Set;
 
 public class EnrolledModuleMapper {
 
+  private EnrolledModuleMapper(){}
+
   public static Set<EnrolledModuleOverviewDto> toEnrolledModuleOverviewDtoList(
       Set<EnrolledModule> enrolledModuleSet) {
     Set<EnrolledModuleOverviewDto> enrolledModuleOverviewDtoSet = new HashSet<>();

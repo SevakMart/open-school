@@ -23,7 +23,7 @@ jest.mock('react-i18next', () => ({
 
 describe('Create test cases for CourseMainContent', () => {
   test('Create a snapshot test', () => {
-    const { asFragment } = render(<Provider store={store}><CourseMainContent description="This course talks about react" goal="The goal is to gain experience." modules={[moduleInfo]} mentorDto={{ name: 'john', surname: 'Smith', linkedinPath: 'myLinkedin.com' }} title="React" currentUserEnrolled={false} /></Provider>, { wrapper: BrowserRouter });
+    const { asFragment } = render(<Provider store={store}><CourseMainContent description="This course talks about react" goal="The goal is to gain experience." modules={[moduleInfo]} mentorDto={{ name: 'john', surname: 'Smith', linkedinPath: 'myLinkedin.com' }} title="React" currentUserEnrolled={false} enrolledCourseId={0} /></Provider>, { wrapper: BrowserRouter });
     expect(asFragment()).toMatchSnapshot();
   });
 });

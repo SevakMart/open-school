@@ -6,6 +6,8 @@ import app.openschool.user.api.mapper.UserMapper;
 
 public class AnswerMapper {
 
+  private AnswerMapper(){}
+
   public static AnswerResponseDto toAnswerDto(PeersAnswer peersAnswer) {
     AnswerResponseDto answerResponseDto = new AnswerResponseDto();
     answerResponseDto.setId(peersAnswer.getId());

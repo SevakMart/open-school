@@ -13,9 +13,9 @@ public abstract class ModuleRequestDto {
   @Length(max = 1000, message = "{length.max.text}")
   private String description;
 
-  public ModuleRequestDto() {}
+  protected ModuleRequestDto() {}
 
-  public ModuleRequestDto(String title, String description) {
+  protected ModuleRequestDto(String title, String description) {
     this.title = title;
     this.description = description;
   }

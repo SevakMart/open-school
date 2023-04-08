@@ -29,7 +29,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthServiceImplTest {
+class AuthServiceImplTest {
 
   @Mock private UserRepository userRepository;
 
@@ -87,18 +87,20 @@ public class AuthServiceImplTest {
 
   @Test
   void verifyAccountWithWrongToken() {
-    given(verificationTokenRepository.findVerificationTokenByToken(anyString()))
+    String anyString = anyString();
+    given(verificationTokenRepository.findVerificationTokenByToken(anyString))
         .willReturn(Optional.empty());
 
-    assertThatThrownBy(() -> authService.verifyAccount(anyString()))
+    assertThatThrownBy(() -> authService.verifyAccount(anyString))
         .isInstanceOf(TokenValidationException.class);
   }
 
   @Test
   void sendVerificationEmailWithWrongUserEmail() {
-    given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
+    String anyString = anyString();
+    given(userRepository.findByEmail(anyString)).willReturn(Optional.empty());
 
-    assertThatThrownBy(() -> authService.sendVerificationEmail(anyString()))
+    assertThatThrownBy(() -> authService.sendVerificationEmail(anyString))
         .isInstanceOf(IllegalArgumentException.class);
   }
 

@@ -7,6 +7,9 @@ import app.openschool.user.api.mapper.UserMapper;
 
 public class QuestionMapper {
 
+  private QuestionMapper(){}
+
+
   public static QuestionResponseDto toResponseDto(PeersQuestion peersQuestion) {
     return new QuestionResponseDto(
         peersQuestion.getId(),

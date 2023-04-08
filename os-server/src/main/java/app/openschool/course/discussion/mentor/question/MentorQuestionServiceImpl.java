@@ -1,7 +1,6 @@
 package app.openschool.course.discussion.mentor.question;
 
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
-import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;

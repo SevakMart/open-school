@@ -29,7 +29,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class PeersAnswerServiceImplTest {
+class PeersAnswerServiceImplTest {
   @Mock PeersAnswerRepository peersAnswerRepository;
   @Mock PeersQuestionRepository peersQuestionRepository;
   @Mock EnrolledCourseRepository enrolledCourseRepository;
@@ -74,15 +74,12 @@ public class PeersAnswerServiceImplTest {
     given(enrolledCourseRepository.findById(anyLong())).willReturn(Optional.of(enrolledCourse));
     given(peersQuestionRepository.findById(anyLong())).willReturn(Optional.empty());
 
+    long enrolledCourseId = enrolledCourse.getId();
+    String email = TestHelper.createPrincipal().getName();
     AnswerRequestDto answerRequestDto = createDiscussionAnswerRequestDto();
     answerRequestDto.setQuestionId(999L);
 
-    assertThatThrownBy(
-            () ->
-                answerService.create(
-                    enrolledCourse.getId(),
-                    answerRequestDto,
-                    TestHelper.createPrincipal().getName()))
+    assertThatThrownBy(() -> answerService.create(enrolledCourseId, answerRequestDto, email))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -92,17 +89,16 @@ public class PeersAnswerServiceImplTest {
     User anotherUser = new User();
     anotherUser.setEmail("anotherEmail@gmail.com");
     enrolledCourse.setUser(anotherUser);
+    long enrolledCourseId = 1L;
+    AnswerRequestDto discussionAnswerRequestDto = createDiscussionAnswerRequestDto();
+    String email = TestHelper.createPrincipal().getName();
+
     given(peersQuestionRepository.findById(anyLong()))
         .willReturn(Optional.of(TestHelper.createDiscussionPeersQuestion()));
-    doReturn(Optional.of(enrolledCourse))
-        .when(enrolledCourseRepository)
-        .findById(enrolledCourse.getId());
+    doReturn(Optional.of(enrolledCourse)).when(enrolledCourseRepository).findById(enrolledCourseId);
+
     assertThatThrownBy(
-            () ->
-                answerService.create(
-                    enrolledCourse.getId(),
-                    createDiscussionAnswerRequestDto(),
-                    TestHelper.createPrincipal().getName()))
+            () -> answerService.create(enrolledCourseId, discussionAnswerRequestDto, email))
         .isInstanceOf(PermissionDeniedException.class);
   }
 

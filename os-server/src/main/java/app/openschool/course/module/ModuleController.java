@@ -2,7 +2,6 @@ package app.openschool.course.module;
 
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.common.response.ResponseMessage;
-import app.openschool.course.Course;
 import app.openschool.course.CourseService;
 import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.module.api.dto.CreateModuleRequest;
