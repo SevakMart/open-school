@@ -1,16 +1,11 @@
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
 import { store } from '../../../../../redux/Store';
 import SubcategoryList from '../SubcategoryList';
+import { reactRouterDomMock } from '../../../../AllMentorsPage/Subcomponents/MainContent/__test__/react-router-dom-mock';
 
-const mockUseNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom') as any,
-  useNavigate: () => mockUseNavigate,
-  useLocation: () => ({
-    search: '',
-  }),
-}));
+jest.doMock('react-router-dom', () => reactRouterDomMock);
 jest.mock('react-i18next', () => ({
   ...jest.requireActual('react-i18next'),
   useTranslation: () => ({
@@ -24,9 +19,11 @@ describe('Create test case to SubcategoryList component', () => {
   test('Create a snapshot test', async () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <SubcategoryList
-          subcategories={[{ id: 1, title: 'React' }]}
-        />
+        <MemoryRouter>
+          <SubcategoryList
+            subcategories={[{ id: 1, title: 'React' }]}
+          />
+        </MemoryRouter>
       </Provider>,
     );
     expect(asFragment).toMatchSnapshot();
