@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import styles from './Sidebar.module.scss';
+import styles from '../Sidebar.module.scss';
 
 interface Props {
 	value:string,

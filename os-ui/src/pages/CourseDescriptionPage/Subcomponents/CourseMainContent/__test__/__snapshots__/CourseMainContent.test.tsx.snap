@@ -51,16 +51,35 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
               <div
                 class="titleAndEllipseIcon"
               >
-                <img
-                  alt="ellipse icon"
-                  class="ellipseIcon"
-                  src="Ellipse.svg"
-                />
-                <p
-                  class="moduleTitle"
+                <div
+                  class="titleAndIconWrapper"
                 >
-                  It talks about React
-                </p>
+                  <img
+                    alt="ellipse icon"
+                    class="ellipseIcon"
+                    src="Ellipse.svg"
+                  />
+                  <p
+                    class="moduleTitle"
+                  >
+                    It talks about React
+                  </p>
+                </div>
+                <div
+                  class="remainingTimeContainer"
+                >
+                  <img
+                    alt="clock icon"
+                    class="remainingTime"
+                    src="ClockIcon.svg"
+                  />
+                  <p
+                    class="remainingTimeContent"
+                    data-testid="remainingTime"
+                  >
+                    undefined hour
+                  </p>
+                </div>
               </div>
               <img
                 alt="chevron"

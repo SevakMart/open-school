@@ -4,36 +4,64 @@
 @import "../../../../styles/Configs/Fonts.scss";
 
 .mainContainer {
-  background-color: #F9F9FD;
+  background-color: $course-module-backgraund-color;
   border-radius: 8px;
-  margin-right: 10px;
-  margin-left: 10px;
+  margin: 0 10px;
 
   .mainContent {
     margin: 10px 8px;
     @include flexStyle(row, center, space-between);
 
-    .titleAndEllipseIcon {
-      display: inline-block;
+	.titleAndEllipseIcon {
+		display: flex;
+		align-items: center;
+  
+		.titleAndIconWrapper {
+		  display: flex;
+		  align-items: center;
+  
+		  .ellipseIcon {
+			margin-right: 8px;
+		  }
+		}
 
-      .moduleTitle {
-        display: inline;
-        margin-left: 16px;
-        @include fontStyle($primary-font, normal, 600, 20px, 24px);
-        color: $black-text-color;
-      }
-    }
+			.moduleTitle {
+				@include fontStyle($primary-font, normal, 600, 20px, 24px);
+				color: $black-text-color;
+				max-width: 650px;
+			}
 
-    .chevronIsOpen {
-      cursor: pointer;
-      transform: rotate(90deg);
-      transition: 0.5s;
-    }
+			.remainingTimeContainer {
+				display: flex;
+				align-items: center;
+			}
 
+			.remainingTime {
+				position: relative;
+				width: 24px;
+				height: 24px;
+				border-radius: 50%;
+				box-shadow: 0px 2px 35px rgba(217, 219, 233, 0.24);
+				margin-left: 30px;
+			}
+
+			.remainingTimeContent {
+				display: inline-block;
+				margin-left: 8px;
+				margin-right: 78px;
+			}
+		}
+
+    .chevronIsOpen,
     .chevronIsClosed {
       cursor: pointer;
       transform: rotate(0deg);
-      transition: 0.5s;
+      transition: transform 0.5s;
+      margin-right: 21px;
+
+      &.chevronIsOpen {
+        transform: rotate(90deg);
+      }
     }
   }
 
@@ -44,7 +72,7 @@
     color: $main-text-color
 
       p {
-        margin: 0 0 0 8px;
+		margin-left: 8px;
       }
 
       .moduleItemLink {
