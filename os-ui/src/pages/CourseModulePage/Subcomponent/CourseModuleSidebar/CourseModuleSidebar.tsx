@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Dropdown from '../../../../component/Dropdown/Dropdown';
-import SidebarDropdown from './SidebarDropdown';
 import styles from './Sidebar.module.scss';
 import { COURSE_NAME } from '../../../../constants/CourseModuleCategories';
 import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
+import SidebarDropdown from './SidebarDropdown/SidebarDropdown';
 
 interface SidebarDropdownProps {
   value: string,
@@ -34,7 +34,7 @@ const CourseModuleSidebar = ({
       <Dropdown
         open={value}
         trigger={(
-          <button type="button" className={styles.ArrowRightIcon} onChange={() => handleChangeValue(value)}>
+          <button type="button" className={styles.ArrowRightIcon} onClick={() => handleChangeValue(value)}>
             Overview
             <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
             {' '}
@@ -42,8 +42,9 @@ const CourseModuleSidebar = ({
 )}
         menu={[
           <div
-            key={modules[0].title}
+            key={title}
             className={moduleListIsOpen ? moduleDescriptionIsOpen : moduleDescriptionIsClosed}
+            data-testid={moduleListIsOpen ? 'moduleListOpen' : 'moduleListClosed'}
           >
             <SidebarDropdown handleChangeValue={handleChangeValue} modules={modules} value={value} />
           </div>,
@@ -62,4 +63,5 @@ const CourseModuleSidebar = ({
     </div>
   );
 };
+
 export default CourseModuleSidebar;

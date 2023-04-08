@@ -2,7 +2,7 @@ export interface CourseDescriptionType {
     title:string;
     description:string;
     goal:string;
-    modules:{link?:any, title:string,
+    modules:{link?:any, title:string, estimatedTime?:number;
          description:string, moduleItemSet:{[index:string]:string}[]}[];
     mentorDto:{[index:string]:string};
     rating:number;
