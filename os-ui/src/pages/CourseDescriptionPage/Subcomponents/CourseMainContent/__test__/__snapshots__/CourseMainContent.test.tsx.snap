@@ -77,7 +77,7 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
                     class="remainingTimeContent"
                     data-testid="remainingTime"
                   >
-                    undefined hour
+                    NaN hours
                   </p>
                 </div>
               </div>

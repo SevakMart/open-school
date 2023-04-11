@@ -15,13 +15,18 @@ const ModuleItem = ({ moduleInfo }:{moduleInfo:Module}) => {
     chevronIsOpen, chevronIsClosed, moduleDescriptionIsOpen, moduleDescriptionIsClosed,
     moduleItemLink,
   } = styles;
+
   const openModuleList = () => {
     setModuleListIsOpen((prevState) => !prevState);
   };
 
-  const handleClick = () => {
-    window.open(moduleInfo.moduleItemSet[0].link, '_blank');
+  const handleClick = (link: string) => {
+    window.open(link, '_blank');
   };
+
+  const totalEstimatedTime = moduleInfo.moduleItemSet.reduce((total, item) => total + Number(item.estimatedTime), 0);
+  const hourText = totalEstimatedTime < 1 ? 'hour' : 'hours';
+  const formattedEstimatedTime = totalEstimatedTime.toFixed(1);
 
   return (
     <div className={mainContainer}>
@@ -34,23 +39,21 @@ const ModuleItem = ({ moduleInfo }:{moduleInfo:Module}) => {
           <div className={remainingTimeContainer}>
             <img className={remainingTime} src={ClockIcon} alt="clock icon" />
             <p data-testid={remainingTime} className={remainingTimeContent}>
-              {t(`${moduleInfo.moduleItemSet[0].estimatedTime} hour`)}
+              {t(`${formattedEstimatedTime} ${hourText}`)}
             </p>
           </div>
         </div>
         <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
       </div>
       <div className={moduleListIsOpen ? moduleDescriptionIsOpen : moduleDescriptionIsClosed} onClick={openModuleList}>
-        <p>
-          {t(`${moduleInfo.moduleItemSet[0].moduleItemType} : `)}
-          <button
-            type="button"
-            className={moduleItemLink}
-            onClick={handleClick}
-          >
-            {moduleInfo.moduleItemSet[0].link}
-          </button>
-        </p>
+        {moduleInfo.moduleItemSet.map((item, index) => (
+          <p key={index}>
+            {t(`${item.moduleItemType} : `)}
+            <button type="button" className={moduleItemLink} onClick={() => handleClick(item.link)}>
+              {item.link}
+            </button>
+          </p>
+        ))}
       </div>
     </div>
   );
