@@ -11,7 +11,9 @@ const moduleInfo = {
   moduleItemSet: [{ title: 'Redux' }],
 };
 const mockUseNavigate = jest.fn();
-const mockUseLocation = jest.fn();
+const mockUseLocation = jest.fn(() => ({
+  pathname: '/userCourse/modulOverview/123',
+}));
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom') as any,
   useNavigate: () => mockUseNavigate,
@@ -23,7 +25,13 @@ jest.mock('react-i18next', () => ({
 
 describe('Create test cases for CourseMainContent', () => {
   test('Create a snapshot test', () => {
-    const { asFragment } = render(<Provider store={store}><CourseMainContent description="This course talks about react" goal="The goal is to gain experience." modules={[moduleInfo]} mentorDto={{ name: 'john', surname: 'Smith', linkedinPath: 'myLinkedin.com' }} title="React" currentUserEnrolled={false} enrolledCourseId={0} /></Provider>, { wrapper: BrowserRouter });
+    const { asFragment } = render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <CourseMainContent description="This course talks about react" goal="The goal is to gain experience." modules={[moduleInfo]} mentorDto={{ name: 'john', surname: 'Smith', linkedinPath: 'myLinkedin.com' }} title="React" currentUserEnrolled={false} enrolledCourseId={0} />
+        </BrowserRouter>
+      </Provider>,
+    );
     expect(asFragment()).toMatchSnapshot();
   });
 });

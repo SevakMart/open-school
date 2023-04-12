@@ -62,22 +62,7 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
                   <p
                     class="moduleTitle"
                   >
-                    It talks about React
-                  </p>
-                </div>
-                <div
-                  class="remainingTimeContainer"
-                >
-                  <img
-                    alt="clock icon"
-                    class="remainingTime"
-                    src="ClockIcon.svg"
-                  />
-                  <p
-                    class="remainingTimeContent"
-                    data-testid="remainingTime"
-                  >
-                    NaN hours
+                    React js
                   </p>
                 </div>
               </div>
@@ -90,12 +75,10 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
             <div
               class="moduleDescriptionIsClosed"
             >
-              <p>
-                undefined : 
-                <button
-                  class="moduleItemLink"
-                  type="button"
-                />
+              <p
+                class="moduleTitle"
+              >
+                It talks about React
               </p>
             </div>
           </div>
