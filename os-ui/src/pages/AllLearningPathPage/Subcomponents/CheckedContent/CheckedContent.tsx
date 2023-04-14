@@ -1,10 +1,9 @@
+import { useEffect } from 'react';
 import { useCheck } from '../../../../custom-hooks/useCheck';
 import CheckedSubcategory from '../../../../assets/svg/CategoriesChecked.svg';
 import UncheckedSubcategory from '../../../../assets/svg/CategoriesUnchecked.svg';
-import { addFilterParams, removeFilterParams } from '../../../../redux/Slices/AllLearningPathFilterParamsSlice';
+import { addFilterParams, removeFilterParams, resetFilterParams } from '../../../../redux/Slices/AllLearningPathFilterParamsSlice';
 import styles from './CheckedContent.module.scss';
-
-/* eslint-disable max-len */
 
 const CheckedContent = ({ id, checkedContent, filterFeature }:
   {id:string, checkedContent:string, filterFeature:string}) => {
@@ -12,12 +11,15 @@ const CheckedContent = ({ id, checkedContent, filterFeature }:
   const { checkedContentClass } = styles;
 
   const handleCheck = () => {
-    /* The state change will occur after dispatching the action so the the dispatched actions should be reversed */
     if (isChecked) {
       dispatch(removeFilterParams({ [filterFeature]: id }));
     } else dispatch(addFilterParams({ [filterFeature]: id }));
     handleChecking();
   };
+
+  useEffect(() => () => {
+    dispatch(resetFilterParams());
+  }, []);
 
   return (
     <div className={checkedContentClass}>
