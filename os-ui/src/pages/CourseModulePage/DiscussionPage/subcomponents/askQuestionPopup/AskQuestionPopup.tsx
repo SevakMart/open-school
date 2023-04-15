@@ -26,7 +26,7 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
     <div className={`popup ${isOpen ? 'open' : ''} ${isAnimating ? 'animating' : ''}`}>
       <div className="popup-overlay" data-testid="close-btn" onClick={() => { animatedFunction(onClose); }} />
       <div className="popup-content">
-        <div className="popup-title">Asq Question</div>
+        <div className="popup-title">Ask Question</div>
         <button type="button" className="close-button" data-testid="close-x-btn" onClick={() => { animatedFunction(onClose); }}>x</button>
         <div className="question_textArea-div">
           <textarea className="question_textArea" data-testid="question-textarea" id="fname" name="fname" ref={textAreaRef} value={value} onChange={handleChange} placeholder="Ask your question here" />

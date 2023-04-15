@@ -19,8 +19,8 @@ class FetchService {
     return request(`${this.baseUrl}/${path}`, 'DELETE', params, token);
   }
 
-  async put(path: string, params: object = {}, token = '') {
-    return request(`${this.baseUrl}/${path}`, 'PUT', params, token);
+  async put(path: string, body: object | null, params: object = {}, token = '') {
+    return request(`${this.baseUrl}/${path}`, 'PUT', params, token, body);
   }
 }
 export default new FetchService();

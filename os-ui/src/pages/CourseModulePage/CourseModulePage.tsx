@@ -13,7 +13,7 @@ import DiscussionForum from './DiscussionPage/DiscussionForum';
 
 const CourseModulePage = ({ userInfo }:{userInfo:any}) => {
   const [isDiscBtnpressed, setDiscBtnpressed] = useState<boolean>(
-    localStorage.getItem('isDiscBtnpressed') === 'true', // Checking the value in localStorage and transforming it into boolean
+    sessionStorage.getItem('isDiscBtnpressed') === 'true' || false, // Initializing to false if value not found in sessionStorage
   );
   const { entity } = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType };
   const [value, setValue] = useState<string>(entity?.modules?.[0]?.title || '');
@@ -28,11 +28,25 @@ const CourseModulePage = ({ userInfo }:{userInfo:any}) => {
     setValue(entity?.modules?.[0]?.title);
   }, [entity]);
 
-  // saving the value isDiscBtnpressed in localStorage, if it changes
+  // Save the value in sessionStorage only if the page is being unloaded (e.g. only after refresh)
   useEffect(() => {
-    localStorage.setItem('isDiscBtnpressed', isDiscBtnpressed.toString()); // transforming boolean into string for saving it into localStorage
+    const handleUnload = () => sessionStorage.setItem('isDiscBtnpressed', isDiscBtnpressed.toString());
+    window.addEventListener('beforeunload', handleUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleUnload);
+    };
   }, [isDiscBtnpressed]);
 
+  // Remove the value from sessionStorage when the page is loaded (e.g. after the user navigates back to the page)
+  useEffect(() => {
+    const handleLoad = () => sessionStorage.removeItem('isDiscBtnpressed');
+    window.addEventListener('load', handleLoad);
+    return () => {
+      window.removeEventListener('load', handleLoad);
+    };
+  }, []);
+
+  // get CourseDescription from redux
   useEffect(() => {
     dispatch(getCourseDescription({
       courseId: Number(courseId), token: userInfo.token,
