@@ -31,7 +31,15 @@ const allLearningPathFilterParamsSlice = createSlice({
         (state[Object.keys(action.payload)[0]] as string[]).splice(index, 1);
       } else state[Object.keys(action.payload)[0]] = '';
     },
+    resetFilterParams(state) {
+      state.subCategoryIds = [];
+      state.languageIds = [];
+      state.difficultyIds = [];
+      state.courseTitle = '';
+      state.sort = RATING;
+	  },
+
   },
 });
-export const { addFilterParams, removeFilterParams } = allLearningPathFilterParamsSlice.actions;
+export const { addFilterParams, removeFilterParams, resetFilterParams } = allLearningPathFilterParamsSlice.actions;
 export default allLearningPathFilterParamsSlice.reducer;
