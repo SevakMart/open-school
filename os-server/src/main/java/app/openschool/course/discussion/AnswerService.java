@@ -1,7 +1,10 @@
 package app.openschool.course.discussion;
 
 import app.openschool.course.discussion.dto.AnswerRequestDto;
-import app.openschool.course.discussion.dto.AnswerResponseDto;import app.openschool.course.discussion.peers.answer.PeersAnswer;import org.springframework.data.domain.Page;import org.springframework.data.domain.Pageable;
+import app.openschool.course.discussion.dto.AnswerResponseDto;
+import app.openschool.course.discussion.peers.answer.PeersAnswer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface AnswerService {
 
@@ -9,5 +12,5 @@ public interface AnswerService {
 
   PeersAnswer findAnswerById(Long answerId);
 
-  Page<PeersAnswer>findAnswerByQuestionId(Long questionId, Pageable pageable);
+  Page<PeersAnswer> findAnswerByQuestionId(Long questionId, Pageable pageable);
 }

@@ -60,7 +60,7 @@ public class PeersAnswerServiceImpl implements AnswerService {
   @Override
   public Page<PeersAnswer> findAnswerByQuestionId(Long questionId, Pageable pageable) {
     return peersAnswerRepository.findPeersAnswerByPeersQuestionId(questionId, pageable);
-    }
+  }
 
   private PeersAnswer prepareAnswer(
       EnrolledCourse enrolledCourse, AnswerRequestDto requestDto, PeersQuestion peersQuestion) {

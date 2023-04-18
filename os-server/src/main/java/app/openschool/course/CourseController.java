@@ -510,28 +510,24 @@ public class CourseController {
     return ResponseEntity.status(HttpStatus.CREATED).body(answerResponseDto);
   }
 
-    @Operation(summary = "get Answer by ID", security = @SecurityRequirement(name = "bearerAuth"))
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Get information about Answer"),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Invalid AnswerID supplied",
-                            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "Only registered users have access to this method",
-                            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
-            })
-    @GetMapping("/enrolled/{enrolledCourseId}/peers-answers/{answerId}")
-    public ResponseEntity<AnswerResponseDto> getAnswerById(
-            @Parameter(description = "Answer id") @PathVariable Long answerId) {
-    return ResponseEntity.ok(
-        AnswerMapper.toAnswerDto(
-            answerService.findAnswerById(answerId)));
-    }
+  @Operation(summary = "get Answer by ID", security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Get information about Answer"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid AnswerID supplied",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Only registered users have access to this method",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
+  @GetMapping("/enrolled/{enrolledCourseId}/peers-answers/{answerId}")
+  public ResponseEntity<AnswerResponseDto> getAnswerById(
+      @Parameter(description = "Answer id") @PathVariable Long answerId) {
+    return ResponseEntity.ok(AnswerMapper.toAnswerDto(answerService.findAnswerById(answerId)));
+  }
 
   private void courseAffiliationVerification(Principal principal, Long courseId) {
 

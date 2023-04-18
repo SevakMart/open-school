@@ -11,7 +11,9 @@ import app.openschool.course.discussion.peers.answer.PeersAnswer;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.time.Instant;
-import org.springframework.data.domain.Page;import org.springframework.data.domain.Pageable;import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service("discussionAnswerMentor")
 public class MentorAnswerServiceImpl implements AnswerService {
@@ -41,10 +43,12 @@ public class MentorAnswerServiceImpl implements AnswerService {
   @Override
   public PeersAnswer findAnswerById(Long answerId) {
     return null;
-  }@Override
+  }
+
+  @Override
   public Page<PeersAnswer> findAnswerByQuestionId(Long questionId, Pageable pageable) {
     return null;
-    }
+  }
 
   private MentorAnswer creteAnswer(AnswerRequestDto requestDto, String email) {
     User userByEmail = userRepository.findUserByEmail(email);

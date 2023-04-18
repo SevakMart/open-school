@@ -9,8 +9,10 @@ import app.openschool.course.discussion.dto.QuestionResponseDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
 import app.openschool.course.discussion.mapper.QuestionMapper;
 import java.time.Instant;
-import java.util.Objects;import java.util.Optional;
-import org.springframework.data.domain.Page;import org.springframework.data.domain.Pageable;import org.springframework.stereotype.Service;
+import java.util.Objects;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service("discussionQuestion")
 public class PeersQuestionServiceImpl implements QuestionService {

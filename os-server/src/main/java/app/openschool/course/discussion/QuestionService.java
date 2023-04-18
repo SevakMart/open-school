@@ -5,7 +5,7 @@ import app.openschool.course.discussion.dto.QuestionResponseDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
 import app.openschool.course.discussion.peers.question.PeersQuestion;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;import java.util.Optional;
+import org.springframework.data.domain.Pageable;
 
 public interface QuestionService {
   QuestionResponseDto create(Long enrolledCourseId, QuestionRequestDto requestDto, String email);
