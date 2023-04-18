@@ -5,8 +5,6 @@ import Header from './Subcomponents/Header/Header';
 import SuggestedCourses from './Subcomponents/SuggestedCourses/SuggestedCourses';
 import Button from '../../component/Button/Button';
 
-/* eslint-disable max-len */
-
 const MyLearningPathPage = ({ userInfo }:any) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
