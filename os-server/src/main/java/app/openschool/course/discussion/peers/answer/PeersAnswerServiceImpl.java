@@ -11,6 +11,8 @@ import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
 import java.time.Instant;
 import java.util.Objects;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service("discussionAnswer")
@@ -49,6 +51,16 @@ public class PeersAnswerServiceImpl implements AnswerService {
         peersAnswerRepository.save(
             prepareAnswer(extractedEnrolledCourse, requestDto, extractedPeersQuestion)));
   }
+
+  @Override
+  public PeersAnswer findAnswerById(Long answerId) {
+    return peersAnswerRepository.findById(answerId).orElseThrow(IllegalArgumentException::new);
+  }
+
+  @Override
+  public Page<PeersAnswer> findAnswerByQuestionId(Long questionId, Pageable pageable) {
+    return peersAnswerRepository.findPeersAnswerByPeersQuestionId(questionId, pageable);
+    }
 
   private PeersAnswer prepareAnswer(
       EnrolledCourse enrolledCourse, AnswerRequestDto requestDto, PeersQuestion peersQuestion) {

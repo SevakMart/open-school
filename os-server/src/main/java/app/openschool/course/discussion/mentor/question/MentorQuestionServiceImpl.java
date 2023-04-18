@@ -13,7 +13,8 @@ import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.time.Instant;
-import org.springframework.stereotype.Service;
+import java.util.Optional;
+import org.springframework.data.domain.Page;import org.springframework.data.domain.Pageable;import org.springframework.stereotype.Service;
 
 @Service("discussionQuestionMentor")
 public class MentorQuestionServiceImpl implements QuestionService {
@@ -62,6 +63,17 @@ public class MentorQuestionServiceImpl implements QuestionService {
 
   @Override
   public void delete(Long questionId, Long enrolledCourseId, String currentUserEmail) {}
+
+  @Override
+  public Page<PeersQuestion> findQuestionByCourseId(Long enrolledCourseId, Pageable pageable) {
+    return null;
+  }
+
+  @Override
+  public PeersQuestion findQuestionByIdAndEnrolledCourseId(
+      Long enrolledCourseId, Long questionId) {
+    return null;
+  }
 
   private MentorQuestion creteQuestion(QuestionRequestDto requestDto, String email) {
     User userByEmail = userRepository.findUserByEmail(email);

@@ -9,8 +9,8 @@ import app.openschool.course.discussion.dto.QuestionResponseDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
 import app.openschool.course.discussion.mapper.QuestionMapper;
 import java.time.Instant;
-import java.util.Objects;
-import org.springframework.stereotype.Service;
+import java.util.Objects;import java.util.Optional;
+import org.springframework.data.domain.Page;import org.springframework.data.domain.Pageable;import org.springframework.stereotype.Service;
 
 @Service("discussionQuestion")
 public class PeersQuestionServiceImpl implements QuestionService {
@@ -67,6 +67,18 @@ public class PeersQuestionServiceImpl implements QuestionService {
     if (updatedRows == 0) {
       throw new IllegalArgumentException();
     }
+  }
+
+  @Override
+  public Page<PeersQuestion> findQuestionByCourseId(Long enrolledCourseId, Pageable pageable) {
+    return peersQuestionRepository.findQuestionByCourseId(enrolledCourseId, pageable);
+  }
+
+  @Override
+  public PeersQuestion findQuestionByIdAndEnrolledCourseId(Long enrolledCourseId, Long questionId) {
+    return peersQuestionRepository
+        .findQuestionByIdAndEnrolledCourseId(enrolledCourseId, questionId)
+        .orElseThrow(IllegalArgumentException::new);
   }
 
   private PeersQuestion prepareQuestion(

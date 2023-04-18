@@ -14,6 +14,7 @@ import app.openschool.course.discussion.dto.AnswerResponseDto;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
 import app.openschool.course.discussion.dto.QuestionResponseDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
+import app.openschool.course.discussion.mapper.AnswerMapper;
 import app.openschool.course.discussion.mapper.QuestionMapper;
 import app.openschool.faq.FaqService;
 import app.openschool.faq.api.dto.CreateFaqRequest;
@@ -412,6 +413,79 @@ public class CourseController {
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
+  @Operation(
+      summary = "find all questions related to the provided course",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description =
+                "Returns a paginated list of Questions, depending on the "
+                    + "sort parameters passed (by default, all Questions are sorted by Question_ID,"
+                    + "or an empty list if the Questions are not found."),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Only registered users have access to this method",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
+  @GetMapping("/enrolled/{enrolledCourseId}/peers-questions")
+  public ResponseEntity<Page<QuestionResponseDto>> findQuestionsByCourseId(
+      @Parameter(description = "Enrolled course id") @PathVariable Long enrolledCourseId,
+      Pageable pageable) {
+    return ResponseEntity.ok()
+        .body(
+            QuestionMapper.toQuestionDtoPage(
+                questionService.findQuestionByCourseId(enrolledCourseId, pageable)));
+  }
+
+  @Operation(summary = "get Question by ID", security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Get information about Question"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid QuestionID or EnrolledCourseID supplied",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Only registered users have access to this method",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
+  @GetMapping("/enrolled/{enrolledCourseId}/peers-questions/{questionId}")
+  public ResponseEntity<QuestionResponseDto> getQuestionById(
+      @Parameter(description = "Enrolled course id") @PathVariable Long enrolledCourseId,
+      @Parameter(description = "Question id") @PathVariable Long questionId) {
+    return ResponseEntity.ok(
+        QuestionMapper.toResponseDto(
+            questionService.findQuestionByIdAndEnrolledCourseId(enrolledCourseId, questionId)));
+  }
+
+  @Operation(
+      summary = "find all Answers related to the provided Question",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description =
+                "Returns a paginated list of Answers, depending on the "
+                    + "sort parameters passed (by default, all Answers are sorted by Answer_ID,"
+                    + "or an empty list if the Answers are not found."),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Only registered users have access to this method",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+      })
+  @GetMapping("/enrolled/{enrolledCourseId}/peers-questions/answers/{questionId}")
+  public ResponseEntity<Page<AnswerResponseDto>> findAnswersByQuestionId(
+      @Parameter(description = "Answer id") @PathVariable Long questionId, Pageable pageable) {
+    return ResponseEntity.ok()
+        .body(
+            AnswerMapper.toAnswerDtoPage(
+                answerService.findAnswerByQuestionId(questionId, pageable)));
+  }
+
   @Operation(summary = "add answer", security = @SecurityRequirement(name = "bearerAuth"))
   @ApiResponses(
       value = {
@@ -435,6 +509,29 @@ public class CourseController {
         answerService.create(enrolledCourseId, requestDto, principal.getName());
     return ResponseEntity.status(HttpStatus.CREATED).body(answerResponseDto);
   }
+
+    @Operation(summary = "get Answer by ID", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Get information about Answer"),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Invalid AnswerID supplied",
+                            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Only registered users have access to this method",
+                            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
+            })
+    @GetMapping("/enrolled/{enrolledCourseId}/peers-answers/{answerId}")
+    public ResponseEntity<AnswerResponseDto> getAnswerById(
+            @Parameter(description = "Answer id") @PathVariable Long answerId) {
+    return ResponseEntity.ok(
+        AnswerMapper.toAnswerDto(
+            answerService.findAnswerById(answerId)));
+    }
 
   private void courseAffiliationVerification(Principal principal, Long courseId) {
 
