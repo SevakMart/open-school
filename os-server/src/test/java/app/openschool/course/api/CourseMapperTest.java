@@ -1,13 +1,16 @@
 package app.openschool.course.api;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import app.openschool.common.utils.MathUtil;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.module.item.ModuleItem;
 import app.openschool.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,9 +44,18 @@ class CourseMapperTest {
     when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(authentication);
     when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn("email");
 
+    Course generateCourse = CourseGenerator.generateCourseWithEnrolledCourses();
+    double estimatedTimeBeforeRounded =
+        generateCourse.getModules().stream()
+            .flatMapToDouble(
+                module ->
+                    module.getModuleItems().stream().mapToDouble((ModuleItem::getEstimatedTime)))
+            .sum();
 
     CourseInfoDto actual =
-        CourseMapper.toCourseInfoDto(CourseGenerator.generateCourseWithEnrolledCourses());
+        CourseMapper.toCourseInfoDto(generateCourse);
+
+    assertEquals(MathUtil.getRoundedHours(estimatedTimeBeforeRounded), actual.getDuration());
     assertThat(actual)
         .hasOnlyFields(
             "enrolledCourseId",

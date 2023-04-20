@@ -108,14 +108,12 @@ public class CourseMapper {
 
   private static double getCourseDurationInHours(Course course) {
 
-    double estimatedTime =
-        course.getModules().stream()
-            .flatMapToDouble(
-                module ->
-                    module.getModuleItems().stream().mapToDouble(ModuleItem::getEstimatedTime))
-            .sum();
-
-    return getRoundedHours(estimatedTime);
+    return course.getModules().stream()
+        .flatMapToDouble(
+            module ->
+                module.getModuleItems().stream()
+                    .mapToDouble((item -> getRoundedHours(item.getEstimatedTime()))))
+        .sum();
   }
 
   private static Set<CourseInfoModuleItemDto> getCourseInfoModuleItemDtoSet(Module module) {
