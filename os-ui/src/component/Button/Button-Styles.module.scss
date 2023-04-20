@@ -72,6 +72,7 @@
     @include fontStyle($primary-font, normal, 500, 1rem, 1.25rem);
     border:none;
 }
+
 .resumeCourse {
 	@include fontStyle($primary-font, normal, 500, 16px, 20px);
 	padding: 16px 32px;
@@ -83,11 +84,60 @@
 	border: none;
 	margin-top: 24px;
 	cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
+  
+	&:hover {
+	  opacity: 0.8;
+	}
   }
-}
+  
+  @media (max-width: 767px) {
+	.resumeCourse {
+	  width: 90%;
+	  margin: 0 auto;
+	  font-size: 14px;
+	  padding: 12px 24px;
+	  margin-top: 16px;
+	}
+  }
+  
+  @media (min-width: 768px) and (max-width: 1024px) {
+	.resumeCourse {
+	  width: 70%;
+	  font-size: 14px;
+	  padding: 12px 24px;
+	  margin-top: 16px;
+	  margin-right: 48px;
+	}
+  }
+  
+  @media (min-width: 1024px) and (max-width: 1200px) {
+	.resumeCourse {
+	  width: 209px;
+	  font-size: 16px;
+	  padding: 16px 32px;
+	  margin-right: 48px;
+	}
+  }
+  
+  @media (min-width: 1201px) {
+	.resumeCourse {
+	  width: 209px;
+	  font-size: 18px;
+	  margin-right: 48px;
+	}
+  }
+
+  @media (min-width: 2000px) {
+	.resumeCourse {
+	  @include fontStyle($primary-font, normal, 500, 16px, 20px);
+	  width: 400px;
+	  font-size: 20px;
+	  margin-left: 120px;
+	}
+  }
+  
+  
+  
 .courseSummaryButton {
     @include buttonStyle($secondary-color,$white-text-color,1rem,400px,60px,166px,166px,20px,20px);
     @include fontStyle($primary-font, normal, 500, 16px, 20px);
