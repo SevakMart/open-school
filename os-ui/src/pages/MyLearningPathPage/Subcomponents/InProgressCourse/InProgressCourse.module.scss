@@ -5,10 +5,11 @@
 @import "../../../../styles/Mixins/FontMixin.scss";
 
 .mainContainer{
-    @include flexStyle(row,center,none);
+    @include flexStyle(row,center,space-evenly);
     background-color: $white-text-color;
     border-radius:20px;
     margin:0 88px;
+	padding: 0 25px;
     .titleContainer {
         margin:32px 32px 32px 48px;
         box-sizing: border-box;
