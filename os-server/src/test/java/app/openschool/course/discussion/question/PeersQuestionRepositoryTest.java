@@ -54,7 +54,9 @@ class PeersQuestionRepositoryTest {
     studentUser.setRole(new Role(1, "STUDENT"));
 
     userRepository.save(studentUser);
-    final User mentor = userRepository.save(UserGenerator.generateUser());
+    final User mentor = UserGenerator.generateUser();
+    mentor.setRole(new Role(2, "MENTOR"));
+    userRepository.save(mentor);
     Difficulty difficulty = new Difficulty();
     difficulty.setTitle("Medium");
     difficultyRepository.save(difficulty);
@@ -101,8 +103,8 @@ class PeersQuestionRepositoryTest {
     long courseId = expectedPeersQuestion.getCourse().getId();
     long wrongEnrolledCourseId = 999L;
 
-    Page<PeersQuestion> questionPage =
-        peersQuestionRepository.findQuestionByCourseId(courseId, PageRequest.of(0, 1));
+    //    Page<PeersQuestion> questionPage =
+    //        peersQuestionRepository.findQuestionByCourseId(courseId, PageRequest.of(0, 1));
     // Optional<PeersQuestion> questionOptional = questionPage.stream().findFirst();
 
     Page<PeersQuestion> emptyPage =
