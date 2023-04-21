@@ -1,26 +1,16 @@
 import { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Dropdown from '../../../../component/Dropdown/Dropdown';
 import SidebarDropdown from './SidebarDropdown';
 import styles from './Sidebar.module.scss';
 import { COURSE_NAME } from '../../../../constants/CourseModuleCategories';
 import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
+import { RootState } from '../../../../redux/Store';
+import { setValue } from '../../../../redux/Slices/CourseModuleSlice';
+import { CourseDescriptionType } from '../../../../types/CourseTypes';
 
-interface SidebarDropdownProps {
-  value: string,
-  handleChangeValue: (a:string) => void,
-  setDisBtnPosition: (value:string) => void,
-  title:string,
-  modules: {
-    link?: any,
-    title: string,
-    description: string,
-    moduleItemSet: { [index: string]: string }[]
-  }[];
-}
-
-const CourseModuleSidebar = ({
-  value, title, handleChangeValue, modules, setDisBtnPosition,
-}: SidebarDropdownProps) => {
+const CourseModuleSidebar = () => {
   const [moduleListIsOpen, setModuleListIsOpen] = useState(true);
   const openModuleList = () => {
     setModuleListIsOpen((prevState) => !prevState);
@@ -29,9 +19,18 @@ const CourseModuleSidebar = ({
     chevronIsOpen, chevronIsClosed, moduleDescriptionIsOpen, moduleDescriptionIsClosed,
   } = styles;
 
+  const { entity } = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType };
+  const { courseId } = useParams();
+  const { value } = useSelector<RootState>((state) => state.courseModule) as { value: string };
+  const dispatch = useDispatch();
+
+  const handleChangeValue = (newValue: string) => {
+    dispatch(setValue(newValue));
+  };
+
   return (
     <div className={styles.Sidebar_container}>
-      <h4 className={styles.Sidebar_courseName}>{title}</h4>
+      <h4 className={styles.Sidebar_courseName}>{entity.title}</h4>
       <Dropdown
         open={value}
         trigger={(
@@ -43,10 +42,10 @@ const CourseModuleSidebar = ({
         )}
         menu={[
           <div
-            key={modules[0].title}
+            key="title"
             className={moduleListIsOpen ? moduleDescriptionIsOpen : moduleDescriptionIsClosed}
           >
-            <SidebarDropdown handleChangeValue={handleChangeValue} modules={modules} value={value} />
+            <SidebarDropdown handleChangeValue={handleChangeValue} modules={entity.modules} value={value} />
           </div>,
         ]}
       />
@@ -55,9 +54,17 @@ const CourseModuleSidebar = ({
           <div
             className={styles.SidebarOverview_button}
             key={button.id}
-            onClick={() => setDisBtnPosition(button.desc)}
           >
-            {button.desc}
+            {button.desc === 'Discussion Forum' ? (
+              <Link
+                style={{ textDecoration: 'none', color: '#333941' }}
+                to={`/userCourse/modulOverview/${courseId}/discussionForum`}
+              >
+                {button.desc}
+              </Link>
+            ) : (
+              button.desc
+            )}
           </div>
         ))
       }

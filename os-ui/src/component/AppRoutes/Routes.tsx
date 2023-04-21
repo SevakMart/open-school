@@ -15,8 +15,10 @@ import CourseDescriptionPage from '../../pages/CourseDescriptionPage/CourseDescr
 import { signInContext } from '../../contexts/Contexts';
 import CourseModulePage from '../../pages/CourseModulePage/CourseModulePage';
 import HomepageWhenSignIn from '../../pages/HomepageWhenSignIn/HomepageWhenSignIn';
-
-/* eslint-disable max-len */
+import DiscussionForum from '../../pages/CourseModulePage/DiscussionPage/DiscussionForum';
+import NavbarOnSignIn from '../Navbar-Component/NavbarOnSignIn/NavbarOnSignIn';
+import CourseModuleSidebar from '../../pages/CourseModulePage/Subcomponent/CourseModuleSidebar/CourseModuleSidebar';
+import styles from '../../pages/CourseModulePage/CourseModulePage.module.scss';
 
 const AppRoutes = () => {
   const userInfoState = useSelector<RootState>((state) => state.userInfo);
@@ -80,6 +82,21 @@ const AppRoutes = () => {
             element={(
               <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
                 <CourseModulePage userInfo={userInfo} />
+              </ProtectedRoute>
+            )}
+          />
+
+          <Route
+            path="/userCourse/modulOverview/:courseId/discussionForum"
+            element={(
+              <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
+                <>
+                  <NavbarOnSignIn />
+                  <div className={styles.ModuleOverviuw_container}>
+                    <CourseModuleSidebar />
+                    <DiscussionForum userInfo={userInfo} />
+                  </div>
+                </>
               </ProtectedRoute>
             )}
           />

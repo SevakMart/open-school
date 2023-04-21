@@ -1,11 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { addQuestion } from '../../../../../redux/Slices/AskQuestionSlice';
 import { PopupProps } from '../../interfaces/interfaces';
 import './askQuestionPopup.scss';
 
 const AskQuestionPopup: React.FC<PopupProps> = ({
-  isOpen, onClose, value, handleChange, addQuestion,
+  isOpen, handleClose, value, handleChange, enrolledCourseId, token, cleanTextField, sectionName,
 }) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  const dispatch = useDispatch();
+  const handleAddQuestion = () => {
+    cleanTextField();
+    dispatch(addQuestion({
+      enrolledCourseId, text: value, token, sectionName,
+    }));
+  };
 
   useEffect(() => {
     if (isOpen && textAreaRef.current) {
@@ -24,15 +34,15 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
 
   return (
     <div className={`popup ${isOpen ? 'open' : ''} ${isAnimating ? 'animating' : ''}`}>
-      <div className="popup-overlay" data-testid="close-btn" onClick={() => { animatedFunction(onClose); }} />
+      <div className="popup-overlay" data-testid="close-btn" onClick={() => { animatedFunction(handleClose); }} />
       <div className="popup-content">
         <div className="popup-title">Ask Question</div>
-        <button type="button" className="close-button" data-testid="close-x-btn" onClick={() => { animatedFunction(onClose); }}>x</button>
+        <button type="button" className="close-button" data-testid="close-x-btn" onClick={() => { animatedFunction(handleClose); }}>x</button>
         <div className="question_textArea-div">
           <textarea className="question_textArea" data-testid="question-textarea" id="fname" name="fname" ref={textAreaRef} value={value} onChange={handleChange} placeholder="Ask your question here" />
           <div className="buttons">
-            <button type="button" onClick={() => { animatedFunction(onClose); }} className="btn_cancel" data-testid="close-cancel-btn">Cancel</button>
-            <button type="button" onClick={() => { animatedFunction(addQuestion, value); }} disabled={!value} data-testid="post-btn" className="btn_post">Post</button>
+            <button type="button" onClick={() => { animatedFunction(handleClose); }} className="btn_cancel" data-testid="close-cancel-btn">Cancel</button>
+            <button type="button" onClick={() => { animatedFunction(handleAddQuestion); }} disabled={!value} data-testid="post-btn" className="btn_post">Post</button>
           </div>
         </div>
       </div>

@@ -5,19 +5,23 @@ export interface Question {
 }
 
 export interface QuestionItemProps {
-  removeQ(questionId: string): void;
-  questionChanged(id: string, val: string): void;
   text: string;
   id: string;
   createdDate: string;
+  token: string;
+  enrolledCourseId: number;
+  sectionName: string;
 }
 
 export interface PopupProps {
   value: string;
   isOpen: boolean;
-  onClose: () => void;
+  handleClose: () => void;
   handleChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  addQuestion: (val: string) => void;
+  enrolledCourseId: number;
+  token: string;
+  cleanTextField: () => void;
+  sectionName: string;
 }
 
 interface AnimatedFunction {
