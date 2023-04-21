@@ -1,6 +1,7 @@
 package app.openschool.course.discussion.question;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 import app.openschool.category.Category;
@@ -26,6 +27,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 
 @DataJpaTest
@@ -91,6 +94,47 @@ class PeersQuestionRepositoryTest {
         expectedPeersQuestion.getUser().getEmail(), actualPeersQuestion.getUser().getEmail());
     assertEquals(
         expectedPeersQuestion.getCourse().getId(), actualPeersQuestion.getCourse().getId());
+  }
+
+  @Test
+  void findQuestionByCourseId() {
+    long courseId = expectedPeersQuestion.getCourse().getId();
+    long wrongEnrolledCourseId = 999L;
+
+    Page<PeersQuestion> questionPage =
+        peersQuestionRepository.findQuestionByCourseId(courseId, PageRequest.of(0, 1));
+    // Optional<PeersQuestion> questionOptional = questionPage.stream().findFirst();
+
+    Page<PeersQuestion> emptyPage =
+        peersQuestionRepository.findQuestionByCourseId(wrongEnrolledCourseId, PageRequest.of(0, 1));
+
+    //    assertEquals(
+    //        expectedPeersQuestion.getCourse().getId(),
+    //        questionOptional.orElseThrow().getCourse().getId());
+    assertEquals(0, emptyPage.getTotalElements());
+  }
+
+  @Test
+  void findQuestionByIdAndEnrolledCourseId() {
+
+    long correctEnrolledCourseId = expectedPeersQuestion.getCourse().getId();
+    Optional<PeersQuestion> actualQuestion =
+        peersQuestionRepository.findQuestionByIdAndEnrolledCourseId(
+            correctEnrolledCourseId, expectedPeersQuestion.getId());
+
+    long wrongEnrolledCourseId = 999L;
+    Optional<PeersQuestion> emptyOptionalWrongEnrolledId =
+        peersQuestionRepository.findQuestionByIdAndEnrolledCourseId(
+            wrongEnrolledCourseId, expectedPeersQuestion.getId());
+
+    long wrongQuestionId = 999L;
+    Optional<PeersQuestion> emptyOptionalWrongQuestionId =
+        peersQuestionRepository.findQuestionByIdAndEnrolledCourseId(
+            correctEnrolledCourseId, wrongQuestionId);
+
+    assertEquals(expectedPeersQuestion.getId(), actualQuestion.orElseThrow().getId());
+    assertTrue(emptyOptionalWrongEnrolledId.isEmpty());
+    assertTrue(emptyOptionalWrongQuestionId.isEmpty());
   }
 
   @Test

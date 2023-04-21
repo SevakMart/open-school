@@ -34,7 +34,6 @@ import app.openschool.user.User;
 import app.openschool.user.api.UserGenerator;
 import app.openschool.user.role.Role;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

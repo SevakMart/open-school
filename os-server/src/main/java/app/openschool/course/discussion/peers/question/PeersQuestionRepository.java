@@ -49,7 +49,6 @@ public interface PeersQuestionRepository extends JpaRepository<PeersQuestion, Lo
               + "WHERE peers_question.learning_path_id = "
               + "(SELECT learning_path_id FROM enrolled_learning_path "
               + "WHERE id =:enrolledCourseId)",
-      // check current user is enrolled to provided course?
       nativeQuery = true)
   Page<PeersQuestion> findQuestionByCourseId(
       @Param("enrolledCourseId") Long enrolledCourseId, Pageable pageable);
@@ -61,7 +60,6 @@ public interface PeersQuestionRepository extends JpaRepository<PeersQuestion, Lo
               + "peers_question.learning_path_id = "
               + "(SELECT learning_path_id FROM enrolled_learning_path "
               + "WHERE id =:enrolledCourseId)",
-      // check current user is enrolled to provided course?
       nativeQuery = true)
   Optional<PeersQuestion> findQuestionByIdAndEnrolledCourseId(
       @Param("enrolledCourseId") Long enrolledCourseId, @Param("questionId") Long questionId);
