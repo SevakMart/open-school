@@ -49,7 +49,7 @@ const CourseModuleSidebar = () => {
         )}
         menu={[
           <div
-            key="title"
+            key={entity.title}
             className={moduleListIsOpen ? moduleDescriptionIsOpen : moduleDescriptionIsClosed}
           >
             <SidebarDropdown handleChangeValue={handleChangeValue} modules={entity.modules} value={value} />
