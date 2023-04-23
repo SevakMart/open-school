@@ -130,6 +130,7 @@ export const AskQuestionSlice = createSlice({
       })
       .addCase(updateQuestion.pending, (state) => {
         state.errorMessage = '';
+        state.isLoading = true;
       })
       .addCase(updateQuestion.fulfilled, (state, action) => {
         const { id } = action.payload;

@@ -34,8 +34,18 @@
     display: flex;
     cursor: pointer;
     width: 70px;
+    border-style: none;
+    background-color: #fff;
   }
   &_item_margin {
-    margin-top: 10px;
+    margin-top: 5px;
   }
+}
+
+.editBtn-title {
+  margin-top: 5px;
+}
+
+.removeBtn-title {
+  margin-top: 5px;
 }

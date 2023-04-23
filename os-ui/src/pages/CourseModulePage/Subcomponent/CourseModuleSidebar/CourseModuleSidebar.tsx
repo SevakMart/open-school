@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Dropdown from '../../../../component/Dropdown/Dropdown';
 import SidebarDropdown from './SidebarDropdown';
@@ -28,6 +28,14 @@ const CourseModuleSidebar = () => {
     dispatch(setValue(newValue));
   };
 
+  // sidebar item's click handler
+  const location = useLocation();
+  const currentPath = location.pathname;
+  let isbtnClicked = false;
+  if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum`) isbtnClicked = true;
+  if (currentPath === `/userCourse/modulOverview/${courseId}/`) isbtnClicked = false;
+  const itemBtnclickedStyle = isbtnClicked ? { textDecoration: 'none', color: '#333941', fontWeight: '900' } : { textDecoration: 'none', color: '#333941' };
+
   return (
     <div className={styles.Sidebar_container}>
       <h4 className={styles.Sidebar_courseName}>{entity.title}</h4>
@@ -37,7 +45,6 @@ const CourseModuleSidebar = () => {
           <button type="button" className={styles.ArrowRightIcon} onChange={() => handleChangeValue(value)}>
             Overview
             <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
-            {' '}
           </button>
         )}
         menu={[
@@ -57,8 +64,8 @@ const CourseModuleSidebar = () => {
           >
             {button.desc === 'Discussion Forum' ? (
               <Link
-                style={{ textDecoration: 'none', color: '#333941' }}
-                to={`/userCourse/modulOverview/${courseId}/discussionForum`}
+                to={`/userCourse/modulOverview/${courseId}${isbtnClicked ? '' : '/discussionForum'}`}
+                style={itemBtnclickedStyle}
               >
                 {button.desc}
               </Link>

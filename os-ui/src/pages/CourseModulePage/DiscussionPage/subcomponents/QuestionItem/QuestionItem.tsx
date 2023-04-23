@@ -95,8 +95,10 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric',
-    // timeZoneName: 'short',
   });
+
+  // disable save button when nothing typed
+  const isDisable = editValue.length === 0;
 
   return (
     <div className="Questions_page">
@@ -107,6 +109,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
             isAnimating={isAnimating}
             animatedFunction={animatedFunction}
             onClose={onClose}
+            isDisable={isDisable}
             editQuestion={editQuestion}
             btnType={btnType}
             btnTextType={btnTextType}

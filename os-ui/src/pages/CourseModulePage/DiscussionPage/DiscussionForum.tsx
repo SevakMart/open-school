@@ -11,7 +11,7 @@ import { Question } from './interfaces/interfaces';
 import AskQuestionPopup from './subcomponents/askQuestionPopup/AskQuestionPopup';
 import QuestionItem from './subcomponents/QuestionItem/QuestionItem';
 
-const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
+const DiscussionForum = ({ userInfo }:{userInfo:object}) => {
   // save typed question
   const [value, setValue] = useState<string>('');
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -49,7 +49,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   const idAndToken = useMemo(() => ({
     token: (userInfo as any).token,
     id: (userInfo as any).id,
-  }), []);
+  }), [userInfo]);
 
   // if QuestionItems' count is > 15, we should make scroll Applicable
   const scrollClassName = questionsWithId.length > 5 ? 'questionItemsScroll' : '';
@@ -64,8 +64,8 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
           <h1 className="forum_header-title">Discussion Forum</h1>
           <div className="forum_header-inner">
             <ul className="forum_header-menu">
-              <li className={`forum_header-list forum_header-list${section ? '_active' : ''}`} onClick={() => dispatch(changeSection(true))}>Ask Peers</li>
-              <li className={`forum_header-list forum_header-list${!section ? '_active' : ''}`} onClick={() => dispatch(changeSection(false))}>Ask Mentor</li>
+              <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${section ? '_active' : ''}`} onClick={() => dispatch(changeSection(true))}>Ask Peers</button>
+              <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${!section ? '_active' : ''}`} onClick={() => dispatch(changeSection(false))}>Ask Mentor</button>
             </ul>
             <button data-testid="toggle-btn" type="button" onClick={() => dispatch(onOpen())} className={`btn ${AskQuestionClassName}`}>Ask Question</button>
           </div>

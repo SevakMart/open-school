@@ -37,6 +37,7 @@ export interface QuestionItemPopupProps {
   isAnimating: boolean;
   animatedFunction: AnimatedFunction;
   onClose: () => void;
+  isDisable: boolean;
   editQuestion: () => void;
   btnType: string
   btnTextType:string;

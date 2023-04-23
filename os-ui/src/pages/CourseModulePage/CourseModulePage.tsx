@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Route, Routes, useParams } from 'react-router-dom';
 import { userContext } from '../../contexts/Contexts';
 import CourseModuleSidebar from './Subcomponent/CourseModuleSidebar/CourseModuleSidebar';
 import styles from './CourseModulePage.module.scss';
@@ -10,6 +10,7 @@ import { getCourseDescription } from '../../redux/Slices/CourseDescriptionReques
 import { RootState } from '../../redux/Store';
 import { CourseDescriptionType } from '../../types/CourseTypes';
 import { setValue } from '../../redux/Slices/CourseModuleSlice';
+import DiscussionForum from './DiscussionPage/DiscussionForum';
 
 const CourseModulePage = ({ userInfo }:{userInfo:any}) => {
   const { entity } = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType };
@@ -36,7 +37,10 @@ const CourseModulePage = ({ userInfo }:{userInfo:any}) => {
         <userContext.Provider value={userInfo}>
           <div className={styles.ModuleOverviuw_container}>
             <CourseModuleSidebar />
-            <ModuleMainPage />
+            <Routes>
+              <Route path="" element={<ModuleMainPage />} />
+              <Route path="/discussionForum" element={<DiscussionForum userInfo={userInfo} />} />
+            </Routes>
           </div>
         </userContext.Provider>
       </>

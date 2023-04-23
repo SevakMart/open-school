@@ -29,13 +29,14 @@
 .forum_header-list {
   width: 90px;
   text-align: center;
-  list-style: none;
+  border-style: none;
   margin-left: 5px;
   padding: 1.5px;
   color: #717685;
+  font-size: 13px;
   &:hover {
     color: #6e6a6a;
-    margin-bottom: -4px;
+    // margin-bottom: -4px;
     font-weight: 600;
     cursor: pointer;
   }

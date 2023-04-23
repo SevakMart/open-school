@@ -26,7 +26,7 @@ describe('DiscussionForum', () => {
     const forumHeadertitle = screen.getByText(/Discussion Forum/i);
     const MenuListItemPeers = screen.getByText(/Ask Peers/i);
     const MenuListItemMentor = screen.getByText(/Ask Mentor/i);
-    const btn = screen.getByRole('button');
+    const btn = screen.getByTestId('toggle-btn');
     expect(forumHeadertitle).toBeInTheDocument;
     expect(MenuListItemPeers).toBeInTheDocument;
     expect(MenuListItemMentor).toBeInTheDocument;
