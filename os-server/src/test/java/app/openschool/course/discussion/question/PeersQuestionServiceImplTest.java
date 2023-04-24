@@ -239,13 +239,14 @@ class PeersQuestionServiceImplTest {
     Pageable pageable = PageRequest.of(0, 2);
     Page<PeersQuestion> questionPage = new PageImpl<>(List.of(question));
 
-    when(peersQuestionRepository.findQuestionByCourseId(enrolledCourseId, pageable))
+    when(peersQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable))
         .thenReturn(questionPage);
     Page<PeersQuestion> questionByCourseId =
         questionService.findQuestionByCourseId(enrolledCourseId, pageable);
 
     assertNotNull(questionByCourseId.stream().findFirst().orElseThrow());
-    verify(peersQuestionRepository, times(1)).findQuestionByCourseId(enrolledCourseId, pageable);
+    verify(peersQuestionRepository, times(1))
+        .findQuestionByEnrolledCourseId(enrolledCourseId, pageable);
   }
 
   @Test
@@ -253,14 +254,14 @@ class PeersQuestionServiceImplTest {
     long wrongEnrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 2);
 
-    when(peersQuestionRepository.findQuestionByCourseId(wrongEnrolledCourseId, pageable))
+    when(peersQuestionRepository.findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable))
         .thenReturn(Page.empty(pageable));
     Page<PeersQuestion> questionByCourseId =
         questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable);
 
     assertTrue(questionByCourseId.getContent().isEmpty());
     verify(peersQuestionRepository, times(1))
-        .findQuestionByCourseId(wrongEnrolledCourseId, pageable);
+        .findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable);
   }
 
   @Test

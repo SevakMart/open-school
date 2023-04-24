@@ -73,7 +73,7 @@ public class PeersQuestionServiceImpl implements QuestionService {
 
   @Override
   public Page<PeersQuestion> findQuestionByCourseId(Long enrolledCourseId, Pageable pageable) {
-    return peersQuestionRepository.findQuestionByCourseId(enrolledCourseId, pageable);
+    return peersQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable);
   }
 
   @Override
