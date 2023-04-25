@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import Loader from '../../../component/Loader/Loader';
 import {
   changeSection, onClose, onOpen,
@@ -11,7 +12,7 @@ import { Question } from './interfaces/interfaces';
 import AskQuestionPopup from './subcomponents/askQuestionPopup/AskQuestionPopup';
 import QuestionItem from './subcomponents/QuestionItem/QuestionItem';
 
-const DiscussionForum = ({ userInfo }:{userInfo:object}) => {
+const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   // save typed question
   const [value, setValue] = useState<string>('');
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -52,10 +53,17 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}) => {
   }), [userInfo]);
 
   // if QuestionItems' count is > 15, we should make scroll Applicable
-  const scrollClassName = questionsWithId.length > 5 ? 'questionItemsScroll' : '';
-  const AskQuestionClassName = questionsWithId.length > 5 ? 'askQuestionsScroll' : '';
+  const scrollClassName = questionsWithId.length > 15 ? 'questionItemsScroll' : '';
+  const AskQuestionClassName = questionsWithId.length > 15 ? 'askQuestionsScroll' : '';
 
+  // Link to the askPeers or askMentor pages
   const sectionName = section ? 'peers' : 'mentor';
+  const { courseId } = useParams();
+  const location = useLocation();
+  const currentPath = location.pathname;
+  let isBtnClicked = true;
+  if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`) isBtnClicked = true;
+  if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`) isBtnClicked = false;
 
   return (
     <div className="inner">
@@ -64,15 +72,24 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}) => {
           <h1 className="forum_header-title">Discussion Forum</h1>
           <div className="forum_header-inner">
             <ul className="forum_header-menu">
-              <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${section ? '_active' : ''}`} onClick={() => dispatch(changeSection(true))}>Ask Peers</button>
-              <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${!section ? '_active' : ''}`} onClick={() => dispatch(changeSection(false))}>Ask Mentor</button>
+              <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${isBtnClicked ? '_active' : ''}`} onClick={() => dispatch(changeSection(true))}>
+                <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`} className="forum_header-list_link">
+                  Ask Peers
+                </Link>
+              </button>
+              <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${!isBtnClicked ? '_active' : ''}`} onClick={() => dispatch(changeSection(false))}>
+                <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`} className="forum_header-list_link">
+                  Ask Mentor
+                </Link>
+              </button>
+
             </ul>
             <button data-testid="toggle-btn" type="button" onClick={() => dispatch(onOpen())} className={`btn ${AskQuestionClassName}`}>Ask Question</button>
           </div>
         </div>
         <div className={scrollClassName}>
           {
-            section ? (
+            isBtnClicked ? (
               questionsWithId.length ? (
                 questionsWithId.map((val) => (
                   <QuestionItem

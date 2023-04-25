@@ -1,0 +1,99 @@
+.Sidebar_container {
+  background: #ffffff;
+  height: 992px;
+  padding-left: 48px;
+  transform-origin: top left;
+}
+.Sidebar_container .ArrowRightIcon {
+  background: #ffffff;
+  border: none;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  color: #333941;
+  align-items: center;
+}
+.Sidebar_container .chevronIsOpen {
+  background: #ffffff;
+  cursor: pointer;
+  transform: rotate(90deg);
+  transition: 0.5s;
+  margin-left: 15px;
+}
+.Sidebar_container .chevronIsClosed {
+  background: #ffffff;
+  cursor: pointer;
+  transform: rotate(0deg);
+  transition: 0.5s;
+  margin-left: 15px;
+}
+.Sidebar_container .moduleDescriptionIsOpen {
+  margin-left: 25px;
+  width: 90%;
+}
+.Sidebar_container .moduleDescriptionIsClosed {
+  display: none;
+}
+.Sidebar_container .Sidebar_courseName {
+  color: #5E617B;
+  font-weight: 600;
+  font-size: 20px;
+}
+.Sidebar_container .SidebarOverview_button {
+  margin-top: 32px;
+  color: #333941;
+  font-size: 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.Sidebar_container .SidebarOverview_button:active {
+  color: #222427;
+  font-weight: 700;
+}
+.Sidebar_container .Checkbox_container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 36px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  color: #5E617B;
+}
+.Sidebar_container .Checkbox_container .Checkbox_checkmark {
+  position: absolute;
+  left: 0;
+  height: 24px;
+  width: 24px;
+  background-color: #EEEFF4;
+  border-radius: 15px;
+}
+.Sidebar_container .Checkbox_container .Checkbox_checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+.Sidebar_container .Checkbox_container input {
+  height: 0;
+  width: 0;
+}
+.Sidebar_container .Checkbox_container input:checked ~ .Checkbox_checkmark {
+  background-color: #4AB8A3;
+}
+.Sidebar_container .Checkbox_container input:checked ~ .Checkbox_checkmark:after {
+  display: block;
+}
+.Sidebar_container .Checkbox_container .Checkbox_checkmark:after {
+  left: 9px;
+  top: 6px;
+  width: 4px;
+  height: 8px;
+  border: solid #ffffff;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}/*# sourceMappingURL=Sidebar.module.css.map */

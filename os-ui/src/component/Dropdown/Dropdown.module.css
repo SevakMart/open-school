@@ -1,0 +1,12 @@
+.dropdownList {
+  list-style: none;
+}
+
+.dropdownList {
+  padding: 0;
+}
+
+.dropdownItem {
+  display: grid;
+  grid-template-columns: auto;
+}/*# sourceMappingURL=Dropdown.module.css.map */

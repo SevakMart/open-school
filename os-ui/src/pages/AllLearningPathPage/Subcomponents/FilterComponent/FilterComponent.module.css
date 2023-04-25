@@ -1,0 +1,17 @@
+.mainContainer {
+  width: 358px;
+  background-color: #ffffff;
+}
+.mainContainer .filterMainContent {
+  border-radius: 18px;
+  margin: 64px 26px 64px 48px;
+}
+.mainContainer .filterMainContent .mainTitle {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 24px;
+  color: #222427;
+  margin: 0;
+}/*# sourceMappingURL=FilterComponent.module.css.map */

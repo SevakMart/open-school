@@ -31,23 +31,23 @@
   text-align: center;
   border-style: none;
   margin-left: 5px;
-  padding: 5px 2px 3px 2px;
+  padding: 1.5px;
   font-size: 13px;
-  &:hover {
-    color: #6e6a6a;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  &_active {
-    border-bottom: 4px solid #52719e;
-    color: #3d3f42;
-    font-weight: 600;
-    margin-bottom: -4px;
-  }
-  &_link {
-    color: #717685;
-    text-decoration: none;
-  }
+}
+.forum_header-list:hover {
+  color: #6e6a6a;
+  font-weight: 600;
+  cursor: pointer;
+}
+.forum_header-list_active {
+  border-bottom: 4px solid #52719e;
+  color: #3d3f42;
+  font-weight: 600;
+  margin-bottom: -4px;
+}
+.forum_header-list_link {
+  color: #717685;
+  text-decoration: none;
 }
 
 .btn {
@@ -96,13 +96,12 @@
 
 .noQuestionsDiv {
   font-weight: 600;
-  font-size:30px;
+  font-size: 30px;
   margin-top: 20px;
   margin-left: 3px;
   color: #12cf5a;
 }
 
-//scroll
 .questionItemsScroll {
   height: 500px;
   overflow-y: scroll;
@@ -110,4 +109,4 @@
 
 .askQuestionsScroll {
   margin-right: 57px;
-}
+}/*# sourceMappingURL=DiscussionForum.css.map */

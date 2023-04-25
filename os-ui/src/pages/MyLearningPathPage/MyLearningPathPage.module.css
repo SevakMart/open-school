@@ -1,0 +1,48 @@
+/*.mainHeader {
+    @include fontStyle('Montserrat',normal,800,4rem,3.688rem);
+    color:#000000;
+    margin-top:3%;
+    padding-left:6%
+}
+
+.courseNavigationBar{
+    @include flexStyle(row,center,space-between);
+    padding-left:6%;
+    width:15%;
+    .activeNav{
+        cursor:pointer;
+        @include fontStyle('Montserrat',normal,600,1.25rem,1.5rem);
+        color:#222427;
+        border-bottom: 2px solid #222427 ;
+    }
+    .nonActiveNav {
+        @include fontStyle('Montserrat',normal,500,1rem,1.5rem);
+        color:#5E617B;
+        cursor:pointer;
+        &:hover {
+            color:#222427;
+        }
+    }
+}
+.courseContainer {
+    @include flexStyle(column,center,space-between);
+    padding-left:6%;
+    padding-right:6%;
+    .exploreCourseButton{
+        @include buttonStyle(transparent,#5E617B,1rem,14.125rem,4rem,2rem,2rem,1.375rem,1.375rem);
+        @include fontStyle('Montserrat',normal,500,1rem,1.25rem);
+        border: 1px solid #5E617B;
+        color: #5E617B;
+    }
+}
+.suggestedCoursesTitle{
+    @include fontStyle('Montserrat',normal,500,1rem,1.5rem);
+    color:#5E617B;
+    margin-top:5%;
+    padding-left:6%;
+}
+.suggestedCoursesContainer{
+    @include flexStyle(row,center,space-between);
+    padding-left:6%;
+    padding-right:6%;
+}*//*# sourceMappingURL=MyLearningPathPage.module.css.map */

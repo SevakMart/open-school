@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Dropdown from '../../../../component/Dropdown/Dropdown';
-import SidebarDropdown from './SidebarDropdown';
 import styles from './Sidebar.module.scss';
 import { COURSE_NAME } from '../../../../constants/CourseModuleCategories';
 import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
+import SidebarDropdown from './SidebarDropdown';
 import { RootState } from '../../../../redux/Store';
 import { setValue } from '../../../../redux/Slices/CourseModuleSlice';
 import { CourseDescriptionType } from '../../../../types/CourseTypes';
@@ -33,6 +33,8 @@ const CourseModuleSidebar = () => {
   const currentPath = location.pathname;
   let isbtnClicked = false;
   if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum`) isbtnClicked = true;
+  if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`) isbtnClicked = true;
+  if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`) isbtnClicked = true;
   if (currentPath === `/userCourse/modulOverview/${courseId}/`) isbtnClicked = false;
   const itemBtnclickedStyle = isbtnClicked ? { textDecoration: 'none', color: '#333941', fontWeight: '900' } : { textDecoration: 'none', color: '#333941' };
 

@@ -1,0 +1,57 @@
+.mainContainer {
+  width: 100%;
+  height: 100%;
+  background-image: conic-gradient(at 50% 38%, #EEEFF4 0deg, #EEEFF4 60deg, #FFFFFF 60deg, #FFFFFF 300deg, #EEEFF4 300deg, #EEEFF4 360deg);
+  border-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.mainContainer .closeIcon {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.mainContainer .closeIcon:hover {
+  background-color: #4BCEB5;
+}
+.mainContainer .mainContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: none;
+}
+.mainContainer .mainContent .textContent {
+  text-align: center;
+  margin: 31px 0 17px;
+}
+.mainContainer .mainContent .textContent h2 {
+  font-family: "Helvetica Neue";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 38px;
+  color: #123761;
+  margin: 0 0 8px;
+}
+.mainContainer .mainContent .textContent p {
+  font-family: "Helvetica Neue";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #848A9D;
+  margin: 0;
+}
+.mainContainer .mainContent .buttonContainer {
+  width: 100%;
+}/*# sourceMappingURL=ModalMessageComponent.module.css.map */

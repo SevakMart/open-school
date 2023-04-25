@@ -1,0 +1,59 @@
+.mainContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: none;
+  background-color: #ffffff;
+  border-radius: 20px;
+  margin: 0 88px;
+}
+.mainContainer .courseTitle {
+  font-family: "Helvetica Neue";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  text-decoration-line: underline;
+  color: #222427;
+  margin: 54px 284px 54px 48px;
+}
+.mainContainer .container {
+  margin: 43px 89px;
+}
+.mainContainer .container .containerTitle {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #848A9D;
+  margin: 0;
+}
+.mainContainer .container .gradeContent {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #333941;
+}
+.mainContainer .container .statusContent {
+  background-color: #D9DBE9;
+  border-radius: 16px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #5E617B;
+  padding: 0.344rem 1rem 0.344rem 1rem;
+}
+.mainContainer .buttonContainer {
+  margin-left: 184px;
+}
+.mainContainer .separator {
+  background-color: #EEEFF4;
+  border-radius: 7px;
+  width: 2px;
+  height: 73px;
+}/*# sourceMappingURL=CompletedCourse.module.css.map */

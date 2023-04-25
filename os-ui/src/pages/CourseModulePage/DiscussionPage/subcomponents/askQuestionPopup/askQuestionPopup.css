@@ -1,0 +1,127 @@
+.popup {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+}
+
+.popup.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.popup.animating {
+  transition: none;
+}
+
+.popup-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+  position: relative;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  min-width: 500px;
+  min-height: 210px;
+  overflow: auto;
+}
+
+.popup-title {
+  padding-top: 4px;
+  padding-left: 10px;
+  color: #1E426A;
+  font-weight: 600;
+  font-size: 20px;
+  font-style: bold;
+}
+
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  padding: 10px;
+  color: #888EA0;
+  font-size: 17px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.buttons {
+  margin-top: 20px;
+  margin-right: -20px;
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+
+.btn_post {
+  background-color: #F0866F;
+  border-style: none;
+  color: #f4f8f7;
+  border-radius: 10px;
+  width: 70px;
+  height: 30px;
+  cursor: pointer;
+}
+.btn_post:hover {
+  background-color: #ff9982;
+  color: #f4f8f7;
+  width: 71px;
+  height: 31px;
+  margin-bottom: -1px;
+  margin-left: -1px;
+  position: relative;
+}
+.btn_post:active {
+  background-color: #f74a24;
+}
+.btn_cancel {
+  background-color: #F9F9FD;
+  border-style: none;
+  color: #8D9ABC;
+  border: #8D9ABC 1px solid;
+  border-radius: 10px;
+  width: 70px;
+  height: 30px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.btn_cancel:hover {
+  width: 71px;
+  height: 31px;
+  margin-bottom: -1px;
+  margin-left: -1px;
+  border: #7b93d1 2px solid;
+  color: #4c6bb8;
+  position: relative;
+}
+.btn_cancel:active {
+  width: 71px;
+  height: 31px;
+  background-color: #e0e3ec;
+  color: #7589bb;
+}
+
+.question_textArea {
+  border: #cfd0d4 1px solid;
+  border-radius: 10px;
+  height: 100px;
+  padding: 10px;
+}/*# sourceMappingURL=askQuestionPopup.css.map */

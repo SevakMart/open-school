@@ -1,0 +1,27 @@
+.overlayStyles {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.9;
+  background-color: #222427;
+  z-index: 100;
+}
+
+.modalStyles {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 40%;
+  height: 90%;
+  background-color: #ffffff;
+  transform: translate(-50%, -50%);
+  overflow-y: auto;
+  scrollbar-width: none;
+  border-radius: 40px;
+  z-index: 100;
+}
+.modalStyles::-webkit-scrollbar {
+  display: none;
+}/*# sourceMappingURL=FormPortal.module.css.map */

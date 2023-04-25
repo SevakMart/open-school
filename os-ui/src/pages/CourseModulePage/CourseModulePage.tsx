@@ -39,7 +39,7 @@ const CourseModulePage = ({ userInfo }:{userInfo:any}) => {
             <CourseModuleSidebar />
             <Routes>
               <Route path="" element={<ModuleMainPage />} />
-              <Route path="/discussionForum" element={<DiscussionForum userInfo={userInfo} />} />
+              <Route path="/discussionForum/*" element={<DiscussionForum userInfo={userInfo} />} />
             </Routes>
           </div>
         </userContext.Provider>

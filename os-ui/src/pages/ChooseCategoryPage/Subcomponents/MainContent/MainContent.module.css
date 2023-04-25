@@ -1,0 +1,8 @@
+.categoriesList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 64px 127px;
+  justify-content: center;
+  margin: 42px 88px 0;
+  box-sizing: border-box;
+}/*# sourceMappingURL=MainContent.module.css.map */

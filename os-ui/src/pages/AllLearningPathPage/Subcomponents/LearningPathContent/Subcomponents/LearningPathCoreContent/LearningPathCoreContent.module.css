@@ -1,0 +1,6 @@
+.mainCoreContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px 32px;
+  justify-content: none;
+}/*# sourceMappingURL=LearningPathCoreContent.module.css.map */

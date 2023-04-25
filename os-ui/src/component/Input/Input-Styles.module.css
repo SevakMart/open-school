@@ -1,0 +1,74 @@
+.textInputContainer, .EmailInputContainer, .PasswordInputContainer {
+  position: relative;
+  width: 100%;
+  margin-bottom: 4%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.textInputContainer input, .textInputContainer .PasswordInputFieldWithIcon, .EmailInputContainer input, .EmailInputContainer .PasswordInputFieldWithIcon, .PasswordInputContainer input, .PasswordInputContainer .PasswordInputFieldWithIcon {
+  width: 100%;
+  border: 1px solid #d9dbe9;
+  box-sizing: border-box;
+  border-radius: 0.75rem;
+  height: 3.5rem;
+  margin-top: 2%;
+}
+.textInputContainer label, .EmailInputContainer label, .PasswordInputContainer label {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: #333941;
+}
+
+.PasswordInputFieldWithIcon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.PasswordInputFieldWithIcon input {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  height: 100%;
+}
+.PasswordInputFieldWithIcon input:focus {
+  outline: none;
+}
+
+.search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: none;
+  box-sizing: border-box;
+  height: 56px;
+  background-color: #ffffff;
+  border-radius: 12px;
+}
+.search input {
+  border: 0;
+  height: 100%;
+  width: 80%;
+  margin: 0 0 0 8px;
+  padding: 0;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #5E617B;
+}
+.search input:focus {
+  outline: none;
+}
+.search__subcategoriesSearch {
+  margin: 0 88px;
+}
+.search__allLearningPathSearch {
+  margin: 8px 0 0 0;
+}/*# sourceMappingURL=Input-Styles.module.css.map */

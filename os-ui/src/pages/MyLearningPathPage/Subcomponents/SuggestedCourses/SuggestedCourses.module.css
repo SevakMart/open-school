@@ -1,0 +1,22 @@
+.mainContainer {
+  margin: 156px 88px 130px;
+  box-sizing: border-box;
+}
+.mainContainer .mainTitle {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #5E617B;
+  margin-top: 0;
+}
+.mainContainer .noSuggestedCourses {
+  text-align: center;
+}
+.mainContainer .suggestedCoursesContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0 32px;
+  justify-content: center;
+}/*# sourceMappingURL=SuggestedCourses.module.css.map */

@@ -1,0 +1,51 @@
+.mainContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: none;
+  justify-content: space-between;
+  padding: 4% 5% 7% 6.25%;
+}
+.mainContainer h2 {
+  display: inline;
+  width: 30%;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 3rem;
+  line-height: 3.688rem;
+  color: #333941;
+}
+.mainContainer .buttonContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 35%;
+}
+.mainContainer .buttonContainer button:nth-of-type(1) {
+  background-color: #5e617b;
+  color: #ffffff;
+  border-radius: 1rem;
+  width: none;
+  height: 4rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1.375rem;
+  padding-bottom: 1.375rem;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.mainContainer .buttonContainer button:nth-of-type(2) {
+  background-color: transparent;
+  color: #5e617b;
+  border-radius: 1rem;
+  width: none;
+  height: 4rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1.375rem;
+  padding-bottom: 1.375rem;
+  cursor: pointer;
+  border: 1px solid #5e617b;
+  text-transform: uppercase;
+}/*# sourceMappingURL=VerifyMessage.module.css.map */

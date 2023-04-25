@@ -2,6 +2,7 @@ import { createStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import rootReducer from '../../../../redux/RootReducer';
 import DiscussionForum from '../DiscussionForum';
 
@@ -14,7 +15,9 @@ describe('DiscussionForum', () => {
   const store = createStore(rootReducer);
   render(
     <Provider store={store}>
-      <DiscussionForum userInfo={userInfo} />
+      <BrowserRouter>
+        <DiscussionForum userInfo={userInfo} />
+      </BrowserRouter>
     </Provider>,
   );
 
@@ -37,7 +40,9 @@ describe('DiscussionForum', () => {
     const store = createStore(rootReducer);
     render(
       <Provider store={store}>
-        <DiscussionForum userInfo={userInfo} />
+        <BrowserRouter>
+          <DiscussionForum userInfo={userInfo} />
+        </BrowserRouter>
       </Provider>,
     );
 

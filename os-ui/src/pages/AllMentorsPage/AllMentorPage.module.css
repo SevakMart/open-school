@@ -1,0 +1,8 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: none;
+  justify-content: space-between;
+  padding-left: 6%;
+  padding-right: 6%;
+}/*# sourceMappingURL=AllMentorPage.module.css.map */

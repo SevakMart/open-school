@@ -1,0 +1,18 @@
+.checkedContentClass {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: none;
+}
+.checkedContentClass img {
+  margin-right: 12px;
+}
+.checkedContentClass p {
+  display: inline;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #5E617B;
+}/*# sourceMappingURL=CheckedContent.module.css.map */

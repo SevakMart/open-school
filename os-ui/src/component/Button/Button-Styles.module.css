@@ -1,0 +1,224 @@
+.headerButton {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  text-transform: uppercase;
+  border: none;
+}
+.headerButton__signUp {
+  background-color: #4BCEB5;
+  color: #ffffff;
+  border-radius: 1rem;
+  width: none;
+  height: 4rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1.375rem;
+  padding-bottom: 1.375rem;
+  cursor: pointer;
+}
+.headerButton__signIn {
+  background-color: transparent;
+  color: #222427;
+  border-radius: 1rem;
+  width: none;
+  height: 4rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1.375rem;
+  padding-bottom: 1.375rem;
+  cursor: pointer;
+}
+.headerButton__signIn:hover {
+  background-color: #4BCEB5;
+  color: #ffffff;
+}
+
+.signUpFooter {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  text-transform: uppercase;
+  margin-right: 5%;
+  border: none;
+}
+.signUpFooter__student {
+  background-color: #4BCEB5;
+  color: #ffffff;
+  border-radius: 1rem;
+  width: none;
+  height: 4rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1.375rem;
+  padding-bottom: 1.375rem;
+  cursor: pointer;
+}
+.signUpFooter__mentor {
+  background-color: transparent;
+  color: #ffffff;
+  border-radius: 1rem;
+  width: none;
+  height: 4rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1.375rem;
+  padding-bottom: 1.375rem;
+  cursor: pointer;
+}
+.signUpFooter__mentor:hover {
+  background-color: #4BCEB5;
+  color: #ffffff;
+}
+
+.mainMentorRegistrationButton, .exploreCourseButton, .rateCourse {
+  background-color: transparent;
+  color: #5E617B;
+  border-radius: 1rem;
+  width: none;
+  height: 4rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1.375rem;
+  padding-bottom: 1.375rem;
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  border: 1px solid #5E617B;
+  text-transform: uppercase;
+}
+
+.navbarSignInButton {
+  background-color: #333941;
+  color: #ffffff;
+  border-radius: 1.25rem;
+  width: none;
+  height: 2.2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 0.938rem;
+  text-transform: uppercase;
+}
+
+.formButton {
+  background-color: #4BCEB5;
+  color: #ffffff;
+  border-radius: 1rem;
+  width: 100%;
+  height: 4.5rem;
+  padding-left: none;
+  padding-right: none;
+  padding-top: none;
+  padding-bottom: none;
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  display: block;
+  text-align: center;
+  box-sizing: border-box;
+  border: none;
+  margin-top: 24px;
+}
+.formButton__resendEmail {
+  margin-bottom: 24px;
+}
+
+.account {
+  background-color: transparent;
+  border: none;
+  color: #333941;
+  cursor: pointer;
+}
+
+.nextButton {
+  background-color: #4BCEB5;
+  color: #ffffff;
+  border-radius: 1rem;
+  width: 100%;
+  height: 64px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-top: 22px;
+  padding-bottom: 22px;
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  border: none;
+}
+
+.resumeCourse {
+  background-color: #4BCEB5;
+  color: #ffffff;
+  border-radius: 1rem;
+  width: 100%;
+  height: 64px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  border: none;
+}
+
+.courseSummaryButton {
+  background-color: #4BCEB5;
+  color: #ffffff;
+  border-radius: 1rem;
+  width: 400px;
+  height: 60px;
+  padding-left: 166px;
+  padding-right: 166px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  border: none;
+}
+
+.startEnrolledCourse {
+  background-color: #4BCEB5;
+  color: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  height: 52px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  border: none;
+}/*# sourceMappingURL=Button-Styles.module.css.map */

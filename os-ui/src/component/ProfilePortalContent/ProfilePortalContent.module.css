@@ -1,0 +1,11 @@
+.mainContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: none;
+  border: solid;
+  cursor: pointer;
+}
+.mainContent .iconContainer, .mainContent .titleContent {
+  margin: 0 24px 0;
+}/*# sourceMappingURL=ProfilePortalContent.module.css.map */

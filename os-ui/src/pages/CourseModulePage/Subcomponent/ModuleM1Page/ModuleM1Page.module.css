@@ -1,0 +1,45 @@
+.Main_container {
+  background: #EEEFF4;
+}
+.Main_container .Main_M1_header {
+  font-size: 36px;
+  line-height: 44px;
+  color: #333941;
+  margin: 64px 0 0 24px;
+}
+.Main_container .Main_SumTime {
+  margin: 8px 0 45px 24px;
+  color: #5E617B;
+}
+.Main_container .Course_Material {
+  background-color: transparent;
+  border: none;
+  font-weight: 600;
+  font-size: 20px;
+  color: #333941;
+  margin-left: 17px;
+}
+.Main_container .chevronIsOpen {
+  cursor: pointer;
+  transform: rotate(90deg);
+  transition: 0.5s;
+  margin-left: 15px;
+}
+.Main_container .chevronIsClosed {
+  cursor: pointer;
+  transform: rotate(0deg);
+  transition: 0.5s;
+  margin-left: 15px;
+}
+.Main_container .moduleDescriptionIsOpen {
+  margin-left: 25px;
+  width: 90%;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 25px;
+}
+.Main_container .moduleDescriptionIsClosed {
+  display: none;
+}/*# sourceMappingURL=ModuleM1Page.module.css.map */

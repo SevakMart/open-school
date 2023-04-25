@@ -32,6 +32,18 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
     }, 300);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // prevent newline in textarea
+      animatedFunction(handleAddQuestion);
+    }
+
+    if (event.key === 'Escape') {
+      event.preventDefault(); // prevent newline in textarea
+      animatedFunction(handleClose);
+    }
+  };
+
   return (
     <div className={`popup ${isOpen ? 'open' : ''} ${isAnimating ? 'animating' : ''}`}>
       <div className="popup-overlay" data-testid="close-btn" onClick={() => { animatedFunction(handleClose); }} />
@@ -39,7 +51,17 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
         <div className="popup-title">Ask Question</div>
         <button type="button" className="close-button" data-testid="close-x-btn" onClick={() => { animatedFunction(handleClose); }}>x</button>
         <div className="question_textArea-div">
-          <textarea className="question_textArea" data-testid="question-textarea" id="fname" name="fname" ref={textAreaRef} value={value} onChange={handleChange} placeholder="Ask your question here" />
+          <textarea
+            className="question_textArea"
+            data-testid="question-textarea"
+            id="fname"
+            name="fname"
+            ref={textAreaRef}
+            value={value}
+            onChange={handleChange}
+            placeholder="Ask your question here"
+            onKeyDown={handleKeyDown}
+          />
           <div className="buttons">
             <button type="button" onClick={() => { animatedFunction(handleClose); }} className="btn_cancel" data-testid="close-cancel-btn">Cancel</button>
             <button type="button" onClick={() => { animatedFunction(handleAddQuestion); }} disabled={!value} data-testid="post-btn" className="btn_post">Post</button>

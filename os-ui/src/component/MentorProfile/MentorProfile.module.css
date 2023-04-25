@@ -1,0 +1,90 @@
+.mainContainer .headerContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 30%;
+  box-sizing: border-box;
+  border-radius: 1.25rem 1.25rem 0 0;
+  background-color: #52719E;
+  padding-left: 6%;
+  padding-right: 6%;
+}
+.mainContainer .headerContainer .MailLinkedinIconsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 30%;
+}
+.mainContainer .headerContainer p {
+  cursor: pointer;
+  color: #ffffff;
+}
+.mainContainer .bodyContainer {
+  background-color: #EEEFF4;
+  border-radius: 0 0 1.25rem 1.25rem;
+}
+.mainContainer .bodyContainer .mentorInfoContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.mainContainer .bodyContainer .mentorInfoContainer .mentorAvatar {
+  width: 35%;
+}
+.mainContainer .bodyContainer .mentorInfoContainer .mentorAvatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.mainContainer .bodyContainer .mentorInfoContainer .mentorInfo h3 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: #222427;
+}
+.mainContainer .bodyContainer .mentorInfoContainer .mentorInfo p:nth-of-type(1) {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.625rem;
+  line-height: 0.75rem;
+  color: #848a9d;
+}
+.mainContainer .bodyContainer .mentorInfoContainer .mentorInfo p:nth-of-type(2) {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 0.938rem;
+  color: #5E617B;
+}
+.mainContainer .bodyContainer .mentorExtraInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 40%;
+  margin-left: 6%;
+}
+.mainContainer .bodyContainer .mentorExtraInfo p {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 0.75rem;
+  line-height: 0.938rem;
+  color: #222427;
+}
+.mainContainer .bodyContainer .mentorExtraInfo p::before {
+  content: "Total Courses: ";
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 0.938rem;
+  color: #848a9d;
+}/*# sourceMappingURL=MentorProfile.module.css.map */

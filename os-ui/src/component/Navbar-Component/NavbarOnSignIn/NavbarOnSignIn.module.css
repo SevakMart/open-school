@@ -1,0 +1,62 @@
+.mainContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 88px;
+  box-sizing: border-box;
+  background-color: #F9F9FD;
+}
+.mainContent h2 {
+  font-family: "Helvetica Neue";
+  font-style: italic;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  color: #222427;
+  margin: 0;
+  cursor: pointer;
+}
+.mainContent .navMainContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.mainContent .navMainContent p {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #5E617B;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin: 0 0 0 32px;
+}
+.mainContent .navMainContent .bookmarkIconStyle {
+  margin: 0 0 0 25px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+.mainContent .navMainContent .notificationIcon {
+  margin: 0 0 0 25px;
+  cursor: pointer;
+}
+.mainContent .navMainContent .userInfoContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  margin: 0 0 0 25px;
+}
+.mainContent .navMainContent .userInfoContent .avatarLogo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+.mainContent .navMainContent .userInfoContent .arrowDownIcon {
+  cursor: pointer;
+}/*# sourceMappingURL=NavbarOnSignIn.module.css.map */

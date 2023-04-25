@@ -1,0 +1,12 @@
+.mentorMainContainer {
+  margin: 0 2.7%;
+  border-radius: 2.5rem;
+  background-color: #F9FAFD;
+  box-sizing: border-box;
+}
+.mentorMainContainer .gridContent {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px 32px;
+  justify-content: center;
+}/*# sourceMappingURL=Mentors.module.css.map */

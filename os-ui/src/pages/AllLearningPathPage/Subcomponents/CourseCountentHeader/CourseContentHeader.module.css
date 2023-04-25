@@ -1,0 +1,42 @@
+.headerMainContainer {
+  margin-bottom: 32px;
+}
+.headerMainContainer .navAndSortContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.headerMainContainer .navAndSortContent nav .activeNav, .headerMainContainer .navAndSortContent nav .nonActiveNav {
+  display: inline-block;
+  margin-right: 24px;
+  margin-top: 0;
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  color: #222427;
+  border-bottom: 4px solid #222427;
+}
+.headerMainContainer .navAndSortContent nav .nonActiveNav {
+  border: none;
+  color: #5E617B;
+}
+.headerMainContainer .navAndSortContent .sortingContainer {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+}
+.headerMainContainer .navAndSortContent .sortingContainer label {
+  color: #848A9D;
+}
+.headerMainContainer .navAndSortContent .sortingContainer select {
+  background-color: transparent;
+  outline: none;
+  border: 0px;
+  cursor: pointer;
+}/*# sourceMappingURL=CourseContentHeader.module.css.map */

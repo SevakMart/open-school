@@ -1,0 +1,73 @@
+.mainContainer .header {
+  background-color: #52719E;
+  border-radius: 40px 40px 0 0;
+  padding: 26.5px 32px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.mainContainer .header .difficultyContent {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #ffffff;
+  margin: 0;
+}
+.mainContainer .header .bookmarkIcon {
+  margin: 0;
+  color: #ffffff;
+}
+.mainContainer .mainBody {
+  background-color: #ffffff;
+  border-radius: 0 0 40px 40px;
+  padding: 24px 24px 32px;
+}
+.mainContainer .mainBody .ratingContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 47px;
+  color: #5E617B;
+}
+.mainContainer .mainBody .ratingContent .iconStyle {
+  margin: 0;
+}
+.mainContainer .mainBody .ratingContent .ratingValue {
+  margin: 0;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+}
+.mainContainer .mainBody .courseTitle {
+  display: inline;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  color: #222427;
+}
+.mainContainer .mainBody .keywordsContent {
+  margin-top: 34px;
+}
+.mainContainer .mainBody .keywordsContent .keyword {
+  display: inline-block;
+  background-color: #EEEFF4;
+  border-radius: 20px;
+  padding: 2.5px 8px;
+  margin-right: 8px;
+}
+.mainContainer .mainBody .keywordsContent .keyword, .mainContainer .mainBody .keywordsContent p {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #848A9D;
+}/*# sourceMappingURL=LearningPath.module.css.map */

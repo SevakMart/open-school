@@ -1,0 +1,7 @@
+.mainContent {
+  margin: 48px 88px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}/*# sourceMappingURL=CourseDescriptionPage.module.css.map */
