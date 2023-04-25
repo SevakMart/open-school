@@ -4,7 +4,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import Loader from '../../../component/Loader/Loader';
 import {
   changeSection, onClose, onOpen,
-} from '../../../redux/Slices/AskQuestionSlice';
+} from '../../../redux/Slices/UpdateQuestionSlice';
 import { RootState } from '../../../redux/Store';
 import { CourseDescriptionType } from '../../../types/CourseTypes';
 import './DiscussionForum.scss';
@@ -25,7 +25,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   const { entity } = courseDescriptionState;
 
   const dispatch = useDispatch();
-  const AllQuestionsState = useSelector<RootState>((state) => state.AskQuestion) as {
+  const AllQuestionsState = useSelector<RootState>((state) => state.UpdateQuestion) as {
      questionsWithId: Question[],
      questionsWithIdToMentor: Question[],
      isLoading: boolean,
@@ -65,6 +65,9 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`) isBtnClicked = true;
   if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`) isBtnClicked = false;
 
+  // set the value of section to true initially when DiscussionForum opens
+  dispatch(changeSection(true));
+
   return (
     <div className="inner">
       <div className="container">
@@ -72,8 +75,8 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
           <h1 className="forum_header-title">Discussion Forum</h1>
           <div className="forum_header-inner">
             <ul className="forum_header-menu">
-              <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${isBtnClicked ? '_active' : ''}`} onClick={() => dispatch(changeSection(true))}>
-                <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`} className="forum_header-list_link">
+              <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${isBtnClicked ? '_active' : ''}`}>
+                <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`} className="forum_header-list_link" onClick={() => dispatch(changeSection(true))}>
                   Ask Peers
                 </Link>
               </button>

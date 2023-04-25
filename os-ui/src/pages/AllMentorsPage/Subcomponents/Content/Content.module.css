@@ -1,7 +1,0 @@
-.mainContent {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 32px 32px;
-  justify-content: none;
-  margin: 32px 88px;
-}/*# sourceMappingURL=Content.module.css.map */

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { addQuestion } from '../../../../../redux/Slices/AskQuestionSlice';
+import { addQuestion } from '../../../../../redux/Slices/UpdateQuestionSlice';
 import { PopupProps } from '../../interfaces/interfaces';
 import './askQuestionPopup.scss';
 

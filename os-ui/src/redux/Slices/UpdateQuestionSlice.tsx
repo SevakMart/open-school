@@ -5,7 +5,7 @@ import { Question } from '../../pages/CourseModulePage/DiscussionPage/interfaces
 import fetchData from '../../services/fetchData';
 import {
   EditQuestionPayload, PeersState, PostQuestionsPayload, RemoveQuestionPayload,
-} from '../interfaces/AskQuestionSliceInterface';
+} from '../interfaces/UpdateQuestionSliceInterface';
 
 // Define the initial state for the "peers" slice
 const initialState: PeersState = {
@@ -95,7 +95,7 @@ export const removeQuestion = createAsyncThunk(
   },
 );
 
-export const AskQuestionSlice = createSlice({
+export const UpdateQuestionSlice = createSlice({
   name: 'peers',
   initialState,
   reducers: {
@@ -163,5 +163,5 @@ export const AskQuestionSlice = createSlice({
   },
 });
 
-export const { onOpen, onClose, changeSection } = AskQuestionSlice.actions;
-export default AskQuestionSlice.reducer;
+export const { onOpen, onClose, changeSection } = UpdateQuestionSlice.actions;
+export default UpdateQuestionSlice.reducer;
