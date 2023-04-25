@@ -1,13 +1,16 @@
 package app.openschool.course.api;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import app.openschool.common.utils.MathUtil;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.dto.CourseDto;
 import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.module.item.ModuleItem;
 import app.openschool.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-public class CourseMapperTest {
+class CourseMapperTest {
   Course course;
 
   @BeforeEach
@@ -25,13 +28,13 @@ public class CourseMapperTest {
   }
 
   @Test
-  public void toCourseDtoTest() {
+  void toCourseDtoTest() {
     CourseDto actual = CourseMapper.toCourseDto(course);
     assertThat(actual).hasOnlyFields("id", "title", "rating", "difficulty", "keywords");
   }
 
   @Test
-  public void toCourseInfoDto() {
+  void toCourseInfoDto() {
 
     Authentication authentication = Mockito.mock(Authentication.class);
     SecurityContext securityContext = Mockito.mock(SecurityContext.class);
@@ -41,9 +44,18 @@ public class CourseMapperTest {
     when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(authentication);
     when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn("email");
 
+    Course generateCourse = CourseGenerator.generateCourseWithEnrolledCourses();
+    double estimatedTimeBeforeRounded =
+        generateCourse.getModules().stream()
+            .flatMapToDouble(
+                module ->
+                    module.getModuleItems().stream().mapToDouble((ModuleItem::getEstimatedTime)))
+            .sum();
 
     CourseInfoDto actual =
-        CourseMapper.toCourseInfoDto(CourseGenerator.generateCourseWithEnrolledCourses());
+        CourseMapper.toCourseInfoDto(generateCourse);
+
+    assertEquals(MathUtil.getRoundedHours(estimatedTimeBeforeRounded), actual.getDuration());
     assertThat(actual)
         .hasOnlyFields(
             "enrolledCourseId",
@@ -61,7 +73,7 @@ public class CourseMapperTest {
   }
 
   @Test
-  public void toEnrolledCourse() {
+  void toEnrolledCourse() {
     EnrolledCourse actual =
         CourseMapper.toEnrolledCourse(CourseGenerator.generateCourse(), new User(1L));
 

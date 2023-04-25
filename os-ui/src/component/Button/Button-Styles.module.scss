@@ -40,6 +40,7 @@
     @include fontStyle($primary-font, normal, 500, 1rem, 1.5rem);
     border: 1px solid $main-text-color;
     text-transform: uppercase;
+	margin-top : 68px;
 }
 
 .navbarSignInButton {
@@ -71,11 +72,50 @@
     @include fontStyle($primary-font, normal, 500, 1rem, 1.25rem);
     border:none;
 }
+
 .resumeCourse {
-    @include buttonStyle($secondary-color,$white-text-color,1rem,100%,64px,32px,32px,16px,16px);
-    @include fontStyle($primary-font, normal, 500, 16px, 20px);
-    border:none;
+	@include fontStyle($primary-font, normal, 500, 20px, 20px);
+	padding: 16px 32px;
+	background-color: $secondary-color;
+	border-radius: 16px;
+	color: $white-text-color;
+	border: none;
+	cursor: pointer;
+	
+	&:hover {
+	opacity: 0.8;
+	}
 }
+	@media (max-width: 2000px) {
+	.resumeCourse {
+	font-size: 18px;
+	}
+}
+	@media (max-width: 1500px) {
+	.resumeCourse {
+	padding-right: 25px;
+	padding-left: 25px;
+	}
+}
+	@media (max-width: 1200px) {
+	.resumeCourse {
+	font-size: 16px;
+	}
+}
+	
+	@media (max-width: 1024px) {
+	.resumeCourse {
+	padding: 12px 24px;
+	}
+}
+	
+	@media (max-width: 767px) {
+	.resumeCourse {
+	font-size: 14px;
+	padding: 12px 24px;
+	}
+}
+  
 .courseSummaryButton {
     @include buttonStyle($secondary-color,$white-text-color,1rem,400px,60px,166px,166px,20px,20px);
     @include fontStyle($primary-font, normal, 500, 16px, 20px);

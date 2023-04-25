@@ -3,7 +3,7 @@ import BookmarkIcon from '../../icons/Bookmark';
 import StarIcon from '../../icons/Star';
 import { SuggestedCourseType } from '../../types/CourseTypes';
 import styles from './LearningPath.module.scss';
-/* eslint-disable max-len */
+
 const LearningPath = ({ courseInfo, saveCourse, deleteCourse }:
   {courseInfo:SuggestedCourseType, saveCourse?:(courseTitle:string, courseId:number)=>void, deleteCourse?:(courseTitle:string, courseId:number)=>void, }) => {
   const {
@@ -16,12 +16,15 @@ const LearningPath = ({ courseInfo, saveCourse, deleteCourse }:
     navigate(`/userCourse/${courseInfo.id}`);
   };
 
+  const handleBookmarkClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+  };
+
   return (
     <div className={mainContainer}>
-      <div className={header}>
-        {/* eslint-disable-next-line max-len */}
+      <div className={header} onClick={headToCourseDescriptionPage}>
         <p data-testid={courseInfo.difficulty} className={difficultyContent}>{courseInfo.difficulty}</p>
-        <p className={bookmarkIcon}>
+        <p className={bookmarkIcon} onClick={handleBookmarkClick}>
           <BookmarkIcon
             iconSize="1rem"
             courseId={courseInfo.id}

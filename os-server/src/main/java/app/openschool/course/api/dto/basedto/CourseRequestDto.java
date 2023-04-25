@@ -32,24 +32,7 @@ public abstract class CourseRequestDto {
   @NotEmpty(message = "{argument.required}")
   private Set<Long> keywordIds;
 
-  public CourseRequestDto() {}
-
-  public CourseRequestDto(
-      String title,
-      String description,
-      String goal,
-      Long categoryId,
-      Integer difficultyId,
-      Integer languageId,
-      Set<Long> keywordIds) {
-    this.title = title;
-    this.description = description;
-    this.goal = goal;
-    this.categoryId = categoryId;
-    this.difficultyId = difficultyId;
-    this.languageId = languageId;
-    this.keywordIds = keywordIds;
-  }
+  protected CourseRequestDto() {}
 
   public String getTitle() {
     return title;

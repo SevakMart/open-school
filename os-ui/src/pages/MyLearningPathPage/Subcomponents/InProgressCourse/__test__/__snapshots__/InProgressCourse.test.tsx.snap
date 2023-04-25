@@ -74,7 +74,7 @@ exports[`Create test cases for InProgress component Create a snapshot test 1`] =
       <p
         class="containerTitle"
       >
-        string.myLearningPaths.inProgressCourse.status
+        Status
       </p>
       <p
         class="statusContent"
@@ -92,7 +92,7 @@ exports[`Create test cases for InProgress component Create a snapshot test 1`] =
       <p
         class="containerTitle"
       >
-        string.myLearningPaths.inProgressCourse.dueDate
+        Due Date
       </p>
       <div
         class="dueDateContainer"

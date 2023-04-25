@@ -1,23 +1,26 @@
-import { useCheck } from '../../../../custom-hooks/useCheck';
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import CheckedSubcategory from '../../../../assets/svg/CategoriesChecked.svg';
 import UncheckedSubcategory from '../../../../assets/svg/CategoriesUnchecked.svg';
-import { addFilterParams, removeFilterParams } from '../../../../redux/Slices/AllLearningPathFilterParamsSlice';
+import { addFilterParams, removeFilterParams, resetFilterParams } from '../../../../redux/Slices/AllLearningPathFilterParamsSlice';
 import styles from './CheckedContent.module.scss';
-
-/* eslint-disable max-len */
 
 const CheckedContent = ({ id, checkedContent, filterFeature }:
   {id:string, checkedContent:string, filterFeature:string}) => {
-  const [isChecked, handleChecking, dispatch] = useCheck(checkedContent, id);
+  const [isChecked, setIsChecked] = useState(false);
   const { checkedContentClass } = styles;
+  const dispatch = useDispatch();
 
   const handleCheck = () => {
-    /* The state change will occur after dispatching the action so the the dispatched actions should be reversed */
     if (isChecked) {
       dispatch(removeFilterParams({ [filterFeature]: id }));
     } else dispatch(addFilterParams({ [filterFeature]: id }));
-    handleChecking();
+    setIsChecked((prevState) => !prevState);
   };
+
+  useEffect(() => () => {
+    dispatch(resetFilterParams());
+  }, []);
 
   return (
     <div className={checkedContentClass}>

@@ -1,0 +1,349 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CourseModuleSidebar calls handleChangeValue when clicking the Overview button 1`] = `
+<DocumentFragment>
+  <div
+    class="Sidebar_container"
+  >
+    <h4
+      class="Sidebar_courseName"
+    >
+      Course Name
+    </h4>
+    <div
+      class="dropdown"
+    >
+      <button
+        class="ArrowRightIcon"
+        type="button"
+      >
+        Overview
+        <img
+          alt="chevron"
+          class="chevronIsOpen"
+          src="ArrowRight.svg"
+        />
+         
+      </button>
+      <ul
+        class="dropdownList"
+      >
+        <li
+          class="dropdownItem"
+        >
+          <div
+            class="moduleDescriptionIsOpen"
+            data-testid="moduleListOpen"
+          >
+            <label
+              class="Checkbox_container"
+            >
+              <input
+                name="category"
+                type="radio"
+                value="Module 1"
+              />
+              <span
+                class="Checkbox_checkmark"
+              />
+            </label>
+            <label
+              class="Checkbox_container"
+            >
+              <input
+                name="category"
+                type="radio"
+                value="Module 2"
+              />
+              <span
+                class="Checkbox_checkmark"
+              />
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      Additional Materials
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      Grade
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      Discussion Forum
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      FAQ
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`CourseModuleSidebar renders the component 1`] = `
+<DocumentFragment>
+  <div
+    class="Sidebar_container"
+  >
+    <h4
+      class="Sidebar_courseName"
+    >
+      Course Name
+    </h4>
+    <div
+      class="dropdown"
+    >
+      <button
+        class="ArrowRightIcon"
+        type="button"
+      >
+        Overview
+        <img
+          alt="chevron"
+          class="chevronIsOpen"
+          src="ArrowRight.svg"
+        />
+         
+      </button>
+      <ul
+        class="dropdownList"
+      >
+        <li
+          class="dropdownItem"
+        >
+          <div
+            class="moduleDescriptionIsOpen"
+            data-testid="moduleListOpen"
+          >
+            <label
+              class="Checkbox_container"
+            >
+              <input
+                name="category"
+                type="radio"
+                value="Module 1"
+              />
+              <span
+                class="Checkbox_checkmark"
+              />
+            </label>
+            <label
+              class="Checkbox_container"
+            >
+              <input
+                name="category"
+                type="radio"
+                value="Module 2"
+              />
+              <span
+                class="Checkbox_checkmark"
+              />
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      Additional Materials
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      Grade
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      Discussion Forum
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      FAQ
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`CourseModuleSidebar toggles the module list on click 1`] = `
+<DocumentFragment>
+  <div
+    class="Sidebar_container"
+  >
+    <h4
+      class="Sidebar_courseName"
+    >
+      Course Name
+    </h4>
+    <div
+      class="dropdown"
+    >
+      <button
+        class="ArrowRightIcon"
+        type="button"
+      >
+        Overview
+        <img
+          alt="chevron"
+          class="chevronIsClosed"
+          src="ArrowRight.svg"
+        />
+         
+      </button>
+      <ul
+        class="dropdownList"
+      >
+        <li
+          class="dropdownItem"
+        >
+          <div
+            class="moduleDescriptionIsClosed"
+            data-testid="moduleListClosed"
+          >
+            <label
+              class="Checkbox_container"
+            >
+              <input
+                name="category"
+                type="radio"
+                value="Module 1"
+              />
+              <span
+                class="Checkbox_checkmark"
+              />
+            </label>
+            <label
+              class="Checkbox_container"
+            >
+              <input
+                name="category"
+                type="radio"
+                value="Module 2"
+              />
+              <span
+                class="Checkbox_checkmark"
+              />
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      Additional Materials
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      Grade
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      Discussion Forum
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      FAQ
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`CourseModuleSidebar toggles the module list on click 2`] = `
+<DocumentFragment>
+  <div
+    class="Sidebar_container"
+  >
+    <h4
+      class="Sidebar_courseName"
+    >
+      Course Name
+    </h4>
+    <div
+      class="dropdown"
+    >
+      <button
+        class="ArrowRightIcon"
+        type="button"
+      >
+        Overview
+        <img
+          alt="chevron"
+          class="chevronIsOpen"
+          src="ArrowRight.svg"
+        />
+         
+      </button>
+      <ul
+        class="dropdownList"
+      >
+        <li
+          class="dropdownItem"
+        >
+          <div
+            class="moduleDescriptionIsOpen"
+            data-testid="moduleListOpen"
+          >
+            <label
+              class="Checkbox_container"
+            >
+              <input
+                name="category"
+                type="radio"
+                value="Module 1"
+              />
+              <span
+                class="Checkbox_checkmark"
+              />
+            </label>
+            <label
+              class="Checkbox_container"
+            >
+              <input
+                name="category"
+                type="radio"
+                value="Module 2"
+              />
+              <span
+                class="Checkbox_checkmark"
+              />
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      Additional Materials
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      Grade
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      Discussion Forum
+    </div>
+    <div
+      class="SidebarOverview_button"
+    >
+      FAQ
+    </div>
+  </div>
+</DocumentFragment>
+`;

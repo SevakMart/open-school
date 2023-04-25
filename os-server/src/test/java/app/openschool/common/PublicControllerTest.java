@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PublicControllerTest {
+class PublicControllerTest {
 
   @Autowired private MockMvc mockMvc;
 

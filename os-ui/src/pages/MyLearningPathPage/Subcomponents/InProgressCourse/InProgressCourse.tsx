@@ -50,12 +50,12 @@ const InProgressCourse = ({
       </div>
       <div className={separator} />
       <div className={container}>
-        <p className={containerTitle}>{t('string.myLearningPaths.inProgressCourse.status')}</p>
+        <p className={containerTitle}>{t('Status')}</p>
         <p data-testid={courseStatus} className={statusContent}>{courseStatus}</p>
       </div>
       <div className={separator} />
       <div className={container}>
-        <p className={containerTitle}>{t('string.myLearningPaths.inProgressCourse.dueDate')}</p>
+        <p className={containerTitle}>{t('Due Date')}</p>
         <div className={dueDateContainer}>
           <img src={CalendarIcon} className={calenderIcon} alt="calendarIcon" />
           <p data-testid={dueDate} className={dueDateContent}>{dueDate}</p>

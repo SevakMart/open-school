@@ -2,17 +2,12 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { PayloadAction } from '@reduxjs/toolkit';
+import { MemoryRouter } from 'react-router-dom';
 import { store } from '../../../../../redux/Store';
 import AllMentorsPageHeader from '../AllMentorsPageHeader';
+import { reactRouterDomMock } from '../../MainContent/__test__/react-router-dom-mock';
 
-const mockUseNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom') as any,
-  useNavigate: () => mockUseNavigate,
-  useLocation: () => ({
-    search: '',
-  }),
-}));
+jest.doMock('react-router-dom', () => reactRouterDomMock);
 
 jest.mock('react-i18next', () => ({
   ...jest.requireActual('react-i18next'),
@@ -33,9 +28,11 @@ describe('Create test cases for AllMentorsPageHeader component', () => {
   test('Create a snapshot test for AllMentorsHeader component', () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <AllMentorsPageHeader
-          changeHeaderFocus={jest.fn()}
-        />
+        <MemoryRouter>
+          <AllMentorsPageHeader
+            changeHeaderFocus={jest.fn()}
+          />
+        </MemoryRouter>
       </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();

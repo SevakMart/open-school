@@ -5,10 +5,10 @@ import Dropdown from '../../../../component/Dropdown/Dropdown';
 import styles from './Sidebar.module.scss';
 import { COURSE_NAME } from '../../../../constants/CourseModuleCategories';
 import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
-import SidebarDropdown from './SidebarDropdown';
 import { RootState } from '../../../../redux/Store';
 import { setValue } from '../../../../redux/Slices/CourseModuleSlice';
 import { CourseDescriptionType } from '../../../../types/CourseTypes';
+import SidebarDropdown from './SidebarDropdown/SidebarDropdown';
 
 const CourseModuleSidebar = () => {
   const [moduleListIsOpen, setModuleListIsOpen] = useState(true);
@@ -44,7 +44,7 @@ const CourseModuleSidebar = () => {
       <Dropdown
         open={value}
         trigger={(
-          <button type="button" className={styles.ArrowRightIcon} onChange={() => handleChangeValue(value)}>
+          <button type="button" className={styles.ArrowRightIcon} onClick={() => handleChangeValue(value)}>
             Overview
             <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
           </button>
@@ -53,6 +53,7 @@ const CourseModuleSidebar = () => {
           <div
             key={entity.title}
             className={moduleListIsOpen ? moduleDescriptionIsOpen : moduleDescriptionIsClosed}
+            data-testid={moduleListIsOpen ? 'moduleListOpen' : 'moduleListClosed'}
           >
             <SidebarDropdown handleChangeValue={handleChangeValue} modules={entity.modules} value={value} />
           </div>,
@@ -80,4 +81,5 @@ const CourseModuleSidebar = () => {
     </div>
   );
 };
+
 export default CourseModuleSidebar;

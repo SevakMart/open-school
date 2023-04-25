@@ -17,9 +17,9 @@ public abstract class ResponseDto {
   @Schema(description = "Date of creation or update")
   private Instant createdDate;
 
-  public ResponseDto() {}
+  protected ResponseDto() {}
 
-  public ResponseDto(Long id, String text, UserDto userDto, Instant createdDate) {
+  protected ResponseDto(Long id, String text, UserDto userDto, Instant createdDate) {
     this.id = id;
     this.text = text;
     this.userDto = userDto;

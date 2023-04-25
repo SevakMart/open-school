@@ -10,6 +10,8 @@ import java.util.Collection;
 
 public class EnrolledCourseMapper {
 
+  private EnrolledCourseMapper(){}
+
   public static EnrolledCourseOverviewDto toEnrolledCourseOverviewDto(
       EnrolledCourse enrolledCourse) {
     return new EnrolledCourseOverviewDto(

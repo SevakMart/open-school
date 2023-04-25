@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SidebarDropdown component should call handleChangeValue with correct value when radio button is clicked 1`] = `
+<DocumentFragment>
+  <label
+    class="Checkbox_container"
+  >
+    <input
+      checked=""
+      name="category"
+      type="radio"
+      value="Title 1"
+    />
+    <span
+      class="Checkbox_checkmark"
+    />
+  </label>
+  <label
+    class="Checkbox_container"
+  >
+    <input
+      name="category"
+      type="radio"
+      value="Title 2"
+    />
+    <span
+      class="Checkbox_checkmark"
+    />
+  </label>
+</DocumentFragment>
+`;

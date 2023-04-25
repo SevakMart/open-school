@@ -6,9 +6,9 @@ import app.openschool.user.api.dto.MentorDto;
 import app.openschool.user.api.mapper.MentorMapper;
 import org.junit.jupiter.api.Test;
 
-public class MentorMapperTest {
+class MentorMapperTest {
   @Test
-  public void toMentorDtoTest() {
+  void toMentorDtoTest() {
     MentorDto expected = MentorMapper.toMentorDto(UserGenerator.generateUser());
     assertThat(expected)
         .hasOnlyFields(

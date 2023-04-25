@@ -13,9 +13,9 @@ public abstract class FaqRequestDto {
   @Length(max = 500, message = "{faq.length.max}")
   private String answer;
 
-  public FaqRequestDto() {}
+  protected FaqRequestDto() {}
 
-  public FaqRequestDto(String question, String answer) {
+  protected FaqRequestDto(String question, String answer) {
     this.question = question;
     this.answer = answer;
   }
