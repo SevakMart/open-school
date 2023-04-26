@@ -35,8 +35,9 @@ const CourseModulePage = ({ userInfo }:{userInfo:any}) => {
 
   useEffect(() => {
     dispatch(getCourseDescription({
-      courseId: Number(courseId), token: userInfo.token,
+	  courseId: Number(courseId), token: userInfo.token,
     }));
+    window.scrollTo(0, 0);
   }, []);
 
   const handleChangeValue = (newValue: string) => {
