@@ -35,8 +35,9 @@ const CourseModuleSidebar = () => {
   if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum`) isbtnClicked = true;
   if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`) isbtnClicked = true;
   if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`) isbtnClicked = true;
-  if (currentPath === `/userCourse/modulOverview/${courseId}/`) isbtnClicked = false;
+  if (currentPath === `/userCourse/modulOverview/${courseId}`) isbtnClicked = false;
   const itemBtnclickedStyle = isbtnClicked ? { textDecoration: 'none', color: '#333941', fontWeight: '900' } : { textDecoration: 'none', color: '#333941' };
+  const itemBtnclickedRevStyle = isbtnClicked ? { textDecoration: 'none', color: '#333941' } : { textDecoration: 'none', color: '#333941', fontWeight: '900' };
 
   return (
     <div className={styles.Sidebar_container}>
@@ -45,7 +46,12 @@ const CourseModuleSidebar = () => {
         open={value}
         trigger={(
           <button type="button" className={styles.ArrowRightIcon} onClick={() => handleChangeValue(value)}>
-            Overview
+            <Link
+              to={`/userCourse/modulOverview/${courseId}`}
+              style={itemBtnclickedRevStyle}
+            >
+              Overview
+            </Link>
             <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
           </button>
         )}
@@ -67,7 +73,7 @@ const CourseModuleSidebar = () => {
           >
             {button.desc === 'Discussion Forum' ? (
               <Link
-                to={`/userCourse/modulOverview/${courseId}${isbtnClicked ? '' : '/discussionForum'}`}
+                to={`/userCourse/modulOverview/${courseId}/discussionForum`}
                 style={itemBtnclickedStyle}
               >
                 {button.desc}

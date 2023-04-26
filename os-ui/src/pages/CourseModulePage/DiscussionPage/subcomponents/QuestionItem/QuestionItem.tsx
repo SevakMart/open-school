@@ -1,6 +1,7 @@
 import './questionItem.scss';
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import ArrowRightIcon from '../../../../../assets/svg/ArrowRight.svg';
 import edit from '../../../../../assets/svg/edit.svg';
 import save from '../../../../../assets/svg/save.svg';
@@ -100,6 +101,8 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   // disable save button when nothing typed
   const isDisable = editValue.length === 0;
 
+  const { t } = useTranslation();
+
   return (
     <div className="Questions_page">
       {
@@ -140,9 +143,9 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
               )
               : (
                 <div className="question_item">
-                  <div className="Question_text_" data-testid="questionItem-text" style={{ wordWrap: 'break-word' }}>{text}</div>
+                  <div className="Question_text_" data-testid="questionItem-text" style={{ wordWrap: 'break-word' }}>{t(text)}</div>
                   <div className="question__text_box">
-                    <div className="user_">Me</div>
+                    <div className="user_">{t('Me')}</div>
                     <div className="Question__text_inner-date" data-testid="questionItem-date">{formattedDate}</div>
                   </div>
                 </div>

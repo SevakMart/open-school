@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import Loader from '../../../component/Loader/Loader';
@@ -68,26 +69,28 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   // set the value of section to true initially when DiscussionForum opens
   dispatch(changeSection(true));
 
+  const { t } = useTranslation();
+
   return (
     <div className="inner">
       <div className="container">
         <div className="forum_header">
-          <h1 className="forum_header-title">Discussion Forum</h1>
+          <h1 className="forum_header-title">{t('Discussion Forum')}</h1>
           <div className="forum_header-inner">
             <ul className="forum_header-menu">
               <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${isBtnClicked ? '_active' : ''}`}>
                 <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`} className="forum_header-list_link" onClick={() => dispatch(changeSection(true))}>
-                  Ask Peers
+                  {t('Ask Peers')}
                 </Link>
               </button>
               <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${!isBtnClicked ? '_active' : ''}`} onClick={() => dispatch(changeSection(false))}>
                 <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`} className="forum_header-list_link">
-                  Ask Mentor
+                  {t('Ask Mentor')}
                 </Link>
               </button>
 
             </ul>
-            <button data-testid="toggle-btn" type="button" onClick={() => dispatch(onOpen())} className={`btn ${AskQuestionClassName}`}>Ask Question</button>
+            <button data-testid="toggle-btn" type="button" onClick={() => dispatch(onOpen())} className={`btn ${AskQuestionClassName}`}>{t('Ask Question')}</button>
           </div>
         </div>
         <div className={scrollClassName}>
@@ -107,7 +110,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
                 ))
               )
                 : (
-                  <div className="noQuestionsDiv">No questions. Be the First to Ask a question!</div>
+                  <div className="noQuestionsDiv">{t('No questions. Be the First to Ask a question!')}</div>
                 )
             )
               : (
@@ -125,7 +128,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
                   ))
                 )
                   : (
-                    <div className="noQuestionsDiv">No questions to mentors. Be the First to Ask a question!</div>
+                    <div className="noQuestionsDiv">{t('No questions to mentors. Be the First to Ask a question!')}</div>
                   )
               )
           }

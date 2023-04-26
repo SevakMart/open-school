@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { QuestionItemPopupProps } from '../../../interfaces/interfaces';
 import trash from '../../../../../../assets/svg/trash.svg';
 import './questionItemPopup.scss';
@@ -24,16 +25,18 @@ const QuestionItemPopup:React.FC<QuestionItemPopupProps> = ({
     };
   }, []);
 
+  const { t } = useTranslation();
+
   return (
     <div ref={popupRef} className={`btnsPopup ${isOpen ? 'open' : ''} ${isAnimating ? 'animating' : ''}`}>
       <div className="btnsPopup-content">
         <button disabled={isDisable} type="button" className="btnsPopup-content_item" onClick={editQuestion}>
           <img className="edit" src={btnType} alt="Edt" />
-          <div className="editBtn-title">{btnTextType}</div>
+          <div className="editBtn-title">{t(btnTextType)}</div>
         </button>
         <button type="button" className="btnsPopup-content_item btnsPopup-content_item_margin" data-testid="remove-btn" onClick={() => removeQ(id)}>
           <img className="trash" src={trash} alt="X" />
-          <div className="removeBtn-title">Remove</div>
+          <div className="removeBtn-title">{t('Remove')}</div>
         </button>
       </div>
     </div>

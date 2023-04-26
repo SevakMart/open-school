@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { addQuestion } from '../../../../../redux/Slices/UpdateQuestionSlice';
 import { PopupProps } from '../../interfaces/interfaces';
@@ -44,12 +45,14 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
     }
   };
 
+  const { t } = useTranslation();
+
   return (
     <div className={`popup ${isOpen ? 'open' : ''} ${isAnimating ? 'animating' : ''}`}>
       <div className="popup-overlay" data-testid="close-btn" onClick={() => { animatedFunction(handleClose); }} />
       <div className="popup-content">
-        <div className="popup-title">Ask Question</div>
-        <button type="button" className="close-button" data-testid="close-x-btn" onClick={() => { animatedFunction(handleClose); }}>x</button>
+        <div className="popup-title">{t('Ask Question')}</div>
+        <button type="button" className="close-button" data-testid="close-x-btn" onClick={() => { animatedFunction(handleClose); }}>{t('x')}</button>
         <div className="question_textArea-div">
           <textarea
             className="question_textArea"
@@ -63,8 +66,8 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
             onKeyDown={handleKeyDown}
           />
           <div className="buttons">
-            <button type="button" onClick={() => { animatedFunction(handleClose); }} className="btn_cancel" data-testid="close-cancel-btn">Cancel</button>
-            <button type="button" onClick={() => { animatedFunction(handleAddQuestion); }} disabled={!value} data-testid="post-btn" className="btn_post">Post</button>
+            <button type="button" onClick={() => { animatedFunction(handleClose); }} className="btn_cancel" data-testid="close-cancel-btn">{t('Cancel')}</button>
+            <button type="button" onClick={() => { animatedFunction(handleAddQuestion); }} disabled={!value} data-testid="post-btn" className="btn_post">{t('Post')}</button>
           </div>
         </div>
       </div>
