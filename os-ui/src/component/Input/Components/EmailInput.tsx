@@ -3,10 +3,19 @@ import { ErrorField } from '../../ErrorField/ErrorField';
 import styles from '../Input-Styles.module.scss';
 
 export const EmailInput = ({
-  textName, labelText, placeholderText, errorMessage, value, handleInputChange,
-}:{
-textName:string, labelText:string, errorMessage:string, value:string, placeholderText:string,
-handleInputChange:(event:React.SyntheticEvent)=>void
+  textName,
+  labelText,
+  placeholderText,
+  errorMessage,
+  value,
+  handleInputChange,
+}: {
+  textName:string,
+  labelText:string,
+  errorMessage:string,
+  value:string,
+  placeholderText:string,
+  handleInputChange:(event:React.SyntheticEvent)=>void,
 }) => {
   const { EmailInputContainer } = styles;
   return (
@@ -24,8 +33,13 @@ handleInputChange:(event:React.SyntheticEvent)=>void
         data-testid="emailInput"
         onChange={(e) => handleInputChange(e)}
         required
+        tabIndex={-1}
       />
-      {errorMessage !== '' && <ErrorField.InputErrorField className={['inputErrorField']}>{errorMessage}</ErrorField.InputErrorField>}
+      {errorMessage !== '' && (
+        <ErrorField.InputErrorField className={['inputErrorField']}>
+          {errorMessage}
+        </ErrorField.InputErrorField>
+      )}
     </div>
   );
 };
