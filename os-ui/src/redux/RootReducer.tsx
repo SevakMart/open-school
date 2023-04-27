@@ -19,7 +19,7 @@ import deleteUserSavedMentorReducer from './Slices/DeleteSavedMentor';
 import courseDescriptionRequestReducer from './Slices/CourseDescriptionRequestSlice';
 import enrollCourseReducer from './Slices/EnrollCourseSlice';
 import portalStatusReducer from './Slices/PortalOpenStatus';
-import UpdateQuestionReducer from './Slices/UpdateQuestionSlice';
+import QuestionActionsReducer from './Slices/QuestionActionsSlice';
 import CourseModuleReducer from './Slices/CourseModuleSlice';
 
 const rootReducer = combineReducers({
@@ -42,7 +42,7 @@ const rootReducer = combineReducers({
   deleteUserSavedMentor: deleteUserSavedMentorReducer,
   courseDescriptionRequest: courseDescriptionRequestReducer,
   enrollCourse: enrollCourseReducer,
-  UpdateQuestion: UpdateQuestionReducer,
+  QuestionActions: QuestionActionsReducer,
   courseModule: CourseModuleReducer,
 });
 export default rootReducer;

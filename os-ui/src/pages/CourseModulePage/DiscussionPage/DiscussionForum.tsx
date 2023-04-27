@@ -5,7 +5,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import Loader from '../../../component/Loader/Loader';
 import {
   changeSection, onClose, onOpen,
-} from '../../../redux/Slices/UpdateQuestionSlice';
+} from '../../../redux/Slices/QuestionActionsSlice';
 import { RootState } from '../../../redux/Store';
 import { CourseDescriptionType } from '../../../types/CourseTypes';
 import './DiscussionForum.scss';
@@ -26,7 +26,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   const { entity } = courseDescriptionState;
 
   const dispatch = useDispatch();
-  const AllQuestionsState = useSelector<RootState>((state) => state.UpdateQuestion) as {
+  const AllQuestionsState = useSelector<RootState>((state) => state.QuestionActions) as {
      questionsWithId: Question[],
      questionsWithIdToMentor: Question[],
      isLoading: boolean,

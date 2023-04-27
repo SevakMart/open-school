@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { addQuestion } from '../../../../../redux/Slices/UpdateQuestionSlice';
+import { addQuestion } from '../../../../../redux/Slices/QuestionActionsSlice';
 import { PopupProps } from '../../interfaces/interfaces';
 import './askQuestionPopup.scss';
 
@@ -33,12 +33,8 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
     }, 300);
   };
 
+  // close the popUp when escape pressed
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault(); // prevent newline in textarea
-      animatedFunction(handleAddQuestion);
-    }
-
     if (event.key === 'Escape') {
       event.preventDefault(); // prevent newline in textarea
       animatedFunction(handleClose);

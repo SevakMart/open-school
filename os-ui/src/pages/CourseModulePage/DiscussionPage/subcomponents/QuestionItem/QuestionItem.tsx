@@ -8,7 +8,7 @@ import save from '../../../../../assets/svg/save.svg';
 import threeVerticalDots from '../../../../../assets/svg/three-dots-vertical.svg';
 import { QuestionItemProps } from '../../interfaces/interfaces';
 import QuestionItemPopup from './QuestionItemPopup/QuestionItemPopup';
-import { removeQuestion, updateQuestion } from '../../../../../redux/Slices/UpdateQuestionSlice';
+import { removeQuestion, updateQuestion } from '../../../../../redux/Slices/QuestionActionsSlice';
 
 /* eslint-disable react/prop-types */
 const QuestionItem: React.FC<QuestionItemProps> = ({
