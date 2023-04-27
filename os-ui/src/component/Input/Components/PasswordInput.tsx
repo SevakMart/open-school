@@ -4,6 +4,7 @@ import VisibileIcon from '../../../icons/Visibility';
 import HiddenIcon from '../../../icons/Hidden';
 import { useFocus } from '../../../custom-hooks/useFocus';
 import styles from '../Input-Styles.module.scss';
+import { PasswordInputProps } from './interfaces/interfaces';
 
 export const PasswordInput = ({
   textName,
@@ -13,15 +14,7 @@ export const PasswordInput = ({
   value,
   handleInputChange,
   handleEnterPress,
-}: {
-  textName:string,
-  labelText:string,
-  errorMessage:string,
-  value:string,
-  placeholderText:string,
-  handleInputChange: (event:React.SyntheticEvent) => void,
-  handleEnterPress: (event: React.KeyboardEvent<HTMLInputElement>) => void,
-}) => {
+}: PasswordInputProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const passwordInputRef = useRef<HTMLInputElement | null>(null);
   const passwordInputContainerRef = useRef<HTMLDivElement | null>(null);

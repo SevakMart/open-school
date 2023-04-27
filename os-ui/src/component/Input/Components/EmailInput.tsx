@@ -1,6 +1,7 @@
 import React from 'react';
 import { ErrorField } from '../../ErrorField/ErrorField';
 import styles from '../Input-Styles.module.scss';
+import { EmailInputProps } from './interfaces/interfaces';
 
 export const EmailInput = ({
   textName,
@@ -9,14 +10,7 @@ export const EmailInput = ({
   errorMessage,
   value,
   handleInputChange,
-}: {
-  textName:string,
-  labelText:string,
-  errorMessage:string,
-  value:string,
-  placeholderText:string,
-  handleInputChange:(event:React.SyntheticEvent)=>void,
-}) => {
+}: EmailInputProps) => {
   const { EmailInputContainer } = styles;
   return (
     <div className={EmailInputContainer}>
