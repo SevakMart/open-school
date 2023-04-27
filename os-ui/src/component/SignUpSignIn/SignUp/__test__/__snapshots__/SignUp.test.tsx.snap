@@ -142,6 +142,7 @@ exports[`Create tests for sign up form Create a snapshot test 1`] = `
         name="email"
         placeholder="form.placeholder.email"
         required=""
+        tabindex="-1"
         type="email"
         value=""
       />
@@ -168,10 +169,13 @@ exports[`Create tests for sign up form Create a snapshot test 1`] = `
           name="psd"
           placeholder="form.placeholder.psd.default"
           required=""
+          tabindex="0"
           type="password"
           value=""
         />
-        <i>
+        <i
+          style="position: absolute; right: 15px; top: 0px; bottom: 0px; margin: auto; height: 1rem;"
+        >
           <svg
             fill="currentColor"
             height="1em"
@@ -193,7 +197,7 @@ exports[`Create tests for sign up form Create a snapshot test 1`] = `
     </div>
     <button
       class="formButton"
-      type="button"
+      type="submit"
     >
       button.homePage.signUp
     </button>

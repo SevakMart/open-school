@@ -4,17 +4,24 @@ import VisibileIcon from '../../../icons/Visibility';
 import HiddenIcon from '../../../icons/Hidden';
 import { useFocus } from '../../../custom-hooks/useFocus';
 import styles from '../Input-Styles.module.scss';
+import { PasswordInputProps } from './interfaces/interfaces';
 
 export const PasswordInput = ({
-  textName, labelText, placeholderText, errorMessage, value, handleInputChange,
-}:{
-textName:string, labelText:string, errorMessage:string, value:string, placeholderText:string,
-handleInputChange:(event:React.SyntheticEvent)=>void
-}) => {
+  textName,
+  labelText,
+  placeholderText,
+  errorMessage,
+  value,
+  handleInputChange,
+  handleEnterPress,
+}: PasswordInputProps) => {
   const [isVisible, setIsVisible] = useState(false);
-  const passwordInputRef = useRef<null|HTMLInputElement>(null);
-  const passwordInputContainerRef = useRef<null|HTMLDivElement>(null);
-  const [handleOnFocus, handleOnBlur] = useFocus('#d9dbe9', passwordInputContainerRef.current);
+  const passwordInputRef = useRef<HTMLInputElement | null>(null);
+  const passwordInputContainerRef = useRef<HTMLDivElement | null>(null);
+  const [handleOnFocus, handleOnBlur] = useFocus(
+    '#d9dbe9',
+    passwordInputContainerRef.current,
+  );
   const { PasswordInputContainer, PasswordInputFieldWithIcon } = styles;
 
   const handlePasswordVisibility = () => {
@@ -26,6 +33,12 @@ handleInputChange:(event:React.SyntheticEvent)=>void
       (passwordInputRef.current as HTMLInputElement).type = 'text';
     } else (passwordInputRef.current as HTMLInputElement).type = 'password';
   }, [isVisible]);
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleEnterPress(event);
+    }
+  };
 
   return (
     <div className={PasswordInputContainer}>
@@ -45,13 +58,21 @@ handleInputChange:(event:React.SyntheticEvent)=>void
           onChange={handleInputChange}
           onFocus={() => handleOnFocus()}
           onBlur={() => handleOnBlur()}
+          onKeyDown={handleKeyDown}
           required
+          tabIndex={0}
         />
-        {isVisible
-          ? <VisibileIcon makeInvisible={handlePasswordVisibility} />
-          : <HiddenIcon makeVisible={handlePasswordVisibility} />}
+        {isVisible ? (
+          <VisibileIcon makeInvisible={handlePasswordVisibility} />
+        ) : (
+          <HiddenIcon makeVisible={handlePasswordVisibility} />
+        )}
       </div>
-      {errorMessage !== '' && <ErrorField.InputErrorField className={['inputErrorField']}>{errorMessage}</ErrorField.InputErrorField>}
+      {errorMessage !== '' && (
+        <ErrorField.InputErrorField className={['inputErrorField']}>
+          {errorMessage}
+        </ErrorField.InputErrorField>
+      )}
     </div>
   );
 };

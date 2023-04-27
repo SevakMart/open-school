@@ -77,6 +77,13 @@ const Form = ({
     dispatch(openModal({ buttonType: Types.Button.FORGOT_VERIFICATION, forgotVerficationEmail: formValues.email }));
   };
 
+  const handleSubmit = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (event.key === 'Enter') {
+	  event.preventDefault();
+	  handleFormOnClick();
+    }
+  };
+
   return (
     <form className={inputContent}>
       {isSignUpForm && (
@@ -138,6 +145,7 @@ const Form = ({
         }
         value={isResetPasswordForm ? formValues.newPassword : formValues.psd}
         handleInputChange={handleInputChange}
+        handleEnterPress={handleSubmit}
       />
       {isResetPasswordForm && (
         <Input.PasswordInput
@@ -147,6 +155,7 @@ const Form = ({
           placeholderText={t('form.placeholder.psd.confirm')}
           value={formValues.confirmedPassword}
           handleInputChange={handleInputChange}
+          handleEnterPress={handleSubmit}
         />
       )}
       {errorMessage ? (

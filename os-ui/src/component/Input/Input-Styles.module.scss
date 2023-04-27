@@ -15,12 +15,18 @@
         border-radius: 0.75rem;
         height: 3.5rem;
         margin-top: 2%;
+		position: relative;
       }
       label {
         @include fontStyle($primary-font, normal, 500, 0.875rem, 1rem);
         color: #333941;
       }
 }
+.EmailInputContainer input {
+	padding-right: 35px;
+	padding-left: 15px;
+  }
+  
 .PasswordInputFieldWithIcon {
   @include flexStyle(row,center,space-between);
    input{
@@ -28,6 +34,8 @@
     padding: 0;
     border:0;
     height:100%;
+	padding-right: 35px;
+	padding-left: 15px;
     &:focus{
       outline:none;
     }

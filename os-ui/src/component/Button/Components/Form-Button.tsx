@@ -1,10 +1,38 @@
+import React, { useEffect, useRef } from 'react';
 import styles from '../Button-Styles.module.scss';
 
-/* eslint-disable max-len */
+interface FormButtonProps {
+  children: string;
+  className: string[];
+  onClick?: () => void;
+}
 
-export const FormButton = ({ children, className, onClick }:{children:string, className:Array<string>, onClick?:()=>void}) => {
-  const styleNames = className.map((className:string) => styles[`${className}`]);
+export const FormButton = ({ children, className, onClick }: FormButtonProps) => {
+  const styleNames = className.map((className: string) => styles[`${className}`]);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        buttonRef.current?.click();
+      }
+    };
+
+    buttonRef.current?.addEventListener('keypress', handleKeyPress);
+
+    return () => {
+      buttonRef.current?.removeEventListener('keypress', handleKeyPress);
+    };
+  }, []);
+
   return (
-    <button type="button" className={styleNames.join(' ')} onClick={() => onClick!()}>{children}</button>
+    <button
+      ref={buttonRef}
+      type="submit"
+      className={styleNames.join(' ')}
+      onClick={onClick}
+    >
+      {children}
+    </button>
   );
 };
