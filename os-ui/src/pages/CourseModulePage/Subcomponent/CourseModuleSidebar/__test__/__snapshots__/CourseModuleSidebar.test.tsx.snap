@@ -7,9 +7,7 @@ exports[`CourseModuleSidebar calls handleChangeValue when clicking the Overview 
   >
     <h4
       class="Sidebar_courseName"
-    >
-      Course Name
-    </h4>
+    />
     <div
       class="dropdown"
     >
@@ -17,51 +15,18 @@ exports[`CourseModuleSidebar calls handleChangeValue when clicking the Overview 
         class="ArrowRightIcon"
         type="button"
       >
-        Overview
+        <a
+          href="/userCourse/modulOverview/undefined"
+          style="text-decoration: none; color: rgb(51, 57, 65); font-weight: 900;"
+        >
+          Overview
+        </a>
         <img
           alt="chevron"
           class="chevronIsOpen"
           src="ArrowRight.svg"
         />
-         
       </button>
-      <ul
-        class="dropdownList"
-      >
-        <li
-          class="dropdownItem"
-        >
-          <div
-            class="moduleDescriptionIsOpen"
-            data-testid="moduleListOpen"
-          >
-            <label
-              class="Checkbox_container"
-            >
-              <input
-                name="category"
-                type="radio"
-                value="Module 1"
-              />
-              <span
-                class="Checkbox_checkmark"
-              />
-            </label>
-            <label
-              class="Checkbox_container"
-            >
-              <input
-                name="category"
-                type="radio"
-                value="Module 2"
-              />
-              <span
-                class="Checkbox_checkmark"
-              />
-            </label>
-          </div>
-        </li>
-      </ul>
     </div>
     <div
       class="SidebarOverview_button"
@@ -76,7 +41,12 @@ exports[`CourseModuleSidebar calls handleChangeValue when clicking the Overview 
     <div
       class="SidebarOverview_button"
     >
-      Discussion Forum
+      <a
+        href="/userCourse/modulOverview/undefined/discussionForum"
+        style="text-decoration: none; color: rgb(51, 57, 65);"
+      >
+        Discussion Forum
+      </a>
     </div>
     <div
       class="SidebarOverview_button"
@@ -94,9 +64,7 @@ exports[`CourseModuleSidebar renders the component 1`] = `
   >
     <h4
       class="Sidebar_courseName"
-    >
-      Course Name
-    </h4>
+    />
     <div
       class="dropdown"
     >
@@ -104,51 +72,18 @@ exports[`CourseModuleSidebar renders the component 1`] = `
         class="ArrowRightIcon"
         type="button"
       >
-        Overview
+        <a
+          href="/userCourse/modulOverview/undefined"
+          style="text-decoration: none; color: rgb(51, 57, 65); font-weight: 900;"
+        >
+          Overview
+        </a>
         <img
           alt="chevron"
           class="chevronIsOpen"
           src="ArrowRight.svg"
         />
-         
       </button>
-      <ul
-        class="dropdownList"
-      >
-        <li
-          class="dropdownItem"
-        >
-          <div
-            class="moduleDescriptionIsOpen"
-            data-testid="moduleListOpen"
-          >
-            <label
-              class="Checkbox_container"
-            >
-              <input
-                name="category"
-                type="radio"
-                value="Module 1"
-              />
-              <span
-                class="Checkbox_checkmark"
-              />
-            </label>
-            <label
-              class="Checkbox_container"
-            >
-              <input
-                name="category"
-                type="radio"
-                value="Module 2"
-              />
-              <span
-                class="Checkbox_checkmark"
-              />
-            </label>
-          </div>
-        </li>
-      </ul>
     </div>
     <div
       class="SidebarOverview_button"
@@ -163,7 +98,12 @@ exports[`CourseModuleSidebar renders the component 1`] = `
     <div
       class="SidebarOverview_button"
     >
-      Discussion Forum
+      <a
+        href="/userCourse/modulOverview/undefined/discussionForum"
+        style="text-decoration: none; color: rgb(51, 57, 65);"
+      >
+        Discussion Forum
+      </a>
     </div>
     <div
       class="SidebarOverview_button"
@@ -181,9 +121,7 @@ exports[`CourseModuleSidebar toggles the module list on click 1`] = `
   >
     <h4
       class="Sidebar_courseName"
-    >
-      Course Name
-    </h4>
+    />
     <div
       class="dropdown"
     >
@@ -191,51 +129,18 @@ exports[`CourseModuleSidebar toggles the module list on click 1`] = `
         class="ArrowRightIcon"
         type="button"
       >
-        Overview
+        <a
+          href="/userCourse/modulOverview/undefined"
+          style="text-decoration: none; color: rgb(51, 57, 65); font-weight: 900;"
+        >
+          Overview
+        </a>
         <img
           alt="chevron"
           class="chevronIsClosed"
           src="ArrowRight.svg"
         />
-         
       </button>
-      <ul
-        class="dropdownList"
-      >
-        <li
-          class="dropdownItem"
-        >
-          <div
-            class="moduleDescriptionIsClosed"
-            data-testid="moduleListClosed"
-          >
-            <label
-              class="Checkbox_container"
-            >
-              <input
-                name="category"
-                type="radio"
-                value="Module 1"
-              />
-              <span
-                class="Checkbox_checkmark"
-              />
-            </label>
-            <label
-              class="Checkbox_container"
-            >
-              <input
-                name="category"
-                type="radio"
-                value="Module 2"
-              />
-              <span
-                class="Checkbox_checkmark"
-              />
-            </label>
-          </div>
-        </li>
-      </ul>
     </div>
     <div
       class="SidebarOverview_button"
@@ -250,7 +155,12 @@ exports[`CourseModuleSidebar toggles the module list on click 1`] = `
     <div
       class="SidebarOverview_button"
     >
-      Discussion Forum
+      <a
+        href="/userCourse/modulOverview/undefined/discussionForum"
+        style="text-decoration: none; color: rgb(51, 57, 65);"
+      >
+        Discussion Forum
+      </a>
     </div>
     <div
       class="SidebarOverview_button"
@@ -268,9 +178,7 @@ exports[`CourseModuleSidebar toggles the module list on click 2`] = `
   >
     <h4
       class="Sidebar_courseName"
-    >
-      Course Name
-    </h4>
+    />
     <div
       class="dropdown"
     >
@@ -278,51 +186,18 @@ exports[`CourseModuleSidebar toggles the module list on click 2`] = `
         class="ArrowRightIcon"
         type="button"
       >
-        Overview
+        <a
+          href="/userCourse/modulOverview/undefined"
+          style="text-decoration: none; color: rgb(51, 57, 65); font-weight: 900;"
+        >
+          Overview
+        </a>
         <img
           alt="chevron"
           class="chevronIsOpen"
           src="ArrowRight.svg"
         />
-         
       </button>
-      <ul
-        class="dropdownList"
-      >
-        <li
-          class="dropdownItem"
-        >
-          <div
-            class="moduleDescriptionIsOpen"
-            data-testid="moduleListOpen"
-          >
-            <label
-              class="Checkbox_container"
-            >
-              <input
-                name="category"
-                type="radio"
-                value="Module 1"
-              />
-              <span
-                class="Checkbox_checkmark"
-              />
-            </label>
-            <label
-              class="Checkbox_container"
-            >
-              <input
-                name="category"
-                type="radio"
-                value="Module 2"
-              />
-              <span
-                class="Checkbox_checkmark"
-              />
-            </label>
-          </div>
-        </li>
-      </ul>
     </div>
     <div
       class="SidebarOverview_button"
@@ -337,7 +212,12 @@ exports[`CourseModuleSidebar toggles the module list on click 2`] = `
     <div
       class="SidebarOverview_button"
     >
-      Discussion Forum
+      <a
+        href="/userCourse/modulOverview/undefined/discussionForum"
+        style="text-decoration: none; color: rgb(51, 57, 65);"
+      >
+        Discussion Forum
+      </a>
     </div>
     <div
       class="SidebarOverview_button"

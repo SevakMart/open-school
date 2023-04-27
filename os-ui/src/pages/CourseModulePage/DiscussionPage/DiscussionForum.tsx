@@ -1,29 +1,49 @@
 import { useState, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import Loader from '../../../component/Loader/Loader';
+import {
+  changeSection, onClose, onOpen,
+} from '../../../redux/Slices/QuestionActionsSlice';
 import { RootState } from '../../../redux/Store';
-import fetchData from '../../../services/fetchData';
 import { CourseDescriptionType } from '../../../types/CourseTypes';
 import './DiscussionForum.scss';
 import { Question } from './interfaces/interfaces';
 import AskQuestionPopup from './subcomponents/askQuestionPopup/AskQuestionPopup';
 import QuestionItem from './subcomponents/QuestionItem/QuestionItem';
 
-function DiscussionForum({ userInfo }:{userInfo:object}): JSX.Element {
+const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   // save typed question
   const [value, setValue] = useState<string>('');
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(event.target.value);
+    if (event.target.value.length > 500) event.preventDefault();
+    else setValue(event.target.value);
   };
 
-  // Popup
-  const [isOpen, setPopupState] = useState<boolean>(false);
+  // get course informatiom
+  const courseDescriptionState = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType, isLoading: boolean, errorMessage: string };
+  const { entity } = courseDescriptionState;
 
-  const onOpen = () => {
-    setPopupState(true);
+  const dispatch = useDispatch();
+  const AllQuestionsState = useSelector<RootState>((state) => state.QuestionActions) as {
+     questionsWithId: Question[],
+     questionsWithIdToMentor: Question[],
+     isLoading: boolean,
+     isOpen: boolean,
+     section: boolean,
+    };
+
+  const {
+    questionsWithId, questionsWithIdToMentor, isLoading, isOpen, section,
+  } = AllQuestionsState;
+
+  const handleClose = () => {
+    setValue('');
+    dispatch(onClose());
   };
 
-  const onClose = () => {
-    setPopupState(false);
+  const cleanTextField = () => {
     setValue('');
   };
 
@@ -31,87 +51,108 @@ function DiscussionForum({ userInfo }:{userInfo:object}): JSX.Element {
   const idAndToken = useMemo(() => ({
     token: (userInfo as any).token,
     id: (userInfo as any).id,
-  }), []);
+  }), [userInfo]);
 
-  // function for forming an object with typed question and generated id for it
-  const [questionsWithId, setQuestionsWithId] = useState<Question[]>([]);
+  // if QuestionItems' count is > 15, we should make scroll Applicable
+  const scrollClassName = questionsWithId.length > 15 ? 'questionItemsScroll' : '';
+  const AskQuestionClassName = questionsWithId.length > 15 ? 'askQuestionsScroll' : '';
 
-  const addToQuestionObjArr = (val: string): void => {
-    const newQuestion: Question = {
-      id: Date.now().toString(),
-      text: val,
-    };
-    setQuestionsWithId((prevQuestion) => [newQuestion, ...prevQuestion]);
-  };
+  // Link to the askPeers or askMentor pages
+  const sectionName = section ? 'peers' : 'mentor';
+  const { courseId } = useParams();
+  const location = useLocation();
+  const currentPath = location.pathname;
+  let isBtnClicked = true;
+  if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`) isBtnClicked = true;
+  if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`) isBtnClicked = false;
 
-  // edit text
-  const questionChanged = (id: string, newText: string): void => {
-    setQuestionsWithId((prevQuestions) => prevQuestions
-      .map((q) => (q.id === id ? { ...q, text: newText } : q)));
-  };
+  // set the value of section to true initially when DiscussionForum opens
+  dispatch(changeSection(true));
 
-  // get course informatiom
-  const courseDescriptionState = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType, isLoading: boolean, errorMessage: string };
-  const { entity } = courseDescriptionState;
-
-  // Post question
-  const postQuestion = async () => {
-    const body = {
-      text: value,
-    };
-
-    const response = await (await fetchData.post(`courses/enrolled/${entity.enrolledCourseId}/peers-questions`, body, {}, idAndToken.token)).json();
-    return response;
-  };
-
-  // delete question from server
-  // const deleteQuestionFromServer = async () => {
-  //   const response = await (await fetchData.delete(`courses/enrolled/${entity.enrolledCourseId}/peers-questions${courceInfo.id}`, {}, idAndToken.token)).json();
-  //   return response;
-  // };
-
-  // add question to the addToQuestionObjArr and post it
-  const addQuestion = (val: string): void => {
-    val && addToQuestionObjArr(val);
-    postQuestion();
-    onClose();
-  };
-  // removes question
-  const removeQusetion = (questionId: string): void => {
-    setQuestionsWithId((prevQuestions) => prevQuestions.filter((q) => q.id !== questionId));
-  };
+  const { t } = useTranslation();
 
   return (
     <div className="inner">
       <div className="container">
         <div className="forum_header">
-          <h1 className="forum_header-title">Discussion Forum</h1>
+          <h1 className="forum_header-title">{t('Discussion Forum')}</h1>
           <div className="forum_header-inner">
             <ul className="forum_header-menu">
-              <li className="forum_header-list">Ask Peeps</li>
-              <li className="forum_header-list">Ask Mentor</li>
+              <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${isBtnClicked ? '_active' : ''}`}>
+                <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`} className="forum_header-list_link" onClick={() => dispatch(changeSection(true))}>
+                  {t('Ask Peers')}
+                </Link>
+              </button>
+              <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${!isBtnClicked ? '_active' : ''}`} onClick={() => dispatch(changeSection(false))}>
+                <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`} className="forum_header-list_link">
+                  {t('Ask Mentor')}
+                </Link>
+              </button>
+
             </ul>
-            <button data-testid="toggle_btn" type="button" onClick={onOpen} className="btn">Ask Question</button>
+            <button data-testid="toggle-btn" type="button" onClick={() => dispatch(onOpen())} className={`btn ${AskQuestionClassName}`}>{t('Ask Question')}</button>
           </div>
         </div>
-        {questionsWithId.map((val) => (
-          <QuestionItem
-            removeQ={removeQusetion}
-            questionChanged={questionChanged}
-            text={val.text}
-            id={val.id}
-            key={val.id}
-          />
-        ))}
+        <div className={scrollClassName}>
+          {
+            isBtnClicked ? (
+              questionsWithId.length ? (
+                questionsWithId.map((val) => (
+                  <QuestionItem
+                    text={val.text}
+                    id={val.id}
+                    createdDate={val.createdDate}
+                    key={val.id}
+                    token={idAndToken.token}
+                    enrolledCourseId={entity.enrolledCourseId}
+                    sectionName={sectionName}
+                  />
+                ))
+              )
+                : (
+                  <div className="noQuestionsDiv">{t('No questions. Be the First to Ask a question!')}</div>
+                )
+            )
+              : (
+                questionsWithIdToMentor.length ? (
+                  questionsWithIdToMentor.map((val) => (
+                    <QuestionItem
+                      text={val.text}
+                      id={val.id}
+                      createdDate={val.createdDate}
+                      key={val.id}
+                      token={idAndToken.token}
+                      enrolledCourseId={entity.enrolledCourseId}
+                      sectionName={sectionName}
+                    />
+                  ))
+                )
+                  : (
+                    <div className="noQuestionsDiv">{t('No questions to mentors. Be the First to Ask a question!')}</div>
+                  )
+              )
+          }
+          {isLoading && <div style={{ marginTop: '40px' }}><Loader /></div>}
+        </div>
       </div>
       {
-          isOpen
-          && (
-            <AskQuestionPopup data-testid="askQuestionPopup" value={value} isOpen={isOpen} onClose={onClose} handleChange={handleChange} addQuestion={addQuestion} />
-          )
-        }
+        isOpen
+        && (
+        <AskQuestionPopup
+          data-testid="askQuestionPopup"
+          value={value}
+          isOpen={isOpen}
+          handleClose={handleClose}
+          handleChange={handleChange}
+          enrolledCourseId={entity.enrolledCourseId}
+          token={idAndToken.token}
+          cleanTextField={cleanTextField}
+          sectionName={sectionName}
+        />
+        )
+      }
     </div>
   );
-}
+};
 
 export default DiscussionForum;

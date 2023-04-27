@@ -85,6 +85,8 @@
       color: #f4f8f7;
       width: 71px;
       height: 31px;
+      margin-bottom: -1px;
+      margin-left: -1px;
       position: relative;
     }
     &:active {
@@ -104,6 +106,8 @@
     &:hover {
       width: 71px;
       height: 31px;
+      margin-bottom: -1px;
+      margin-left: -1px;
       border: #7b93d1 2px solid;
       color: #4c6bb8;
       position: relative;

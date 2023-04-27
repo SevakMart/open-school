@@ -16,8 +16,6 @@ import { signInContext } from '../../contexts/Contexts';
 import CourseModulePage from '../../pages/CourseModulePage/CourseModulePage';
 import HomepageWhenSignIn from '../../pages/HomepageWhenSignIn/HomepageWhenSignIn';
 
-/* eslint-disable max-len */
-
 const AppRoutes = () => {
   const userInfoState = useSelector<RootState>((state) => state.userInfo);
   const { userInfo } = userInfoState as any;
@@ -76,14 +74,13 @@ const AppRoutes = () => {
             )}
           />
           <Route
-            path="/userCourse/modulOverview/:courseId"
+            path="/userCourse/modulOverview/:courseId/*"
             element={(
               <ProtectedRoute token={(userInfo && (userInfo as any).token) ? (userInfo as any).token : null}>
                 <CourseModulePage userInfo={userInfo} />
               </ProtectedRoute>
             )}
           />
-
           <Route
             path="/homepage/WhenSignin"
             element={(

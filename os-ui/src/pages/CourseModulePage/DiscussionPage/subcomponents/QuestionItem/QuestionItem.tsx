@@ -1,27 +1,55 @@
-/* eslint-disable react/prop-types */
 import './questionItem.scss';
 import { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import ArrowRightIcon from '../../../../../assets/svg/ArrowRight.svg';
 import edit from '../../../../../assets/svg/edit.svg';
 import save from '../../../../../assets/svg/save.svg';
-import trash from '../../../../../assets/svg/trash.svg';
+import threeVerticalDots from '../../../../../assets/svg/three-dots-vertical.svg';
 import { QuestionItemProps } from '../../interfaces/interfaces';
+import QuestionItemPopup from './QuestionItemPopup/QuestionItemPopup';
+import { removeQuestion, updateQuestion } from '../../../../../redux/Slices/QuestionActionsSlice';
 
+/* eslint-disable react/prop-types */
 const QuestionItem: React.FC<QuestionItemProps> = ({
-  removeQ, questionChanged, text, id,
+  text, id, createdDate, token, enrolledCourseId, sectionName,
 }) => {
   const [isEditPressed, SetEditPresses] = useState<boolean>(false);
   const btnType = isEditPressed ? `${save}` : `${edit}`;
+  const btnTextType = isEditPressed ? 'Save' : 'Edit';
   const [editValue, SetEditValue] = useState<string>(text);
 
+  const dispatch = useDispatch();
+  const handleUpdateQuestion = (questionId:string) => {
+    dispatch(updateQuestion({
+      enrolledCourseId, questionId, newText: editValue, token, sectionName,
+    }));
+  };
+
+  const handleRemoveQuestion = (questionId:string) => {
+    dispatch(removeQuestion({
+      enrolledCourseId, questionId, token, sectionName,
+    }));
+  };
+
+  // popUp open and close state
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  // edit
   const editValueChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    SetEditValue(event.target.value);
+    if (event.target.value.length > 500) event.preventDefault();
+    else SetEditValue(event.target.value);
   };
 
   const editQuestion = (): void => {
     SetEditPresses((prev) => !prev);
     if (isEditPressed) {
-      questionChanged(id, editValue);
+      handleUpdateQuestion(id);
+      setIsOpen(false);
+    }
+    if (!editValue) {
+      handleUpdateQuestion(id);
+      SetEditValue(text);
     }
   };
 
@@ -35,15 +63,69 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     }
   }, [isEditPressed]);
 
+  // popup for edit and remove btns
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  const animatedFunction = (any_function: (...args: string[]) => void, ...args: string[]): void => {
+    setIsAnimating(true);
+    setTimeout(() => {
+      setIsAnimating(false);
+      any_function(...args);
+    }, 300);
+  };
+
+  // open and close a popup
+  const onOpen = () => {
+    setIsOpen(true);
+  };
+
+  const onClose = () => {
+    SetEditPresses(false);
+    if (!editValue) {
+      SetEditValue(text);
+    }
+    // questionChanged(id, editValue);
+    setIsOpen(false);
+  };
+
+  // formatting data
+  const date = new Date(createdDate);
+  const formattedDate = date.toLocaleString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+  });
+
+  // disable save button when nothing typed
+  const isDisable = editValue.length === 0;
+
+  const { t } = useTranslation();
+
   return (
     <div className="Questions_page">
+      {
+        isOpen && (
+          <QuestionItemPopup
+            isOpen={isOpen}
+            isAnimating={isAnimating}
+            animatedFunction={animatedFunction}
+            onClose={onClose}
+            isDisable={isDisable}
+            editQuestion={editQuestion}
+            btnType={btnType}
+            btnTextType={btnTextType}
+            removeQ={handleRemoveQuestion}
+            id={id}
+            textAreaRef={textAreaRef}
+          />
+        )
+      }
       <div className="Questions_inner">
         <div className="Question_item">
           <div className="icons">
-            <div className="changeQuestion">
-              <img className="edit" src={btnType} alt="Edt" onClick={editQuestion} />
-              <img className="trash" src={trash} alt="X" onClick={() => removeQ(id)} />
-            </div>
+            <img className="icon_menu" src={threeVerticalDots} onClick={() => { animatedFunction(onOpen); }} alt="menu" />
             <img className="arrowRightIcon" src={ArrowRightIcon} alt=">" />
           </div>
           {
@@ -60,10 +142,12 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
                 />
               )
               : (
-                <div className="question_text_container">
-                  <p className="Question_text">
-                    <span className="Question__text_inner" style={{ wordWrap: 'break-word', overflow: 'auto' }}>{text}</span>
-                  </p>
+                <div className="question_item">
+                  <div className="Question_text_" data-testid="questionItem-text" style={{ wordWrap: 'break-word' }}>{t(text)}</div>
+                  <div className="question__text_box">
+                    <div className="user_">{t('Me')}</div>
+                    <div className="Question__text_inner-date" data-testid="questionItem-date">{formattedDate}</div>
+                  </div>
                 </div>
               )
           }

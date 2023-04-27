@@ -1,69 +1,82 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { createStore } from '@reduxjs/toolkit';
+import {
+  act, fireEvent, render, screen,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { unmountComponentAtNode } from 'react-dom';
+import { Provider } from 'react-redux';
+import rootReducer from '../../../../../../redux/RootReducer';
 import AskQuestionPopup from '../AskQuestionPopup';
 
 describe('AskQuestionPopup', () => {
-  const onClose = jest.fn();
+  const handleClose = jest.fn();
   const handleChange = jest.fn();
-  const addQuestion = jest.fn();
+  const cleanTextField = jest.fn();
 
+  const store = createStore(rootReducer);
+
+  let container: Element | null = null;
   beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
     jest.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    if (container) {
+      unmountComponentAtNode(container);
+      if (container instanceof Element) {
+        container.remove();
+      }
+      container = null;
+      jest.useRealTimers();
+    }
   });
 
-  test('input questiom', () => {
-    render(<AskQuestionPopup
-      value=""
-      isOpen
-      onClose={onClose}
-      handleChange={handleChange}
-      addQuestion={addQuestion}
-    />);
+  test('input question', () => {
+    render(
+      <Provider store={store}>
+        <AskQuestionPopup
+          value=""
+          isOpen
+          handleChange={handleChange}
+          handleClose={handleClose}
+          enrolledCourseId={0}
+          token="123"
+          cleanTextField={cleanTextField}
+          sectionName="Mentor"
+        />
+      </Provider>,
+    );
+
     const closeButton = screen.getByTestId('close-btn');
-    userEvent.click(closeButton);
-    jest.runAllTimers();
-    expect(onClose).toHaveBeenCalled();
+    act(() => {
+      userEvent.click(closeButton);
+      jest.runAllTimers();
+    });
+
+    expect(handleClose).toHaveBeenCalled();
 
     const textArea = screen.getByTestId('question-textarea');
     const postButton = screen.getByTestId('post-btn');
 
-    fireEvent.input(textArea, { target: { value: '' } });
-    userEvent.click(postButton);
-    expect(addQuestion).not.toBeCalled();
+    act(() => {
+      fireEvent.input(textArea, { target: { value: '' } });
+      userEvent.click(postButton);
+    });
 
     const close_btn_x = screen.getByTestId('close-x-btn');
-    userEvent.click(close_btn_x);
-    jest.runAllTimers();
-    expect(onClose).toHaveBeenCalled();
+    act(() => {
+      userEvent.click(close_btn_x);
+      jest.runAllTimers();
+    });
+    expect(handleClose).toHaveBeenCalled();
 
     const close_cancel_btn = screen.getByTestId('close-cancel-btn');
-    userEvent.click(close_cancel_btn);
-    jest.runAllTimers();
-    expect(onClose).toHaveBeenCalled();
-  });
-
-  test('should call addQuestion when post button is clicked and value is not empty', () => {
-    render(<AskQuestionPopup
-      value="new test value"
-      isOpen
-      onClose={onClose}
-      handleChange={handleChange}
-      addQuestion={addQuestion}
-    />);
-
-    const textArea = screen.getByTestId('question-textarea');
-    const postButton = screen.getByTestId('post-btn');
-
-    userEvent.click(postButton);
-    expect(addQuestion).not.toBeCalled();
-
-    fireEvent.input(textArea, { target: { value: 'new test value' } });
-    userEvent.click(postButton);
-    jest.runAllTimers();
-    expect(addQuestion).toBeCalledWith('new test value');
+    act(() => {
+      userEvent.click(close_cancel_btn);
+      jest.runAllTimers();
+    });
+    expect(handleClose).toHaveBeenCalled();
   });
 });

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Route, Routes, useParams } from 'react-router-dom';
 import { userContext } from '../../contexts/Contexts';
 import CourseModuleSidebar from './Subcomponent/CourseModuleSidebar/CourseModuleSidebar';
 import styles from './CourseModulePage.module.scss';
@@ -9,39 +9,26 @@ import NavbarOnSignIn from '../../component/Navbar-Component/NavbarOnSignIn/Navb
 import { getCourseDescription } from '../../redux/Slices/CourseDescriptionRequestSlice';
 import { RootState } from '../../redux/Store';
 import { CourseDescriptionType } from '../../types/CourseTypes';
+import { setValue } from '../../redux/Slices/CourseModuleSlice';
 import DiscussionForum from './DiscussionPage/DiscussionForum';
 
 const CourseModulePage = ({ userInfo }:{userInfo:any}) => {
-  const [isDiscBtnpressed, setDiscBtnpressed] = useState<boolean>(
-    localStorage.getItem('isDiscBtnpressed') === 'true', // Checking the value in localStorage and transforming it into boolean
-  );
   const { entity } = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType };
-  const [value, setValue] = useState<string>(entity?.modules?.[0]?.title || '');
+  const { value } = useSelector<RootState>((state) => state.courseModule) as { value: string };
+
   const { courseId } = useParams();
   const dispatch = useDispatch();
-  const setDisBtnPosition = (value: string): void => {
-    if (value === 'Discussion Forum') {
-      setDiscBtnpressed(() => !isDiscBtnpressed);
-    }
-  };
+
   useEffect(() => {
-    setValue(entity?.modules?.[0]?.title);
+    dispatch(setValue(entity?.modules?.[0]?.title));
   }, [entity]);
 
-  // saving the value isDiscBtnpressed in localStorage, if it changes
-  useEffect(() => {
-    localStorage.setItem('isDiscBtnpressed', isDiscBtnpressed.toString()); // transforming boolean into string for saving it into localStorage
-  }, [isDiscBtnpressed]);
-
+  // get CourseDescription from redux
   useEffect(() => {
     dispatch(getCourseDescription({
       courseId: Number(courseId), token: userInfo.token,
     }));
   }, []);
-
-  const handleChangeValue = (newValue: string) => {
-    setValue(newValue);
-  };
 
   return (
     value ? (
@@ -49,17 +36,15 @@ const CourseModulePage = ({ userInfo }:{userInfo:any}) => {
         <NavbarOnSignIn />
         <userContext.Provider value={userInfo}>
           <div className={styles.ModuleOverviuw_container}>
-            <CourseModuleSidebar value={value} handleChangeValue={handleChangeValue} title={entity.title} modules={entity.modules} setDisBtnPosition={setDisBtnPosition} />
-            { isDiscBtnpressed === false
-              ? (
-                <ModuleMainPage value={value} handleChangeValue={handleChangeValue} modules={entity.modules} duration={entity.duration} />
-              )
-              : (<DiscussionForum userInfo={userInfo} />
-              )}
+            <CourseModuleSidebar />
+            <Routes>
+              <Route path="" element={<ModuleMainPage />} />
+              <Route path="/discussionForum/*" element={<DiscussionForum userInfo={userInfo} />} />
+            </Routes>
           </div>
         </userContext.Provider>
       </>
-	  ) : null
+    ) : null
   );
 };
 

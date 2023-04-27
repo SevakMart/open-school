@@ -1,0 +1,51 @@
+// popUp
+.questionItemsScroll {
+  position: relative;
+}
+
+.btnsPopup {
+  z-index: 2;
+  display: flex;
+  right: 93px;
+  margin-top: 35px;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  position: absolute;
+}
+
+.btnsPopup.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.btnsPopup.animating {
+  transition: none;
+}
+
+.btnsPopup-content {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  min-width:100px;
+  min-height: 50px;
+  display: block;
+  &_item {
+    display: flex;
+    cursor: pointer;
+    width: 70px;
+    border-style: none;
+    background-color: #fff;
+  }
+  &_item_margin {
+    margin-top: 5px;
+  }
+}
+
+.editBtn-title {
+  margin-top: 5px;
+}
+
+.removeBtn-title {
+  margin-top: 5px;
+}

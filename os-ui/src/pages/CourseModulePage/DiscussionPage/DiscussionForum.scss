@@ -29,18 +29,25 @@
 .forum_header-list {
   width: 90px;
   text-align: center;
-  list-style: none;
+  border-style: none;
   margin-left: 5px;
-  padding: 1.5px;
-  color: #717685;
-}
-
-.forum_header-list:hover {
-  border-bottom: 3px solid #52719e;
-  color: #3d3f42;
-  padding: 0;
-  font-weight: 600;
-  cursor: pointer;
+  padding: 5px 2px 3px 2px;
+  font-size: 13px;
+  &:hover {
+    color: #6e6a6a;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  &_active {
+    border-bottom: 4px solid #52719e;
+    color: #3d3f42;
+    font-weight: 600;
+    margin-bottom: -4px;
+  }
+  &_link {
+    color: #717685;
+    text-decoration: none;
+  }
 }
 
 .btn {
@@ -53,6 +60,11 @@
   margin-top: 10px;
   margin-right: 40px;
   cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #f16d4f;
+  color: #d6faf1;
 }
 
 .btn:active {
@@ -80,4 +92,22 @@
   resize: none;
   outline: none;
   border: none;
+}
+
+.noQuestionsDiv {
+  font-weight: 600;
+  font-size:30px;
+  margin-top: 20px;
+  margin-left: 3px;
+  color: #12cf5a;
+}
+
+//scroll
+.questionItemsScroll {
+  height: 500px;
+  overflow-y: scroll;
+}
+
+.askQuestionsScroll {
+  margin-right: 57px;
 }
