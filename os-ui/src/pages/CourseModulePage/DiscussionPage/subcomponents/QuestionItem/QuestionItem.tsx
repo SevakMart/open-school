@@ -19,6 +19,9 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const btnTextType = isEditPressed ? 'Save' : 'Edit';
   const [editValue, SetEditValue] = useState<string>(text);
 
+  // disable save button when it is nothing typed or if we don't change the text
+  const isDisable = btnTextType === 'Save' ? editValue.trim() === '' || editValue === text : false;
+
   const dispatch = useDispatch();
   const handleUpdateQuestion = (questionId:string) => {
     dispatch(updateQuestion({
@@ -97,9 +100,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     minute: 'numeric',
     second: 'numeric',
   });
-
-  // disable save button when nothing typed
-  const isDisable = editValue.length === 0;
 
   const { t } = useTranslation();
 

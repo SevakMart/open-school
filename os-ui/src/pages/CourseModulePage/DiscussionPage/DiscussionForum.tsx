@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
@@ -66,8 +66,10 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`) isBtnClicked = true;
   if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`) isBtnClicked = false;
 
-  // set the value of section to true initially when DiscussionForum opens
-  dispatch(changeSection(true));
+  // This will call the changeSection action with the true value only once when the component mounts.
+  useEffect(() => {
+    dispatch(changeSection(true));
+  }, []);
 
   const { t } = useTranslation();
 

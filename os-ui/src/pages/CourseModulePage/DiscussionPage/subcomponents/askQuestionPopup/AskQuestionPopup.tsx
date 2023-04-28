@@ -43,6 +43,8 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
 
   const { t } = useTranslation();
 
+  const isValueEmpty = value.trim() === '';
+
   return (
     <div className={`popup ${isOpen ? 'open' : ''} ${isAnimating ? 'animating' : ''}`}>
       <div className="popup-overlay" data-testid="close-btn" onClick={() => { animatedFunction(handleClose); }} />
@@ -63,7 +65,7 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
           />
           <div className="buttons">
             <button type="button" onClick={() => { animatedFunction(handleClose); }} className="btn_cancel" data-testid="close-cancel-btn">{t('Cancel')}</button>
-            <button type="button" onClick={() => { animatedFunction(handleAddQuestion); }} disabled={!value} data-testid="post-btn" className="btn_post">{t('Post')}</button>
+            <button type="button" onClick={() => { animatedFunction(handleAddQuestion); }} disabled={isValueEmpty} data-testid="post-btn" className="btn_post">{t('Post')}</button>
           </div>
         </div>
       </div>
