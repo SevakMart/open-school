@@ -1,9 +1,9 @@
-import { FormValues } from '../component/SignUpSignIn/Form/Form';
 import {
   emailRegex, passwordRegex, EMAIL_REQUIRED, EMAIL_TOO_LONG, INVALID_EMAIL_ERROR_MESSAGE,
   PASSWORD_REQUIRED, INVALID_PASSWORD_ERROR_MESSAGE, FIRSTNAME_REQUIRED, LASTNAME_REQUIRED,
   FIRSTNAME_TOO_LONG, LASTNAME_TOO_LONG,
 } from '../constants/Strings';
+import { FormValues } from '../types/FormTypes';
 
 export const validateSignUpForm = (formValues:FormValues) => {
   const errorFormValue = {

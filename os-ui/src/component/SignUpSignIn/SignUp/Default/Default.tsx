@@ -5,8 +5,9 @@ import { addSignedUpUserId } from '../../../../redux/Slices/SignedUpUserIdSlice'
 import { validateSignUpForm } from '../../../../helpers/SignUpFormValidate';
 import { openModalWithSuccessMessage } from '../../../../redux/Slices/PortalOpenStatus';
 import { Types } from '../../../../types/types';
-import Form, { FormValues } from '../../Form/Form';
+import Form from '../../Form/Form';
 import authService from '../../../../services/authService';
+import { FormValues } from '../../../../types/FormTypes';
 
 const initialErrorFormValues = {
   firstNameError: '', lastNameError: '', emailError: '', psdError: '',

@@ -10,8 +10,6 @@ import Header from '../../Header/Header';
 import Button from '../../../Button/Button';
 import { Input } from '../../../Input/Input';
 
-/* eslint-disable max-len */
-
 const ForgotPassword = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -20,6 +18,17 @@ const ForgotPassword = () => {
 
   const handleInputChange = (e:React.SyntheticEvent) => {
     setEmail((e.target as HTMLInputElement).value);
+  };
+
+  const handleFormOnClick = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+  };
+
+  const handleSubmit = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (event.key === 'Enter') {
+	  event.preventDefault();
+	  handleFormOnClick(event);
+    }
   };
 
   const sendForgotPassword = () => {
@@ -54,6 +63,7 @@ const ForgotPassword = () => {
           placeholderText={t('form.placeholder.email')}
           value={email}
           handleInputChange={handleInputChange}
+          handleEnterPress={handleSubmit}
         />
         <Button.FormButton className={['formButton']} onClick={sendForgotPassword}>
           {t('button.forgotPsd.continue')}

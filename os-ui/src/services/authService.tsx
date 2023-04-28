@@ -1,8 +1,7 @@
 import fetchService from './fetchData';
 import { RegistrationFormType } from '../types/RegistartionFormType';
-import { FormValues } from '../component/SignUpSignIn/Form/Form';
 import { ResetPasswordType } from '../types/ResetPasswordType';
-// import { ForgotVerificationType } from '../types/ForgotVerificationType';
+import { FormValues } from '../types/FormTypes';
 
 class AuthService {
   readonly basePath: string;

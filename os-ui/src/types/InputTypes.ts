@@ -5,6 +5,7 @@ export interface EmailInputProps {
 	errorMessage: string;
 	value: string;
 	handleInputChange: (event: React.SyntheticEvent) => void;
+	handleEnterPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   }
 
 export interface PasswordInputProps {
