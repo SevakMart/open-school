@@ -61,7 +61,9 @@ const CourseModuleSidebar = () => {
             className={moduleListIsOpen ? moduleDescriptionIsOpen : moduleDescriptionIsClosed}
             data-testid={moduleListIsOpen ? 'moduleListOpen' : 'moduleListClosed'}
           >
-            <SidebarDropdown handleChangeValue={handleChangeValue} modules={entity.modules} value={value} />
+            { entity?.modules?.map((module) => (
+              <SidebarDropdown key={module.title} checked={value === module.title} title={module.title} handleChangeValue={handleChangeValue} courseId={courseId} />
+            ))}
           </div>,
         ]}
       />

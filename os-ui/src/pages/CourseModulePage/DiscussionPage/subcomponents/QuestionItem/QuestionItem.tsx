@@ -99,7 +99,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   });
 
   // disable save button when nothing typed
-  const isDisable = editValue.length === 0;
+  const isDisable = editValue.trim() === '';
 
   const { t } = useTranslation();
 
