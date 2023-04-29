@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/Store';
 import { validateResetPasswordForm } from '../../../../helpers/ResetPasswordFormValidate';
 import { openModalWithSuccessMessage } from '../../../../redux/Slices/PortalOpenStatus';
-import Form, { FormValues } from '../../Form/Form';
+import Form from '../../Form/Form';
 import Header from '../../Header/Header';
 import { Types } from '../../../../types/types';
 import authService from '../../../../services/authService';
+import { FormValues } from '../../../../types/FormTypes';
 
 const initialErrorFormValues = { tokenError: '', newPasswordError: '', confirmedPasswordError: '' };
 /* eslint-disable max-len */

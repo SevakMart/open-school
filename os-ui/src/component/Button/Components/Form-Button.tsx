@@ -4,7 +4,7 @@ import styles from '../Button-Styles.module.scss';
 interface FormButtonProps {
   children: string;
   className: string[];
-  onClick?: () => void;
+  onClick?: (event: React.SyntheticEvent) => void;
 }
 
 export const FormButton = ({ children, className, onClick }: FormButtonProps) => {

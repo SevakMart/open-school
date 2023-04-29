@@ -4,7 +4,7 @@ import VisibileIcon from '../../../icons/Visibility';
 import HiddenIcon from '../../../icons/Hidden';
 import { useFocus } from '../../../custom-hooks/useFocus';
 import styles from '../Input-Styles.module.scss';
-import { PasswordInputProps } from './interfaces/interfaces';
+import { PasswordInputProps } from '../../../types/InputTypes';
 
 export const PasswordInput = ({
   textName,

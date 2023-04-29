@@ -1,7 +1,7 @@
 import React from 'react';
 import { ErrorField } from '../../ErrorField/ErrorField';
 import styles from '../Input-Styles.module.scss';
-import { EmailInputProps } from './interfaces/interfaces';
+import { EmailInputProps } from '../../../types/InputTypes';
 
 export const EmailInput = ({
   textName,
@@ -10,8 +10,16 @@ export const EmailInput = ({
   errorMessage,
   value,
   handleInputChange,
+  handleEnterPress,
 }: EmailInputProps) => {
   const { EmailInputContainer } = styles;
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleEnterPress(event);
+    }
+  };
+
   return (
     <div className={EmailInputContainer}>
       <label htmlFor={textName}>
@@ -26,6 +34,7 @@ export const EmailInput = ({
         placeholder={placeholderText}
         data-testid="emailInput"
         onChange={(e) => handleInputChange(e)}
+        onKeyDown={handleKeyDown}
         required
         tabIndex={-1}
       />
