@@ -2,6 +2,7 @@ package app.openschool.course.module;
 
 import app.openschool.course.Course;
 import app.openschool.course.module.item.ModuleItem;
+import app.openschool.course.module.quiz.Quiz;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -37,16 +38,20 @@ public class Module {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
   private Set<ModuleItem> moduleItems = new HashSet<>();
 
+  @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
+  private Set<Quiz> quizzes;
+
   public Module() {}
 
   public Module(Course course) {
     this.course = course;
   }
 
-  public Module(Long id, Course course, Set<ModuleItem> moduleItems) {
+  public Module(Long id, Course course, Set<ModuleItem> moduleItems, Set<Quiz> quizzes) {
     this.id = id;
     this.course = course;
     this.moduleItems = moduleItems;
+    this.quizzes = quizzes;
   }
 
   public Long getId() {
@@ -87,5 +92,13 @@ public class Module {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public Set<Quiz> getQuizzes() {
+    return quizzes;
+  }
+
+  public void setQuizzes(Set<Quiz> quizzes) {
+    this.quizzes = quizzes;
   }
 }
