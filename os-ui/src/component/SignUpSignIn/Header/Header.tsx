@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { closeModal } from '../../../redux/Slices/PortalOpenStatus';
 import CloseIcon from '../../../icons/Close';
 import LinkedinIcon1 from '../../../icons/Linkedin1';
-import EmailIcon1 from '../../../icons/Email1';
+import EmailIcon1 from '../../../icons/EmailIcon/Email1';
 import styles from './Header.module.scss';
-/* eslint-disable max-len */
+
 const Header = ({
   mainTitle, shouldRemoveIconContent, isForgotPasswordContent, isVerificationContent,
 }:{mainTitle:string, shouldRemoveIconContent:boolean, isForgotPasswordContent:boolean, isVerificationContent:boolean}) => {
@@ -36,8 +36,8 @@ const Header = ({
         && (
         <>
           <div className={iconContent}>
-            <div className={icon}><LinkedinIcon1 /></div>
-            <div className={icon}><EmailIcon1 /></div>
+            <div className={icon}><LinkedinIcon1 href="" /></div>
+            <div className={icon}><EmailIcon1 title="example@example.com" /></div>
           </div>
           <p>{t('string.signIn.or')}</p>
         </>

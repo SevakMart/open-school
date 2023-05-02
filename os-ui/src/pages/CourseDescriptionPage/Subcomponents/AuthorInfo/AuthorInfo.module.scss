@@ -24,11 +24,23 @@
             display:inline;
             @include fontStyle($primary-font,normal,500,16,24px);
             color:$main-text-color;
-            margin-right:52px;
+            // margin-right:30px;
         }
         a {
            cursor:pointer;
            @include flexStyle(column,center,center);
         }
+		.iconContent {
+			height:36px;
+			width:20%;
+			@include flexStyle(row,center,space-evenly);
+			.icon {
+				display:inline-block;
+				width:30px;
+				height:30px;
+				cursor: pointer;
+			}
+			
+		}
     }
 }

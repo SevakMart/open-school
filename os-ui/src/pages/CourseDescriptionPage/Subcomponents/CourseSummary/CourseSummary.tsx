@@ -9,9 +9,9 @@ import { deleteUserSavedCourse } from '../../../../redux/Slices/DeleteUserSavedC
 import userService from '../../../../services/userService';
 import BookmarkIcon from '../../../../icons/Bookmark';
 import CourseSummaryItem from './Subcomponent/CourseSummaryItem/CourseSummaryItem';
-import ShareIcon from '../../../../assets/svg/ShareIcon.svg';
 import Button from '../../../../component/Button/Button';
 import styles from './CourseSummary.module.scss';
+import ShareButton from '../../../../icons/ShareIcon/ShareIcon';
 
 const CourseSummary = ({
   rating,
@@ -33,18 +33,17 @@ const CourseSummary = ({
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const { id: userId, token } = userIdAndToken;
+  const dispatch = useDispatch<DispatchType>();
 
-  const courseSummaryItem = {
+  const [enrolledInCourse, setEnrolledInCourse] = useState<boolean>(Boolean(currentUserEnrolled));
+  const [enrollButtonDisabled, setEnrollButtonDisabled] = useState<boolean>(false);
+  const [courseSummaryItem, setCourseSummaryItem] = useState({
     rating,
     enrolled,
     level,
     language,
     duration,
-  };
-  const dispatch = useDispatch<DispatchType>();
-
-  const [enrolledInCourse, setEnrolledInCourse] = useState<boolean>(Boolean(currentUserEnrolled));
-  const [enrollButtonDisabled, setEnrollButtonDisabled] = useState<boolean>(false);
+  });
 
   const {
     mainContent,
@@ -86,15 +85,20 @@ const CourseSummary = ({
   }, []);
 
   const handleEnrollButtonClick = () => {
-	  setEnrolledInCourse(true);
-	  setEnrollButtonDisabled(true);
+    setEnrolledInCourse(true);
+    setEnrollButtonDisabled(true);
+    setCourseSummaryItem((prevState) => ({
+      ...prevState,
+      enrolled: prevState.enrolled + 1,
+    }));
   };
+
   return (
     <div className={mainContent}>
       <div className={headerContent}>
         <h2>{t('string.courseDescriptionPage.title.summary')}</h2>
         <div className={headerIcons}>
-          <img src={ShareIcon} alt="Share icon" />
+          <ShareButton courseId={courseId} />
           <BookmarkIcon
             iconSize="20px"
             courseTitle={title}
