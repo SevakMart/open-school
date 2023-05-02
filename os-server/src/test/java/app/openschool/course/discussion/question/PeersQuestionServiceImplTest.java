@@ -2,6 +2,8 @@ package app.openschool.course.discussion.question;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -9,6 +11,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.course.Course;
@@ -24,12 +27,17 @@ import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
 import app.openschool.course.discussion.peers.question.PeersQuestionServiceImpl;
 import app.openschool.user.User;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class PeersQuestionServiceImplTest {
@@ -222,6 +230,75 @@ class PeersQuestionServiceImplTest {
     assertThatThrownBy(() -> questionService.delete(questionId, wrongEnrolledCourseId, userEmail))
         .isInstanceOf(IllegalArgumentException.class);
     verify(peersQuestionRepository, times(1)).delete(any(), any(), any());
+  }
+
+  @Test
+  void findQuestionByCourseId_withCorrectData() {
+    PeersQuestion question = TestHelper.createDiscussionPeersQuestion();
+    long enrolledCourseId = 1L;
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<PeersQuestion> questionPage = new PageImpl<>(List.of(question));
+
+    when(peersQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable))
+        .thenReturn(questionPage);
+    Page<PeersQuestion> questionByCourseId =
+        questionService.findQuestionByCourseId(enrolledCourseId, pageable);
+
+    assertNotNull(questionByCourseId.stream().findFirst().orElseThrow());
+    verify(peersQuestionRepository, times(1))
+        .findQuestionByEnrolledCourseId(enrolledCourseId, pageable);
+  }
+
+  @Test
+  void findQuestionByCourseId_withIncorrectData() {
+    long wrongEnrolledCourseId = 1L;
+    Pageable pageable = PageRequest.of(0, 2);
+
+    when(peersQuestionRepository.findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable))
+        .thenReturn(Page.empty(pageable));
+    Page<PeersQuestion> questionByCourseId =
+        questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable);
+
+    assertTrue(questionByCourseId.getContent().isEmpty());
+    verify(peersQuestionRepository, times(1))
+        .findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable);
+  }
+
+  @Test
+  void findQuestionByIdAndEnrolledCourseId_withCorrectData() {
+
+    PeersQuestion question = TestHelper.createDiscussionPeersQuestion();
+    long questionId = question.getId();
+    long enrolledCourseId = 1L;
+
+    when(peersQuestionRepository.findQuestionByIdAndEnrolledCourseId(enrolledCourseId, questionId))
+        .thenReturn(Optional.of(question));
+    PeersQuestion questionByCourseId =
+        questionService.findQuestionByIdAndEnrolledCourseId(enrolledCourseId, questionId);
+
+    assertNotNull(questionByCourseId);
+    verify(peersQuestionRepository, times(1))
+        .findQuestionByIdAndEnrolledCourseId(enrolledCourseId, questionId);
+  }
+
+  @Test
+  void findQuestionByIdAndEnrolledCourseId_withIncorrectData() {
+
+    long wrongQuestionId = 999L;
+    long enrolledCourseId = 1L;
+
+    when(peersQuestionRepository.findQuestionByIdAndEnrolledCourseId(
+            enrolledCourseId, wrongQuestionId))
+        .thenReturn(Optional.empty());
+
+    assertThatThrownBy(
+            () ->
+                questionService.findQuestionByIdAndEnrolledCourseId(
+                    enrolledCourseId, wrongQuestionId))
+        .isInstanceOf(IllegalArgumentException.class);
+
+    verify(peersQuestionRepository, times(1))
+        .findQuestionByIdAndEnrolledCourseId(enrolledCourseId, wrongQuestionId);
   }
 
   QuestionRequestDto crateDiscussionQuestionRequestDto() {

@@ -1,6 +1,7 @@
 package app.openschool.course.discussion.question;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 import app.openschool.category.Category;
@@ -9,7 +10,7 @@ import app.openschool.course.Course;
 import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
-import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.api.CourseGenerator;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.difficulty.DifficultyRepository;
 import app.openschool.course.discussion.TestHelper;
@@ -20,12 +21,16 @@ import app.openschool.course.language.LanguageRepository;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.api.UserGenerator;
+import app.openschool.user.company.CompanyRepository;
 import app.openschool.user.role.Role;
+import app.openschool.user.role.RoleRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 
 @DataJpaTest
@@ -39,42 +44,61 @@ class PeersQuestionRepositoryTest {
   @Autowired CategoryRepository categoryRepository;
   @Autowired EnrolledCourseRepository enrolledCourseRepository;
   @Autowired UserRepository userRepository;
+  @Autowired RoleRepository roleRepository;
 
-  private PeersQuestion expectedPeersQuestion;
-  private User studentUser;
+  private PeersQuestion expectedQuestion;
+  private User student;
   private EnrolledCourse enrolledCourse;
 
   @BeforeEach
   public void setup() {
-    expectedPeersQuestion = TestHelper.createDiscussionPeersQuestion();
-    studentUser = expectedPeersQuestion.getUser();
-    studentUser.setRole(new Role(1, "STUDENT"));
 
-    userRepository.save(studentUser);
-    final User mentor = userRepository.save(UserGenerator.generateUser());
+    User mentor = new User();
+    Role role = roleRepository.save(new Role(2, "MENTOR"));
+    mentor.setRole(role);
+    mentor.setName("Mentor");
+    mentor.setPassword("password");
+    mentor.setEmail("email@email.com");
+
+    mentor = userRepository.save(mentor);
+
     Difficulty difficulty = new Difficulty();
     difficulty.setTitle("Medium");
-    difficultyRepository.save(difficulty);
+    difficulty = difficultyRepository.save(difficulty);
 
     Language language = new Language();
     language.setTitle("English");
-    languageRepository.save(language);
+    language = languageRepository.save(language);
 
     Category category = new Category();
     category.setTitle("Java");
-    categoryRepository.save(category);
+    category = categoryRepository.save(category);
 
-    Course course = expectedPeersQuestion.getCourse();
-
-    course.setCategory(category);
-    course.setLanguage(language);
-    course.setDifficulty(difficulty);
+    Course course = new Course();
+    course.setTitle("Title");
     course.setMentor(mentor);
+    course.setDifficulty(difficulty);
+    course.setLanguage(language);
+    course.setCategory(category);
+    course = courseRepository.save(course);
 
-    courseRepository.save(course);
-    enrolledCourse = CourseMapper.toEnrolledCourse(course, studentUser);
-    enrolledCourseRepository.save(enrolledCourse);
-    peersQuestionRepository.save(expectedPeersQuestion);
+    student = new User();
+    role = roleRepository.save(new Role(1, "STUDENT"));
+    student.setRole(role);
+    student.setName("Student");
+    student.setPassword("password");
+    student.setEmail("student@email.com");
+    student = userRepository.save(student);
+
+    enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    enrolledCourse.setCourse(course);
+    enrolledCourse.setUser(student);
+    enrolledCourse = enrolledCourseRepository.save(enrolledCourse);
+
+    expectedQuestion = TestHelper.createDiscussionPeersQuestion();
+    expectedQuestion.setCourse(course);
+    expectedQuestion.setUser(student);
+    expectedQuestion = peersQuestionRepository.save(expectedQuestion);
   }
 
   @Test
@@ -83,25 +107,64 @@ class PeersQuestionRepositoryTest {
     PeersQuestion actualPeersQuestion =
         peersQuestionRepository
             .findPeersQuestionByIdAndUserEmailAndEnrolledCourseId(
-                expectedPeersQuestion.getId(), studentUser.getEmail(), enrolledCourse.getId())
+                expectedQuestion.getId(), student.getEmail(), enrolledCourse.getId())
             .orElseThrow(IllegalArgumentException::new);
 
-    assertEquals(expectedPeersQuestion.getId(), actualPeersQuestion.getId());
+    assertEquals(expectedQuestion.getId(), actualPeersQuestion.getId());
+    assertEquals(expectedQuestion.getUser().getEmail(), actualPeersQuestion.getUser().getEmail());
+    assertEquals(expectedQuestion.getCourse().getId(), actualPeersQuestion.getCourse().getId());
+  }
+
+  @Test
+  void findQuestionByCourseId() {
+    long courseId = enrolledCourse.getId();
+    long wrongEnrolledCourseId = 999L;
+
+    Page<PeersQuestion> questionPage =
+        peersQuestionRepository.findQuestionByEnrolledCourseId(courseId, PageRequest.of(0, 1));
+    Optional<PeersQuestion> questionOptional = questionPage.stream().findFirst();
+
+    Page<PeersQuestion> emptyPage =
+        peersQuestionRepository.findQuestionByEnrolledCourseId(
+            wrongEnrolledCourseId, PageRequest.of(0, 1));
+
     assertEquals(
-        expectedPeersQuestion.getUser().getEmail(), actualPeersQuestion.getUser().getEmail());
-    assertEquals(
-        expectedPeersQuestion.getCourse().getId(), actualPeersQuestion.getCourse().getId());
+        expectedQuestion.getCourse().getId(), questionOptional.orElseThrow().getCourse().getId());
+    assertEquals(0, emptyPage.getTotalElements());
+  }
+
+  @Test
+  void findQuestionByIdAndEnrolledCourseId() {
+
+    long correctEnrolledCourseId = expectedQuestion.getCourse().getId();
+    Optional<PeersQuestion> actualQuestion =
+        peersQuestionRepository.findQuestionByIdAndEnrolledCourseId(
+            correctEnrolledCourseId, expectedQuestion.getId());
+
+    long wrongEnrolledCourseId = 999L;
+    Optional<PeersQuestion> emptyOptionalWrongEnrolledId =
+        peersQuestionRepository.findQuestionByIdAndEnrolledCourseId(
+            wrongEnrolledCourseId, expectedQuestion.getId());
+
+    long wrongQuestionId = 999L;
+    Optional<PeersQuestion> emptyOptionalWrongQuestionId =
+        peersQuestionRepository.findQuestionByIdAndEnrolledCourseId(
+            correctEnrolledCourseId, wrongQuestionId);
+
+    assertEquals(expectedQuestion.getId(), actualQuestion.orElseThrow().getId());
+    assertTrue(emptyOptionalWrongEnrolledId.isEmpty());
+    assertTrue(emptyOptionalWrongQuestionId.isEmpty());
   }
 
   @Test
   void delete() {
 
     PeersQuestion peersQuestion =
-        peersQuestionRepository.findById(expectedPeersQuestion.getId()).orElseThrow();
+        peersQuestionRepository.findById(expectedQuestion.getId()).orElseThrow();
 
     int updatedRows =
         peersQuestionRepository.delete(
-            peersQuestion.getId(), studentUser.getEmail(), enrolledCourse.getId());
+            peersQuestion.getId(), student.getEmail(), enrolledCourse.getId());
 
     assertEquals(1, updatedRows);
     assertEquals(peersQuestionRepository.findById(peersQuestion.getId()), Optional.empty());
