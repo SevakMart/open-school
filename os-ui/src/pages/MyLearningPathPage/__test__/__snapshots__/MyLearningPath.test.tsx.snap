@@ -59,6 +59,7 @@ exports[`Create several unit tests for MyLearningPathPage Component Create a Sna
           src="Arrow-down.svg"
         />
       </div>
+      <div />
     </div>
   </nav>
   <h1

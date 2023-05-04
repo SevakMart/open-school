@@ -32,12 +32,13 @@ const CourseModuleSidebar = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   let isbtnClicked = false;
-  if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum`) isbtnClicked = true;
-  if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`) isbtnClicked = true;
-  if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`) isbtnClicked = true;
-  if (currentPath === `/userCourse/modulOverview/${courseId}`) isbtnClicked = false;
-  const itemBtnclickedStyle = isbtnClicked ? { textDecoration: 'none', color: '#333941', fontWeight: '900' } : { textDecoration: 'none', color: '#333941' };
-  const itemBtnclickedRevStyle = isbtnClicked ? { textDecoration: 'none', color: '#333941' } : { textDecoration: 'none', color: '#333941', fontWeight: '900' };
+  const currentBaseUrl = `/userCourse/modulOverview/${courseId}`;
+  if (currentPath === `${currentBaseUrl}/discussionForum`) isbtnClicked = true;
+  if (currentPath === `${currentBaseUrl}/discussionForum/AskMentor`) isbtnClicked = true;
+  if (currentPath === `${currentBaseUrl}/discussionForum/AskPeers`) isbtnClicked = true;
+  if (currentPath === currentBaseUrl) isbtnClicked = false;
+  const itemBtnclickedStyle = isbtnClicked ? styles.btnClickedCName : styles.btnNotClickedCName;
+  const itemBtnclickedRevStyle = isbtnClicked ? styles.btnNotClickedCName : styles.btnClickedCName;
 
   return (
     <div className={styles.Sidebar_container}>
@@ -48,7 +49,7 @@ const CourseModuleSidebar = () => {
           <button type="button" className={styles.ArrowRightIcon} onClick={() => handleChangeValue(value)}>
             <Link
               to={`/userCourse/modulOverview/${courseId}`}
-              style={itemBtnclickedRevStyle}
+              className={itemBtnclickedRevStyle}
             >
               Overview
             </Link>
@@ -76,7 +77,7 @@ const CourseModuleSidebar = () => {
             {button.desc === 'Discussion Forum' ? (
               <Link
                 to={`/userCourse/modulOverview/${courseId}/discussionForum`}
-                style={itemBtnclickedStyle}
+                className={itemBtnclickedStyle}
               >
                 {button.desc}
               </Link>

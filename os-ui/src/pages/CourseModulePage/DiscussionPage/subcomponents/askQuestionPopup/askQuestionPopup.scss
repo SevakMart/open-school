@@ -11,6 +11,18 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease-out;
+  animation-name: fadeIn;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .popup.open {
@@ -28,44 +40,54 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #1A233D;
+  opacity: 0.7;
 }
 
 .popup-content {
   position: relative;
-  background-color: #fff;
-  border-radius: 16px;
-  padding: 16px;
+  background-color: #f9f9fd;
+  border-radius: 40px;
+  padding: 25px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  min-width:500px;
-  min-height: 210px;
-  overflow: auto;
+  min-width: 550px;
+  min-height: 250px;
 }
 
 .popup-title {
   padding-top: 4px;
   padding-left: 10px;
   color: #1E426A;
-  font-weight: 600;
-  font-size: 20px;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
   font-style: bold;
 }
 
 .close-button {
   position: absolute;
-  top: 8px;
-  right: 10px;
+  top: 23px;
+  right: 25px;
   padding: 10px;
-  color: #888EA0;
-  font-size: 17px;
+  color: #848A9D;
+  font-weight: 600;
+  font-size: 25px;
   background: none;
   border: none;
   cursor: pointer;
+  &:hover {
+    font-size: 32px;
+    top: 20px;
+    right: 22px;
+    color: #b1b5c2;
+  }
+  &:active {
+    color: #F08670;
+  }
 }
 
 .buttons {
-  margin-top: 20px;
-  margin-right: -20px;
+  margin-top: 30px;
   display: flex;
   justify-content: flex-end;
   padding-bottom: 10px;
@@ -73,20 +95,20 @@
 
 .btn {
   &_post {
-    background-color: #F0866F;
+    background-color: #F08670;
     border-style: none;
-    color: #f4f8f7;
-    border-radius: 10px;
-    width: 70px;
-    height: 30px;
+    color: #fff;
+    font-weight: 500;
+    line-height: 20px;
+    border-radius: 16px;
+    padding: 10px 30px;
     cursor: pointer;
     &:hover {
       background-color: #ff9982;
       color: #f4f8f7;
-      width: 71px;
-      height: 31px;
-      margin-bottom: -1px;
-      margin-left: -1px;
+      padding: 11px 31px;
+      margin-bottom: -2px;
+      margin-left: -2px;
       position: relative;
     }
     &:active {
@@ -95,26 +117,24 @@
   }
   &_cancel {
     background-color: #F9F9FD;
-    border-style: none;
-    color: #8D9ABC;
-    border: #8D9ABC 1px solid;
-    border-radius: 10px;
-    width: 70px;
-    height: 30px;
+    color: #415791;
+    border: 2px solid #415791;
+    border-radius: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    padding: 10px 30px;
     margin-right: 10px;
     cursor: pointer;
     &:hover {
-      width: 71px;
-      height: 31px;
-      margin-bottom: -1px;
+      padding: 11px 31px;
+      margin-bottom: -2px;
       margin-left: -1px;
       border: #7b93d1 2px solid;
-      color: #4c6bb8;
+      color: #2f5fda;
       position: relative;
     }
     &:active {
-      width: 71px;
-      height: 31px;
+      padding: 11px 31px;
       background-color: #e0e3ec;
       color: #7589bb;
     }
@@ -125,5 +145,27 @@
   border: #cfd0d4 1px solid;
   border-radius: 10px;
   height: 100px;
+  margin-left: 20px;
   padding: 10px;
+  padding-bottom: 25px;
+  width: 100%;
+  color: #3d3f42;
+  border: 1px solid #D9DBE9;
+  background-color: #fff;
+  resize: none;
+  outline: none;
+  &_box {
+    display: flex;
+    align-items: start;
+  }
 }
+
+.question_textArea_item {
+  margin: 32px 0 5px 0;
+  padding: 0 10px 0 10px;
+}
+
+
+
+
+

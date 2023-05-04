@@ -59,6 +59,7 @@ exports[`Make unit tests of NavbarOnSignIn component Create a snapshot test 1`] 
           src="Arrow-down.svg"
         />
       </div>
+      <div />
     </div>
   </nav>
 </DocumentFragment>

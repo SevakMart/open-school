@@ -1,21 +1,27 @@
 .inner {
   box-sizing: border-box;
-  background-color: #eeeff3;
+  background-color: #EEEFF4;
   margin: 0;
+  padding-left: 10px;
+  padding-right: 30px;
   padding-top: 50px;
 }
 
 .container {
-  margin-left: 20px;
+  margin-left: 30px;
 }
 
 .forum_header-title {
   margin: 0;
+  font-weight: 800;
+  font-size: 36px;
+  line-height: 44px;
   color: #333941;
 }
 
 .forum_header-menu {
   display: flex;
+  align-items: start;
   justify-content: space-between;
   margin-left: -50px;
 }
@@ -27,71 +33,64 @@
 }
 
 .forum_header-list {
-  width: 90px;
+  width: 115px;
   text-align: center;
   border-style: none;
   margin-left: 5px;
   padding: 5px 2px 3px 2px;
   font-size: 13px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  &_underLine {
+    margin-top: 5px;
+    &_active{
+      background-color: #415790;
+      margin-left: -5px;
+      width: 120px;
+      height: 8px;
+      border-radius: 20px;
+    }
+  }
   &:hover {
-    color: #6e6a6a;
     font-weight: 600;
     cursor: pointer;
   }
-  &_active {
-    border-bottom: 4px solid #52719e;
-    color: #3d3f42;
-    font-weight: 600;
-    margin-bottom: -4px;
-  }
   &_link {
-    color: #717685;
+    color: #5E617B;
     text-decoration: none;
+    &_active {
+      color: #222427;
+      font-weight: 600;
+      font-size: 20px;
+    }
   }
 }
 
 .btn {
-  background-color: #F0866F;
+  background-color: #F08670;
   border-style: none;
-  color: #f4f8f7;
-  border-radius: 10px;
-  width: 111px;
-  height: 30px;
+  color: #fff;
+  font-weight: 500;
+  line-height: 20px;
+  border-radius: 16px;
+  padding: 16px 32px;
+  height: 52px;
   margin-top: 10px;
   margin-right: 40px;
   cursor: pointer;
-}
-
-.btn:hover {
-  background-color: #f16d4f;
-  color: #d6faf1;
-}
-
-.btn:active {
-  background-color: #ff9982;
-  color: #f4f8f7;
-  width: 112px;
-  height: 32px;
-  position: relative;
-  top: -1px;
-  right: -1px;
-}
-
-.question_textArea-div {
-  margin: 0 40px 5px 0;
-  padding: 0 10px 0 10px;
-  background-color: #f9f9fd;
-}
-
-.question_textArea {
-  padding-bottom: 25px;
-  margin-top: 19px;
-  width: 100%;
-  color: #3d3f42;
-  background-color: #f9f9fd;
-  resize: none;
-  outline: none;
-  border: none;
+  &:hover {
+    background-color: #f16d4f;
+    color: #d6faf1;
+  }
+  &:active {
+    background-color: #ff9982;
+    color: #f4f8f7;
+    padding: 17px 34px;
+    position: relative;
+    top: -1px;
+    right: -1px;
+  }
 }
 
 .noQuestionsDiv {
@@ -104,7 +103,7 @@
 
 //scroll
 .questionItemsScroll {
-  height: 500px;
+  max-height: 800px;
   overflow-y: scroll;
 }
 

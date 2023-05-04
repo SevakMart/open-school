@@ -59,6 +59,7 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
           src="Arrow-down.svg"
         />
       </div>
+      <div />
     </div>
   </nav>
   <div

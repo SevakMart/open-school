@@ -4,8 +4,7 @@
     background: $white-text-color;
     height: 992px;
     padding-left: 48px;
-	transform-origin: top left;
-
+	  transform-origin: top left;
 	.ArrowRightIcon{
 		background: $white-text-color;
         border: none;
@@ -106,4 +105,19 @@
       border-width: 0 3px 3px 0;
       transform: rotate(45deg);
     }
+    
+  .btnClickedCName {
+    text-decoration: none; 
+    color: #415791;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+  }
+  .btnNotClickedCName {
+    text-decoration: none; 
+    color: #333941;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+  }
 }

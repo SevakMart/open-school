@@ -1,7 +1,21 @@
+interface Answer {
+  idAnswer: string;
+  answerText: string;
+  answerCreatedDate: string;
+  name: string,
+  surname: string,
+  questionId: string,
+}
+
+export interface ResponsesMap {
+  questionId: Answer;
+}
+
 export interface Question {
   id: string;
   text: string;
   createdDate: string;
+  answers: Answer[];
 }
 
 export interface QuestionItemProps {
@@ -11,6 +25,7 @@ export interface QuestionItemProps {
   token: string;
   enrolledCourseId: number;
   sectionName: string;
+  responsesMap: ResponsesMap[];
 }
 
 export interface PopupProps {
@@ -44,4 +59,12 @@ export interface QuestionItemPopupProps {
   removeQ: (id: string) => void;
   id: string;
   textAreaRef:TextAreaRef;
+}
+
+export interface AnswerItemProps {
+  name: string;
+  surname: string;
+  answerText: string;
+  answerCreatedDate: string;
+  avatar: string;
 }

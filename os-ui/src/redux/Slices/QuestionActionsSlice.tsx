@@ -40,10 +40,11 @@ export const addQuestion = createAsyncThunk(
         id,
         text,
         createdDate,
+        answers: [],
       };
       return newQuestion;
     } catch (error) {
-      return rejectWithValue('Failed to fetch peers questions');
+      return rejectWithValue('Failed to fetch questions');
     }
   },
 );
@@ -67,7 +68,12 @@ export const updateQuestion = createAsyncThunk(
         token,
       );
       const responseJSON = await response.json();
-      const updatedQuestion: Question = { id: questionId, text: newText, createdDate: responseJSON.createdDate };
+      const updatedQuestion: Question = {
+        id: questionId,
+        text: newText,
+        createdDate: responseJSON.createdDate,
+        answers: [],
+      };
       return updatedQuestion;
     } catch (error) {
       return rejectWithValue('Failed to edit Question');
@@ -163,5 +169,7 @@ export const QuestionActionsSlice = createSlice({
   },
 });
 
-export const { onOpen, onClose, changeSection } = QuestionActionsSlice.actions;
+export const {
+  onOpen, onClose, changeSection,
+} = QuestionActionsSlice.actions;
 export default QuestionActionsSlice.reducer;
