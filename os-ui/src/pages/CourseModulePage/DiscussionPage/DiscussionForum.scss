@@ -1,3 +1,5 @@
+@import '../../../styles/Configs/Colors.scss';
+
 .inner {
   box-sizing: border-box;
   background-color: #EEEFF4;
@@ -45,7 +47,7 @@
   &_underLine {
     margin-top: 5px;
     &_active{
-      background-color: #415790;
+      background-color: $discussionForum-header-list-Color;
       margin-left: -5px;
       width: 120px;
       height: 8px;
@@ -98,7 +100,7 @@
   font-size:30px;
   margin-top: 20px;
   margin-left: 3px;
-  color: #4AB8A3;
+  color: #333941;
 }
 
 //scroll

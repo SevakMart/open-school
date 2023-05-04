@@ -1,3 +1,5 @@
+@import '../../../../../styles/Configs/Colors.scss';
+
 .popup {
   z-index: 1;
   position: fixed;
@@ -95,7 +97,7 @@
 
 .btn {
   &_post {
-    background-color: #F08670;
+    background-color: $discussionForum-asqQuestion-Popup-color;
     border-style: none;
     color: #fff;
     font-weight: 500;
