@@ -1,6 +1,7 @@
 package app.openschool.course.discussion.peers.question;
 
 import app.openschool.course.Course;
+import app.openschool.course.discussion.Question;
 import app.openschool.course.discussion.peers.answer.PeersAnswer;
 import app.openschool.user.User;
 import java.time.Instant;
@@ -19,7 +20,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "peers_question")
-public class PeersQuestion {
+public class PeersQuestion implements Question {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -58,34 +59,42 @@ public class PeersQuestion {
     this.createdDate = createdDate;
   }
 
+  @Override
   public Long getId() {
     return id;
   }
 
+  @Override
   public void setId(Long id) {
     this.id = id;
   }
 
+  @Override
   public String getText() {
     return text;
   }
 
+  @Override
   public void setText(String text) {
     this.text = text;
   }
 
+  @Override
   public User getUser() {
     return user;
   }
 
+  @Override
   public void setUser(User user) {
     this.user = user;
   }
 
+  @Override
   public Course getCourse() {
     return course;
   }
 
+  @Override
   public void setCourse(Course course) {
     this.course = course;
   }
@@ -98,10 +107,12 @@ public class PeersQuestion {
     this.peersAnswers = peersAnswers;
   }
 
+  @Override
   public Instant getCreatedDate() {
     return createdDate;
   }
 
+  @Override
   public void setCreatedDate(Instant createdDate) {
     this.createdDate = createdDate;
   }

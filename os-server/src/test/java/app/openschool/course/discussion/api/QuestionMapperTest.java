@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import app.openschool.course.api.mapper.CourseMapper;
+import app.openschool.course.discussion.Question;
 import app.openschool.course.discussion.TestHelper;
 import app.openschool.course.discussion.dto.QuestionResponseDto;
 import app.openschool.course.discussion.mapper.QuestionMapper;
@@ -19,7 +20,7 @@ class QuestionMapperTest {
 
   @Test
   void toQuestionDtoPage() {
-    Page<PeersQuestion> questionPage =
+    Page<Question> questionPage =
         new PageImpl<>(List.of(TestHelper.createDiscussionPeersQuestion()));
     Page<QuestionResponseDto> expectedResult = QuestionMapper.toQuestionDtoPage(questionPage);
     String className = QuestionResponseDto.class.getName();
@@ -30,7 +31,6 @@ class QuestionMapperTest {
 
     assertThat(expectedResult.getContent().stream().findAny().get()).hasFieldOrProperty("text");
   }
-
 
   @Test
   void toResponseDto() {

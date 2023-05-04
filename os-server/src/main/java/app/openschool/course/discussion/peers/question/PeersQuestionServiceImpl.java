@@ -5,9 +5,7 @@ import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.discussion.QuestionService;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
-import app.openschool.course.discussion.dto.QuestionResponseDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
-import app.openschool.course.discussion.mapper.QuestionMapper;
 import java.time.Instant;
 import java.util.Objects;
 import org.springframework.data.domain.Page;
@@ -28,8 +26,7 @@ public class PeersQuestionServiceImpl implements QuestionService {
   }
 
   @Override
-  public QuestionResponseDto create(
-      Long enrolledCourseId, QuestionRequestDto requestDto, String email) {
+  public PeersQuestion create(Long enrolledCourseId, QuestionRequestDto requestDto, String email) {
 
     EnrolledCourse extractedEnrolledCourse =
         enrolledCourseRepository
@@ -38,8 +35,7 @@ public class PeersQuestionServiceImpl implements QuestionService {
 
     checkingDataConsistency(extractedEnrolledCourse, email);
 
-    return QuestionMapper.toResponseDto(
-        peersQuestionRepository.save(prepareQuestion(requestDto, extractedEnrolledCourse)));
+    return peersQuestionRepository.save(prepareQuestion(requestDto, extractedEnrolledCourse));
   }
 
   @Override

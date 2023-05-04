@@ -31,8 +31,7 @@ public class PeersAnswerServiceImpl implements AnswerService {
   }
 
   @Override
-  public AnswerResponseDto create(
-      Long enrolledCourseId, AnswerRequestDto requestDto, String email) {
+  public PeersAnswer create(Long enrolledCourseId, AnswerRequestDto requestDto, String email) {
 
     EnrolledCourse extractedEnrolledCourse =
         enrolledCourseRepository
@@ -47,9 +46,8 @@ public class PeersAnswerServiceImpl implements AnswerService {
     checkingDataConsistency(
         extractedPeersQuestion, extractedEnrolledCourse, email, requestDto.getQuestionId());
 
-    return AnswerMapper.toAnswerDto(
-        peersAnswerRepository.save(
-            prepareAnswer(extractedEnrolledCourse, requestDto, extractedPeersQuestion)));
+    return peersAnswerRepository.save(
+        prepareAnswer(extractedEnrolledCourse, requestDto, extractedPeersQuestion));
   }
 
   @Override
