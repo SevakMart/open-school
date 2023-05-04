@@ -1,8 +1,8 @@
-import { FormValues } from '../component/SignUpSignIn/Form/Form';
 import {
   passwordRegex, tokenRegex, INVALID_PASSWORD_ERROR_MESSAGE, INVALID_TOKEN,
   TOKEN_REQUIRED, PASSWORD_REQUIRED, PASSWORDS_MISMATCH,
 } from '../constants/Strings';
+import { FormValues } from '../types/FormTypes';
 
 export const validateResetPasswordForm = (formValues:FormValues) => {
   const errorFormValue = { tokenError: '', newPasswordError: '', confirmedPasswordError: '' };

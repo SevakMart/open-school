@@ -24,6 +24,7 @@ import app.openschool.course.discussion.TestHelper;
 import app.openschool.course.discussion.dto.AnswerResponseDto;
 import app.openschool.course.discussion.dto.QuestionResponseDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
+import app.openschool.course.discussion.peers.answer.PeersAnswer;
 import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.faq.Faq;
 import app.openschool.faq.FaqServiceImpl;
@@ -33,7 +34,6 @@ import app.openschool.user.User;
 import app.openschool.user.api.UserGenerator;
 import app.openschool.user.role.Role;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -447,6 +447,129 @@ class CourseControllerTest {
   }
 
   @Test
+  void findQuestionsByCourseId_withCorrectData() throws Exception {
+
+    Page<PeersQuestion> questions =
+        new PageImpl<>(List.of(TestHelper.createDiscussionPeersQuestion()));
+    long enrolledCourseId = 1L;
+    String jwt = generateJwtToken();
+
+    Pageable pageable = PageRequest.of(0, 5);
+    when(questionService.findQuestionByCourseId(enrolledCourseId, pageable)).thenReturn(questions);
+
+    mockMvc
+        .perform(
+            get("/api/v1/courses/enrolled/" + enrolledCourseId + "/peers-questions")
+                .queryParam("page", "o")
+                .queryParam("size", "5")
+                .header("Authorization", jwt)
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void findQuestionsByCourseId_unauthorized() throws Exception {
+
+    Page<PeersQuestion> questions =
+        new PageImpl<>(List.of(TestHelper.createDiscussionPeersQuestion()));
+
+    long enrolledCourseId = 1L;
+    Pageable pageable = PageRequest.of(0, 5);
+    when(questionService.findQuestionByCourseId(enrolledCourseId, pageable)).thenReturn(questions);
+
+    mockMvc
+        .perform(
+            get("/api/v1/courses/enrolled/" + enrolledCourseId + "/peers-questions")
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void getQuestionsById_withCorrectData() throws Exception {
+
+    long enrolledCourseId = 1L;
+    long questionId = 1L;
+    String jwt = generateJwtToken();
+
+    when(questionService.findQuestionByIdAndEnrolledCourseId(enrolledCourseId, questionId))
+        .thenReturn(new PeersQuestion());
+
+    mockMvc
+        .perform(
+            get("/api/v1/courses/enrolled/" + enrolledCourseId + "/peers-questions" + questionId)
+                .header("Authorization", jwt)
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void getQuestionsById_withIncorrectData() throws Exception {
+
+    long enrolledCourseId = 1L;
+    long wrongQuestionId = 1L;
+    String jwt = generateJwtToken();
+
+    when(questionService.findQuestionByIdAndEnrolledCourseId(enrolledCourseId, wrongQuestionId))
+        .thenThrow(IllegalArgumentException.class);
+
+    mockMvc
+        .perform(
+            get("/api/v1/courses/enrolled/"
+                    + enrolledCourseId
+                    + "/peers-questions/"
+                    + wrongQuestionId)
+                .header("Authorization", jwt)
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void findAnswersByQuestionId_withCorrectData() throws Exception {
+
+    Page<PeersAnswer> answers = new PageImpl<>(List.of(TestHelper.createDiscussionPeersAnswer()));
+    long enrolledCourseId = 1L;
+    long questionId = 1L;
+    String jwt = generateJwtToken();
+
+    Pageable pageable = PageRequest.of(0, 5);
+    when(answerService.findAnswerByQuestionId(questionId, pageable)).thenReturn(answers);
+
+    mockMvc
+        .perform(
+            get("/api/v1/courses/enrolled/"
+                    + enrolledCourseId
+                    + "/peers-questions/answers/"
+                    + questionId)
+                .queryParam("page", "o")
+                .queryParam("size", "5")
+                .header("Authorization", jwt)
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void findAnswersByQuestionId_unauthorized() throws Exception {
+
+    Page<PeersAnswer> answers = new PageImpl<>(List.of(TestHelper.createDiscussionPeersAnswer()));
+    long enrolledCourseId = 1L;
+    long questionId = 1L;
+
+    Pageable pageable = PageRequest.of(0, 5);
+    when(answerService.findAnswerByQuestionId(questionId, pageable)).thenReturn(answers);
+
+    mockMvc
+        .perform(
+            get("/api/v1/courses/enrolled/"
+                    + enrolledCourseId
+                    + "/peers-questions/answers/"
+                    + questionId)
+                .queryParam("page", "o")
+                .queryParam("size", "5")
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
   void createAnswer_withCorrectData() throws Exception {
 
     when(answerService.create(anyLong(), any(), anyString())).thenReturn(new AnswerResponseDto());
@@ -511,6 +634,57 @@ class CourseControllerTest {
                 .content(requestBody)
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void getAnswerById_withCorrectData() throws Exception {
+
+    PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
+    long enrolledCourseId = 1L;
+    long answerId = 1L;
+    String jwt = generateJwtToken();
+
+    when(answerService.findAnswerById(answerId)).thenReturn(peersAnswer);
+
+    mockMvc
+        .perform(
+            get("/api/v1/courses/enrolled/" + enrolledCourseId + "/peers-answers/" + answerId)
+                .header("Authorization", jwt)
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void getAnswerById_withIncorrectData() throws Exception {
+
+    long enrolledCourseId = 1L;
+    long wrongAnswerId = 1L;
+    String jwt = generateJwtToken();
+
+    when(answerService.findAnswerById(wrongAnswerId)).thenThrow(IllegalArgumentException.class);
+
+    mockMvc
+        .perform(
+            get("/api/v1/courses/enrolled/" + enrolledCourseId + "/peers-answers/" + wrongAnswerId)
+                .header("Authorization", jwt)
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void getAnswerById_unauthorized() throws Exception {
+
+    PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
+    long enrolledCourseId = 1L;
+    long answerId = 1L;
+
+    when(answerService.findAnswerById(answerId)).thenReturn(peersAnswer);
+
+    mockMvc
+        .perform(
+            get("/api/v1/courses/enrolled/" + enrolledCourseId + "/peers-answers/" + answerId)
+                .contentType(APPLICATION_JSON))
+        .andExpect(status().isUnauthorized());
   }
 
   private String generateJwtToken() {

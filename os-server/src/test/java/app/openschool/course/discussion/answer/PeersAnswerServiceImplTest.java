@@ -2,12 +2,14 @@ package app.openschool.course.discussion.answer;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.course.EnrolledCourse;
@@ -21,12 +23,17 @@ import app.openschool.course.discussion.peers.answer.PeersAnswerRepository;
 import app.openschool.course.discussion.peers.answer.PeersAnswerServiceImpl;
 import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
 import app.openschool.user.User;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class PeersAnswerServiceImplTest {
@@ -100,6 +107,43 @@ class PeersAnswerServiceImplTest {
     assertThatThrownBy(
             () -> answerService.create(enrolledCourseId, discussionAnswerRequestDto, email))
         .isInstanceOf(PermissionDeniedException.class);
+  }
+
+  @Test
+  void findAnswerById_withCorrectData() {
+    PeersAnswer answer = TestHelper.createDiscussionPeersAnswer();
+    long answerId = answer.getId();
+    when(peersAnswerRepository.findById(answerId)).thenReturn(Optional.of(answer));
+    PeersAnswer answerById = answerService.findAnswerById(answerId);
+
+    assertNotNull(answerById);
+    verify(peersAnswerRepository, times(1)).findById(answerId);
+  }
+
+  @Test
+  void findAnswerById_withIncorrectData() {
+    PeersAnswer answer = TestHelper.createDiscussionPeersAnswer();
+    long wrongAnswerId = answer.getId();
+    when(peersAnswerRepository.findById(wrongAnswerId)).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> answerService.findAnswerById(wrongAnswerId))
+        .isInstanceOf(IllegalArgumentException.class);
+    verify(peersAnswerRepository, times(1)).findById(wrongAnswerId);
+  }
+
+  @Test
+  void findAnswerByQuestionId_withCorrectData() {
+    PeersAnswer answer = TestHelper.createDiscussionPeersAnswer();
+    long questionId = answer.getDiscussionQuestion().getId();
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<PeersAnswer> answersPage = new PageImpl<>(List.of(answer));
+    when(peersAnswerRepository.findPeersAnswerByPeersQuestionId(questionId, pageable))
+        .thenReturn(answersPage);
+    Page<PeersAnswer> answersByQuestionId =
+        answerService.findAnswerByQuestionId(questionId, pageable);
+
+    assertNotNull(answersByQuestionId.stream().findFirst().orElseThrow());
+    verify(peersAnswerRepository, times(1)).findPeersAnswerByPeersQuestionId(questionId, pageable);
   }
 
   PeersAnswer createDiscussionAnswer() {
