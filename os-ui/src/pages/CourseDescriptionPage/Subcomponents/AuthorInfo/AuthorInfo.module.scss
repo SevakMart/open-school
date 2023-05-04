@@ -24,7 +24,6 @@
             display:inline;
             @include fontStyle($primary-font,normal,500,16,24px);
             color:$main-text-color;
-            // margin-right:30px;
         }
         a {
            cursor:pointer;

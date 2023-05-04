@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import styles from './AuthorInfo.module.scss';
-import LinkedinIcon1 from '../../../../icons/Linkedin1';
+import LinkedinIcon1 from '../../../../icons/LinkedinIcon/Linkedin1';
 import EmailIcon1 from '../../../../icons/EmailIcon/Email1';
 
 const AuthorInfo = ({ mentorName, mentorSurname, mentorLinkedIn }:{mentorName:string, mentorSurname:string, mentorLinkedIn:string}) => {
