@@ -44,6 +44,10 @@ const ShareButton = ({ courseId }: { courseId: number }) => {
 	  };
   }, [showShareLink, copyTimeoutId]);
 
+  const linkMaxLength = 50;
+  const linkText = `${window.location.origin}/userCourse/modulOverview/${courseId}`;
+  const truncatedLinkText = linkText.length > linkMaxLength ? `${linkText.substring(0, linkMaxLength)}...` : linkText;
+
   return (
     <div className={shareButton}>
       <img
@@ -56,7 +60,9 @@ const ShareButton = ({ courseId }: { courseId: number }) => {
       <div className={sharePopup}>
         <div className={closeIcon} onClick={handleShareIconClick}><CloseIcon /></div>
         <div className={linkContainer}>
-          <p className={link} onClick={copyLinkToClipboard}>{`${window.location.origin}/userCourse/modulOverview/${courseId}`}</p>
+          <p className={link} onClick={copyLinkToClipboard} title={linkText}>
+            {truncatedLinkText}
+          </p>
           <button type="button" className={copyIcon} onClick={copyLinkToClipboard}>
             {isLinkCopied ? (
               <>
