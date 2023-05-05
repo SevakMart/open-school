@@ -33,15 +33,14 @@ public class MentorAnswerServiceImpl implements AnswerService {
   }
 
   @Override
-  public AnswerResponseDto create(
+  public MentorAnswer create(
       Long enrolledCourseId, AnswerRequestDto requestDto, String email) {
 
-    return MentorAnswerMapper.toAnswerDto(
-        mentorAnswerRepository.save(creteAnswer(requestDto, email)));
+    return null;
   }
 
   @Override
-  public PeersAnswer findAnswerById(Long answerId) {
+  public MentorAnswer findAnswerById(Long answerId) {
     return null;
   }
 

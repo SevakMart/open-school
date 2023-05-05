@@ -1,5 +1,6 @@
 package app.openschool.course.discussion.mentor.answer;
 
+import app.openschool.course.discussion.Answer;
 import app.openschool.course.discussion.mentor.question.MentorQuestion;
 import app.openschool.user.User;
 import java.time.Instant;
@@ -15,9 +16,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "mentor_answer")
-public class MentorAnswer {
+public class MentorAnswer implements Answer {
 
-  // ToDo this class and the components used in it will be changed in the future
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -47,26 +47,32 @@ public class MentorAnswer {
     this.createdDate = createdDate;
   }
 
+  @Override
   public Long getId() {
     return id;
   }
 
+  @Override
   public void setId(Long id) {
     this.id = id;
   }
 
+  @Override
   public String getText() {
     return text;
   }
 
+  @Override
   public void setText(String text) {
     this.text = text;
   }
 
+  @Override
   public User getUser() {
     return user;
   }
 
+  @Override
   public void setUser(User user) {
     this.user = user;
   }
@@ -79,10 +85,12 @@ public class MentorAnswer {
     this.mentorQuestion = mentorQuestion;
   }
 
+  @Override
   public Instant getCreatedDate() {
     return createdDate;
   }
 
+  @Override
   public void setCreatedDate(Instant createdDate) {
     this.createdDate = createdDate;
   }

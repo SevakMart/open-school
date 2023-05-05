@@ -3,6 +3,7 @@ package app.openschool.course.discussion.answer;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -14,10 +15,10 @@ import static org.mockito.Mockito.when;
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
+import app.openschool.course.discussion.Answer;
 import app.openschool.course.discussion.AnswerService;
 import app.openschool.course.discussion.TestHelper;
 import app.openschool.course.discussion.dto.AnswerRequestDto;
-import app.openschool.course.discussion.dto.AnswerResponseDto;
 import app.openschool.course.discussion.peers.answer.PeersAnswer;
 import app.openschool.course.discussion.peers.answer.PeersAnswerRepository;
 import app.openschool.course.discussion.peers.answer.PeersAnswerServiceImpl;
@@ -59,16 +60,18 @@ class PeersAnswerServiceImplTest {
         .willReturn(Optional.of(TestHelper.createDiscussionPeersQuestion()));
     EnrolledCourse enrolledCourse = TestHelper.createEnrolledCourse(user, TestHelper.crateCourse());
     given(enrolledCourseRepository.findById(anyLong())).willReturn(Optional.of(enrolledCourse));
-    AnswerResponseDto answerResponseDto =
+    Answer answerResponseDto =
         answerService.create(
             enrolledCourse.getId(),
             createDiscussionAnswerRequestDto(),
             TestHelper.createPrincipal().getName());
+
+    assertTrue(answerResponseDto instanceof PeersAnswer);
     assertEquals(peersAnswer.getId(), answerResponseDto.getId());
     assertEquals(peersAnswer.getText(), answerResponseDto.getText());
-    assertEquals(peersAnswer.getUser().getId(), answerResponseDto.getUserDto().getId());
-    assertEquals(peersAnswer.getUser().getName(), answerResponseDto.getUserDto().getName());
-    assertEquals(peersAnswer.getUser().getEmail(), answerResponseDto.getUserDto().getEmail());
+    assertEquals(peersAnswer.getUser().getId(), answerResponseDto.getUser().getId());
+    assertEquals(peersAnswer.getUser().getName(), answerResponseDto.getUser().getName());
+    assertEquals(peersAnswer.getUser().getEmail(), answerResponseDto.getUser().getEmail());
     verify(peersAnswerRepository, times(1)).save(any());
   }
 
@@ -114,9 +117,10 @@ class PeersAnswerServiceImplTest {
     PeersAnswer answer = TestHelper.createDiscussionPeersAnswer();
     long answerId = answer.getId();
     when(peersAnswerRepository.findById(answerId)).thenReturn(Optional.of(answer));
-    PeersAnswer answerById = answerService.findAnswerById(answerId);
+    Answer answerById = answerService.findAnswerById(answerId);
 
     assertNotNull(answerById);
+    assertTrue(answerById instanceof PeersAnswer);
     verify(peersAnswerRepository, times(1)).findById(answerId);
   }
 
@@ -139,10 +143,11 @@ class PeersAnswerServiceImplTest {
     Page<PeersAnswer> answersPage = new PageImpl<>(List.of(answer));
     when(peersAnswerRepository.findPeersAnswerByPeersQuestionId(questionId, pageable))
         .thenReturn(answersPage);
-    Page<PeersAnswer> answersByQuestionId =
+    Page<? extends Answer> answersByQuestionId =
         answerService.findAnswerByQuestionId(questionId, pageable);
 
     assertNotNull(answersByQuestionId.stream().findFirst().orElseThrow());
+    assertTrue(answersByQuestionId.stream().allMatch(an -> an instanceof PeersAnswer));
     verify(peersAnswerRepository, times(1)).findPeersAnswerByPeersQuestionId(questionId, pageable);
   }
 
