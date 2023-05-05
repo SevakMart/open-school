@@ -21,7 +21,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const [isEditPressed, SetEditPresses] = useState<boolean>(false);
   const btnTextType = isEditPressed ? 'Save' : 'Edit';
   const [editValue, setEditValue] = useState<string>(text);
-  const [answerValue, setAnswerValue] = useState<string>(text);
+  const [answerValue, setAnswerValue] = useState<string>('');
   // popUp open and close state
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -38,21 +38,25 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const dispatch = useDispatch();
 
   // answer section
-  const handleAddAsnswer = (questionId: string) => {
-    if (answerValue.trim() !== '') {
-      dispatch(addAnswer({
-        enrolledCourseId, answerText: answerValue, token, sectionName, questionId,
-      }));
-    }
-  };
-
   const [isAnswerSectionOpen, setIsAnswerSectionOpen] = useState<boolean>(false);
   const handleAnswerSectionOpen = () => {
     setIsAnswerSectionOpen((prev) => !prev);
-    if (!isAnswerSectionOpen) setAnswerValue('');
-    if (isAnswerSectionOpen) {
-      handleAddAsnswer(id);
+  };
+
+  const onAnswerTextareaClose = () => {
+    setAnswerValue('');
+    setIsAnswerSectionOpen(false);
+  };
+
+  const isAnswerValueEmpty = answerValue.trim() !== '';
+  const handleAddAsnswer = (questionId: string) => {
+    if (isAnswerValueEmpty && answerValue.length < 500) {
+      dispatch(addAnswer({
+        enrolledCourseId, answerText: answerValue, token, sectionName, questionId,
+      }));
+      onAnswerTextareaClose();
     }
+    return null;
   };
 
   // disable save button when it is nothing typed or if we don't change the text
@@ -68,6 +72,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const changeIsOpen = () => {
     if (isOpen) return;
     setIsOpen((true));
+    setIsAnswerSectionOpen(false);
   };
 
   const onClose = () => {
@@ -109,11 +114,14 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
       editTextAreaRef.current.focus();
       editTextAreaRef.current.setSelectionRange(editValue.length, editValue.length);
     }
+  }, [isEditPressed]);
+
+  useEffect(() => {
     if (isAnswerSectionOpen && answerTextAreaRef.current) {
       answerTextAreaRef.current.focus();
-      answerTextAreaRef.current.setSelectionRange(editValue.length, editValue.length);
+      answerTextAreaRef.current.setSelectionRange(answerValue.length, answerValue.length);
     }
-  }, [isEditPressed, isAnswerSectionOpen]);
+  }, [isAnswerSectionOpen]);
 
   // changeHandler for answers
   const changeHandlerAnswer = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -124,30 +132,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const formattedDate = formatDate(createdDate);
 
   const { t } = useTranslation();
-
-  // close the asnswer input when we click ootside of it
-  // const bodyRef = useRef(document.body);
-  // const questionItemRef = useRef<HTMLDivElement>(null);
-  // const responsesItemsRef = useRef<HTMLDivElement>(null);
-  // const answerSectionRef = useRef<HTMLDivElement>(null);
-
-  // const handleClickOutsideAnswerInput = (event: MouseEvent) => {
-  //   const target = event.target as Node;
-  //   if (answerSectionRef.current && !answerSectionRef.current.contains(target)
-  //     && questionItemRef.current && !questionItemRef.current.contains(target)
-  //     && responsesItemsRef.current && !responsesItemsRef.current.contains(target)
-  //   ) {
-  //     animatedFunction(handleAnswerSectionOpen);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const listener = (event: MouseEvent) => handleClickOutsideAnswerInput(event);
-  //   bodyRef.current.addEventListener('mousedown', listener);
-  //   return () => {
-  //     bodyRef.current.removeEventListener('mousedown', listener);
-  //   };
-  // }, []);
 
   return (
     <div className="Questions_page">
@@ -203,9 +187,14 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
       </div>
       {isAnswerSectionOpen && (
         <div className="answer_section">
-          <img src={avatar} alt="I" className="answer_section_avatarka" />
-          <textarea ref={answerTextAreaRef} value={answerValue} onChange={changeHandlerAnswer} className="answer_section_textarea" placeholder="Add your answer here" />
-          <button type="button" className="close-button_answer" onClick={() => { animatedFunction(handleAnswerSectionOpen); }}>{t('×')}</button>
+          <div className="answer_section_body">
+            <img src={avatar} alt="I" className="answer_section_avatarka" />
+            <textarea ref={answerTextAreaRef} value={answerValue} onChange={changeHandlerAnswer} className="answer_section_textarea" placeholder="Add your answer here" />
+          </div>
+          <div className="answer_section_actions">
+            <button type="button" onClick={() => animatedFunction(onAnswerTextareaClose)} className="answer_section_btn_cancel">{t('Cancel')}</button>
+            <button type="button" onClick={() => animatedFunction(handleAddAsnswer, id)} className="answer_section_btn_post">{t('Post')}</button>
+          </div>
         </div>
       )}
       {responsesMap.some((item) => item.questionId.questionId === id) && (

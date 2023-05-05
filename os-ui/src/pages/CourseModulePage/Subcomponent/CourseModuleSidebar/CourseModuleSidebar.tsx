@@ -33,10 +33,20 @@ const CourseModuleSidebar = () => {
   const currentPath = location.pathname;
   let isbtnClicked = false;
   const currentBaseUrl = `/userCourse/modulOverview/${courseId}`;
-  if (currentPath === `${currentBaseUrl}/discussionForum`) isbtnClicked = true;
-  if (currentPath === `${currentBaseUrl}/discussionForum/AskMentor`) isbtnClicked = true;
-  if (currentPath === `${currentBaseUrl}/discussionForum/AskPeers`) isbtnClicked = true;
-  if (currentPath === currentBaseUrl) isbtnClicked = false;
+
+  switch (currentPath) {
+    case `${currentBaseUrl}/discussionForum`:
+    case `${currentBaseUrl}/discussionForum/AskMentor`:
+    case `${currentBaseUrl}/discussionForum/AskPeers`:
+      isbtnClicked = true;
+      break;
+    case currentBaseUrl:
+      isbtnClicked = false;
+      break;
+    default:
+      break;
+  }
+
   const itemBtnclickedStyle = isbtnClicked ? styles.btnClickedCName : styles.btnNotClickedCName;
   const itemBtnclickedRevStyle = isbtnClicked ? styles.btnNotClickedCName : styles.btnClickedCName;
 

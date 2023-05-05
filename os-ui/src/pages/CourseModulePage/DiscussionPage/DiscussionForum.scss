@@ -18,7 +18,7 @@
   font-weight: 800;
   font-size: 36px;
   line-height: 44px;
-  color: #333941;
+  color: $black-text-color;
 }
 
 .forum_header-menu {
@@ -60,10 +60,10 @@
     cursor: pointer;
   }
   &_link {
-    color: #5E617B;
+    color: $text-light-color;
     text-decoration: none;
     &_active {
-      color: #222427;
+      color: $text-color;
       font-weight: 600;
       font-size: 20px;
     }
@@ -71,7 +71,7 @@
 }
 
 .btn {
-  background-color: #F08670;
+  background-color: $btn-primary-color;
   border-style: none;
   color: #fff;
   font-weight: 500;
@@ -87,7 +87,7 @@
     color: #d6faf1;
   }
   &:active {
-    background-color: #ff9982;
+    background-color: $btn-primary-hover-color;
     color: #f4f8f7;
     padding: 17px 34px;
     position: relative;
@@ -101,7 +101,7 @@
   font-size:30px;
   margin-top: 20px;
   margin-left: 3px;
-  color: #333941;
+  color: $black-text-color;
 }
 
 //scroll

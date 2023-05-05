@@ -1,3 +1,5 @@
+@import '../../../../../styles/Configs/Colors.scss';
+
 .Question_item {
   display: flex;
   justify-content: space-between;
@@ -5,14 +7,14 @@
   margin-right: 40px;
   padding-left: 16px;
   padding-top: 7px;
-  background-color: #F9F9FD;
+  background-color: $bg-color;
   z-index: 1;
   padding-bottom: 5px;
   margin-bottom: 8px;
 }
 
 .Question_item:hover {
-  background-color: #e1e1eb;
+  background-color: $bg-hover-color;
   opacity: 0.8;
 }
 
@@ -36,7 +38,7 @@
 
 .messageCount {
   display: inline;
-  color: #5E617B;
+  color: $text-light-color;
   font-weight: 500;
   line-height: 24px;
   margin-right: 24px;  
@@ -49,12 +51,12 @@
 }
 
 .arrowRightIcon {
-  color: #848A9D;
+  color: $icon-color;
 }
 
 .question_text_ {
   margin-top: 10px;
-  color: #222427;
+  color: $text-color;
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
@@ -74,7 +76,7 @@
   padding-bottom: 10px;
   font-weight: 400;
   line-height: 24px;
-  color: #222427;
+  color: $text-color;
   &::before {
     content: url('./../../../../../assets/svg/ClockIcon.svg');
     margin-right: 5px;
@@ -83,7 +85,7 @@
 }
 
 .user_ {
-  color: #222427;
+  color: $text-color;
   font-weight: 500;
   line-height: 24px;
 }
@@ -93,8 +95,8 @@
   font-weight: 500;
   line-height: 24px;
   font-size: 20px;
-  color: #222427;
-  background-color: #F9F9FD;
+  color: $text-color;
+  background-color: $bg-color;
   margin: -7px 0 -6px -16px;
   padding: 12px 200px 31px 20px;
   resize: none;
@@ -106,62 +108,92 @@
   max-width: 1445px;
   margin-right: 40px;
   border-radius: 8px;
-  background-color: #F9F9FD;
+  background-color: $bg-color;
   margin-bottom: 15px;
   padding-bottom: 32px;
 }
 
 // answer section
 .answer_section {
-  display: flex;
   margin-top: 20px;
+  margin-bottom: 20px;
+  &_body {
+    display: flex;
+  }
+  &_actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 40px;
+  }
   &_avatarka {
     padding: 5px;
     margin-top: -5px;
     text-align: center;
     padding: 1px;
-    background-color: #C6BDFF;
+    background-color: $avatar-bg-color;
     border-radius: 50%  ;
     width: 27px;
     height: 27px;
     cursor: pointer;
   }
   &_textarea {
-    border: 1px solid #D9DBE9;
+    border: 1px solid $border-color;
     border-radius: 12px;
     height: 60px;
     width: 100%;
     max-width: 1372px;
     margin: 0 40px 13px 17px;
     padding: 10px 20px 10px 16px;  
-    background-color: #F9F9FD;
+    background-color: $bg-color;
     color: #3D3F42;
     word-break: break-all;
     overflow-y:auto;
     resize: none;
     outline: none;
   }
-}
-
-.answer_section {
-  position: relative;
-}
-
-.close-button_answer {
-  position: absolute;
-  top: 12px;
-  right: 55px;
-  color: #848A9D;
-  font-weight: 600;
-  font-size: 25px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  &:hover {
-    font-size: 26px;
-    color: #b1b5c2;
-  }
-  &:active {
-    color: #F08670;
-  }
+  &_btn {
+    &_post {
+      background-color: $btn-primary-color;
+      border-style: none;
+      color: #fff;
+      font-weight: 500;
+      line-height: 20px;
+      border-radius: 11px;
+      padding: 5px 20px;
+      cursor: pointer;
+      &:hover {
+        background-color: #ff9982;
+        color: #f4f8f7;
+        padding: 6px 21px;
+        margin-bottom: -2px;
+        margin-left: -2px;
+        position: relative;
+      }
+      &:active {
+        background-color: #f74a24;
+      }
+    }
+    &_cancel {
+      background-color: $bg-color;
+      color: $btn-secondary-color;
+      border: 2px solid $btn-secondary-color;
+      border-radius: 11px;
+      font-weight: 500;
+      line-height: 20px;
+      padding: 5px 20px;
+      margin-right: 10px;
+      cursor: pointer;
+      &:hover {
+        padding: 6px 21px;
+        margin-bottom: -2px;
+        border: #7b93d1 2px solid;
+        color: $btn-secondary-hover-color;
+        position: relative;
+      }
+      &:active {
+          background-color: #e0e3ec;
+        color: #7589bb;
+      }
+    }  
+  }  
 }

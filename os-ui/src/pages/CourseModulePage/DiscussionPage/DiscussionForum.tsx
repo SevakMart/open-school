@@ -65,7 +65,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
     dispatch(changeSection(true));
   }, []);
 
-  // mentor or peers
+  // mentor or peersF
   const questionsMap:Question[] = isBtnClicked ? questionsWithId : questionsWithIdToMentor;
 
   const { t } = useTranslation();

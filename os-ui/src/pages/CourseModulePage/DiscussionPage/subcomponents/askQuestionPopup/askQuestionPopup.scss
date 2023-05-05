@@ -42,7 +42,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #1A233D;
+  background-color: $popUp-overlay-color;
   opacity: 0.7;
 }
 
@@ -51,7 +51,7 @@
   background-color: #f9f9fd;
   border-radius: 40px;
   padding: 25px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 8px #00000040;
   min-width: 550px;
   min-height: 250px;
 }
@@ -71,7 +71,7 @@
   top: 23px;
   right: 25px;
   padding: 10px;
-  color: #848A9D;
+  color: $icon-color;
   font-weight: 600;
   font-size: 25px;
   background: none;
@@ -84,7 +84,7 @@
     color: #b1b5c2;
   }
   &:active {
-    color: #F08670;
+    color: $btn-primary-color;
   }
 }
 
@@ -97,7 +97,7 @@
 
 .btn {
   &_post {
-    background-color: $discussionForum-asqQuestion-Popup-color;
+    background-color: $btn-primary-color;
     border-style: none;
     color: #fff;
     font-weight: 500;
@@ -106,7 +106,7 @@
     padding: 10px 30px;
     cursor: pointer;
     &:hover {
-      background-color: #ff9982;
+      background-color: $btn-primary-hover-color;
       color: #f4f8f7;
       padding: 11px 31px;
       margin-bottom: -2px;
@@ -118,9 +118,9 @@
     }
   }
   &_cancel {
-    background-color: #F9F9FD;
-    color: #415791;
-    border: 2px solid #415791;
+    background-color: $bg-color;
+    color: $btn-secondary-color;
+    border: 2px solid $btn-secondary-color;
     border-radius: 16px;
     font-weight: 500;
     line-height: 20px;
@@ -132,7 +132,7 @@
       margin-bottom: -2px;
       margin-left: -1px;
       border: #7b93d1 2px solid;
-      color: #2f5fda;
+      color: $btn-secondary-hover-color;
       position: relative;
     }
     &:active {
@@ -152,7 +152,7 @@
   padding-bottom: 25px;
   width: 100%;
   color: #3d3f42;
-  border: 1px solid #D9DBE9;
+  border: 1px solid $border-color;
   background-color: #fff;
   resize: none;
   outline: none;

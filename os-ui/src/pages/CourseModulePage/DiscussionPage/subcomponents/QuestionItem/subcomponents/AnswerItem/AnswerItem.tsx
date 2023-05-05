@@ -42,7 +42,7 @@ const Answeritem:React.FC<AnswerItemProps> = ({
           {answerText.length > 220 && (
             <div className="answers-item_showMore" onClick={toggleShowMore}>
               {showMore ? 'Show less' : 'Show more'}
-              <img className="answers-item_showMore_img" src={next} alt=">" />
+              <img className={`answers-item_showMore_img ${showMore ? 'answers-item_showMore_img_rotateIcon' : ''}`} src={next} alt=">" />
             </div>
           )}
         </div>

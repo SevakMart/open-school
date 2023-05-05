@@ -1,3 +1,5 @@
+@import '../../../../../../../styles/Configs/Colors.scss';
+
 .answers-item {
   max-width: 1445px;
   margin-right: 40px;
@@ -21,13 +23,13 @@
       &_person {
         font-weight: 600;
         line-height: 24px;
-        color: #222427;
+        color: $text-color;
       }
       &_createdDate {
         margin-top: 5px;
         font-weight: 400;
         line-height: 24px;
-        color: #222427;
+        color: $text-color;
         &::before {
           content: url('./../../../../../../../assets/svg/ClockIcon.svg');
           margin-right: 5px;
@@ -50,10 +52,13 @@
     margin-top: 10px;
     font-weight: 500;
     line-height: 24px;
-    color: #415791;
+    color: $btn-secondary-color;
     cursor: pointer;
-  &_img {
-    margin-left: 9px;
-  }
+    &_img {
+      margin-left: 9px;
+      &_rotateIcon {
+        transform: rotate(90deg);
+      }
+    }
   }
 }
