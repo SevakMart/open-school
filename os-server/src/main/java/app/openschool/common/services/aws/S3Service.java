@@ -6,6 +6,8 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.UUID;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -36,12 +38,19 @@ public class S3Service implements FileStorageService {
   public String uploadFile(MultipartFile file) {
 
     filename = generateUniqueFilename(file.getOriginalFilename());
-
     File convertedFile = convertMultiPartFileToFile(file);
+    Path filePath = convertedFile.toPath();
     amazonS3.putObject(
         new PutObjectRequest(bucketName, filename, convertedFile)
             .withCannedAcl(CannedAccessControlList.PublicRead));
-    boolean deletedFile = convertedFile.delete();
+
+    try {
+      Files.delete(filePath);
+
+    } catch (IOException e) {
+      logger.error("Error while deleting temporary file");
+    }
+    //    boolean deletedFile = convertedFile.delete();
 
     return filename;
   }
