@@ -39,6 +39,7 @@ public class S3Service implements FileStorageService {
 
     filename = generateUniqueFilename(file.getOriginalFilename());
     File convertedFile = convertMultiPartFileToFile(file);
+    //after write
     Path filePath = convertedFile.toPath();
     amazonS3.putObject(
         new PutObjectRequest(bucketName, filename, convertedFile)
@@ -50,7 +51,7 @@ public class S3Service implements FileStorageService {
     } catch (IOException e) {
       logger.error("Error while deleting temporary file");
     }
-    //    boolean deletedFile = convertedFile.delete();
+    //     boolean deletedFile = convertedFile.delete();
 
     return filename;
   }
