@@ -15,8 +15,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-
-
 @Service
 @ConditionalOnMissingBean(value = FileStorageLocalService.class)
 public class S3Service implements FileStorageService {
@@ -27,6 +25,8 @@ public class S3Service implements FileStorageService {
 
   private final AmazonS3 amazonS3;
 
+  private String filename;
+
   public S3Service(@Value("${application.bucket.name}") String bucketName, AmazonS3 amazonS3) {
     this.bucketName = bucketName;
     this.amazonS3 = amazonS3;
@@ -34,13 +34,16 @@ public class S3Service implements FileStorageService {
 
   @Override
   public String uploadFile(MultipartFile file) {
+
+    filename = generateUniqueFilename(file.getOriginalFilename());
+
     File convertedFile = convertMultiPartFileToFile(file);
     amazonS3.putObject(
-        new PutObjectRequest(bucketName, convertedFile.getName(), convertedFile)
+        new PutObjectRequest(bucketName, filename, convertedFile)
             .withCannedAcl(CannedAccessControlList.PublicRead));
     boolean deletedFile = convertedFile.delete();
 
-    return convertedFile.getName();
+    return filename;
   }
 
   @Override
@@ -48,10 +51,13 @@ public class S3Service implements FileStorageService {
     amazonS3.deleteObject(bucketName, fileName);
   }
 
+  private String generateUniqueFilename(String originalFileName) {
+    String fileExtension = FilenameUtils.getExtension(originalFileName);
+    return UUID.randomUUID() + "." + fileExtension;
+  }
+
   private File convertMultiPartFileToFile(MultipartFile file) {
-    String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-    String fileName = UUID.randomUUID() + "." + extension;
-    File convertedFile = new File(fileName);
+    File convertedFile = new File(filename);
     try (FileOutputStream out = new FileOutputStream(convertedFile)) {
       out.write(file.getBytes());
     } catch (IOException e) {
