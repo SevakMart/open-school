@@ -11,6 +11,8 @@ import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
 import java.time.Instant;
 import java.util.Objects;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service("discussionAnswer")
@@ -29,8 +31,7 @@ public class PeersAnswerServiceImpl implements AnswerService {
   }
 
   @Override
-  public AnswerResponseDto create(
-      Long enrolledCourseId, AnswerRequestDto requestDto, String email) {
+  public PeersAnswer create(Long enrolledCourseId, AnswerRequestDto requestDto, String email) {
 
     EnrolledCourse extractedEnrolledCourse =
         enrolledCourseRepository
@@ -45,9 +46,18 @@ public class PeersAnswerServiceImpl implements AnswerService {
     checkingDataConsistency(
         extractedPeersQuestion, extractedEnrolledCourse, email, requestDto.getQuestionId());
 
-    return AnswerMapper.toAnswerDto(
-        peersAnswerRepository.save(
-            prepareAnswer(extractedEnrolledCourse, requestDto, extractedPeersQuestion)));
+    return peersAnswerRepository.save(
+        prepareAnswer(extractedEnrolledCourse, requestDto, extractedPeersQuestion));
+  }
+
+  @Override
+  public PeersAnswer findAnswerById(Long answerId) {
+    return peersAnswerRepository.findById(answerId).orElseThrow(IllegalArgumentException::new);
+  }
+
+  @Override
+  public Page<PeersAnswer> findAnswerByQuestionId(Long questionId, Pageable pageable) {
+    return peersAnswerRepository.findPeersAnswerByPeersQuestionId(questionId, pageable);
   }
 
   private PeersAnswer prepareAnswer(

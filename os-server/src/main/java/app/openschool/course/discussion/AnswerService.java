@@ -1,9 +1,14 @@
 package app.openschool.course.discussion;
 
 import app.openschool.course.discussion.dto.AnswerRequestDto;
-import app.openschool.course.discussion.dto.AnswerResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface AnswerService {
 
-  AnswerResponseDto create(Long enrolledCourseId, AnswerRequestDto requestDto, String email);
+  Answer create(Long enrolledCourseId, AnswerRequestDto requestDto, String email);
+
+  Answer findAnswerById(Long answerId);
+
+  Page<? extends Answer> findAnswerByQuestionId(Long questionId, Pageable pageable);
 }

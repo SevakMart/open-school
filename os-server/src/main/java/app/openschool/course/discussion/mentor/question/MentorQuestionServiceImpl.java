@@ -1,58 +1,44 @@
 package app.openschool.course.discussion.mentor.question;
 
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
-import app.openschool.course.CourseRepository;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.discussion.QuestionService;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
-import app.openschool.course.discussion.dto.QuestionResponseDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
-import app.openschool.course.discussion.mapper.MentorQuestionMapper;
-import app.openschool.course.discussion.peers.question.PeersQuestion;
-import app.openschool.user.User;
-import app.openschool.user.UserRepository;
 import java.time.Instant;
+import java.util.Objects;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service("discussionQuestionMentor")
 public class MentorQuestionServiceImpl implements QuestionService {
-
-  // ToDo this class and the components used in it will be changed in the future
-  private final UserRepository userRepository;
   private final EnrolledCourseRepository enrolledCourseRepository;
-  private final CourseRepository courseRepository;
   private final MentorQuestionRepository mentorQuestionRepository;
 
   public MentorQuestionServiceImpl(
-      UserRepository userRepository,
       EnrolledCourseRepository enrolledCourseRepository,
-      CourseRepository courseRepository,
       MentorQuestionRepository mentorQuestionRepository) {
-    this.userRepository = userRepository;
     this.enrolledCourseRepository = enrolledCourseRepository;
-    this.courseRepository = courseRepository;
     this.mentorQuestionRepository = mentorQuestionRepository;
   }
 
   @Override
-  public QuestionResponseDto create(
-      Long enrolledCourseId, QuestionRequestDto requestDto, String email) {
-    User user = userRepository.findUserByEmail(email);
+  public MentorQuestion create(Long enrolledCourseId, QuestionRequestDto requestDto, String email) {
+
     EnrolledCourse enrolledCourse =
         enrolledCourseRepository
             .findById(enrolledCourseId)
             .orElseThrow(IllegalArgumentException::new);
-    if (enrolledCourse.getUser().getId() != user.getId()) {
-      throw new PermissionDeniedException("permission.denied");
-    }
 
-    return MentorQuestionMapper.toResponseDto(
-        mentorQuestionRepository.save(creteQuestion(requestDto, email)));
+    checkingDataConsistency(enrolledCourse, email);
+
+    return mentorQuestionRepository.save(prepareMentorQuestion(requestDto, enrolledCourse));
   }
 
   @Override
-  public PeersQuestion update(
+  public MentorQuestion update(
       UpdateQuestionRequest request,
       Long questionId,
       Long enrolledCourseId,
@@ -63,16 +49,39 @@ public class MentorQuestionServiceImpl implements QuestionService {
   @Override
   public void delete(Long questionId, Long enrolledCourseId, String currentUserEmail) {}
 
-  private MentorQuestion creteQuestion(QuestionRequestDto requestDto, String email) {
-    User userByEmail = userRepository.findUserByEmail(email);
-    //    Course courseById =
-    // courseRepository.findById(requestDto.getCourseId()).orElseThrow(IllegalAccessError::new);
+  @Override
+  public MentorQuestion findQuestionByIdAndEnrolledCourseId(
+      Long enrolledCourseId, Long questionId) {
+    return mentorQuestionRepository
+        .findQuestionByIdAndEnrolledCourseId(enrolledCourseId, questionId)
+        .orElseThrow(IllegalArgumentException::new);
+  }
+
+  @Override
+  public Page<MentorQuestion> findQuestionByCourseId(Long enrolledCourseId, Pageable pageable) {
+
+    return mentorQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable);
+  }
+
+  private MentorQuestion prepareMentorQuestion(
+      QuestionRequestDto requestDto, EnrolledCourse enrolledCourse) {
+
     MentorQuestion mentorQuestion = new MentorQuestion();
     mentorQuestion.setText(requestDto.getText());
-    mentorQuestion.setUser(userByEmail);
+    mentorQuestion.setUser(enrolledCourse.getUser());
+    mentorQuestion.setCourse(enrolledCourse.getCourse());
     mentorQuestion.setCreatedDate(Instant.now());
-    //    mentorQuestion.setCourse(courseById);
 
     return mentorQuestion;
+  }
+
+  private void checkingDataConsistency(EnrolledCourse enrolledCourse, String currentUserEmail) {
+
+    String emailFromEnrolledCourse = enrolledCourse.getUser().getEmail();
+
+    if (!Objects.equals(emailFromEnrolledCourse, currentUserEmail)) {
+
+      throw new PermissionDeniedException("permission.denied");
+    }
   }
 }

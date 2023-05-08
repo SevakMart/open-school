@@ -5,7 +5,8 @@ import { validateSignInForm } from '../../../../helpers/SignInFormValidate';
 import authService from '../../../../services/authService';
 import { closeModal } from '../../../../redux/Slices/PortalOpenStatus';
 import { addUserInfoToLocalStorage } from '../../../../redux/Slices/UserInfoSlice';
-import Form, { FormValues } from '../../Form/Form';
+import Form from '../../Form/Form';
+import { FormValues } from '../../../../types/FormTypes';
 
 const initialErrorFormValues = { fullNameError: '', emailError: '', passwordError: '' };
 

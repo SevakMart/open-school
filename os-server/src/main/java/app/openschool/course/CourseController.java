@@ -7,14 +7,6 @@ import app.openschool.course.api.dto.CourseInfoDto;
 import app.openschool.course.api.dto.CreateCourseRequest;
 import app.openschool.course.api.dto.UpdateCourseRequest;
 import app.openschool.course.api.mapper.CourseMapper;
-import app.openschool.course.discussion.AnswerService;
-import app.openschool.course.discussion.QuestionService;
-import app.openschool.course.discussion.dto.AnswerRequestDto;
-import app.openschool.course.discussion.dto.AnswerResponseDto;
-import app.openschool.course.discussion.dto.QuestionRequestDto;
-import app.openschool.course.discussion.dto.QuestionResponseDto;
-import app.openschool.course.discussion.dto.UpdateQuestionRequest;
-import app.openschool.course.discussion.mapper.QuestionMapper;
 import app.openschool.faq.FaqService;
 import app.openschool.faq.api.dto.CreateFaqRequest;
 import app.openschool.faq.api.dto.FaqDto;
@@ -56,20 +48,12 @@ public class CourseController {
   private final CourseService courseService;
   private final FaqService faqService;
   private final MessageSource messageSource;
-  private final QuestionService questionService;
-  private final AnswerService answerService;
 
   public CourseController(
-      CourseService courseService,
-      MessageSource messageSource,
-      FaqService faqService,
-      @Qualifier("discussionQuestion") QuestionService questionService,
-      @Qualifier("discussionAnswer") AnswerService answerService) {
+      CourseService courseService, MessageSource messageSource, FaqService faqService) {
     this.courseService = courseService;
     this.messageSource = messageSource;
     this.faqService = faqService;
-    this.questionService = questionService;
-    this.answerService = answerService;
   }
 
   @Operation(summary = "get course info", security = @SecurityRequirement(name = "bearerAuth"))
@@ -324,116 +308,6 @@ public class CourseController {
 
     faqService.delete(faqId, principal.getName());
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-  }
-
-  @Operation(summary = "add question", security = @SecurityRequirement(name = "bearerAuth"))
-  @ApiResponses(
-      value = {
-        @ApiResponse(responseCode = "201", description = "Creates new question and returns that"),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid request arguments supplied or not provided",
-            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
-        @ApiResponse(
-            responseCode = "403",
-            description = "User has not enrolled in the course provided",
-            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
-      })
-  @PostMapping("/enrolled/{enrolledCourseId}/peers-questions")
-  public ResponseEntity<QuestionResponseDto> createQuestion(
-      @Parameter(description = "ID of the enrolled course") @PathVariable Long enrolledCourseId,
-      @Valid @RequestBody QuestionRequestDto requestDto,
-      Principal principal) {
-    QuestionResponseDto questionResponseDto =
-        questionService.create(enrolledCourseId, requestDto, principal.getName());
-    return ResponseEntity.status(HttpStatus.CREATED).body(questionResponseDto);
-  }
-
-  @Operation(
-      summary = "update peers question",
-      security = @SecurityRequirement(name = "bearerAuth"))
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Modifies the Peers-Question and returns that"),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid request arguments provided.",
-            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
-      })
-  @PutMapping("/enrolled/{enrolledCourseId}/peers-questions/{peersQuestionId}")
-  public ResponseEntity<QuestionResponseDto> updatePeersQuestion(
-      @Parameter(description = "ID of the enrolled course")
-          @PathVariable(value = "enrolledCourseId")
-          Long enrolledCourseId,
-      @Parameter(description = "Peers-Question ID to be updated")
-          @PathVariable(value = "peersQuestionId")
-          Long peersQuestionId,
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(
-              description = "Request object for updating the Peers-Question")
-          @Valid
-          @RequestBody
-          UpdateQuestionRequest request,
-      Principal principal) {
-
-    return ResponseEntity.ok()
-        .body(
-            QuestionMapper.toResponseDto(
-                questionService.update(
-                    request, peersQuestionId, enrolledCourseId, principal.getName())));
-  }
-
-  @Operation(
-      summary = "delete peers question",
-      security = @SecurityRequirement(name = "bearerAuth"))
-  @ApiResponses(
-      value = {
-        @ApiResponse(
-            responseCode = "204",
-            description = "Peers-Question was deleted",
-            content = @Content(schema = @Schema())),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid request arguments provided.",
-            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
-      })
-  @DeleteMapping("/enrolled/{enrolledCourseId}/peers-questions/{peersQuestionId}")
-  public ResponseEntity<HttpStatus> deletePeersQuestion(
-      @Parameter(description = "ID of the enrolled course")
-          @PathVariable(value = "enrolledCourseId")
-          Long enrolledCourseId,
-      @Parameter(description = "Peers-Question ID to be deleted")
-          @PathVariable(value = "peersQuestionId")
-          Long peersQuestionId,
-      Principal principal) {
-
-    questionService.delete(peersQuestionId, enrolledCourseId, principal.getName());
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-  }
-
-  @Operation(summary = "add answer", security = @SecurityRequirement(name = "bearerAuth"))
-  @ApiResponses(
-      value = {
-        @ApiResponse(responseCode = "201", description = "Creates new answer and returns that"),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid request arguments supplied or not provided",
-            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
-        @ApiResponse(
-            responseCode = "403",
-            description = "User has not enrolled in the course provided",
-            content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
-      })
-  @PostMapping("/enrolled/{enrolledCourseId}/peers-answers")
-  public ResponseEntity<AnswerResponseDto> createAnswer(
-      @Parameter(description = "ID of the enrolled course") @PathVariable Long enrolledCourseId,
-      @Valid @RequestBody AnswerRequestDto requestDto,
-      Principal principal) {
-
-    AnswerResponseDto answerResponseDto =
-        answerService.create(enrolledCourseId, requestDto, principal.getName());
-    return ResponseEntity.status(HttpStatus.CREATED).body(answerResponseDto);
   }
 
   private void courseAffiliationVerification(Principal principal, Long courseId) {

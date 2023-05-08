@@ -1,7 +1,7 @@
-import { FormValues } from '../component/SignUpSignIn/Form/Form';
 import {
   PASSWORD_REQUIRED, EMAIL_REQUIRED, INVALID_EMAIL_ERROR_MESSAGE, emailRegex,
 } from '../constants/Strings';
+import { FormValues } from '../types/FormTypes';
 
 export const validateSignInForm = (formValues:FormValues) => {
   const errorFormValue = { fullNameError: '', emailError: '', passwordError: '' };

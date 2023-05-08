@@ -37,7 +37,7 @@ exports[`Create test case for Verification component Create a snapshot test 1`] 
   >
     <button
       class="formButton"
-      type="button"
+      type="submit"
     >
       button.resend
     </button>

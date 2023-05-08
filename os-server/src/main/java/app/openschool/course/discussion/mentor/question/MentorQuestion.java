@@ -1,6 +1,7 @@
 package app.openschool.course.discussion.mentor.question;
 
 import app.openschool.course.Course;
+import app.openschool.course.discussion.Question;
 import app.openschool.course.discussion.mentor.answer.MentorAnswer;
 import app.openschool.user.User;
 import java.time.Instant;
@@ -15,18 +16,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "mentor_question")
-public class MentorQuestion {
+public class MentorQuestion implements Question {
 
-  // ToDo this class and the components used in it will be changed in the future
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank(message = "validation.notBlank")
   @Column(name = "text", nullable = false)
   private String text;
 
@@ -48,7 +46,7 @@ public class MentorQuestion {
 
   public MentorQuestion(
       Long id,
-      @NotBlank(message = "validation.notBlank") String text,
+      String text,
       User user,
       Course course,
       List<MentorAnswer> mentorAnswerList,
@@ -61,18 +59,22 @@ public class MentorQuestion {
     this.createdDate = createdDate;
   }
 
+  @Override
   public Long getId() {
     return id;
   }
 
+  @Override
   public void setId(Long id) {
     this.id = id;
   }
 
+  @Override
   public String getText() {
     return text;
   }
 
+  @Override
   public void setText(String text) {
     this.text = text;
   }
@@ -81,14 +83,17 @@ public class MentorQuestion {
     return user;
   }
 
+  @Override
   public void setUser(User user) {
     this.user = user;
   }
 
+  @Override
   public Course getCourse() {
     return course;
   }
 
+  @Override
   public void setCourse(Course course) {
     this.course = course;
   }
@@ -101,10 +106,12 @@ public class MentorQuestion {
     this.mentorAnswerList = mentorAnswerList;
   }
 
+  @Override
   public Instant getCreatedDate() {
     return createdDate;
   }
 
+  @Override
   public void setCreatedDate(Instant createdDate) {
     this.createdDate = createdDate;
   }

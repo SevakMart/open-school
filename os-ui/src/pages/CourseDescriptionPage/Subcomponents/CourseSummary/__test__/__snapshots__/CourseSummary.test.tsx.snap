@@ -14,10 +14,15 @@ exports[`Create test cases for course description page Create a snapshot test 1`
       <div
         class="headerIcons"
       >
-        <img
-          alt="Share icon"
-          src="ShareIcon.svg"
-        />
+        <div
+          class="shareButton"
+        >
+          <img
+            alt="shareButton.alt"
+            class="shareIcon"
+            src="ShareIcon.svg"
+          />
+        </div>
         <svg
           fill="none"
           height="1em"

@@ -7,9 +7,12 @@ import app.openschool.course.discussion.dto.AnswerResponseDto;
 import app.openschool.course.discussion.mapper.MentorAnswerMapper;
 import app.openschool.course.discussion.mentor.question.MentorQuestion;
 import app.openschool.course.discussion.mentor.question.MentorQuestionRepository;
+import app.openschool.course.discussion.peers.answer.PeersAnswer;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import java.time.Instant;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service("discussionAnswerMentor")
@@ -30,11 +33,20 @@ public class MentorAnswerServiceImpl implements AnswerService {
   }
 
   @Override
-  public AnswerResponseDto create(
+  public MentorAnswer create(
       Long enrolledCourseId, AnswerRequestDto requestDto, String email) {
 
-    return MentorAnswerMapper.toAnswerDto(
-        mentorAnswerRepository.save(creteAnswer(requestDto, email)));
+    return null;
+  }
+
+  @Override
+  public MentorAnswer findAnswerById(Long answerId) {
+    return null;
+  }
+
+  @Override
+  public Page<PeersAnswer> findAnswerByQuestionId(Long questionId, Pageable pageable) {
+    return null;
   }
 
   private MentorAnswer creteAnswer(AnswerRequestDto requestDto, String email) {

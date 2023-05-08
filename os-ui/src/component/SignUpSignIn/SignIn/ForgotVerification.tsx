@@ -26,6 +26,17 @@ const ForgotVerification = (props: ForgotVerificationProps) => {
     setEmail((e.target as HTMLInputElement).value);
   };
 
+  const handleFormOnClick = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+  };
+
+  const handleSubmit = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (event.key === 'Enter') {
+	  event.preventDefault();
+	  handleFormOnClick(event);
+    }
+  };
+
   const sendForgotVerification = () => {
     const emailError = validateEmail(email);
     if (!emailError) {
@@ -61,6 +72,7 @@ const ForgotVerification = (props: ForgotVerificationProps) => {
           placeholderText={t('form.placeholder.email')}
           value={email}
           handleInputChange={handleInputChange}
+          handleEnterPress={handleSubmit}
         />
         <Button.FormButton className={['formButton']} onClick={sendForgotVerification}>
           {t('Resend')}
