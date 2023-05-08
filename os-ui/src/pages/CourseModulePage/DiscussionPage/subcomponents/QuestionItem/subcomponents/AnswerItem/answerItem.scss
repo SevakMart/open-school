@@ -3,12 +3,19 @@
 .answers-item {
   max-width: 1445px;
   margin-right: 40px;
+  margin-left: 15px;
+  margin-top: 14px;
   padding: 20px 20px 0 20px;  
   color: #3D3F42;
   word-break: break-all;
   resize: none;
   outline: none;
   border: none;
+  border-radius: 8px;
+  background-color: $bg-color;
+  margin-bottom: 15px;
+  padding-bottom: 9px;
+  padding-top: 16px;
   &_info {
     display: flex;
     &_img {
@@ -19,6 +26,7 @@
       cursor: pointer;
     }
     &_box {
+      display: flex;
       margin-left: 16px;
       &_person {
         font-weight: 600;
@@ -26,14 +34,15 @@
         color: $text-color;
       }
       &_createdDate {
-        // margin-top: 5px;
+        margin-left: 20px;
         font-weight: 400;
+        font-size: 14px;
         line-height: 24px;
         color: $text-color;
         &::before {
           content: url('./../../../../../../../assets/svg/ClockIcon.svg');
           margin-right: 5px;
-          vertical-align: -2px;
+          vertical-align: -3px;
         }
       }
     }
@@ -46,6 +55,7 @@
     padding-right: 120px;
     font-weight: 400;
     line-height: 24px;
+    margin-top: -15px;
     color: #000;
   }
   &_showMore {

@@ -22,6 +22,12 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const btnTextType = isEditPressed ? 'Save' : 'Edit';
   const [editValue, setEditValue] = useState<string>(text);
   const [answerValue, setAnswerValue] = useState<string>('');
+  // isAllAnswersApper?
+  const [allAnswersState, setAllAnswersState] = useState(true);
+  const handleSetAllAnswersState = () => {
+    setAllAnswersState((prev) => !prev);
+  };
+
   // popUp open and close state
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -158,7 +164,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
             <img className="answer_icon" onClick={() => animatedFunction(handleAnswerSectionOpen)} src={answer} alt="->" />
             <div className="messageCount">5</div>
             <img className="icon_menu" src={threeVerticalDots} onClick={() => animatedFunction(changeIsOpen)} alt="menu" />
-            <img className="arrowRightIcon" src={ArrowRightIcon} alt=">" />
+            <img className={`arrowRightIcon ${allAnswersState ? 'arrowRightIcon_rotate' : ''}`} onClick={() => animatedFunction(handleSetAllAnswersState)} src={ArrowRightIcon} alt=">" />
           </div>
           {
             isEditPressed
@@ -175,11 +181,11 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
               )
               : (
                 <div className="question_item">
-                  <div className="question_text_" data-testid="questionItem-text" style={{ wordWrap: 'break-word' }}>{t(text)}</div>
                   <div className="question__text_box">
                     <div className="user_">{t('Me')}</div>
                     <div className="question__text_inner-date" data-testid="questionItem-date">{formattedDate}</div>
                   </div>
+                  <div className="question_text_" data-testid="questionItem-text" style={{ wordWrap: 'break-word' }}>{t(text)}</div>
                 </div>
               )
           }
@@ -197,8 +203,8 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
           </div>
         </div>
       )}
-      {responsesMap.some((item) => item.questionId.questionId === id) && (
-        <div className="responsesItems">
+      {allAnswersState && (
+        <div className={`allAnswers ${allAnswersState ? 'allAnswersOpen' : ''}`}>
           {responsesMap.map((item) => {
             if (item.questionId.questionId === id) {
               return (

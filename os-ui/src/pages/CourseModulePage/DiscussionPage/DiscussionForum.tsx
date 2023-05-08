@@ -84,8 +84,8 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   const responsesMap: ResponsesMap[] = isBtnClicked ? PeersResponses : MentorResponses;
 
   // if Items' count is > ~15, we should make scroll Applicable
-  const scrollClassName = questionsWithId.length + responsesMap.length > 6 ? 'questionItemsScroll' : '';
-  const AskQuestionClassName = questionsWithId.length + responsesMap.length > 6 ? 'askQuestionsScroll' : '';
+  const scrollClassName = questionsWithId.length > 10 ? 'questionItemsScroll' : '';
+  const AskQuestionClassName = questionsWithId.length > 10 ? 'askQuestionsScroll' : '';
 
   return (
     <div className="inner">
