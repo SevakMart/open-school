@@ -21,10 +21,15 @@ const ShareButton = ({ courseId }: { courseId: number }) => {
   };
 
   const copyLinkToClipboard = () => {
-	  const link = `${window.location.origin}/userCourse/modulOverview/${courseId}`;
-	  navigator.clipboard.writeText(link);
-	  setIsLinkCopied(true);
-	  setCopyTimeoutId(window.setTimeout(() => setIsLinkCopied(false), 5000));
+    const link = `${window.location.origin}/userCourse/modulOverview/${courseId}`;
+    const textField = document.createElement('textarea');
+    textField.innerText = link;
+    document.body.appendChild(textField);
+    textField.select();
+    document.execCommand('copy');
+    textField.remove();
+    setIsLinkCopied(true);
+    setCopyTimeoutId(window.setTimeout(() => setIsLinkCopied(false), 5000));
   };
 
   useEffect(() => {
