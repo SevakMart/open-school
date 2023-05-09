@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { QuestionItemPopupProps } from '../../../interfaces/interfaces';
-import trash from '../../../../../../assets/svg/trash.svg';
+import { QuestionItemPopupProps } from '../../../../interfaces/interfaces';
+import trash from '../../../../../../../assets/svg/trash.svg';
 import './questionItemPopup.scss';
 
 const QuestionItemPopup:React.FC<QuestionItemPopupProps> = ({
@@ -10,6 +10,7 @@ const QuestionItemPopup:React.FC<QuestionItemPopupProps> = ({
   const popupRef = useRef<HTMLDivElement | null>(null);
   const bodyRef = useRef(document.body);
 
+  // when click outside the popup, close it
   const handleClickOutside = (event: MouseEvent) => {
     const target = event.target as Node;
     if (popupRef.current && !popupRef.current.contains(target) && target !== textAreaRef.current) {
@@ -23,7 +24,7 @@ const QuestionItemPopup:React.FC<QuestionItemPopupProps> = ({
     return () => {
       bodyRef.current.removeEventListener('mousedown', listener);
     };
-  }, []);
+  }, [popupRef, textAreaRef]);
 
   const { t } = useTranslation();
 

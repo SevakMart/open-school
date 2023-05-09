@@ -16,8 +16,8 @@ exports[`CourseModuleSidebar calls handleChangeValue when clicking the Overview 
         type="button"
       >
         <a
+          class="btnClickedCName"
           href="/userCourse/modulOverview/undefined"
-          style="text-decoration: none; color: rgb(51, 57, 65); font-weight: 900;"
         >
           Overview
         </a>
@@ -42,8 +42,8 @@ exports[`CourseModuleSidebar calls handleChangeValue when clicking the Overview 
       class="SidebarOverview_button"
     >
       <a
+        class="btnNotClickedCName"
         href="/userCourse/modulOverview/undefined/discussionForum"
-        style="text-decoration: none; color: rgb(51, 57, 65);"
       >
         Discussion Forum
       </a>
@@ -73,8 +73,8 @@ exports[`CourseModuleSidebar renders the component 1`] = `
         type="button"
       >
         <a
+          class="btnClickedCName"
           href="/userCourse/modulOverview/undefined"
-          style="text-decoration: none; color: rgb(51, 57, 65); font-weight: 900;"
         >
           Overview
         </a>
@@ -99,8 +99,8 @@ exports[`CourseModuleSidebar renders the component 1`] = `
       class="SidebarOverview_button"
     >
       <a
+        class="btnNotClickedCName"
         href="/userCourse/modulOverview/undefined/discussionForum"
-        style="text-decoration: none; color: rgb(51, 57, 65);"
       >
         Discussion Forum
       </a>
@@ -130,8 +130,8 @@ exports[`CourseModuleSidebar toggles the module list on click 1`] = `
         type="button"
       >
         <a
+          class="btnClickedCName"
           href="/userCourse/modulOverview/undefined"
-          style="text-decoration: none; color: rgb(51, 57, 65); font-weight: 900;"
         >
           Overview
         </a>
@@ -156,8 +156,8 @@ exports[`CourseModuleSidebar toggles the module list on click 1`] = `
       class="SidebarOverview_button"
     >
       <a
+        class="btnNotClickedCName"
         href="/userCourse/modulOverview/undefined/discussionForum"
-        style="text-decoration: none; color: rgb(51, 57, 65);"
       >
         Discussion Forum
       </a>
@@ -187,8 +187,8 @@ exports[`CourseModuleSidebar toggles the module list on click 2`] = `
         type="button"
       >
         <a
+          class="btnClickedCName"
           href="/userCourse/modulOverview/undefined"
-          style="text-decoration: none; color: rgb(51, 57, 65); font-weight: 900;"
         >
           Overview
         </a>
@@ -213,8 +213,8 @@ exports[`CourseModuleSidebar toggles the module list on click 2`] = `
       class="SidebarOverview_button"
     >
       <a
+        class="btnNotClickedCName"
         href="/userCourse/modulOverview/undefined/discussionForum"
-        style="text-decoration: none; color: rgb(51, 57, 65);"
       >
         Discussion Forum
       </a>

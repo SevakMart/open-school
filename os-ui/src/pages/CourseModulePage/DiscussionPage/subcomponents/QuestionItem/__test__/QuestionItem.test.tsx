@@ -5,10 +5,33 @@ import {
 import React from 'react';
 import { Provider } from 'react-redux';
 import rootReducer from '../../../../../../redux/RootReducer';
+import { formatDate } from '../../../helpers/formatDate';
 import QuestionItem from '../QuestionItem';
-import QuestionItemPopup from '../QuestionItemPopup/QuestionItemPopup';
+import QuestionItemPopup from '../subcomponents/QuestionItemPopup/QuestionItemPopup';
 
 const url_Q = '/api/v1/courses/enrolled/41/peers-questions';
+const fakeResponsesMap = [
+  {
+    questionId: {
+      idAnswer: '233',
+      answerText: 'Answer1',
+      answerCreatedDate: '2023-05-02T06:02:08.535262100Z',
+      name: 'ed',
+      surname: 'x',
+      questionId: '971',
+    },
+  },
+  {
+    questionId: {
+      idAnswer: '217',
+      answerText: 'Answer2',
+      answerCreatedDate: '2023-05-02T06:02:09.535262100Z',
+      name: 'ed',
+      surname: 'x',
+      questionId: '970',
+    },
+  },
+];
 
 const fakeData = {
   id: 593,
@@ -22,16 +45,8 @@ const fakeData = {
   },
 };
 
-const date = new Date(fakeData.createdDate);
-const formattedDate = date.toLocaleString('en-US', {
-  month: 'long',
-  day: 'numeric',
-  year: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-  second: 'numeric',
-  // timeZoneName: 'short',
-});
+// const date = new Date(fakeData.createdDate);
+const formattedDate = formatDate(fakeData.createdDate);
 
 const fakeResponse = new Response(JSON.stringify(fakeData), {
   status: 200,
@@ -55,6 +70,7 @@ describe('AskQuestionPopup', () => {
             token=""
             enrolledCourseId={28}
             sectionName="Peers"
+            responsesMap={fakeResponsesMap}
           />
         </>
       </Provider>,

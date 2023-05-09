@@ -20,6 +20,7 @@ import courseDescriptionRequestReducer from './Slices/CourseDescriptionRequestSl
 import enrollCourseReducer from './Slices/EnrollCourseSlice';
 import portalStatusReducer from './Slices/PortalOpenStatus';
 import QuestionActionsReducer from './Slices/QuestionActionsSlice';
+import AnswerActionsReducer from './Slices/AnswerActionsSlice';
 import CourseModuleReducer from './Slices/CourseModuleSlice';
 
 const rootReducer = combineReducers({
@@ -43,6 +44,7 @@ const rootReducer = combineReducers({
   courseDescriptionRequest: courseDescriptionRequestReducer,
   enrollCourse: enrollCourseReducer,
   QuestionActions: QuestionActionsReducer,
+  AnswerActions: AnswerActionsReducer,
   courseModule: CourseModuleReducer,
 });
 export default rootReducer;

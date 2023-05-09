@@ -59,6 +59,7 @@ exports[`Create test cases for course description page Create a snapshot test 1`
           src="Arrow-down.svg"
         />
       </div>
+      <div />
     </div>
   </nav>
   <div

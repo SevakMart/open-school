@@ -1,0 +1,123 @@
+@import "../../styles/Configs/Colors.scss";
+@import "../../styles/Configs/Fonts.scss";
+@import "../../styles/Mixins/FontMixin.scss";
+@import "../../styles/Mixins/FlexMixins.scss";
+
+.shareButton {
+  position: relative;
+  
+  .shareIcon {
+    width: 20px;
+    height: 20px;
+    margin-right: 7px;
+    cursor: pointer;
+  }
+  
+  .sharePopup {
+    position: absolute;
+    width: 500px;
+    height: 40px;
+    top: 150%;
+    left: -200%;
+    transform: translateX(-50%);
+    background-color: $white-text-color;
+    border: 1px solid black;
+    border-radius: 25px;
+    z-index: 1;
+    
+    .closeIcon {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      box-sizing: border-box;
+      height: 30px;
+      margin-left: 10px;
+      @include flexStyle(row, center, center);
+      cursor: pointer;
+    }
+  
+    .linkContainer {
+      display: flex;
+      align-items: center;
+      width: 400px;
+      height: 30px;
+      margin: 6px;
+      background-color: $mentor-card-backgraund-color;
+      border-radius: 25px;
+      padding-right: 15px;
+
+      .link {
+        margin-right: 5px;
+		margin-left: 10px;
+        @include fontStyle($primary-font, normal, 500, 20px, 10px);
+        color: $black-text-color;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
+		white-space: nowrap; 
+  		text-overflow: ellipsis; 
+      }
+
+      .copyIcon {
+		position: absolute;
+		left: 440px;
+		border: none;
+		background-color: transparent;
+		cursor: pointer;
+		margin-left: 5px;
+	  
+		img {
+		  width: 15px;
+		  height: 15px;
+		}
+	  }
+	  
+  
+      .tooltip {
+        position: absolute;
+        top: 40px;
+        right: 30px;
+        margin-right: 5px;
+        background-color: $black-text-color;
+        color: $white-text-color;
+        border-radius: 6px;
+        padding: 5px;
+        font-size: 12px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+      }
+
+      &:hover .tooltip {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    .copiedIcon {
+      width: 15px;
+      height: 15px;
+      margin-right: 5px;
+    }
+
+    .linkCopiedMsg {
+      visibility: hidden;
+      width: 250px;
+      background-color: $header-main-color;
+      color: $white-text-color;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 12;
+      top: -100%;
+      left: -120%;
+      margin-right: 200px;
+    }
+
+    &:hover .linkCopiedMsg {
+      visibility: visible;
+    }
+  }
+}

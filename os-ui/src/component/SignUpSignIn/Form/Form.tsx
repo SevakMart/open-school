@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { Input } from '../../Input/Input';
@@ -69,6 +69,13 @@ const Form = ({
 	  handleFormOnClick(event);
     }
   };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleSubmit as unknown as (event: KeyboardEvent) => void);
+    return () => {
+	  document.removeEventListener('keydown', handleSubmit as unknown as (event: KeyboardEvent) => void);
+    };
+  }, [formValues]);
 
   return (
     <form className={inputContent}>

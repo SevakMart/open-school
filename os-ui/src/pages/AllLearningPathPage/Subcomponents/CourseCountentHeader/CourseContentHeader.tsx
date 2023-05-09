@@ -41,15 +41,17 @@ const CourseContentHeader = ({ handleChangeHeader }:{handleChangeHeader:(headerT
   }, [sortingFeature]);
 
   const handleSavedLearningPathClick = () => {
+    dispatch(removeFilterParams(''));
     handleChangeHeader(HeaderPath.SAVED_LEARNING_PATHS);
     setFocusedHeader(HeaderPath.SAVED_LEARNING_PATHS);
-    setKey(key + 1);
+    setKey((prevKey) => prevKey + 1);
   };
 
   const handleAllLearningPathClick = () => {
+    dispatch(removeFilterParams(''));
     handleChangeHeader(HeaderPath.ALL_LEARNING_PATHS);
     setFocusedHeader(HeaderPath.ALL_LEARNING_PATHS);
-    setKey(key + 1);
+    setKey((prevKey) => prevKey + 1);
   };
 
   return (

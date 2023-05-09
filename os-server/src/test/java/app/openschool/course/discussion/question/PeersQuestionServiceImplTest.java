@@ -18,10 +18,10 @@ import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.api.CourseGenerator;
+import app.openschool.course.discussion.Question;
 import app.openschool.course.discussion.QuestionService;
 import app.openschool.course.discussion.TestHelper;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
-import app.openschool.course.discussion.dto.QuestionResponseDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
 import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
@@ -43,7 +43,6 @@ import org.springframework.data.domain.Pageable;
 class PeersQuestionServiceImplTest {
   @Mock PeersQuestionRepository peersQuestionRepository;
   @Mock EnrolledCourseRepository enrolledCourseRepository;
-
   QuestionService questionService;
 
   @BeforeEach
@@ -60,19 +59,20 @@ class PeersQuestionServiceImplTest {
     Course course = TestHelper.crateCourse();
     EnrolledCourse enrolledCourse = TestHelper.createEnrolledCourse(user, course);
     doReturn(Optional.of(enrolledCourse)).when(enrolledCourseRepository).findById(anyLong());
-    QuestionResponseDto questionResponseDto =
+    Question actual =
         questionService.create(
             enrolledCourse.getId(),
-            crateDiscussionQuestionRequestDto(),
+            TestHelper.crateDiscussionQuestionRequestDto(),
             TestHelper.createPrincipal().getName());
-    assertEquals(peersQuestion.getId(), questionResponseDto.getId());
-    assertEquals(peersQuestion.getText(), questionResponseDto.getText());
-    assertEquals(peersQuestion.getUser().getId(), questionResponseDto.getUserDto().getId());
-    assertEquals(peersQuestion.getUser().getName(), questionResponseDto.getUserDto().getName());
-    assertEquals(peersQuestion.getUser().getEmail(), questionResponseDto.getUserDto().getEmail());
-    assertEquals(peersQuestion.getCourse().getId(), questionResponseDto.getCourseDto().getId());
-    assertEquals(
-        peersQuestion.getCourse().getTitle(), questionResponseDto.getCourseDto().getTitle());
+
+    assertTrue(actual instanceof PeersQuestion);
+    assertEquals(peersQuestion.getId(), actual.getId());
+    assertEquals(peersQuestion.getText(), actual.getText());
+    assertEquals(peersQuestion.getUser().getId(), actual.getUser().getId());
+    assertEquals(peersQuestion.getUser().getName(), actual.getUser().getName());
+    assertEquals(peersQuestion.getUser().getEmail(), actual.getUser().getEmail());
+    assertEquals(peersQuestion.getCourse().getId(), actual.getCourse().getId());
+    assertEquals(peersQuestion.getCourse().getTitle(), actual.getCourse().getTitle());
     verify(peersQuestionRepository, times(1)).save(any());
   }
 
@@ -80,7 +80,7 @@ class PeersQuestionServiceImplTest {
   void addQuestion_withInCorrectEnrolledCourseId() {
 
     String email = TestHelper.createPrincipal().getName();
-    QuestionRequestDto requestDto = crateDiscussionQuestionRequestDto();
+    QuestionRequestDto requestDto = TestHelper.crateDiscussionQuestionRequestDto();
     long wrongEnrolledCourseId = 999L;
 
     given(enrolledCourseRepository.findById(wrongEnrolledCourseId)).willReturn(Optional.empty());
@@ -95,7 +95,7 @@ class PeersQuestionServiceImplTest {
     EnrolledCourse enrolledCourse = new EnrolledCourse();
     enrolledCourse.setUser(new User(2L));
     long enrolledCourseId = 1L;
-    QuestionRequestDto requestDto = crateDiscussionQuestionRequestDto();
+    QuestionRequestDto requestDto = TestHelper.crateDiscussionQuestionRequestDto();
     String email = TestHelper.createPrincipal().getName();
 
     doReturn(Optional.of(enrolledCourse)).when(enrolledCourseRepository).findById(enrolledCourseId);
@@ -121,9 +121,10 @@ class PeersQuestionServiceImplTest {
 
     peersQuestion.setText(request.getText());
 
-    PeersQuestion updatedQuestion =
+    Question updatedQuestion =
         questionService.update(
             request, peersQuestion.getId(), 1L, peersQuestion.getUser().getEmail());
+    assertTrue(updatedQuestion instanceof PeersQuestion);
     assertEquals(updatedQuestion.getText(), updateText);
 
     verify(peersQuestionRepository, times(1)).save(any());
@@ -241,10 +242,13 @@ class PeersQuestionServiceImplTest {
 
     when(peersQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable))
         .thenReturn(questionPage);
-    Page<PeersQuestion> questionByCourseId =
+    Page<? extends Question> questionByCourseId =
         questionService.findQuestionByCourseId(enrolledCourseId, pageable);
 
     assertNotNull(questionByCourseId.stream().findFirst().orElseThrow());
+    assertTrue(
+        questionByCourseId.stream()
+            .allMatch(peersQuestion -> peersQuestion instanceof PeersQuestion));
     verify(peersQuestionRepository, times(1))
         .findQuestionByEnrolledCourseId(enrolledCourseId, pageable);
   }
@@ -256,7 +260,7 @@ class PeersQuestionServiceImplTest {
 
     when(peersQuestionRepository.findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable))
         .thenReturn(Page.empty(pageable));
-    Page<PeersQuestion> questionByCourseId =
+    Page<? extends Question> questionByCourseId =
         questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable);
 
     assertTrue(questionByCourseId.getContent().isEmpty());
@@ -273,10 +277,11 @@ class PeersQuestionServiceImplTest {
 
     when(peersQuestionRepository.findQuestionByIdAndEnrolledCourseId(enrolledCourseId, questionId))
         .thenReturn(Optional.of(question));
-    PeersQuestion questionByCourseId =
+    Question questionByCourseId =
         questionService.findQuestionByIdAndEnrolledCourseId(enrolledCourseId, questionId);
 
     assertNotNull(questionByCourseId);
+    assertTrue(questionByCourseId instanceof PeersQuestion);
     verify(peersQuestionRepository, times(1))
         .findQuestionByIdAndEnrolledCourseId(enrolledCourseId, questionId);
   }
@@ -301,9 +306,4 @@ class PeersQuestionServiceImplTest {
         .findQuestionByIdAndEnrolledCourseId(enrolledCourseId, wrongQuestionId);
   }
 
-  QuestionRequestDto crateDiscussionQuestionRequestDto() {
-    QuestionRequestDto requestDto = new QuestionRequestDto();
-    requestDto.setText("text");
-    return requestDto;
-  }
 }

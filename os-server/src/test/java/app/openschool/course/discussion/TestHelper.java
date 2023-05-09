@@ -3,6 +3,8 @@ package app.openschool.course.discussion;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.difficulty.Difficulty;
+import app.openschool.course.discussion.dto.QuestionRequestDto;
+import app.openschool.course.discussion.mentor.question.MentorQuestion;
 import app.openschool.course.discussion.peers.answer.PeersAnswer;
 import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.user.User;
@@ -23,6 +25,16 @@ public class TestHelper {
     peersQuestion.setUser(createUser());
     peersQuestion.setCreatedDate(Instant.now());
     return peersQuestion;
+  }
+
+  public static MentorQuestion createMentorQuestion() {
+    MentorQuestion mentorQuestion = new MentorQuestion();
+    mentorQuestion.setId(1L);
+    mentorQuestion.setText("Question to Mentor");
+    mentorQuestion.setUser(createUser());
+    mentorQuestion.setCourse(crateCourse());
+    mentorQuestion.setCreatedDate(Instant.now());
+    return mentorQuestion;
   }
 
   public static PeersAnswer createDiscussionPeersAnswer() {
@@ -60,5 +72,11 @@ public class TestHelper {
     enrolledCourse.setUser(user);
     enrolledCourse.setCourse(course);
     return enrolledCourse;
+  }
+
+  public static QuestionRequestDto crateDiscussionQuestionRequestDto() {
+    QuestionRequestDto requestDto = new QuestionRequestDto();
+    requestDto.setText("text");
+    return requestDto;
   }
 }
