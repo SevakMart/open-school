@@ -1,15 +1,13 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import Loader from '../../../component/Loader/Loader';
-import {
-  changeSection, onClose, onOpen,
-} from '../../../redux/Slices/QuestionActionsSlice';
+import { changeSection, onClose, onOpen } from '../../../redux/Slices/QuestionActionsSlice';
 import { RootState } from '../../../redux/Store';
 import { CourseDescriptionType } from '../../../types/CourseTypes';
 import './DiscussionForum.scss';
-import { Question } from './interfaces/interfaces';
+import { Question, ResponsesMap } from './interfaces/interfaces';
 import AskQuestionPopup from './subcomponents/askQuestionPopup/AskQuestionPopup';
 import QuestionItem from './subcomponents/QuestionItem/QuestionItem';
 
@@ -53,10 +51,6 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
     id: (userInfo as any).id,
   }), [userInfo]);
 
-  // if QuestionItems' count is > 15, we should make scroll Applicable
-  const scrollClassName = questionsWithId.length > 15 ? 'questionItemsScroll' : '';
-  const AskQuestionClassName = questionsWithId.length > 15 ? 'askQuestionsScroll' : '';
-
   // Link to the askPeers or askMentor pages
   const sectionName = section ? 'peers' : 'mentor';
   const { courseId } = useParams();
@@ -66,10 +60,32 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`) isBtnClicked = true;
   if (currentPath === `/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`) isBtnClicked = false;
 
-  // set the value of section to true initially when DiscussionForum opens
-  dispatch(changeSection(true));
+  // This will call the changeSection action with the true value only once when the component mounts.
+  useEffect(() => {
+    dispatch(changeSection(true));
+  }, []);
+
+  // mentor or peersF
+  const questionsMap:Question[] = isBtnClicked ? questionsWithId : questionsWithIdToMentor;
 
   const { t } = useTranslation();
+
+  // get all AnswerStates
+  const AllAnswerState = useSelector<RootState>((state) => state.AnswerActions) as {
+    PeersResponses: ResponsesMap[],
+    MentorResponses: ResponsesMap[],
+    isLoading: boolean,
+  };
+
+  const {
+    PeersResponses, MentorResponses, isLoading: isLoadingAnswers,
+  } = AllAnswerState;
+
+  const responsesMap: ResponsesMap[] = isBtnClicked ? PeersResponses : MentorResponses;
+
+  // if Items' count is > ~15, we should make scroll Applicable
+  const scrollClassName = questionsWithId.length > 10 ? 'questionItemsScroll' : '';
+  const AskQuestionClassName = questionsWithId.length > 10 ? 'askQuestionsScroll' : '';
 
   return (
     <div className="inner">
@@ -78,79 +94,62 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
           <h1 className="forum_header-title">{t('Discussion Forum')}</h1>
           <div className="forum_header-inner">
             <ul className="forum_header-menu">
-              <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${isBtnClicked ? '_active' : ''}`}>
-                <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`} className="forum_header-list_link" onClick={() => dispatch(changeSection(true))}>
+              <button disabled={isLoading} type="button" className="forum_header-list forum_header-list" onClick={() => dispatch(changeSection(true))}>
+                <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`} className={`forum_header-list_link forum_header-list_link${isBtnClicked ? '_active' : ''}`}>
                   {t('Ask Peers')}
                 </Link>
+                <div className={`forum_header-list_underLine forum_header-list_underLine${isBtnClicked ? '_active' : ''}`} />
               </button>
-              <button disabled={isLoading} type="button" className={`forum_header-list forum_header-list${!isBtnClicked ? '_active' : ''}`} onClick={() => dispatch(changeSection(false))}>
-                <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`} className="forum_header-list_link">
+              <button disabled={isLoading} type="button" className="forum_header-list forum_header-list" onClick={() => dispatch(changeSection(false))}>
+                <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`} className={`forum_header-list_link forum_header-list_link${isBtnClicked ? '' : '_active'}`}>
                   {t('Ask Mentor')}
                 </Link>
+                <div className={`forum_header-list_underLine forum_header-list_underLine${isBtnClicked ? '' : '_active'}`} />
               </button>
 
             </ul>
-            <button data-testid="toggle-btn" type="button" onClick={() => dispatch(onOpen())} className={`btn ${AskQuestionClassName}`}>{t('Ask Question')}</button>
+            <button data-testid="toggle-btn" type="button" onClick={() => dispatch(onOpen())} className={`btn ${AskQuestionClassName}`}>{t('ASK QUESTION')}</button>
           </div>
         </div>
         <div className={scrollClassName}>
           {
-            isBtnClicked ? (
-              questionsWithId.length ? (
-                questionsWithId.map((val) => (
-                  <QuestionItem
-                    text={val.text}
-                    id={val.id}
-                    createdDate={val.createdDate}
-                    key={val.id}
-                    token={idAndToken.token}
-                    enrolledCourseId={entity.enrolledCourseId}
-                    sectionName={sectionName}
-                  />
-                ))
-              )
-                : (
-                  <div className="noQuestionsDiv">{t('No questions. Be the First to Ask a question!')}</div>
-                )
+            questionsMap.length ? (
+              questionsMap.map((val) => (
+                <QuestionItem
+                  text={val.text}
+                  id={val.id}
+                  createdDate={val.createdDate}
+                  key={val.id}
+                  token={idAndToken.token}
+                  enrolledCourseId={entity.enrolledCourseId}
+                  sectionName={sectionName}
+                  responsesMap={responsesMap}
+                />
+              ))
+            ) : (
+              <div className="noQuestionsDiv">{t(`No questions. Be the First to Ask a question to ${isBtnClicked ? 'peers' : 'mentor'}!`)}</div>
             )
-              : (
-                questionsWithIdToMentor.length ? (
-                  questionsWithIdToMentor.map((val) => (
-                    <QuestionItem
-                      text={val.text}
-                      id={val.id}
-                      createdDate={val.createdDate}
-                      key={val.id}
-                      token={idAndToken.token}
-                      enrolledCourseId={entity.enrolledCourseId}
-                      sectionName={sectionName}
-                    />
-                  ))
-                )
-                  : (
-                    <div className="noQuestionsDiv">{t('No questions to mentors. Be the First to Ask a question!')}</div>
-                  )
-              )
           }
           {isLoading && <div style={{ marginTop: '40px' }}><Loader /></div>}
+          {isLoadingAnswers && <div style={{ marginTop: '40px' }}><Loader /></div>}
         </div>
-      </div>
-      {
+        {
         isOpen
-        && (
-        <AskQuestionPopup
-          data-testid="askQuestionPopup"
-          value={value}
-          isOpen={isOpen}
-          handleClose={handleClose}
-          handleChange={handleChange}
-          enrolledCourseId={entity.enrolledCourseId}
-          token={idAndToken.token}
-          cleanTextField={cleanTextField}
-          sectionName={sectionName}
-        />
-        )
-      }
+          && (
+            <AskQuestionPopup
+              data-testid="askQuestionPopup"
+              value={value}
+              isOpen={isOpen}
+              handleClose={handleClose}
+              handleChange={handleChange}
+              enrolledCourseId={entity.enrolledCourseId}
+              token={idAndToken.token}
+              cleanTextField={cleanTextField}
+              sectionName={sectionName}
+            />
+          )
+        }
+      </div>
     </div>
   );
 };

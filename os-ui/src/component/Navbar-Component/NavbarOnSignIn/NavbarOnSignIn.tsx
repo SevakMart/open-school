@@ -24,14 +24,22 @@ const NavbarOnSignIn = () => {
     setIsOpen((prevState) => !prevState);
   };
 
+  const popupRef = useRef<HTMLDivElement | null>(null);
+  const bodyRef = useRef(document.body);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    const target = event.target as Node;
+    if (!popupRef?.current?.contains(target)) {
+      setIsOpen(false);
+    }
+  };
+
   useEffect(() => {
-    const closeDropDown = (e:any) => {
-      if (e.path[0] !== arrowRef.current) {
-        setIsOpen(false);
-      }
+    const listener = (event: MouseEvent) => handleClickOutside(event);
+    bodyRef.current.addEventListener('mousedown', listener);
+    return () => {
+      bodyRef.current.removeEventListener('mousedown', listener);
     };
-    document.body.addEventListener('click', closeDropDown);
-    return () => document.body.removeEventListener('click', closeDropDown);
   }, []);
 
   return (
@@ -49,13 +57,15 @@ const NavbarOnSignIn = () => {
           <img className={avatarLogo} src="https://reactjs.org/logo-og.png" alt="avatar" />
           <img ref={arrowRef} className={arrowDownIcon} style={isOpen ? { transform: 'rotate(180deg)' } : undefined} src={ArrowDownIcon} alt="Arrow down Icon" onClick={handleProfilePortal} />
         </div>
-        <Portal.ProfilePortal isOpen={isOpen}>
-          <>
-            <ProfilePortalContent icon={<SignoutIcon />} isSignOut>
-              {t('string.profilePortal.signOut')}
-            </ProfilePortalContent>
-          </>
-        </Portal.ProfilePortal>
+        <div ref={popupRef}>
+          <Portal.ProfilePortal isOpen={isOpen}>
+            <div ref={popupRef}>
+              <ProfilePortalContent icon={<SignoutIcon />} isSignOut>
+                {t('string.profilePortal.signOut')}
+              </ProfilePortalContent>
+            </div>
+          </Portal.ProfilePortal>
+        </div>
       </div>
     </nav>
   );

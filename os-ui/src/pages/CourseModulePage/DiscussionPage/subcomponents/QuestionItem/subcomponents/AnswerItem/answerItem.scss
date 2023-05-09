@@ -1,0 +1,74 @@
+@import '../../../../../../../styles/Configs/Colors.scss';
+
+.answers-item {
+  max-width: 1445px;
+  margin-right: 40px;
+  margin-left: 15px;
+  margin-top: 14px;
+  padding: 20px 20px 0 20px;  
+  color: #3D3F42;
+  word-break: break-all;
+  resize: none;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  background-color: $bg-color;
+  margin-bottom: 15px;
+  padding-bottom: 9px;
+  padding-top: 16px;
+  &_info {
+    display: flex;
+    &_img {
+      padding: 1px;
+      border-radius: 50%;
+      width: 31px;
+      height: 31px;
+      cursor: pointer;
+    }
+    &_box {
+      display: flex;
+      margin-left: 16px;
+      &_person {
+        font-weight: 600;
+        line-height: 24px;
+        color: $text-color;
+      }
+      &_createdDate {
+        margin-left: 20px;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 24px;
+        color: $text-color;
+        &::before {
+          content: url('./../../../../../../../assets/svg/ClockIcon.svg');
+          margin-right: 5px;
+          vertical-align: -3px;
+        }
+      }
+    }
+  }
+  &_body {
+    margin-top: 8px;
+    margin-left: 49px;
+  }
+  &_text {
+    padding-right: 120px;
+    font-weight: 400;
+    line-height: 24px;
+    margin-top: -15px;
+    color: #000;
+  }
+  &_showMore {
+    margin-top: 10px;
+    font-weight: 500;
+    line-height: 24px;
+    color: $btn-secondary-color;
+    cursor: pointer;
+    &_img {
+      margin-left: 9px;
+      &_rotateIcon {
+        transform: rotate(90deg);
+      }
+    }
+  }
+}
