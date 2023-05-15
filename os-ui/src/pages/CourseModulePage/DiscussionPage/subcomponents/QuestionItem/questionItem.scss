@@ -25,10 +25,14 @@
 
 .icons {
   position: absolute;
-  bottom: 35px;
+  top: 48px;
   right: 0;
   margin-right: 20px;
   margin-bottom: -5px;
+}
+
+.iconsToTop {
+  top: 38px;
 }
 
 .icon_menu {
@@ -55,23 +59,42 @@
   color: $icon-color;
   transform: rotate(0deg);
   transition: transform 0.5s;
+  cursor: pointer;
   &_rotate {
     transform: rotate(90deg);
     transition: transform 0.5s;
   }
 }
 
-.question_text_ {
-  margin-bottom: 9px;
-  margin-top: -8px;
-  color: $text-color;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 24px;
-  max-height: 40px;
-  word-break: break-all;
-  overflow-y:auto;  
-  margin-right: 115px;
+.question-item{
+  &_body {
+    min-height: 40px;
+    margin-top: 8px;
+    margin-left: 49px;
+  }
+  &_text{
+    margin-bottom: 9px;
+    margin-top: -8px;
+    color: $text-color;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    word-break: break-word;
+    margin-right: 120px;
+  }
+  &_showMore {
+    margin-top: 10px;
+    font-weight: 500;
+    line-height: 24px;
+    color: $btn-secondary-color;
+    cursor: pointer;
+    &_img {
+      margin-left: 9px;
+      &_rotateIcon {
+        transform: rotate(90deg);
+      }
+    }
+  }
 }
 
 .question__text_box {
@@ -146,7 +169,7 @@
     padding: 10px 20px 10px 16px;  
     background-color: $bg-color;
     color: #3D3F42;
-    word-break: break-all;
+    word-break: break-word;
     overflow-y:auto;
     resize: none;
     outline: none;

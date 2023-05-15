@@ -7,6 +7,7 @@ import edit from '../../../../../assets/svg/edit.svg';
 import answer from '../../../../../assets/svg/chat-left.svg';
 import avatar from '../../../../../assets/svg/Avatar.png';
 import threeVerticalDots from '../../../../../assets/svg/three-dots-vertical.svg';
+import next from '../../../../../assets/svg/next.svg';
 import { QuestionItemProps } from '../../interfaces/interfaces';
 import QuestionItemPopup from './subcomponents/QuestionItemPopup/QuestionItemPopup';
 import { removeQuestion, updateQuestion } from '../../../../../redux/Slices/QuestionActionsSlice';
@@ -94,6 +95,15 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     }));
   };
 
+  // show more ...
+  const [showMore, setShowMore] = useState(false);
+  const toggleShowMore = () => {
+    setShowMore(!showMore);
+  };
+
+  let truncatedText = text;
+  if (text.length > 65) truncatedText = `${text.slice(0, 56)}...`;
+
   // edit
   const editValueChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (event.target.value.length > 500) event.preventDefault();
@@ -105,6 +115,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     if (isEditPressed) {
       handleUpdateQuestion(id);
       setIsOpen(false);
+      setShowMore(false);
     }
     if (!editValue) {
       setEditValue(text);
@@ -131,7 +142,8 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
 
   // changeHandler for answers
   const changeHandlerAnswer = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setAnswerValue(event.target.value);
+    if (event.target.value.length > 500) event.preventDefault();
+    else setAnswerValue(event.target.value);
   };
 
   // formatting data
@@ -160,7 +172,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
       }
       <div className="Questions_inner">
         <div className="Question_item">
-          <div className="icons">
+          <div className={`icons ${text.length < 65 ? 'iconsToTop' : ''}`}>
             <img className="answer_icon" onClick={() => animatedFunction(handleAnswerSectionOpen)} src={answer} alt="->" />
             <div className="messageCount">5</div>
             <img className="icon_menu" src={threeVerticalDots} onClick={() => animatedFunction(changeIsOpen)} alt="menu" />
@@ -185,7 +197,17 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
                     <div className="user_">{t('Me')}</div>
                     <div className="question__text_inner-date" data-testid="questionItem-date">{formattedDate}</div>
                   </div>
-                  <div className="question_text_" data-testid="questionItem-text" style={{ wordWrap: 'break-word' }}>{t(text)}</div>
+                  <div className="question-item_body">
+                    <div className="question-item_text" data-testid="questionItem-text" style={{ wordWrap: 'break-word' }}>
+                      {showMore ? text : truncatedText}
+                    </div>
+                    {text.length > 65 && (
+                      <div className="question-item_showMore" onClick={toggleShowMore}>
+                        {showMore ? 'Show less' : 'Show more'}
+                        <img className={`question-item_showMore_img ${showMore ? 'question-item_showMore_img_rotateIcon' : ''}`} src={next} alt=">" />
+                      </div>
+                    )}
+                  </div>
                 </div>
               )
           }
