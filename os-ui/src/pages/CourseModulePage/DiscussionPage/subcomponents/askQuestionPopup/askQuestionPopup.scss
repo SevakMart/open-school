@@ -113,8 +113,21 @@
       margin-left: -2px;
       position: relative;
     }
+    &:hover[disabled] {
+      background-color: $btn-primary-color;
+      color: #fff;
+    }
     &:active {
       background-color: #f74a24;
+    }
+    &:active[disabled] {
+      background-color: $btn-primary-color;
+      opacity: 0.5;
+    }
+    
+    &[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
   &_cancel {
