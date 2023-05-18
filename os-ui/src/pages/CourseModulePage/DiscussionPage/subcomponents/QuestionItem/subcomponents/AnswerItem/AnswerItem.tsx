@@ -17,7 +17,7 @@ const Answeritem:React.FC<AnswerItemProps> = ({
   };
 
   let truncatedText = answerText;
-  if (answerText.length > 220) truncatedText = `${answerText.slice(0, 220)}...`;
+  if (answerText.length > 234) truncatedText = `${answerText.slice(0, 233)}...`;
 
   return (
     <div className="answersPage">
@@ -39,7 +39,7 @@ const Answeritem:React.FC<AnswerItemProps> = ({
           <div className="answers-item_text">
             {showMore ? answerText : truncatedText}
           </div>
-          {answerText.length > 220 && (
+          {answerText.length > 234 && (
             <div className="answers-item_showMore" onClick={toggleShowMore}>
               {showMore ? 'Show less' : 'Show more'}
               <img className={`answers-item_showMore_img ${showMore ? 'answers-item_showMore_img_rotateIcon' : ''}`} src={next} alt=">" />
