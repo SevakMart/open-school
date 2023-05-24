@@ -1,6 +1,7 @@
 @import '../../../styles/Configs/Colors.scss';
 
 .inner {
+  font-family: "Montserrat", sans-serif;
   box-sizing: border-box;
   background-color: #EEEFF4;
   margin: 0;
@@ -32,7 +33,6 @@
   display: flex;
   justify-content: space-between;
   margin-top: 5px;
-  font-family: serif;
 }
 
 .forum_header-list {

@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import Loader from '../../../component/Loader/Loader';
-import { changeSection, onClose, onOpen } from '../../../redux/Slices/QuestionActionsSlice';
+import { AllQuestions } from '../../../redux/Slices/GetAllQuestionsSlice';
+import {
+  AllQuestionsFromServer, changeSection, onClose, onOpen,
+} from '../../../redux/Slices/QuestionActionsSlice';
 import { RootState } from '../../../redux/Store';
 import { CourseDescriptionType } from '../../../types/CourseTypes';
 import './DiscussionForum.scss';
@@ -45,6 +48,16 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
     setValue('');
   };
 
+  // get allQuestions from server
+  const AllQuestionFromServer = useSelector<RootState>((state) => state.GetAllQuestions) as {
+    AllquestionsToPeers: Question[],
+    AllquestionsToMentor: Question[],
+    isLoading: false,
+    section: true,
+  };
+
+  const { AllquestionsToPeers, AllquestionsToMentor } = AllQuestionFromServer;
+
   // get id and token of user
   const idAndToken = useMemo(() => ({
     token: (userInfo as any).token,
@@ -62,7 +75,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
 
   // This will call the changeSection action with the true value only once when the component mounts.
   useEffect(() => {
-    dispatch(changeSection(true));
+    dispatch(changeSection(isBtnClicked));
   }, []);
 
   // mentor or peersF
@@ -84,8 +97,19 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   const responsesMap: ResponsesMap[] = isBtnClicked ? PeersResponses : MentorResponses;
 
   // if Items' count is > ~15, we should make scroll Applicable
-  const scrollClassName = questionsWithId.length > 10 ? 'questionItemsScroll' : '';
-  const AskQuestionClassName = questionsWithId.length > 10 ? 'askQuestionsScroll' : '';
+  const scrollClassName = questionsWithId.length > 15 ? 'questionItemsScroll' : '';
+  const AskQuestionClassName = questionsWithId.length > 15 ? 'askQuestionsScroll' : '';
+
+  //
+  const AllQuestionsFromServerMap = isBtnClicked ? AllquestionsToPeers : AllquestionsToMentor;
+
+  // useEffect(() => {
+  //   dispatch(AllQuestions({ enrolledCourseId: entity.enrolledCourseId, token: idAndToken.token, sectionName }));
+  //   dispatch(AllQuestionsFromServer(AllQuestionsFromServerMap));
+  // }, []);
+
+  console.log('questionsFromServer', AllQuestionsFromServerMap);
+  console.log('questions', questionsMap);
 
   return (
     <div className="inner">

@@ -1,6 +1,4 @@
-import {
-  createSlice, createAsyncThunk, PayloadAction,
-} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Question } from '../../pages/CourseModulePage/DiscussionPage/interfaces/interfaces';
 import fetchData from '../../services/fetchData';
 import {
@@ -114,6 +112,10 @@ export const QuestionActionsSlice = createSlice({
     changeSection: (state, action) => {
       state.section = action.payload;
     },
+    AllQuestionsFromServer: (state, action) => {
+      if (state.section) state.questionsWithId = action.payload;
+      else state.questionsWithIdToMentor = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -170,6 +172,6 @@ export const QuestionActionsSlice = createSlice({
 });
 
 export const {
-  onOpen, onClose, changeSection,
+  onOpen, onClose, changeSection, AllQuestionsFromServer,
 } = QuestionActionsSlice.actions;
 export default QuestionActionsSlice.reducer;

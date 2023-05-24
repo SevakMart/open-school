@@ -188,7 +188,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
                   onChange={editValueChange}
                   id="fname"
                   name="fname"
-                  style={{ wordWrap: 'break-word', overflow: 'auto' }}
                 />
               )
               : (
