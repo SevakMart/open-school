@@ -9,7 +9,6 @@ const initialState = {
   errorMessage: '',
   isLoading: false,
   section: true,
-  isMounted: false,
 };
 
 export const AllQuestions = createAsyncThunk(
@@ -41,7 +40,11 @@ export const AllQuestions = createAsyncThunk(
 export const GetAllQuestionsSlice = createSlice({
   name: 'AllQuestions',
   initialState,
-  reducers: {},
+  reducers: {
+    changeSectionValue: (state, action) => {
+      state.section = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(AllQuestions.pending, (state) => {
@@ -49,9 +52,9 @@ export const GetAllQuestionsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(AllQuestions.fulfilled, (state, action) => {
-        if (state.section) {
+        if (action.meta.arg.sectionName === 'peers') {
           state.AllquestionsToPeers = action.payload;
-        } else {
+        } else if (action.meta.arg.sectionName === 'mentor') {
           state.AllquestionsToMentor = action.payload;
         }
         state.isLoading = false;
@@ -64,4 +67,5 @@ export const GetAllQuestionsSlice = createSlice({
   },
 });
 
+export const { changeSectionValue } = GetAllQuestionsSlice.actions;
 export default GetAllQuestionsSlice.reducer;

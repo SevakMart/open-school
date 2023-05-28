@@ -12,15 +12,34 @@ export const formatDate = (someDate: string) => {
   const timeZoneAffect = getTimezoneOffsetString();
 
   // Use the Date object's methods to extract the desired date and time components
-  const date = dateObj.getUTCDate();
+  let date = dateObj.getUTCDate();
   const month = dateObj.getUTCMonth() + 1;
   const year = dateObj.getUTCFullYear();
   const hours = dateObj.getUTCHours();
   const minutes = dateObj.getUTCMinutes();
 
   // Add the GMT hours and minutes to the real hours and minutes
-  const hoursWithGMT = hours + +`${timeZoneAffect[0]}${timeZoneAffect[1]}`;
-  const minutesWithGMT = minutes + +`${timeZoneAffect[0]}${timeZoneAffect[2]}`;
+  let hoursWithGMT = hours + +`${timeZoneAffect[0]}${timeZoneAffect[1]}`;
+  let minutesWithGMT = minutes + +`${timeZoneAffect[0]}${timeZoneAffect[2]}`;
+
+  // Adjust the date if hours or minutes go beyond 24 or 60, respectively
+  if (hoursWithGMT >= 24) {
+    date += Math.floor(hoursWithGMT / 24);
+    hoursWithGMT %= 24;
+  }
+  if (minutesWithGMT >= 60) {
+    hoursWithGMT += Math.floor(minutesWithGMT / 60);
+    minutesWithGMT %= 60;
+    if (hoursWithGMT >= 24) {
+      date += Math.floor(hoursWithGMT / 24);
+      hoursWithGMT %= 24;
+    }
+  }
+  if (+`${timeZoneAffect[0]}${timeZoneAffect[2]}` === 15
+    || +`${timeZoneAffect[0]}${timeZoneAffect[2]}` === 30
+    || +`${timeZoneAffect[0]}${timeZoneAffect[2]}` === 45) {
+    hoursWithGMT -= 1;
+  }
 
   // Format the components into desired string format
   const formattedDate = `${date < 10 ? `0${date}` : date}.${month < 10 ? `0${month}` : month}.${year}`;

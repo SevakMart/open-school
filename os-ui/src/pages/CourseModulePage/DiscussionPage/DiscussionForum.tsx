@@ -96,20 +96,37 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
 
   const responsesMap: ResponsesMap[] = isBtnClicked ? PeersResponses : MentorResponses;
 
-  // if Items' count is > ~15, we should make scroll Applicable
-  const scrollClassName = questionsWithId.length > 15 ? 'questionItemsScroll' : '';
-  const AskQuestionClassName = questionsWithId.length > 15 ? 'askQuestionsScroll' : '';
-
-  //
+  // get all questions
   const AllQuestionsFromServerMap = isBtnClicked ? AllquestionsToPeers : AllquestionsToMentor;
+  const [isPageReloaded, setPageReloaded] = useState(true);
 
-  // useEffect(() => {
-  //   dispatch(AllQuestions({ enrolledCourseId: entity.enrolledCourseId, token: idAndToken.token, sectionName }));
-  //   dispatch(AllQuestionsFromServer(AllQuestionsFromServerMap));
-  // }, []);
+  useEffect(() => {
+    setPageReloaded(true);
+  }, []);
 
-  console.log('questionsFromServer', AllQuestionsFromServerMap);
-  console.log('questions', questionsMap);
+  useEffect(() => {
+    const fetchAllQuestions = async () => {
+      try {
+        await Promise.all([
+          dispatch(AllQuestions({ enrolledCourseId: entity.enrolledCourseId, token: idAndToken.token, sectionName: 'peers' })),
+          dispatch(AllQuestions({ enrolledCourseId: entity.enrolledCourseId, token: idAndToken.token, sectionName: 'mentor' })),
+        ]);
+        setPageReloaded(false);
+      } catch (error) {
+        throw new Error('something went wrong');
+      }
+    };
+    fetchAllQuestions();
+  }, []);
+
+  useEffect(() => {
+    dispatch(AllQuestionsFromServer(AllQuestionsFromServerMap));
+  }, [isPageReloaded, isBtnClicked]);
+
+  // change Section
+  const onChangeSection = (value:boolean) => {
+    dispatch(changeSection(value));
+  };
 
   return (
     <div className="inner">
@@ -118,13 +135,13 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
           <h1 className="forum_header-title">{t('Discussion Forum')}</h1>
           <div className="forum_header-inner">
             <ul className="forum_header-menu">
-              <button disabled={isLoading} type="button" className="forum_header-list forum_header-list" onClick={() => dispatch(changeSection(true))}>
+              <button disabled={isLoading} type="button" className="forum_header-list forum_header-list" onClick={() => onChangeSection(true)}>
                 <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskPeers`} className={`forum_header-list_link forum_header-list_link${isBtnClicked ? '_active' : ''}`}>
                   {t('Ask Peers')}
                 </Link>
                 <div className={`forum_header-list_underLine forum_header-list_underLine${isBtnClicked ? '_active' : ''}`} />
               </button>
-              <button disabled={isLoading} type="button" className="forum_header-list forum_header-list" onClick={() => dispatch(changeSection(false))}>
+              <button disabled={isLoading} type="button" className="forum_header-list forum_header-list" onClick={() => onChangeSection(false)}>
                 <Link to={`/userCourse/modulOverview/${courseId}/discussionForum/AskMentor`} className={`forum_header-list_link forum_header-list_link${isBtnClicked ? '' : '_active'}`}>
                   {t('Ask Mentor')}
                 </Link>
@@ -132,10 +149,10 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
               </button>
 
             </ul>
-            <button data-testid="toggle-btn" type="button" onClick={() => dispatch(onOpen())} className={`btn ${AskQuestionClassName}`}>{t('ASK QUESTION')}</button>
+            <button data-testid="toggle-btn" type="button" onClick={() => dispatch(onOpen())} className="btn">{t('ASK QUESTION')}</button>
           </div>
         </div>
-        <div className={scrollClassName}>
+        <div className="">
           {
             questionsMap.length ? (
               questionsMap.map((val) => (
@@ -143,6 +160,8 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
                   text={val.text}
                   id={val.id}
                   createdDate={val.createdDate}
+                  name={val.name}
+                  surname={val.surname}
                   key={val.id}
                   token={idAndToken.token}
                   enrolledCourseId={entity.enrolledCourseId}

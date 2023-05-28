@@ -16,6 +16,8 @@ export interface Question {
   text: string;
   createdDate: string;
   answers: Answer[];
+  name?: string;
+  surname?: string;
 }
 
 export interface QuestionItemProps {
@@ -26,6 +28,8 @@ export interface QuestionItemProps {
   enrolledCourseId: number;
   sectionName: string;
   responsesMap: ResponsesMap[];
+  name: string | undefined;
+  surname: string | undefined;
 }
 
 export interface PopupProps {
@@ -54,8 +58,7 @@ export interface QuestionItemPopupProps {
   onClose: () => void;
   isDisable: boolean;
   editQuestion: () => void;
-  btnType: string
-  btnTextType:string;
+  btnType: string;
   removeQ: (id: string) => void;
   id: string;
   textAreaRef:TextAreaRef;

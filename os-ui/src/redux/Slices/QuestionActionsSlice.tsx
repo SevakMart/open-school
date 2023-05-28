@@ -33,12 +33,14 @@ export const addQuestion = createAsyncThunk(
         token,
       );
       const responseJSON = await response.json();
-      const { id, createdDate } = responseJSON;
+      const { id, createdDate, userDto } = responseJSON;
       const newQuestion: Question = {
         id,
         text,
         createdDate,
         answers: [],
+        name: userDto.name,
+        surname: userDto.surname,
       };
       return newQuestion;
     } catch (error) {
@@ -113,8 +115,11 @@ export const QuestionActionsSlice = createSlice({
       state.section = action.payload;
     },
     AllQuestionsFromServer: (state, action) => {
-      if (state.section) state.questionsWithId = action.payload;
-      else state.questionsWithIdToMentor = action.payload;
+      if (state.section) {
+        state.questionsWithId = action.payload;
+      } else {
+        state.questionsWithIdToMentor = action.payload;
+      }
     },
   },
   extraReducers: (builder) => {

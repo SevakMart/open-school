@@ -71,6 +71,8 @@ describe('AskQuestionPopup', () => {
             enrolledCourseId={28}
             sectionName="Peers"
             responsesMap={fakeResponsesMap}
+            name="joe"
+            surname="Tribiani"
           />
         </>
       </Provider>,
@@ -136,7 +138,6 @@ describe('AskQuestionPopup', () => {
           isDisable={false}
           editQuestion={editQuestion}
           btnType="save"
-          btnTextType="Save"
           removeQ={removeQ}
           id="1"
           textAreaRef={mockRef}

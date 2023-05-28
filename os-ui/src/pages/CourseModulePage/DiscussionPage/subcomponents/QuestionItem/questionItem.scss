@@ -1,22 +1,18 @@
 @import '../../../../../styles/Configs/Colors.scss';
 
+body {
+  box-sizing: border-box;
+}
+
 .Question_item {
   display: flex;
   justify-content: space-between;
   max-width: 1429px;
-  margin-right: 40px;
-  padding-left: 16px;
-  padding-top: 7px;
   border-radius: 6px;
   background-color: $bg-color;
   z-index: 1;
-  padding-bottom: 5px;
+  margin-right: 40px;
   margin-bottom: 8px;
-}
-
-.Question_item:hover {
-  background-color: $bg-hover-color;
-  opacity: 0.8;
 }
 
 .Question_item {
@@ -63,6 +59,16 @@
   &_rotate {
     transform: rotate(90deg);
     transition: transform 0.5s;
+  }
+}
+
+.question_item {
+  width: 100%;
+  border-radius: 6px;
+  padding: 7px 41px 5px 16px;
+  &:hover {
+    background-color: $bg-hover-color;
+    opacity: 0.8;
   }
 }
 
@@ -122,22 +128,43 @@
   line-height: 24px;
 }
 
-.edit_question_textArea {
+.editField {
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  &_btns {
+    display: flex;
+    background-color: #EEEFF4;
+    justify-content: flex-end;
+    padding-top: 7px;
+    padding-bottom: 10px;
+  }
+  &_count {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+    padding-right: 2px;
+    background-color: #EEEFF4;
+    font-size: 13px;
+    color: #3d3f42;
+  }
+}
+
+.edit_question_textArea {
   min-height: 100px;
   font-weight: 500;
   line-height: 24px;
   font-size: 20px;
   color: $text-color;
   background-color: $bg-color;
-  margin: -7px 0 -6px -16px;
-  padding: 12px 200px 31px 20px;
+  padding: 12px 0 10px 20px;
   resize: none;
   outline: none;
   border: none;
   word-wrap: break-word;
 }
-
 // answer section
 .answer_section {
   margin-top: 20px;
@@ -149,6 +176,7 @@
     display: flex;
     justify-content: flex-end;
     margin-right: 40px;
+    margin-top: 5px;
   }
   &_avatarka {
     padding: 5px;
@@ -167,7 +195,7 @@
     height: 60px;
     width: 100%;
     max-width: 1372px;
-    margin: 0 40px 13px 17px;
+    margin: 0 40px 7px 17px;
     padding: 10px 20px 10px 16px;  
     background-color: $bg-color;
     color: #3D3F42;
@@ -176,50 +204,59 @@
     resize: none;
     outline: none;
   }
-  &_btn {
-    &_post {
-      background-color: $btn-primary-color;
-      border-style: none;
-      color: #fff;
-      font-weight: 500;
-      line-height: 20px;
-      border-radius: 11px;
-      padding: 5px 20px;
-      cursor: pointer;
-      &:hover {
-        background-color: #ff9982;
-        color: #f4f8f7;
-        padding: 6px 21px;
-        margin-bottom: -2px;
-        margin-left: -2px;
-        position: relative;
-      }
-      &:active {
-        background-color: #f74a24;
-      }
+  &_count {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 42px;
+    background-color: #EEEFF4;
+    font-size: 13px;
+    color: #3d3f42;
+  }
+}
+
+.btn {
+  &_post {
+    background-color: $btn-primary-color;
+    border-style: none;
+    color: #fff;
+    font-weight: 500;
+    line-height: 20px;
+    border-radius: 11px;
+    padding: 5px 20px;
+    cursor: pointer;
+    &:hover {
+      background-color: #ff9982;
+      color: #f4f8f7;
+      padding: 6px 21px;
+      margin-bottom: -2px;
+      margin-left: -2px;
+      position: relative;
     }
-    &_cancel {
-      background-color: $bg-color;
-      color: $btn-secondary-color;
-      border: 2px solid $btn-secondary-color;
-      border-radius: 11px;
-      font-weight: 500;
-      line-height: 20px;
-      padding: 5px 20px;
-      margin-right: 10px;
-      cursor: pointer;
-      &:hover {
-        padding: 6px 21px;
-        margin-bottom: -2px;
-        border: #7b93d1 2px solid;
-        color: $btn-secondary-hover-color;
-        position: relative;
-      }
-      &:active {
-          background-color: #e0e3ec;
-        color: #7589bb;
-      }
-    }  
+    &:active {
+      background-color: #f74a24;
+    }
+  }
+  &_cancel {
+    background-color: $bg-color;
+    color: $btn-secondary-color;
+    border: 2px solid $btn-secondary-color;
+    border-radius: 11px;
+    font-weight: 500;
+    line-height: 20px;
+    padding: 5px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    &:hover {
+      padding: 6px 21px;
+      margin-bottom: -2px;
+      border: #7b93d1 2px solid;
+      color: $btn-secondary-hover-color;
+      position: relative;
+    }
+    &:active {
+        background-color: #e0e3ec;
+      color: #7589bb;
+    }
   }  
 }
 

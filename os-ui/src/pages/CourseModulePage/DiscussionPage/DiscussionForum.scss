@@ -8,6 +8,7 @@
   padding-left: 10px;
   padding-right: 30px;
   padding-top: 50px;
+  padding-bottom: 100px;
 }
 
 .container {
@@ -102,14 +103,4 @@
   margin-top: 20px;
   margin-left: 3px;
   color: $black-text-color;
-}
-
-//scroll
-.questionItemsScroll {
-  max-height: 800px;
-  overflow-y: scroll;
-}
-
-.askQuestionsScroll {
-  margin-right: 57px;
 }

@@ -19,11 +19,11 @@ import { formatDate } from '../../helpers/formatDate';
 const QuestionItem: React.FC<QuestionItemProps> = ({
   text, id, createdDate, token, enrolledCourseId, sectionName, responsesMap,
 }) => {
-  const [isEditPressed, SetEditPresses] = useState<boolean>(false);
-  const btnTextType = isEditPressed ? 'Save' : 'Edit';
+  const [isEditPressed, setEditPresses] = useState<boolean>(false);
   const [editValue, setEditValue] = useState<string>(text);
   const [answerValue, setAnswerValue] = useState<string>('');
-  // isAllAnswersApper?
+
+  // is all answers to a question appers
   const [allAnswersState, setAllAnswersState] = useState(true);
   const handleSetAllAnswersState = () => {
     setAllAnswersState((prev) => !prev);
@@ -67,7 +67,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   };
 
   // disable save button when it is nothing typed or if we don't change the text
-  const isDisable = btnTextType === 'Save' ? editValue.trim() === '' || editValue === text : false;
+  const isDisable = isEditPressed ? editValue.trim() === '' || editValue === text : false;
 
   const handleUpdateQuestion = (questionId:string) => {
     dispatch(updateQuestion({
@@ -83,7 +83,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   };
 
   const onClose = () => {
-    SetEditPresses(false);
+    setEditPresses(false);
     setEditValue(text);
     setIsOpen(false);
   };
@@ -111,14 +111,17 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   };
 
   const editQuestion = (): void => {
-    SetEditPresses((prev) => !prev);
+    setEditPresses((prev) => !prev);
+    if (!editValue) {
+      setEditValue(text);
+    }
+
     if (isEditPressed) {
       handleUpdateQuestion(id);
       setIsOpen(false);
       setShowMore(false);
-    }
-    if (!editValue) {
-      setEditValue(text);
+    } else {
+      setIsOpen(false);
     }
   };
 
@@ -163,7 +166,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
             isDisable={isDisable}
             editQuestion={editQuestion}
             btnType={edit}
-            btnTextType={btnTextType}
             removeQ={handleRemoveQuestion}
             id={id}
             textAreaRef={editTextAreaRef}
@@ -172,23 +174,27 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
       }
       <div className="Questions_inner">
         <div className="Question_item">
-          <div className={`icons ${text.length < 65 ? 'iconsToTop' : ''}`}>
-            <img className="answer_icon" onClick={() => animatedFunction(handleAnswerSectionOpen)} src={answer} alt="->" />
-            <div className="messageCount">5</div>
-            <img className="icon_menu" src={threeVerticalDots} onClick={() => animatedFunction(changeIsOpen)} alt="menu" />
-            <img className={`arrowRightIcon ${allAnswersState ? 'arrowRightIcon_rotate' : ''}`} onClick={() => animatedFunction(handleSetAllAnswersState)} src={ArrowRightIcon} alt=">" />
-          </div>
           {
             isEditPressed
               ? (
-                <textarea
-                  className="edit_question_textArea"
-                  value={editValue}
-                  ref={editTextAreaRef}
-                  onChange={editValueChange}
-                  id="fname"
-                  name="fname"
-                />
+                <div className="editField">
+                  <textarea
+                    className="edit_question_textArea"
+                    value={editValue}
+                    ref={editTextAreaRef}
+                    onChange={editValueChange}
+                    id="fname"
+                    name="fname"
+                  />
+                  <div className="editField_count">
+                    {editValue.length}
+                    /500
+                  </div>
+                  <div className="editField_btns">
+                    <button type="button" className="btn_cancel" onClick={() => animatedFunction(onClose)}>{t('Cancel')}</button>
+                    <button type="button" className="btn_post" onClick={() => animatedFunction(editQuestion)}>{t('Save')}</button>
+                  </div>
+                </div>
               )
               : (
                 <div className="question_item">
@@ -207,6 +213,12 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
                       </div>
                     )}
                   </div>
+                  <div className={`icons ${text.length < 65 ? 'iconsToTop' : ''}`}>
+                    <img className="answer_icon" onClick={() => animatedFunction(handleAnswerSectionOpen)} src={answer} alt="->" />
+                    <div className="messageCount">5</div>
+                    <img className="icon_menu" src={threeVerticalDots} onClick={() => animatedFunction(changeIsOpen)} alt="menu" />
+                    <img className={`arrowRightIcon ${allAnswersState ? 'arrowRightIcon_rotate' : ''}`} onClick={() => animatedFunction(handleSetAllAnswersState)} src={ArrowRightIcon} alt=">" />
+                  </div>
                 </div>
               )
           }
@@ -218,9 +230,13 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
             <img src={avatar} alt="I" className="answer_section_avatarka" />
             <textarea ref={answerTextAreaRef} value={answerValue} onChange={changeHandlerAnswer} className="answer_section_textarea" placeholder="Add your answer here" />
           </div>
+          <div className="answer_section_count">
+            {answerValue.length}
+            /500
+          </div>
           <div className="answer_section_actions">
-            <button type="button" onClick={() => animatedFunction(onAnswerTextareaClose)} className="answer_section_btn_cancel">{t('Cancel')}</button>
-            <button type="button" onClick={() => animatedFunction(handleAddAsnswer, id)} className="answer_section_btn_post">{t('Post')}</button>
+            <button type="button" onClick={() => animatedFunction(onAnswerTextareaClose)} className="btn_cancel">{t('Cancel')}</button>
+            <button type="button" onClick={() => animatedFunction(handleAddAsnswer, id)} className="btn_post">{t('Post')}</button>
           </div>
         </div>
       )}

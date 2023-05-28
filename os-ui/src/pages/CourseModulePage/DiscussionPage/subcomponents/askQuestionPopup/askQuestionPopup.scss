@@ -159,9 +159,10 @@
 .question_textArea {
   border: #cfd0d4 1px solid;
   border-radius: 10px;
-  height: 100px;
+  height: 120px;
   margin-left: 20px;
   padding: 10px;
+  margin-bottom: 25px;
   padding-bottom: 25px;
   width: 100%;
   color: #3d3f42;
@@ -172,6 +173,13 @@
   &_box {
     display: flex;
     align-items: flex-start;
+  }
+  &_count {
+    font-size: 13px;
+    position: absolute;
+    right: 35px;
+    bottom: 105px;
+    color: #3d3f42;
   }
 }
 

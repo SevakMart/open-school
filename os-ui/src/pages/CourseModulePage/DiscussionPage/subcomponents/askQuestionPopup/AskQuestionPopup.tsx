@@ -67,6 +67,10 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
               onKeyDown={handleKeyDown}
             />
           </div>
+          <div className="question_textArea_count">
+            {value.length}
+            /500
+          </div>
           <div className="buttons">
             <button type="button" onClick={() => { animatedFunction(handleClose); }} className="btn_cancel" data-testid="close-cancel-btn">{t('Cancel')}</button>
             <button type="button" onClick={() => { animatedFunction(handleAddQuestion); }} disabled={isValueEmpty} data-testid="post-btn" className="btn_post">{t('Post')}</button>
