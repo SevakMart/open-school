@@ -17,9 +17,12 @@ import QuestionItem from './subcomponents/QuestionItem/QuestionItem';
 const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   // save typed question
   const [value, setValue] = useState<string>('');
+  // const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  //   const newValue = event.target.value.length > 500 ? value : event.target.value;
+  //   setValue(newValue);
+  // };
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (event.target.value.length > 500) event.preventDefault();
-    else setValue(event.target.value);
+    setValue(event.target.value);
   };
 
   // get course informatiom
@@ -106,15 +109,11 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
 
   useEffect(() => {
     const fetchAllQuestions = async () => {
-      try {
-        await Promise.all([
-          dispatch(AllQuestions({ enrolledCourseId: entity.enrolledCourseId, token: idAndToken.token, sectionName: 'peers' })),
-          dispatch(AllQuestions({ enrolledCourseId: entity.enrolledCourseId, token: idAndToken.token, sectionName: 'mentor' })),
-        ]);
-        setPageReloaded(false);
-      } catch (error) {
-        throw new Error('something went wrong');
-      }
+      await Promise.all([
+        dispatch(AllQuestions({ enrolledCourseId: entity.enrolledCourseId, token: idAndToken.token, sectionName: 'peers' })),
+        dispatch(AllQuestions({ enrolledCourseId: entity.enrolledCourseId, token: idAndToken.token, sectionName: 'mentor' })),
+      ]);
+      setPageReloaded(false);
     };
     fetchAllQuestions();
   }, []);
@@ -149,10 +148,10 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
               </button>
 
             </ul>
-            <button data-testid="toggle-btn" type="button" onClick={() => dispatch(onOpen())} className="btn">{t('ASK QUESTION')}</button>
+            <button type="button" onClick={() => dispatch(onOpen())} className="btn">{t('ASK QUESTION')}</button>
           </div>
         </div>
-        <div className="">
+        <div className="question_items">
           {
             questionsMap.length ? (
               questionsMap.map((val) => (
@@ -170,7 +169,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
                 />
               ))
             ) : (
-              <div className="noQuestionsDiv">{t(`No questions. Be the First to Ask a question to ${isBtnClicked ? 'peers' : 'mentor'}!`)}</div>
+              <div className="noQuestionsDiv" data-testid="noQuestionsDiv">{t(`No questions. Be the First to Ask a question to ${isBtnClicked ? 'peers' : 'mentor'}!`)}</div>
             )
           }
           {isLoading && <div style={{ marginTop: '40px' }}><Loader /></div>}

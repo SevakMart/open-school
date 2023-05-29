@@ -45,6 +45,8 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
   const { t } = useTranslation();
 
   const isValueEmpty = value.trim() === '';
+  const isValueLong = value.length > 500;
+  const isValueEmptyOrLong = isValueEmpty || isValueLong;
 
   return (
     <div className={`popup ${isOpen ? 'open' : ''} ${isAnimating ? 'animating' : ''}`}>
@@ -55,17 +57,19 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
         <div className="question_textArea_item">
           <div className="question_textArea_box">
             <img src={avatar} alt="I" className="question_textArea_box_avatarka" />
-            <textarea
-              className="question_textArea"
-              data-testid="question-textarea"
-              id="fname"
-              name="fname"
-              ref={textAreaRef}
-              value={value}
-              onChange={handleChange}
-              placeholder="Ask your question here"
-              onKeyDown={handleKeyDown}
-            />
+            <div className={`question_textArea_inner ${isValueLong ? 'question_textArea_inner_disabled' : ''}`}>
+              <textarea
+                className="question_textArea"
+                data-testid="question-textarea"
+                id="fname"
+                name="fname"
+                ref={textAreaRef}
+                value={value}
+                onChange={handleChange}
+                placeholder="Ask your question here"
+                onKeyDown={handleKeyDown}
+              />
+            </div>
           </div>
           <div className="question_textArea_count">
             {value.length}
@@ -73,7 +77,7 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
           </div>
           <div className="buttons">
             <button type="button" onClick={() => { animatedFunction(handleClose); }} className="btn_cancel" data-testid="close-cancel-btn">{t('Cancel')}</button>
-            <button type="button" onClick={() => { animatedFunction(handleAddQuestion); }} disabled={isValueEmpty} data-testid="post-btn" className="btn_post">{t('Post')}</button>
+            <button type="button" onClick={() => { animatedFunction(handleAddQuestion); }} disabled={isValueEmptyOrLong} data-testid="post-btn" className="btn_post">{t('Post')}</button>
           </div>
         </div>
       </div>
