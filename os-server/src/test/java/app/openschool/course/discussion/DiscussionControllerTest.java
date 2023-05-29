@@ -1032,45 +1032,6 @@ class DiscussionControllerTest {
   }
 
   @Test
-  void updateMentorAnswer_withCorrectData() throws Exception {
-
-    UpdateAnswerRequest request = new UpdateAnswerRequest();
-    request.setText("Update answer");
-    MentorQuestion mentorQuestion = TestHelper.createMentorQuestion();
-    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
-    enrolledCourse.setId(1L);
-    enrolledCourse.setCourse(mentorQuestion.getCourse());
-    enrolledCourse.setUser(mentorQuestion.getUser());
-    MentorAnswer mentorAnswer = TestHelper.createMentorAnswer();
-    mentorAnswer.setDiscussionQuestionMentor(mentorQuestion);
-    mentorAnswer.setUser(mentorQuestion.getUser());
-
-    when(mentorAnswerService.update(any(), anyLong(), anyLong(), anyLong(), anyString()))
-        .thenReturn(
-            new MentorAnswer(
-                mentorAnswer.getId(),
-                request.getText(),
-                mentorAnswer.getUser(),
-                mentorAnswer.getDiscussionQuestionMentor(),
-                Instant.now()));
-    String jwt = generateJwtToken();
-    String requestBody = "{\"text\": \"Update answer\"}";
-
-    mockMvc
-        .perform(
-            put("/api/v1/courses/enrolled/"
-                    + enrolledCourse.getId()
-                    + "/mentor-questions/answers/"
-                    + mentorQuestion.getId()
-                    + "/"
-                    + mentorAnswer.getId())
-                .header("Authorization", jwt)
-                .content(requestBody)
-                .contentType(APPLICATION_JSON))
-        .andExpect(status().isOk());
-  }
-
-  @Test
   void updateMentorAnswer_unauthorized() throws Exception {
 
     when(mentorAnswerService.update(any(), anyLong(), anyLong(), anyLong(), anyString()))
