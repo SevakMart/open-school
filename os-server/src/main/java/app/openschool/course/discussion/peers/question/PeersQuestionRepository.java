@@ -19,7 +19,7 @@ public interface PeersQuestionRepository extends JpaRepository<PeersQuestion, Lo
               + "WHERE peers_question.id =:questionId AND "
               + "peers_question.learning_path_id = "
               + "(SELECT learning_path_id FROM enrolled_learning_path "
-              + "WHERE id =:enrolledCourseId AND user_id = "
+              + "WHERE id =:enrolledCourseId AND peers_question.user_id = "
               + "(SELECT id FROM user WHERE email =:userEmail)); ",
       nativeQuery = true)
   Optional<PeersQuestion> findPeersQuestionByIdAndUserEmailAndEnrolledCourseId(
@@ -35,7 +35,7 @@ public interface PeersQuestionRepository extends JpaRepository<PeersQuestion, Lo
               + "WHERE peers_question.id =:questionId AND "
               + "peers_question.learning_path_id = "
               + "(SELECT learning_path_id FROM enrolled_learning_path "
-              + "WHERE id =:enrolledCourseId AND user_id = "
+              + "WHERE id =:enrolledCourseId AND peers_question.user_id = "
               + "(SELECT id FROM user WHERE email =:userEmail)); ",
       nativeQuery = true)
   int delete(

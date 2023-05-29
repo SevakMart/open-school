@@ -30,7 +30,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 @DataJpaTest
-public class MentorQuestionRepositoryTest {
+class MentorQuestionRepositoryTest {
 
   @Autowired MentorQuestionRepository mentorQuestionRepository;
   @Autowired CourseRepository courseRepository;
@@ -135,5 +135,30 @@ public class MentorQuestionRepositoryTest {
     assertEquals(expectedQuestion.getId(), actualQuestion.orElseThrow().getId());
     assertTrue(emptyOptionalWrongEnrolledId.isEmpty());
     assertTrue(emptyOptionalWrongQuestionId.isEmpty());
+  }
+
+  @Test
+  void delete() {
+    MentorQuestion mentorQuestion =
+            mentorQuestionRepository.findById(expectedQuestion.getId()).orElseThrow();
+
+    int updatedRows =
+            mentorQuestionRepository.delete(
+                    mentorQuestion.getId(), student.getEmail(), enrolledCourse.getId());
+
+    assertEquals(1, updatedRows);
+    assertEquals(mentorQuestionRepository.findById(mentorQuestion.getId()), Optional.empty());
+  }
+  @Test
+  void findMentorQuestionByIdAndUserEmailAndEnrolledCourseId() {
+    MentorQuestion actualMentorQuestion =
+            mentorQuestionRepository
+                    .findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(
+                            expectedQuestion.getId(), student.getEmail(), enrolledCourse.getId())
+                    .orElseThrow(IllegalArgumentException::new);
+
+    assertEquals(expectedQuestion.getId(), actualMentorQuestion.getId());
+    assertEquals(expectedQuestion.getUser().getEmail(), actualMentorQuestion.getUser().getEmail());
+    assertEquals(expectedQuestion.getCourse().getId(), actualMentorQuestion.getCourse().getId());
   }
 }

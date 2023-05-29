@@ -17,12 +17,16 @@ import app.openschool.common.security.JwtTokenProvider;
 import app.openschool.common.security.UserPrincipal;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.api.CourseGenerator;
+import app.openschool.course.discussion.dto.UpdateAnswerRequest;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
+import app.openschool.course.discussion.mentor.answer.MentorAnswer;
 import app.openschool.course.discussion.mentor.question.MentorQuestion;
 import app.openschool.course.discussion.peers.answer.PeersAnswer;
 import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.user.User;
 import app.openschool.user.role.Role;
+
+import java.time.Instant;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,7 +47,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class DiscussionControllerTest {
+class DiscussionControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
@@ -57,6 +61,9 @@ public class DiscussionControllerTest {
 
   @MockBean
   private @Qualifier("discussionAnswer") AnswerService answerService;
+
+  @MockBean
+  private @Qualifier("discussionAnswerMentor") AnswerService mentorAnswerService;
 
   @Test
   void createQuestion_withCorrectData() throws Exception {
@@ -457,6 +464,153 @@ public class DiscussionControllerTest {
   }
 
   @Test
+  void updatePeersAnswer_withCorrectData() throws Exception {
+
+    UpdateAnswerRequest request = new UpdateAnswerRequest();
+    request.setText("Update answer");
+    PeersQuestion peersQuestion = TestHelper.createDiscussionPeersQuestion();
+    PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
+    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    enrolledCourse.setId(1L);
+    enrolledCourse.setCourse(peersQuestion.getCourse());
+    enrolledCourse.setUser(peersQuestion.getUser());
+    peersAnswer.setDiscussionQuestion(peersQuestion);
+    peersAnswer.setUser(peersQuestion.getUser());
+
+
+    when(answerService.update(any(), anyLong(),anyLong() ,anyLong(), anyString()))
+            .thenReturn(
+                    new PeersAnswer(
+                            peersAnswer.getId(),
+                            request.getText(),
+                            peersAnswer.getUser(),
+                            peersAnswer.getDiscussionQuestion(),
+                            Instant.now()));
+    String jwt = generateJwtToken();
+    String requestBody = "{\"text\": \"Update answer\"}";
+
+    mockMvc
+            .perform(
+                    put("/api/v1/courses/enrolled/"
+                            + enrolledCourse.getId()
+                            + "/peers-questions/answers/"
+                            + peersQuestion.getId() + "/" + peersAnswer.getId())
+                            .header("Authorization", jwt)
+                            .content(requestBody)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  void updatePeersAnswer_unauthorized() throws Exception {
+
+    when(answerService.update(any(), anyLong(), anyLong(),anyLong(), anyString()))
+            .thenReturn(new PeersAnswer());
+
+    String requestBody = "{\"text\": \"Update answer\"}";
+
+    mockMvc
+            .perform(
+                    put("/api/v1/courses/enrolled/1/peers-questions/answers/1/1")
+                            .content(requestBody)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void updatePeersAnswer_withIncorrectArgument() throws Exception {
+
+    when(answerService.update(any(), anyLong(), anyLong() ,anyLong(), anyString()))
+            .thenReturn(new PeersAnswer());
+    String jwt = generateJwtToken();
+    String wrongRequestBody = "{\"wrong\": \"Update answer\"}";
+
+    mockMvc
+            .perform(
+                    put("/api/v1/courses/enrolled/1/peers-questions/answers/1/1")
+                            .header("Authorization", jwt)
+                            .content(wrongRequestBody)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void deletePeersAnswer_withCorrectData() throws Exception {
+
+    PeersQuestion peersQuestion = TestHelper.createDiscussionPeersQuestion();
+    PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
+    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    enrolledCourse.setId(1L);
+    peersAnswer.setDiscussionQuestion(peersQuestion);
+
+    doNothing()
+            .when(answerService)
+            .delete(peersAnswer.getId(), peersAnswer.getDiscussionQuestion().getId(), enrolledCourse.getId(), peersAnswer.getUser().getEmail());
+    String jwt = generateJwtToken();
+
+    mockMvc
+            .perform(
+                    delete(
+                            "/api/v1/courses/enrolled/"
+                                    + enrolledCourse.getId()
+                                    + "/peers-questions/answers/"
+                                    + peersAnswer.getDiscussionQuestion().getId() + "/" + peersAnswer.getId())
+                            .header("Authorization", jwt)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void deletePeersAnswer_unauthorized() throws Exception {
+
+    PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
+    PeersQuestion peersQuestion = TestHelper.createDiscussionPeersQuestion();
+    peersAnswer.setDiscussionQuestion(peersQuestion);
+    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    enrolledCourse.setId(1L);
+
+    doNothing()
+            .when(answerService)
+            .delete(peersAnswer.getId(), peersAnswer.getDiscussionQuestion().getId(),enrolledCourse.getId(), peersAnswer.getUser().getEmail());
+
+    mockMvc
+            .perform(
+                    delete(
+                            "/api/v1/courses/enrolled/"
+                                    + enrolledCourse.getId()
+                                    + "/peers-questions/answers/"
+                                    + peersAnswer.getDiscussionQuestion().getId() + "/" + peersAnswer.getId())
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void deletePeersAnswer_incorrectArgument() throws Exception {
+
+    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    PeersQuestion peersQuestion = TestHelper.createDiscussionPeersQuestion();
+    enrolledCourse.setId(1L);
+    long wrongAnswerId = 999L;
+
+    doThrow(IllegalArgumentException.class)
+            .when(answerService)
+            .delete(anyLong(), any(),any() ,anyString());
+
+    String jwt = generateJwtToken();
+
+    mockMvc
+            .perform(
+                    delete(
+                            "/api/v1/courses/enrolled/"
+                                    + enrolledCourse.getId()
+                                    + "/peers-questions/answers/"
+                                    + peersQuestion.getId() + "/" + wrongAnswerId)
+                            .header("Authorization", jwt)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void getAnswerById_withCorrectData() throws Exception {
 
     PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
@@ -578,6 +732,145 @@ public class DiscussionControllerTest {
   }
 
   @Test
+  void updateMentorQuestion_withCorrectData() throws Exception {
+
+    UpdateQuestionRequest request = new UpdateQuestionRequest();
+    request.setText("Update question");
+    MentorQuestion question = TestHelper.createMentorQuestion();
+    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    enrolledCourse.setId(1L);
+    enrolledCourse.setCourse(question.getCourse());
+    enrolledCourse.setUser(question.getUser());
+
+    when(mentorQuestionService.update(any(), anyLong(), anyLong(), anyString()))
+            .thenReturn(
+                    new MentorQuestion(
+                            question.getId(),
+                            request.getText(),
+                            question.getUser(),
+                            question.getCourse(),
+                            null,
+                            null));
+    String jwt = generateJwtToken();
+    String requestBody = "{\"text\": \"Update question\"}";
+
+    mockMvc
+            .perform(
+                    put("/api/v1/courses/enrolled/"
+                            + enrolledCourse.getId()
+                            + "/mentor-questions/"
+                            + question.getId())
+                            .header("Authorization", jwt)
+                            .content(requestBody)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  void updateMentorQuestion_unauthorized() throws Exception {
+
+    when(mentorQuestionService.update(any(), anyLong(), anyLong(), anyString()))
+            .thenReturn(new PeersQuestion());
+
+    String requestBody = "{\"text\": \"Update question\"}";
+
+    mockMvc
+            .perform(
+                    put("/api/v1/courses/enrolled/1/mentor-questions/1")
+                            .content(requestBody)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void updateMentorQuestion_withIncorrectArgument() throws Exception {
+
+    when(mentorQuestionService.update(any(), anyLong(), anyLong(), anyString()))
+            .thenReturn(new PeersQuestion());
+    String jwt = generateJwtToken();
+    String wrongRequestBody = "{\"wrong\": \"Update question\"}";
+
+    mockMvc
+            .perform(
+                    put("/api/v1/courses/enrolled/1/mentor-questions/1")
+                            .header("Authorization", jwt)
+                            .content(wrongRequestBody)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void deleteMentorQuestion_withCorrectData() throws Exception {
+
+    MentorQuestion question = TestHelper.createMentorQuestion();
+    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    enrolledCourse.setId(1L);
+
+    doNothing()
+            .when(mentorQuestionService)
+            .delete(question.getId(), enrolledCourse.getId(), question.getUser().getEmail());
+    String jwt = generateJwtToken();
+
+    mockMvc
+            .perform(
+                    delete(
+                            "/api/v1/courses/enrolled/"
+                                    + enrolledCourse.getId()
+                                    + "/mentor-questions/"
+                                    + question.getId())
+                            .header("Authorization", jwt)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void deleteMentorQuestion_unauthorized() throws Exception {
+
+    MentorQuestion question = TestHelper.createMentorQuestion();
+    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    enrolledCourse.setId(1L);
+
+    doNothing()
+            .when(mentorQuestionService)
+            .delete(question.getId(), enrolledCourse.getId(), question.getUser().getEmail());
+
+    mockMvc
+            .perform(
+                    delete(
+                            "/api/v1/courses/enrolled/"
+                                    + enrolledCourse.getId()
+                                    + "/mentor-questions/"
+                                    + question.getId())
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void deleteMentorQuestion_incorrectArgument() throws Exception {
+
+    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    enrolledCourse.setId(1L);
+    long wrongQuestionId = 999L;
+
+    doThrow(IllegalArgumentException.class)
+            .when(mentorQuestionService)
+            .delete(anyLong(), any(), anyString());
+
+    String jwt = generateJwtToken();
+
+    mockMvc
+            .perform(
+                    delete(
+                            "/api/v1/courses/enrolled/"
+                                    + enrolledCourse.getId()
+                                    + "/mentor-questions/"
+                                    + wrongQuestionId)
+                            .header("Authorization", jwt)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void findMentorQuestionsByCourseId_withCorrectData() throws Exception {
 
     Page questions = new PageImpl<>(List.of(TestHelper.createMentorQuestion()));
@@ -654,6 +947,323 @@ public class DiscussionControllerTest {
                 .header("Authorization", jwt)
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void createMentorAnswer_withCorrectData() throws Exception {
+
+    MentorAnswer answer = TestHelper.createMentorAnswer();
+    when(mentorAnswerService.create(anyLong(), any(), anyString())).thenReturn(answer);
+    String requestBody = "{\"text\": \"Any answer\", \"questionId\": 1}";
+    String jwt = generateJwtToken();
+
+    mockMvc
+            .perform(
+                    post("/api/v1/courses/enrolled/1/mentor-answers")
+                            .header("Authorization", jwt)
+                            .content(requestBody)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isCreated());
+  }
+
+  @Test
+  void createMentorAnswer_unauthorized() throws Exception {
+
+    when(mentorAnswerService.create(anyLong(), any(), anyString())).thenReturn(new PeersAnswer());
+    String requestBody = "{\"text\": \"Any answer\", \"questionId\": 1}";
+
+    mockMvc
+            .perform(
+                    post("/api/v1/courses/enrolled/1/mentor-answers")
+                            .content(requestBody)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void createMentorAnswer_invalidArgument() throws Exception {
+
+    when(mentorAnswerService.create(anyLong(), any(), anyString())).thenReturn(new PeersAnswer());
+
+    String wrongRequestBody = "{\"wrong\": \"Any question\", \"questionId\": 1}";
+    String jwt = generateJwtToken();
+
+    mockMvc
+            .perform(
+                    post("/api/v1/courses/enrolled/1/mentor-answers")
+                            .header("Authorization", jwt)
+                            .content(wrongRequestBody)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void createMentorAnswer_incorrectEnrolledCourseId() throws Exception {
+
+    long wrongEnrolledCourseId = 999L;
+
+    when(mentorAnswerService.create(anyLong(), any(), anyString()))
+            .thenThrow(IllegalArgumentException.class);
+
+    String requestBody = "{\"text\": \"Any answer\", \"questionId\": 1}";
+    String jwt = generateJwtToken();
+
+    mockMvc
+            .perform(
+                    post("/api/v1/courses/enrolled/" + wrongEnrolledCourseId + "/mentor-answers")
+                            .header("Authorization", jwt)
+                            .content(requestBody)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+  }
+
+
+  @Test
+  void updateMentorAnswer_withCorrectData() throws Exception {
+
+    UpdateAnswerRequest request = new UpdateAnswerRequest();
+    request.setText("Update answer");
+    MentorQuestion mentorQuestion = TestHelper.createMentorQuestion();
+    MentorAnswer mentorAnswer = TestHelper.createMentorAnswer();
+    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    enrolledCourse.setId(1L);
+    enrolledCourse.setCourse(mentorQuestion.getCourse());
+    enrolledCourse.setUser(mentorQuestion.getUser());
+    mentorAnswer.setDiscussionQuestionMentor(mentorQuestion);
+    mentorAnswer.setUser(mentorQuestion.getUser());
+
+
+    when(mentorAnswerService.update(any(), anyLong(),anyLong() ,anyLong(), anyString()))
+            .thenReturn(
+                    new MentorAnswer(
+                            mentorAnswer.getId(),
+                            request.getText(),
+                            mentorAnswer.getUser(),
+                            mentorAnswer.getDiscussionQuestionMentor(),
+                            Instant.now()));
+    String jwt = generateJwtToken();
+    String requestBody = "{\"text\": \"Update answer\"}";
+
+    mockMvc
+            .perform(
+                    put("/api/v1/courses/enrolled/"
+                            + enrolledCourse.getId()
+                            + "/mentor-questions/answers/"
+                            + mentorQuestion.getId() + "/" + mentorAnswer.getId())
+                            .header("Authorization", jwt)
+                            .content(requestBody)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  void updateMentorAnswer_unauthorized() throws Exception {
+
+    when(mentorAnswerService.update(any(), anyLong(), anyLong(),anyLong(), anyString()))
+            .thenReturn(new MentorAnswer());
+
+    String requestBody = "{\"text\": \"Update answer\"}";
+
+    mockMvc
+            .perform(
+                    put("/api/v1/courses/enrolled/1/mentor-questions/answers/1/1")
+                            .content(requestBody)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void updateMentorAnswer_withIncorrectArgument() throws Exception {
+
+    when(mentorAnswerService.update(any(), anyLong(), anyLong() ,anyLong(), anyString()))
+            .thenReturn(new MentorAnswer());
+    String jwt = generateJwtToken();
+    String wrongRequestBody = "{\"wrong\": \"Update answer\"}";
+
+    mockMvc
+            .perform(
+                    put("/api/v1/courses/enrolled/1/mentor-questions/answers/1/1")
+                            .header("Authorization", jwt)
+                            .content(wrongRequestBody)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void deleteMentorAnswer_withCorrectData() throws Exception {
+
+    MentorQuestion mentorQuestion = TestHelper.createMentorQuestion();
+    MentorAnswer mentorAnswer = TestHelper.createMentorAnswer();
+    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    enrolledCourse.setId(1L);
+    mentorAnswer.setDiscussionQuestionMentor(mentorQuestion);
+
+    doNothing()
+            .when(mentorAnswerService)
+            .delete(mentorAnswer.getId(), mentorAnswer.getDiscussionQuestionMentor().getId(), enrolledCourse.getId(),
+                    mentorAnswer.getUser().getEmail());
+    String jwt = generateJwtToken();
+
+    mockMvc
+            .perform(
+                    delete(
+                            "/api/v1/courses/enrolled/"
+                                    + enrolledCourse.getId()
+                                    + "/mentor-questions/answers/"
+                                    + mentorAnswer.getDiscussionQuestionMentor().getId() + "/" + mentorAnswer.getId())
+                            .header("Authorization", jwt)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void deleteMentorAnswer_unauthorized() throws Exception {
+
+    MentorAnswer mentorAnswer = TestHelper.createMentorAnswer();
+    MentorQuestion mentorQuestion = TestHelper.createMentorQuestion();
+    mentorAnswer.setDiscussionQuestionMentor(mentorQuestion);
+    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    enrolledCourse.setId(1L);
+
+    doNothing()
+            .when(mentorAnswerService)
+            .delete(mentorAnswer.getId(), mentorAnswer.getDiscussionQuestionMentor().getId(),enrolledCourse.getId(),
+                    mentorAnswer.getUser().getEmail());
+
+    mockMvc
+            .perform(
+                    delete(
+                            "/api/v1/courses/enrolled/"
+                                    + enrolledCourse.getId()
+                                    + "/mentor-questions/answers/"
+                                    + mentorAnswer.getDiscussionQuestionMentor().getId() + "/" + mentorAnswer.getId())
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void deleteMentorAnswer_incorrectArgument() throws Exception {
+
+    EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    MentorQuestion mentorQuestion = TestHelper.createMentorQuestion();
+    enrolledCourse.setId(1L);
+    long wrongAnswerId = 999L;
+
+    doThrow(IllegalArgumentException.class)
+            .when(mentorAnswerService)
+            .delete(anyLong(), any(),any() ,anyString());
+
+    String jwt = generateJwtToken();
+
+    mockMvc
+            .perform(
+                    delete(
+                            "/api/v1/courses/enrolled/"
+                                    + enrolledCourse.getId()
+                                    + "/mentor-questions/answers/"
+                                    + mentorQuestion.getId() + "/" + wrongAnswerId)
+                            .header("Authorization", jwt)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+  }
+
+
+  @Test
+  void findMentorAnswersByQuestionId_withCorrectData() throws Exception {
+
+    Page answers = new PageImpl<>(List.of(TestHelper.createMentorAnswer()));
+
+    long enrolledCourseId = 1L;
+    long questionId = 1L;
+    String jwt = generateJwtToken();
+
+    Pageable pageable = PageRequest.of(0, 5);
+    when(mentorAnswerService.findAnswerByQuestionId(questionId, pageable)).thenReturn(answers);
+
+    mockMvc
+            .perform(
+                    get("/api/v1/courses/enrolled/"
+                            + enrolledCourseId
+                            + "/mentor-questions/answers/"
+                            + questionId)
+                            .queryParam("page", "o")
+                            .queryParam("size", "5")
+                            .header("Authorization", jwt)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  void findMentorAnswersByQuestionId_unauthorized() throws Exception {
+
+    Page answers = new PageImpl<>(List.of(TestHelper.createMentorAnswer()));
+
+    long enrolledCourseId = 1L;
+    long questionId = 1L;
+
+    Pageable pageable = PageRequest.of(0, 5);
+    when(mentorAnswerService.findAnswerByQuestionId(questionId, pageable)).thenReturn(answers);
+    mockMvc
+            .perform(
+                    get("/api/v1/courses/enrolled/"
+                            + enrolledCourseId
+                            + "/mentor-questions/answers/"
+                            + questionId)
+                            .queryParam("page", "o")
+                            .queryParam("size", "5")
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void getMentorAnswerById_withCorrectData() throws Exception {
+
+    MentorAnswer mentorAnswer = TestHelper.createMentorAnswer();
+    long enrolledCourseId = 1L;
+    long answerId = 1L;
+    String jwt = generateJwtToken();
+
+    when(mentorAnswerService.findAnswerById(answerId)).thenReturn(mentorAnswer);
+
+    mockMvc
+            .perform(
+                    get("/api/v1/courses/enrolled/" + enrolledCourseId + "/mentor-answers/" + answerId)
+                            .header("Authorization", jwt)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  void getMentorAnswerById_withIncorrectData() throws Exception {
+
+    long enrolledCourseId = 1L;
+    long wrongAnswerId = 1L;
+    String jwt = generateJwtToken();
+
+    when(mentorAnswerService.findAnswerById(wrongAnswerId)).thenThrow(IllegalArgumentException.class);
+
+    mockMvc
+            .perform(
+                    get("/api/v1/courses/enrolled/" + enrolledCourseId + "/mentor-answers/" + wrongAnswerId)
+                            .header("Authorization", jwt)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void getMentorAnswerById_unauthorized() throws Exception {
+
+    MentorAnswer mentorAnswer = TestHelper.createMentorAnswer();
+    long enrolledCourseId = 1L;
+    long answerId = 1L;
+
+    when(mentorAnswerService.findAnswerById(answerId)).thenReturn(mentorAnswer);
+
+    mockMvc
+            .perform(
+                    get("/api/v1/courses/enrolled/" + enrolledCourseId + "/mentor-answers/" + answerId)
+                            .contentType(APPLICATION_JSON))
+            .andExpect(status().isUnauthorized());
   }
 
   private String generateJwtToken() {

@@ -5,8 +5,7 @@ import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.discussion.AnswerService;
 import app.openschool.course.discussion.dto.AnswerRequestDto;
-import app.openschool.course.discussion.dto.AnswerResponseDto;
-import app.openschool.course.discussion.mapper.AnswerMapper;
+import app.openschool.course.discussion.dto.UpdateAnswerRequest;
 import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
 import java.time.Instant;
@@ -48,6 +47,28 @@ public class PeersAnswerServiceImpl implements AnswerService {
 
     return peersAnswerRepository.save(
         prepareAnswer(extractedEnrolledCourse, requestDto, extractedPeersQuestion));
+  }
+
+  @Override
+  public PeersAnswer update(UpdateAnswerRequest request,
+                            Long answerId,
+                            Long questionId,
+                            Long enrolledCourseId,
+                            String currentUserEmail){
+    PeersAnswer peersAnswer =
+            peersAnswerRepository
+                    .findPeersAnswerByIdAndUserEmailAndQuestionId(answerId, questionId, enrolledCourseId, currentUserEmail)
+                    .orElseThrow(IllegalArgumentException::new);
+    peersAnswer.setText(request.getText());
+    peersAnswer.setCreatedDate(Instant.now());
+    return peersAnswerRepository.save(peersAnswer) ;
+  }
+
+  @Override
+  public void delete(Long answerId, Long questionId, Long enrolledCourseId, String currentUserEmail){
+    int updatedRows =
+            peersAnswerRepository.delete(answerId, questionId, enrolledCourseId, currentUserEmail);
+    if (updatedRows == 0) throw new IllegalArgumentException();
   }
 
   @Override
