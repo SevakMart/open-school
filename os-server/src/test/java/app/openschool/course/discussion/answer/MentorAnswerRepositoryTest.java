@@ -33,130 +33,130 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 class MentorAnswerRepositoryTest {
-    @Autowired
-    MentorAnswerRepository mentorAnswerRepository;
-    @Autowired
-    MentorQuestionRepository mentorQuestionRepository;
-    @Autowired
-    CourseRepository courseRepository;
-    @Autowired
-    DifficultyRepository difficultyRepository;
-    @Autowired
-    LanguageRepository languageRepository;
-    @Autowired
-    CategoryRepository categoryRepository;
-    @Autowired
-    EnrolledCourseRepository enrolledCourseRepository;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    RoleRepository roleRepository;
+  @Autowired MentorAnswerRepository mentorAnswerRepository;
+  @Autowired MentorQuestionRepository mentorQuestionRepository;
+  @Autowired CourseRepository courseRepository;
+  @Autowired DifficultyRepository difficultyRepository;
+  @Autowired LanguageRepository languageRepository;
+  @Autowired CategoryRepository categoryRepository;
+  @Autowired EnrolledCourseRepository enrolledCourseRepository;
+  @Autowired UserRepository userRepository;
+  @Autowired RoleRepository roleRepository;
 
-    private MentorAnswer expectedMentorAnswer;
-    private MentorAnswer mentorAnswer;
-    private MentorQuestion expectedQuestion;
-    private EnrolledCourse enrolledCourse;
+  private MentorAnswer expectedMentorAnswer;
+  private MentorAnswer mentorAnswer;
+  private MentorQuestion expectedQuestion;
+  private EnrolledCourse enrolledCourse;
 
-    private User student;
+  private User student;
 
-    @BeforeEach
-    void setup() {
-        User mentor = new User();
-        Role role = roleRepository.save(new Role(2, "MENTOR"));
-        mentor.setRole(role);
-        mentor.setName("Mentor");
-        mentor.setPassword("password");
-        mentor.setEmail("email@email.com");
+  @BeforeEach
+  void setup() {
+    User mentor = new User();
+    Role role = roleRepository.save(new Role(2, "MENTOR"));
+    mentor.setRole(role);
+    mentor.setName("Mentor");
+    mentor.setPassword("password");
+    mentor.setEmail("email@email.com");
 
-        mentor = userRepository.save(mentor);
+    mentor = userRepository.save(mentor);
 
-        Difficulty difficulty = new Difficulty();
-        difficulty.setTitle("Medium");
-        difficulty = difficultyRepository.save(difficulty);
+    Difficulty difficulty = new Difficulty();
+    difficulty.setTitle("Medium");
+    difficulty = difficultyRepository.save(difficulty);
 
-        Language language = new Language();
-        language.setTitle("English");
-        language = languageRepository.save(language);
+    Language language = new Language();
+    language.setTitle("English");
+    language = languageRepository.save(language);
 
-        Category category = new Category();
-        category.setTitle("Java");
-        category = categoryRepository.save(category);
+    Category category = new Category();
+    category.setTitle("Java");
+    category = categoryRepository.save(category);
 
-        Course course = new Course();
-        course.setTitle("Title");
-        course.setMentor(mentor);
-        course.setDifficulty(difficulty);
-        course.setLanguage(language);
-        course.setCategory(category);
-        course = courseRepository.save(course);
+    Course course = new Course();
+    course.setTitle("Title");
+    course.setMentor(mentor);
+    course.setDifficulty(difficulty);
+    course.setLanguage(language);
+    course.setCategory(category);
+    course = courseRepository.save(course);
 
-        student = new User();
-        role = roleRepository.save(new Role(1, "STUDENT"));
-        student.setRole(role);
-        student.setName("Student");
-        student.setPassword("password");
-        student.setEmail("student@email.com");
-        student = userRepository.save(student);
+    student = new User();
+    role = roleRepository.save(new Role(1, "STUDENT"));
+    student.setRole(role);
+    student.setName("Student");
+    student.setPassword("password");
+    student.setEmail("student@email.com");
+    student = userRepository.save(student);
 
-        enrolledCourse = CourseGenerator.generateEnrolledCourse();
-        enrolledCourse.setCourse(course);
-        enrolledCourse.setUser(student);
-        enrolledCourse = enrolledCourseRepository.save(enrolledCourse);
+    enrolledCourse = CourseGenerator.generateEnrolledCourse();
+    enrolledCourse.setCourse(course);
+    enrolledCourse.setUser(student);
+    enrolledCourse = enrolledCourseRepository.save(enrolledCourse);
 
-        expectedQuestion = TestHelper.createMentorQuestion();
-        expectedQuestion.setCourse(course);
-        expectedQuestion.setUser(student);
-        expectedQuestion = mentorQuestionRepository.save(expectedQuestion);
+    expectedQuestion = TestHelper.createMentorQuestion();
+    expectedQuestion.setCourse(course);
+    expectedQuestion.setUser(student);
+    expectedQuestion = mentorQuestionRepository.save(expectedQuestion);
 
-        mentorAnswer = TestHelper.createMentorAnswer();
-        mentorAnswer.setDiscussionQuestionMentor(expectedQuestion);
-        mentorAnswer.setUser(student);
-        expectedMentorAnswer = mentorAnswerRepository.save(mentorAnswer);
-    }
+    mentorAnswer = TestHelper.createMentorAnswer();
+    mentorAnswer.setDiscussionQuestionMentor(expectedQuestion);
+    mentorAnswer.setUser(student);
+    expectedMentorAnswer = mentorAnswerRepository.save(mentorAnswer);
+  }
 
-    @Test
-    void findMentorAnswerByMentorQuestionId() {
+  @Test
+  void findMentorAnswerByMentorQuestionId() {
 
-        long correctQuestionId = expectedMentorAnswer.getDiscussionQuestionMentor().getId();
-        long wrongQuestionId = 999L;
+    long correctQuestionId = expectedMentorAnswer.getDiscussionQuestionMentor().getId();
+    long wrongQuestionId = 999L;
 
-        Page<MentorAnswer> mentorAnswerPage =
-                mentorAnswerRepository.findMentorAnswerByMentorQuestionId(
-                        correctQuestionId, PageRequest.of(0, 1));
-        Optional<MentorAnswer> optionalAnswer = mentorAnswerPage.stream().findFirst();
+    Page<MentorAnswer> mentorAnswerPage =
+        mentorAnswerRepository.findMentorAnswerByMentorQuestionId(
+            correctQuestionId, PageRequest.of(0, 1));
+    Optional<MentorAnswer> optionalAnswer = mentorAnswerPage.stream().findFirst();
 
-        Page<MentorAnswer> emptyPage =
-                mentorAnswerRepository.findMentorAnswerByMentorQuestionId(
-                        wrongQuestionId, PageRequest.of(0, 1));
+    Page<MentorAnswer> emptyPage =
+        mentorAnswerRepository.findMentorAnswerByMentorQuestionId(
+            wrongQuestionId, PageRequest.of(0, 1));
 
-        assertEquals(expectedMentorAnswer.getId(), optionalAnswer.orElseThrow().getId());
-        assertEquals(0, emptyPage.getTotalElements());
-    }
+    assertEquals(expectedMentorAnswer.getId(), optionalAnswer.orElseThrow().getId());
+    assertEquals(0, emptyPage.getTotalElements());
+  }
 
-    @Test
-    void delete(){
+  @Test
+  void delete() {
 
-        MentorAnswer mentorAnswer =
-                mentorAnswerRepository.findById(expectedMentorAnswer.getId()).orElseThrow();
+    MentorAnswer mentorAnswer =
+        mentorAnswerRepository.findById(expectedMentorAnswer.getId()).orElseThrow();
 
-        int updatedRows =
-                mentorAnswerRepository.delete(
-                        mentorAnswer.getId(), mentorAnswer.getDiscussionQuestionMentor().getId(), enrolledCourse.getId(),student.getEmail());
+    int updatedRows =
+        mentorAnswerRepository.delete(
+            mentorAnswer.getId(),
+            mentorAnswer.getDiscussionQuestionMentor().getId(),
+            enrolledCourse.getId(),
+            student.getEmail());
 
-        assertEquals(1, updatedRows);
-        assertEquals(mentorAnswerRepository.findById(mentorAnswer.getId()), Optional.empty());
-    }
+    assertEquals(1, updatedRows);
+    assertEquals(mentorAnswerRepository.findById(mentorAnswer.getId()), Optional.empty());
+  }
 
-    @Test
-    void findMentorAnswerByIdAndUserEmailAndQuestionId(){
-        MentorAnswer actualMentorAnswer =
-                mentorAnswerRepository
-                        .findMentorAnswerByIdAndUserEmailAndQuestionId(
-                                expectedMentorAnswer.getId(), expectedMentorAnswer.getDiscussionQuestionMentor().getId(), enrolledCourse.getId(), student.getEmail())
-                        .orElseThrow(IllegalArgumentException::new);
+  @Test
+  void findMentorAnswerByIdAndUserEmailAndQuestionId() {
+    MentorAnswer actualMentorAnswer =
+        mentorAnswerRepository
+            .findMentorAnswerByIdAndUserEmailAndQuestionId(
+                expectedMentorAnswer.getId(),
+                expectedMentorAnswer.getDiscussionQuestionMentor().getId(),
+                enrolledCourse.getId(),
+                student.getEmail())
+            .orElseThrow(IllegalArgumentException::new);
 
-        assertEquals(expectedMentorAnswer.getId(), actualMentorAnswer.getId());
-        assertEquals(expectedMentorAnswer.getUser().getEmail(), actualMentorAnswer.getUser().getEmail());
-        assertEquals(expectedMentorAnswer.getDiscussionQuestionMentor().getId(), actualMentorAnswer.getDiscussionQuestionMentor().getId());
-    }
+    assertEquals(expectedMentorAnswer.getId(), actualMentorAnswer.getId());
+    assertEquals(
+        expectedMentorAnswer.getUser().getEmail(), actualMentorAnswer.getUser().getEmail());
+    assertEquals(
+        expectedMentorAnswer.getDiscussionQuestionMentor().getId(),
+        actualMentorAnswer.getDiscussionQuestionMentor().getId());
+  }
 }

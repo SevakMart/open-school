@@ -8,12 +8,14 @@ import org.springframework.data.domain.Pageable;
 public interface AnswerService {
 
   Answer create(Long enrolledCourseId, AnswerRequestDto requestDto, String email);
+
   Answer update(
-          UpdateAnswerRequest request,
-          Long answerId,
-          Long questionId,
-          Long enrolledCourseId,
-          String currentUserEmail);
+      UpdateAnswerRequest request,
+      Long answerId,
+      Long questionId,
+      Long enrolledCourseId,
+      String currentUserEmail);
+
   void delete(Long answerId, Long questionId, Long enrolledCourseId, String currentUserEmail);
 
   Answer findAnswerById(Long answerId);

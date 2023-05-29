@@ -50,24 +50,27 @@ public class PeersAnswerServiceImpl implements AnswerService {
   }
 
   @Override
-  public PeersAnswer update(UpdateAnswerRequest request,
-                            Long answerId,
-                            Long questionId,
-                            Long enrolledCourseId,
-                            String currentUserEmail){
+  public PeersAnswer update(
+      UpdateAnswerRequest request,
+      Long answerId,
+      Long questionId,
+      Long enrolledCourseId,
+      String currentUserEmail) {
     PeersAnswer peersAnswer =
-            peersAnswerRepository
-                    .findPeersAnswerByIdAndUserEmailAndQuestionId(answerId, questionId, enrolledCourseId, currentUserEmail)
-                    .orElseThrow(IllegalArgumentException::new);
+        peersAnswerRepository
+            .findPeersAnswerByIdAndUserEmailAndQuestionId(
+                answerId, questionId, enrolledCourseId, currentUserEmail)
+            .orElseThrow(IllegalArgumentException::new);
     peersAnswer.setText(request.getText());
     peersAnswer.setCreatedDate(Instant.now());
-    return peersAnswerRepository.save(peersAnswer) ;
+    return peersAnswerRepository.save(peersAnswer);
   }
 
   @Override
-  public void delete(Long answerId, Long questionId, Long enrolledCourseId, String currentUserEmail){
+  public void delete(
+      Long answerId, Long questionId, Long enrolledCourseId, String currentUserEmail) {
     int updatedRows =
-            peersAnswerRepository.delete(answerId, questionId, enrolledCourseId, currentUserEmail);
+        peersAnswerRepository.delete(answerId, questionId, enrolledCourseId, currentUserEmail);
     if (updatedRows == 0) throw new IllegalArgumentException();
   }
 

@@ -37,6 +37,7 @@ public class TestHelper {
     mentorQuestion.setCreatedDate(Instant.now());
     return mentorQuestion;
   }
+
   public static MentorAnswer createMentorAnswer() {
     MentorAnswer mentorAnswer = new MentorAnswer();
     mentorAnswer.setId(1L);

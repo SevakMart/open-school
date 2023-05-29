@@ -124,21 +124,25 @@ class PeersAnswerServiceImplTest {
 
     given(
             peersAnswerRepository.findPeersAnswerByIdAndUserEmailAndQuestionId(
-                    anyLong(),anyLong(),anyLong(), anyString()))
-            .willReturn(Optional.of(peersAnswer));
+                anyLong(), anyLong(), anyLong(), anyString()))
+        .willReturn(Optional.of(peersAnswer));
     given(peersAnswerRepository.save(any())).willReturn(peersAnswer);
 
     peersAnswer.setText(request.getText());
 
     Answer updatedAnswer =
-            answerService.update(
-                    request, peersAnswer.getId(), peersAnswer.getDiscussionQuestion().getId(),peersAnswer.getDiscussionQuestion().getCourse().getId(), peersAnswer.getUser().getEmail());
+        answerService.update(
+            request,
+            peersAnswer.getId(),
+            peersAnswer.getDiscussionQuestion().getId(),
+            peersAnswer.getDiscussionQuestion().getCourse().getId(),
+            peersAnswer.getUser().getEmail());
     assertTrue(updatedAnswer instanceof PeersAnswer);
     assertEquals(updatedAnswer.getText(), updateText);
 
     verify(peersAnswerRepository, times(1)).save(any());
     verify(peersAnswerRepository, times(1))
-            .findPeersAnswerByIdAndUserEmailAndQuestionId(any(), any(), any(),any());
+        .findPeersAnswerByIdAndUserEmailAndQuestionId(any(), any(), any(), any());
   }
 
   @Test
@@ -153,15 +157,12 @@ class PeersAnswerServiceImplTest {
     String email = peersAnswer.getUser().getEmail();
 
     assertThatThrownBy(
-            () ->
-                    answerService.update(
-                            request, wrongAnswerId, questionId , courseId
-                            ,email))
-            .isInstanceOf(IllegalArgumentException.class);
+            () -> answerService.update(request, wrongAnswerId, questionId, courseId, email))
+        .isInstanceOf(IllegalArgumentException.class);
 
     verify(peersAnswerRepository, times(0)).save(any());
     verify(peersAnswerRepository, times(1))
-            .findPeersAnswerByIdAndUserEmailAndQuestionId(any(), any(), any(),any());
+        .findPeersAnswerByIdAndUserEmailAndQuestionId(any(), any(), any(), any());
   }
 
   @Test
@@ -172,12 +173,12 @@ class PeersAnswerServiceImplTest {
     UpdateAnswerRequest request = new UpdateAnswerRequest();
     String wrongEmail = "wrongEmail";
 
-    assertThatThrownBy(() -> answerService.update(request, peersAnswerId, 1L, 1L,wrongEmail))
-            .isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> answerService.update(request, peersAnswerId, 1L, 1L, wrongEmail))
+        .isInstanceOf(IllegalArgumentException.class);
 
     verify(peersAnswerRepository, times(0)).save(any());
     verify(peersAnswerRepository, times(1))
-            .findPeersAnswerByIdAndUserEmailAndQuestionId(any(), any(), any(),any());
+        .findPeersAnswerByIdAndUserEmailAndQuestionId(any(), any(), any(), any());
   }
 
   @Test
@@ -190,13 +191,19 @@ class PeersAnswerServiceImplTest {
 
     given(
             peersAnswerRepository.delete(
-                    peersAnswer.getId(), peersQuestion.getId(), peersQuestion.getCourse().getId(), peersQuestion.getUser().getEmail()))
-            .willReturn(updatedRows);
+                peersAnswer.getId(),
+                peersQuestion.getId(),
+                peersQuestion.getCourse().getId(),
+                peersQuestion.getUser().getEmail()))
+        .willReturn(updatedRows);
     answerService.delete(
-            peersAnswer.getId(), peersQuestion.getId(), peersQuestion.getCourse().getId(),peersQuestion.getUser().getEmail());
+        peersAnswer.getId(),
+        peersQuestion.getId(),
+        peersQuestion.getCourse().getId(),
+        peersQuestion.getUser().getEmail());
 
     assertEquals(1, updatedRows);
-    verify(peersAnswerRepository, times(1)).delete(any(), any(),any(), any());
+    verify(peersAnswerRepository, times(1)).delete(any(), any(), any(), any());
   }
 
   @Test
@@ -211,9 +218,10 @@ class PeersAnswerServiceImplTest {
     String wrongEmail = "wrongEmail";
     long courseId = peersQuestion.getCourse().getId();
 
-    assertThatThrownBy(() -> answerService.delete(peersAnswerId, peersQuestionId, courseId ,wrongEmail))
-            .isInstanceOf(IllegalArgumentException.class);
-    verify(peersAnswerRepository, times(1)).delete(any(), any(),any() ,any());
+    assertThatThrownBy(
+            () -> answerService.delete(peersAnswerId, peersQuestionId, courseId, wrongEmail))
+        .isInstanceOf(IllegalArgumentException.class);
+    verify(peersAnswerRepository, times(1)).delete(any(), any(), any(), any());
   }
 
   @Test
@@ -228,9 +236,10 @@ class PeersAnswerServiceImplTest {
     long wrongQuestionId = 999L;
     Long courseId = peersQuestion.getCourse().getId();
 
-    assertThatThrownBy(() -> answerService.delete(peersAnswerId,wrongQuestionId, courseId , userEmail))
-            .isInstanceOf(IllegalArgumentException.class);
-    verify(peersAnswerRepository, times(1)).delete(any(), any(), any(),any());
+    assertThatThrownBy(
+            () -> answerService.delete(peersAnswerId, wrongQuestionId, courseId, userEmail))
+        .isInstanceOf(IllegalArgumentException.class);
+    verify(peersAnswerRepository, times(1)).delete(any(), any(), any(), any());
   }
 
   @Test
@@ -244,9 +253,10 @@ class PeersAnswerServiceImplTest {
     long wrongEnrolledCourseId = 999L;
     Long answerId = peersAnswer.getId();
 
-    assertThatThrownBy(() -> answerService.delete(answerId,questionId, wrongEnrolledCourseId, userEmail))
-            .isInstanceOf(IllegalArgumentException.class);
-    verify(peersAnswerRepository, times(1)).delete(any(), any(), any(),any());
+    assertThatThrownBy(
+            () -> answerService.delete(answerId, questionId, wrongEnrolledCourseId, userEmail))
+        .isInstanceOf(IllegalArgumentException.class);
+    verify(peersAnswerRepository, times(1)).delete(any(), any(), any(), any());
   }
 
   @Test

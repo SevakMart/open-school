@@ -51,7 +51,6 @@ class PeersAnswerRepositoryTest {
 
   private User student;
 
-
   @BeforeEach
   void setup() {
 
@@ -128,29 +127,37 @@ class PeersAnswerRepositoryTest {
   }
 
   @Test
-  void delete(){
+  void delete() {
 
     PeersAnswer peersAnswer =
-            peersAnswerRepository.findById(expectedPeersAnswer.getId()).orElseThrow();
+        peersAnswerRepository.findById(expectedPeersAnswer.getId()).orElseThrow();
 
     int updatedRows =
-            peersAnswerRepository.delete(
-                    peersAnswer.getId(), peersAnswer.getDiscussionQuestion().getId(), enrolledCourse.getId(),student.getEmail());
+        peersAnswerRepository.delete(
+            peersAnswer.getId(),
+            peersAnswer.getDiscussionQuestion().getId(),
+            enrolledCourse.getId(),
+            student.getEmail());
 
     assertEquals(1, updatedRows);
     assertEquals(peersAnswerRepository.findById(peersAnswer.getId()), Optional.empty());
   }
 
   @Test
-  void findPeersAnswerByIdAndUserEmailAndQuestionId(){
+  void findPeersAnswerByIdAndUserEmailAndQuestionId() {
     PeersAnswer actualPeersAnswer =
-            peersAnswerRepository
-                    .findPeersAnswerByIdAndUserEmailAndQuestionId(
-                            expectedPeersAnswer.getId(), expectedPeersAnswer.getDiscussionQuestion().getId(), enrolledCourse.getId(), student.getEmail())
-                    .orElseThrow(IllegalArgumentException::new);
+        peersAnswerRepository
+            .findPeersAnswerByIdAndUserEmailAndQuestionId(
+                expectedPeersAnswer.getId(),
+                expectedPeersAnswer.getDiscussionQuestion().getId(),
+                enrolledCourse.getId(),
+                student.getEmail())
+            .orElseThrow(IllegalArgumentException::new);
 
     assertEquals(expectedPeersAnswer.getId(), actualPeersAnswer.getId());
     assertEquals(expectedPeersAnswer.getUser().getEmail(), actualPeersAnswer.getUser().getEmail());
-    assertEquals(expectedPeersAnswer.getDiscussionQuestion().getId(), actualPeersAnswer.getDiscussionQuestion().getId());
+    assertEquals(
+        expectedPeersAnswer.getDiscussionQuestion().getId(),
+        actualPeersAnswer.getDiscussionQuestion().getId());
   }
 }

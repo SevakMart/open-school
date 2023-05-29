@@ -44,8 +44,9 @@ public class MentorQuestionServiceImpl implements QuestionService {
       Long enrolledCourseId,
       String currentUserEmail) {
     MentorQuestion mentorQuestion =
-            mentorQuestionRepository
-            .findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(questionId, currentUserEmail, enrolledCourseId)
+        mentorQuestionRepository
+            .findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(
+                questionId, currentUserEmail, enrolledCourseId)
             .orElseThrow(IllegalArgumentException::new);
     mentorQuestion.setText(request.getText());
     mentorQuestion.setCreatedDate(Instant.now());

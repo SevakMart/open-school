@@ -19,40 +19,40 @@ public interface PeersAnswerRepository extends JpaRepository<PeersAnswer, Long> 
   @Modifying(flushAutomatically = true, clearAutomatically = true)
   @Transactional
   @Query(
-          value =
-                  "DELETE FROM peers_answer "
-                          + "WHERE peers_answer.id =:answerId AND "
-                          + "peers_answer.peers_question_id = "
-                          + "(SELECT id FROM peers_question "
-                          + "WHERE id =:questionId AND "
-                          + "peers_question.learning_path_id = "
-                          + "(SELECT learning_path_id FROM enrolled_learning_path "
-                          + "WHERE id = :enrolledCourseId AND peers_question.user_id = "
-                          + "(SELECT id FROM user "
-                          + "WHERE email = :userEmail)));",
-          nativeQuery = true)
+      value =
+          "DELETE FROM peers_answer "
+              + "WHERE peers_answer.id =:answerId AND "
+              + "peers_answer.peers_question_id = "
+              + "(SELECT id FROM peers_question "
+              + "WHERE id =:questionId AND "
+              + "peers_question.learning_path_id = "
+              + "(SELECT learning_path_id FROM enrolled_learning_path "
+              + "WHERE id = :enrolledCourseId AND peers_question.user_id = "
+              + "(SELECT id FROM user "
+              + "WHERE email = :userEmail)));",
+      nativeQuery = true)
   int delete(
-          @Param("answerId") Long answerId,
-          @Param("questionId") Long questionId,
-          @Param("enrolledCourseId") Long enrolledCourseId,
-          @Param("userEmail") String userEmail);
+      @Param("answerId") Long answerId,
+      @Param("questionId") Long questionId,
+      @Param("enrolledCourseId") Long enrolledCourseId,
+      @Param("userEmail") String userEmail);
 
   @Query(
-          value =
-                  "SELECT * FROM peers_answer "
-                          + "WHERE peers_answer.id =:answerId AND "
-                          + "peers_answer.peers_question_id = "
-                          + "(SELECT id FROM peers_question "
-                          + "WHERE id =:questionId AND "
-                          + "peers_question.learning_path_id = "
-                          + "(SELECT learning_path_id FROM enrolled_learning_path "
-                          + "WHERE id = :enrolledCourseId AND peers_question.user_id = "
-                          + "(SELECT id FROM user "
-                          + "WHERE email = :userEmail)));",
-          nativeQuery = true)
+      value =
+          "SELECT * FROM peers_answer "
+              + "WHERE peers_answer.id =:answerId AND "
+              + "peers_answer.peers_question_id = "
+              + "(SELECT id FROM peers_question "
+              + "WHERE id =:questionId AND "
+              + "peers_question.learning_path_id = "
+              + "(SELECT learning_path_id FROM enrolled_learning_path "
+              + "WHERE id = :enrolledCourseId AND peers_question.user_id = "
+              + "(SELECT id FROM user "
+              + "WHERE email = :userEmail)));",
+      nativeQuery = true)
   Optional<PeersAnswer> findPeersAnswerByIdAndUserEmailAndQuestionId(
-          @Param("answerId") Long answerId,
-          @Param("questionId") Long questionId,
-          @Param("enrolledCourseId") Long enrolledCourseId,
-          @Param("userEmail") String userEmail);
+      @Param("answerId") Long answerId,
+      @Param("questionId") Long questionId,
+      @Param("enrolledCourseId") Long enrolledCourseId,
+      @Param("userEmail") String userEmail);
 }

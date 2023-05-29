@@ -140,22 +140,23 @@ class MentorQuestionRepositoryTest {
   @Test
   void delete() {
     MentorQuestion mentorQuestion =
-            mentorQuestionRepository.findById(expectedQuestion.getId()).orElseThrow();
+        mentorQuestionRepository.findById(expectedQuestion.getId()).orElseThrow();
 
     int updatedRows =
-            mentorQuestionRepository.delete(
-                    mentorQuestion.getId(), student.getEmail(), enrolledCourse.getId());
+        mentorQuestionRepository.delete(
+            mentorQuestion.getId(), student.getEmail(), enrolledCourse.getId());
 
     assertEquals(1, updatedRows);
     assertEquals(mentorQuestionRepository.findById(mentorQuestion.getId()), Optional.empty());
   }
+
   @Test
   void findMentorQuestionByIdAndUserEmailAndEnrolledCourseId() {
     MentorQuestion actualMentorQuestion =
-            mentorQuestionRepository
-                    .findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(
-                            expectedQuestion.getId(), student.getEmail(), enrolledCourse.getId())
-                    .orElseThrow(IllegalArgumentException::new);
+        mentorQuestionRepository
+            .findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(
+                expectedQuestion.getId(), student.getEmail(), enrolledCourse.getId())
+            .orElseThrow(IllegalArgumentException::new);
 
     assertEquals(expectedQuestion.getId(), actualMentorQuestion.getId());
     assertEquals(expectedQuestion.getUser().getEmail(), actualMentorQuestion.getUser().getEmail());

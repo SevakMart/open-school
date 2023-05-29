@@ -85,7 +85,7 @@ class MentorQuestionServiceImplTest {
     given(enrolledCourseRepository.findById(wrongEnrolledCourseId)).willReturn(Optional.empty());
 
     assertThatThrownBy(() -> questionService.create(wrongEnrolledCourseId, requestDto, email))
-            .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
@@ -100,7 +100,7 @@ class MentorQuestionServiceImplTest {
     doReturn(Optional.of(enrolledCourse)).when(enrolledCourseRepository).findById(enrolledCourseId);
 
     assertThatThrownBy(() -> questionService.create(enrolledCourseId, requestDto, email))
-            .isInstanceOf(PermissionDeniedException.class);
+        .isInstanceOf(PermissionDeniedException.class);
   }
 
   @Test
@@ -114,21 +114,21 @@ class MentorQuestionServiceImplTest {
 
     given(
             mentorQuestionRepository.findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(
-                    anyLong(), anyString(), anyLong()))
-            .willReturn(Optional.of(mentorQuestion));
+                anyLong(), anyString(), anyLong()))
+        .willReturn(Optional.of(mentorQuestion));
     given(mentorQuestionRepository.save(any())).willReturn(mentorQuestion);
 
     mentorQuestion.setText(request.getText());
 
     Question updatedQuestion =
-            questionService.update(
-                    request, mentorQuestion.getId(), 1L, mentorQuestion.getUser().getEmail());
+        questionService.update(
+            request, mentorQuestion.getId(), 1L, mentorQuestion.getUser().getEmail());
     assertTrue(updatedQuestion instanceof MentorQuestion);
     assertEquals(updatedQuestion.getText(), updateText);
 
     verify(mentorQuestionRepository, times(1)).save(any());
     verify(mentorQuestionRepository, times(1))
-            .findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(any(), any(), any());
+        .findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(any(), any(), any());
   }
 
   @Test
@@ -140,15 +140,12 @@ class MentorQuestionServiceImplTest {
     long wrongQuestionId = 999L;
     String email = mentorQuestion.getUser().getEmail();
 
-    assertThatThrownBy(
-            () ->
-                    questionService.update(
-                            request, wrongQuestionId, 1L, email))
-            .isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> questionService.update(request, wrongQuestionId, 1L, email))
+        .isInstanceOf(IllegalArgumentException.class);
 
     verify(mentorQuestionRepository, times(0)).save(any());
     verify(mentorQuestionRepository, times(1))
-            .findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(any(), any(), any());
+        .findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(any(), any(), any());
   }
 
   @Test
@@ -160,11 +157,11 @@ class MentorQuestionServiceImplTest {
     String wrongEmail = "wrongEmail";
 
     assertThatThrownBy(() -> questionService.update(request, mentorQuestionId, 1L, wrongEmail))
-            .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(IllegalArgumentException.class);
 
     verify(mentorQuestionRepository, times(0)).save(any());
     verify(mentorQuestionRepository, times(1))
-            .findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(any(), any(), any());
+        .findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(any(), any(), any());
   }
 
   @Test
@@ -177,10 +174,12 @@ class MentorQuestionServiceImplTest {
 
     given(
             mentorQuestionRepository.delete(
-                    mentorQuestion.getId(), mentorQuestion.getUser().getEmail(), enrolledCourse.getId()))
-            .willReturn(updatedRows);
+                mentorQuestion.getId(),
+                mentorQuestion.getUser().getEmail(),
+                enrolledCourse.getId()))
+        .willReturn(updatedRows);
     questionService.delete(
-            mentorQuestion.getId(), enrolledCourse.getId(), mentorQuestion.getUser().getEmail());
+        mentorQuestion.getId(), enrolledCourse.getId(), mentorQuestion.getUser().getEmail());
 
     assertEquals(1, updatedRows);
     verify(mentorQuestionRepository, times(1)).delete(any(), any(), any());
@@ -198,7 +197,7 @@ class MentorQuestionServiceImplTest {
     String wrongEmail = "wrongEmail";
 
     assertThatThrownBy(() -> questionService.delete(mentorQuestionId, enrolledCourseId, wrongEmail))
-            .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(IllegalArgumentException.class);
     verify(mentorQuestionRepository, times(1)).delete(any(), any(), any());
   }
 
@@ -214,7 +213,7 @@ class MentorQuestionServiceImplTest {
     long wrongQuestionId = 999L;
 
     assertThatThrownBy(() -> questionService.delete(wrongQuestionId, enrolledCourseId, userEmail))
-            .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(IllegalArgumentException.class);
     verify(mentorQuestionRepository, times(1)).delete(any(), any(), any());
   }
 
@@ -229,7 +228,7 @@ class MentorQuestionServiceImplTest {
     long wrongEnrolledCourseId = 999L;
 
     assertThatThrownBy(() -> questionService.delete(questionId, wrongEnrolledCourseId, userEmail))
-            .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(IllegalArgumentException.class);
     verify(mentorQuestionRepository, times(1)).delete(any(), any(), any());
   }
 
