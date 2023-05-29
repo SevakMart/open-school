@@ -468,11 +468,11 @@ class DiscussionControllerTest {
     UpdateAnswerRequest request = new UpdateAnswerRequest();
     request.setText("Update answer");
     PeersQuestion peersQuestion = TestHelper.createDiscussionPeersQuestion();
-    PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
     EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
     enrolledCourse.setId(1L);
     enrolledCourse.setCourse(peersQuestion.getCourse());
     enrolledCourse.setUser(peersQuestion.getUser());
+    PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
     peersAnswer.setDiscussionQuestion(peersQuestion);
     peersAnswer.setUser(peersQuestion.getUser());
 
@@ -1037,11 +1037,11 @@ class DiscussionControllerTest {
     UpdateAnswerRequest request = new UpdateAnswerRequest();
     request.setText("Update answer");
     MentorQuestion mentorQuestion = TestHelper.createMentorQuestion();
-    MentorAnswer mentorAnswer = TestHelper.createMentorAnswer();
     EnrolledCourse enrolledCourse = CourseGenerator.generateEnrolledCourse();
     enrolledCourse.setId(1L);
     enrolledCourse.setCourse(mentorQuestion.getCourse());
     enrolledCourse.setUser(mentorQuestion.getUser());
+    MentorAnswer mentorAnswer = TestHelper.createMentorAnswer();
     mentorAnswer.setDiscussionQuestionMentor(mentorQuestion);
     mentorAnswer.setUser(mentorQuestion.getUser());
 
