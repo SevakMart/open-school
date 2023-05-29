@@ -1,7 +1,13 @@
 package app.openschool.course.discussion;
 
 import app.openschool.common.response.ResponseMessage;
-import app.openschool.course.discussion.dto.*;
+import app.openschool.course.discussion.dto.AnswerRequestDto;
+import app.openschool.course.discussion.dto.AnswerResponseDto;
+import app.openschool.course.discussion.dto.MentorQuestionResponseDto;
+import app.openschool.course.discussion.dto.QuestionRequestDto;
+import app.openschool.course.discussion.dto.QuestionResponseDto;
+import app.openschool.course.discussion.dto.UpdateAnswerRequest;
+import app.openschool.course.discussion.dto.UpdateQuestionRequest;
 import app.openschool.course.discussion.mapper.AnswerMapper;
 import app.openschool.course.discussion.mapper.MentorQuestionMapper;
 import app.openschool.course.discussion.mapper.QuestionMapper;

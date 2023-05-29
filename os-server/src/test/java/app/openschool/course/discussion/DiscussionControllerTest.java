@@ -25,7 +25,6 @@ import app.openschool.course.discussion.peers.answer.PeersAnswer;
 import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.user.User;
 import app.openschool.user.role.Role;
-
 import java.time.Instant;
 import java.util.List;
 import org.junit.jupiter.api.Test;

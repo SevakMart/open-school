@@ -1,5 +1,7 @@
 package app.openschool.course.discussion.answer;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import app.openschool.category.Category;
 import app.openschool.category.CategoryRepository;
 import app.openschool.course.Course;
@@ -20,16 +22,13 @@ import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.role.Role;
 import app.openschool.user.role.RoleRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 class MentorAnswerRepositoryTest {

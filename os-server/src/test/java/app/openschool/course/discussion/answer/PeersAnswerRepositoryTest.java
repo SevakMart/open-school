@@ -21,9 +21,8 @@ import app.openschool.course.language.LanguageRepository;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
 import app.openschool.user.role.Role;
-import java.util.Optional;
-
 import app.openschool.user.role.RoleRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

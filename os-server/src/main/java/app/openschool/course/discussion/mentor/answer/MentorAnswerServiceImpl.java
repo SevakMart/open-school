@@ -70,7 +70,9 @@ public class MentorAnswerServiceImpl implements AnswerService {
       Long answerId, Long questionId, Long enrolledCourseId, String currentUserEmail) {
     int updatedRows =
         mentorAnswerRepository.delete(answerId, questionId, enrolledCourseId, currentUserEmail);
-    if (updatedRows == 0) throw new IllegalArgumentException();
+    if (updatedRows == 0) {
+      throw new IllegalArgumentException();
+    }
   }
 
   @Override

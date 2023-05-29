@@ -20,8 +20,6 @@ import app.openschool.course.language.Language;
 import app.openschool.course.language.LanguageRepository;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
-import app.openschool.user.api.UserGenerator;
-import app.openschool.user.company.CompanyRepository;
 import app.openschool.user.role.Role;
 import app.openschool.user.role.RoleRepository;
 import java.util.Optional;

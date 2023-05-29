@@ -71,7 +71,9 @@ public class PeersAnswerServiceImpl implements AnswerService {
       Long answerId, Long questionId, Long enrolledCourseId, String currentUserEmail) {
     int updatedRows =
         peersAnswerRepository.delete(answerId, questionId, enrolledCourseId, currentUserEmail);
-    if (updatedRows == 0) throw new IllegalArgumentException();
+    if (updatedRows == 0) {
+      throw new IllegalArgumentException();
+    }
   }
 
   @Override

@@ -57,7 +57,9 @@ public class MentorQuestionServiceImpl implements QuestionService {
   public void delete(Long questionId, Long enrolledCourseId, String currentUserEmail) {
     int updatedRows =
         mentorQuestionRepository.delete(questionId, currentUserEmail, enrolledCourseId);
-    if (updatedRows == 0) throw new IllegalArgumentException();
+    if (updatedRows == 0) {
+      throw new IllegalArgumentException();
+    }
   }
 
   @Override
