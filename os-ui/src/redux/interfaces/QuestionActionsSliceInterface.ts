@@ -68,3 +68,11 @@ export interface GetAllQuestionsPayload {
   token: string;
   sectionName: string;
 }
+
+// all Answers
+export interface GetAllAnswersPayload {
+  enrolledCourseId: number;
+  token: string;
+  sectionName: string;
+  questionId: string;
+}

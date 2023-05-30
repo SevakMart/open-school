@@ -1,25 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Question } from '../../pages/CourseModulePage/DiscussionPage/interfaces/interfaces';
 import fetchData from '../../services/fetchData';
-import { GetAllQuestionsPayload } from '../interfaces/QuestionActionsSliceInterface';
+import { GetAllAnswersPayload } from '../interfaces/QuestionActionsSliceInterface';
 
 const initialState = {
-  AllquestionsToPeers: [],
-  AllquestionsToMentor: [],
+  AllAnswersByQuIdToPeers: [],
+  AllAnswersByQuIdToMentor: [],
   errorMessage: '',
   isLoading: false,
-  // section: true,
+  section: true,
 };
 
-export const AllQuestions = createAsyncThunk(
-  'discussionForum/getAllQuestions',
-  async (payload: GetAllQuestionsPayload, { rejectWithValue }) => {
+export const AllAnswersByQuId = createAsyncThunk(
+  'discussionForum/getAllAnswers',
+  async (payload: GetAllAnswersPayload, { rejectWithValue }) => {
     try {
       const {
-        enrolledCourseId, token, sectionName,
+        enrolledCourseId, token, sectionName, questionId,
       } = payload;
       const response = await fetchData.get(
-        `courses/enrolled/${enrolledCourseId}/${sectionName}-questions`,
+        `courses/enrolled/${enrolledCourseId}/${sectionName}-questions/answers${questionId}`,
         {},
         token,
       );
@@ -37,8 +37,8 @@ export const AllQuestions = createAsyncThunk(
   },
 );
 
-export const GetAllQuestionsSlice = createSlice({
-  name: 'AllQuestions',
+export const GetAllAnswersByQuestionIdSlice = createSlice({
+  name: 'AllAnswersByQuId',
   initialState,
   reducers: {
     // changeSectionValue: (state, action) => {
@@ -47,20 +47,20 @@ export const GetAllQuestionsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(AllQuestions.pending, (state) => {
+      .addCase(AllAnswersByQuId.pending, (state) => {
         state.errorMessage = '';
         state.isLoading = true;
       })
-      .addCase(AllQuestions.fulfilled, (state, action) => {
+      .addCase(AllAnswersByQuId.fulfilled, (state, action) => {
         if (action.meta.arg.sectionName === 'peers') {
-          state.AllquestionsToPeers = action.payload;
+          state.AllAnswersByQuIdToPeers = action.payload;
         } else if (action.meta.arg.sectionName === 'mentor') {
-          state.AllquestionsToMentor = action.payload;
+          state.AllAnswersByQuIdToMentor = action.payload;
         }
         state.isLoading = false;
         state.errorMessage = '';
       })
-      .addCase(AllQuestions.rejected, (state, action) => {
+      .addCase(AllAnswersByQuId.rejected, (state, action) => {
         state.errorMessage = `${action.payload}`;
         state.isLoading = false;
       });
@@ -68,4 +68,4 @@ export const GetAllQuestionsSlice = createSlice({
 });
 
 // export const { changeSectionValue } = GetAllQuestionsSlice.actions;
-export default GetAllQuestionsSlice.reducer;
+export default GetAllAnswersByQuestionIdSlice.reducer;

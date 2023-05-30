@@ -24,7 +24,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const [answerValue, setAnswerValue] = useState<string>('');
 
   // is all answers to a question appers
-  const [allAnswersState, setAllAnswersState] = useState(true);
+  const [allAnswersState, setAllAnswersState] = useState(false);
   const handleSetAllAnswersState = () => {
     setAllAnswersState((prev) => !prev);
   };
@@ -58,6 +58,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const isAnswerValueEmpty = answerValue.trim() !== '';
   const handleAddAsnswer = (questionId: string) => {
     if (isAnswerValueEmpty && answerValue.length < 500) {
+      if (!allAnswersState) handleSetAllAnswersState();
       dispatch(addAnswer({
         enrolledCourseId, answerText: answerValue, token, sectionName, questionId,
       }));
@@ -102,7 +103,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   };
 
   let truncatedText = text;
-  if (text.length > 65) truncatedText = `${text.slice(0, 56)}...`;
+  if (text.length > 65) truncatedText = `${text.slice(0, 55)}...`;
 
   // edit
   const editValueChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -153,6 +154,8 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const formattedDate = formatDate(createdDate);
 
   const { t } = useTranslation();
+
+  // get all answers by QuestionId
 
   return (
     <div className="Questions_page">
