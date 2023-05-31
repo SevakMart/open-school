@@ -2,6 +2,8 @@ package app.openschool.course.discussion.question;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -9,33 +11,38 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.api.CourseGenerator;
+import app.openschool.course.discussion.Question;
 import app.openschool.course.discussion.QuestionService;
 import app.openschool.course.discussion.TestHelper;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
-import app.openschool.course.discussion.dto.QuestionResponseDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
 import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
 import app.openschool.course.discussion.peers.question.PeersQuestionServiceImpl;
 import app.openschool.user.User;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class PeersQuestionServiceImplTest {
   @Mock PeersQuestionRepository peersQuestionRepository;
   @Mock EnrolledCourseRepository enrolledCourseRepository;
-
   QuestionService questionService;
 
   @BeforeEach
@@ -52,19 +59,20 @@ class PeersQuestionServiceImplTest {
     Course course = TestHelper.crateCourse();
     EnrolledCourse enrolledCourse = TestHelper.createEnrolledCourse(user, course);
     doReturn(Optional.of(enrolledCourse)).when(enrolledCourseRepository).findById(anyLong());
-    QuestionResponseDto questionResponseDto =
+    Question actual =
         questionService.create(
             enrolledCourse.getId(),
-            crateDiscussionQuestionRequestDto(),
+            TestHelper.crateDiscussionQuestionRequestDto(),
             TestHelper.createPrincipal().getName());
-    assertEquals(peersQuestion.getId(), questionResponseDto.getId());
-    assertEquals(peersQuestion.getText(), questionResponseDto.getText());
-    assertEquals(peersQuestion.getUser().getId(), questionResponseDto.getUserDto().getId());
-    assertEquals(peersQuestion.getUser().getName(), questionResponseDto.getUserDto().getName());
-    assertEquals(peersQuestion.getUser().getEmail(), questionResponseDto.getUserDto().getEmail());
-    assertEquals(peersQuestion.getCourse().getId(), questionResponseDto.getCourseDto().getId());
-    assertEquals(
-        peersQuestion.getCourse().getTitle(), questionResponseDto.getCourseDto().getTitle());
+
+    assertTrue(actual instanceof PeersQuestion);
+    assertEquals(peersQuestion.getId(), actual.getId());
+    assertEquals(peersQuestion.getText(), actual.getText());
+    assertEquals(peersQuestion.getUser().getId(), actual.getUser().getId());
+    assertEquals(peersQuestion.getUser().getName(), actual.getUser().getName());
+    assertEquals(peersQuestion.getUser().getEmail(), actual.getUser().getEmail());
+    assertEquals(peersQuestion.getCourse().getId(), actual.getCourse().getId());
+    assertEquals(peersQuestion.getCourse().getTitle(), actual.getCourse().getTitle());
     verify(peersQuestionRepository, times(1)).save(any());
   }
 
@@ -72,7 +80,7 @@ class PeersQuestionServiceImplTest {
   void addQuestion_withInCorrectEnrolledCourseId() {
 
     String email = TestHelper.createPrincipal().getName();
-    QuestionRequestDto requestDto = crateDiscussionQuestionRequestDto();
+    QuestionRequestDto requestDto = TestHelper.crateDiscussionQuestionRequestDto();
     long wrongEnrolledCourseId = 999L;
 
     given(enrolledCourseRepository.findById(wrongEnrolledCourseId)).willReturn(Optional.empty());
@@ -87,7 +95,7 @@ class PeersQuestionServiceImplTest {
     EnrolledCourse enrolledCourse = new EnrolledCourse();
     enrolledCourse.setUser(new User(2L));
     long enrolledCourseId = 1L;
-    QuestionRequestDto requestDto = crateDiscussionQuestionRequestDto();
+    QuestionRequestDto requestDto = TestHelper.crateDiscussionQuestionRequestDto();
     String email = TestHelper.createPrincipal().getName();
 
     doReturn(Optional.of(enrolledCourse)).when(enrolledCourseRepository).findById(enrolledCourseId);
@@ -113,9 +121,10 @@ class PeersQuestionServiceImplTest {
 
     peersQuestion.setText(request.getText());
 
-    PeersQuestion updatedQuestion =
+    Question updatedQuestion =
         questionService.update(
             request, peersQuestion.getId(), 1L, peersQuestion.getUser().getEmail());
+    assertTrue(updatedQuestion instanceof PeersQuestion);
     assertEquals(updatedQuestion.getText(), updateText);
 
     verify(peersQuestionRepository, times(1)).save(any());
@@ -224,9 +233,77 @@ class PeersQuestionServiceImplTest {
     verify(peersQuestionRepository, times(1)).delete(any(), any(), any());
   }
 
-  QuestionRequestDto crateDiscussionQuestionRequestDto() {
-    QuestionRequestDto requestDto = new QuestionRequestDto();
-    requestDto.setText("text");
-    return requestDto;
+  @Test
+  void findQuestionByCourseId_withCorrectData() {
+    PeersQuestion question = TestHelper.createDiscussionPeersQuestion();
+    long enrolledCourseId = 1L;
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<PeersQuestion> questionPage = new PageImpl<>(List.of(question));
+
+    when(peersQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable))
+        .thenReturn(questionPage);
+    Page<? extends Question> questionByCourseId =
+        questionService.findQuestionByCourseId(enrolledCourseId, pageable);
+
+    assertNotNull(questionByCourseId.stream().findFirst().orElseThrow());
+    assertTrue(
+        questionByCourseId.stream()
+            .allMatch(peersQuestion -> peersQuestion instanceof PeersQuestion));
+    verify(peersQuestionRepository, times(1))
+        .findQuestionByEnrolledCourseId(enrolledCourseId, pageable);
   }
+
+  @Test
+  void findQuestionByCourseId_withIncorrectData() {
+    long wrongEnrolledCourseId = 1L;
+    Pageable pageable = PageRequest.of(0, 2);
+
+    when(peersQuestionRepository.findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable))
+        .thenReturn(Page.empty(pageable));
+    Page<? extends Question> questionByCourseId =
+        questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable);
+
+    assertTrue(questionByCourseId.getContent().isEmpty());
+    verify(peersQuestionRepository, times(1))
+        .findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable);
+  }
+
+  @Test
+  void findQuestionByIdAndEnrolledCourseId_withCorrectData() {
+
+    PeersQuestion question = TestHelper.createDiscussionPeersQuestion();
+    long questionId = question.getId();
+    long enrolledCourseId = 1L;
+
+    when(peersQuestionRepository.findQuestionByIdAndEnrolledCourseId(enrolledCourseId, questionId))
+        .thenReturn(Optional.of(question));
+    Question questionByCourseId =
+        questionService.findQuestionByIdAndEnrolledCourseId(enrolledCourseId, questionId);
+
+    assertNotNull(questionByCourseId);
+    assertTrue(questionByCourseId instanceof PeersQuestion);
+    verify(peersQuestionRepository, times(1))
+        .findQuestionByIdAndEnrolledCourseId(enrolledCourseId, questionId);
+  }
+
+  @Test
+  void findQuestionByIdAndEnrolledCourseId_withIncorrectData() {
+
+    long wrongQuestionId = 999L;
+    long enrolledCourseId = 1L;
+
+    when(peersQuestionRepository.findQuestionByIdAndEnrolledCourseId(
+            enrolledCourseId, wrongQuestionId))
+        .thenReturn(Optional.empty());
+
+    assertThatThrownBy(
+            () ->
+                questionService.findQuestionByIdAndEnrolledCourseId(
+                    enrolledCourseId, wrongQuestionId))
+        .isInstanceOf(IllegalArgumentException.class);
+
+    verify(peersQuestionRepository, times(1))
+        .findQuestionByIdAndEnrolledCourseId(enrolledCourseId, wrongQuestionId);
+  }
+
 }

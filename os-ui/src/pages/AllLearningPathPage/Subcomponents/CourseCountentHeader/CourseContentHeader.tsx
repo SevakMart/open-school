@@ -20,6 +20,7 @@ const CourseContentHeader = ({ handleChangeHeader }:{handleChangeHeader:(headerT
   const [sortingFeature, setSortingFeature] = useState<any>(params.has('sort') ? params.get('sort') : RATING);
   const { t } = useTranslation();
   const [, , dispatch, handleSearchedResult] = useCheck('courseTitle', '');
+  const [key, setKey] = useState(0);
   const {
     activeNav, nonActiveNav, headerMainContainer, sortingContainer, navAndSortContent,
   } = styles;
@@ -39,14 +40,28 @@ const CourseContentHeader = ({ handleChangeHeader }:{handleChangeHeader:(headerT
     }
   }, [sortingFeature]);
 
+  const handleSavedLearningPathClick = () => {
+    dispatch(removeFilterParams(''));
+    handleChangeHeader(HeaderPath.SAVED_LEARNING_PATHS);
+    setFocusedHeader(HeaderPath.SAVED_LEARNING_PATHS);
+    setKey((prevKey) => prevKey + 1);
+  };
+
+  const handleAllLearningPathClick = () => {
+    dispatch(removeFilterParams(''));
+    handleChangeHeader(HeaderPath.ALL_LEARNING_PATHS);
+    setFocusedHeader(HeaderPath.ALL_LEARNING_PATHS);
+    setKey((prevKey) => prevKey + 1);
+  };
+
   return (
-    <div className={headerMainContainer}>
+    <div key={key} className={headerMainContainer}>
       <div className={navAndSortContent}>
         <nav>
           <p
             className={focusedHeader === HeaderPath.ALL_LEARNING_PATHS ? activeNav : nonActiveNav}
             data-testid={HeaderPath.ALL_LEARNING_PATHS}
-            onClick={() => { handleChangeHeader(HeaderPath.ALL_LEARNING_PATHS); setFocusedHeader(HeaderPath.ALL_LEARNING_PATHS); }}
+            onClick={handleAllLearningPathClick}
           >
             {t('string.learningPath.all')}
 
@@ -54,7 +69,7 @@ const CourseContentHeader = ({ handleChangeHeader }:{handleChangeHeader:(headerT
           <p
             className={focusedHeader === HeaderPath.SAVED_LEARNING_PATHS ? activeNav : nonActiveNav}
             data-testid={HeaderPath.SAVED_LEARNING_PATHS}
-            onClick={() => { handleChangeHeader(HeaderPath.SAVED_LEARNING_PATHS); setFocusedHeader(HeaderPath.SAVED_LEARNING_PATHS); }}
+            onClick={handleSavedLearningPathClick}
           >
             {t('string.learningPath.saved')}
 

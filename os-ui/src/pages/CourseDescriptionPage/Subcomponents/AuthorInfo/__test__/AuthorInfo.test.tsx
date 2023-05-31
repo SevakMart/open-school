@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { store } from '../../../../../redux/Store';
 import AuthorInfo from '../AuthorInfo';
 
@@ -21,11 +22,13 @@ describe('Create test case to AuthorInfo component', () => {
   test('Create a snapshot test', async () => {
     const { asFragment } = render(
       <Provider store={store}>
-        <AuthorInfo
-          mentorName="John"
-          mentorSurname="Smith"
-          mentorLinkedIn="https://www.linkedin.com/in/john-smith/"
-        />
+        <Router>
+          <AuthorInfo
+            mentorName="John"
+            mentorSurname="Smith"
+            mentorLinkedIn="https://www.linkedin.com/in/john-smith/"
+          />
+        </Router>
       </Provider>,
     );
     expect(asFragment).toMatchSnapshot();

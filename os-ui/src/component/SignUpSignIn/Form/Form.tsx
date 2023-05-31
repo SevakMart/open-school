@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { Input } from '../../Input/Input';
@@ -8,14 +8,7 @@ import Button from '../../Button/Button';
 import styles from './Form.module.scss';
 import { signInContext } from '../../../contexts/Contexts';
 import { PASSWORD_REQUIRED } from '../../../constants/Strings';
-
-export interface FormValues {
-  [index:string]:string;
-}
-
-interface ErrorFormValues {
-  [index:string]:string;
-}
+import { FormProps } from '../../../types/FormTypes';
 
 const initialFormValues = {
   firstName: '',
@@ -32,18 +25,10 @@ const Form = ({
   isResetPasswordForm,
   formButtonText,
   errorFormValue,
+  unAuthorizedSignInError,
   handleForm,
   resendEmail,
-  unAuthorizedSignInError,
-}: {
-  isSignUpForm:boolean,
-  isResetPasswordForm:boolean,
-  formButtonText:string,
-  errorFormValue:ErrorFormValues,
-  unAuthorizedSignInError?:string,
-  handleForm:(formValue:FormValues)=>void,
-  resendEmail?:()=>void
-}) => {
+}: FormProps) => {
   const [formValues, setFormValues] = useState(initialFormValues);
   const [errorMessage, setErrorMessage] = useState('');
   const { setSignIn } = useContext(signInContext);
@@ -62,7 +47,8 @@ const Form = ({
     dispatch(openModal({ buttonType: Types.Button.FORGOT_PASSWORD }));
   };
 
-  const handleFormOnClick = () => {
+  const handleFormOnClick = (e: React.SyntheticEvent) => {
+    e.preventDefault();
     const trimmedPassword = formValues.psd.trim();
     if (trimmedPassword === '') {
 	  setErrorMessage(PASSWORD_REQUIRED);
@@ -76,6 +62,20 @@ const Form = ({
   const handleForgotVerification = () => {
     dispatch(openModal({ buttonType: Types.Button.FORGOT_VERIFICATION, forgotVerficationEmail: formValues.email }));
   };
+
+  const handleSubmit = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (event.key === 'Enter') {
+	  event.preventDefault();
+	  handleFormOnClick(event);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleSubmit as unknown as (event: KeyboardEvent) => void);
+    return () => {
+	  document.removeEventListener('keydown', handleSubmit as unknown as (event: KeyboardEvent) => void);
+    };
+  }, [formValues]);
 
   return (
     <form className={inputContent}>
@@ -117,6 +117,7 @@ const Form = ({
           placeholderText={t('form.placeholder.email')}
           value={formValues.email}
           handleInputChange={handleInputChange}
+          handleEnterPress={handleSubmit}
         />
       )}
       <Input.PasswordInput
@@ -138,6 +139,7 @@ const Form = ({
         }
         value={isResetPasswordForm ? formValues.newPassword : formValues.psd}
         handleInputChange={handleInputChange}
+        handleEnterPress={handleSubmit}
       />
       {isResetPasswordForm && (
         <Input.PasswordInput
@@ -147,6 +149,7 @@ const Form = ({
           placeholderText={t('form.placeholder.psd.confirm')}
           value={formValues.confirmedPassword}
           handleInputChange={handleInputChange}
+          handleEnterPress={handleSubmit}
         />
       )}
       {errorMessage ? (
@@ -191,4 +194,5 @@ const Form = ({
     </form>
   );
 };
+
 export default Form;
