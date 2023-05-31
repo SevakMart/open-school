@@ -67,6 +67,7 @@ export interface GetAllQuestionsPayload {
   enrolledCourseId: number;
   token: string;
   sectionName: string;
+  pageNum: number;
 }
 
 // all Answers

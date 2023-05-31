@@ -16,11 +16,16 @@ export const AllQuestions = createAsyncThunk(
   async (payload: GetAllQuestionsPayload, { rejectWithValue }) => {
     try {
       const {
-        enrolledCourseId, token, sectionName,
+        enrolledCourseId, token, sectionName, pageNum,
       } = payload;
       const response = await fetchData.get(
         `courses/enrolled/${enrolledCourseId}/${sectionName}-questions`,
-        {},
+        {
+          size: pageNum * 15,
+          sort: [
+            'id,desc',
+          ],
+        },
         token,
       );
       const responseJSON = await response.json();
@@ -41,9 +46,6 @@ export const GetAllQuestionsSlice = createSlice({
   name: 'AllQuestions',
   initialState,
   reducers: {
-    // changeSectionValue: (state, action) => {
-    //   state.section = action.payload;
-    // },
   },
   extraReducers: (builder) => {
     builder
@@ -67,5 +69,4 @@ export const GetAllQuestionsSlice = createSlice({
   },
 });
 
-// export const { changeSectionValue } = GetAllQuestionsSlice.actions;
 export default GetAllQuestionsSlice.reducer;

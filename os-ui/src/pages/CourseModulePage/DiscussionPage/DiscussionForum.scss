@@ -104,3 +104,26 @@
   margin-left: 3px;
   color: $black-text-color;
 }
+
+// questions pagination
+.questions_items-showMore {
+  display: flex;
+  margin-top: 20px;
+  margin-left: 5px;
+  &_btn{
+    border: none;
+    font-size: 16px;
+    color: $btn-secondary-color;
+    margin-right: 20px;
+    cursor: pointer;
+    &_more, 
+    &_less {
+      &:hover {
+        color: $pagination-showMore-hover-color
+      }
+      &:active {
+        color: $pagination-showMore-active-color;
+      }
+    }
+  }
+}

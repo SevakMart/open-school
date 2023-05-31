@@ -17,10 +17,6 @@ import QuestionItem from './subcomponents/QuestionItem/QuestionItem';
 const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   // save typed question
   const [value, setValue] = useState<string>('');
-  // const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-  //   const newValue = event.target.value.length > 500 ? value : event.target.value;
-  //   setValue(newValue);
-  // };
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(event.target.value);
   };
@@ -59,7 +55,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
     section: true,
   };
 
-  const { AllquestionsToPeers, AllquestionsToMentor } = AllQuestionFromServer;
+  const { AllquestionsToPeers, AllquestionsToMentor, isLoading: isLoadingAllTheQuestions } = AllQuestionFromServer;
 
   // get id and token of user
   const idAndToken = useMemo(() => ({
@@ -81,12 +77,25 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
     dispatch(changeSection(isBtnClicked));
   }, []);
 
+  // all questions from server
+  const AllQuestionsFromServerMap = isBtnClicked ? AllquestionsToPeers : AllquestionsToMentor;
+
   // mentor or peersF
   const questionsMap:Question[] = isBtnClicked ? questionsWithId : questionsWithIdToMentor;
-
   const { t } = useTranslation();
 
-  // get all AnswerStates
+  // pagination for questions- show more
+  const [pageNum, setPageNum] = useState<number>(1);
+  const togglesetPageNum = (type:string) => {
+    if (type === 'plus') {
+      setPageNum((prev) => prev + 1);
+    }
+    if (type === 'minus') {
+      setPageNum((prev) => prev - 1);
+    }
+  };
+
+  // get all AnswerStates to a question
   const AllAnswerState = useSelector<RootState>((state) => state.AnswerActions) as {
     PeersResponses: ResponsesMap[],
     MentorResponses: ResponsesMap[],
@@ -100,9 +109,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   const responsesMap: ResponsesMap[] = isBtnClicked ? PeersResponses : MentorResponses;
 
   // get all questions
-  const AllQuestionsFromServerMap = isBtnClicked ? AllquestionsToPeers : AllquestionsToMentor;
   const [isPageReloaded, setPageReloaded] = useState(true);
-
   useEffect(() => {
     setPageReloaded(true);
   }, []);
@@ -110,17 +117,25 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   useEffect(() => {
     const fetchAllQuestions = async () => {
       await Promise.all([
-        dispatch(AllQuestions({ enrolledCourseId: entity.enrolledCourseId, token: idAndToken.token, sectionName: 'peers' })),
-        dispatch(AllQuestions({ enrolledCourseId: entity.enrolledCourseId, token: idAndToken.token, sectionName: 'mentor' })),
+        dispatch(AllQuestions({
+          enrolledCourseId: entity.enrolledCourseId, token: idAndToken.token, sectionName: 'peers', pageNum,
+        })),
+        dispatch(AllQuestions({
+          enrolledCourseId: entity.enrolledCourseId, token: idAndToken.token, sectionName: 'mentor', pageNum,
+        })),
       ]);
       setPageReloaded(false);
     };
     fetchAllQuestions();
-  }, []);
+  }, [pageNum]);
 
   useEffect(() => {
     dispatch(AllQuestionsFromServer(AllQuestionsFromServerMap));
   }, [isPageReloaded, isBtnClicked]);
+
+  useEffect(() => {
+    dispatch(AllQuestionsFromServer(AllQuestionsFromServerMap));
+  }, [pageNum, AllQuestionsFromServerMap]);
 
   // change Section
   const onChangeSection = (value:boolean) => {
@@ -174,6 +189,24 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
           }
           {isLoading && <div style={{ marginTop: '40px' }}><Loader /></div>}
           {isLoadingAnswers && <div style={{ marginTop: '40px' }}><Loader /></div>}
+        </div>
+        <div className="questions_items-showMore">
+          <button
+            type="button"
+            disabled={isLoadingAllTheQuestions}
+            className="questions_items-showMore_btn questions_items-showMore_btn_more"
+            onClick={() => togglesetPageNum('plus')}
+          >
+            {t('Show more')}
+          </button>
+          <button
+            type="button"
+            disabled={isLoadingAllTheQuestions}
+            className="questions_items-showMore_btn questions_items-showMore_btn_less"
+            onClick={() => togglesetPageNum('minus')}
+          >
+            {pageNum > 1 ? 'Show less' : ''}
+          </button>
         </div>
         {
         isOpen

@@ -238,8 +238,8 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
             /500
           </div>
           <div className="answer_section_actions">
-            <button type="button" onClick={() => animatedFunction(onAnswerTextareaClose)} className="btn_cancel">{t('Cancel')}</button>
-            <button type="button" onClick={() => animatedFunction(handleAddAsnswer, id)} className="btn_post">{t('Post')}</button>
+            <button type="button" onClick={() => animatedFunction(onAnswerTextareaClose)} className="btn_cancel" disabled={isAnimating}>{t('Cancel')}</button>
+            <button type="button" onClick={() => animatedFunction(handleAddAsnswer, id)} className="btn_post" disabled={isAnimating}>{t('Post')}</button>
           </div>
         </div>
       )}

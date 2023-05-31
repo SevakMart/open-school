@@ -131,8 +131,8 @@ export const QuestionActionsSlice = createSlice({
       })
       .addCase(addQuestion.fulfilled, (state, action) => {
         // Update state with the newly posted question
-        if (state.section) state.questionsWithId.push(action.payload);
-        else state.questionsWithIdToMentor.push(action.payload);
+        if (state.section) state.questionsWithId.unshift(action.payload);
+        else state.questionsWithIdToMentor.unshift(action.payload);
         state.isLoading = false;
         state.errorMessage = '';
       })

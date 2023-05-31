@@ -11,6 +11,20 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
 }) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
+  // animating function
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  const animatedFunction = (any_function: (...args: string[]) => void, ...args: string[]): void => {
+    setIsAnimating(true);
+    setTimeout(() => {
+      setIsAnimating(false);
+      any_function(...args);
+    }, 300);
+  };
+
+  const isValueEmpty = value.trim() === '';
+  const isValueLong = value.length > 500;
+  const isDisabled = isValueEmpty || isValueLong || isAnimating;
+
   const dispatch = useDispatch();
   const handleAddQuestion = () => {
     cleanTextField();
@@ -25,15 +39,6 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
     }
   }, [isOpen]);
 
-  const [isAnimating, setIsAnimating] = useState<boolean>(false);
-  const animatedFunction = (any_function: (...args: string[]) => void, ...args: string[]): void => {
-    setIsAnimating(true);
-    setTimeout(() => {
-      setIsAnimating(false);
-      any_function(...args);
-    }, 300);
-  };
-
   // close the popUp when escape pressed
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Escape') {
@@ -43,10 +48,6 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
   };
 
   const { t } = useTranslation();
-
-  const isValueEmpty = value.trim() === '';
-  const isValueLong = value.length > 500;
-  const isValueEmptyOrLong = isValueEmpty || isValueLong;
 
   return (
     <div className={`popup ${isOpen ? 'open' : ''} ${isAnimating ? 'animating' : ''}`}>
@@ -76,8 +77,8 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
             /500
           </div>
           <div className="buttons">
-            <button type="button" onClick={() => { animatedFunction(handleClose); }} className="btn_cancel" data-testid="close-cancel-btn">{t('Cancel')}</button>
-            <button type="button" onClick={() => { animatedFunction(handleAddQuestion); }} disabled={isValueEmptyOrLong} data-testid="post-btn" className="btn_post">{t('Post')}</button>
+            <button type="button" onClick={() => animatedFunction(handleClose)} disabled={isDisabled} className="btn_cancel" data-testid="close-cancel-btn">{t('Cancel')}</button>
+            <button type="button" onClick={() => animatedFunction(handleAddQuestion)} disabled={isDisabled} data-testid="post-btn" className="btn_post">{t('Post')}</button>
           </div>
         </div>
       </div>
