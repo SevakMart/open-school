@@ -195,7 +195,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
                   </div>
                   <div className="editField_btns">
                     <button type="button" className="btn_cancel" onClick={() => animatedFunction(onClose)}>{t('Cancel')}</button>
-                    <button type="button" className="btn_post" onClick={() => animatedFunction(editQuestion)}>{t('Save')}</button>
+                    <button type="button" className="btn_post" disabled={isDisable} onClick={() => animatedFunction(editQuestion)}>{t('Save')}</button>
                   </div>
                 </div>
               )

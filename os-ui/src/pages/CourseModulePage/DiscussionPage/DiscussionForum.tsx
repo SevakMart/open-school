@@ -15,7 +15,7 @@ import AskQuestionPopup from './subcomponents/askQuestionPopup/AskQuestionPopup'
 import QuestionItem from './subcomponents/QuestionItem/QuestionItem';
 
 const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
-  // save typed question
+  // set typed question in local state
   const [value, setValue] = useState<string>('');
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(event.target.value);
@@ -135,7 +135,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
 
   useEffect(() => {
     dispatch(AllQuestionsFromServer(AllQuestionsFromServerMap));
-  }, [pageNum, AllQuestionsFromServerMap]);
+  }, [AllQuestionsFromServerMap]);
 
   // change Section
   const onChangeSection = (value:boolean) => {
@@ -190,24 +190,26 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
           {isLoading && <div style={{ marginTop: '40px' }}><Loader /></div>}
           {isLoadingAnswers && <div style={{ marginTop: '40px' }}><Loader /></div>}
         </div>
-        <div className="questions_items-showMore">
-          <button
-            type="button"
-            disabled={isLoadingAllTheQuestions}
-            className="questions_items-showMore_btn questions_items-showMore_btn_more"
-            onClick={() => togglesetPageNum('plus')}
-          >
-            {t('Show more')}
-          </button>
-          <button
-            type="button"
-            disabled={isLoadingAllTheQuestions}
-            className="questions_items-showMore_btn questions_items-showMore_btn_less"
-            onClick={() => togglesetPageNum('minus')}
-          >
-            {pageNum > 1 ? 'Show less' : ''}
-          </button>
-        </div>
+        {questionsMap.length >= 15 && (
+          <div className="questions_items-showMore">
+            <button
+              type="button"
+              disabled={isLoadingAllTheQuestions}
+              className="questions_items-showMore_btn questions_items-showMore_btn_more"
+              onClick={() => togglesetPageNum('plus')}
+            >
+              {t('Show more')}
+            </button>
+            <button
+              type="button"
+              disabled={isLoadingAllTheQuestions}
+              className="questions_items-showMore_btn questions_items-showMore_btn_less"
+              onClick={() => togglesetPageNum('minus')}
+            >
+              {pageNum > 1 ? 'Show less' : ''}
+            </button>
+          </div>
+        )}
         {
         isOpen
           && (
