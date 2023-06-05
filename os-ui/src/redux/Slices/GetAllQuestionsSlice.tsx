@@ -8,7 +8,6 @@ const initialState = {
   AllquestionsToMentor: [],
   errorMessage: '',
   isLoading: false,
-  // section: true,
 };
 
 export const AllQuestions = createAsyncThunk(

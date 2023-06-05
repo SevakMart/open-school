@@ -54,7 +54,7 @@ export const AnswerActionsSlice = createSlice({
       if (state.section) {
         state.PeersResponses = action.payload;
       } else {
-        state.PeersResponses = action.payload;
+        state.MentorResponses = action.payload;
       }
     },
   },
