@@ -49,7 +49,15 @@ export const addAnswer = createAsyncThunk(
 export const AnswerActionsSlice = createSlice({
   name: 'response',
   initialState,
-  reducers: {},
+  reducers: {
+    AllAnswersByQuIdFromServer: (state, action) => {
+      if (state.section) {
+        state.PeersResponses = action.payload;
+      } else {
+        state.MentorResponses = action.payload;
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(addAnswer.pending, (state) => {
@@ -70,4 +78,5 @@ export const AnswerActionsSlice = createSlice({
   },
 });
 
+export const { AllAnswersByQuIdFromServer } = AnswerActionsSlice.actions;
 export default AnswerActionsSlice.reducer;

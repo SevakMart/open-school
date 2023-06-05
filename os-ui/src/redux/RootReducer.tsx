@@ -22,6 +22,8 @@ import portalStatusReducer from './Slices/PortalOpenStatus';
 import QuestionActionsReducer from './Slices/QuestionActionsSlice';
 import AnswerActionsReducer from './Slices/AnswerActionsSlice';
 import CourseModuleReducer from './Slices/CourseModuleSlice';
+import GetAllQuestionsReducer from './Slices/GetAllQuestionsSlice';
+import GetAllAnswersByQuestionIdReducer from './Slices/GetAllAnswersByQuestionIdSlice';
 
 const rootReducer = combineReducers({
   portalStatus: portalStatusReducer,
@@ -46,5 +48,7 @@ const rootReducer = combineReducers({
   QuestionActions: QuestionActionsReducer,
   AnswerActions: AnswerActionsReducer,
   courseModule: CourseModuleReducer,
+  GetAllQuestions: GetAllQuestionsReducer,
+  GetAllAnswersByQuestionId: GetAllAnswersByQuestionIdReducer,
 });
 export default rootReducer;

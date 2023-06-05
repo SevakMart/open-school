@@ -1,12 +1,14 @@
 @import '../../../styles/Configs/Colors.scss';
 
 .inner {
+  font-family: "Montserrat", sans-serif;
   box-sizing: border-box;
   background-color: #EEEFF4;
   margin: 0;
   padding-left: 10px;
   padding-right: 30px;
   padding-top: 50px;
+  padding-bottom: 100px;
 }
 
 .container {
@@ -32,7 +34,6 @@
   display: flex;
   justify-content: space-between;
   margin-top: 5px;
-  font-family: serif;
 }
 
 .forum_header-list {
@@ -104,12 +105,25 @@
   color: $black-text-color;
 }
 
-//scroll
-.questionItemsScroll {
-  max-height: 800px;
-  overflow-y: scroll;
-}
-
-.askQuestionsScroll {
-  margin-right: 57px;
+// questions pagination
+.questions_items-showMore {
+  display: flex;
+  margin-top: 20px;
+  margin-left: 5px;
+  &_btn{
+    border: none;
+    font-size: 16px;
+    color: $btn-secondary-color;
+    margin-right: 20px;
+    cursor: pointer;
+    &_more, 
+    &_less {
+      &:hover {
+        color: $pagination-showMore-hover-color
+      }
+      &:active {
+        color: $pagination-showMore-active-color;
+      }
+    }
+  }
 }

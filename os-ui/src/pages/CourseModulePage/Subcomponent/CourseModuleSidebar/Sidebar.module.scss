@@ -2,7 +2,7 @@
 
 .Sidebar_container {
     background: $white-text-color;
-    height: 992px;
+    min-height: 992px;
     padding-left: 48px;
 	  transform-origin: top left;
 	.ArrowRightIcon{

@@ -29,7 +29,7 @@ const NavbarOnSignIn = () => {
 
   const handleClickOutside = (event: MouseEvent) => {
     const target = event.target as Node;
-    if (!popupRef?.current?.contains(target)) {
+    if (!popupRef?.current?.contains(target) && target !== arrowRef.current) {
       setIsOpen(false);
     }
   };

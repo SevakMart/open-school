@@ -5,7 +5,7 @@ import trash from '../../../../../../../assets/svg/trash.svg';
 import './questionItemPopup.scss';
 
 const QuestionItemPopup:React.FC<QuestionItemPopupProps> = ({
-  isOpen, isAnimating, animatedFunction, onClose, isDisable, editQuestion, btnType, btnTextType, removeQ, id, textAreaRef,
+  isOpen, isAnimating, animatedFunction, onClose, isDisable, editQuestion, btnType, removeQ, id, textAreaRef,
 }) => {
   const popupRef = useRef<HTMLDivElement | null>(null);
   const bodyRef = useRef(document.body);
@@ -32,8 +32,8 @@ const QuestionItemPopup:React.FC<QuestionItemPopupProps> = ({
     <div ref={popupRef} className={`btnsPopup ${isOpen ? 'open' : ''} ${isAnimating ? 'animating' : ''}`}>
       <div className="btnsPopup-content">
         <button disabled={isDisable} type="button" className="btnsPopup-content_item" onClick={editQuestion}>
-          <img className="edit" src={btnType} alt="Edt" />
-          <div className="editBtn-title">{t(btnTextType)}</div>
+          <img className="edit" src={btnType} alt="edit" />
+          <div className="editBtn-title">{t('Edit')}</div>
         </button>
         <button type="button" className="btnsPopup-content_item btnsPopup-content_item_margin" data-testid="remove-btn" onClick={() => removeQ(id)}>
           <img className="trash" src={trash} alt="X" />

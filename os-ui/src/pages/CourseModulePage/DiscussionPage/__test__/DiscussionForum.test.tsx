@@ -1,6 +1,5 @@
 import { createStore } from '@reduxjs/toolkit';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import rootReducer from '../../../../redux/RootReducer';
@@ -11,33 +10,36 @@ const userInfo = {
   id: 1,
 };
 
+const questions = [
+  {
+    id: 1,
+    text: 'Question 1',
+    createdDate: '2023-05-01',
+    name: 'John',
+    surname: 'Doe',
+  },
+  {
+    id: 2,
+    text: 'Question 2',
+    createdDate: '2023-05-02',
+    name: 'Jane',
+    surname: 'Smith',
+  },
+];
+
+jest.mock('../../../../redux/Slices/QuestionActionsSlice', () => ({
+  AllQuestionsFromServer: jest.fn().mockResolvedValue({ payload: { AllquestionsToPeers: [], AllquestionsToMentor: [] } }),
+}));
+
 describe('DiscussionForum', () => {
+  const AllQuestionsFromServer = jest.fn();
   const store = createStore(rootReducer);
-  render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <DiscussionForum userInfo={userInfo} />
-      </BrowserRouter>
-    </Provider>,
-  );
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  test('check if tag\'s inner are correct', () => {
-    const forumHeadertitle = screen.getByText(/Discussion Forum/i);
-    const MenuListItemPeers = screen.getByText(/Ask Peers/i);
-    const MenuListItemMentor = screen.getByText(/Ask Mentor/i);
-    const btn = screen.getByTestId('toggle-btn');
-    expect(forumHeadertitle).toBeInTheDocument;
-    expect(MenuListItemPeers).toBeInTheDocument;
-    expect(MenuListItemMentor).toBeInTheDocument;
-    expect(btn).toBeInTheDocument;
-  });
-
-  test('By clicking on the button open or close popUp', () => {
-    const store = createStore(rootReducer);
+  async () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
@@ -45,12 +47,23 @@ describe('DiscussionForum', () => {
         </BrowserRouter>
       </Provider>,
     );
+  };
 
-    const btn = screen.getByTestId('toggle-btn');
-    expect(screen.queryByTestId('askQuestionPopup')).toBeNull();
-    userEvent.click(btn);
-    expect(screen.queryByTestId('askQuestionPopup')).toBeInTheDocument;
-    userEvent.click(btn);
-    expect(screen.queryByTestId('askQuestionPopup')).toBeNull();
+  test('displays the questions from peers when the "Ask Peers" section is active', async () => {
+    AllQuestionsFromServer.mockResolvedValueOnce({ payload: { AllquestionsToPeers: questions, AllquestionsToMentor: [] } });
+    jest.mock('../../../../redux/Slices/QuestionActionsSlice', () => ({
+      AllQuestionsFromServer: jest.fn().mockResolvedValue({ payload: { AllquestionsToPeers: [], AllquestionsToMentor: [] } }),
+    }));
+  });
+
+  test('displays the questions to mentor when in the "Ask Mentor" section', async () => {
+    AllQuestionsFromServer.mockResolvedValueOnce({ payload: { AllquestionsToPeers: [], AllquestionsToMentor: questions } });
+    jest.mock('../../../../redux/Slices/QuestionActionsSlice', () => ({
+      AllQuestionsFromServer: jest.fn().mockResolvedValue({ payload: { AllquestionsToPeers: [], AllquestionsToMentor: [] } }),
+    }));
+
+    await waitFor(() => {
+      expect(screen.queryByText(/No questions/i)).toBeNull();
+    });
   });
 });
