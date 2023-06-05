@@ -61,3 +61,19 @@ export interface PostAnswersPayload {
   sectionName: string;
   questionId: string;
 }
+
+// all Questions
+export interface GetAllQuestionsPayload {
+  enrolledCourseId: number;
+  token: string;
+  sectionName: string;
+  pageNum: number;
+}
+
+// all Answers
+export interface GetAllAnswersPayload {
+  enrolledCourseId: number;
+  token: string;
+  sectionName: string;
+  questionId: string;
+}

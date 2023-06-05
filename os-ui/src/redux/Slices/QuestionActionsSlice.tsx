@@ -1,6 +1,4 @@
-import {
-  createSlice, createAsyncThunk, PayloadAction,
-} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Question } from '../../pages/CourseModulePage/DiscussionPage/interfaces/interfaces';
 import fetchData from '../../services/fetchData';
 import {
@@ -35,12 +33,14 @@ export const addQuestion = createAsyncThunk(
         token,
       );
       const responseJSON = await response.json();
-      const { id, createdDate } = responseJSON;
+      const { id, createdDate, userDto } = responseJSON;
       const newQuestion: Question = {
         id,
         text,
         createdDate,
         answers: [],
+        name: userDto.name,
+        surname: userDto.surname,
       };
       return newQuestion;
     } catch (error) {
@@ -114,6 +114,13 @@ export const QuestionActionsSlice = createSlice({
     changeSection: (state, action) => {
       state.section = action.payload;
     },
+    AllQuestionsFromServer: (state, action) => {
+      if (state.section) {
+        state.questionsWithId = action.payload;
+      } else {
+        state.questionsWithIdToMentor = action.payload;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -124,8 +131,8 @@ export const QuestionActionsSlice = createSlice({
       })
       .addCase(addQuestion.fulfilled, (state, action) => {
         // Update state with the newly posted question
-        if (state.section) state.questionsWithId.push(action.payload);
-        else state.questionsWithIdToMentor.push(action.payload);
+        if (state.section) state.questionsWithId.unshift(action.payload);
+        else state.questionsWithIdToMentor.unshift(action.payload);
         state.isLoading = false;
         state.errorMessage = '';
       })
@@ -170,6 +177,6 @@ export const QuestionActionsSlice = createSlice({
 });
 
 export const {
-  onOpen, onClose, changeSection,
+  onOpen, onClose, changeSection, AllQuestionsFromServer,
 } = QuestionActionsSlice.actions;
 export default QuestionActionsSlice.reducer;
