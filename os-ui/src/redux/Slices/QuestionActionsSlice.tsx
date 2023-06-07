@@ -114,12 +114,11 @@ export const QuestionActionsSlice = createSlice({
     changeSection: (state, action) => {
       state.section = action.payload;
     },
-    AllQuestionsFromServer: (state, action) => {
-      if (state.section) {
-        state.questionsWithId = action.payload;
-      } else {
-        state.questionsWithIdToMentor = action.payload;
-      }
+    AllQuestionsPeersFromServer: (state, action) => {
+      state.questionsWithId = action.payload;
+    },
+    AllQuestionsmentorFromServer: (state, action) => {
+      state.questionsWithIdToMentor = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -177,6 +176,6 @@ export const QuestionActionsSlice = createSlice({
 });
 
 export const {
-  onOpen, onClose, changeSection, AllQuestionsFromServer,
+  onOpen, onClose, changeSection, AllQuestionsPeersFromServer, AllQuestionsmentorFromServer,
 } = QuestionActionsSlice.actions;
 export default QuestionActionsSlice.reducer;
