@@ -5,7 +5,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import Loader from '../../../component/Loader/Loader';
 import { AllQuestions } from '../../../redux/Slices/GetAllQuestionsSlice';
 import {
-  AllQuestionsmentorFromServer,
+  AllQuestionsMentorFromServer,
   AllQuestionsPeersFromServer,
   changeSection, onClose, onOpen,
 } from '../../../redux/Slices/QuestionActionsSlice';
@@ -108,7 +108,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   const responsesMap: ResponsesMap[] = isBtnClicked ? PeersResponses : MentorResponses;
 
   // get all questions
-  const [isPageReloaded, setPageReloaded] = useState(true);
+  const [, setPageReloaded] = useState(true);
   useEffect(() => {
     setPageReloaded(true);
   }, []);
@@ -130,7 +130,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
 
   useEffect(() => {
     dispatch(AllQuestionsPeersFromServer(AllquestionsToPeers));
-    dispatch(AllQuestionsmentorFromServer(AllquestionsToMentor));
+    dispatch(AllQuestionsMentorFromServer(AllquestionsToMentor));
   }, [AllquestionsToPeers, AllquestionsToMentor]);
 
   // change Section

@@ -117,7 +117,7 @@ export const QuestionActionsSlice = createSlice({
     AllQuestionsPeersFromServer: (state, action) => {
       state.questionsWithId = action.payload;
     },
-    AllQuestionsmentorFromServer: (state, action) => {
+    AllQuestionsMentorFromServer: (state, action) => {
       state.questionsWithIdToMentor = action.payload;
     },
   },
@@ -176,6 +176,6 @@ export const QuestionActionsSlice = createSlice({
 });
 
 export const {
-  onOpen, onClose, changeSection, AllQuestionsPeersFromServer, AllQuestionsmentorFromServer,
+  onOpen, onClose, changeSection, AllQuestionsPeersFromServer, AllQuestionsMentorFromServer,
 } = QuestionActionsSlice.actions;
 export default QuestionActionsSlice.reducer;
