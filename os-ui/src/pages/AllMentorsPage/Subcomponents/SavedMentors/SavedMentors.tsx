@@ -13,9 +13,6 @@ import styles from './SavedMentors.module.scss';
 /* eslint-disable max-len */
 
 const SavedMentors = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const params = new URLSearchParams(location.search);
   const { token, id: userId } = useContext(userContext);
   const dispatch = useDispatch<DispatchType>();
   const mentorsSendingParams = useSelector<RootState>((state) => state.allMentorsFilterParams) as MentorStateType;
@@ -26,8 +23,6 @@ const SavedMentors = () => {
 
   const deleteMentor = (mentorName:string, mentorId:number) => {
     dispatch(deleteUserSavedMentor({ userId, mentorId, token }));
-    params.delete(mentorName);
-    navigate(`${location.pathname}?${params}`);
   };
 
   useEffect(() => {

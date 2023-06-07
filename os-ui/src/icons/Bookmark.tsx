@@ -1,24 +1,49 @@
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { FiBookmark } from 'react-icons/fi';
 import { Types } from '../types/types';
 import { openModal } from '../redux/Slices/PortalOpenStatus';
-
-/* eslint-disable max-len */
+import { RootState } from '../redux/Store';
+import { SuggestedCourseType } from '../types/CourseTypes';
+import { MentorType } from '../types/MentorType';
 
 const BookmarkIcon = ({
-  iconSize, courseId, mentorId, courseTitle, mentorName, isHomepageNotSignedInMentor,
-  saveCourse, deleteCourse, saveMentor, deleteMentor, isCourseSummaryBookmarkIcon,
-}:
-  {iconSize:string, courseId?:number, mentorId?:number, courseTitle?:string, mentorName?:string, isHomepageNotSignedInMentor?:boolean,
-    saveCourse?:(courseTitle:string, courseId:number)=>void, deleteCourse?:(courseTitle:string, courseId:number)=>void, saveMentor?:(mentorName:string, mentorId:number)=>void,
-    deleteMentor?:(mentorName:string, mentorId:number)=>void, isCourseSummaryBookmarkIcon?:boolean
-  }) => {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const [isChecked, setIsChecked] = useState(params.has(courseTitle!) || params.has(mentorName!) || params.has('savedCourse'));
+  iconSize,
+  courseId,
+  mentorId,
+  courseTitle,
+  mentorName,
+  isHomepageNotSignedInMentor,
+  saveCourse,
+  deleteCourse,
+  saveMentor,
+  deleteMentor,
+  isCourseSummaryBookmarkIcon,
+}: {
+  iconSize: string;
+  courseId?: number;
+  mentorId?: number;
+  courseTitle?: string;
+  mentorName?: string;
+  isHomepageNotSignedInMentor?: boolean;
+  saveCourse?: (courseTitle: string, courseId: number) => void;
+  deleteCourse?: (courseTitle: string, courseId: number) => void;
+  saveMentor?: (mentorName: string, mentorId: number) => void;
+  deleteMentor?: (mentorName: string, mentorId: number) => void;
+  isCourseSummaryBookmarkIcon?: boolean;
+}) => {
+  const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
+  const savedCourses = useSelector<RootState, SuggestedCourseType[]>((state) => state.savedCourse.entity);
+  const savedMentors = useSelector<RootState, MentorType[]>((state) => state.savedMentors.entity);
+
+  useEffect(() => {
+    if (courseId && savedCourses.some((course) => course.id === courseId)) {
+      setIsChecked(true);
+    } else if (mentorId && savedMentors.some((mentor) => mentor.id === mentorId)) {
+      setIsChecked(true);
+    }
+  }, [courseId, mentorId, savedCourses, savedMentors]);
 
   const handleSaving = () => {
     if (!isChecked) {
@@ -33,7 +58,8 @@ const BookmarkIcon = ({
       } else if (mentorId) {
         deleteMentor && deleteMentor(mentorName!, mentorId);
       }
-    }setIsChecked((prevState) => !prevState);
+    }
+    setIsChecked((prevState) => !prevState);
   };
 
   const handleMentorBookmark = () => {
@@ -51,4 +77,5 @@ const BookmarkIcon = ({
     />
   );
 };
+
 export default BookmarkIcon;
