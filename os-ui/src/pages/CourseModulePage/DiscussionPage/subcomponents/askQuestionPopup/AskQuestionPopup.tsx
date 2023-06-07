@@ -77,7 +77,7 @@ const AskQuestionPopup: React.FC<PopupProps> = ({
             /500
           </div>
           <div className="buttons">
-            <button type="button" onClick={() => animatedFunction(handleClose)} disabled={isDisabled} className="btn_cancel" data-testid="close-cancel-btn">{t('Cancel')}</button>
+            <button type="button" onClick={() => animatedFunction(handleClose)} disabled={isAnimating} className="btn_cancel" data-testid="close-cancel-btn">{t('Cancel')}</button>
             <button type="button" onClick={() => animatedFunction(handleAddQuestion)} disabled={isDisabled} data-testid="post-btn" className="btn_post">{t('Post')}</button>
           </div>
         </div>

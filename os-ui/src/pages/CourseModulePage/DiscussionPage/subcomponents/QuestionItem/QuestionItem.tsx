@@ -103,7 +103,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   };
 
   let truncatedText = text;
-  if (text.length > 65) truncatedText = `${text.slice(0, 55)}...`;
+  if (text.length > 195) truncatedText = `${text.slice(0, 165)}...`;
 
   // edit
   const editValueChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -154,8 +154,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const formattedDate = formatDate(createdDate);
 
   const { t } = useTranslation();
-
-  // get all answers by QuestionId
 
   return (
     <div className="Questions_page">
@@ -209,14 +207,14 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
                     <div className="question-item_text" data-testid="questionItem-text" style={{ wordWrap: 'break-word' }}>
                       {showMore ? text : truncatedText}
                     </div>
-                    {text.length > 65 && (
+                    {text.length > 195 && (
                       <div className="question-item_showMore" onClick={toggleShowMore}>
                         {showMore ? 'Show less' : 'Show more'}
                         <img className={`question-item_showMore_img ${showMore ? 'question-item_showMore_img_rotateIcon' : ''}`} src={next} alt=">" />
                       </div>
                     )}
                   </div>
-                  <div className={`icons ${text.length < 65 ? 'iconsToTop' : ''}`}>
+                  <div className={`icons ${text.length < 195 ? 'iconsToTop' : ''}`}>
                     <img className="answer_icon" onClick={() => animatedFunction(handleAnswerSectionOpen)} src={answer} alt="->" />
                     <div className="messageCount">5</div>
                     <img className="icon_menu" src={threeVerticalDots} onClick={() => animatedFunction(changeIsOpen)} alt="menu" />

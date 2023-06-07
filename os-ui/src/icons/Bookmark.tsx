@@ -37,6 +37,7 @@ const BookmarkIcon = ({
   const savedCourses = useSelector<RootState, SuggestedCourseType[]>((state) => state.savedCourse.entity);
   const savedMentors = useSelector<RootState, MentorType[]>((state) => state.savedMentors.entity);
 
+
   useEffect(() => {
     if (courseId && savedCourses.some((course) => course.id === courseId)) {
       setIsChecked(true);
