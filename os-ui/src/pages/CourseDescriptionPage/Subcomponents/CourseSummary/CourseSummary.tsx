@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { DispatchType } from '../../../../redux/Store';
-import { CourseDescriptionType, SuggestedCourseType } from '../../../../types/CourseTypes';
+import { CourseDescriptionType } from '../../../../types/CourseTypes';
 import { getUserSavedCourse } from '../../../../redux/Slices/SavedLearningPathSlice';
-import { deleteUserSavedCourse } from '../../../../redux/Slices/DeleteUserSavedCourse';
-import userService from '../../../../services/userService';
+import { deleteUserSavedCourse } from '../../../../redux/Slices/DeleteUserSavedCourseSlice';
+import { saveUserPreferredCourse } from '../../../../redux/Slices/SaveUserPreferredCourseSlice';
 import BookmarkIcon from '../../../../icons/Bookmark';
 import CourseSummaryItem from './Subcomponent/CourseSummaryItem/CourseSummaryItem';
 import Button from '../../../../component/Button/Button';
@@ -29,9 +29,7 @@ const CourseSummary = ({
 
 }) => {
   const { t } = useTranslation();
-  const location = useLocation();
   const navigate = useNavigate();
-  const params = new URLSearchParams(location.search);
   const { id: userId, token } = userIdAndToken;
   const dispatch = useDispatch<DispatchType>();
 
@@ -55,33 +53,17 @@ const CourseSummary = ({
     enrolledButtonContainer,
   } = styles;
 
-  const saveCourse = (courseTitle: string, courseId: number) => {
-    userService.saveUserPreferredCourses(userId, courseId, token);
-    params.set('savedCourse', courseTitle);
-    navigate(`${location.pathname}?${params}`, { replace: true });
+  const saveCourse = (courseTitle:string, courseId:number) => {
+    dispatch(saveUserPreferredCourse({ userId, courseId, token }));
   };
-  const deleteCourse = (courseTitle: string, courseId: number) => {
+
+  const deleteCourse = (courseTitle:string, courseId:number) => {
     dispatch(deleteUserSavedCourse({ userId, courseId, token }));
-    params.delete('savedCourse');
-    navigate(`${location.pathname}`, { replace: true });
   };
 
   useEffect(() => {
     setEnrolledInCourse(Boolean(currentUserEnrolled));
-    dispatch(getUserSavedCourse({ userId, token, params: {} }))
-	  .unwrap()
-	  .then((savedCourseList: SuggestedCourseType[]) => {
-        if (savedCourseList.some((savedCourse: SuggestedCourseType) => savedCourse.id === courseId)) {
-		  params.set(
-            'savedCourse',
-			savedCourseList.find((savedCourse: SuggestedCourseType) => savedCourse.id === courseId)!.title,
-		  );
-		  navigate(`${location.pathname}?${params}`, { replace: true });
-        } else {
-		  params.delete('savedCourse');
-		  navigate(`${location.pathname}`, { replace: true });
-        }
-	  });
+    dispatch(getUserSavedCourse({ userId, token, params: {} }));
   }, []);
 
   const handleEnrollButtonClick = () => {
