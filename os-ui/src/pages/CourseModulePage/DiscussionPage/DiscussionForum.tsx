@@ -5,7 +5,9 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import Loader from '../../../component/Loader/Loader';
 import { AllQuestions } from '../../../redux/Slices/GetAllQuestionsSlice';
 import {
-  AllQuestionsFromServer, changeSection, onClose, onOpen,
+  AllQuestionsMentorFromServer,
+  AllQuestionsPeersFromServer,
+  changeSection, onClose, onOpen,
 } from '../../../redux/Slices/QuestionActionsSlice';
 import { RootState } from '../../../redux/Store';
 import { CourseDescriptionType } from '../../../types/CourseTypes';
@@ -77,9 +79,6 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
     dispatch(changeSection(isBtnClicked));
   }, []);
 
-  // all questions from server
-  const AllQuestionsFromServerMap = isBtnClicked ? AllquestionsToPeers : AllquestionsToMentor;
-
   // mentor or peersF
   const questionsMap:Question[] = isBtnClicked ? questionsWithId : questionsWithIdToMentor;
   const { t } = useTranslation();
@@ -109,7 +108,7 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   const responsesMap: ResponsesMap[] = isBtnClicked ? PeersResponses : MentorResponses;
 
   // get all questions
-  const [isPageReloaded, setPageReloaded] = useState(true);
+  const [, setPageReloaded] = useState(true);
   useEffect(() => {
     setPageReloaded(true);
   }, []);
@@ -130,12 +129,9 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
   }, [pageNum]);
 
   useEffect(() => {
-    dispatch(AllQuestionsFromServer(AllQuestionsFromServerMap));
-  }, [isPageReloaded, isBtnClicked]);
-
-  useEffect(() => {
-    dispatch(AllQuestionsFromServer(AllQuestionsFromServerMap));
-  }, [AllQuestionsFromServerMap]);
+    dispatch(AllQuestionsPeersFromServer(AllquestionsToPeers));
+    dispatch(AllQuestionsMentorFromServer(AllquestionsToMentor));
+  }, [AllquestionsToPeers, AllquestionsToMentor]);
 
   // change Section
   const onChangeSection = (value:boolean) => {
@@ -168,8 +164,8 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
         </div>
         <div className="question_items">
           {
-            questionsMap.length ? (
-              questionsMap.map((val) => (
+            questionsMap.length > 0 ? (
+              (pageNum === 1 ? questionsMap.slice(0, 15) : questionsMap).map((val) => (
                 <QuestionItem
                   text={val.text}
                   id={val.id}
@@ -184,7 +180,9 @@ const DiscussionForum = ({ userInfo }:{userInfo:object}): JSX.Element => {
                 />
               ))
             ) : (
-              <div className="noQuestionsDiv" data-testid="noQuestionsDiv">{t(`No questions. Be the First to Ask a question to ${isBtnClicked ? 'peers' : 'mentor'}!`)}</div>
+              <div className="noQuestionsDiv" data-testid="noQuestionsDiv">
+                {t(`No questions. Be the First to Ask a question to ${isBtnClicked ? 'peers' : 'mentor'}!`)}
+              </div>
             )
           }
           {isLoading && <div style={{ marginTop: '40px' }}><Loader /></div>}

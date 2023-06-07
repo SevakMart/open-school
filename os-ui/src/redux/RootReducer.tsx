@@ -14,7 +14,7 @@ import savedCourseReducer from './Slices/SavedLearningPathSlice';
 import homepageMentorListReducer from './Slices/HomepageMentorSlice';
 import homepageCategoriesListReducer from './Slices/HomepageCategoriesSlice';
 import userInfoReducer from './Slices/UserInfoSlice';
-import deleteUserSavedCourseReducer from './Slices/DeleteUserSavedCourse';
+import deleteUserSavedCourseReducer from './Slices/DeleteUserSavedCourseSlice';
 import deleteUserSavedMentorReducer from './Slices/DeleteSavedMentor';
 import courseDescriptionRequestReducer from './Slices/CourseDescriptionRequestSlice';
 import enrollCourseReducer from './Slices/EnrollCourseSlice';

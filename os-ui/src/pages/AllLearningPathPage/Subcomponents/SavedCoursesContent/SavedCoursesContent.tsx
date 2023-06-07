@@ -1,21 +1,16 @@
 import { useEffect, useContext } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/Store';
 import { SuggestedCourseType } from '../../../../types/CourseTypes';
-import LearningPath from '../../../../component/LearningPath/LearningPath';
 import { getUserSavedCourse } from '../../../../redux/Slices/SavedLearningPathSlice';
-import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
 import { filterSendingParams } from '../../helpers';
 import { userContext } from '../../../../contexts/Contexts';
-import { deleteUserSavedCourse } from '../../../../redux/Slices/DeleteUserSavedCourse';
+import { deleteUserSavedCourse } from '../../../../redux/Slices/DeleteUserSavedCourseSlice';
+import LearningPath from '../../../../component/LearningPath/LearningPath';
+import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
 import styles from './SavedCoursesContent.module.scss';
 
-/* eslint-disable max-len */
 const SavedCoursesContent = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const params = new URLSearchParams(location.search);
   const { token, id: userId } = useContext(userContext);
   const dispatch = useDispatch();
   const savedCoursesState = useSelector<RootState>((state) => state.savedCourse);
@@ -27,8 +22,6 @@ const SavedCoursesContent = () => {
 
   const deleteSavedCourse = (courseTitle:string, courseId:number) => {
     dispatch(deleteUserSavedCourse({ userId, courseId, token }));
-    params.delete(courseTitle);
-    navigate(`${location.pathname}?${params}`);
   };
 
   useEffect(() => {
@@ -48,6 +41,7 @@ const SavedCoursesContent = () => {
               key={course.title}
               courseInfo={course}
               deleteCourse={deleteSavedCourse}
+
             />
           ))
         )}
