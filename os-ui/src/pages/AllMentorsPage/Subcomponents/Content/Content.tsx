@@ -1,5 +1,4 @@
 import { useEffect, useContext } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, DispatchType } from '../../../../redux/Store';
 import { getMentorsList } from '../../../../redux/Slices/AllMentorsSlice';
@@ -8,12 +7,10 @@ import { MentorStateType } from '../../../../redux/Slices/AllMentorsFilterParams
 import MentorCard from '../../../../component/MentorProfile/MentorProfile';
 import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
 import { deleteUserSavedMentor } from '../../../../redux/Slices/DeleteSavedMentor';
-import userService from '../../../../services/userService';
 import { getSavedMentors } from '../../../../redux/Slices/SavedMentorsSlice';
 import { MentorType } from '../../../../types/MentorType';
 import styles from './Content.module.scss';
-
-/* eslint-disable max-len */
+import { saveUserMentor } from '../../../../redux/Slices/SaveUserMentorSlice';
 
 const Content = () => {
   const { token, id: userId } = useContext(userContext);
@@ -24,7 +21,7 @@ const Content = () => {
   const { mainContent } = styles;
 
   const saveMentor = (mentorName:string, mentorId:number) => {
-    userService.saveUserMentor(userId, mentorId, token);
+    dispatch(saveUserMentor({ userId, mentorId, token }));
   };
 
   const deleteMentor = (mentorName:string, mentorId:number) => {
