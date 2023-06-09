@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, DispatchType } from '../../../../redux/Store';
 import { getSavedMentors } from '../../../../redux/Slices/SavedMentorsSlice';
@@ -10,12 +9,8 @@ import { MentorStateType } from '../../../../redux/Slices/AllMentorsFilterParams
 import { deleteUserSavedMentor } from '../../../../redux/Slices/DeleteSavedMentor';
 import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
 import styles from './SavedMentors.module.scss';
-/* eslint-disable max-len */
 
 const SavedMentors = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const params = new URLSearchParams(location.search);
   const { token, id: userId } = useContext(userContext);
   const dispatch = useDispatch<DispatchType>();
   const mentorsSendingParams = useSelector<RootState>((state) => state.allMentorsFilterParams) as MentorStateType;
@@ -26,8 +21,6 @@ const SavedMentors = () => {
 
   const deleteMentor = (mentorName:string, mentorId:number) => {
     dispatch(deleteUserSavedMentor({ userId, mentorId, token }));
-    params.delete(mentorName);
-    navigate(`${location.pathname}?${params}`);
   };
 
   useEffect(() => {
