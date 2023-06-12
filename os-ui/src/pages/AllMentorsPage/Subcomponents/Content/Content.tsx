@@ -1,5 +1,4 @@
 import { useEffect, useContext } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, DispatchType } from '../../../../redux/Store';
 import { getMentorsList } from '../../../../redux/Slices/AllMentorsSlice';
@@ -8,17 +7,12 @@ import { MentorStateType } from '../../../../redux/Slices/AllMentorsFilterParams
 import MentorCard from '../../../../component/MentorProfile/MentorProfile';
 import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
 import { deleteUserSavedMentor } from '../../../../redux/Slices/DeleteSavedMentor';
-import userService from '../../../../services/userService';
 import { getSavedMentors } from '../../../../redux/Slices/SavedMentorsSlice';
 import { MentorType } from '../../../../types/MentorType';
 import styles from './Content.module.scss';
-
-/* eslint-disable max-len */
+import { saveUserMentor } from '../../../../redux/Slices/SaveUserMentorSlice';
 
 const Content = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const params = new URLSearchParams(location.search);
   const { token, id: userId } = useContext(userContext);
   const dispatch = useDispatch<DispatchType>();
   const mentorsSendingParams = useSelector<RootState>((state) => state.allMentorsFilterParams) as MentorStateType;
@@ -27,28 +21,15 @@ const Content = () => {
   const { mainContent } = styles;
 
   const saveMentor = (mentorName:string, mentorId:number) => {
-    userService.saveUserMentor(userId, mentorId, token);
-    params.set(mentorName, String(mentorId));
-    navigate(`${location.pathname}?${params}`);
+    dispatch(saveUserMentor({ userId, mentorId, token }));
   };
 
   const deleteMentor = (mentorName:string, mentorId:number) => {
     dispatch(deleteUserSavedMentor({ userId, mentorId, token }));
-    params.delete(mentorName);
-    navigate(`${location.pathname}?${params}`);
   };
 
   useEffect(() => {
-    if (!params.toString()) {
-      dispatch(getSavedMentors({ userId, token, params: mentorsSendingParams }))
-        .unwrap()
-        .then((userSavedMentorList:MentorType[]) => {
-          for (const savedMentor of userSavedMentorList) {
-            params.set(`${savedMentor.name} ${savedMentor.surname}`, String(savedMentor.id));
-          }
-          navigate(`${location.pathname}?${params}`);
-        });
-    }
+    dispatch(getSavedMentors({ userId, token, params: mentorsSendingParams }));
   }, []);
 
   useEffect(() => {

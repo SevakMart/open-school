@@ -5,6 +5,7 @@ import { Types } from '../types/types';
 import { openModal } from '../redux/Slices/PortalOpenStatus';
 import { RootState } from '../redux/Store';
 import { SuggestedCourseType } from '../types/CourseTypes';
+import { MentorType } from '../types/MentorType';
 
 const BookmarkIcon = ({
   iconSize,
@@ -30,17 +31,19 @@ const BookmarkIcon = ({
   saveMentor?: (mentorName: string, mentorId: number) => void;
   deleteMentor?: (mentorName: string, mentorId: number) => void;
   isCourseSummaryBookmarkIcon?: boolean;
-
 }) => {
   const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
   const savedCourses = useSelector<RootState, SuggestedCourseType[]>((state) => state.savedCourse.entity);
+  const savedMentors = useSelector<RootState, MentorType[]>((state) => state.savedMentors.entity);
 
   useEffect(() => {
     if (courseId && savedCourses.some((course) => course.id === courseId)) {
       setIsChecked(true);
+    } else if (mentorId && savedMentors.some((mentor) => mentor.id === mentorId)) {
+      setIsChecked(true);
     }
-  }, [courseId, savedCourses]);
+  }, [courseId, mentorId, savedCourses, savedMentors]);
 
   const handleSaving = () => {
     if (!isChecked) {
