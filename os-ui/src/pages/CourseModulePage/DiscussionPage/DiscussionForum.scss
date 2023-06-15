@@ -1,7 +1,7 @@
 @import '../../../styles/Configs/Colors.scss';
 
 .inner {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat-ExtraBold";
   box-sizing: border-box;
   background-color: #EEEFF4;
   margin: 0;
@@ -17,7 +17,6 @@
 
 .forum_header-title {
   margin: 0;
-  font-weight: 800;
   font-size: 36px;
   line-height: 44px;
   color: $black-text-color;
@@ -37,13 +36,12 @@
 }
 
 .forum_header-list {
+  font-family: "Montserrat-Regular";
   width: 115px;
   text-align: center;
   border-style: none;
   margin-left: 5px;
   padding: 5px 2px 3px 2px;
-  font-size: 13px;
-  font-weight: 500;
   font-size: 16px;
   line-height: 24px;
   &_underLine {
@@ -57,15 +55,14 @@
     }
   }
   &:hover {
-    font-weight: 600;
     cursor: pointer;
   }
   &_link {
     color: $text-light-color;
     text-decoration: none;
     &_active {
+      font-family: "Montserrat-Medium";
       color: $text-color;
-      font-weight: 600;
       font-size: 20px;
     }
   }
@@ -75,7 +72,6 @@
   background-color: $btn-primary-color;
   border-style: none;
   color: #fff;
-  font-weight: 500;
   line-height: 20px;
   border-radius: 16px;
   padding: 16px 32px;
@@ -116,7 +112,7 @@
     color: $btn-secondary-color;
     margin-right: 20px;
     cursor: pointer;
-    &_more, 
+    &_more,
     &_less {
       &:hover {
         color: $pagination-showMore-hover-color
