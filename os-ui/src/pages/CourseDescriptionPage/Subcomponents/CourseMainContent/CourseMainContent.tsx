@@ -6,7 +6,7 @@ import styles from './CourseMainContent.module.scss';
 /* eslint-disable max-len */
 const CourseMainContent = ({
   description, goal, modules, mentorDto, title,
-}: Omit<CourseDescriptionType, 'rating' | 'enrolled' | 'level' | 'language' | 'duration'>) => {
+}: Omit<CourseDescriptionType, 'Rating' | 'Enrolled' | 'Course Level' | 'Language' | 'Estimated efforts'>) => {
   const { t } = useTranslation();
   const {
     mainContent, subContent, moduleListContainer, mainTitle, mainCourseInfoContainer,
@@ -25,7 +25,7 @@ const CourseMainContent = ({
           <p>{goal}</p>
         </div>
         <div className={subContent}>
-          <h2>{t('string.courseDescriptionPage.title.modulesList')}</h2>
+          <h2>{t('Modules in This Program')}</h2>
           <div className={moduleListContainer}>
             {modules.map((module, index) => (<ModuleItem key={index} moduleInfo={module} />))}
           </div>

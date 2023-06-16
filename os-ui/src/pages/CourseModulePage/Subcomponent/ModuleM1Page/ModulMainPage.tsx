@@ -7,7 +7,6 @@ import ModuleItem from '../../../CourseDescriptionPage/Subcomponents/ModuleItem/
 import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
 import { RootState } from '../../../../redux/Store';
 import { setValue } from '../../../../redux/Slices/CourseModuleSlice';
-import { CourseDescriptionType } from '../../../../types/CourseTypes';
 
 const ModuleMainPage = () => {
   const [moduleListIsOpen, setModuleListIsOpen] = useState(true);
@@ -18,7 +17,21 @@ const ModuleMainPage = () => {
 
   const dispatch = useDispatch();
   const { value } = useSelector<RootState>((state) => state.courseModule) as { value: string };
-  const { entity } = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType };
+  const { entity } = useSelector<RootState>((state) => state.courseDescriptionRequest) as {
+    entity: {
+		modules:{link?:any, title:string, estimatedTime?:number;
+			 description:string, moduleItemSet:{[index:string]:string}[]}[];
+		mentorDto:{[index:string]:string};
+		currentUserEnrolled: boolean;
+		description: string;
+		duration: number;
+		enrolled: number;
+		enrolledCourseId: number;
+		goal: string | null;
+		language: string;
+		level: string;
+    };
+  };
   const {
     chevronIsOpen, chevronIsClosed, moduleDescriptionIsOpen, moduleDescriptionIsClosed,
   } = styles;

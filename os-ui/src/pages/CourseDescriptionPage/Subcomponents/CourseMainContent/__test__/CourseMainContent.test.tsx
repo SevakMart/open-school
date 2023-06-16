@@ -28,7 +28,7 @@ describe('Create test cases for CourseMainContent', () => {
     const { asFragment } = render(
       <Provider store={store}>
         <BrowserRouter>
-          <CourseMainContent description="This course talks about react" goal="The goal is to gain experience." modules={[moduleInfo]} mentorDto={{ name: 'john', surname: 'Smith', linkedinPath: 'myLinkedin.com' }} title="React" currentUserEnrolled={false} enrolledCourseId={0} />
+          <CourseMainContent description="This course talks about react" goal="The goal is to gain experience." modules={[moduleInfo]} mentorDto={{ name: 'john', surname: 'Smith', linkedinPath: 'myLinkedin.com' }} title="React" currentUserEnrolled={false} enrolledCourseId={0} Course_Level="Intermediate" Estimated_efforts={1.9} />
         </BrowserRouter>
       </Provider>,
     );

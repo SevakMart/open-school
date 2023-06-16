@@ -5,14 +5,20 @@ const CourseSummaryItem = ({ title, value }:{title:string, value:number|string})
   const {
     mainContainer, mainContent,
   } = styles;
+
+  const formattedTitle = title === 'CourseLevel'
+    ? 'Course Level'
+    : title.replace(/([A-Z])/g, ' $1').trim();
+
   return (
     <div className={mainContainer}>
       <img src={CourseSummaryEllipseIcon} alt="Ellipse" />
       <div className={mainContent}>
-        <h2>{title}</h2>
+        <h2>{formattedTitle}</h2>
         <p>{value}</p>
       </div>
     </div>
   );
 };
+
 export default CourseSummaryItem;
