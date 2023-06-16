@@ -6,11 +6,11 @@ export interface CourseDescriptionType {
     modules:{link?:any, title:string, estimatedTime?:number;
          description:string, moduleItemSet:{[index:string]:string}[]}[];
     mentorDto:{[index:string]:string};
-    rating:number;
-    enrolled:number;
-    level:string;
-    language:string;
-    duration:number;
+    Rating:number;
+    Enrolled:number;
+    Course_Level:string;
+    Language:string;
+    Estimated_efforts:number;
 	currentUserEnrolled: boolean;
 }
 export interface UserCourseType{

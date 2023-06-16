@@ -16,11 +16,11 @@ describe('Create test cases for course description page', () => {
       <Provider store={store}>
         <MemoryRouter>
           <CourseSummary
-            rating={4.5}
-            enrolled={2}
-            level="Advanced"
-            language="French"
-            duration={360}
+            Rating={4.5}
+            Enrolled={2}
+            Course_Level="Advanced"
+            Language="French"
+            Estimated_efforts={360}
             courseId={2}
             enrolledCourseId={2}
             userIdAndToken={{ id: 2, token: 'jksndfkjnskfk' }}
