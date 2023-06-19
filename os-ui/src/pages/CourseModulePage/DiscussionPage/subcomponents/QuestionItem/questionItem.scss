@@ -87,6 +87,13 @@ body {
     line-height: 24px;
     word-break: break-word;
     margin-right: 120px;
+    // text-align: justify;
+    &_expanded {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
   }
   &_showMore {
     margin-top: 10px;
