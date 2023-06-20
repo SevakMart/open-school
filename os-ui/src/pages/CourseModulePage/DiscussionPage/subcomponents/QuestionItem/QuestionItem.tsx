@@ -97,13 +97,29 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   };
 
   // show more ...
-  const [showMore, setShowMore] = useState(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const questionTextRef = useRef<HTMLDivElement>(null);
+  const [isQuestonLong, setIsQuestonLong] = useState<boolean>(false);
+
   const toggleShowMore = () => {
-    setShowMore(!showMore);
+    setIsExpanded(!isExpanded);
   };
 
-  let truncatedText = text;
-  if (text.length > 195) truncatedText = `${text.slice(0, 165)}...`;
+  const calculateLineCount = () => {
+    const questionTextElement = questionTextRef.current;
+    if (questionTextElement) {
+      const lineHeight = parseFloat(getComputedStyle(questionTextElement).lineHeight);
+      const height = questionTextElement.clientHeight;
+      const lineCount = Math.round(height / lineHeight);
+      return lineCount;
+    }
+    return 0;
+  };
+
+  useEffect(() => {
+    const lineCount = calculateLineCount();
+    setIsQuestonLong(lineCount >= 3);
+  }, [text]);
 
   // edit
   const editValueChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -120,7 +136,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     if (isEditPressed) {
       handleUpdateQuestion(id);
       setIsOpen(false);
-      setShowMore(false);
+      setIsExpanded(false);
     } else {
       setIsOpen(false);
     }
@@ -175,54 +191,51 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
       }
       <div className="Questions_inner">
         <div className="Question_item">
-          {
-            isEditPressed
-              ? (
-                <div className="editField">
-                  <textarea
-                    className="edit_question_textArea"
-                    value={editValue}
-                    ref={editTextAreaRef}
-                    onChange={editValueChange}
-                    id="fname"
-                    name="fname"
-                  />
-                  <div className="editField_count">
-                    {editValue.length}
-                    /500
-                  </div>
-                  <div className="editField_btns">
-                    <button type="button" className="btn_cancel" onClick={() => animatedFunction(onClose)}>{t('Cancel')}</button>
-                    <button type="button" className="btn_post" disabled={isDisable} onClick={() => animatedFunction(editQuestion)}>{t('Save')}</button>
-                  </div>
+          {isEditPressed ? (
+            <div className="editField">
+              <textarea
+                className="edit_question_textArea"
+                value={editValue}
+                ref={editTextAreaRef}
+                onChange={editValueChange}
+                id="fname"
+                name="fname"
+              />
+              <div className="editField_count">
+                {editValue.length}
+                /500
+              </div>
+              <div className="editField_btns">
+                <button type="button" className="btn_cancel" onClick={() => animatedFunction(onClose)}>{t('Cancel')}</button>
+                <button type="button" className="btn_post" disabled={isDisable} onClick={() => animatedFunction(editQuestion)}>{t('Save')}</button>
+              </div>
+            </div>
+          )
+            : (
+              <div className="question_item">
+                <div className="question__text_box">
+                  <div className="user_">{t('Me')}</div>
+                  <div className="question__text_inner-date" data-testid="questionItem-date">{formattedDate}</div>
                 </div>
-              )
-              : (
-                <div className="question_item">
-                  <div className="question__text_box">
-                    <div className="user_">{t('Me')}</div>
-                    <div className="question__text_inner-date" data-testid="questionItem-date">{formattedDate}</div>
+                <div className="question-item_body">
+                  <div className={`question-item_text ${!isExpanded && 'question-item_text_expanded'}`} data-testid="questionItem-text" style={{ wordWrap: 'break-word' }} ref={questionTextRef}>
+                    {t(text)}
                   </div>
-                  <div className="question-item_body">
-                    <div className="question-item_text" data-testid="questionItem-text" style={{ wordWrap: 'break-word' }}>
-                      {showMore ? text : truncatedText}
+                  {isQuestonLong && (
+                    <div className="question-item_showMore" onClick={toggleShowMore}>
+                      {isExpanded ? 'Show less' : 'Show more'}
+                      <img className={`question-item_showMore_img ${isExpanded ? 'question-item_showMore_img_rotateIcon' : ''}`} src={next} alt=">" />
                     </div>
-                    {text.length > 195 && (
-                      <div className="question-item_showMore" onClick={toggleShowMore}>
-                        {showMore ? 'Show less' : 'Show more'}
-                        <img className={`question-item_showMore_img ${showMore ? 'question-item_showMore_img_rotateIcon' : ''}`} src={next} alt=">" />
-                      </div>
-                    )}
-                  </div>
-                  <div className={`icons ${text.length < 195 ? 'iconsToTop' : ''}`}>
-                    <img className="answer_icon" onClick={() => animatedFunction(handleAnswerSectionOpen)} src={answer} alt="->" />
-                    <div className="messageCount">5</div>
-                    <img className="icon_menu" src={threeVerticalDots} onClick={() => animatedFunction(changeIsOpen)} alt="menu" />
-                    <img className={`arrowRightIcon ${allAnswersState ? 'arrowRightIcon_rotate' : ''}`} onClick={() => animatedFunction(handleSetAllAnswersState)} src={ArrowRightIcon} alt=">" />
-                  </div>
+                  )}
                 </div>
-              )
-          }
+                <div className={`icons ${!isQuestonLong ? 'iconsToTop' : ''}`}>
+                  <img className="answer_icon" onClick={() => animatedFunction(handleAnswerSectionOpen)} src={answer} alt="->" />
+                  <div className="messageCount">5</div>
+                  <img className="icon_menu" src={threeVerticalDots} onClick={() => animatedFunction(changeIsOpen)} alt="menu" />
+                  <img className={`arrowRightIcon ${allAnswersState ? 'arrowRightIcon_rotate' : ''}`} onClick={() => animatedFunction(handleSetAllAnswersState)} src={ArrowRightIcon} alt=">" />
+                </div>
+              </div>
+            )}
         </div>
       </div>
       {isAnswerSectionOpen && (
