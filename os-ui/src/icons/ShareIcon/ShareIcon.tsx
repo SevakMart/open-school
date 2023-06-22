@@ -20,6 +20,11 @@ const ShareButton = ({ courseId }: { courseId: number }) => {
 	  setIsLinkCopied(false);
   };
 
+  const handleCloseIconClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    handleShareIconClick();
+  };
+
   const copyLinkToClipboard = () => {
     const link = `${window.location.origin}/userCourse/modulOverview/${courseId}`;
     const textField = document.createElement('textarea');
@@ -33,7 +38,7 @@ const ShareButton = ({ courseId }: { courseId: number }) => {
   };
 
   useEffect(() => {
-	  const handleClickOutsidePopup = (event: MouseEvent) => {
+    const handleClickOutsidePopup = (event: MouseEvent) => {
       const popup = document.querySelector(`.${sharePopup}`) as HTMLElement;
       const target = event.target as HTMLElement;
       if (popup && !popup.contains(target)) {
@@ -62,27 +67,29 @@ const ShareButton = ({ courseId }: { courseId: number }) => {
         alt={t('shareButton.alt')}
       />
       {showShareLink && (
-      <div className={sharePopup}>
-        <div className={closeIcon} onClick={handleShareIconClick}><CloseIcon /></div>
-        <div className={linkContainer}>
-          <p className={link} onClick={copyLinkToClipboard} title={linkText}>
-            {truncatedLinkText}
-          </p>
-          <button type="button" className={copyIcon} onClick={copyLinkToClipboard}>
-            {isLinkCopied ? (
-              <>
-                <img className={copiedIcon} src={CheckIcon} alt={t('copyIcon.checkAlt')} />
-                <span className={tooltip}>{t('Link copied to clipboard!')}</span>
-              </>
-            ) : (
-              <>
-                <img src={CopyIcon} alt={t('copyIcon.alt')} />
-                <span className={tooltip}>{t('Copy link to clipboard')}</span>
-              </>
-            )}
-          </button>
+        <div className={sharePopup}>
+          <div className={linkContainer}>
+            <p className={link} onClick={copyLinkToClipboard} title={linkText}>
+              {truncatedLinkText}
+            </p>
+            <button type="button" className={copyIcon} onClick={copyLinkToClipboard}>
+              {isLinkCopied ? (
+                <>
+                  <img className={copiedIcon} src={CheckIcon} alt={t('copyIcon.checkAlt')} />
+                  <span className={tooltip}>{t('Link copied to clipboard!')}</span>
+                </>
+              ) : (
+                <>
+                  <img src={CopyIcon} alt={t('copyIcon.alt')} />
+                  <span className={tooltip}>{t('Copy link to clipboard')}</span>
+                </>
+              )}
+            </button>
+            <div className={closeIcon} onClick={handleCloseIconClick}>
+              <CloseIcon />
+            </div>
+          </div>
         </div>
-      </div>
       )}
     </div>
   );

@@ -49,7 +49,7 @@
       .link {
         margin-right: 5px;
 		margin-left: 10px;
-        @include fontStyle($primary-font, normal, 500, 20px, 10px);
+        @include fontStyle($primary-font, normal, 500, 16px, 10px);
         color: $black-text-color;
         cursor: pointer;
         &:hover {
