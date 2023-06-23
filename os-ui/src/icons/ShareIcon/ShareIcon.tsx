@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import ShareIcon from '../../assets/svg/ShareIcon.svg';
 import CheckIcon from '../../assets/svg/CheckIcon.svg';
@@ -20,6 +20,11 @@ const ShareButton = ({ courseId }: { courseId: number }) => {
 	  setIsLinkCopied(false);
   };
 
+  const handleCloseIconClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    handleShareIconClick();
+  };
+
   const copyLinkToClipboard = () => {
     const link = `${window.location.origin}/userCourse/modulOverview/${courseId}`;
     const textField = document.createElement('textarea');
@@ -32,21 +37,25 @@ const ShareButton = ({ courseId }: { courseId: number }) => {
     setCopyTimeoutId(window.setTimeout(() => setIsLinkCopied(false), 5000));
   };
 
+  const popupRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-	  const handleClickOutsidePopup = (event: MouseEvent) => {
-      const popup = document.querySelector(`.${sharePopup}`) as HTMLElement;
+    const handleClickOutsidePopup = (event: MouseEvent) => {
+      const popup = popupRef.current;
       const target = event.target as HTMLElement;
       if (popup && !popup.contains(target)) {
-		  handleShareIconClick();
+        handleShareIconClick();
       }
-	  };
-	  if (showShareLink) {
+    };
+
+    if (showShareLink) {
       document.addEventListener('click', handleClickOutsidePopup);
-	  }
-	  return () => {
+    }
+
+    return () => {
       document.removeEventListener('click', handleClickOutsidePopup);
       if (copyTimeoutId) clearTimeout(copyTimeoutId);
-	  };
+    };
   }, [showShareLink, copyTimeoutId]);
 
   const linkMaxLength = 50;
@@ -62,27 +71,29 @@ const ShareButton = ({ courseId }: { courseId: number }) => {
         alt={t('shareButton.alt')}
       />
       {showShareLink && (
-      <div className={sharePopup}>
-        <div className={closeIcon} onClick={handleShareIconClick}><CloseIcon /></div>
-        <div className={linkContainer}>
-          <p className={link} onClick={copyLinkToClipboard} title={linkText}>
-            {truncatedLinkText}
-          </p>
-          <button type="button" className={copyIcon} onClick={copyLinkToClipboard}>
-            {isLinkCopied ? (
-              <>
-                <img className={copiedIcon} src={CheckIcon} alt={t('copyIcon.checkAlt')} />
-                <span className={tooltip}>{t('Link copied to clipboard!')}</span>
-              </>
-            ) : (
-              <>
-                <img src={CopyIcon} alt={t('copyIcon.alt')} />
-                <span className={tooltip}>{t('Copy link to clipboard')}</span>
-              </>
-            )}
-          </button>
+        <div ref={popupRef} className={sharePopup}>
+          <div className={linkContainer}>
+            <p className={link} onClick={copyLinkToClipboard} title={linkText}>
+              {truncatedLinkText}
+            </p>
+            <button type="button" className={copyIcon} onClick={copyLinkToClipboard}>
+              {isLinkCopied ? (
+                <>
+                  <img className={copiedIcon} src={CheckIcon} alt={t('copyIcon.checkAlt')} />
+                  <span className={tooltip}>{t('Link copied to clipboard!')}</span>
+                </>
+              ) : (
+                <>
+                  <img src={CopyIcon} alt={t('copyIcon.alt')} />
+                  <span className={tooltip}>{t('Copy link to clipboard')}</span>
+                </>
+              )}
+            </button>
+            <div className={closeIcon} onClick={handleCloseIconClick}>
+              <CloseIcon />
+            </div>
+          </div>
         </div>
-      </div>
       )}
     </div>
   );

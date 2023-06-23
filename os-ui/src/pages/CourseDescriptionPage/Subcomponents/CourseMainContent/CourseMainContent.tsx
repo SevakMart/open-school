@@ -17,11 +17,11 @@ const CourseMainContent = ({
       <h1 className={mainTitle}>{title}</h1>
       <div className={mainCourseInfoContainer}>
         <div className={subContent}>
-          <h2>{t('string.courseDescriptionPage.title.description')}</h2>
+          <h2>{t('What You Will Learn')}</h2>
           <p>{description}</p>
         </div>
         <div className={subContent}>
-          <h2>{t('string.courseDescriptionPage.title.goal')}</h2>
+          <h2>{t('Course Goal')}</h2>
           <p>{goal}</p>
         </div>
         <div className={subContent}>
