@@ -82,14 +82,15 @@
         background-color: $black-text-color;
         color: $white-text-color;
         border-radius: 6px;
-        padding: 5px;
-        font-size: 12px;
+        padding: 5px 20px;
+        font-size: 14px;
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.3s, visibility 0.3s;
+		white-space: nowrap;
       }
 
-      &:hover .tooltip {
+      .copyIcon:hover .tooltip { 
         opacity: 1;
         visibility: visible;
       }
