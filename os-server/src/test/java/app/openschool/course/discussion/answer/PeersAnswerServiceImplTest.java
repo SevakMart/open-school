@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
@@ -19,9 +20,11 @@ import app.openschool.course.discussion.Answer;
 import app.openschool.course.discussion.AnswerService;
 import app.openschool.course.discussion.TestHelper;
 import app.openschool.course.discussion.dto.AnswerRequestDto;
+import app.openschool.course.discussion.dto.UpdateAnswerRequest;
 import app.openschool.course.discussion.peers.answer.PeersAnswer;
 import app.openschool.course.discussion.peers.answer.PeersAnswerRepository;
 import app.openschool.course.discussion.peers.answer.PeersAnswerServiceImpl;
+import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
 import app.openschool.user.User;
 import java.util.List;
@@ -110,6 +113,152 @@ class PeersAnswerServiceImplTest {
     assertThatThrownBy(
             () -> answerService.create(enrolledCourseId, discussionAnswerRequestDto, email))
         .isInstanceOf(PermissionDeniedException.class);
+  }
+
+  @Test
+  void update_withCorrectData() {
+
+    PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
+
+    UpdateAnswerRequest request = new UpdateAnswerRequest();
+    String updateText = "Answer was updated";
+    request.setText(updateText);
+
+    given(
+            peersAnswerRepository.findPeersAnswerByIdAndUserEmailAndQuestionId(
+                anyLong(), anyLong(), anyLong(), anyString()))
+        .willReturn(Optional.of(peersAnswer));
+    given(peersAnswerRepository.save(any())).willReturn(peersAnswer);
+
+    peersAnswer.setText(request.getText());
+
+    Answer updatedAnswer =
+        answerService.update(
+            request,
+            peersAnswer.getId(),
+            peersAnswer.getDiscussionQuestion().getId(),
+            peersAnswer.getDiscussionQuestion().getCourse().getId(),
+            peersAnswer.getUser().getEmail());
+    assertTrue(updatedAnswer instanceof PeersAnswer);
+    assertEquals(updatedAnswer.getText(), updateText);
+
+    verify(peersAnswerRepository, times(1)).save(any());
+    verify(peersAnswerRepository, times(1))
+        .findPeersAnswerByIdAndUserEmailAndQuestionId(any(), any(), any(), any());
+  }
+
+  @Test
+  void update_withIncorrectData_wrongQuestionId() {
+
+    PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
+
+    UpdateAnswerRequest request = new UpdateAnswerRequest();
+    long wrongAnswerId = 999L;
+    long questionId = peersAnswer.getDiscussionQuestion().getId();
+    Long courseId = peersAnswer.getDiscussionQuestion().getCourse().getId();
+    String email = peersAnswer.getUser().getEmail();
+
+    assertThatThrownBy(
+            () -> answerService.update(request, wrongAnswerId, questionId, courseId, email))
+        .isInstanceOf(IllegalArgumentException.class);
+
+    verify(peersAnswerRepository, times(0)).save(any());
+    verify(peersAnswerRepository, times(1))
+        .findPeersAnswerByIdAndUserEmailAndQuestionId(any(), any(), any(), any());
+  }
+
+  @Test
+  void update_withIncorrectData_wrongUserEmail() {
+
+    long peersAnswerId = TestHelper.createDiscussionPeersAnswer().getId();
+
+    UpdateAnswerRequest request = new UpdateAnswerRequest();
+    String wrongEmail = "wrongEmail";
+
+    assertThatThrownBy(() -> answerService.update(request, peersAnswerId, 1L, 1L, wrongEmail))
+        .isInstanceOf(IllegalArgumentException.class);
+
+    verify(peersAnswerRepository, times(0)).save(any());
+    verify(peersAnswerRepository, times(1))
+        .findPeersAnswerByIdAndUserEmailAndQuestionId(any(), any(), any(), any());
+  }
+
+  @Test
+  void delete_withCorrectData() {
+
+    PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
+    PeersQuestion peersQuestion = TestHelper.createDiscussionPeersQuestion();
+    peersAnswer.setDiscussionQuestion(peersQuestion);
+    int updatedRows = 1;
+
+    given(
+            peersAnswerRepository.delete(
+                peersAnswer.getId(),
+                peersQuestion.getId(),
+                peersQuestion.getCourse().getId(),
+                peersQuestion.getUser().getEmail()))
+        .willReturn(updatedRows);
+    answerService.delete(
+        peersAnswer.getId(),
+        peersQuestion.getId(),
+        peersQuestion.getCourse().getId(),
+        peersQuestion.getUser().getEmail());
+
+    assertEquals(1, updatedRows);
+    verify(peersAnswerRepository, times(1)).delete(any(), any(), any(), any());
+  }
+
+  @Test
+  void delete_withIncorrectData_wrongUserEmail() {
+
+    PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
+    PeersQuestion peersQuestion = TestHelper.createDiscussionPeersQuestion();
+    peersAnswer.setDiscussionQuestion(peersQuestion);
+
+    long peersAnswerId = peersAnswer.getId();
+    long peersQuestionId = peersQuestion.getId();
+    String wrongEmail = "wrongEmail";
+    long courseId = peersQuestion.getCourse().getId();
+
+    assertThatThrownBy(
+            () -> answerService.delete(peersAnswerId, peersQuestionId, courseId, wrongEmail))
+        .isInstanceOf(IllegalArgumentException.class);
+    verify(peersAnswerRepository, times(1)).delete(any(), any(), any(), any());
+  }
+
+  @Test
+  void delete_withIncorrectData_wrongQuestionId() {
+
+    PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
+    PeersQuestion peersQuestion = TestHelper.createDiscussionPeersQuestion();
+    peersAnswer.setDiscussionQuestion(peersQuestion);
+
+    String userEmail = peersAnswer.getUser().getEmail();
+    long peersAnswerId = peersAnswer.getId();
+    long wrongQuestionId = 999L;
+    Long courseId = peersQuestion.getCourse().getId();
+
+    assertThatThrownBy(
+            () -> answerService.delete(peersAnswerId, wrongQuestionId, courseId, userEmail))
+        .isInstanceOf(IllegalArgumentException.class);
+    verify(peersAnswerRepository, times(1)).delete(any(), any(), any(), any());
+  }
+
+  @Test
+  void delete_withIncorrectData_wrongEnrolledCourseId() {
+
+    PeersAnswer peersAnswer = TestHelper.createDiscussionPeersAnswer();
+    PeersQuestion peersQuestion = TestHelper.createDiscussionPeersQuestion();
+    peersAnswer.setDiscussionQuestion(peersQuestion);
+    String userEmail = peersAnswer.getUser().getEmail();
+    long questionId = peersAnswer.getDiscussionQuestion().getId();
+    long wrongEnrolledCourseId = 999L;
+    Long answerId = peersAnswer.getId();
+
+    assertThatThrownBy(
+            () -> answerService.delete(answerId, questionId, wrongEnrolledCourseId, userEmail))
+        .isInstanceOf(IllegalArgumentException.class);
+    verify(peersAnswerRepository, times(1)).delete(any(), any(), any(), any());
   }
 
   @Test

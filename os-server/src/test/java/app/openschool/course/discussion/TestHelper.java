@@ -4,6 +4,7 @@ import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
+import app.openschool.course.discussion.mentor.answer.MentorAnswer;
 import app.openschool.course.discussion.mentor.question.MentorQuestion;
 import app.openschool.course.discussion.peers.answer.PeersAnswer;
 import app.openschool.course.discussion.peers.question.PeersQuestion;
@@ -35,6 +36,16 @@ public class TestHelper {
     mentorQuestion.setCourse(crateCourse());
     mentorQuestion.setCreatedDate(Instant.now());
     return mentorQuestion;
+  }
+
+  public static MentorAnswer createMentorAnswer() {
+    MentorAnswer mentorAnswer = new MentorAnswer();
+    mentorAnswer.setId(1L);
+    mentorAnswer.setText("Question to Mentor");
+    mentorAnswer.setUser(createUser());
+    mentorAnswer.setDiscussionQuestionMentor(createMentorQuestion());
+    mentorAnswer.setCreatedDate(Instant.now());
+    return mentorAnswer;
   }
 
   public static PeersAnswer createDiscussionPeersAnswer() {

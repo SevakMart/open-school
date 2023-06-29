@@ -43,11 +43,24 @@ public class MentorQuestionServiceImpl implements QuestionService {
       Long questionId,
       Long enrolledCourseId,
       String currentUserEmail) {
-    return null;
+    MentorQuestion mentorQuestion =
+        mentorQuestionRepository
+            .findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(
+                questionId, currentUserEmail, enrolledCourseId)
+            .orElseThrow(IllegalArgumentException::new);
+    mentorQuestion.setText(request.getText());
+    mentorQuestion.setCreatedDate(Instant.now());
+    return mentorQuestionRepository.save(mentorQuestion);
   }
 
   @Override
-  public void delete(Long questionId, Long enrolledCourseId, String currentUserEmail) {}
+  public void delete(Long questionId, Long enrolledCourseId, String currentUserEmail) {
+    int updatedRows =
+        mentorQuestionRepository.delete(questionId, currentUserEmail, enrolledCourseId);
+    if (updatedRows == 0) {
+      throw new IllegalArgumentException();
+    }
+  }
 
   @Override
   public MentorQuestion findQuestionByIdAndEnrolledCourseId(

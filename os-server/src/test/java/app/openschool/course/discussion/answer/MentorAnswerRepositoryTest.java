@@ -1,7 +1,6 @@
-package app.openschool.course.discussion.question;
+package app.openschool.course.discussion.answer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import app.openschool.category.Category;
 import app.openschool.category.CategoryRepository;
@@ -13,6 +12,8 @@ import app.openschool.course.api.CourseGenerator;
 import app.openschool.course.difficulty.Difficulty;
 import app.openschool.course.difficulty.DifficultyRepository;
 import app.openschool.course.discussion.TestHelper;
+import app.openschool.course.discussion.mentor.answer.MentorAnswer;
+import app.openschool.course.discussion.mentor.answer.MentorAnswerRepository;
 import app.openschool.course.discussion.mentor.question.MentorQuestion;
 import app.openschool.course.discussion.mentor.question.MentorQuestionRepository;
 import app.openschool.course.language.Language;
@@ -30,8 +31,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 @DataJpaTest
-class MentorQuestionRepositoryTest {
-
+class MentorAnswerRepositoryTest {
+  @Autowired MentorAnswerRepository mentorAnswerRepository;
   @Autowired MentorQuestionRepository mentorQuestionRepository;
   @Autowired CourseRepository courseRepository;
   @Autowired DifficultyRepository difficultyRepository;
@@ -41,13 +42,15 @@ class MentorQuestionRepositoryTest {
   @Autowired UserRepository userRepository;
   @Autowired RoleRepository roleRepository;
 
+  private MentorAnswer expectedMentorAnswer;
+  private MentorAnswer mentorAnswer;
   private MentorQuestion expectedQuestion;
-  private User student;
   private EnrolledCourse enrolledCourse;
 
-  @BeforeEach
-  public void setup() {
+  private User student;
 
+  @BeforeEach
+  void setup() {
     User mentor = new User();
     Role role = roleRepository.save(new Role(2, "MENTOR"));
     mentor.setRole(role);
@@ -94,72 +97,65 @@ class MentorQuestionRepositoryTest {
     expectedQuestion.setCourse(course);
     expectedQuestion.setUser(student);
     expectedQuestion = mentorQuestionRepository.save(expectedQuestion);
+
+    mentorAnswer = TestHelper.createMentorAnswer();
+    mentorAnswer.setDiscussionQuestionMentor(expectedQuestion);
+    mentorAnswer.setUser(student);
+    expectedMentorAnswer = mentorAnswerRepository.save(mentorAnswer);
   }
 
   @Test
-  void findMentorQuestionsByEnrolledCourseId() {
-    long courseId = enrolledCourse.getId();
-    long wrongEnrolledCourseId = 999L;
+  void findMentorAnswerByMentorQuestionId() {
 
-    Page<MentorQuestion> questionPage =
-        mentorQuestionRepository.findQuestionByEnrolledCourseId(courseId, PageRequest.of(0, 1));
-    Optional<MentorQuestion> questionOptional = questionPage.stream().findFirst();
+    long correctQuestionId = expectedMentorAnswer.getDiscussionQuestionMentor().getId();
+    long wrongQuestionId = 999L;
 
-    Page<MentorQuestion> emptyPage =
-        mentorQuestionRepository.findQuestionByEnrolledCourseId(
-            wrongEnrolledCourseId, PageRequest.of(0, 1));
+    Page<MentorAnswer> mentorAnswerPage =
+        mentorAnswerRepository.findMentorAnswerByMentorQuestionId(
+            correctQuestionId, PageRequest.of(0, 1));
+    Optional<MentorAnswer> optionalAnswer = mentorAnswerPage.stream().findFirst();
 
-    assertEquals(
-        expectedQuestion.getCourse().getId(), questionOptional.orElseThrow().getCourse().getId());
+    Page<MentorAnswer> emptyPage =
+        mentorAnswerRepository.findMentorAnswerByMentorQuestionId(
+            wrongQuestionId, PageRequest.of(0, 1));
+
+    assertEquals(expectedMentorAnswer.getId(), optionalAnswer.orElseThrow().getId());
     assertEquals(0, emptyPage.getTotalElements());
   }
 
   @Test
-  void findQuestionByIdAndEnrolledCourseId() {
-
-    long correctEnrolledCourseId = expectedQuestion.getCourse().getId();
-    Optional<MentorQuestion> actualQuestion =
-        mentorQuestionRepository.findQuestionByIdAndEnrolledCourseId(
-            correctEnrolledCourseId, expectedQuestion.getId());
-
-    long wrongEnrolledCourseId = 999L;
-    Optional<MentorQuestion> emptyOptionalWrongEnrolledId =
-        mentorQuestionRepository.findQuestionByIdAndEnrolledCourseId(
-            wrongEnrolledCourseId, expectedQuestion.getId());
-
-    long wrongQuestionId = 999L;
-    Optional<MentorQuestion> emptyOptionalWrongQuestionId =
-        mentorQuestionRepository.findQuestionByIdAndEnrolledCourseId(
-            correctEnrolledCourseId, wrongQuestionId);
-
-    assertEquals(expectedQuestion.getId(), actualQuestion.orElseThrow().getId());
-    assertTrue(emptyOptionalWrongEnrolledId.isEmpty());
-    assertTrue(emptyOptionalWrongQuestionId.isEmpty());
-  }
-
-  @Test
   void delete() {
-    MentorQuestion mentorQuestion =
-        mentorQuestionRepository.findById(expectedQuestion.getId()).orElseThrow();
+
+    MentorAnswer mentorAnswer =
+        mentorAnswerRepository.findById(expectedMentorAnswer.getId()).orElseThrow();
 
     int updatedRows =
-        mentorQuestionRepository.delete(
-            mentorQuestion.getId(), student.getEmail(), enrolledCourse.getId());
+        mentorAnswerRepository.delete(
+            mentorAnswer.getId(),
+            mentorAnswer.getDiscussionQuestionMentor().getId(),
+            enrolledCourse.getId(),
+            student.getEmail());
 
     assertEquals(1, updatedRows);
-    assertEquals(mentorQuestionRepository.findById(mentorQuestion.getId()), Optional.empty());
+    assertEquals(mentorAnswerRepository.findById(mentorAnswer.getId()), Optional.empty());
   }
 
   @Test
-  void findMentorQuestionByIdAndUserEmailAndEnrolledCourseId() {
-    MentorQuestion actualMentorQuestion =
-        mentorQuestionRepository
-            .findMentorQuestionByIdAndUserEmailAndEnrolledCourseId(
-                expectedQuestion.getId(), student.getEmail(), enrolledCourse.getId())
+  void findMentorAnswerByIdAndUserEmailAndQuestionId() {
+    MentorAnswer actualMentorAnswer =
+        mentorAnswerRepository
+            .findMentorAnswerByIdAndUserEmailAndQuestionId(
+                expectedMentorAnswer.getId(),
+                expectedMentorAnswer.getDiscussionQuestionMentor().getId(),
+                enrolledCourse.getId(),
+                student.getEmail())
             .orElseThrow(IllegalArgumentException::new);
 
-    assertEquals(expectedQuestion.getId(), actualMentorQuestion.getId());
-    assertEquals(expectedQuestion.getUser().getEmail(), actualMentorQuestion.getUser().getEmail());
-    assertEquals(expectedQuestion.getCourse().getId(), actualMentorQuestion.getCourse().getId());
+    assertEquals(expectedMentorAnswer.getId(), actualMentorAnswer.getId());
+    assertEquals(
+        expectedMentorAnswer.getUser().getEmail(), actualMentorAnswer.getUser().getEmail());
+    assertEquals(
+        expectedMentorAnswer.getDiscussionQuestionMentor().getId(),
+        actualMentorAnswer.getDiscussionQuestionMentor().getId());
   }
 }

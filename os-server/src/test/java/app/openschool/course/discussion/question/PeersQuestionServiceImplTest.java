@@ -305,5 +305,4 @@ class PeersQuestionServiceImplTest {
     verify(peersQuestionRepository, times(1))
         .findQuestionByIdAndEnrolledCourseId(enrolledCourseId, wrongQuestionId);
   }
-
 }
