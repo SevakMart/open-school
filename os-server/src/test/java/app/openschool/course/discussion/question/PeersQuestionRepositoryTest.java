@@ -119,14 +119,15 @@ class PeersQuestionRepositoryTest {
   void findQuestionByCourseId() {
     long courseId = enrolledCourse.getId();
     long wrongEnrolledCourseId = 999L;
+    String q = "Question";
 
     Page<PeersQuestion> questionPage =
-        peersQuestionRepository.findQuestionByEnrolledCourseId(courseId, PageRequest.of(0, 1));
+        peersQuestionRepository.findQuestionByEnrolledCourseId(courseId, PageRequest.of(0, 1), q);
     Optional<PeersQuestion> questionOptional = questionPage.stream().findFirst();
 
     Page<PeersQuestion> emptyPage =
         peersQuestionRepository.findQuestionByEnrolledCourseId(
-            wrongEnrolledCourseId, PageRequest.of(0, 1));
+            wrongEnrolledCourseId, PageRequest.of(0, 1), q);
 
     assertEquals(
         expectedQuestion.getCourse().getId(), questionOptional.orElseThrow().getCourse().getId());

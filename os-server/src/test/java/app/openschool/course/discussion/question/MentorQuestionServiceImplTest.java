@@ -1,5 +1,28 @@
 package app.openschool.course.discussion.question;
 
+import app.openschool.course.Course;
+import app.openschool.course.EnrolledCourse;
+import app.openschool.course.EnrolledCourseRepository;
+import app.openschool.course.discussion.Question;
+import app.openschool.course.discussion.QuestionService;
+import app.openschool.course.discussion.TestHelper;
+import app.openschool.course.discussion.mentor.question.MentorQuestion;
+import app.openschool.course.discussion.mentor.question.MentorQuestionRepository;
+import app.openschool.course.discussion.mentor.question.MentorQuestionServiceImpl;
+import app.openschool.user.User;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -11,28 +34,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import app.openschool.course.Course;
-import app.openschool.course.EnrolledCourse;
-import app.openschool.course.EnrolledCourseRepository;
-import app.openschool.course.discussion.Question;
-import app.openschool.course.discussion.QuestionService;
-import app.openschool.course.discussion.TestHelper;
-import app.openschool.course.discussion.mentor.question.MentorQuestion;
-import app.openschool.course.discussion.mentor.question.MentorQuestionRepository;
-import app.openschool.course.discussion.mentor.question.MentorQuestionServiceImpl;
-import app.openschool.user.User;
-import java.util.List;
-import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 public class MentorQuestionServiceImplTest {
@@ -78,33 +79,36 @@ public class MentorQuestionServiceImplTest {
     long enrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 2);
     Page<MentorQuestion> questionPage = new PageImpl<>(List.of(question));
+    String q = "Question";
 
-    when(mentorQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable))
+
+    when(mentorQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable, q))
         .thenReturn(questionPage);
     Page<? extends Question> questionByCourseId =
-        questionService.findQuestionByCourseId(enrolledCourseId, pageable);
+        questionService.findQuestionByCourseId(enrolledCourseId, pageable, q);
 
     assertNotNull(questionByCourseId.stream().findFirst().orElseThrow());
     assertTrue(
         questionByCourseId.stream()
             .allMatch(peersQuestion -> peersQuestion instanceof MentorQuestion));
     verify(mentorQuestionRepository, times(1))
-        .findQuestionByEnrolledCourseId(enrolledCourseId, pageable);
+        .findQuestionByEnrolledCourseId(enrolledCourseId, pageable, q);
   }
 
   @Test
   void findMentorQuestionByCourseId_withIncorrectData() {
     long wrongEnrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 2);
+    String q = "";
 
-    when(mentorQuestionRepository.findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable))
+    when(mentorQuestionRepository.findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable, q))
         .thenReturn(Page.empty(pageable));
     Page<? extends Question> questionByCourseId =
-        questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable);
+        questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable, q);
 
     assertTrue(questionByCourseId.getContent().isEmpty());
     verify(mentorQuestionRepository, times(1))
-        .findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable);
+        .findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable, q);
   }
 
   @Test

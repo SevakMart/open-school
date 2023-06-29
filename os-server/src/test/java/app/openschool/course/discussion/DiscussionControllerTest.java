@@ -272,15 +272,17 @@ public class DiscussionControllerTest {
 
     long enrolledCourseId = 1L;
     String jwt = generateJwtToken();
+    String q = "Question";
 
     Pageable pageable = PageRequest.of(0, 5);
 
-    when(questionService.findQuestionByCourseId(enrolledCourseId, pageable)).thenReturn(questions);
+    when(questionService.findQuestionByCourseId(enrolledCourseId, pageable, q)).thenReturn(questions);
     mockMvc
         .perform(
             get("/api/v1/courses/enrolled/" + enrolledCourseId + "/peers-questions")
                 .queryParam("page", "o")
                 .queryParam("size", "5")
+                .queryParam("q", q)
                 .header("Authorization", jwt)
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isOk());
@@ -290,10 +292,11 @@ public class DiscussionControllerTest {
   void findQuestionsByCourseId_unauthorized() throws Exception {
 
     Page questions = new PageImpl<>(List.of(TestHelper.createDiscussionPeersQuestion()));
+    String q = "Question";
 
     long enrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 5);
-    when(questionService.findQuestionByCourseId(enrolledCourseId, pageable)).thenReturn(questions);
+    when(questionService.findQuestionByCourseId(enrolledCourseId, pageable, q)).thenReturn(questions);
 
     mockMvc
         .perform(
@@ -584,16 +587,18 @@ public class DiscussionControllerTest {
 
     long enrolledCourseId = 1L;
     String jwt = generateJwtToken();
+    String q = "Question";
 
     Pageable pageable = PageRequest.of(0, 5);
 
-    when(mentorQuestionService.findQuestionByCourseId(enrolledCourseId, pageable))
+    when(mentorQuestionService.findQuestionByCourseId(enrolledCourseId, pageable, q))
         .thenReturn(questions);
     mockMvc
         .perform(
             get("/api/v1/courses/enrolled/" + enrolledCourseId + "/mentor-questions")
                 .queryParam("page", "o")
                 .queryParam("size", "5")
+                .queryParam("q", q)
                 .header("Authorization", jwt)
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isOk());
@@ -603,10 +608,11 @@ public class DiscussionControllerTest {
   void findMentorQuestionsByCourseId_unauthorized() throws Exception {
 
     Page questions = new PageImpl<>(List.of(TestHelper.createMentorQuestion()));
+    String q = "Question";
 
     long enrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 5);
-    when(mentorQuestionService.findQuestionByCourseId(enrolledCourseId, pageable))
+    when(mentorQuestionService.findQuestionByCourseId(enrolledCourseId, pageable, q))
         .thenReturn(questions);
 
     mockMvc

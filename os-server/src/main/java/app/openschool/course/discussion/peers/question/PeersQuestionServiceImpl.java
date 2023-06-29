@@ -6,11 +6,12 @@ import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.discussion.QuestionService;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
-import java.time.Instant;
-import java.util.Objects;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.Objects;
 
 @Service("discussionQuestion")
 public class PeersQuestionServiceImpl implements QuestionService {
@@ -68,8 +69,8 @@ public class PeersQuestionServiceImpl implements QuestionService {
   }
 
   @Override
-  public Page<PeersQuestion> findQuestionByCourseId(Long enrolledCourseId, Pageable pageable) {
-    return peersQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable);
+  public Page<PeersQuestion> findQuestionByCourseId(Long enrolledCourseId, Pageable pageable, String q) {
+    return peersQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable, q);
   }
 
   @Override
