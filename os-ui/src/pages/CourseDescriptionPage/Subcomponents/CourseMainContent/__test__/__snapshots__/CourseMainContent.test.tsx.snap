@@ -17,7 +17,7 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
         class="subContent"
       >
         <h2>
-          string.courseDescriptionPage.title.description
+          What You Will Learn
         </h2>
         <p>
           This course talks about react
@@ -27,7 +27,7 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
         class="subContent"
       >
         <h2>
-          string.courseDescriptionPage.title.goal
+          Course Goal
         </h2>
         <p>
           The goal is to gain experience.
@@ -37,7 +37,7 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
         class="subContent"
       >
         <h2>
-          string.courseDescriptionPage.title.modulesList
+          Modules in This Program
         </h2>
         <div
           class="moduleListContainer"

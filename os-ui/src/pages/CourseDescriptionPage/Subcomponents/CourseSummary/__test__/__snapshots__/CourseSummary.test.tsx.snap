@@ -55,7 +55,7 @@ exports[`Create test cases for course description page Create a snapshot test 1`
           class="mainContent"
         >
           <h2>
-            rating
+            Rating
           </h2>
           <p>
             4.5
@@ -73,7 +73,7 @@ exports[`Create test cases for course description page Create a snapshot test 1`
           class="mainContent"
         >
           <h2>
-            enrolled
+            Enrolled
           </h2>
           <p>
             2
@@ -91,7 +91,7 @@ exports[`Create test cases for course description page Create a snapshot test 1`
           class="mainContent"
         >
           <h2>
-            level
+            Course Level
           </h2>
           <p>
             Advanced
@@ -109,7 +109,7 @@ exports[`Create test cases for course description page Create a snapshot test 1`
           class="mainContent"
         >
           <h2>
-            language
+            Language
           </h2>
           <p>
             French
@@ -127,7 +127,7 @@ exports[`Create test cases for course description page Create a snapshot test 1`
           class="mainContent"
         >
           <h2>
-            duration
+            Estimated Efforts
           </h2>
           <p>
             360

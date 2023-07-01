@@ -58,13 +58,15 @@ const CourseDescriptionPage = ({ userInfo }: { userInfo: any }) => {
                 title={entity.title}
                 currentUserEnrolled={currentUserEnrolled}
                 enrolledCourseId={entity.enrolledCourseId}
+                Course_Level={entity.level}
+                Estimated_efforts={entity.duration}
               />
               <CourseSummary
-                rating={entity.rating}
-                enrolled={entity.enrolled}
-                level={entity.level}
-                language={entity.language}
-                duration={entity.duration}
+                Rating={entity.rating}
+                Enrolled={entity.enrolled}
+                Course_Level={entity.level}
+                Language={entity.language}
+                Estimated_efforts={entity.duration}
                 courseId={Number(courseId)}
                 userIdAndToken={idAndToken}
                 title={entity.title}

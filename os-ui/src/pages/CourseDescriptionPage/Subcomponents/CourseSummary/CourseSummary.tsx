@@ -14,11 +14,11 @@ import styles from './CourseSummary.module.scss';
 import ShareButton from '../../../../icons/ShareIcon/ShareIcon';
 
 const CourseSummary = ({
-  rating,
-  enrolled,
-  level,
-  language,
-  duration,
+  Rating,
+  Enrolled,
+  Course_Level,
+  Language,
+  Estimated_efforts,
   courseId,
   userIdAndToken,
   title,
@@ -36,11 +36,11 @@ const CourseSummary = ({
   const [enrolledInCourse, setEnrolledInCourse] = useState<boolean>(Boolean(currentUserEnrolled));
   const [enrollButtonDisabled, setEnrollButtonDisabled] = useState<boolean>(false);
   const [courseSummaryItem, setCourseSummaryItem] = useState({
-    rating,
-    enrolled,
-    level,
-    language,
-    duration,
+    Rating,
+    Enrolled,
+    CourseLevel: Course_Level,
+    Language,
+    EstimatedEfforts: Estimated_efforts,
   });
 
   const {
@@ -71,7 +71,7 @@ const CourseSummary = ({
     setEnrollButtonDisabled(true);
     setCourseSummaryItem((prevState) => ({
       ...prevState,
-      enrolled: prevState.enrolled + 1,
+      enrolled: prevState.Enrolled + 1,
     }));
   };
 
@@ -93,14 +93,15 @@ const CourseSummary = ({
       </div>
       <div className={courseSummaryItemList}>
         {
-          Object.entries(courseSummaryItem).map((item) => (
-            <CourseSummaryItem
-              key={item[0]}
-              title={item[0]}
-              value={item[1]}
-            />
-          ))
-        }
+		Object.entries(courseSummaryItem).map((item) => (
+  <CourseSummaryItem
+    key={item[0]}
+    title={item[0].replace(/_/g, ' ')}
+    value={item[1]}
+  />
+		))
+	}
+
       </div>
       {enrolledInCourse && (
       <p className={userEnrollText}>
