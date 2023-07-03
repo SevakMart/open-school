@@ -100,18 +100,19 @@ public class MentorQuestionRepositoryTest {
   void findMentorQuestionsByEnrolledCourseId() {
     long courseId = enrolledCourse.getId();
     long wrongEnrolledCourseId = 999L;
-    String q = "Question";
+    String searchQuery = "Question";
 
     Page<MentorQuestion> questionPage =
-        mentorQuestionRepository.findQuestionByEnrolledCourseId(courseId, PageRequest.of(0, 1), q);
+        mentorQuestionRepository.findQuestionByEnrolledCourseId(
+            courseId, PageRequest.of(0, 1), searchQuery);
     Optional<MentorQuestion> questionOptional = questionPage.stream().findFirst();
 
     Page<MentorQuestion> emptyPage =
         mentorQuestionRepository.findQuestionByEnrolledCourseId(
-            wrongEnrolledCourseId, PageRequest.of(0, 1), q);
+            wrongEnrolledCourseId, PageRequest.of(0, 1), searchQuery);
 
-    assertEquals(
-        expectedQuestion.getCourse().getId(), questionOptional.orElseThrow().getCourse().getId());
+    assertTrue(questionOptional.isPresent(), "Expected mentor question to be present");
+    assertEquals(expectedQuestion.getCourse().getId(), questionOptional.get().getCourse().getId());
     assertEquals(0, emptyPage.getTotalElements());
   }
 

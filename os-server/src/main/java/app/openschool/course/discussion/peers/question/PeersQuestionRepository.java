@@ -1,5 +1,6 @@
 package app.openschool.course.discussion.peers.question;
 
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,8 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Repository
 public interface PeersQuestionRepository extends JpaRepository<PeersQuestion, Long> {
@@ -46,13 +45,17 @@ public interface PeersQuestionRepository extends JpaRepository<PeersQuestion, Lo
 
   @Query(
       value =
-              "SELECT * FROM peers_question "
-                      + "WHERE peers_question.learning_path_id = "
-                      + "(SELECT learning_path_id FROM enrolled_learning_path "
-                      + "WHERE id =:enrolledCourseId)" + "AND (:q IS NOT NULL AND LENGTH(:q) >= 3 AND peers_question.text LIKE CONCAT('%', :q, '%'))",
+          "SELECT * FROM peers_question "
+              + "WHERE peers_question.learning_path_id = "
+              + "(SELECT learning_path_id FROM enrolled_learning_path "
+              + "WHERE id = :enrolledCourseId) "
+              + "AND (COALESCE(:searchQuery) IS NULL "
+              + "OR peers_question.`text` LIKE CONCAT('%', :searchQuery, '%'))",
       nativeQuery = true)
   Page<PeersQuestion> findQuestionByEnrolledCourseId(
-          @Param("enrolledCourseId") Long enrolledCourseId, Pageable pageable, @Param("q") String q);
+      @Param("enrolledCourseId") Long enrolledCourseId,
+      Pageable pageable,
+      @Param("searchQuery") String searchQuery);
 
   @Query(
       value =

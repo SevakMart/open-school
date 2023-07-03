@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.security.Principal;
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -157,12 +158,13 @@ public class DiscussionForumController {
       })
   @GetMapping("/{enrolledCourseId}/peers-questions")
   public ResponseEntity<Page<QuestionResponseDto>> findQuestionsByCourseId(
-          @Parameter(description = "Enrolled course id") @PathVariable Long enrolledCourseId,
-          Pageable pageable, @RequestParam("q") String q) {
+      @Parameter(description = "Enrolled course id") @PathVariable Long enrolledCourseId,
+      Pageable pageable,
+      @Valid @Size(min = 3) @RequestParam(value = "q", required = false) String searchQuery) {
 
     Page<QuestionResponseDto> questionResponseDtos =
         QuestionMapper.toQuestionDtoPage(
-            questionService.findQuestionByCourseId(enrolledCourseId, pageable, q));
+            questionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery));
     return ResponseEntity.ok().body(questionResponseDtos);
   }
 
@@ -302,11 +304,12 @@ public class DiscussionForumController {
   @GetMapping("/{enrolledCourseId}/mentor-questions")
   public ResponseEntity<Page<MentorQuestionResponseDto>> findMentorQuestionsByCourseId(
       @Parameter(description = "Enrolled course id") @PathVariable Long enrolledCourseId,
-      Pageable pageable, @RequestParam("q") String q) {
+      Pageable pageable,
+      @Valid @Size(min = 3) @RequestParam(value = "q", required = false) String searchQuery) {
 
     Page<MentorQuestionResponseDto> dtoPage =
         MentorQuestionMapper.toQuestionDtoPage(
-            mentorQuestionService.findQuestionByCourseId(enrolledCourseId, pageable, q));
+            mentorQuestionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery));
     return ResponseEntity.ok().body(dtoPage);
   }
 
