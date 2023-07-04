@@ -112,6 +112,23 @@ public class MentorQuestionServiceImplTest {
   }
 
   @Test
+  void findMentorQuestionByCourseId_withSearchQueryNullValues() {
+    long wrongEnrolledCourseId = 1L;
+    Pageable pageable = PageRequest.of(0, 2);
+    String searchQuery = null;
+
+    when(mentorQuestionRepository.findQuestionByEnrolledCourseId(
+            wrongEnrolledCourseId, pageable, searchQuery))
+        .thenReturn(Page.empty(pageable));
+    Page<? extends Question> questionByCourseId =
+        questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable, searchQuery);
+
+    assertTrue(questionByCourseId.getContent().isEmpty());
+    verify(mentorQuestionRepository, times(1))
+        .findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable, searchQuery);
+  }
+
+  @Test
   void findMentorQuestionByIdAndEnrolledCourseId_withCorrectData() {
 
     MentorQuestion question = TestHelper.createMentorQuestion();

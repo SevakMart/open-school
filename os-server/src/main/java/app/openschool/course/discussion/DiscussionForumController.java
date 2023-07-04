@@ -160,7 +160,10 @@ public class DiscussionForumController {
   public ResponseEntity<Page<QuestionResponseDto>> findQuestionsByCourseId(
       @Parameter(description = "Enrolled course id") @PathVariable Long enrolledCourseId,
       Pageable pageable,
-      @Valid @Size(min = 3) @RequestParam(value = "q", required = false) String searchQuery) {
+      @Valid
+          @Size(min = 3, message = "Search query must be at least 3 characters long")
+          @RequestParam(value = "q", required = false)
+          String searchQuery) {
 
     Page<QuestionResponseDto> questionResponseDtos =
         QuestionMapper.toQuestionDtoPage(
