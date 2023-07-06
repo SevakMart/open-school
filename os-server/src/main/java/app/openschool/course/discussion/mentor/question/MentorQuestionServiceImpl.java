@@ -1,5 +1,6 @@
 package app.openschool.course.discussion.mentor.question;
 
+import app.openschool.common.exceptionhandler.exception.InvalidSearchQueryException;
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
@@ -7,7 +8,9 @@ import app.openschool.course.discussion.QuestionService;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
 import java.time.Instant;
+import java.util.Locale;
 import java.util.Objects;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,11 +20,15 @@ public class MentorQuestionServiceImpl implements QuestionService {
   private final EnrolledCourseRepository enrolledCourseRepository;
   private final MentorQuestionRepository mentorQuestionRepository;
 
+  private final MessageSource messageSource;
+
   public MentorQuestionServiceImpl(
       EnrolledCourseRepository enrolledCourseRepository,
-      MentorQuestionRepository mentorQuestionRepository) {
+      MentorQuestionRepository mentorQuestionRepository,
+      MessageSource messageSource) {
     this.enrolledCourseRepository = enrolledCourseRepository;
     this.mentorQuestionRepository = mentorQuestionRepository;
+    this.messageSource = messageSource;
   }
 
   @Override
@@ -60,6 +67,11 @@ public class MentorQuestionServiceImpl implements QuestionService {
   @Override
   public Page<MentorQuestion> findQuestionByCourseId(
       Long enrolledCourseId, Pageable pageable, String searchQuery) {
+    if (searchQuery != null && searchQuery.length() < 3) {
+      String message =
+          messageSource.getMessage("discussion.mentor.question.query.size", null, Locale.ROOT);
+      throw new InvalidSearchQueryException(message);
+    }
     return mentorQuestionRepository.findQuestionByEnrolledCourseId(
         enrolledCourseId, pageable, searchQuery);
   }
