@@ -28,6 +28,7 @@ import app.openschool.course.discussion.dto.UpdateQuestionRequest;
 import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
 import app.openschool.course.discussion.peers.question.PeersQuestionServiceImpl;
+import app.openschool.course.discussion.util.ValidationHandler;
 import app.openschool.user.User;
 import java.util.List;
 import java.util.Optional;
@@ -48,13 +49,16 @@ class PeersQuestionServiceImplTest {
   @Mock EnrolledCourseRepository enrolledCourseRepository;
 
   @Mock MessageSource messageSource;
+
+  ValidationHandler validationHandler;
   QuestionService questionService;
 
   @BeforeEach
   void setUp() {
+    validationHandler = new ValidationHandler(messageSource);
     questionService =
         new PeersQuestionServiceImpl(
-            peersQuestionRepository, enrolledCourseRepository, messageSource);
+            peersQuestionRepository, enrolledCourseRepository, validationHandler);
   }
 
   @Test
@@ -267,9 +271,11 @@ class PeersQuestionServiceImplTest {
     Pageable pageable = PageRequest.of(0, 2);
     String searchQuery = "qu";
 
-    assertThrows(InvalidSearchQueryException.class, () -> {
-      questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable, searchQuery);
-    });
+    assertThrows(
+        InvalidSearchQueryException.class,
+        () -> {
+          questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable, searchQuery);
+        });
   }
 
   @Test

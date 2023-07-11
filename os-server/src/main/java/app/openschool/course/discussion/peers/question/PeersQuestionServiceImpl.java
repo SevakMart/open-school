@@ -1,16 +1,14 @@
 package app.openschool.course.discussion.peers.question;
 
-import app.openschool.common.exceptionhandler.exception.InvalidSearchQueryException;
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.discussion.QuestionService;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
+import app.openschool.course.discussion.util.ValidationHandler;
 import java.time.Instant;
-import java.util.Locale;
 import java.util.Objects;
-import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,15 +19,15 @@ public class PeersQuestionServiceImpl implements QuestionService {
   private final PeersQuestionRepository peersQuestionRepository;
   private final EnrolledCourseRepository enrolledCourseRepository;
 
-  private final MessageSource messageSource;
+  private final ValidationHandler validationHandler;
 
   public PeersQuestionServiceImpl(
       PeersQuestionRepository peersQuestionRepository,
       EnrolledCourseRepository enrolledCourseRepository,
-      MessageSource messageSource) {
+      ValidationHandler validationHandler) {
     this.peersQuestionRepository = peersQuestionRepository;
     this.enrolledCourseRepository = enrolledCourseRepository;
-    this.messageSource = messageSource;
+    this.validationHandler = validationHandler;
   }
 
   @Override
@@ -77,11 +75,7 @@ public class PeersQuestionServiceImpl implements QuestionService {
   @Override
   public Page<PeersQuestion> findQuestionByCourseId(
       Long enrolledCourseId, Pageable pageable, String searchQuery) {
-    if (searchQuery != null && searchQuery.length() < 3) {
-      String message =
-          messageSource.getMessage("discussion.mentor.question.query.size", null, Locale.ROOT);
-      throw new InvalidSearchQueryException(message);
-    }
+    validationHandler.validateSearchQuery(searchQuery);
     return peersQuestionRepository.findQuestionByEnrolledCourseId(
         enrolledCourseId, pageable, searchQuery);
   }

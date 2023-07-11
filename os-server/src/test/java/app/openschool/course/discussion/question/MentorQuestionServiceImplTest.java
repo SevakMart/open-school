@@ -23,6 +23,7 @@ import app.openschool.course.discussion.TestHelper;
 import app.openschool.course.discussion.mentor.question.MentorQuestion;
 import app.openschool.course.discussion.mentor.question.MentorQuestionRepository;
 import app.openschool.course.discussion.mentor.question.MentorQuestionServiceImpl;
+import app.openschool.course.discussion.util.ValidationHandler;
 import app.openschool.user.User;
 import java.util.List;
 import java.util.Optional;
@@ -44,13 +45,16 @@ public class MentorQuestionServiceImplTest {
   @Mock EnrolledCourseRepository enrolledCourseRepository;
 
   @Mock MessageSource messageSource;
+
+  ValidationHandler validationHandler;
   private QuestionService questionService;
 
   @BeforeEach
   void setUp() {
+    validationHandler = new ValidationHandler(messageSource);
     questionService =
         new MentorQuestionServiceImpl(
-            enrolledCourseRepository, mentorQuestionRepository, messageSource);
+            enrolledCourseRepository, mentorQuestionRepository, validationHandler);
   }
 
   @Test
