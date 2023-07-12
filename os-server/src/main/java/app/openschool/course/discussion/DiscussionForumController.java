@@ -63,6 +63,10 @@ public class DiscussionForumController {
         @ApiResponse(
             responseCode = "403",
             description = "User has not enrolled in the course provided",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Only registered users have access to this method",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
   @PostMapping("/{enrolledCourseId}/peers-questions")
@@ -87,6 +91,10 @@ public class DiscussionForumController {
         @ApiResponse(
             responseCode = "400",
             description = "Invalid request arguments provided.",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Only registered users have access to this method",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
   @PutMapping("/{enrolledCourseId}/peers-questions/{peersQuestionId}")
@@ -123,6 +131,10 @@ public class DiscussionForumController {
         @ApiResponse(
             responseCode = "400",
             description = "Invalid request arguments provided.",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Only registered users have access to this method",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
   @DeleteMapping("/{enrolledCourseId}/peers-questions/{peersQuestionId}")
@@ -151,7 +163,7 @@ public class DiscussionForumController {
                     + "sort parameters passed (by default, all Questions are sorted by Question_ID,"
                     + "or an empty list if the Questions are not found."),
         @ApiResponse(
-            responseCode = "403",
+            responseCode = "401",
             description = "Only registered users have access to this method",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
@@ -175,7 +187,7 @@ public class DiscussionForumController {
             description = "Invalid QuestionID or EnrolledCourseID supplied",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
-            responseCode = "403",
+            responseCode = "401",
             description = "Only registered users have access to this method",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
@@ -200,7 +212,7 @@ public class DiscussionForumController {
                     + "sort parameters passed (by default, all Answers are sorted by Answer_ID,"
                     + "or an empty list if the Answers are not found."),
         @ApiResponse(
-            responseCode = "403",
+            responseCode = "401",
             description = "Only registered users have access to this method",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
@@ -224,6 +236,10 @@ public class DiscussionForumController {
         @ApiResponse(
             responseCode = "403",
             description = "User has not enrolled in the course provided",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Only registered users have access to this method",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
   @PostMapping("/{enrolledCourseId}/peers-answers")
@@ -247,7 +263,7 @@ public class DiscussionForumController {
             description = "Invalid AnswerID supplied",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
-            responseCode = "403",
+            responseCode = "401",
             description = "Only registered users have access to this method",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
@@ -269,6 +285,10 @@ public class DiscussionForumController {
         @ApiResponse(
             responseCode = "403",
             description = "User has not enrolled in the course provided",
+            content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Only registered users have access to this method",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
   @PostMapping("/{enrolledCourseId}/mentor-questions")
@@ -295,7 +315,7 @@ public class DiscussionForumController {
                     + "sort parameters passed (by default, all Questions are sorted by Question_ID,"
                     + "or an empty list if the MentorQuestions are not found."),
         @ApiResponse(
-            responseCode = "403",
+            responseCode = "401",
             description = "Only registered users have access to this method",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
@@ -322,7 +342,7 @@ public class DiscussionForumController {
             description = "Invalid Mentor-QuestionID or EnrolledCourseID supplied",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class))),
         @ApiResponse(
-            responseCode = "403",
+            responseCode = "401",
             description = "Only registered users have access to this method",
             content = @Content(schema = @Schema(implementation = ResponseMessage.class)))
       })
