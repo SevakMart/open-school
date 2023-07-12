@@ -7,6 +7,7 @@ import app.openschool.common.exceptionhandler.exception.DuplicateEntityException
 import app.openschool.common.exceptionhandler.exception.FileDeleteException;
 import app.openschool.common.exceptionhandler.exception.FileNotFoundException;
 import app.openschool.common.exceptionhandler.exception.FileSaveException;
+import app.openschool.common.exceptionhandler.exception.InvalidSearchQueryException;
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.common.exceptionhandler.exception.TemporaryStorageFailsException;
 import app.openschool.common.response.ResponseMessage;
@@ -68,8 +69,10 @@ public class CommonExceptionHandler implements ErrorController {
     Map<String, String> errorMap = new HashMap<>();
     bindException
         .getAllErrors()
-        .forEach(objectError ->
-              errorMap.put(((FieldError) objectError).getField(), objectError.getDefaultMessage()));
+        .forEach(
+            objectError ->
+                errorMap.put(
+                    ((FieldError) objectError).getField(), objectError.getDefaultMessage()));
     return ResponseEntity.badRequest().body(errorMap);
   }
 
@@ -130,5 +133,12 @@ public class CommonExceptionHandler implements ErrorController {
       UserVerificationException ex) {
     String message = messageSource.getMessage("exception.user.verification", null, Locale.ROOT);
     return ResponseEntity.badRequest().body(new ResponseMessage(message));
+  }
+
+  @ExceptionHandler(InvalidSearchQueryException.class)
+  public ResponseEntity<ResponseMessage> handleInvalidSearchQueryException(
+      InvalidSearchQueryException ex) {
+    return ResponseEntity.status(HttpStatus.LENGTH_REQUIRED)
+        .body(new ResponseMessage(ex.getMessage()));
   }
 }

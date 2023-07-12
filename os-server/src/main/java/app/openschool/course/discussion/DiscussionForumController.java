@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -157,11 +158,11 @@ public class DiscussionForumController {
   @GetMapping("/{enrolledCourseId}/peers-questions")
   public ResponseEntity<Page<QuestionResponseDto>> findQuestionsByCourseId(
       @Parameter(description = "Enrolled course id") @PathVariable Long enrolledCourseId,
-      Pageable pageable) {
-
+      Pageable pageable,
+      @RequestParam(value = "q", required = false) String searchQuery) {
     Page<QuestionResponseDto> questionResponseDtos =
         QuestionMapper.toQuestionDtoPage(
-            questionService.findQuestionByCourseId(enrolledCourseId, pageable));
+            questionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery));
     return ResponseEntity.ok().body(questionResponseDtos);
   }
 
@@ -301,11 +302,12 @@ public class DiscussionForumController {
   @GetMapping("/{enrolledCourseId}/mentor-questions")
   public ResponseEntity<Page<MentorQuestionResponseDto>> findMentorQuestionsByCourseId(
       @Parameter(description = "Enrolled course id") @PathVariable Long enrolledCourseId,
-      Pageable pageable) {
+      Pageable pageable,
+      @RequestParam(value = "q", required = false) String searchQuery) {
 
     Page<MentorQuestionResponseDto> dtoPage =
         MentorQuestionMapper.toQuestionDtoPage(
-            mentorQuestionService.findQuestionByCourseId(enrolledCourseId, pageable));
+            mentorQuestionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery));
     return ResponseEntity.ok().body(dtoPage);
   }
 

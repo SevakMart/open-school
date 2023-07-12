@@ -3,6 +3,7 @@ package app.openschool.course.discussion.question;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -12,6 +13,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import app.openschool.common.exceptionhandler.exception.InvalidSearchQueryException;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
@@ -21,6 +23,7 @@ import app.openschool.course.discussion.TestHelper;
 import app.openschool.course.discussion.mentor.question.MentorQuestion;
 import app.openschool.course.discussion.mentor.question.MentorQuestionRepository;
 import app.openschool.course.discussion.mentor.question.MentorQuestionServiceImpl;
+import app.openschool.course.discussion.util.ValidationHandler;
 import app.openschool.user.User;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -39,12 +43,18 @@ public class MentorQuestionServiceImplTest {
 
   @Mock MentorQuestionRepository mentorQuestionRepository;
   @Mock EnrolledCourseRepository enrolledCourseRepository;
+
+  @Mock MessageSource messageSource;
+
+  ValidationHandler validationHandler;
   private QuestionService questionService;
 
   @BeforeEach
   void setUp() {
+    validationHandler = new ValidationHandler(messageSource);
     questionService =
-        new MentorQuestionServiceImpl(enrolledCourseRepository, mentorQuestionRepository);
+        new MentorQuestionServiceImpl(
+            enrolledCourseRepository, mentorQuestionRepository, validationHandler);
   }
 
   @Test
@@ -78,33 +88,50 @@ public class MentorQuestionServiceImplTest {
     long enrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 2);
     Page<MentorQuestion> questionPage = new PageImpl<>(List.of(question));
+    String searchQuery = "Question";
 
-    when(mentorQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable))
+    when(mentorQuestionRepository.findQuestionByEnrolledCourseId(
+            enrolledCourseId, pageable, searchQuery))
         .thenReturn(questionPage);
     Page<? extends Question> questionByCourseId =
-        questionService.findQuestionByCourseId(enrolledCourseId, pageable);
+        questionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery);
 
     assertNotNull(questionByCourseId.stream().findFirst().orElseThrow());
     assertTrue(
         questionByCourseId.stream()
             .allMatch(peersQuestion -> peersQuestion instanceof MentorQuestion));
     verify(mentorQuestionRepository, times(1))
-        .findQuestionByEnrolledCourseId(enrolledCourseId, pageable);
+        .findQuestionByEnrolledCourseId(enrolledCourseId, pageable, searchQuery);
   }
 
   @Test
   void findMentorQuestionByCourseId_withIncorrectData() {
     long wrongEnrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 2);
+    String searchQuery = "qu";
 
-    when(mentorQuestionRepository.findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable))
+    assertThrows(
+        InvalidSearchQueryException.class,
+        () -> {
+          questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable, searchQuery);
+        });
+  }
+
+  @Test
+  void findMentorQuestionByCourseId_withSearchQueryNullValues() {
+    long wrongEnrolledCourseId = 1L;
+    Pageable pageable = PageRequest.of(0, 2);
+    String searchQuery = null;
+
+    when(mentorQuestionRepository.findQuestionByEnrolledCourseId(
+            wrongEnrolledCourseId, pageable, searchQuery))
         .thenReturn(Page.empty(pageable));
     Page<? extends Question> questionByCourseId =
-        questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable);
+        questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable, searchQuery);
 
     assertTrue(questionByCourseId.getContent().isEmpty());
     verify(mentorQuestionRepository, times(1))
-        .findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable);
+        .findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable, searchQuery);
   }
 
   @Test

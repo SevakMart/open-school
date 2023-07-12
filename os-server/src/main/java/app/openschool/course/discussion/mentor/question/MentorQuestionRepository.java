@@ -16,10 +16,14 @@ public interface MentorQuestionRepository extends JpaRepository<MentorQuestion, 
           "SELECT * FROM mentor_question "
               + "WHERE mentor_question.learning_path_id = "
               + "(SELECT learning_path_id FROM enrolled_learning_path "
-              + "WHERE id =:enrolledCourseId)",
+              + "WHERE id =:enrolledCourseId) "
+              + "AND (COALESCE(:searchQuery) IS NULL "
+              + "OR mentor_question.`text` LIKE CONCAT('%', :searchQuery, '%'))",
       nativeQuery = true)
   Page<MentorQuestion> findQuestionByEnrolledCourseId(
-      @Param("enrolledCourseId") Long enrolledCourseId, Pageable pageable);
+      @Param("enrolledCourseId") Long enrolledCourseId,
+      Pageable pageable,
+      @Param("searchQuery") String searchQuery);
 
   @Query(
       value =

@@ -6,6 +6,7 @@ import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.discussion.QuestionService;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
+import app.openschool.course.discussion.util.ValidationHandler;
 import java.time.Instant;
 import java.util.Objects;
 import org.springframework.data.domain.Page;
@@ -17,11 +18,15 @@ public class MentorQuestionServiceImpl implements QuestionService {
   private final EnrolledCourseRepository enrolledCourseRepository;
   private final MentorQuestionRepository mentorQuestionRepository;
 
+  private final ValidationHandler validationHandler;
+
   public MentorQuestionServiceImpl(
       EnrolledCourseRepository enrolledCourseRepository,
-      MentorQuestionRepository mentorQuestionRepository) {
+      MentorQuestionRepository mentorQuestionRepository,
+      ValidationHandler validationHandler) {
     this.enrolledCourseRepository = enrolledCourseRepository;
     this.mentorQuestionRepository = mentorQuestionRepository;
+    this.validationHandler = validationHandler;
   }
 
   @Override
@@ -58,9 +63,11 @@ public class MentorQuestionServiceImpl implements QuestionService {
   }
 
   @Override
-  public Page<MentorQuestion> findQuestionByCourseId(Long enrolledCourseId, Pageable pageable) {
-
-    return mentorQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable);
+  public Page<MentorQuestion> findQuestionByCourseId(
+      Long enrolledCourseId, Pageable pageable, String searchQuery) {
+    validationHandler.validateSearchQuery(searchQuery);
+    return mentorQuestionRepository.findQuestionByEnrolledCourseId(
+        enrolledCourseId, pageable, searchQuery);
   }
 
   private MentorQuestion prepareMentorQuestion(

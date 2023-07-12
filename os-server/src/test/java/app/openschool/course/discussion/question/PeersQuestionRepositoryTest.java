@@ -20,8 +20,6 @@ import app.openschool.course.language.Language;
 import app.openschool.course.language.LanguageRepository;
 import app.openschool.user.User;
 import app.openschool.user.UserRepository;
-import app.openschool.user.api.UserGenerator;
-import app.openschool.user.company.CompanyRepository;
 import app.openschool.user.role.Role;
 import app.openschool.user.role.RoleRepository;
 import java.util.Optional;
@@ -119,14 +117,16 @@ class PeersQuestionRepositoryTest {
   void findQuestionByCourseId() {
     long courseId = enrolledCourse.getId();
     long wrongEnrolledCourseId = 999L;
+    String searchQuery = "Question";
 
     Page<PeersQuestion> questionPage =
-        peersQuestionRepository.findQuestionByEnrolledCourseId(courseId, PageRequest.of(0, 1));
+        peersQuestionRepository.findQuestionByEnrolledCourseId(
+            courseId, PageRequest.of(0, 1), searchQuery);
     Optional<PeersQuestion> questionOptional = questionPage.stream().findFirst();
 
     Page<PeersQuestion> emptyPage =
         peersQuestionRepository.findQuestionByEnrolledCourseId(
-            wrongEnrolledCourseId, PageRequest.of(0, 1));
+            wrongEnrolledCourseId, PageRequest.of(0, 1), searchQuery);
 
     assertEquals(
         expectedQuestion.getCourse().getId(), questionOptional.orElseThrow().getCourse().getId());
