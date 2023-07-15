@@ -61,7 +61,7 @@ const Form = ({
 	  setErrorMessage(PASSWORD_REQUIRED);
 	  return;
     }
-    if (trimmedPassword !== formValues.newPassword) {
+    if (isResetPasswordForm && trimmedPassword !== formValues.newPassword) {
       setErrorMessage(PASSWORDS_MISMATCH);
     } else {
       setErrorMessage('');
