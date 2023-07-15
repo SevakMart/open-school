@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input } from '../../Input/Input';
@@ -74,19 +74,12 @@ const Form = ({
     dispatch(openModal({ buttonType: Types.Button.FORGOT_VERIFICATION, forgotVerficationEmail: formValues.email }));
   };
 
-  const handleSubmit = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (event.key === 'Enter') {
-	  event.preventDefault();
-	  handleFormOnClick(event);
+  const handleSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleFormOnClick(e);
     }
   };
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleSubmit as unknown as (event: KeyboardEvent) => void);
-    return () => {
-	  document.removeEventListener('keydown', handleSubmit as unknown as (event: KeyboardEvent) => void);
-    };
-  }, [formValues]);
 
   return (
     <form className={inputContent}>

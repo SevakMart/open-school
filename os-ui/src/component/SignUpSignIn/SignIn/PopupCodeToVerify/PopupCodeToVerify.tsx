@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import './popupCodeToVerify.scss';
 import '../ForgotPassword/forgotPassword.scss';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import CloseIcon from '../../../../icons/Close';
 import { closeModal, openModal } from '../../../../redux/Slices/PortalOpenStatus';
 import { Types } from '../../../../types/types';
@@ -17,6 +18,7 @@ const PopupCodeToVerify: React.FC = () => {
   const { codeDigits } = AllcodeDigitsState;
   const codeInputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const disabled = !codeDigits[0] || !codeDigits[1] || !codeDigits[2] || !codeDigits[3];
+  const { t } = useTranslation();
 
   const handleClosePortal = () => {
     dispatch(closeModal());
@@ -97,12 +99,12 @@ const PopupCodeToVerify: React.FC = () => {
         <CloseIcon />
       </div>
       <div className="verPopupBody">
-        <div className="verPopUpTitle">Enter security code</div>
+        <div className="verPopUpTitle">{t('Enter security code')}</div>
         <p className="verPopUpcontent">
-          Please check your email for a message with your code. Your code is 4 numbers long.
+          {t('Please check your email for a message with your code. Your code is 4 numbers long.')}
         </p>
         <div className="sentMail">
-          <div>We sent your code to:</div>
+          <div>{t('We sent your code to:')}</div>
           <div>{email}</div>
         </div>
       </div>
@@ -124,10 +126,10 @@ const PopupCodeToVerify: React.FC = () => {
       </div>
       <div className="popUpBtns">
         <button type="button" className="anyBtns backBtn" onClick={() => { toSomePopup(Types.Button.FORGOT_PASSWORD); dispatch(setCodeDigits(['', '', '', ''])); }}>
-          Go Back
+          {t('Go Back')}
         </button>
         <button type="button" className="anyBtns continueBtn" disabled={disabled} onClick={() => toSomePopup(Types.Button.RESET_PASSWORD)}>
-          Continue
+          {t('Continue')}
         </button>
       </div>
     </div>

@@ -41,14 +41,14 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div style={{ marginTop: '10px' }}>
+    <div className="forgotpsdContainer">
       <Header
         mainTitle={t('string.forgotPsd.title')}
         shouldRemoveIconContent
         isForgotPasswordContent
         isVerificationContent={false}
       />
-      <div style={{ margin: '20px 80px 0 80px' }}>
+      <div className="forgotpsdContainer_mainBody">
         <Input.TextInput
           textName=""
           labelText={t('form.labels.email')}
