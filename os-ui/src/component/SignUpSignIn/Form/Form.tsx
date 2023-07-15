@@ -1,24 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input } from '../../Input/Input';
 import { Types } from '../../../types/types';
 import { openModal } from '../../../redux/Slices/PortalOpenStatus';
 import Button from '../../Button/Button';
 import styles from './Form.module.scss';
 import { signInContext } from '../../../contexts/Contexts';
-import { PASSWORD_REQUIRED } from '../../../constants/Strings';
+import { PASSWORDS_MISMATCH, PASSWORD_REQUIRED } from '../../../constants/Strings';
 import { FormProps } from '../../../types/FormTypes';
-
-const initialFormValues = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  psd: '',
-  token: '',
-  newPassword: '',
-  confirmedPassword: '',
-};
+import { RootState } from '../../../redux/Store';
 
 const Form = ({
   isSignUpForm,
@@ -29,12 +20,28 @@ const Form = ({
   handleForm,
   resendEmail,
 }: FormProps) => {
-  const [formValues, setFormValues] = useState(initialFormValues);
   const [errorMessage, setErrorMessage] = useState('');
   const { setSignIn } = useContext(signInContext);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { inputContent, forgotPassword, unAuthorizedSignInErrorStyle } = styles;
+
+  const AllcodeDigitsState = useSelector<RootState>((state) => state.CodeVerificationPsw) as {
+    codeDigits: string[],
+  };
+  const codeDigitsString = AllcodeDigitsState.codeDigits.join('');
+
+  const initialFormValues = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    psd: '',
+    token: codeDigitsString,
+    newPassword: '',
+    confirmedPassword: '',
+  };
+
+  const [formValues, setFormValues] = useState(initialFormValues);
 
   const handleInputChange = (e:React.SyntheticEvent) => {
     setFormValues({
@@ -49,13 +56,17 @@ const Form = ({
 
   const handleFormOnClick = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const trimmedPassword = formValues.psd.trim();
+    const trimmedPassword = isResetPasswordForm ? formValues.confirmedPassword.trim() : formValues.psd.trim();
     if (trimmedPassword === '') {
 	  setErrorMessage(PASSWORD_REQUIRED);
 	  return;
     }
-    setErrorMessage('');
-    handleForm({ ...formValues, psd: trimmedPassword });
+    if (trimmedPassword !== formValues.newPassword) {
+      setErrorMessage(PASSWORDS_MISMATCH);
+    } else {
+      setErrorMessage('');
+    }
+    handleForm({ ...formValues, confirmedPassword: trimmedPassword, psd: trimmedPassword });
     setSignIn(true);
   };
 

@@ -18,7 +18,7 @@
     }
 }
 .headerContent {
-    margin:0px 50px 0px 50px;
+    margin: 0px 50px 0px 50px;
     box-sizing: border-box;
     @include flexStyle(column,center,space-between);
     h2 {
@@ -26,18 +26,20 @@
         color:$header-main-color;
     }
     .iconContent {
-        height:36px;
-        width:35%;
-        @include flexStyle(row,center,space-evenly);
-        .icon {
-            display:inline-block;
-            width:36px;
-            height:36px;
-            cursor: pointer;
-        }
+      height:36px;
+      width:35%;
+      @include flexStyle(row,center,space-evenly);
+      .icon {
+          display:inline-block;
+          width:36px;
+          height:36px;
+          cursor: pointer;
+      }
     }
 }
 p {
     @include fontStyle($primary-font, normal, 600, 1.25rem, 2.5rem);
     color:$main-text-color;
+    // text-align: center;
+    margin-top: 0;
 }

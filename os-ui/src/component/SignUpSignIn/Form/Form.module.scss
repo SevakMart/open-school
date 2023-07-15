@@ -13,6 +13,10 @@
     }
     .unAuthorizedSignInErrorStyle {
         color:$main-error-color;
-        cursor:none;
+        font-weight: 700;
+        cursor:auto;
+        text-align: left;
+        margin-top: -10px;
+        margin-bottom: -10px;
     }
 }
