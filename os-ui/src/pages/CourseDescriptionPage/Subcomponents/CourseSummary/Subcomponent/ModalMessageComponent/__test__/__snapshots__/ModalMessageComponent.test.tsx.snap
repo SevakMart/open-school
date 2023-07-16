@@ -8,6 +8,11 @@ exports[`Create test cases for ModalMessageComponent Create a snapshot test 1`] 
     <div
       class="mainContent"
     >
+      <img
+        alt="success"
+        class="successMessage"
+        src="SuccessMessage.svg"
+      />
       <div
         class="closeIcon"
       >
@@ -30,6 +35,7 @@ exports[`Create test cases for ModalMessageComponent Create a snapshot test 1`] 
       </div>
       <img
         alt="Enrolled"
+        class="enrollIcon"
         src="Enroll.svg"
       />
       <div
@@ -39,7 +45,7 @@ exports[`Create test cases for ModalMessageComponent Create a snapshot test 1`] 
           string.courseDescriptionPage.title.modalSuccessTitle!
         </h2>
         <p>
-          string.courseDescriptionPage.text.modalSuccessText!
+          Your Have Enrolled To The Course!
         </p>
       </div>
       <div

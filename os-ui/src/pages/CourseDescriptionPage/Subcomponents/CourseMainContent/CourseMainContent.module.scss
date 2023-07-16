@@ -4,37 +4,86 @@
 @import "../../../../styles/Configs/Fonts.scss";
 @import "../../../../styles/Mixins/GridMixin.scss";
 
-.mainContent{
-    width:50%;
-    margin-top:16px;
-    align-self: flex-start;
-   .mainTitle {
-    display:inline;
-    @include fontStyle($primary-font,normal,800,48px,59px);
-    color:$header-main-color;
-   }
-   .mainCourseInfoContainer{
-    margin:112px 0 56px;
-    .subContent {
-        margin-bottom: 32px;
-        h2 {
-            @include fontStyle($primary-font,normal,600,20px,24px);
-            color:$black-text-color;
-            margin:0 0 16px;
-        }
-        p{
-            @include fontStyle($primary-font,normal,400,16px,24px);
-            color:$main-text-color;
-            text-align: justify;
-            margin:0;
-        }
-        .moduleListContainer {
-            border-radius: 20px;
-            background-color: $white-text-color;
-            @include gridStyle(repeat(1,1fr),none,10px,0);
-            padding:10px 0;
-        }
-    }
-   }
+.mainContent {
+  margin:48px 88px;
+  width: 50%;
+  margin-top:16px;
+  align-self: flex-start;
+
+  .mainTitle, .erolledTitle {
+    display: flex;
+    width: 533px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    @include fontStyle($primary-font, normal, 800, 48px, normal);
+    margin-bottom: 64px;
+    margin-left: 88px;
+    margin-top: 64px;
 }
 
+.mainTitle {
+	color: $white-text-color;
+}
+
+.erolledTitle {
+    color: $black-color;
+}
+
+  .mainCourseInfoContainer {
+    margin: 238px 0 56px;
+
+    .subContent {
+      margin-bottom: 32px;
+
+      h2 {
+        @include fontStyle($primary-font, normal, 600, 20px, normal);
+        color: $black-text-color;
+        margin: 48px 0 34px;
+      }
+
+      p {
+        @include fontStyle($primary-font, normal, 400, 16px, 24px);
+        color: $main-text-color;
+        text-align: justify;
+        margin: 0;
+      }
+
+      .erolledModuleListContainer, .moduleListContainer {
+        border-radius: 20px;
+        @include gridStyle(repeat(1, 1fr), none, 10px, 0);
+        padding: 10px 0;
+      }
+	.erolledModuleListContainer{
+		background-color: $white-text-color;
+		border-radius: 20px;
+		max-width: 596px;
+		padding: 10px;
+	}
+	.moduleListContainer{
+		background-color: transparent;
+	}  
+    }
+  } 
+}
+
+.titleContainer {
+	position: absolute;
+	top: -60px;
+	left: 0;
+	max-width: 100%;
+	height: 246px;
+	border-radius: 0px 0px 40px 40px;
+	background: $discussionForum-header-list-Color;
+  }
+
+.enrolledTitleContainer {
+	position: absolute;
+	top: -60px;
+	left: 0;
+	width: calc(200%);
+	height: 246px;
+	background:  $white-text-color;
+
+}
+  

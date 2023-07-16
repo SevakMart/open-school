@@ -6,6 +6,7 @@ import EnrollIcon from '../../../../../../assets/svg/Enroll.svg';
 import Button from '../../../../../../component/Button/Button';
 import styles from './ModalMessageComponent.module.scss';
 import CloseIcon from '../../../../../../icons/Close';
+import succesMessage from '../../../../../../assets/svg/SuccessMessage.svg';
 
 type Props = {
 	courseId: number;
@@ -13,7 +14,7 @@ type Props = {
 
 const EnrolledSuccessMessage = ({ courseId }: Props) => {
   const {
-    mainContainer, mainContent, textContent, buttonContainer, closeIcon,
+    mainContainer, mainContent, textContent, buttonContainer, closeIcon, successMessage, enrollIcon,
   } = styles;
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -30,16 +31,16 @@ const EnrolledSuccessMessage = ({ courseId }: Props) => {
   return (
     <div className={mainContainer}>
       <div className={mainContent}>
+        <img className={successMessage} src={succesMessage} alt="success" />
         <div className={closeIcon} onClick={handleClosePortal}><CloseIcon /></div>
-        <img src={EnrollIcon} alt="Enrolled" />
+        <img className={enrollIcon} src={EnrollIcon} alt="Enrolled" />
         <div className={textContent}>
           <h2>
             {t('string.courseDescriptionPage.title.modalSuccessTitle')}
             !
           </h2>
           <p>
-            {t('string.courseDescriptionPage.text.modalSuccessText')}
-            !
+            {t('Your Have Enrolled To The Course!')}
           </p>
         </div>
         <div className={buttonContainer}>

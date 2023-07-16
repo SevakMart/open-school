@@ -42,7 +42,7 @@ const ChooseCategoryPage = ({ userInfo }:{userInfo:object}) => {
   }, [title]);
   return (
     <>
-      <NavbarOnSignIn />
+      <NavbarOnSignIn currentUserEnrolled />
       <Header changeUrlQueries={handleChangeUrlTitleParam} />
       <MainContent
         isLoading={isLoading}

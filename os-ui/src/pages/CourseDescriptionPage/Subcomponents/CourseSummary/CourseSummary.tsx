@@ -44,13 +44,8 @@ const CourseSummary = ({
   });
 
   const {
-    mainContent,
-    headerContent,
-    headerIcons,
-    courseSummaryItemList,
-    buttonContainer,
-    userEnrollText,
-    enrolledButtonContainer,
+    mainContent, headerContent, headerIcons, courseSummaryItemList, buttonContainer, userEnrollText,
+    enrolledButtonContainer, enrolledHeaderContent, enrolledCourseSummaryItemList, enrolledMainContent, enrollText,
   } = styles;
 
   const saveCourse = (courseTitle:string, courseId:number) => {
@@ -76,8 +71,8 @@ const CourseSummary = ({
   };
 
   return (
-    <div className={mainContent}>
-      <div className={headerContent}>
+    <div className={currentUserEnrolled ? enrolledMainContent : mainContent}>
+      <div className={currentUserEnrolled ? enrolledHeaderContent : headerContent}>
         <h2>{t('string.courseDescriptionPage.title.summary')}</h2>
         <div className={headerIcons}>
           <ShareButton courseId={courseId} />
@@ -91,7 +86,8 @@ const CourseSummary = ({
           />
         </div>
       </div>
-      <div className={courseSummaryItemList}>
+
+      <div className={currentUserEnrolled ? enrolledCourseSummaryItemList : courseSummaryItemList}>
         {
 		Object.entries(courseSummaryItem).map((item) => (
   <CourseSummaryItem
@@ -100,11 +96,10 @@ const CourseSummary = ({
     value={item[1]}
   />
 		))
-	}
-
+		}
       </div>
       {enrolledInCourse && (
-      <p className={userEnrollText}>
+      <p className={currentUserEnrolled ? userEnrollText : enrollText}>
         {t('string.courseDescriptionPage.title.userEnrolled')}
       </p>
 	  )}
