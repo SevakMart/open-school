@@ -35,11 +35,12 @@
 
     .subContent {
       margin-bottom: 32px;
+	  width: 616px;
 
       h2 {
         @include fontStyle($primary-font, normal, 600, 20px, normal);
         color: $black-text-color;
-        margin: 48px 0 34px;
+		margin: 32px 0 16px;
       }
 
       p {
@@ -53,12 +54,14 @@
         border-radius: 20px;
         @include gridStyle(repeat(1, 1fr), none, 10px, 0);
         padding: 10px 0;
+		margin-top: 24px;
       }
 	.erolledModuleListContainer{
 		background-color: $white-text-color;
 		border-radius: 20px;
 		max-width: 596px;
 		padding: 10px;
+		
 	}
 	.moduleListContainer{
 		background-color: transparent;

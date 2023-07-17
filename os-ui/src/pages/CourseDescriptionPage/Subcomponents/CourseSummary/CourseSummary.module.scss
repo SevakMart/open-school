@@ -59,14 +59,15 @@
 		background:  $main-course-color;
     }
     .buttonContainer {
-        margin:64px 60px 80px 48px;
+        padding:64px 60px 80px 48px;
     }
 
     .enrolledButtonContainer {
-        margin:24px 60px 80px 48px;
+        padding:4px 60px 80px 48px;
     }
 
 	.enrollText{
+		margin-top:66px;
         text-align: center;
 		background: $mentor-card-backgraund-color;
 	}
@@ -79,5 +80,4 @@
 
 .mainContent{
     background: $mentor-card-backgraund-color;
-	height: 752px;
 }
