@@ -10,12 +10,15 @@ import { RootState } from '../../../../../../redux/Store';
 import styles from './LearningPathCoreContent.module.scss';
 import LearningPath from '../../../../../../component/LearningPath/LearningPath';
 import ContentRenderer from '../../../../../../component/ContentRenderer/ContentRenderer';
+import { filterSendingParams } from '../../../../helpers';
 
 const LearningPathCoreContent = () => {
   const { token, id: userId } = useContext(userContext);
   const dispatch = useDispatch();
+  const sendingParams = useSelector<RootState>((state) => state.filterParams);
   const allLearningPathCourseState = useSelector<RootState>((state) => state.allLearningPathCourses);
   const { entity, isLoading, errorMessage } = allLearningPathCourseState as {entity:SuggestedCourseType[], isLoading:boolean, errorMessage:string};
+  const filteredParams = filterSendingParams(sendingParams as object);
   const { mainCoreContainer, courseContainer } = styles;
 
   const saveCourse = (courseTitle:string, courseId:number) => {
@@ -33,10 +36,8 @@ const LearningPathCoreContent = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getAllLearningPathCourses({
-	  token, params: {},
-    }));
-  }, []);
+    dispatch(getAllLearningPathCourses({ token, params: filteredParams }));
+  }, [sendingParams]);
 
   return (
     <div className={mainCoreContainer}>

@@ -6,8 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface QuestionService {
-  Question create(
-      Long enrolledCourseId, QuestionRequestDto requestDto, String email);
+  Question create(Long enrolledCourseId, QuestionRequestDto requestDto, String email);
 
   Question update(
       UpdateQuestionRequest request,
@@ -17,7 +16,8 @@ public interface QuestionService {
 
   void delete(Long questionId, Long enrolledCourseId, String currentUserEmail);
 
-  Page<? extends Question> findQuestionByCourseId(Long enrolledCourseId, Pageable pageable);
+  Page<? extends Question> findQuestionByCourseId(
+      Long enrolledCourseId, Pageable pageable, String searchQuery);
 
   Question findQuestionByIdAndEnrolledCourseId(Long enrolledCourseId, Long questionId);
 }

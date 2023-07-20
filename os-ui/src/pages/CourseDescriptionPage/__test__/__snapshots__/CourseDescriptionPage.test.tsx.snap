@@ -2,26 +2,17 @@
 
 exports[`Create test cases for course description page Create a snapshot test 1`] = `
 <DocumentFragment>
-  <nav
-    class="mainContent"
+  <div
+    class="backgroundFrame"
   >
-    <h2>
-      string.homePage.navBar.logo
-    </h2>
-    <div
-      class="navMainContent"
+    <nav
+      class="mainContent"
     >
-      <p>
-        string.homePage.navBar.allLearningPaths
-      </p>
-      <p>
-        string.homePage.navBar.myLearningPaths
-      </p>
-      <p>
-        string.homePage.navBar.mentors
-      </p>
+      <h2>
+        string.homePage.navBar.logo
+      </h2>
       <div
-        class="bookmarkIconStyle"
+        class="navMainContent"
       >
         <img
           alt="bookmark"
@@ -43,14 +34,28 @@ exports[`Create test cases for course description page Create a snapshot test 1`
           src="https://reactjs.org/logo-og.png"
         />
         <img
-          alt="Arrow down Icon"
-          class="arrowDownIcon"
-          src="Arrow-down.svg"
+          alt="Notification"
+          class="notificationIcon"
+          src="Notification.svg"
         />
+        <div
+          class="userInfoContent"
+        >
+          <img
+            alt="avatar"
+            class="avatarLogo"
+            src="https://reactjs.org/logo-og.png"
+          />
+          <img
+            alt="Arrow down Icon"
+            class="arrowDownIcon"
+            src="Arrow-down.svg"
+          />
+        </div>
+        <div />
       </div>
-      <div />
-    </div>
-  </nav>
+    </nav>
+  </div>
   <div
     class="mainContent"
   >

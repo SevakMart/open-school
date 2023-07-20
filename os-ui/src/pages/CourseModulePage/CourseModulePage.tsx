@@ -23,7 +23,6 @@ const CourseModulePage = ({ userInfo }:{userInfo:any}) => {
     dispatch(setValue(entity?.modules?.[0]?.title));
   }, [entity]);
 
-  // get CourseDescription from redux
   useEffect(() => {
     dispatch(getCourseDescription({
 	  courseId: Number(courseId), token: userInfo.token,
@@ -34,7 +33,7 @@ const CourseModulePage = ({ userInfo }:{userInfo:any}) => {
   return (
     value ? (
       <>
-        <NavbarOnSignIn />
+        <NavbarOnSignIn currentUserEnrolled />
         <userContext.Provider value={userInfo}>
           <div className={styles.ModuleOverviuw_container}>
             <CourseModuleSidebar />

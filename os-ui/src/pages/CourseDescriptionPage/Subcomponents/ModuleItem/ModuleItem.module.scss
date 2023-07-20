@@ -3,61 +3,73 @@
 @import "../../../../styles/Configs/Colors.scss";
 @import "../../../../styles/Configs/Fonts.scss";
 
-.mainContainer {
+.mainContainer,.enrolledMainContainer {
   background-color: $course-module-backgraund-color;
   border-radius: 8px;
-  margin: 0 10px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0px 16px;
+  position: relative;
 
   .mainContent {
-    margin: 10px 8px;
     @include flexStyle(row, center, space-between);
 
-	.titleAndEllipseIcon {
-		display: flex;
-		align-items: center;
-  
-		.titleAndIconWrapper {
-		  display: flex;
-		  align-items: center;
-  
-		  .ellipseIcon {
-			margin-right: 8px;
-		  }
-		}
+    .titleAndEllipseIcon {
+      display: flex;
+      align-items: center;
 
-			.moduleTitle {
-				@include fontStyle($primary-font, normal, 600, 20px, 24px);
-				color: $black-text-color;
-				max-width: 650px;
-			}
+      .titleAndIconWrapper {
+        display: flex;
+        align-items: center;
 
-			.remainingTimeContainer {
-				display: flex;
-				align-items: center;
-			}
+        .ellipseIcon {
+          display: flex;
+          align-items: center;
+          position: relative;
+        }
 
-			.remainingTime {
-				position: relative;
-				width: 24px;
-				height: 24px;
-				border-radius: 50%;
-				box-shadow: 0px 2px 35px rgba(217, 219, 233, 0.24);
-				margin-left: 30px;
-			}
+        .vector {
+          position: relative;
+          right: 9px;
+        }
+      }
 
-			.remainingTimeContent {
-				display: inline-block;
-				margin-left: 8px;
-				margin-right: 78px;
-			}
-		}
+      .moduleTitle {
+        @include fontStyle($primary-font, normal, 600, 20px, 24px);
+        color: $black-text-color;
+        max-width: 650px;
+        margin-left: 8px;
+      }
 
-    .chevronIsOpen,
+      .remainingTimeContainer {
+        display: flex;
+        align-items: center;
+      }
+
+      .remainingTime {
+        position: relative;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        box-shadow: 0px 2px 35px rgba(217, 219, 233, 0.24);
+        margin-left: 30px;
+      }
+
+      .remainingTimeContent {
+        display: inline-block;
+        margin-left: 8px;
+        margin-right: 78px;
+      }
+    }
+
+	.chevronIsOpen,
     .chevronIsClosed {
+	  position: absolute;
+	  right: 16px;
       cursor: pointer;
       transform: rotate(0deg);
       transition: transform 0.5s;
-      margin-right: 21px;
+     
 
       &.chevronIsOpen {
         transform: rotate(90deg);
@@ -66,30 +78,39 @@
   }
 
   .moduleDescriptionIsOpen {
-    margin: 24px 16px;
+    margin-top: 24px;
+	margin-bottom: 24px;
+    padding: 10px;
     text-align: justify;
     @include fontStyle($primary-font, normal, 400, 16px, 24px);
-    color: $main-text-color
+    color: $main-text-color;
 
-      p {
-		margin-left: 8px;
-      }
+    .moduleTitle {
+      flex-basis: 100%; 
+    }
 
-      .moduleItemLink {
-		appearance: none;
-		background-color: transparent;
-		border: none;
-		color: $main-text-color;
-		text-decoration: underline;
-		cursor: pointer;
-		margin: 0;
-		padding: 0;
-		font: inherit;
-	  }
-	  
+    .moduleItemLink {
+      appearance: none;
+      background-color: transparent;
+      border: none;
+      color: $main-text-color;
+      text-decoration: underline;
+      cursor: pointer;
+      margin: 0;
+      padding: 0;
+      font: inherit;
+    }
   }
 
   .moduleDescriptionIsClosed {
     display: none;
   }
+}
+
+.enrolledMainContainer{
+	width: 564px;
+}
+
+.mainContainer{
+	width: 100%;
 }

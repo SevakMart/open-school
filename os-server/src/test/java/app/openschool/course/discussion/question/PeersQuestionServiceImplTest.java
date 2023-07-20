@@ -3,6 +3,7 @@ package app.openschool.course.discussion.question;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -13,6 +14,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import app.openschool.common.exceptionhandler.exception.InvalidSearchQueryException;
 import app.openschool.common.exceptionhandler.exception.PermissionDeniedException;
 import app.openschool.course.Course;
 import app.openschool.course.EnrolledCourse;
@@ -26,6 +28,7 @@ import app.openschool.course.discussion.dto.UpdateQuestionRequest;
 import app.openschool.course.discussion.peers.question.PeersQuestion;
 import app.openschool.course.discussion.peers.question.PeersQuestionRepository;
 import app.openschool.course.discussion.peers.question.PeersQuestionServiceImpl;
+import app.openschool.course.discussion.util.ValidationHandler;
 import app.openschool.user.User;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -43,12 +47,18 @@ import org.springframework.data.domain.Pageable;
 class PeersQuestionServiceImplTest {
   @Mock PeersQuestionRepository peersQuestionRepository;
   @Mock EnrolledCourseRepository enrolledCourseRepository;
+
+  @Mock MessageSource messageSource;
+
+  ValidationHandler validationHandler;
   QuestionService questionService;
 
   @BeforeEach
   void setUp() {
+    validationHandler = new ValidationHandler(messageSource);
     questionService =
-        new PeersQuestionServiceImpl(peersQuestionRepository, enrolledCourseRepository);
+        new PeersQuestionServiceImpl(
+            peersQuestionRepository, enrolledCourseRepository, validationHandler);
   }
 
   @Test
@@ -239,33 +249,33 @@ class PeersQuestionServiceImplTest {
     long enrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 2);
     Page<PeersQuestion> questionPage = new PageImpl<>(List.of(question));
+    String searchQuery = "Question";
 
-    when(peersQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable))
+    when(peersQuestionRepository.findQuestionByEnrolledCourseId(
+            enrolledCourseId, pageable, searchQuery))
         .thenReturn(questionPage);
     Page<? extends Question> questionByCourseId =
-        questionService.findQuestionByCourseId(enrolledCourseId, pageable);
+        questionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery);
 
     assertNotNull(questionByCourseId.stream().findFirst().orElseThrow());
     assertTrue(
         questionByCourseId.stream()
             .allMatch(peersQuestion -> peersQuestion instanceof PeersQuestion));
     verify(peersQuestionRepository, times(1))
-        .findQuestionByEnrolledCourseId(enrolledCourseId, pageable);
+        .findQuestionByEnrolledCourseId(enrolledCourseId, pageable, searchQuery);
   }
 
   @Test
   void findQuestionByCourseId_withIncorrectData() {
     long wrongEnrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 2);
+    String searchQuery = "qu";
 
-    when(peersQuestionRepository.findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable))
-        .thenReturn(Page.empty(pageable));
-    Page<? extends Question> questionByCourseId =
-        questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable);
-
-    assertTrue(questionByCourseId.getContent().isEmpty());
-    verify(peersQuestionRepository, times(1))
-        .findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable);
+    assertThrows(
+        InvalidSearchQueryException.class,
+        () -> {
+          questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable, searchQuery);
+        });
   }
 
   @Test
@@ -305,5 +315,4 @@ class PeersQuestionServiceImplTest {
     verify(peersQuestionRepository, times(1))
         .findQuestionByIdAndEnrolledCourseId(enrolledCourseId, wrongQuestionId);
   }
-
 }
