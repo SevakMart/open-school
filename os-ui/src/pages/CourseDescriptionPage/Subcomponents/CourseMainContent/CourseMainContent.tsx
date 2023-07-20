@@ -5,16 +5,21 @@ import AuthorInfo from '../AuthorInfo/AuthorInfo';
 import styles from './CourseMainContent.module.scss';
 /* eslint-disable max-len */
 const CourseMainContent = ({
-  description, goal, modules, mentorDto, title,
+  description, goal, modules, mentorDto, title, currentUserEnrolled,
 }: Omit<CourseDescriptionType, 'Rating' | 'Enrolled' | 'Course Level' | 'Language' | 'Estimated efforts'>) => {
   const { t } = useTranslation();
   const {
-    mainContent, subContent, moduleListContainer, mainTitle, mainCourseInfoContainer,
+    mainContent, subContent, moduleListContainer, mainTitle, mainCourseInfoContainer, titleContainer, enrolledTitleContainer,
+    erolledTitle, erolledModuleListContainer,
   } = styles;
 
   return (
     <div className={mainContent}>
-      <h1 className={mainTitle}>{title}</h1>
+      <div className={currentUserEnrolled ? enrolledTitleContainer : titleContainer}>
+        <h1 className={currentUserEnrolled ? erolledTitle : mainTitle}>
+          {title}
+        </h1>
+      </div>
       <div className={mainCourseInfoContainer}>
         <div className={subContent}>
           <h2>{t('What You Will Learn')}</h2>
@@ -26,7 +31,7 @@ const CourseMainContent = ({
         </div>
         <div className={subContent}>
           <h2>{t('Modules in This Program')}</h2>
-          <div className={moduleListContainer}>
+          <div className={currentUserEnrolled ? erolledModuleListContainer : moduleListContainer}>
             {modules.map((module, index) => (<ModuleItem key={index} moduleInfo={module} />))}
           </div>
         </div>
@@ -35,4 +40,5 @@ const CourseMainContent = ({
     </div>
   );
 };
+
 export default CourseMainContent;

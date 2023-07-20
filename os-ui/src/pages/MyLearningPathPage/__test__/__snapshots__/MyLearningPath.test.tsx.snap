@@ -11,13 +11,19 @@ exports[`Create several unit tests for MyLearningPathPage Component Create a Sna
     <div
       class="navMainContent"
     >
-      <p>
+      <p
+        class="navbarTitle"
+      >
         string.homePage.navBar.allLearningPaths
       </p>
-      <p>
+      <p
+        class="navbarTitle"
+      >
         string.homePage.navBar.myLearningPaths
       </p>
-      <p>
+      <p
+        class="navbarTitle"
+      >
         string.homePage.navBar.mentors
       </p>
       <div

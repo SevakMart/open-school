@@ -49,6 +49,7 @@ exports[`Create test cases for course description page Create a snapshot test 1`
       >
         <img
           alt="Ellipse"
+          class="ellipseIcon"
           src="Course-Summary-Ellipse.svg"
         />
         <div
@@ -67,6 +68,7 @@ exports[`Create test cases for course description page Create a snapshot test 1`
       >
         <img
           alt="Ellipse"
+          class="ellipseIcon"
           src="Course-Summary-Ellipse.svg"
         />
         <div
@@ -85,6 +87,7 @@ exports[`Create test cases for course description page Create a snapshot test 1`
       >
         <img
           alt="Ellipse"
+          class="ellipseIcon"
           src="Course-Summary-Ellipse.svg"
         />
         <div
@@ -103,6 +106,7 @@ exports[`Create test cases for course description page Create a snapshot test 1`
       >
         <img
           alt="Ellipse"
+          class="ellipseIcon"
           src="Course-Summary-Ellipse.svg"
         />
         <div
@@ -121,6 +125,7 @@ exports[`Create test cases for course description page Create a snapshot test 1`
       >
         <img
           alt="Ellipse"
+          class="ellipseIcon"
           src="Course-Summary-Ellipse.svg"
         />
         <div

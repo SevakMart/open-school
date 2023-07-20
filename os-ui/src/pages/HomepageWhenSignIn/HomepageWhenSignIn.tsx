@@ -27,7 +27,7 @@ const HomepageWhenSignIn = () => {
 
   return (
     <>
-      <NavbarOnSignIn />
+      <NavbarOnSignIn currentUserEnrolled />
       <div className={mainContent}>
         <div className={leftContent}>
           <h1>{t('string.homePage.header.educationalPlatform')}</h1>

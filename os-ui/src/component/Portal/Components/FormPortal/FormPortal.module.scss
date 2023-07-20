@@ -10,12 +10,10 @@
     background-color: $header-main-color;
     z-index:100;
 }
-.modalStyles {
+.modalStyles, .enrolledPopup {
     position:fixed;
     top:50%;
     left:50%;
-    width:40%;
-    height:90%;
     background-color: $white-text-color;
     transform:translate(-50%,-50%);
     overflow-y: auto;
@@ -25,4 +23,9 @@
     &::-webkit-scrollbar {
         display: none;
     }
+}
+
+.modalStyles{
+	width:40%;
+    height:90%
 }

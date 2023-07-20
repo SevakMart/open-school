@@ -11,7 +11,7 @@ const AllLearningPathPage = ({ userInfo }:{userInfo:object}) => {
 
   return (
     <>
-      <NavbarOnSignIn />
+      <NavbarOnSignIn currentUserEnrolled />
       <userContext.Provider value={idAndToken}>
         <MainContent />
       </userContext.Provider>

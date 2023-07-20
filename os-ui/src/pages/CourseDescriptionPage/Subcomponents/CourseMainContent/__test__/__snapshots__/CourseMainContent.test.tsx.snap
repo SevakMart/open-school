@@ -5,11 +5,15 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
   <div
     class="mainContent"
   >
-    <h1
-      class="mainTitle"
+    <div
+      class="titleContainer"
     >
-      React
-    </h1>
+      <h1
+        class="mainTitle"
+      >
+        React
+      </h1>
+    </div>
     <div
       class="mainCourseInfoContainer"
     >
@@ -43,7 +47,7 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
           class="moduleListContainer"
         >
           <div
-            class="mainContainer"
+            class="enrolledMainContainer"
           >
             <div
               class="mainContent"
@@ -58,6 +62,11 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
                     alt="ellipse icon"
                     class="ellipseIcon"
                     src="Ellipse.svg"
+                  />
+                  <img
+                    alt="vector"
+                    class="vector"
+                    src="Vector.svg"
                   />
                   <p
                     class="moduleTitle"
@@ -76,7 +85,7 @@ exports[`Create test cases for CourseMainContent Create a snapshot test 1`] = `
               class="moduleDescriptionIsClosed"
             >
               <p
-                class="moduleTitle"
+                class="moduleDecription"
               >
                 It talks about React
               </p>

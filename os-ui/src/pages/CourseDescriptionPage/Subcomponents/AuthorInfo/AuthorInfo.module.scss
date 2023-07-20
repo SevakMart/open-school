@@ -22,8 +22,9 @@
         }
         p {
             display:inline;
-            @include fontStyle($primary-font,normal,500,16,24px);
+            @include fontStyle($primary-font,normal,500,16,20px);
             color:$main-text-color;
+			margin: 0;
         }
         a {
            cursor:pointer;
@@ -32,6 +33,7 @@
 		.iconContent {
 			height:36px;
 			width:20%;
+			margin-left:30px;
 			@include flexStyle(row,center,space-evenly);
 			.icon {
 				display:inline-block;

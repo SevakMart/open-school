@@ -10,10 +10,11 @@ document.body.appendChild(portalElement);
 
 export const FormPortal = ({ isOpen, children }:{isOpen:boolean, children:any}) => {
   if (!isOpen) return null;
-  const { overlayStyles, modalStyles } = styles;
+  const { overlayStyles, modalStyles, enrolledPopup } = styles;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const isCourseDescriptionPage = location.pathname.match(/^\/userCourse\/\d+$/);
   const handleOverlayClick = () => {
     if (location.pathname === '/homepage/account') {
       dispatch(closeModal());
@@ -26,7 +27,7 @@ export const FormPortal = ({ isOpen, children }:{isOpen:boolean, children:any}) 
   return createPortal(
     <>
       <div className={overlayStyles} onClick={handleOverlayClick} />
-      <div className={modalStyles}>
+      <div className={isCourseDescriptionPage ? enrolledPopup : modalStyles}>
         {children}
       </div>
     </>,

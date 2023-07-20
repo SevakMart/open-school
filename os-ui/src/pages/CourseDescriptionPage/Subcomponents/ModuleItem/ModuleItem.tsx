@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import ArrowRightIcon from '../../../../assets/svg/ArrowRight.svg';
 import EllipseIcon from '../../../../assets/svg/Ellipse.svg';
 import ClockIcon from '../../../../assets/svg/ClockIcon.svg';
+import Vector from '../../../../assets/svg/Vector.svg';
 import { CourseDescriptionType } from '../../../../types/CourseTypes';
 import styles from './ModuleItem.module.scss';
 
@@ -13,8 +14,8 @@ const ModuleItem = ({ moduleInfo }:{moduleInfo:Module}) => {
   const [moduleListIsOpen, setModuleListIsOpen] = useState(false);
   const {
     mainContainer, mainContent, ellipseIcon, remainingTime, remainingTimeContainer, remainingTimeContent, titleAndEllipseIcon, titleAndIconWrapper, moduleTitle,
-    chevronIsOpen, chevronIsClosed, moduleDescriptionIsOpen, moduleDescriptionIsClosed,
-    moduleItemLink,
+    chevronIsOpen, chevronIsClosed, moduleDescriptionIsOpen, moduleDescriptionIsClosed, moduleDecription,
+    moduleItemLink, vector, enrolledMainContainer,
   } = styles;
 
   const openModuleList = () => {
@@ -62,18 +63,19 @@ const ModuleItem = ({ moduleInfo }:{moduleInfo:Module}) => {
 	  );
   }
 	  return (
-  <div className={mainContainer}>
+  <div className={enrolledMainContainer}>
     <div className={mainContent}>
       <div className={titleAndEllipseIcon}>
         <div className={titleAndIconWrapper}>
           <img className={ellipseIcon} src={EllipseIcon} alt="ellipse icon" />
+          <img className={vector} src={Vector} alt="vector" />
           <p className={moduleTitle}>{t(moduleInfo.title)}</p>
         </div>
       </div>
       <img className={moduleListIsOpen ? chevronIsOpen : chevronIsClosed} src={ArrowRightIcon} alt="chevron" onClick={openModuleList} />
     </div>
     <div className={moduleListIsOpen ? moduleDescriptionIsOpen : moduleDescriptionIsClosed} onClick={openModuleList}>
-      <p className={moduleTitle}>{t(moduleInfo.description)}</p>
+      <p className={moduleDecription}>{t(moduleInfo.description)}</p>
     </div>
   </div>
 	  );
