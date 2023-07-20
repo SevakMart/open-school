@@ -9,7 +9,6 @@ import mobileMenu from '../../../assets/svg/mobileMenu.svg';
 import closeIcon from '../../../assets/svg/closeIcon.svg';
 
 const Navbar = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -56,6 +55,8 @@ const Navbar = () => {
   const goToMentorsPage = () => {
     dispatch(openModal({ buttonType: Types.Button.SIGN_IN, isRequestForMentorsPage: true }));
   };
+
+  const { t } = useTranslation();
 
   return (
     <>
