@@ -14,25 +14,30 @@ exports[`Create test cases for course description page Create a snapshot test 1`
       <div
         class="navMainContent"
       >
-        <img
-          alt="bookmark"
-          src="bookMark.svg"
-          style="font-size: 20px; cursor: pointer; fill: none;"
-        />
-      </div>
-      <img
-        alt="Notification"
-        class="notificationIcon"
-        src="Notification.svg"
-      />
-      <div
-        class="userInfoContent"
-      >
-        <img
-          alt="avatar"
-          class="avatarLogo"
-          src="https://reactjs.org/logo-og.png"
-        />
+        <p
+          class="navbarTitle"
+        >
+          string.homePage.navBar.allLearningPaths
+        </p>
+        <p
+          class="navbarTitle"
+        >
+          string.homePage.navBar.myLearningPaths
+        </p>
+        <p
+          class="navbarTitle"
+        >
+          string.homePage.navBar.mentors
+        </p>
+        <div
+          class="bookmarkIconStyle"
+        >
+          <img
+            alt="bookmark"
+            src="bookMark.svg"
+            style="font-size: 20px; cursor: pointer; fill: none;"
+          />
+        </div>
         <img
           alt="Notification"
           class="notificationIcon"
