@@ -7,15 +7,13 @@
 .mainContainer {
   .headerContainer {
     @include flexStyle(row, center, space-between);
-    height:30%;
-    box-sizing: border-box;
     border-radius: 1.25rem 1.25rem 0 0;
     background-color: $primary-color;
-    padding-left: 6%;
-    padding-right: 6%;
+    padding-left: 8%;
+    padding-right: 8%;
     .MailLinkedinIconsContainer {
-      @include flexStyle(row, center, space-between);
-      width:30%;
+      display: flex;
+      gap: 16px;
     }
     p {
       cursor: pointer;
@@ -23,45 +21,112 @@
     }
   }
   .bodyContainer {
-    background-color:#EEEFF4;
+    background-color:$white-text-color;
     border-radius: 0 0 1.25rem 1.25rem;
+    color: $black-text-color;
+    &:hover {
+      background-color: #d3bebe33;
+      .mentorCourseProperty {
+        background-color: #ffa3a398;
+      }
+    }
     .mentorInfoContainer {
-      @include flexStyle(row, center, space-evenly);
+      display: flex;
+      padding-left: 24px;
+      padding-top: 24px;
       .mentorAvatar {
         width: 35%;
         img {
-          width: 100%;
-          height: 100%;
           border-radius: 50%;
         }
       }
       .mentorInfo {
         h3 {
-          @include fontStyle($primary-font, normal, 500, 1rem, 1.5rem);
-          color: $header-main-color;
+          margin: 3px 0 0 0;
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 24px;
+          color: $black-text-color;
         }
-        & p:nth-of-type(1) {
-          @include fontStyle($primary-font, normal, 400, 0.625rem, 0.75rem);
-          color: #848a9d;
+        
+        .professionName{
+          margin: 3px 0 0 0;
+          font-weight: 400;
+          font-size: 10px;
+          line-height: 13px;
+          color: $email-icon-color;
         }
-        & p:nth-of-type(2) {
-          @include fontStyle($primary-font, normal, 500, 0.75rem, 0.938rem);
+        
+        .companyName {
+          margin: 2px 0 0 0;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 15px;
           color: $main-text-color;
         }
       }
     }
-    .mentorExtraInfo {
-      @include flexStyle(row, center, space-evenly);
-      width:40%;
-      margin-left:6%;
-      p{
-        &::before {
-          content: "Total Courses: ";
-          @include fontStyle($primary-font, normal, 500, 0.75rem, 0.938rem);
-          color: #848a9d;
+
+    .countBeforeContentBox {
+      display: flex;
+      align-items: center;
+      margin-left: 24px;
+      margin-top: 14px;
+      padding-bottom: 20px;
+    }
+
+    .countBeforeContent {
+      margin-left: 8px;
+      color: $email-icon-color;
+      &::after {
+        content: '\00a0';
+      }
+    }
+
+    .mentorCourseCount,
+    .countBeforeContent,
+    .mentorCourseProperty {
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 15px;
+    }
+
+    .mentorCourseCount {
+      color: #333941;
+    }
+
+    .mentorCourseProperty {
+      background-color: $mentorPropertyBtnColor;
+      color: $header-main-color;
+      padding: 6px 16px;
+      border-radius: 16px;
+      border: none;
+      height: 26px;
+      margin-left: auto;
+      margin-right: 24px;
+      cursor: pointer;
+    }
+  }
+}
+
+@media only screen and (max-width: 1250px) {
+  .mainContainer {
+    .bodyContainer {
+      .mentorInfoContainer {
+        .mentorInfo {
+          margin-left: auto;
+          margin-right: 30px;
         }
-        @include fontStyle($primary-font, normal, 800, 0.75rem, 0.938rem);
-        color: $header-main-color;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 670px) {
+  .mainContainer {
+    .bodyContainer {
+      .mentorCourseProperty {
+        margin-left: 5px;
       }
     }
   }

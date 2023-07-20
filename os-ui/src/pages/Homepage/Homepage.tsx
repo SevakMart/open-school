@@ -17,6 +17,7 @@ import { Types } from '../../types/types';
 import { PortalStatus } from '../../types/PortalStatusType';
 import ForgotVerification from '../../component/SignUpSignIn/SignIn/ForgotVerification';
 import PopupCodeToVerify from '../../component/SignUpSignIn/SignIn/PopupCodeToVerify/PopupCodeToVerify';
+import styles from './Homepage.module.scss';
 
 const Homepage = ({ userInfo }:{userInfo:any}) => {
   const portalStatus = useSelector<RootState>((state) => state.portalStatus);
@@ -30,8 +31,10 @@ const Homepage = ({ userInfo }:{userInfo:any}) => {
     id: userInfo ? (userInfo as any).id : -1,
   }), [{ ...userInfo }]);
 
+  const { homepage } = styles;
+
   return (
-    <>
+    <div className={homepage}>
       <userContext.Provider value={idAndToken}>
         <HomepageHeader />
         <HomepageCategories />
@@ -57,7 +60,7 @@ const Homepage = ({ userInfo }:{userInfo:any}) => {
         />
         )}
       </Portal.FormPortal>
-    </>
+    </div>
   );
 };
 export default Homepage;

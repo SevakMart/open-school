@@ -1,20 +1,82 @@
 @import "../../../../styles/Mixins/GridMixin.scss";
 @import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
+
 .categoriesMainContainer {
+  font-family: $primary-font;
+  padding-top: 18px;
   margin: 2.5% 2.3% 2.3%;
   border-radius: 2.5rem;
-  background-color: $exsplore-categories-backgraund-color;
-  box-sizing: border-box;
-      .gridContent{
-        @include gridStyle(repeat(4,1fr),center,32px,32px);
-      }
-
-    .gridContent{
-      display:grid;
-      grid-template-columns: repeat(3,1fr);
-      justify-content:center;
-      gap:32px;
-	  border-radius:1.5rem;
-	  background-color: $exsplore-categories-backgraund-color;
-    }
+  background-color: $white-text-color;
+  .gridContent{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    gap: 32px;
+	  border-radius: 1.5rem;
+    padding: 30px;
+    background: radial-gradient(circle at center,#F8FBFF,#f7f9fc); 
+  }
+  .categoriesTitle {
+    text-align: center;
+    font-weight: 500;
+    line-height: 24px;
+    color: $header-main-color;
+  }
+  .categoriesSumtitle {
+    margin-top: 16px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 36px;
+    line-height: 44px;
+    color: $black-text-color;
+  }
+  
+  .icon {
+    position: absolute;
+    right: 70px;
+    margin-top: -130px;
+    cursor: pointer;
+  }
 }
+
+@media only screen and (max-width: 1070px) {
+  .categoriesMainContainer {
+    .gridContent {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media only screen and (max-width: 817px) {
+  .categoriesMainContainer {
+    .gridContent {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media only screen and (max-width: 817px) {
+  .categoriesMainContainer {
+    .icon {
+      margin-top: -180px;
+    }
+  }
+}
+
+@media only screen and (max-width: 780px) {
+  .categoriesMainContainer {
+    .gridContent {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}
+
+@media only screen and (max-width: 426px) {
+  .categoriesMainContainer {
+    .icon {
+      margin-top: -220px;
+    }
+  }
+}
+

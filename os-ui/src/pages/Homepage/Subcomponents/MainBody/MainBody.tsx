@@ -1,41 +1,30 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import Button from '../../../../component/Button/Button';
-import LeftArrowIcon from '../../../../icons/LeftArrow';
-import RightArrowIcon from '../../../../icons/RightArrow';
 import styles from './MainBody.module.scss';
 
 const MainBody = ({
-  page, maxPage, children, clickPrevious, clickNext, isMentor,
+  children, isMentor,
 }:
      /* eslint-disable-next-line max-len */
-    {page:number, maxPage:number, children:any, clickPrevious:()=>void, clickNext:()=>void, isMentor:boolean}) => {
+    {children:any, isMentor:boolean}) => {
   const {
-    listContainer, icon, icon__left, icon__right, registrationButton,
+    listContainer, registrationButton, regButton, btnBelow, btnAbove,
   } = styles;
   const { t } = useTranslation();
 
+  const btnX = isMentor ? btnAbove : btnBelow;
+
   return (
     <>
-      <div className={listContainer} style={isMentor ? { margin: '6%' } : { backgroundColor: '#DFF3FF', margin: '0 6%' }}>
-        {page > 0 && (
-        <div className={`${icon} ${icon__left}`}>
-          <LeftArrowIcon testId="categoryLeftArrow" handleArrowClick={() => { clickPrevious(); }} />
-        </div>
-        )}
+      <div className={listContainer} style={isMentor ? { margin: '3%' } : { backgroundColor: '#FFFFFF', margin: '0 3%' }}>
         {children}
-        {page < maxPage
-        && (
-        <div className={`${icon} ${icon__right}`}>
-          <RightArrowIcon testId="categoryRightArrow" handleArrowClick={() => { clickNext(); }} />
-        </div>
-        )}
+
       </div>
-      <div className={registrationButton} style={isMentor ? { margin: 'auto', padding: '5% 0 10%' } : { margin: 'auto', padding: '5% 0 4%' }}>
+      <div className={registrationButton}>
         <Link to="/categories/subcategories">
-          <Button.MainButton className={['mainMentorRegistrationButton']}>
+          <button type="button" className={`${regButton} ${btnX}`}>
             {isMentor ? t('button.homePage.registerMentor') : t('button.homePage.seeAll')}
-          </Button.MainButton>
+          </button>
         </Link>
       </div>
     </>

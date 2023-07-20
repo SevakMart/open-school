@@ -1,31 +1,51 @@
-@import "../../styles/Mixins/FlexMixins.scss";
-@import "../../styles/Mixins/FontMixin.scss";
 @import "../../styles/Configs/Colors.scss";
 @import "../../styles/Configs/Fonts.scss";
 
 .mainContainer {
+  font-family: $primary-font;
   background-color: $white-text-color;
-  border-radius: 2.5rem;
-  padding-left:10%;
-  padding-top:5%;
-  box-sizing: border-box;
-
+  border-radius: 20px;
+  padding-top: 32px;
+  padding-bottom: 17px;
+  padding-left: 48px;
+  cursor: pointer;
+  &:hover{
+    background-color: #a7bac7;
+  }
   .categoryInfoContainer {
-    @include flexStyle(row, center, space-between);
-    box-sizing: border-box;
-    padding-right:10%;
-
+    display: flex;
     .categoryTitle {
-      @include fontStyle($primary-font,normal,700,1.5rem,1.75rem);
-      color:$header-main-color;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 30px;
+      margin-top: 17px;
+      margin-right: 70px;
+      margin-bottom: 0;
+      color:$black-text-color;
     }
     .numberOfSubcategories {
-      @include fontStyle($primary-font,normal,500,0.875rem,1.063rem);
-      color:$main-text-color;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+      margin-top: 3px;
+      color: $main-text-color;
     }
+  }
+}
 
-    img {
-      cursor:pointer;
-    }
+.categoryInfoContainer{
+  position: relative;
+}
+
+.mainContainerRightArrow {
+  position: absolute;
+  bottom: 15px;
+  right: 37px;
+}
+
+@media only screen and (max-width: 780px) {
+  .mainContainerRightArrow {
+    position: relative;
+    padding-top: 63px;
   }
 }
