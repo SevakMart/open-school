@@ -1,6 +1,41 @@
 @import "../../styles/Mixins/FlexMixins.scss";
-
+@import "../../styles/Configs/Colors.scss";
+.course-description-page {
+	background-color:  $main-course-color;
+  }
 .mainContent {
-    margin:48px 88px;
     @include flexStyle(row,center, space-between);
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	.courseMainContent{
+		position: absolute;
+		top: 144px;
+	}
+
+
+	.courseSummary {
+		position: absolute;
+		top: 128px;
+		right: 88px;
+		bottom: auto;
+	}
+
+	@media (max-width: 1700px) {
+		.courseSummary {
+			left: 844px;
+		}
+	}
 }
+
+.backgroundFrame{
+	width: 100%; 
+	height: 334px;
+	flex-shrink: 0;
+	border-radius: 0px 0px 40px 40px;
+	background: $discussionForum-header-list-Color;
+}
+
+
+  
+

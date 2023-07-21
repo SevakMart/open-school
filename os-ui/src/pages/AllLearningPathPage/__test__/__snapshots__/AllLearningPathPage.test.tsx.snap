@@ -11,13 +11,19 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
     <div
       class="navMainContent"
     >
-      <p>
+      <p
+        class="navbarTitle"
+      >
         string.homePage.navBar.allLearningPaths
       </p>
-      <p>
+      <p
+        class="navbarTitle"
+      >
         string.homePage.navBar.myLearningPaths
       </p>
-      <p>
+      <p
+        class="navbarTitle"
+      >
         string.homePage.navBar.mentors
       </p>
       <div
