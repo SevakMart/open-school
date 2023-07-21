@@ -17,7 +17,7 @@ public interface QuestionService {
   void delete(Long questionId, Long enrolledCourseId, String currentUserEmail);
 
   Page<? extends Question> findQuestionByCourseId(
-      Long enrolledCourseId, Pageable pageable, String searchQuery);
+      Long enrolledCourseId, String userEmail, Pageable pageable, String searchQuery);
 
   Question findQuestionByIdAndEnrolledCourseId(Long enrolledCourseId, Long questionId);
 }

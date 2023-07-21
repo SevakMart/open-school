@@ -10,6 +10,7 @@ import app.openschool.course.discussion.dto.UpdateQuestionRequest;
 import app.openschool.course.discussion.mapper.AnswerMapper;
 import app.openschool.course.discussion.mapper.MentorQuestionMapper;
 import app.openschool.course.discussion.mapper.QuestionMapper;
+import app.openschool.course.discussion.util.ValidationHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,13 +44,17 @@ public class DiscussionForumController {
 
   private final QuestionService mentorQuestionService;
 
+  private final ValidationHandler validationHandler;
+
   public DiscussionForumController(
       @Qualifier("discussionQuestion") QuestionService questionService,
       @Qualifier("discussionAnswer") AnswerService answerService,
-      @Qualifier("discussionQuestionMentor") QuestionService mentorQuestionService) {
+      @Qualifier("discussionQuestionMentor") QuestionService mentorQuestionService,
+      ValidationHandler validationHandler) {
     this.questionService = questionService;
     this.answerService = answerService;
     this.mentorQuestionService = mentorQuestionService;
+    this.validationHandler = validationHandler;
   }
 
   @Operation(summary = "add question", security = @SecurityRequirement(name = "bearerAuth"))
@@ -159,10 +164,19 @@ public class DiscussionForumController {
   public ResponseEntity<Page<QuestionResponseDto>> findQuestionsByCourseId(
       @Parameter(description = "Enrolled course id") @PathVariable Long enrolledCourseId,
       Pageable pageable,
-      @RequestParam(value = "q", required = false) String searchQuery) {
+      @RequestParam(value = "q", required = false) String searchQuery,
+      Principal principal) {
+
+    boolean isEnrolled =
+        validationHandler.checkUserEnrollment(enrolledCourseId, principal.getName());
+    if (!isEnrolled) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
     Page<QuestionResponseDto> questionResponseDtos =
         QuestionMapper.toQuestionDtoPage(
-            questionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery));
+            questionService.findQuestionByCourseId(
+                enrolledCourseId, principal.getName(), pageable, searchQuery));
     return ResponseEntity.ok().body(questionResponseDtos);
   }
 
@@ -303,11 +317,19 @@ public class DiscussionForumController {
   public ResponseEntity<Page<MentorQuestionResponseDto>> findMentorQuestionsByCourseId(
       @Parameter(description = "Enrolled course id") @PathVariable Long enrolledCourseId,
       Pageable pageable,
-      @RequestParam(value = "q", required = false) String searchQuery) {
+      @RequestParam(value = "q", required = false) String searchQuery,
+      Principal principal) {
+
+    boolean isEnrolled =
+        validationHandler.checkUserEnrollment(enrolledCourseId, principal.getName());
+    if (!isEnrolled) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
 
     Page<MentorQuestionResponseDto> dtoPage =
         MentorQuestionMapper.toQuestionDtoPage(
-            mentorQuestionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery));
+            mentorQuestionService.findQuestionByCourseId(
+                enrolledCourseId, principal.getName(), pageable, searchQuery));
     return ResponseEntity.ok().body(dtoPage);
   }
 
