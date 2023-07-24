@@ -1,15 +1,15 @@
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Input } from '../../Input/Input';
 import { Types } from '../../../types/types';
 import { openModal } from '../../../redux/Slices/PortalOpenStatus';
 import Button from '../../Button/Button';
 import styles from './Form.module.scss';
 import { signInContext } from '../../../contexts/Contexts';
-import { PASSWORDS_MISMATCH, PASSWORD_REQUIRED } from '../../../constants/Strings';
+import { PASSWORD_REQUIRED } from '../../../constants/Strings';
 import { FormProps } from '../../../types/FormTypes';
-import { RootState } from '../../../redux/Store';
+import PopupCodeToVerify from '../SignIn/PopupCodeToVerify/PopupCodeToVerify';
 
 const Form = ({
   isSignUpForm,
@@ -26,17 +26,12 @@ const Form = ({
   const dispatch = useDispatch();
   const { inputContent, forgotPassword, unAuthorizedSignInErrorStyle } = styles;
 
-  const AllcodeDigitsState = useSelector<RootState>((state) => state.CodeVerificationPsw) as {
-    codeDigits: string[],
-  };
-  const codeDigitsString = AllcodeDigitsState.codeDigits.join('');
-
   const initialFormValues = {
     firstName: '',
     lastName: '',
     email: '',
     psd: '',
-    token: codeDigitsString,
+    token: '',
     newPassword: '',
     confirmedPassword: '',
   };
@@ -61,11 +56,7 @@ const Form = ({
 	  setErrorMessage(PASSWORD_REQUIRED);
 	  return;
     }
-    if (isResetPasswordForm && trimmedPassword !== formValues.newPassword) {
-      setErrorMessage(PASSWORDS_MISMATCH);
-    } else {
-      setErrorMessage('');
-    }
+    setErrorMessage('');
     handleForm({ ...formValues, confirmedPassword: trimmedPassword, psd: trimmedPassword });
     setSignIn(true);
   };
@@ -104,14 +95,7 @@ const Form = ({
         </>
       )}
       {isResetPasswordForm && (
-        <Input.TextInput
-          textName="token"
-          labelText={t('form.labels.resetPsdToken')}
-          errorMessage={errorFormValue.tokenError}
-          placeholderText={t('form.placeholder.resetPsdToken')}
-          value={formValues.token}
-          handleInputChange={handleInputChange}
-        />
+      <PopupCodeToVerify errorMessage={errorFormValue.tokenError} formValues={formValues} setFormValues={setFormValues} />
       )}
       {!isResetPasswordForm && (
         <Input.EmailInput

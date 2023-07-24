@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { validateEmail } from '../../../../helpers/EmailValidate';
-import { openModal, openModalWithSuccessMessage } from '../../../../redux/Slices/PortalOpenStatus';
+import { closeModal, openModal, openModalWithSuccessMessage } from '../../../../redux/Slices/PortalOpenStatus';
 import { addEmail } from '../../../../redux/Slices/ForgotPasswordEmailSlice';
 import { Types } from '../../../../types/types';
 import authService from '../../../../services/authService';
-import Header from '../../Header/Header';
 import { Input } from '../../../Input/Input';
 import './forgotPassword.scss';
+import CloseIcon from '../../../../icons/Close';
 
 const ForgotPassword = () => {
   const { t } = useTranslation();
@@ -26,7 +26,7 @@ const ForgotPassword = () => {
       authService.sendForgotPasswordRequest({ email })
         .then((response) => {
           if (response.status === 200) {
-            dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.Code_VerifivationPopup, withSuccessMessage: response.data.message }));
+            dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.RESET_PASSWORD, withSuccessMessage: response.data.message }));
             dispatch(addEmail(email));
             setEmailError('');
           } else if (response.status === 400) {
@@ -40,14 +40,26 @@ const ForgotPassword = () => {
     dispatch(openModal({ buttonType: Types.Button.SIGN_IN }));
   };
 
+  const handleClosePortal = () => {
+    dispatch(closeModal());
+  };
+
   return (
     <div className="forgotpsdContainer">
-      <Header
-        mainTitle={t('string.forgotPsd.title')}
-        shouldRemoveIconContent
-        isForgotPasswordContent
-        isVerificationContent={false}
-      />
+      <div className="closeIcon" onClick={handleClosePortal}>
+        <CloseIcon />
+      </div>
+      <div className="forgotpsd_box">
+        <div className="forgotpsd_box_title">Forgot password</div>
+        <div className="forgotpsd_box_subtitles">
+          <div className="forgotpsd_box_subtitle">
+            {t('string.forgotPsd.enterEmail')}
+          </div>
+          <div className="forgotpsd_box_subtitle">
+            {t('string.forgotPsd.sendNotification')}
+          </div>
+        </div>
+      </div>
       <div className="forgotpsdContainer_mainBody">
         <Input.TextInput
           textName=""
