@@ -1,11 +1,9 @@
 package app.openschool.course.discussion.util;
 
 import app.openschool.common.exceptionhandler.exception.InvalidSearchQueryException;
-import app.openschool.course.EnrolledCourse;
 import app.openschool.course.EnrolledCourseRepository;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
@@ -32,8 +30,6 @@ public class ValidationHandler {
   }
 
   public boolean checkUserEnrollment(Long enrolledCourseId, String userEmail) {
-    Optional<EnrolledCourse> enrolledCourse = enrolledCourseRepository.findById(enrolledCourseId);
-    return enrolledCourse.isPresent()
-        && enrolledCourse.get().getUser().getEmail().equals(userEmail);
+    return enrolledCourseRepository.existsByIdAndUserEmail(enrolledCourseId, userEmail);
   }
 }
