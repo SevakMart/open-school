@@ -14,7 +14,6 @@ const initialErrorFormValues = { tokenError: '', newPasswordError: '', confirmed
 
 const ResetPassword = () => {
   const { t } = useTranslation();
-  const forgotPasswordEmail = useSelector<RootState>((state) => state.forgotPasswordEmail);
   const dispatch = useDispatch();
   const [errorFormValue, setErrorFormValue] = useState(initialErrorFormValues);
   const email = useSelector<RootState>((state) => state.forgotPasswordEmail);
@@ -38,9 +37,9 @@ const ResetPassword = () => {
   };
 
   const resendEmail = () => {
-    authService.sendForgotPasswordRequest({ forgotPasswordEmail })
+    authService.sendForgotPasswordRequest({ email })
       .then((response) => {
-        dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: response.data.message }));
+        dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.RESET_PASSWORD, withSuccessMessage: response.data.message }));
         setErrorFormValue(initialErrorFormValues);
       });
   };

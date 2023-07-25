@@ -10,6 +10,7 @@ import { signInContext } from '../../../contexts/Contexts';
 import { PASSWORD_REQUIRED } from '../../../constants/Strings';
 import { FormProps } from '../../../types/FormTypes';
 import PopupCodeToVerify from '../SignIn/PopupCodeToVerify/PopupCodeToVerify';
+import ResendButton from '../helpers/ResendButton/ResendButton';
 
 const Form = ({
   isSignUpForm,
@@ -24,7 +25,9 @@ const Form = ({
   const { setSignIn } = useContext(signInContext);
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { inputContent, forgotPassword, unAuthorizedSignInErrorStyle } = styles;
+  const {
+    inputContent, forgotPassword, unAuthorizedSignInErrorStyle,
+  } = styles;
 
   const initialFormValues = {
     firstName: '',
@@ -133,22 +136,21 @@ const Form = ({
         <Input.PasswordInput
           textName="confirmedPassword"
           labelText={t('form.labels.psd.confirm')}
-          errorMessage={errorFormValue.confirmedPasswordError}
+          errorMessage={errorMessage || errorFormValue.confirmedPasswordError}
           placeholderText={t('form.placeholder.psd.confirm')}
           value={formValues.confirmedPassword}
           handleInputChange={handleInputChange}
           handleEnterPress={handleSubmit}
         />
       )}
-      {errorMessage ? (
-        <p className={unAuthorizedSignInErrorStyle}>
-          {errorMessage}
-        </p>
-      ) : (unAuthorizedSignInError ? (
+      {isResetPasswordForm && (
+        <ResendButton resendEmail={resendEmail} />
+      )}
+      {unAuthorizedSignInError ? (
         <p className={unAuthorizedSignInErrorStyle}>
           {unAuthorizedSignInError}
         </p>
-      ) : null)}
+      ) : null}
       {unAuthorizedSignInError === 'User is disabled' ? (
         <Button.FormButton
           className={['formButton', 'formButton__resendEmail']}
@@ -170,14 +172,6 @@ const Form = ({
             {formButtonText}
           </Button.FormButton>
         </>
-      )}
-      {isResetPasswordForm && (
-        <Button.FormButton
-          className={['formButton', 'formButton__resendEmail']}
-          onClick={resendEmail}
-        >
-          {t('button.resetPsd.resendEmail')}
-        </Button.FormButton>
       )}
     </form>
   );

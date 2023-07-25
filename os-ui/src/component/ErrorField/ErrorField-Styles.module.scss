@@ -3,6 +3,8 @@
 @import "../../styles/Mixins/FontMixin.scss";
 
 .inputErrorField {
+    margin-top: 10px;
+    margin-bottom: 10px;
     @include fontStyle($primary-font, normal, 800, 0.875rem, 1rem);
     color: $main-error-color;
 }
