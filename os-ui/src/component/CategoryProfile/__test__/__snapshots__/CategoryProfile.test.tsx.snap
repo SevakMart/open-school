@@ -12,7 +12,9 @@ exports[`Create unit tests of category profile Make a snapshot tests 1`] = `
     <div
       class="categoryInfoContainer"
     >
-      <div>
+      <div
+        class="categoryBox"
+      >
         <p
           class="categoryTitle"
           data-testid="JavaScript"
@@ -22,11 +24,12 @@ exports[`Create unit tests of category profile Make a snapshot tests 1`] = `
         <p
           class="numberOfSubcategories"
         >
-          3
+          12 Subcategories
         </p>
       </div>
       <img
         alt="JavaScript"
+        class="mainContainerRightArrow"
         src="RightArrow.svg"
       />
     </div>

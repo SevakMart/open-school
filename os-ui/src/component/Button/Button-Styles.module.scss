@@ -124,12 +124,12 @@
 }
   
 .courseSummaryButton {
-    @include buttonStyle($secondary-color,$white-text-color,1rem,400px,60px,166px,166px,20px,20px);
-    @include fontStyle($primary-font, normal, 500, 16px, 20px);
+    @include buttonStyle($secondary-color,$white-text-color,16px,400px,60px,32px,32px,16px,16px);
+    @include fontStyle($primary-font, normal, 500, 16px, normal);
     border:none;
 }
 .startEnrolledCourse {
-    @include buttonStyle($secondary-color,$white-text-color,16px,100%,52px,32px,32px,16px,16px);
-    @include fontStyle($primary-font,normal,500,16px,20px);
+    @include buttonStyle($secondary-color,$white-text-color,16px,238px,60px,32px,32px,16px,16px);
+    @include fontStyle($primary-font,normal,500,16px,normal);
     border:none;
 }

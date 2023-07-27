@@ -3,7 +3,7 @@ import styles from './CourseSummaryItem.module.scss';
 
 const CourseSummaryItem = ({ title, value }:{title:string, value:number|string}) => {
   const {
-    mainContainer, mainContent,
+    mainContainer, mainContent, ellipseIcon,
   } = styles;
 
   const formattedTitle = title === 'CourseLevel'
@@ -12,7 +12,7 @@ const CourseSummaryItem = ({ title, value }:{title:string, value:number|string})
 
   return (
     <div className={mainContainer}>
-      <img src={CourseSummaryEllipseIcon} alt="Ellipse" />
+      <img src={CourseSummaryEllipseIcon} className={ellipseIcon} alt="Ellipse" />
       <div className={mainContent}>
         <h2>{formattedTitle}</h2>
         <p>{value}</p>

@@ -15,7 +15,7 @@ describe('Make unit tests of NavbarOnSignIn component', () => {
     const { asFragment } = render(
       <Provider store={store}>
         <MemoryRouter>
-          <NavbarOnSignIn />
+          <NavbarOnSignIn currentUserEnrolled />
         </MemoryRouter>
       </Provider>,
     );

@@ -6,6 +6,7 @@ import app.openschool.course.EnrolledCourseRepository;
 import app.openschool.course.discussion.QuestionService;
 import app.openschool.course.discussion.dto.QuestionRequestDto;
 import app.openschool.course.discussion.dto.UpdateQuestionRequest;
+import app.openschool.course.discussion.util.ValidationHandler;
 import java.time.Instant;
 import java.util.Objects;
 import org.springframework.data.domain.Page;
@@ -18,11 +19,15 @@ public class PeersQuestionServiceImpl implements QuestionService {
   private final PeersQuestionRepository peersQuestionRepository;
   private final EnrolledCourseRepository enrolledCourseRepository;
 
+  private final ValidationHandler validationHandler;
+
   public PeersQuestionServiceImpl(
       PeersQuestionRepository peersQuestionRepository,
-      EnrolledCourseRepository enrolledCourseRepository) {
+      EnrolledCourseRepository enrolledCourseRepository,
+      ValidationHandler validationHandler) {
     this.peersQuestionRepository = peersQuestionRepository;
     this.enrolledCourseRepository = enrolledCourseRepository;
+    this.validationHandler = validationHandler;
   }
 
   @Override
@@ -68,8 +73,11 @@ public class PeersQuestionServiceImpl implements QuestionService {
   }
 
   @Override
-  public Page<PeersQuestion> findQuestionByCourseId(Long enrolledCourseId, Pageable pageable) {
-    return peersQuestionRepository.findQuestionByEnrolledCourseId(enrolledCourseId, pageable);
+  public Page<PeersQuestion> findQuestionByCourseId(
+      Long enrolledCourseId, Pageable pageable, String searchQuery) {
+    validationHandler.validateSearchQuery(searchQuery);
+    return peersQuestionRepository.findQuestionByEnrolledCourseId(
+        enrolledCourseId, pageable, searchQuery);
   }
 
   @Override

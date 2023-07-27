@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './NavbarOnSignIn.module.scss';
 import ArrowDownIcon from '../../../assets/svg/Arrow-down.svg';
 import NotificationIcon from '../../../assets/svg/Notification.svg';
@@ -9,15 +9,16 @@ import { SignoutIcon } from '../../../icons/Signout/Signout';
 import ProfilePortalContent from '../../ProfilePortalContent/ProfilePortalContent';
 import { Portal } from '../../Portal/Portal';
 
-const NavbarOnSignIn = () => {
+const NavbarOnSignIn = ({ currentUserEnrolled }: { currentUserEnrolled: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const arrowRef = useRef(null);
   const { t } = useTranslation();
 
   const {
     mainContent, navMainContent, userInfoContent,
-    bookmarkIconStyle, notificationIcon, avatarLogo, arrowDownIcon,
+    bookmarkIconStyle, notificationIcon, avatarLogo, arrowDownIcon, mainConentDecrptionPage, navbarTitle, decrptionPageTitle,
   } = styles;
 
   const handleProfilePortal = () => {
@@ -42,13 +43,15 @@ const NavbarOnSignIn = () => {
     };
   }, []);
 
+  const isCourseDescriptionPage = location.pathname?.match(/^\/userCourse\/\d+$/);
+
   return (
-    <nav className={mainContent}>
+    <nav className={!currentUserEnrolled && isCourseDescriptionPage ? mainConentDecrptionPage : mainContent}>
       <h2 onClick={() => navigate('/homepage/WhenSignin')}>{t('string.homePage.navBar.logo')}</h2>
       <div className={navMainContent}>
-        <p onClick={() => navigate('/exploreLearningPaths')}>{t('string.homePage.navBar.allLearningPaths')}</p>
-        <p onClick={() => navigate('/myLearningPath')}>{t('string.homePage.navBar.myLearningPaths')}</p>
-        <p onClick={() => navigate('/mentors')}>{t('string.homePage.navBar.mentors')}</p>
+        <p className={!currentUserEnrolled && isCourseDescriptionPage ? decrptionPageTitle : navbarTitle} onClick={() => navigate('/exploreLearningPaths')}>{t('string.homePage.navBar.allLearningPaths')}</p>
+        <p className={!currentUserEnrolled && isCourseDescriptionPage ? decrptionPageTitle : navbarTitle} onClick={() => navigate('/myLearningPath')}>{t('string.homePage.navBar.myLearningPaths')}</p>
+        <p className={!currentUserEnrolled && isCourseDescriptionPage ? decrptionPageTitle : navbarTitle} onClick={() => navigate('/mentors')}>{t('string.homePage.navBar.mentors')}</p>
         <div className={bookmarkIconStyle}>
           <BookmarkIcon iconSize="20px" />
         </div>
@@ -70,4 +73,5 @@ const NavbarOnSignIn = () => {
     </nav>
   );
 };
+
 export default NavbarOnSignIn;

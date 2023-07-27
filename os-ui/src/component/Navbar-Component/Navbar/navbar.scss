@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Inconsolata:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=Montserrat&display=swap');
+@import "../../../styles/Configs/Fonts.scss";
+@import "../../../styles/Configs/Colors.scss";
+
+.homePage {
+  font-family: $primary-font;
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  &_Logo{
+    margin-left: 80px;
+    font-family: 'Inconsolata';
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 21px;
+    color: $header-main-color;
+    cursor: pointer;
+  }
+  &_leftMenu {
+    margin-left: 85px;
+    display: flex;
+    flex: 1;
+    gap: 35px;
+    &_item {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      color: $main-text-color;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+  }
+  
+  &_rightMenu {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-right: 80px;
+    &_item {
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 15px;
+      color: $header-main-color;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+  }
+  &_btn {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    border-radius: 20px;
+    height: 35px;
+    padding: 10px 15px;
+    background-color: $black-text-color;
+    color: $white-text-color;
+    cursor: pointer;
+    &:hover {
+      background-color: #48505c;
+    }
+    &:active {
+      background-color: #17191d;
+    }
+  }
+}
+
+// mobile
+.mobileMenu {
+  font-family: $primary-font;
+  display: none;
+}
+
+.mobileList {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 230px;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba($email-icon-color, 1) 0%, rgba($email-icon-color, 0) 100%);
+  opacity: 0.8;
+  &_info {
+    margin-top: 60px;
+    margin-left: 30px;
+    cursor: pointer;
+    p {
+      color: $header-main-color;
+      font-weight: 500;
+      &:hover {
+        color: #e0e0e0;
+      }
+      &:active {
+        color: #121314;
+        font-weight: 600;
+      }
+    }
+  }
+  &.open {
+    animation: slideDown 0.3s forwards;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

@@ -51,22 +51,11 @@ exports[`Make unit tests on Mentor Profile Make a snapshot test 1`] = `
         </p>
       </div>
       <p>
-        <svg
-          fill="none"
-          height="1em"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
+        <img
+          alt="bookmark"
+          src="bookMark.svg"
           style="font-size: 1rem; cursor: pointer; fill: none;"
-          viewBox="0 0 24 24"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
-          />
-        </svg>
+        />
       </p>
     </div>
     <div
@@ -80,7 +69,7 @@ exports[`Make unit tests on Mentor Profile Make a snapshot test 1`] = `
         >
           <img
             alt="mentor_avatar"
-            src="https://image.shutterstock.com/image-vector/businessman-avatar-profile-picture-260nw-221565274.jpg"
+            src="mentor_avatarka.svg"
           />
         </div>
         <div
@@ -92,11 +81,13 @@ exports[`Make unit tests on Mentor Profile Make a snapshot test 1`] = `
             John Smith
           </h3>
           <p
+            class="professionName"
             data-testid="JS Developer"
           >
             JS Developer
           </p>
           <p
+            class="companyName"
             data-testid="Google"
           >
             Google
@@ -106,29 +97,31 @@ exports[`Make unit tests on Mentor Profile Make a snapshot test 1`] = `
       <div
         class="mentorExtraInfo"
       >
-        <svg
-          fill="none"
-          height="1em"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"
-          />
-          <path
-            d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
-          />
-        </svg>
-        <p
+        <div
+          class="countBeforeContentBox"
           data-testid="5"
         >
-          5
-        </p>
+          <img
+            alt="book"
+            src="bookIcon.svg"
+          />
+          <p
+            class="countBeforeContent"
+          >
+            Total Courses:
+          </p>
+          <p
+            class="mentorCourseCount"
+          >
+            5
+          </p>
+          <button
+            class="mentorCourseProperty"
+            type="button"
+          >
+            Creative
+          </button>
+        </div>
       </div>
     </div>
   </div>

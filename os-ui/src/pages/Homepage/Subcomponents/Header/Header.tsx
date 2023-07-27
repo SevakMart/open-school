@@ -12,7 +12,7 @@ const HomepageHeader = () => {
   const dispatch = useDispatch();
 
   const {
-    mainContent, leftContent, rightContent, buttonContainer,
+    mainContent, leftContent, rightContent, buttonContainer, leftContentSignInBtn,
   } = styles;
 
   const handleSignUp = () => {
@@ -35,9 +35,9 @@ const HomepageHeader = () => {
               <Button.SignUpButton className={['headerButton', 'headerButton__signUp']} onClick={handleSignUp}>
                 {t('button.homePage.signUp')}
               </Button.SignUpButton>
-              <Button.SignInButton className={['headerButton', 'headerButton__signIn']} onClick={handleSignIn}>
+              <button type="button" onClick={handleSignIn} className={leftContentSignInBtn}>
                 {t('button.homePage.signIn')}
-              </Button.SignInButton>
+              </button>
             </>
           </div>
         </div>

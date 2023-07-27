@@ -1,4 +1,3 @@
-@import "../../styles/Mixins/ButtonMixin.scss";
 @import "../../styles/Mixins/FlexMixins.scss";
 @import "../../styles/Mixins/FontMixin.scss";
 @import "../../styles/Configs/Colors.scss";
@@ -6,26 +5,63 @@
 
 .mainContainer {
   @include flexStyle(column, center, center);
-  margin: 5% 2.7%;
-  padding-top:8%;
-  padding-bottom:8%;
+  margin: 5% 2.7% 0;
+  padding-top: 45px;
+  padding-bottom: 6%;
   border-radius: 2.5rem;
   background-color: $primary-color;
-  box-sizing: border-box;
-    h2 {
-      @include fontStyle($primary-font, normal, 800, 3rem, 3.5rem);
-      color: $white-text-color;
-      margin-bottom:inherit;
-    }
-
+  h2 {
+    @include fontStyle($primary-font, normal, 800, 3rem, 3.5rem);
+    color: $white-text-color;
+    margin-bottom:inherit;
+  }
   .buttonContainer {
-    width:50%;
+    padding-top: 40px;
+    width: 50%;
     text-align: center;
-    box-sizing: border-box;
   }
 }
-h2 {
-  @include fontStyle($secondary-font, italic, 700, 1.25rem, 1.5rem);
-  color: $header-main-color;
-  margin-left:2.7%;
+
+@media only screen and (max-width: 1187px) {
+  .mainContainer {
+   .buttonContainer {
+    button {
+      margin-top: 18px;
+    }
+   } 
+  }
+}
+
+@media only screen and (max-width: 775px) {
+  .mainContainer {
+    h2 {
+      font-weight: 500;
+      font-size: 2.5rem;
+      line-height: 3rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 610px) {
+  .mainContainer {
+    h2 {
+      font-weight: 400;
+      font-size: 2rem;
+      line-height: 2rem;
+    }
+    .buttonContainer {
+      padding-top: 40px;
+      width: 80%;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .mainContainer {
+    h2 {
+      font-weight: 300;
+      font-size: 1.4rem;
+      line-height: 1rem;
+    }
+  }
 }

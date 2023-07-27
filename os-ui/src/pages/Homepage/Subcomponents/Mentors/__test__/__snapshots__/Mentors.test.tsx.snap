@@ -5,19 +5,19 @@ exports[`Create test cases for homepage mentors list Create a snapshot test 1`] 
   <div
     class="mentorMainContainer"
   >
-    <div
-      class="main"
+    <p
+      class="MentorTitle"
     >
-      <h3>
-        string.homePage.mentors.ourMentors
-      </h3>
-      <h2>
-        string.homePage.mentors.learnAboutContributors
-      </h2>
-    </div>
+      string.homePage.mentors.ourMentors
+    </p>
+    <p
+      class="MentorSubTitle"
+    >
+      string.homePage.mentors.learnAboutContributors
+    </p>
     <div
       class="listContainer"
-      style="margin: 6%;"
+      style="margin: 3%;"
     >
       <div
         class="gridContent"
@@ -37,13 +37,12 @@ exports[`Create test cases for homepage mentors list Create a snapshot test 1`] 
     </div>
     <div
       class="registrationButton"
-      style="margin: auto; padding: 5% 0px 10%;"
     >
       <a
         href="/categories/subcategories"
       >
         <button
-          class="mainMentorRegistrationButton"
+          class="regButton btnAbove"
           type="button"
         >
           button.homePage.registerMentor

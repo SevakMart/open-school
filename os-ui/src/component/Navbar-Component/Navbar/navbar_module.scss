@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Inconsolata:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=Montserrat&display=swap');
+@import "../../../styles/Configs/Fonts.scss";
+@import "../../../styles/Configs/Colors.scss";
+
+@media only screen and (max-width: 1045px) {
+  .homePage {
+    &_Logo{
+      font-size: 16px;
+      line-height: 15px;
+    }
+    &_leftMenu {
+      margin-left: 45px;
+      gap: 30px;
+      &_item {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 15px;
+      }
+    }
+    &_rightMenu {
+      &_item {
+        font-weight: 400;
+        font-size: 10px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .homePage {
+    &_Logo{
+      margin-left: 35px;
+    }
+  }
+  .mobileMenu {
+    display: flex;
+    padding-top: 11px;
+  }
+
+  .desktopMenu {
+    display: none;
+  }
+
+  .mobileMenuButton {
+    margin-left: auto;
+    margin-right: 40px;
+    cursor: pointer;
+  }
+}  

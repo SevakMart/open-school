@@ -10,7 +10,7 @@ enum LearningPathNav {
     InProgress='InProgress',
     Completed='Completed'
 }
-/* eslint-disable max-len */
+
 const Header = ({ userId, token }:{userId:number, token:string}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ const Header = ({ userId, token }:{userId:number, token:string}) => {
 
   return (
     <>
-      <NavbarOnSignIn />
+      <NavbarOnSignIn currentUserEnrolled />
       <h1 className={mainHeader}>{t('string.myLearningPaths.mainHeaderTitle')}</h1>
       <nav className={courseNavigationBar}>
         <p className={activeNavType === 'All' ? activeNav : nonActiveNav} data-testid={LearningPathNav.All} onClick={handleNavigation}>{t('string.myLearningPaths.courseStatus.all')}</p>

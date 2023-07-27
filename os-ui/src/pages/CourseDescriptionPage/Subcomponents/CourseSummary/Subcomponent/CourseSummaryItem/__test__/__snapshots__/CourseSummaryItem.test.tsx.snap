@@ -7,6 +7,7 @@ exports[`Create test cases for CourseSummaryItem Create a snapshot test 1`] = `
   >
     <img
       alt="Ellipse"
+      class="ellipseIcon"
       src="Course-Summary-Ellipse.svg"
     />
     <div
