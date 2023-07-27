@@ -1,26 +1,34 @@
 @import "../../../../styles/Configs/Colors.scss";
-@import "../../../../styles/Configs/Fonts.scss";
-@import "../../../../styles/Mixins/FontMixin.scss";
 
-.listContainer{
-    position:relative;
-
-    .icon {
-      position:absolute;
-      z-index:2;
-      top:45%;
-      font-size: 3rem;
-      cursor:pointer;
-
-      &__left {
-        left:0;
-      }
-      &__right {
-        right:0;
-      }
+  .registrationButton{
+    text-align: center;
+    margin: auto;
+    width:40%;
+  }
+  
+  .regButton {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    color: $header-main-color;
+    background-color: $white-text-color;
+    border: 1px solid $header-main-color;
+    border-radius: 13px;
+    padding: 16px 32px;
+    cursor: pointer;
+    &:hover {
+      background-color: $secondary-color;
+      color: $white-text-color;
+      border: 1px solid transparent;
     }
   }
-  .registrationButton{
-    width:40%;
-    text-align: center;
+  
+  .btnAbove {
+    margin-bottom: 48px;
   }
+  
+  .btnBelow {
+    margin-top: 48px;
+    margin-bottom: 50px;
+  }
+  

@@ -49,15 +49,22 @@
     text-transform: uppercase;
 }
 .formButton {
-    @include buttonStyle($secondary-color,$white-text-color,1rem,100%,4.5rem,none,none,none,none);
+    @include buttonStyle($secondary-color, $white-text-color, 1rem, 100%, 4.5rem, none, none, none, none);
     @include fontStyle($primary-font, normal, 500, 1rem, 1.25rem);
     display: block;
     text-align: center;
     box-sizing: border-box;
     border:none;
-    margin-top:24px;
+    margin-top: 24px;
+    margin-bottom: 24px;
     &__resendEmail {
         margin-bottom: 24px;
+    }
+    &:hover {
+        background-color: #83f0dc;
+    }
+    &:active {
+      background-color: #17ac90;
     }
 }
 .account {

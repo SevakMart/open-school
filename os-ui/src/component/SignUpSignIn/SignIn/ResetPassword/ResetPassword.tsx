@@ -3,12 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/Store';
 import { validateResetPasswordForm } from '../../../../helpers/ResetPasswordFormValidate';
-import { openModalWithSuccessMessage } from '../../../../redux/Slices/PortalOpenStatus';
+import { closeModal, openModalWithSuccessMessage } from '../../../../redux/Slices/PortalOpenStatus';
 import Form from '../../Form/Form';
 import Header from '../../Header/Header';
 import { Types } from '../../../../types/types';
 import authService from '../../../../services/authService';
 import { FormValues } from '../../../../types/FormTypes';
+import { setCodeDigits } from '../../../../redux/Slices/CodeVerificationPswSlice';
 
 const initialErrorFormValues = { tokenError: '', newPasswordError: '', confirmedPasswordError: '' };
 /* eslint-disable max-len */
@@ -22,12 +23,14 @@ const ResetPassword = () => {
   const sendResetPassword = (formValues:FormValues) => {
     const { token, newPassword, confirmedPassword } = formValues;
     const { tokenError, newPasswordError, confirmedPasswordError } = validateResetPasswordForm(formValues);
-    if (!tokenError && !newPasswordError && !confirmedPasswordError) {
+    if (!tokenError || !newPasswordError || !confirmedPasswordError) {
       authService.sendResetPasswordRequest({ token, newPassword, confirmedPassword })
         .then((response) => {
           if (response.status === 200) {
             setErrorFormValue(initialErrorFormValues);
             dispatch(openModalWithSuccessMessage({ buttonType: Types.Button.SUCCESS_MESSAGE, withSuccessMessage: response.data.message, isResetPasswordSuccessfulMessage: true }));
+            dispatch(setCodeDigits(['', '', '', '']));
+            setTimeout(() => { dispatch(closeModal()); }, 2000);
           } else if (response.status === 400) {
             setErrorFormValue({ ...initialErrorFormValues, tokenError: response.data.message });
           }

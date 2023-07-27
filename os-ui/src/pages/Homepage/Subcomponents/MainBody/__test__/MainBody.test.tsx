@@ -14,11 +14,7 @@ describe('Create test cases for MainBody component', () => {
       <Router>
         <Provider store={store}>
           <MainBody
-            page={0}
-            maxPage={10}
             children={<p>Hello world</p>}
-            clickNext={jest.fn()}
-            clickPrevious={jest.fn()}
             isMentor={false}
           />
         </Provider>

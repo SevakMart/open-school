@@ -1,8 +1,8 @@
-import { BsArrowRightCircleFill } from 'react-icons/bs';
+import arrowIcon from '../assets/svg/arrowIcon.svg';
 
 const RightArrowIcon = ({ handleArrowClick, testId }:{handleArrowClick():void, testId:string}) => (
   <i data-testid={testId}>
-    <BsArrowRightCircleFill onClick={() => handleArrowClick()} />
+    <img src={arrowIcon} style={{ margin: '0' }} alt="arrow" onClick={() => handleArrowClick()} />
   </i>
 );
 export default RightArrowIcon;

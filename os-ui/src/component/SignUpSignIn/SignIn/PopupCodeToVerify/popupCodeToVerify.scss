@@ -1,0 +1,118 @@
+@import "./../../../../styles/Configs/Colors.scss";
+@import "./../../../../styles/Configs/Fonts.scss";
+@import "./../../../../styles/Mixins/FlexMixins.scss";
+@import "./../../../../styles/Mixins/ButtonMixin.scss";
+@import "./../../../../styles/Mixins/FontMixin.scss";
+
+.container {
+  margin: 0 50px;
+  margin-top: 45px;
+  font-family: $primary-font;
+}
+
+.verPopUpTitle {
+  font-weight: 800;
+  color:$header-main-color;
+  font-size: 2.25rem;
+  text-align: center;
+  margin-top: 35px;
+}
+
+.verPopUpcontent {
+  @include fontStyle($primary-font, normal, 600, 1.25rem, 1.7rem);
+  color:$main-text-color;
+  margin-top: 30px;
+  margin-left: 15px;
+}
+
+.sentMail {
+  @include fontStyle($primary-font, normal, 600, 1.25rem, 1.8rem);
+  color:$black-text-color;
+  margin-top: 30px;
+  margin-left: 15px;
+}
+
+.closeIcon {
+  position: absolute;
+  top:24px;
+  right:24px;
+  box-sizing: border-box;
+  width:24px;
+  height:24px;
+  @include flexStyle(row,center,center);
+  cursor: pointer;
+  &:hover {
+      background-color: $secondary-color;
+  }
+}
+
+.codeBox {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.ceil {
+  font-family: $primary-font;
+  text-align: center;
+  margin-left: 20px;
+  width: 35px;
+  height: 35px;
+  font-size: 30px;
+  &:focus {
+    outline-color: $secondary-color;
+  }
+}
+
+.popUpBtns {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  margin-left: 20px;
+}
+
+.anyBtns {
+  font-family: $primary-font;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 0.7rem;
+  background-color: $secondary-color;
+  color: $white-text-color;
+  display: block;
+  text-align: center;
+  box-sizing: border-box;
+  border: none;
+  margin-top: 10px;
+  margin-bottom: 24px;
+  width: 150px;
+  height: 55px;
+}
+
+.backBtn {
+  width: 120px;
+}
+
+.continueBtn {
+  margin-left: 40px;
+}
+
+.continueBtn, .backBtn {
+  &:hover {
+    background-color: #83f0dc;
+  }
+  &:active {
+    background-color: #17ac90;
+  }
+  &:hover[disabled] {
+    background-color: $btn-primary-color;
+    color: #fff;
+  }
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.verPopupBody {
+  margin-left: 20px;
+}

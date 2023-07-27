@@ -5,19 +5,19 @@ exports[`Create test cases for homepage categories list Create a snapshot test 1
   <div
     class="categoriesMainContainer"
   >
-    <div
-      class="main"
+    <p
+      class="categoriesTitle"
     >
-      <h3>
-        string.homePage.categories.title
-      </h3>
-      <h2>
-        string.homePage.categories.exploreCategories
-      </h2>
-    </div>
+      string.homePage.categories.title
+    </p>
+    <p
+      class="categoriesSumtitle"
+    >
+      string.homePage.categories.exploreCategories
+    </p>
     <div
       class="listContainer"
-      style="background-color: rgb(223, 243, 255); margin: 0px 6%;"
+      style="background-color: rgb(255, 255, 255); margin: 0px 3%;"
     >
       <div
         class="gridContent"
@@ -37,13 +37,12 @@ exports[`Create test cases for homepage categories list Create a snapshot test 1
     </div>
     <div
       class="registrationButton"
-      style="margin: auto; padding: 5% 0px 4%;"
     >
       <a
         href="/categories/subcategories"
       >
         <button
-          class="mainMentorRegistrationButton"
+          class="regButton btnBelow"
           type="button"
         >
           button.homePage.seeAll
