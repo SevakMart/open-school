@@ -193,7 +193,7 @@ exports[`Create tests for sign up form Create a snapshot test 1`] = `
       button.homePage.signUp
     </button>
   </form>
-  <p
+  <div
     class="alreadyHaveAccount"
   >
     string.signUp.haveAccount
@@ -205,6 +205,6 @@ exports[`Create tests for sign up form Create a snapshot test 1`] = `
         button.homePage.signIn
       </button>
     </span>
-  </p>
+  </div>
 </DocumentFragment>
 `;

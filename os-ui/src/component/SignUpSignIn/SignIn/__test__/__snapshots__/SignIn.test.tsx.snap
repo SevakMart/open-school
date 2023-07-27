@@ -159,7 +159,7 @@ exports[`Create test cases for SignIn component Create a snapshot test 1`] = `
       </button>
     </form>
   </div>
-  <p
+  <div
     class="alreadyHaveAccount"
   >
     string.signIn.dontHaveAccount
@@ -171,6 +171,6 @@ exports[`Create test cases for SignIn component Create a snapshot test 1`] = `
         button.homePage.signUp
       </button>
     </span>
-  </p>
+  </div>
 </DocumentFragment>
 `;

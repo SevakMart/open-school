@@ -19,13 +19,13 @@ const Footer = ({ mainText, buttonType, buttonText }:{mainText:string, buttonTyp
 
   return (
     <>
-      <p className={alreadyHaveAccount}>
+      <div className={alreadyHaveAccount}>
         {mainText}
         <span>
           {buttonType === Types.Button.SIGN_IN && <Button.SignInButton className={['account']} onClick={handleSignIn}>{buttonText}</Button.SignInButton>}
           {buttonType === Types.Button.SIGN_UP && <Button.SignUpButton className={['account']} onClick={handleSignUp}>{buttonText}</Button.SignUpButton>}
         </span>
-      </p>
+      </div>
     </>
   );
 };
