@@ -78,22 +78,24 @@ const PopupCodeToVerify = ({ errorMessage, formValues, setFormValues }: {errorMe
       <div style={{ marginLeft: '50px' }}>
         {errorMessage !== '' && <ErrorField.InputErrorField className={['inputErrorField']}>{errorMessage}</ErrorField.InputErrorField>}
       </div>
-      <form autoComplete="off" className="codeBox">
-        {codeDigits.map((digit, index) => (
-          <input
-            key={index}
-            type="text"
-            inputMode="numeric"
-            className="ceil"
-            autoComplete="new-password"
-            maxLength={1}
-            value={digit}
-            ref={(ref) => handleRefCreated(ref, index)}
-            onChange={(e) => handleCodeChange(index, e.target.value)}
-            onKeyDown={(e) => handleCodeKeyDown(index, e)}
-            onPaste={handleCodePaste}
-          />
-        ))}
+      <form autoComplete="off">
+        <div className="codeBox">
+          {codeDigits.map((digit, index) => (
+            <input
+              key={index}
+              type="text"
+              inputMode="numeric"
+              className="ceil"
+              autoComplete="new-password"
+              maxLength={1}
+              value={digit}
+              ref={(ref) => handleRefCreated(ref, index)}
+              onChange={(e) => handleCodeChange(index, e.target.value)}
+              onKeyDown={(e) => handleCodeKeyDown(index, e)}
+              onPaste={handleCodePaste}
+            />
+          ))}
+        </div>
       </form>
     </div>
   );
