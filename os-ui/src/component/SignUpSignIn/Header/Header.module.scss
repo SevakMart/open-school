@@ -5,15 +5,16 @@
 @import "../../../styles/Mixins/FontMixin.scss";
 
 .closeIcon {
-    position: absolute;
+    position: sticky;
     top:24px;
+    margin-left: auto;
     right:24px;
     box-sizing: border-box;
-    width:24px;
-    height:24px;
+    width: 24px;
+    height: 24px;
     cursor: pointer;
     &:hover {
-        background-color: $secondary-color;
+        color: brown;
     }
 }
 .headerContent {

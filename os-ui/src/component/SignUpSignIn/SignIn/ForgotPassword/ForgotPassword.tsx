@@ -8,7 +8,6 @@ import { Types } from '../../../../types/types';
 import authService from '../../../../services/authService';
 import { Input } from '../../../Input/Input';
 import './forgotPassword.scss';
-import CloseIcon from '../../../../icons/Close';
 
 const ForgotPassword = () => {
   const { t } = useTranslation();
@@ -46,8 +45,8 @@ const ForgotPassword = () => {
 
   return (
     <div className="forgotpsdContainer">
-      <div className="closeIcon" onClick={handleClosePortal}>
-        <CloseIcon />
+      <div className="closeIconX" onClick={handleClosePortal}>
+        ✖
       </div>
       <div className="forgotpsd_box">
         <div className="forgotpsd_box_title">Forgot password</div>

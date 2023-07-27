@@ -9,20 +9,6 @@
   font-family: $primary-font;
 }
 
-.closeIcon {
-  position: absolute;
-  top:24px;
-  right:24px;
-  box-sizing: border-box;
-  width:24px;
-  height:24px;
-  @include flexStyle(row,center,center);
-  cursor: pointer;
-  &:hover {
-      background-color: $secondary-color;
-  }
-}
-
 .codeBox {
   display: flex;
   justify-content: flex-start;
@@ -39,8 +25,4 @@
   &:focus {
     outline-color: $secondary-color;
   }
-}
-
-.verPopupBody {
-  margin-left: 20px;
 }

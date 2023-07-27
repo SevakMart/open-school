@@ -1,20 +1,11 @@
 import React, { useRef, useState } from 'react';
 import './popupCodeToVerify.scss';
 import '../ForgotPassword/forgotPassword.scss';
-import { useDispatch } from 'react-redux';
-import CloseIcon from '../../../../icons/Close';
-import { closeModal } from '../../../../redux/Slices/PortalOpenStatus';
 import { ErrorField } from '../../../ErrorField/ErrorField';
 
 const PopupCodeToVerify = ({ errorMessage, formValues, setFormValues }: {errorMessage: string, formValues: any, setFormValues: (formValues: any) => void}) => {
-  const dispatch = useDispatch();
-
   const [codeDigits, setCodeDigits] = useState<string[]>(['', '', '', '']);
   const codeInputRefs = useRef<Array<HTMLInputElement | null>>([]);
-
-  const handleClosePortal = () => {
-    dispatch(closeModal());
-  };
 
   const handleCodeChange = (index: number, value: string) => {
     const numericValue = value.replace(/\D/g, '');
@@ -84,19 +75,17 @@ const PopupCodeToVerify = ({ errorMessage, formValues, setFormValues }: {errorMe
 
   return (
     <div className="container">
-      <div className="closeIcon" onClick={handleClosePortal}>
-        <CloseIcon />
-      </div>
       <div style={{ marginLeft: '50px' }}>
         {errorMessage !== '' && <ErrorField.InputErrorField className={['inputErrorField']}>{errorMessage}</ErrorField.InputErrorField>}
       </div>
-      <div className="codeBox">
+      <form autoComplete="off" className="codeBox">
         {codeDigits.map((digit, index) => (
           <input
             key={index}
             type="text"
             inputMode="numeric"
             className="ceil"
+            autoComplete="new-password"
             maxLength={1}
             value={digit}
             ref={(ref) => handleRefCreated(ref, index)}
@@ -105,7 +94,7 @@ const PopupCodeToVerify = ({ errorMessage, formValues, setFormValues }: {errorMe
             onPaste={handleCodePaste}
           />
         ))}
-      </div>
+      </form>
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../../redux/Slices/PortalOpenStatus';
-import CloseIcon from '../../../icons/Close';
 import LinkedinIcon1 from '../../../icons/LinkedinIcon/Linkedin1';
 import EmailIcon1 from '../../../icons/EmailIcon/Email1';
 import styles from './Header.module.scss';
@@ -21,7 +20,7 @@ const Header = ({
 
   return (
     <>
-      <div className={closeIcon} onClick={handleClosePortal}><CloseIcon /></div>
+      <div className={closeIcon} onClick={handleClosePortal}>✖</div>
       <div className={headerContent}>
         <h2>{mainTitle}</h2>
         {isVerificationContent && <p>{t('messages.verificationPageHint')}</p>}

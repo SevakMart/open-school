@@ -10,6 +10,7 @@
   @include flexStyle(column, flex-start, space-between);
   input,.PasswordInputFieldWithIcon {
     width: 100%;
+    box-sizing: border-box;
     border: 1px solid #d9dbe9;
     border-radius: 0.75rem;
     height: 3.5rem;

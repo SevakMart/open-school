@@ -44,8 +44,15 @@ const ResetPassword = () => {
       });
   };
 
+  const handleClosePortal = () => {
+    dispatch(closeModal());
+  };
+
   return (
     <>
+      <div className="closeX" onClick={handleClosePortal}>
+        ✖
+      </div>
       <div className="verPopUpTitle">{t('string.resetPsd.title')}</div>
       <div className="verPopupBody">
         <div className="sentMail">
