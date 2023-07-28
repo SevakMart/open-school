@@ -66,7 +66,7 @@ public class JwtTokenProvider {
     return expiration.before(new Date());
   }
 
-  public String getSubject(String token) throws InvalidTokenException {
+  public String getSubject(String token) {
     try {
       JWTVerifier verifier = getJwtVerifier();
       return verifier.verify(token).getSubject();
