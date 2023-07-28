@@ -74,10 +74,10 @@ public class PeersQuestionServiceImpl implements QuestionService {
 
   @Override
   public Page<PeersQuestion> findQuestionByCourseId(
-      Long enrolledCourseId, Pageable pageable, String searchQuery) {
+      Long enrolledCourseId, String userEmail, Pageable pageable, String searchQuery) {
     validationHandler.validateSearchQuery(searchQuery);
     return peersQuestionRepository.findQuestionByEnrolledCourseId(
-        enrolledCourseId, pageable, searchQuery);
+        enrolledCourseId, userEmail, pageable, searchQuery);
   }
 
   @Override

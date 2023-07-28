@@ -55,7 +55,7 @@ class PeersQuestionServiceImplTest {
 
   @BeforeEach
   void setUp() {
-    validationHandler = new ValidationHandler(messageSource);
+    validationHandler = new ValidationHandler(messageSource, enrolledCourseRepository);
     questionService =
         new PeersQuestionServiceImpl(
             peersQuestionRepository, enrolledCourseRepository, validationHandler);
@@ -250,19 +250,20 @@ class PeersQuestionServiceImplTest {
     Pageable pageable = PageRequest.of(0, 2);
     Page<PeersQuestion> questionPage = new PageImpl<>(List.of(question));
     String searchQuery = "Question";
+    String userEmail = "user@gmail.com";
 
     when(peersQuestionRepository.findQuestionByEnrolledCourseId(
-            enrolledCourseId, pageable, searchQuery))
+            enrolledCourseId, userEmail, pageable, searchQuery))
         .thenReturn(questionPage);
     Page<? extends Question> questionByCourseId =
-        questionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery);
+        questionService.findQuestionByCourseId(enrolledCourseId, userEmail, pageable, searchQuery);
 
     assertNotNull(questionByCourseId.stream().findFirst().orElseThrow());
     assertTrue(
         questionByCourseId.stream()
             .allMatch(peersQuestion -> peersQuestion instanceof PeersQuestion));
     verify(peersQuestionRepository, times(1))
-        .findQuestionByEnrolledCourseId(enrolledCourseId, pageable, searchQuery);
+        .findQuestionByEnrolledCourseId(enrolledCourseId, userEmail, pageable, searchQuery);
   }
 
   @Test
@@ -270,11 +271,13 @@ class PeersQuestionServiceImplTest {
     long wrongEnrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 2);
     String searchQuery = "qu";
+    String userEmail = "user@gmail.com";
 
     assertThrows(
         InvalidSearchQueryException.class,
         () -> {
-          questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable, searchQuery);
+          questionService.findQuestionByCourseId(
+              wrongEnrolledCourseId, userEmail, pageable, searchQuery);
         });
   }
 
