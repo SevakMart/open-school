@@ -9,6 +9,7 @@ export namespace Types {
 		RESET_PASSWORD = 'resetPassword',
 		SUCCESS_MESSAGE = 'successMessage',
 		ENROLL_COURSE = 'enrollCourse',
-		FORGOT_VERIFICATION = 'FORGOT_VERIFICATION'
+		FORGOT_VERIFICATION = 'FORGOT_VERIFICATION',
+		Code_VerifivationPopup = 'Code_VerifivationPopup',
 	}
 }

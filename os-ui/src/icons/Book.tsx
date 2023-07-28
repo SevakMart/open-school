@@ -1,6 +1,6 @@
-import { FiBookOpen } from 'react-icons/fi';
+import bookIon from '../assets/svg/bookIcon.svg';
 
 const BookIcon = () => (
-  <FiBookOpen />
+  <img src={bookIon} alt="book" />
 );
 export default BookIcon;

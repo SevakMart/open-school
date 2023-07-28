@@ -2,35 +2,61 @@
 
 exports[`Make unit tests of Navbar component Create a snapshot test 1`] = `
 <DocumentFragment>
-  <nav
-    class="navContainer"
+  <div
+    class="desktopMenu"
   >
-    <h2>
+    <nav
+      class="homePage"
+    >
+      <h2
+        class="homePage_Logo"
+      >
+        string.homePage.navBar.logo
+      </h2>
+      <div
+        class="homePage_leftMenu"
+      >
+        <p
+          class="homePage_leftMenu_item"
+        >
+          string.homePage.navBar.exploreCategories
+        </p>
+        <p
+          class="homePage_leftMenu_item"
+        >
+          string.homePage.navBar.mentors
+        </p>
+      </div>
+      <div
+        class="homePage_rightMenu"
+      >
+        <p
+          class="homePage_rightMenu_item"
+        >
+          button.homePage.becomeMentor
+        </p>
+        <button
+          class="homePage_btn"
+          type="button"
+        >
+          button.homePage.signIn
+        </button>
+      </div>
+    </nav>
+  </div>
+  <div
+    class="mobileMenu"
+  >
+    <h2
+      class="homePage_Logo"
+    >
       string.homePage.navBar.logo
     </h2>
-    <div
-      class="categoriesMentors"
-    >
-      <p>
-        string.homePage.navBar.exploreCategories
-      </p>
-      <p>
-        string.homePage.navBar.mentors
-      </p>
-    </div>
-    <div
-      class="buttonContent"
-    >
-      <p>
-        button.homePage.becomeMentor
-      </p>
-      <button
-        class="navbarSignInButton"
-        type="button"
-      >
-        button.homePage.signIn
-      </button>
-    </div>
-  </nav>
+    <img
+      alt="menu"
+      class="mobileMenuButton "
+      src="mobileMenu.svg"
+    />
+  </div>
 </DocumentFragment>
 `;

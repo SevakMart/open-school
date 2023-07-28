@@ -64,10 +64,10 @@ public class MentorQuestionServiceImpl implements QuestionService {
 
   @Override
   public Page<MentorQuestion> findQuestionByCourseId(
-      Long enrolledCourseId, Pageable pageable, String searchQuery) {
+      Long enrolledCourseId, String userEmail, Pageable pageable, String searchQuery) {
     validationHandler.validateSearchQuery(searchQuery);
     return mentorQuestionRepository.findQuestionByEnrolledCourseId(
-        enrolledCourseId, pageable, searchQuery);
+        enrolledCourseId, userEmail, pageable, searchQuery);
   }
 
   private MentorQuestion prepareMentorQuestion(

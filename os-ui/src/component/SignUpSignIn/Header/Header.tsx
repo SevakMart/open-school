@@ -5,6 +5,8 @@ import CloseIcon from '../../../icons/Close';
 import LinkedinIcon1 from '../../../icons/LinkedinIcon/Linkedin1';
 import EmailIcon1 from '../../../icons/EmailIcon/Email1';
 import styles from './Header.module.scss';
+import './header.scss';
+import { setCodeDigits } from '../../../redux/Slices/CodeVerificationPswSlice';
 
 const Header = ({
   mainTitle, shouldRemoveIconContent, isForgotPasswordContent, isVerificationContent,
@@ -17,6 +19,7 @@ const Header = ({
 
   const handleClosePortal = () => {
     dispatch(closeModal());
+    dispatch(setCodeDigits(['', '', '', '']));
   };
 
   return (
@@ -28,7 +31,7 @@ const Header = ({
         {isForgotPasswordContent
           && (
           <>
-            <p>{t('string.forgotPsd.enterEmail')}</p>
+            <p className="emailParagraph">{t('string.forgotPsd.enterEmail')}</p>
             <p>{t('string.forgotPsd.sendNotification')}</p>
           </>
           )}

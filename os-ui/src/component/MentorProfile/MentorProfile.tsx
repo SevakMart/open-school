@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { MentorType } from '../../types/MentorType';
 import EmailIcon from '../../icons/Email';
 import LinkedinIcon from '../../icons/Linkedin';
@@ -5,6 +6,7 @@ import BookmarkIcon from '../../icons/Bookmark';
 import BookIcon from '../../icons/Book';
 import Separator from '../../assets/svg/Separator.svg';
 import styles from './MentorProfile.module.scss';
+import mentor_avatarka from '../../assets/svg/mentor_avatarka.svg';
 
 /* eslint-disable max-len */
 
@@ -15,8 +17,12 @@ const MentorCard = ({
     deleteMentor?:(mentorName:string, mentorId:number)=>void, }) => {
   const {
     mainContainer, headerContainer, MailLinkedinIconsContainer, bodyContainer, mentorInfo,
-    mentorAvatar, mentorInfoContainer, mentorExtraInfo,
+    countBeforeContent, mentorCourseProperty, mentorAvatar, mentorInfoContainer, mentorExtraInfo,
+    professionName, companyName, mentorCourseCount, countBeforeContentBox,
   } = styles;
+
+  const { t } = useTranslation();
+
   return (
     <div className={mainContainer}>
       <div className={headerContainer}>
@@ -39,7 +45,7 @@ const MentorCard = ({
       <div className={bodyContainer}>
         <div className={mentorInfoContainer}>
           <div className={mentorAvatar}>
-            <img src={mentor.userImgPath} alt="mentor_avatar" />
+            <img src={mentor_avatarka} alt="mentor_avatar" />
           </div>
           <div className={mentorInfo}>
             <h3 data-testid={`${mentor.name} ${mentor.surname}`}>
@@ -47,15 +53,17 @@ const MentorCard = ({
               {' '}
               {mentor.surname}
             </h3>
-            <p data-testid={mentor.professionName}>{mentor.professionName}</p>
-            <p data-testid={mentor.companyName}>{mentor.companyName}</p>
+            <p className={professionName} data-testid={mentor.professionName}>{mentor.professionName}</p>
+            <p className={companyName} data-testid={mentor.companyName}>{mentor.companyName}</p>
           </div>
         </div>
         <div className={mentorExtraInfo}>
-          <BookIcon />
-          <p data-testid={mentor.courseCount}>
-            {mentor.courseCount}
-          </p>
+          <div className={countBeforeContentBox} data-testid={mentor.courseCount}>
+            <BookIcon />
+            <p className={countBeforeContent}>{t('Total Courses:')}</p>
+            <p className={mentorCourseCount}>{mentor.courseCount}</p>
+            <button type="button" className={mentorCourseProperty}>Creative</button>
+          </div>
         </div>
       </div>
     </div>

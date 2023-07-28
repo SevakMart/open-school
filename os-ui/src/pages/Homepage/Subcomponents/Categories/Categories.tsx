@@ -6,10 +6,11 @@ import { getHomepageCategoriesList } from '../../../../redux/Slices/HomepageCate
 import CategoryCard from '../../../../component/CategoryProfile/CategoryProfile';
 import { userContext } from '../../../../contexts/Contexts';
 import { CategoryType } from '../../../../types/CategoryType';
-import Title from '../Title/Title';
 import MainBody from '../MainBody/MainBody';
 import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
 import styles from './Categories.module.scss';
+import RightArrowIcon from '../../../../icons/RightArrow';
+import LeftArrowIcon from '../../../../icons/LeftArrow';
 
 /* eslint-disable max-len */
 
@@ -22,7 +23,9 @@ const HomepageCategories = () => {
   } = homepageCategoriesListState;
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
-  const { categoriesMainContainer, gridContent } = styles;
+  const {
+    categoriesMainContainer, gridContent, categoriesTitle, categoriesSumtitle, icon,
+  } = styles;
 
   useEffect(() => {
     dispatch(getHomepageCategoriesList({ page, token: token || '' }));
@@ -30,16 +33,25 @@ const HomepageCategories = () => {
 
   return (
     <div className={categoriesMainContainer}>
-      <Title
-        mainTitle={t('string.homePage.categories.title')}
-        subTitle={t('string.homePage.categories.exploreCategories')}
-      />
+      <p className={categoriesTitle}>
+        {t('string.homePage.categories.title')}
+      </p>
+      <p className={categoriesSumtitle}>
+        {t('string.homePage.categories.exploreCategories')}
+      </p>
+      {page < totalPages
+        && (
+        <div className={icon}>
+          <RightArrowIcon testId="categoryRightArrow" handleArrowClick={() => setPage((prevPage) => prevPage + 1)} />
+        </div>
+        )}
+      {page > 0 && (
+      <div className={icon}>
+        <LeftArrowIcon testId="categoryLeftArrow" handleArrowClick={() => setPage((prevPage) => prevPage - 1)} />
+      </div>
+      )}
       <MainBody
-        page={page}
-        maxPage={totalPages}
         isMentor={false}
-        clickPrevious={() => setPage((prevPage) => prevPage - 1)}
-        clickNext={() => setPage((prevPage) => prevPage + 1)}
       >
         <div className={gridContent}>
           <ContentRenderer

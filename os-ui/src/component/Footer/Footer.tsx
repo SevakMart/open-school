@@ -27,7 +27,6 @@ const Footer = () => {
           </Button.SignUpButton>
         </div>
       </div>
-      <h2>{t('string.homePage.navBar.logo')}</h2>
     </>
   );
 };

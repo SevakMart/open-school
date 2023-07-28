@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FiBookmark } from 'react-icons/fi';
+import bookMark from '../assets/svg/bookMark.svg';
 import { Types } from '../types/types';
 import { openModal } from '../redux/Slices/PortalOpenStatus';
 import { RootState } from '../redux/Store';
@@ -67,7 +67,9 @@ const BookmarkIcon = ({
   };
 
   return (
-    <FiBookmark
+    <img
+      src={bookMark}
+      alt="bookmark"
       onClick={isHomepageNotSignedInMentor ? handleMentorBookmark : handleSaving}
       style={{
         fontSize: `${iconSize}`,
