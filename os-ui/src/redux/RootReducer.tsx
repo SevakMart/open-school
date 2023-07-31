@@ -28,7 +28,6 @@ import GetForumSearchPeersReducer from './Slices/ForumSearchPeersSlice';
 import GetForumSearchMentorReducer from './Slices/ForumSearchMentorSlice';
 import CodeVerificationPswReducer from './Slices/CodeVerificationPswSlice';
 
-
 const rootReducer = combineReducers({
   portalStatus: portalStatusReducer,
   userInfo: userInfoReducer,
