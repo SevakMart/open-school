@@ -26,6 +26,8 @@ import GetAllQuestionsReducer from './Slices/GetAllQuestionsSlice';
 import GetAllAnswersByQuestionIdReducer from './Slices/GetAllAnswersByQuestionIdSlice';
 import GetForumSearchPeersReducer from './Slices/ForumSearchPeersSlice';
 import GetForumSearchMentorReducer from './Slices/ForumSearchMentorSlice';
+import CodeVerificationPswReducer from './Slices/CodeVerificationPswSlice';
+
 
 const rootReducer = combineReducers({
   portalStatus: portalStatusReducer,
@@ -54,5 +56,6 @@ const rootReducer = combineReducers({
   GetAllAnswersByQuestionId: GetAllAnswersByQuestionIdReducer,
   GetForumSearchPeers: GetForumSearchPeersReducer,
   GetForumSearchMentor: GetForumSearchMentorReducer,
+  CodeVerificationPsw: CodeVerificationPswReducer,
 });
 export default rootReducer;

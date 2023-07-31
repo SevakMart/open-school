@@ -5,9 +5,12 @@ interface FormButtonProps {
   children: string;
   className: string[];
   onClick?: (event: React.SyntheticEvent) => void;
+  disabled?: boolean;
 }
 
-export const FormButton = ({ children, className, onClick }: FormButtonProps) => {
+export const FormButton = ({
+  children, className, onClick, disabled,
+}: FormButtonProps) => {
   const styleNames = className.map((className: string) => styles[`${className}`]);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -31,6 +34,7 @@ export const FormButton = ({ children, className, onClick }: FormButtonProps) =>
       type="submit"
       className={styleNames.join(' ')}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </button>

@@ -5,18 +5,23 @@
 @import "../../../../styles/Configs/Fonts.scss";
 @import "../../../../styles/Mixins/GridMixin.scss";
 
-.mainContent {
+.mainContent, .enrolledMainContent {
+	margin:48px 88px;
+	position: relative;
     border-radius: 40px;
     align-self: flex-start;
-    border: 2px solid black;
-    .headerContent{
+    border: 2px;
+	flex-shrink: 0;
+	width: 508px;
+    .enrolledHeaderContent, .headerContent{
         @include flexStyle(row,center,space-between);
-        background-color: #F9F9FD;
         border-radius: 40px 40px 0px 0px;
         h2{
-            @include fontStyle($primary-font,normal,600,20px,24px);
+            @include fontStyle($primary-font,normal,600,20px,normal);
             color: $black-text-color;
-            margin:32px 162px 32px 48px;
+            margin:32px 180px 30px 48px;
+			display: inline-block;
+  			white-space: nowrap;
         }
         .headerIcons {
             @include flexStyle(row, center, space-between);
@@ -26,18 +31,53 @@
             }
         }
     }
-    .courseSummaryItemList{
-        margin-top:48px;
-        @include gridStyle(repeat(1,1fr),none,24px,0);
-    }
+	.enrolledHeaderContent{
+		background: 
+		 $mentor-card-backgraund-color;
+	}
+	.headerContent{
+		background: $main-course-color;
+	}
+
+	.enrolledCourseSummaryItemList, .courseSummaryItemList{
+		margin-top:44px;
+		@include gridStyle(repeat(1,1fr),none,24px,0);
+		border-radius: 0px 0px 40px 40px;
+	}
+		
+	.enrolledCourseSummaryItemList{
+		background: $main-course-color;
+	}
+
+	.courseSummaryItemList{
+		background:  $mentor-card-backgraund-color;
+	}
+
     .userEnrollText {
-        margin:66px auto 24px;
+        margin-top:66px;
         text-align: center;
+		background:  $main-course-color;
     }
     .buttonContainer {
-        margin:64px 60px 80px 48px;
+        padding:64px 60px 80px 48px;
     }
+
     .enrolledButtonContainer {
-        margin:24px 60px 80px 48px;
+        padding:4px 60px 80px 48px;
     }
+
+	.enrollText{
+		margin-top:66px;
+        text-align: center;
+		background: $mentor-card-backgraund-color;
+	}
+}
+
+.enrolledMainContent{
+	background: $main-course-color;
+	height: 798px;
+}
+
+.mainContent{
+    background: $mentor-card-backgraund-color;
 }

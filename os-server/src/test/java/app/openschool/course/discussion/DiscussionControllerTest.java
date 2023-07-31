@@ -5,8 +5,10 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -21,8 +23,10 @@ import app.openschool.course.discussion.dto.UpdateQuestionRequest;
 import app.openschool.course.discussion.mentor.question.MentorQuestion;
 import app.openschool.course.discussion.peers.answer.PeersAnswer;
 import app.openschool.course.discussion.peers.question.PeersQuestion;
+import app.openschool.course.discussion.util.ValidationHandler;
 import app.openschool.user.User;
 import app.openschool.user.role.Role;
+import java.security.Principal;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,6 +55,8 @@ public class DiscussionControllerTest {
 
   @MockBean
   private @Qualifier("discussionQuestion") QuestionService questionService;
+
+  @MockBean private ValidationHandler validationHandler;
 
   @MockBean
   private @Qualifier("discussionQuestionMentor") QuestionService mentorQuestionService;
@@ -273,17 +279,23 @@ public class DiscussionControllerTest {
     long enrolledCourseId = 1L;
     String jwt = generateJwtToken();
     String searchQuery = "Question";
+    String userEmail = "Test";
 
     Pageable pageable = PageRequest.of(0, 5);
 
-    when(questionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery))
+    when(validationHandler.checkUserEnrollment(enrolledCourseId, userEmail)).thenReturn(true);
+    when(questionService.findQuestionByCourseId(enrolledCourseId, userEmail, pageable, searchQuery))
         .thenReturn(questions);
+
+    Principal principal = mock(Principal.class);
+    when(principal.getName()).thenReturn(userEmail);
     mockMvc
         .perform(
             get("/api/v1/courses/enrolled/" + enrolledCourseId + "/peers-questions")
                 .queryParam("page", "o")
                 .queryParam("size", "5")
                 .queryParam("q", searchQuery)
+                .principal(principal)
                 .header("Authorization", jwt)
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isOk());
@@ -294,10 +306,11 @@ public class DiscussionControllerTest {
 
     Page questions = new PageImpl<>(List.of(TestHelper.createDiscussionPeersQuestion()));
     String searchQuery = "Question";
+    String userEmail = "user@email";
 
     long enrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 5);
-    when(questionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery))
+    when(questionService.findQuestionByCourseId(enrolledCourseId, userEmail, pageable, searchQuery))
         .thenReturn(questions);
 
     mockMvc
@@ -590,17 +603,23 @@ public class DiscussionControllerTest {
     long enrolledCourseId = 1L;
     String jwt = generateJwtToken();
     String searchQuery = "Question";
+    String userEmail = "Test";
 
     Pageable pageable = PageRequest.of(0, 5);
-
-    when(mentorQuestionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery))
+    when(validationHandler.checkUserEnrollment(enrolledCourseId, userEmail)).thenReturn(true);
+    when(mentorQuestionService.findQuestionByCourseId(
+            enrolledCourseId, userEmail, pageable, searchQuery))
         .thenReturn(questions);
+
+    Principal principal = mock(Principal.class);
+    when(principal.getName()).thenReturn(userEmail);
     mockMvc
         .perform(
             get("/api/v1/courses/enrolled/" + enrolledCourseId + "/mentor-questions")
                 .queryParam("page", "o")
                 .queryParam("size", "5")
                 .queryParam("q", searchQuery)
+                .principal(principal)
                 .header("Authorization", jwt)
                 .contentType(APPLICATION_JSON))
         .andExpect(status().isOk());
@@ -611,10 +630,13 @@ public class DiscussionControllerTest {
 
     Page questions = new PageImpl<>(List.of(TestHelper.createMentorQuestion()));
     String searchQuery = "Question";
+    String userEmail = "user@gmail.com";
 
     long enrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 5);
-    when(mentorQuestionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery))
+    when(validationHandler.checkUserEnrollment(enrolledCourseId, userEmail)).thenReturn(true);
+    when(mentorQuestionService.findQuestionByCourseId(
+            enrolledCourseId, userEmail, pageable, searchQuery))
         .thenReturn(questions);
 
     mockMvc

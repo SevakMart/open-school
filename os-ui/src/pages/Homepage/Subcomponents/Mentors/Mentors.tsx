@@ -7,9 +7,10 @@ import { getHomepageMentorsList } from '../../../../redux/Slices/HomepageMentorS
 import { MentorType } from '../../../../types/MentorType';
 import { userContext } from '../../../../contexts/Contexts';
 import ContentRenderer from '../../../../component/ContentRenderer/ContentRenderer';
-import Title from '../Title/Title';
 import MainBody from '../MainBody/MainBody';
 import styles from './Mentors.module.scss';
+import RightArrowIcon from '../../../../icons/RightArrow';
+import LeftArrowIcon from '../../../../icons/LeftArrow';
 
 /* eslint-disable max-len */
 
@@ -22,7 +23,9 @@ const HomepageMentors = () => {
   } = homepageMentorListState;
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
-  const { mentorMainContainer, gridContent } = styles;
+  const {
+    mentorMainContainer, gridContent, MentorTitle, MentorSubTitle, icon,
+  } = styles;
 
   useEffect(() => {
     dispatch(getHomepageMentorsList({ page, token: token || '' }));
@@ -30,16 +33,25 @@ const HomepageMentors = () => {
 
   return (
     <div className={mentorMainContainer}>
-      <Title
-        mainTitle={t('string.homePage.mentors.ourMentors')}
-        subTitle={t('string.homePage.mentors.learnAboutContributors')}
-      />
+      <p className={MentorTitle}>
+        {t('string.homePage.mentors.ourMentors')}
+      </p>
+      <p className={MentorSubTitle}>
+        {t('string.homePage.mentors.learnAboutContributors')}
+      </p>
+      {page < totalPages
+        && (
+        <div className={icon}>
+          <RightArrowIcon testId="categoryRightArrow" handleArrowClick={() => setPage((prevPage) => prevPage + 1)} />
+        </div>
+        )}
+      {page > 0 && (
+      <div className={icon}>
+        <LeftArrowIcon testId="categoryLeftArrow" handleArrowClick={() => setPage((prevPage) => prevPage - 1)} />
+      </div>
+      )}
       <MainBody
-        page={page}
-        maxPage={totalPages}
         isMentor
-        clickPrevious={() => setPage((prevPage) => prevPage - 1)}
-        clickNext={() => setPage((prevPage) => prevPage + 1)}
       >
         <div className={gridContent}>
           <ContentRenderer

@@ -1,33 +1,92 @@
 @import "../../../../styles/Configs/Colors.scss";
 @import "../../../../styles/Configs/Fonts.scss";
-@import "../../../../styles/Mixins/FlexMixins.scss";
-@import "../../../../styles/Mixins/FontMixin.scss";
 
   .mainContent {
-    @include flexStyle(row, center, space-between);
+    display: flex;
+    justify-content: space-between;
     margin: 0 2.7%;
+    margin-top: 50px;
+    padding-top: 120px;
+    padding-bottom: 120px;
     border-radius: 2.5rem;
-    background-color: #F9FAFD;
-    box-sizing: border-box;
+    background-color: #52719E;
+    font-family: $primary-font;
     .leftContent {
-      padding:11% 0 11% 11%;
-      width: 40%;
+      margin-left:  156px;
       h1 {
-        @include fontStyle($primary-font, normal, 800, 3rem, 3.6rem);
-        color: $header-main-color;
+        margin-top: 0;
+        font-weight: 800;
+        font-size: 64px;
+        line-height: 78px;
+        color: $white-text-color;
       }
       p {
-        @include fontStyle($primary-font, normal, 400, 1rem, 1.5rem);
-        color: $main-text-color;
+        margin-top: -10px;
+        font-weight: 400;
+        line-height: 24px;
+        color: $otherWhite-color;
       }
       .buttonContainer {
-        width: 50%;
-        margin-top:8%;
-        @include flexStyle(row, center, space-between);
+        margin-top: 40px;
+      }
+      .leftContentSignInBtn {
+        margin-left: 40px;
+        padding: 5px 8px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        color: $white-text-color;
+        font-size: 16px;
+        &:hover {
+          color: $black-text-color;
+        }
       }
     }
     .rightContent {
-      width: 50%;
-      text-align: center;
+      margin-top: -4px;
+      margin-right:  120px;
+
+    }
+  }
+
+  @media only screen and (max-width: 1180px ) {  
+    .mainContent {
+      .leftContent {
+        margin: 0 156px;
+      }
+      .rightContent {
+        display: none;
+      }  
+    }
+  }
+
+  @media only screen and (max-width: 760px ) {  
+    .mainContent {
+      .leftContent {
+        h1 {
+          font-weight: 500;
+          font-size: 40px;
+          line-height: 50px;
+        }
+      }
+    }
+  }
+
+  @media only screen and (max-width: 600px ) {  
+    .mainContent {
+      .leftContent {
+        margin: 0 100px;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 475px ) {  
+    .mainContent {
+      .leftContent {
+        margin: 0 70px;
+      }
+      .buttonContainer {
+        display: flex;
+      }
     }
   }

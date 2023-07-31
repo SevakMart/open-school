@@ -5,19 +5,31 @@
 
 .mainContainer {
     margin-left:48px;
+
+    &::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .ellipseIcon {
+        margin-top: 6px;
+    }
+
     .mainContent {
         display:inline-block;
         margin-left:16px;
+
         h2{
-            @include fontStyle($primary-font,normal,400,14px,17px);
+            @include fontStyle($primary-font,normal,400,14px, normal);
             color:$main-text-color;
             margin:0 0 8px;
         }
+
         p {
-            @include fontStyle($primary-font,normal,600,20px,24px);
+            @include fontStyle($primary-font,normal,600,20px, normal);
             color:$black-text-color;
             margin:0;
         }
     }
-
 }

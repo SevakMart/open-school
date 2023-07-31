@@ -11,7 +11,7 @@ const AllMentorsPage = ({ userInfo }:{userInfo:any}) => {
 
   return (
     <>
-      <NavbarOnSignIn />
+      <NavbarOnSignIn currentUserEnrolled />
       <userContext.Provider value={idAndToken}>
         <MainContent />
       </userContext.Provider>

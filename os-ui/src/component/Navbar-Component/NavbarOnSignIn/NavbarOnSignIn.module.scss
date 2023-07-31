@@ -7,16 +7,16 @@
     @include flexStyle(row, center, space-between);
     padding:28px 88px;
     box-sizing: border-box;
-    background-color: #F9F9FD;
+    background-color: $mentor-card-backgraund-color;
     h2 {
-        @include fontStyle($secondary-font,italic,700,20px,24px);
+        @include fontStyle($primary-font,italic,700,20px,24px);
         color:$header-main-color;
         margin:0;
         cursor:pointer;
     }
     .navMainContent{
         @include flexStyle(row, center, space-between);
-        p{
+        .navbarTitle{
             @include fontStyle($primary-font,normal,500,16px,24px);
             color:$main-text-color;
             cursor:pointer;
@@ -48,3 +48,51 @@
         }
     }
 }
+
+
+.mainConentDecrptionPage{
+	@include flexStyle(row, center, space-between);
+    padding:28px 88px;
+    box-sizing: border-box;
+	background-color: transparent;
+	h2 {
+        @include fontStyle($secondary-font,italic,700,20px,normal);
+        color:$header-main-color;
+        margin:0;
+        cursor:pointer;
+    }
+    .navMainContent{
+        @include flexStyle(row, center, space-between);
+        .decrptionPageTitle{
+            @include fontStyle($primary-font,normal,500,16px,24px);
+            color:$white-text-color;
+            cursor:pointer;
+            box-sizing: border-box;
+            margin:0 0 0 32px;
+        }
+        .bookmarkIconStyle {
+            margin:0 0 0 25px;
+            width:20px;
+            height:20px;
+            text-align: center;
+        }
+        .notificationIcon {
+            margin:0 0 0 25px;
+            cursor:pointer;
+        }
+        .userInfoContent {
+            @include flexStyle(row, center, space-between);
+            box-sizing: border-box;
+            margin:0 0 0 25px;
+            .avatarLogo {
+                width:32px;
+                height:32px;
+                border-radius: 50%;
+            }
+            .arrowDownIcon {
+                cursor:pointer;
+            }
+        }
+    }
+}
+

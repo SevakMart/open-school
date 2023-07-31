@@ -15,7 +15,6 @@ import EnrolledSuccessMessage from './Subcomponents/CourseSummary/Subcomponent/M
 import { CourseDescriptionType, SuggestedCourseType } from '../../types/CourseTypes';
 import styles from './CourseDescriptionPage.module.scss';
 
-/* eslint-disable max-len */
 const CourseDescriptionPage = ({ userInfo }: { userInfo: any }) => {
   const portalStatus = useSelector<RootState>((state) => state.portalStatus) as PortalStatus;
   const { isOpen, buttonType } = portalStatus;
@@ -30,18 +29,36 @@ const CourseDescriptionPage = ({ userInfo }: { userInfo: any }) => {
   const dispatch = useDispatch();
   const courseDescriptionState = useSelector<RootState>((state) => state.courseDescriptionRequest) as { entity: CourseDescriptionType, isLoading: boolean, errorMessage: string };
   const { entity, isLoading, errorMessage } = courseDescriptionState;
-  const { mainContent } = styles;
+  const {
+    mainContent, backgroundFrame, courseSummary, courseMainContent,
+  } = styles;
+  const currentUserEnrolled = entity && entity.currentUserEnrolled;
 
   useEffect(() => {
     dispatch(getCourseDescription({ courseId: Number(courseId), token: idAndToken.token }));
   }, []);
 
-  const currentUserEnrolled = entity && entity.currentUserEnrolled;
+  useEffect(() => {
+    if (currentUserEnrolled) {
+	  document.body.classList.add('course-description-page');
+    } else {
+	  document.body.classList.remove('course-description-page');
+    }
+    return () => {
+	  document.body.classList.remove('course-description-page');
+    };
+  }, [currentUserEnrolled]);
 
   return (
     <>
-      <NavbarOnSignIn />
       <userContext.Provider value={idAndToken}>
+        {currentUserEnrolled ? (
+          <NavbarOnSignIn currentUserEnrolled={currentUserEnrolled} />
+        ) : (
+          <div className={backgroundFrame}>
+            <NavbarOnSignIn currentUserEnrolled={currentUserEnrolled} />
+          </div>
+        )}
         <ContentRenderer
           isLoading={isLoading}
           errorMessage={errorMessage}
@@ -50,47 +67,52 @@ const CourseDescriptionPage = ({ userInfo }: { userInfo: any }) => {
           isMyLearningPathPage={false}
           render={(entity) => (
             <div className={mainContent}>
-              <CourseMainContent
-                description={entity.description}
-                goal={entity.goal}
-                mentorDto={entity.mentorDto}
-                modules={entity.modules}
-                title={entity.title}
-                currentUserEnrolled={currentUserEnrolled}
-                enrolledCourseId={entity.enrolledCourseId}
-                Course_Level={entity.level}
-                Estimated_efforts={entity.duration}
-              />
-              <CourseSummary
-                Rating={entity.rating}
-                Enrolled={entity.enrolled}
-                Course_Level={entity.level}
-                Language={entity.language}
-                Estimated_efforts={entity.duration}
-                courseId={Number(courseId)}
-                userIdAndToken={idAndToken}
-                title={entity.title}
-                currentUserEnrolled={currentUserEnrolled}
-                enrolledCourseId={entity.enrolledCourseId}
-              />
+              <div className={courseMainContent}>
+                <CourseMainContent
+                  description={entity.description}
+                  goal={entity.goal}
+                  mentorDto={entity.mentorDto}
+                  modules={entity.modules}
+                  title={entity.title}
+                  currentUserEnrolled={currentUserEnrolled}
+                  enrolledCourseId={entity.enrolledCourseId}
+                  Course_Level={entity.level}
+                  Estimated_efforts={entity.duration}
+                />
+              </div>
+              <div className={courseSummary}>
+                <CourseSummary
+                  Rating={entity.rating}
+                  Enrolled={entity.enrolled}
+                  Course_Level={entity.level}
+                  Language={entity.language}
+                  Estimated_efforts={entity.duration}
+                  courseId={Number(courseId)}
+                  userIdAndToken={idAndToken}
+                  title={entity.title}
+                  currentUserEnrolled={currentUserEnrolled}
+                  enrolledCourseId={entity.enrolledCourseId}
+                />
+              </div>
             </div>
           )}
         />
       </userContext.Provider>
+
       <Portal.FormPortal isOpen={isOpen}>
-        {isOpen && buttonType === Types.Button.ENROLL_COURSE
-        && (
-        <ContentRenderer
-          isLoading={enrolledCourseLoading}
-          errorMessage={enrolledCourseErrorMessage}
-          entity={enrolledCourseEntity}
-          errorFieldClassName="enrolmentError"
-          isMyLearningPathPage={false}
-          render={() => <EnrolledSuccessMessage courseId={Number(courseId)} />}
-        />
+        {isOpen && buttonType === Types.Button.ENROLL_COURSE && (
+          <ContentRenderer
+            isLoading={enrolledCourseLoading}
+            errorMessage={enrolledCourseErrorMessage}
+            entity={enrolledCourseEntity}
+            errorFieldClassName="enrolmentError"
+            isMyLearningPathPage={false}
+            render={() => <EnrolledSuccessMessage courseId={Number(courseId)} />}
+          />
         )}
       </Portal.FormPortal>
     </>
   );
 };
+
 export default CourseDescriptionPage;

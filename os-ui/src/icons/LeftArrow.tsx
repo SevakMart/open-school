@@ -1,8 +1,8 @@
-import { BsArrowLeftCircleFill } from 'react-icons/bs';
+import arrowIcon from '../assets/svg/arrowIcon.svg';
 
 const LeftArrowIcon = ({ handleArrowClick, testId }:{handleArrowClick():void, testId:string}) => (
   <i data-testid={testId}>
-    <BsArrowLeftCircleFill onClick={() => handleArrowClick()} />
+    <img src={arrowIcon} style={{ transform: 'rotate(180deg)' }} alt="arrow" onClick={() => handleArrowClick()} />
   </i>
 );
 export default LeftArrowIcon;
