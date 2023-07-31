@@ -155,9 +155,30 @@ exports[`Create test cases for AllLearningPathPage component Create a snapshot t
           </div>
           <input
             data-testid="searchInput"
-            placeholder="string.search"
+            placeholder="Search by name"
             type="text"
+            value=""
           />
+          <div
+            class="closeIcon"
+          >
+            <svg
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7,7 L17,17 M7,17 L17,7"
+                fill="none"
+                stroke="#000"
+                stroke-width="2"
+              />
+            </svg>
+          </div>
         </div>
       </div>
       <div

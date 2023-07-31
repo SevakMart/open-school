@@ -55,6 +55,7 @@ const AllMentorsPageHeader = ({ changeHeaderFocus }:{changeHeaderFocus:(headerNa
       <Input.SearchInput
         className={['search', 'search__allMentorsSearch']}
         changeUrlQueries={handleSearch}
+        placeholder={t('Search by name')}
       />
     </div>
   );

@@ -11,6 +11,7 @@ const Header = ({ changeUrlQueries }:{changeUrlQueries:(title:string)=>void}) =>
       <Input.SearchInput
         changeUrlQueries={(title:string) => changeUrlQueries(title)}
         className={['search', 'search__subcategoriesSearch']}
+        placeholder={t('Search by name')}
       />
     </div>
   );

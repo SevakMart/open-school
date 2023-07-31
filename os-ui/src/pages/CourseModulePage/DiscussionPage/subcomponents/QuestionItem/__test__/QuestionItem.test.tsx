@@ -73,6 +73,7 @@ describe('AskQuestionPopup', () => {
             responsesMap={fakeResponsesMap}
             name="joe"
             surname="Tribiani"
+            searchQuery=""
           />
         </>
       </Provider>,

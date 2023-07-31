@@ -1,5 +1,4 @@
-import './questionItem.scss';
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import ArrowRightIcon from '../../../../../assets/svg/ArrowRight.svg';
@@ -14,10 +13,17 @@ import { removeQuestion, updateQuestion } from '../../../../../redux/Slices/Ques
 import { addAnswer } from '../../../../../redux/Slices/AnswerActionsSlice';
 import Answeritem from './subcomponents/AnswerItem/AnswerItem';
 import { formatDate } from '../../helpers/formatDate';
+import './questionItem.scss';
 
-/* eslint-disable react/prop-types */
 const QuestionItem: React.FC<QuestionItemProps> = ({
-  text, id, createdDate, token, enrolledCourseId, sectionName, responsesMap,
+  text,
+  id,
+  createdDate,
+  token,
+  enrolledCourseId,
+  sectionName,
+  responsesMap,
+  searchQuery,
 }) => {
   const [isEditPressed, setEditPresses] = useState<boolean>(false);
   const [editValue, setEditValue] = useState<string>(text);
@@ -171,6 +177,32 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
 
   const { t } = useTranslation();
 
+  const highlightMatches = (text: string, searchQuery: string) => {
+    if (!searchQuery || typeof searchQuery !== 'string') return text;
+
+    const lowerCaseSearchQuery = searchQuery.toLowerCase();
+    const lowerCaseText = text.toLowerCase();
+
+    let startIndex = 0;
+    const highlightedText: JSX.Element[] = [];
+
+    while (startIndex < lowerCaseText.length) {
+	  const index = lowerCaseText.indexOf(lowerCaseSearchQuery, startIndex);
+	  if (index !== -1) {
+        const prefix = text.substring(startIndex, index);
+        const match = text.substring(index, index + searchQuery.length);
+        highlightedText.push(<span key={startIndex}>{prefix}</span>);
+        highlightedText.push(<span key={startIndex + 1} className="highlighted">{match}</span>);
+        startIndex = index + searchQuery.length;
+	  } else {
+        highlightedText.push(<span key={startIndex}>{text.substring(startIndex)}</span>);
+        break;
+	  }
+    }
+
+    return <>{highlightedText}</>;
+  };
+
   return (
     <div className="Questions_page">
       {
@@ -210,32 +242,42 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
                 <button type="button" className="btn_post" disabled={isDisable} onClick={() => animatedFunction(editQuestion)}>{t('Save')}</button>
               </div>
             </div>
-          )
-            : (
-              <div className="question_item">
-                <div className="question__text_box">
-                  <div className="user_">{t('Me')}</div>
-                  <div className="question__text_inner-date" data-testid="questionItem-date">{formattedDate}</div>
-                </div>
-                <div className="question-item_body">
-                  <div className={`question-item_text ${!isExpanded && 'question-item_text_expanded'}`} data-testid="questionItem-text" style={{ wordWrap: 'break-word' }} ref={questionTextRef}>
-                    {t(text)}
-                  </div>
-                  {isQuestonLong && (
-                    <div className="question-item_showMore" onClick={toggleShowMore}>
-                      {isExpanded ? 'Show less' : 'Show more'}
-                      <img className={`question-item_showMore_img ${isExpanded ? 'question-item_showMore_img_rotateIcon' : ''}`} src={next} alt=">" />
-                    </div>
-                  )}
-                </div>
-                <div className={`icons ${!isQuestonLong ? 'iconsToTop' : ''}`}>
-                  <img className="answer_icon" onClick={() => animatedFunction(handleAnswerSectionOpen)} src={answer} alt="->" />
-                  <div className="messageCount">5</div>
-                  <img className="icon_menu" src={threeVerticalDots} onClick={() => animatedFunction(changeIsOpen)} alt="menu" />
-                  <img className={`arrowRightIcon ${allAnswersState ? 'arrowRightIcon_rotate' : ''}`} onClick={() => animatedFunction(handleSetAllAnswersState)} src={ArrowRightIcon} alt=">" />
+          ) : (
+            <div className="question_item">
+              <div className="question__text_box">
+                <div className="user_">{t('Me')}</div>
+                <div className="question__text_inner-date" data-testid="questionItem-date">
+                  {formattedDate}
                 </div>
               </div>
-            )}
+              <div className="question-item_body">
+                <div
+                  className={`question-item_text ${!isExpanded && 'question-item_text_expanded'}`}
+                  data-testid="questionItem-text"
+                  style={{ wordWrap: 'break-word' }}
+                  ref={questionTextRef}
+                >
+                  {highlightMatches(text, searchQuery)}
+                </div>
+                {isQuestonLong && (
+                  <div className="question-item_showMore" onClick={toggleShowMore}>
+                    {isExpanded ? 'Show less' : 'Show more'}
+                    <img
+                      className={`question-item_showMore_img ${isExpanded ? 'question-item_showMore_img_rotateIcon' : ''}`}
+                      src={next}
+                      alt=">"
+                    />
+                  </div>
+                )}
+              </div>
+              <div className={`icons ${!isQuestonLong ? 'iconsToTop' : ''}`}>
+                <img className="answer_icon" onClick={() => animatedFunction(handleAnswerSectionOpen)} src={answer} alt="->" />
+                <div className="messageCount">5</div>
+                <img className="icon_menu" src={threeVerticalDots} onClick={() => animatedFunction(changeIsOpen)} alt="menu" />
+                <img className={`arrowRightIcon ${allAnswersState ? 'arrowRightIcon_rotate' : ''}`} onClick={() => animatedFunction(handleSetAllAnswersState)} src={ArrowRightIcon} alt=">" />
+              </div>
+            </div>
+          )}
         </div>
       </div>
       {isAnswerSectionOpen && (
