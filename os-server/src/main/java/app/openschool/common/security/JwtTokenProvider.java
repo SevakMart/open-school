@@ -1,8 +1,10 @@
 package app.openschool.common.security;
 
+import app.openschool.common.exceptionhandler.exception.InvalidTokenException;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Date;
@@ -65,8 +67,12 @@ public class JwtTokenProvider {
   }
 
   public String getSubject(String token) {
-    JWTVerifier verifier = getJwtVerifier();
-    return verifier.verify(token).getSubject();
+    try {
+      JWTVerifier verifier = getJwtVerifier();
+      return verifier.verify(token).getSubject();
+    } catch (SignatureVerificationException e) {
+      throw new InvalidTokenException(e.getMessage());
+    }
   }
 
   private String[] getClaimsFromUser(UserPrincipal userPrincipal) {
