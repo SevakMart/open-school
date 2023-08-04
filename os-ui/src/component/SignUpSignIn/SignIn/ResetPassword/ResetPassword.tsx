@@ -51,7 +51,7 @@ const ResetPassword = () => {
   return (
     <>
       <div className="closeX" onClick={handleClosePortal}>
-        ✖
+        &#x2716;
       </div>
       <div className="verPopUpTitle">{t('string.resetPsd.title')}</div>
       <div className="verPopupBody">

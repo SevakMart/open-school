@@ -20,7 +20,7 @@ const Header = ({
 
   return (
     <>
-      <div className={closeIcon} onClick={handleClosePortal}>✖</div>
+      <div className={closeIcon} onClick={handleClosePortal}>&#x2716;</div>
       <div className={headerContent}>
         <h2>{mainTitle}</h2>
         {isVerificationContent && <p>{t('messages.verificationPageHint')}</p>}

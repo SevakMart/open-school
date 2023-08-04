@@ -29,7 +29,8 @@ const HomepageHeader = () => {
       <div className={mainContent}>
         <div className={leftContent}>
           <h1>{t('string.homePage.header.educationalPlatform')}</h1>
-          <p>{t('string.homePage.header.chooseCategories')}</p>
+          <p>{t('Join our community of mentors and help shape')}</p>
+          <p>{t('the future of tech talent')}</p>
           <div className={buttonContainer}>
             <>
               <Button.SignUpButton className={['headerButton', 'headerButton__signUp']} onClick={handleSignUp}>
