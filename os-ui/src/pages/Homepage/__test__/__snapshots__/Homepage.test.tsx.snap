@@ -68,7 +68,10 @@ exports[`Create several unit tests for Homepage Component Create a Snapshot test
         string.homePage.header.educationalPlatform
       </h1>
       <p>
-        string.homePage.header.chooseCategories
+        Join our community of mentors and help shape
+      </p>
+      <p>
+        the future of tech talent
       </p>
       <div
         class="buttonContainer"
