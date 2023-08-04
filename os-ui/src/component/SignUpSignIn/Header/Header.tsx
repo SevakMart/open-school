@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../../redux/Slices/PortalOpenStatus';
 import LinkedinIcon1 from '../../../icons/LinkedinIcon/Linkedin1';
-import CloseIcon from '../../../icons/Close';
 import EmailIcon1 from '../../../icons/EmailIcon/Email1';
 import styles from './Header.module.scss';
 
