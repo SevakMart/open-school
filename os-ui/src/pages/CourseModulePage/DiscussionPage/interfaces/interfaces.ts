@@ -30,6 +30,7 @@ export interface QuestionItemProps {
   responsesMap: ResponsesMap[];
   name: string | undefined;
   surname: string | undefined;
+  searchQuery: string;
 }
 
 export interface PopupProps {

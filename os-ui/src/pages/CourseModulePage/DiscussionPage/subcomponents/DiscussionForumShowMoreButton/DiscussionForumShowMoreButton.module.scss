@@ -1,0 +1,23 @@
+@import '../../../../../styles/Configs/Colors.scss';
+
+.showMoreContainer{
+	display: flex;
+	margin-top: 20px;
+	margin-left: 5px;
+	.showMoreButton{
+	  border: none;
+	  font-size: 16px;
+	  color: $btn-secondary-color;
+	  margin-right: 20px;
+	  cursor: pointer;
+	  .showMoreButtonMore,
+	  .showMoreButtonLess {
+		&:hover {
+		  color: $pagination-showMore-hover-color
+		}
+		&:active {
+		  color: $pagination-showMore-active-color;
+		}
+	  }
+	}
+  }
