@@ -1,15 +1,16 @@
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Input } from '../../Input/Input';
 import { Types } from '../../../types/types';
 import { openModal } from '../../../redux/Slices/PortalOpenStatus';
 import Button from '../../Button/Button';
 import styles from './Form.module.scss';
 import { signInContext } from '../../../contexts/Contexts';
-import { PASSWORDS_MISMATCH, PASSWORD_REQUIRED } from '../../../constants/Strings';
+import { PASSWORD_REQUIRED } from '../../../constants/Strings';
 import { FormProps } from '../../../types/FormTypes';
-import { RootState } from '../../../redux/Store';
+import PopupCodeToVerify from '../SignIn/PopupCodeToVerify/PopupCodeToVerify';
+import ResendButton from '../helpers/ResendButton/ResendButton';
 
 const Form = ({
   isSignUpForm,
@@ -24,19 +25,16 @@ const Form = ({
   const { setSignIn } = useContext(signInContext);
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { inputContent, forgotPassword, unAuthorizedSignInErrorStyle } = styles;
-
-  const AllcodeDigitsState = useSelector<RootState>((state) => state.CodeVerificationPsw) as {
-    codeDigits: string[],
-  };
-  const codeDigitsString = AllcodeDigitsState.codeDigits.join('');
+  const {
+    inputContent, forgotPassword, unAuthorizedSignInErrorStyle,
+  } = styles;
 
   const initialFormValues = {
     firstName: '',
     lastName: '',
     email: '',
     psd: '',
-    token: codeDigitsString,
+    token: '',
     newPassword: '',
     confirmedPassword: '',
   };
@@ -61,11 +59,7 @@ const Form = ({
 	  setErrorMessage(PASSWORD_REQUIRED);
 	  return;
     }
-    if (isResetPasswordForm && trimmedPassword !== formValues.newPassword) {
-      setErrorMessage(PASSWORDS_MISMATCH);
-    } else {
-      setErrorMessage('');
-    }
+    setErrorMessage('');
     handleForm({ ...formValues, confirmedPassword: trimmedPassword, psd: trimmedPassword });
     setSignIn(true);
   };
@@ -104,14 +98,7 @@ const Form = ({
         </>
       )}
       {isResetPasswordForm && (
-        <Input.TextInput
-          textName="token"
-          labelText={t('form.labels.resetPsdToken')}
-          errorMessage={errorFormValue.tokenError}
-          placeholderText={t('form.placeholder.resetPsdToken')}
-          value={formValues.token}
-          handleInputChange={handleInputChange}
-        />
+      <PopupCodeToVerify errorMessage={errorFormValue.tokenError} formValues={formValues} setFormValues={setFormValues} />
       )}
       {!isResetPasswordForm && (
         <Input.EmailInput
@@ -149,22 +136,21 @@ const Form = ({
         <Input.PasswordInput
           textName="confirmedPassword"
           labelText={t('form.labels.psd.confirm')}
-          errorMessage={errorFormValue.confirmedPasswordError}
+          errorMessage={errorMessage || errorFormValue.confirmedPasswordError}
           placeholderText={t('form.placeholder.psd.confirm')}
           value={formValues.confirmedPassword}
           handleInputChange={handleInputChange}
           handleEnterPress={handleSubmit}
         />
       )}
-      {errorMessage ? (
-        <p className={unAuthorizedSignInErrorStyle}>
-          {errorMessage}
-        </p>
-      ) : (unAuthorizedSignInError ? (
+      {isResetPasswordForm && (
+        <ResendButton resendEmail={resendEmail} />
+      )}
+      {unAuthorizedSignInError ? (
         <p className={unAuthorizedSignInErrorStyle}>
           {unAuthorizedSignInError}
         </p>
-      ) : null)}
+      ) : null}
       {unAuthorizedSignInError === 'User is disabled' ? (
         <Button.FormButton
           className={['formButton', 'formButton__resendEmail']}
@@ -186,14 +172,6 @@ const Form = ({
             {formButtonText}
           </Button.FormButton>
         </>
-      )}
-      {isResetPasswordForm && (
-        <Button.FormButton
-          className={['formButton', 'formButton__resendEmail']}
-          onClick={resendEmail}
-        >
-          {t('button.resetPsd.resendEmail')}
-        </Button.FormButton>
       )}
     </form>
   );

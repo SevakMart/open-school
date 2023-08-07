@@ -2,7 +2,7 @@
 
 exports[`Create unit tests for Footer component Create a snapshot test 1`] = `
 <DocumentFragment>
-  <p
+  <div
     class="alreadyHaveAccount"
   >
     This is main text
@@ -14,6 +14,6 @@ exports[`Create unit tests for Footer component Create a snapshot test 1`] = `
         Sign In
       </button>
     </span>
-  </p>
+  </div>
 </DocumentFragment>
 `;

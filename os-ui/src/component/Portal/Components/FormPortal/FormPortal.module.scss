@@ -2,15 +2,33 @@
 
 .overlayStyles {
     position:fixed;
-    top:0;
-    right:0;
-    bottom:0;
-    left:0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     opacity: 0.9;
     background-color: $header-main-color;
-    z-index:100;
+    z-index: 100;
 }
-.modalStyles, .enrolledPopup {
+.modalStyles {
+    position:fixed;
+    top:50%;
+    left:50%;
+    width:40%;
+    padding-bottom: 20px;
+    max-height: 90%;
+    background-color: $white-text-color;
+    transform:translate(-50%,-50%);
+    overflow-y: auto;
+    scrollbar-width: none;
+    border-radius: 40px;
+    z-index:100;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.enrolledPopup {
     position:fixed;
     top:50%;
     left:50%;
@@ -23,9 +41,4 @@
     &::-webkit-scrollbar {
         display: none;
     }
-}
-
-.modalStyles{
-	width:40%;
-    height:90%
 }

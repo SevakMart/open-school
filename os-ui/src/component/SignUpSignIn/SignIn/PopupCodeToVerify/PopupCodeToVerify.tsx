@@ -1,35 +1,18 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import './popupCodeToVerify.scss';
 import '../ForgotPassword/forgotPassword.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import CloseIcon from '../../../../icons/Close';
-import { closeModal, openModal } from '../../../../redux/Slices/PortalOpenStatus';
-import { Types } from '../../../../types/types';
-import { RootState } from '../../../../redux/Store';
-import { setCodeDigits } from '../../../../redux/Slices/CodeVerificationPswSlice';
+import { ErrorField } from '../../../ErrorField/ErrorField';
 
-const PopupCodeToVerify: React.FC = () => {
-  const dispatch = useDispatch();
-  const AllcodeDigitsState = useSelector<RootState>((state) => state.CodeVerificationPsw) as {
-    codeDigits: string[],
-  };
-
-  const { codeDigits } = AllcodeDigitsState;
+const PopupCodeToVerify = ({ errorMessage, formValues, setFormValues }: {errorMessage: string, formValues: any, setFormValues: (formValues: any) => void}) => {
+  const [codeDigits, setCodeDigits] = useState<string[]>(['', '', '', '']);
   const codeInputRefs = useRef<Array<HTMLInputElement | null>>([]);
-  const disabled = !codeDigits[0] || !codeDigits[1] || !codeDigits[2] || !codeDigits[3];
-  const { t } = useTranslation();
-
-  const handleClosePortal = () => {
-    dispatch(closeModal());
-    dispatch(setCodeDigits(['', '', '', '']));
-  };
 
   const handleCodeChange = (index: number, value: string) => {
     const numericValue = value.replace(/\D/g, '');
     const newCodeDigits = [...codeDigits];
     newCodeDigits[index] = numericValue;
-    dispatch(setCodeDigits(newCodeDigits));
+    setCodeDigits(newCodeDigits);
+    setFormValues({ ...formValues, token: newCodeDigits.join('') });
 
     if (numericValue.length === 1 && index < newCodeDigits.length - 1) {
       const nextIndex = index + 1;
@@ -44,7 +27,8 @@ const PopupCodeToVerify: React.FC = () => {
     if (event.key === 'Backspace' && index > 0 && codeDigits[index] === '') {
       const newCodeDigits = [...codeDigits];
       newCodeDigits[index - 1] = '';
-      dispatch(setCodeDigits(newCodeDigits));
+      setCodeDigits(newCodeDigits);
+      setFormValues({ ...formValues, token: newCodeDigits.join('') });
 
       const prevInputRef = codeInputRefs.current[index - 1];
       if (prevInputRef) {
@@ -55,7 +39,7 @@ const PopupCodeToVerify: React.FC = () => {
       if (prevInputRef) {
         prevInputRef.focus();
         setTimeout(() => {
-          prevInputRef.setSelectionRange(1, 1); // Установка позиции курсора в начало
+          prevInputRef.setSelectionRange(1, 1); // set the cursor in the start position
         });
       }
     } else if (event.key === 'ArrowRight' && index < codeDigits.length - 1) {
@@ -63,7 +47,7 @@ const PopupCodeToVerify: React.FC = () => {
       if (nextInputRef) {
         nextInputRef.focus();
         setTimeout(() => {
-          nextInputRef.setSelectionRange(0, 0); // Установка позиции курсора в начало
+          nextInputRef.setSelectionRange(0, 0); // set the cursor in the start position
         });
       }
     }
@@ -73,65 +57,46 @@ const PopupCodeToVerify: React.FC = () => {
     event.preventDefault();
     const pasteData = event.clipboardData.getData('text');
     const pasteDigits = pasteData.replace(/\D/g, '').padEnd(4, '').split('').slice(0, 4);
-    const NthInputRef = codeInputRefs.current[pasteDigits.length - 1]; // Исправлено здесь
+    const NthInputRef = codeInputRefs.current[pasteDigits.length - 1];
     const newCodeDigits = [...codeDigits];
     newCodeDigits.splice(0, pasteDigits.length, ...pasteDigits);
-    dispatch(setCodeDigits(newCodeDigits));
+    setCodeDigits(newCodeDigits);
+    setFormValues({ ...formValues, token: newCodeDigits.join('') });
+
     if (NthInputRef) {
       NthInputRef.focus();
       NthInputRef.setSelectionRange(0, 0);
     }
   };
 
-  const toSomePopup = (to: string) => {
-    dispatch(openModal({ buttonType: to }));
-  };
-
   const handleRefCreated = (ref: HTMLInputElement | null, index: number) => {
     codeInputRefs.current[index] = ref;
   };
 
-  const email = useSelector<RootState>((state) => state.forgotPasswordEmail);
-
   return (
     <div className="container">
-      <div className="closeIcon" onClick={handleClosePortal}>
-        <CloseIcon />
+      <div style={{ marginLeft: '50px' }}>
+        {errorMessage !== '' && <ErrorField.InputErrorField className={['inputErrorField']}>{errorMessage}</ErrorField.InputErrorField>}
       </div>
-      <div className="verPopupBody">
-        <div className="verPopUpTitle">{t('Enter security code')}</div>
-        <p className="verPopUpcontent">
-          {t('Please check your email for a message with your code. Your code is 4 numbers long.')}
-        </p>
-        <div className="sentMail">
-          <div>{t('We sent your code to:')}</div>
-          <div>{email}</div>
+      <form autoComplete="off">
+        <div className="codeBox">
+          {codeDigits.map((digit, index) => (
+            <input
+              key={index}
+              type="text"
+              inputMode="numeric"
+              className="ceil"
+              autoComplete="new-password"
+              maxLength={1}
+              value={digit}
+              ref={(ref) => handleRefCreated(ref, index)}
+              onChange={(e) => handleCodeChange(index, e.target.value)}
+              onKeyDown={(e) => handleCodeKeyDown(index, e)}
+              onPaste={handleCodePaste}
+            />
+          ))}
         </div>
-      </div>
-      <div className="codeBox">
-        {codeDigits.map((digit, index) => (
-          <input
-            key={index}
-            type="text"
-            inputMode="numeric"
-            className="ceil"
-            maxLength={1}
-            value={digit}
-            ref={(ref) => handleRefCreated(ref, index)}
-            onChange={(e) => handleCodeChange(index, e.target.value)}
-            onKeyDown={(e) => handleCodeKeyDown(index, e)}
-            onPaste={handleCodePaste}
-          />
-        ))}
-      </div>
-      <div className="popUpBtns">
-        <button type="button" className="anyBtns backBtn" onClick={() => { toSomePopup(Types.Button.FORGOT_PASSWORD); dispatch(setCodeDigits(['', '', '', ''])); }}>
-          {t('Go Back')}
-        </button>
-        <button type="button" className="anyBtns continueBtn" disabled={disabled} onClick={() => toSomePopup(Types.Button.RESET_PASSWORD)}>
-          {t('Continue')}
-        </button>
-      </div>
+      </form>
     </div>
   );
 };

@@ -3,220 +3,219 @@
 exports[`Create several unit tests for Homepage Component Create a Snapshot test 1`] = `
 <DocumentFragment>
   <div
-    class="homepage"
+    class="desktopMenu"
   >
-    <div
-      class="desktopMenu"
-    >
-      <nav
-        class="homePage"
-      >
-        <h2
-          class="homePage_Logo"
-        >
-          string.homePage.navBar.logo
-        </h2>
-        <div
-          class="homePage_leftMenu"
-        >
-          <p
-            class="homePage_leftMenu_item"
-          >
-            string.homePage.navBar.exploreCategories
-          </p>
-          <p
-            class="homePage_leftMenu_item"
-          >
-            string.homePage.navBar.mentors
-          </p>
-        </div>
-        <div
-          class="homePage_rightMenu"
-        >
-          <p
-            class="homePage_rightMenu_item"
-          >
-            button.homePage.becomeMentor
-          </p>
-          <button
-            class="homePage_btn"
-            type="button"
-          >
-            button.homePage.signIn
-          </button>
-        </div>
-      </nav>
-    </div>
-    <div
-      class="mobileMenu"
+    <nav
+      class="homePage"
     >
       <h2
         class="homePage_Logo"
       >
         string.homePage.navBar.logo
       </h2>
-      <img
-        alt="menu"
-        class="mobileMenuButton "
-        src="mobileMenu.svg"
-      />
-    </div>
-    <div
-      class="mainContent"
-    >
       <div
-        class="leftContent"
+        class="homePage_leftMenu"
       >
-        <h1>
-          string.homePage.header.educationalPlatform
-        </h1>
-        <p>
-          string.homePage.header.chooseCategories
+        <p
+          class="homePage_leftMenu_item"
+        >
+          string.homePage.navBar.exploreCategories
         </p>
-        <div
-          class="buttonContainer"
+        <p
+          class="homePage_leftMenu_item"
         >
-          <button
-            class="headerButton headerButton__signUp"
-            type="button"
-          >
-            button.homePage.signUp
-          </button>
-          <button
-            class="leftContentSignInBtn"
-            type="button"
-          >
-            button.homePage.signIn
-          </button>
-        </div>
+          string.homePage.navBar.mentors
+        </p>
       </div>
       <div
-        class="rightContent"
+        class="homePage_rightMenu"
       >
-        <img
-          alt="Education platform logo"
-          src="HomepageMainImage.svg"
-        />
+        <p
+          class="homePage_rightMenu_item"
+        >
+          button.homePage.becomeMentor
+        </p>
+        <button
+          class="homePage_btn"
+          type="button"
+        >
+          button.homePage.signIn
+        </button>
       </div>
-    </div>
-    <div
-      class="categoriesMainContainer"
+    </nav>
+  </div>
+  <div
+    class="mobileMenu"
+  >
+    <h2
+      class="homePage_Logo"
     >
-      <p
-        class="categoriesTitle"
-      >
-        string.homePage.categories.title
-      </p>
-      <p
-        class="categoriesSumtitle"
-      >
-        string.homePage.categories.exploreCategories
-      </p>
-      <div
-        class="listContainer"
-        style="background-color: rgb(255, 255, 255); margin: 0px 3%;"
-      >
-        <div
-          class="gridContent"
-        >
-          <div
-            class="mainContent"
-          >
-            <div
-              class="loader"
-            >
-              <span />
-              <span />
-              <span />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="registrationButton"
-      >
-        <a
-          href="/categories/subcategories"
-        >
-          <button
-            class="regButton btnBelow"
-            type="button"
-          >
-            button.homePage.seeAll
-          </button>
-        </a>
-      </div>
-    </div>
+      string.homePage.navBar.logo
+    </h2>
+    <img
+      alt="menu"
+      class="mobileMenuButton "
+      src="mobileMenu.svg"
+    />
+  </div>
+  <div
+    class="mainContent"
+  >
     <div
-      class="mentorMainContainer"
+      class="leftContent"
     >
-      <p
-        class="MentorTitle"
-      >
-        string.homePage.mentors.ourMentors
+      <h1>
+        string.homePage.header.educationalPlatform
+      </h1>
+      <p>
+        Join our community of mentors and help shape
       </p>
-      <p
-        class="MentorSubTitle"
-      >
-        string.homePage.mentors.learnAboutContributors
+      <p>
+        the future of tech talent
       </p>
-      <div
-        class="listContainer"
-        style="margin: 3%;"
-      >
-        <div
-          class="gridContent"
-        >
-          <div
-            class="mainContent"
-          >
-            <div
-              class="loader"
-            >
-              <span />
-              <span />
-              <span />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="registrationButton"
-      >
-        <a
-          href="/categories/subcategories"
-        >
-          <button
-            class="regButton btnAbove"
-            type="button"
-          >
-            button.homePage.registerMentor
-          </button>
-        </a>
-      </div>
-    </div>
-    <div
-      class="mainContainer"
-    >
-      <h2>
-        string.homePage.footer.startJourney
-      </h2>
       <div
         class="buttonContainer"
       >
         <button
-          class="signUpFooter signUpFooter__student"
+          class="headerButton headerButton__signUp"
           type="button"
         >
-          button.homePage.signUpStudent
+          button.homePage.signUp
         </button>
         <button
-          class="signUpFooter signUpFooter__mentor"
+          class="leftContentSignInBtn"
           type="button"
         >
-          button.homePage.signUpMentor
+          button.homePage.signIn
         </button>
       </div>
+    </div>
+    <div
+      class="rightContent"
+    >
+      <img
+        alt="Education platform logo"
+        src="HomepageMainImage.svg"
+      />
+    </div>
+  </div>
+  <div
+    class="categoriesMainContainer"
+  >
+    <p
+      class="categoriesTitle"
+    >
+      string.homePage.categories.title
+    </p>
+    <p
+      class="categoriesSumtitle"
+    >
+      string.homePage.categories.exploreCategories
+    </p>
+    <div
+      class="listContainer"
+      style="background-color: rgb(255, 255, 255); margin: 0px 3%;"
+    >
+      <div
+        class="gridContent"
+      >
+        <div
+          class="mainContent"
+        >
+          <div
+            class="loader"
+          >
+            <span />
+            <span />
+            <span />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="registrationButton"
+    >
+      <a
+        href="/categories/subcategories"
+      >
+        <button
+          class="regButton btnBelow"
+          type="button"
+        >
+          button.homePage.seeAll
+        </button>
+      </a>
+    </div>
+  </div>
+  <div
+    class="mentorMainContainer"
+  >
+    <p
+      class="MentorTitle"
+    >
+      string.homePage.mentors.ourMentors
+    </p>
+    <p
+      class="MentorSubTitle"
+    >
+      string.homePage.mentors.learnAboutContributors
+    </p>
+    <div
+      class="listContainer"
+      style="margin: 3%;"
+    >
+      <div
+        class="gridContent"
+      >
+        <div
+          class="mainContent"
+        >
+          <div
+            class="loader"
+          >
+            <span />
+            <span />
+            <span />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="registrationButton"
+    >
+      <a
+        href="/categories/subcategories"
+      >
+        <button
+          class="regButton btnAbove"
+          type="button"
+        >
+          button.homePage.registerMentor
+        </button>
+      </a>
+    </div>
+  </div>
+  <div
+    class="mainContainer"
+  >
+    <h2>
+      string.homePage.footer.startJourney
+    </h2>
+    <div
+      class="buttonContainer"
+    >
+      <button
+        class="signUpFooter signUpFooter__student"
+        type="button"
+      >
+        button.homePage.signUpStudent
+      </button>
+      <button
+        class="signUpFooter signUpFooter__mentor"
+        type="button"
+      >
+        button.homePage.signUpMentor
+      </button>
     </div>
   </div>
 </DocumentFragment>

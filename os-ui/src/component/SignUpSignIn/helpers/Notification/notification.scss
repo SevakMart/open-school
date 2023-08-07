@@ -1,0 +1,43 @@
+@import "../../../../styles/Configs/Colors.scss";
+@import "../../../../styles/Configs/Fonts.scss";
+
+.notification {
+  font-family: $primary-font;
+  position: fixed;
+  display: flex;
+  margin-top: 5px;
+  right: 80px;
+  width: 200px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px #00000033;
+  background-color: rgba($email-icon-color, 0.7);
+  animation: slideIn 0.3s ease-in-out;
+}
+
+.message {
+  padding: 2px 15px;
+  flex: 1;
+  font-weight: 500;
+  color: $main-course-color;
+}
+
+.close-notification {
+  position: absolute;
+  color: $black-text-color;
+  top: 3px;
+  right: 7px;
+  cursor: pointer;
+  &:hover {
+    color: $notification-hover-color;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

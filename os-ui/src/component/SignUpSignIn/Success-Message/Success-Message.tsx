@@ -1,12 +1,9 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import CloseIcon from '../../../icons/Close';
 import { closeModal, openModal } from '../../../redux/Slices/PortalOpenStatus';
 import { Types } from '../../../types/types';
 import styles from './Success-Message.module.scss';
-
-/* eslint-disable max-len */
 
 const SuccessMessage = ({
   message,
@@ -23,7 +20,9 @@ const SuccessMessage = ({
 	isForgotVerificationMessage: boolean;
 	forgotVerficationEmail?: string
   }) => {
-  const { mainContainer, closeIcon } = styles;
+  const {
+    mainContainer, closeIcon, title, subtitle,
+  } = styles;
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -59,12 +58,12 @@ const SuccessMessage = ({
 
   return (
     <>
-      <div className={mainContainer}>
-        <h1>{t('messages.successHeader')}</h1>
-        <h2>{message}</h2>
-      </div>
       <div className={closeIcon} onClick={handleClosePortal}>
-        <CloseIcon />
+        ✖
+      </div>
+      <div className={mainContainer}>
+        <h1 className={title}>{t('messages.successHeader')}</h1>
+        <h2 className={subtitle}>{message}</h2>
       </div>
     </>
   );

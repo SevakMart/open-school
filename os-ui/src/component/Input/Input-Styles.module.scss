@@ -4,42 +4,42 @@
 @import "../../styles/Mixins/FontMixin.scss";
 
 .textInputContainer,.EmailInputContainer,.PasswordInputContainer {
-        position: relative;
-        width: 100%;
-        margin-bottom: 4%;
-        @include flexStyle(column, flex-start, space-between);
-      input,.PasswordInputFieldWithIcon {
-        width: 100%;
-        border: 1px solid #d9dbe9;
-        box-sizing: border-box;
-        border-radius: 0.75rem;
-        height: 3.5rem;
-        margin-top: 2%;
+  position: relative;
+  width: 100%;
+  margin-bottom: 4%;
+  @include flexStyle(column, flex-start, space-between);
+  input,.PasswordInputFieldWithIcon {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d9dbe9;
+    border-radius: 0.75rem;
+    height: 3.5rem;
+    margin-top: 2%;
 		position: relative;
-      }
-      label {
-        @include fontStyle($primary-font, normal, 500, 0.875rem, 1rem);
-        color: #333941;
-      }
+  }
+  label {
+    @include fontStyle($primary-font, normal, 500, 0.875rem, 1rem);
+    color: #333941;
+  }
 }
 .EmailInputContainer input,.textInputContainer input {
-	padding-right: 35px;
-	padding-left: 15px;
+	  padding-right: 35px;
+	  padding-left: 15px;
   }
   
 .PasswordInputFieldWithIcon {
   @include flexStyle(row,center,space-between);
-   input{
+  input{
     margin:0;
     padding: 0;
     border:0;
     height:100%;
-	padding-right: 35px;
-	padding-left: 15px;
+	  padding-right: 35px;
+	  padding-left: 15px;
     &:focus{
       outline:none;
     }
-   }
+  }
 }
 .search {
   @include flexStyle(row,center,none);
@@ -49,16 +49,16 @@
   border-radius: 12px;
   position: relative;
   input {
-      border:0;
-      height:100%;
-      width:80%;
-      margin:0 0 0 8px;
-      padding:0;
-      @include fontStyle($primary-font,normal,400,16px,24px);
-      color:$main-text-color;
-      &:focus{
-        outline:none;
-      }
+    border:0;
+    height:100%;
+    width:80%;
+    margin:0 0 0 8px;
+    padding:0;
+    @include fontStyle($primary-font,normal,400,16px,24px);
+    color:$main-text-color;
+    &:focus{
+      outline:none;
+    }
   }
   .closeIcon {
     position: absolute;

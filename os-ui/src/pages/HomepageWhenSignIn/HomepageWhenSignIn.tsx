@@ -17,7 +17,7 @@ const HomepageWhenSignIn = () => {
   const { buttonContainer } = styles;
 
   const {
-    mainContent, leftContent, rightContent,
+    mainContent, leftContent, rightContent, allTheContent,
   } = styles;
 
   const idAndToken = useMemo(() => ({
@@ -26,7 +26,7 @@ const HomepageWhenSignIn = () => {
   }), [{ ...userInfo }]);
 
   return (
-    <>
+    <div className={allTheContent}>
       <NavbarOnSignIn currentUserEnrolled />
       <div className={mainContent}>
         <div className={leftContent}>
@@ -42,7 +42,7 @@ const HomepageWhenSignIn = () => {
         <HomepageMentors />
       </userContext.Provider>
       <Footer />
-    </>
+    </div>
 
   );
 };
