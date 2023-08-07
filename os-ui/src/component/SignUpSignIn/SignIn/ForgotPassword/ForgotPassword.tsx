@@ -46,7 +46,7 @@ const ForgotPassword = () => {
   return (
     <div className="forgotpsdContainer">
       <div className="closeIconX" onClick={handleClosePortal}>
-        ✖
+        &#x2716;
       </div>
       <div className="forgotpsd_box">
         <div className="forgotpsd_box_title">Forgot password</div>

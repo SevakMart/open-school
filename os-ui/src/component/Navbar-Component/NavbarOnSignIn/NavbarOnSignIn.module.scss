@@ -3,43 +3,46 @@
 @import "../../../styles/Mixins/FontMixin.scss";
 @import "../../../styles/Configs/Colors.scss";
 @import "../../../styles/Configs/Fonts.scss";
+
 .mainContent {
     @include flexStyle(row, center, space-between);
-    padding:28px 88px;
-    box-sizing: border-box;
-    background-color: $mentor-card-backgraund-color;
+    padding: 8px 70px 8px 0;
+    background-color: white;
     h2 {
-        @include fontStyle($primary-font,italic,700,20px,24px);
-        color:$header-main-color;
-        margin:0;
-        cursor:pointer;
+        margin-left: 80px;
+        font-family: 'Inconsolata';
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 21px;
+        color: $header-main-color;
+        cursor: pointer;
     }
     .navMainContent{
         @include flexStyle(row, center, space-between);
         .navbarTitle{
             @include fontStyle($primary-font,normal,500,16px,24px);
-            color:$main-text-color;
-            cursor:pointer;
+            color: $main-text-color;
+            cursor: pointer;
             box-sizing: border-box;
-            margin:0 0 0 32px;
+            margin: 0 0 0 32px;
         }
         .bookmarkIconStyle {
-            margin:0 0 0 25px;
-            width:20px;
-            height:20px;
+            margin: 0 0 0 25px;
+            width: 20px;
+            height: 20px;
             text-align: center;
         }
         .notificationIcon {
-            margin:0 0 0 25px;
-            cursor:pointer;
+            margin: 0 0 0 25px;
+            cursor: pointer;
         }
         .userInfoContent {
             @include flexStyle(row, center, space-between);
             box-sizing: border-box;
-            margin:0 0 0 25px;
+            margin: 0 0 0 25px;
             .avatarLogo {
-                width:32px;
-                height:32px;
+                width: 32px;
+                height: 32px;
                 border-radius: 50%;
             }
             .arrowDownIcon {
@@ -52,7 +55,7 @@
 
 .mainConentDecrptionPage{
 	@include flexStyle(row, center, space-between);
-    padding:28px 88px;
+    padding: 28px 88px;
     box-sizing: border-box;
 	background-color: transparent;
 	h2 {
