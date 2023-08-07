@@ -1,0 +1,44 @@
+@import '../../../styles/Configs/Colors.scss';
+
+.inner {
+  font-family: "Montserrat", sans-serif;
+  box-sizing: border-box;
+  background-color: #EEEFF4;
+  margin: 0;
+  padding-left: 10px;
+  padding-right: 30px;
+  padding-top: 50px;
+  padding-bottom: 100px;
+}
+
+.container {
+  margin-left: 30px;
+}
+
+.noQuestionsDiv {
+  font-weight: 600;
+  font-size:30px;
+  margin-top: 20px;
+  margin-left: 3px;
+  color: $black-text-color;
+}
+
+.num_matches {
+	font-size: 16px;
+	color: #70757a;
+	margin-top: 4px;
+	margin-bottom: 20px;
+  }
+  
+  .num_matches::before {
+	content: '';
+	display: inline-block;
+	height: 10px;
+	width: 10px;
+	background-color: #70757a;
+	border-radius: 50%;
+	margin-right: 6px;
+	margin-left: 6px;
+  }
+  
+

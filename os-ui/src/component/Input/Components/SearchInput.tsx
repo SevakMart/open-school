@@ -1,63 +1,68 @@
 import React, {
-  useRef, useEffect, useMemo, useState, createContext,
+  useRef, useEffect, useState, useMemo,
 } from 'react';
-import { useTranslation } from 'react-i18next';
 import styles from '../Input-Styles.module.scss';
 import SearchIcon from '../../../icons/Search';
 import { useFocus } from '../../../custom-hooks/useFocus';
 import { SearchProps } from '../../../types/SearchType';
+import CloseIcon from '../../../icons/Close';
 
 interface SearchContextType {
   searchQuery: string;
   setSearchQuery?: (query: string) => void;
 }
 
-const SearchContext = createContext<SearchContextType>({
+const SearchContext = React.createContext<SearchContextType>({
   searchQuery: '',
   setSearchQuery: undefined,
 });
 
-export const SearchInput = ({ changeUrlQueries, className }: SearchProps) => {
-  const { t } = useTranslation();
+export const SearchInput = ({
+  urlQueries = '',
+  changeUrlQueries,
+  className,
+  placeholder,
+}: SearchProps) => {
   const styleNames = className.map((className: string) => styles[className]);
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const searchContainerRef = useRef<HTMLDivElement | null>(null);
   const [handleOnFocus, handleOnBlur] = useFocus('white', searchContainerRef.current);
+  const [searchQuery, setSearchQuery] = useState(urlQueries);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const handleDeleteInput = () => {
+    setSearchQuery('');
+    changeUrlQueries('');
+  };
 
-  const handleSearch = () => {
-    if (inputRef.current && inputRef.current.value) {
-      setSearchQuery(inputRef.current.value);
-      changeUrlQueries(inputRef.current.value);
-    } else {
-      setSearchQuery('');
-      changeUrlQueries('');
-    }
+  const handleSearch = (needle: string) => {
+    setSearchQuery(needle);
+    changeUrlQueries(needle);
   };
 
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.value = searchQuery;
-      changeUrlQueries(searchQuery);
-    }
-  }, [searchQuery, changeUrlQueries]);
+    setSearchQuery(urlQueries);
+  }, [urlQueries]);
 
-  const memoizedValue = useMemo(() => ({ searchQuery, setSearchQuery: (query: string) => setSearchQuery(query) }), [searchQuery, setSearchQuery]);
+  const memoizedValue = useMemo(
+    () => ({ searchQuery, setSearchQuery }),
+    [searchQuery],
+  );
 
   return (
     <SearchContext.Provider value={memoizedValue}>
       <div className={styleNames.join(' ')} ref={searchContainerRef}>
         <SearchIcon />
         <input
-          ref={inputRef}
           type="text"
-          placeholder={t('string.search')}
+          placeholder={placeholder}
           data-testid="searchInput"
-          onChange={handleSearch}
           onFocus={() => handleOnFocus()}
           onBlur={() => handleOnBlur()}
+          onChange={(e) => handleSearch(e.target.value)}
+          value={searchQuery}
         />
+        <div className={styles.closeIcon} onClick={handleDeleteInput}>
+          <CloseIcon />
+        </div>
       </div>
     </SearchContext.Provider>
   );

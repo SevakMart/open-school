@@ -2,6 +2,7 @@ package app.openschool.common.security.filters;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+import app.openschool.common.exceptionhandler.exception.InvalidTokenException;
 import app.openschool.common.security.JwtTokenProvider;
 import java.io.IOException;
 import java.util.List;
@@ -37,7 +38,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       return;
     }
     String token = authorizationHeader.substring(TOKEN_PREFIX.length());
-    String username = jwtTokenProvider.getSubject(token);
+    String username;
+    try {
+      username = jwtTokenProvider.getSubject(token);
+    } catch (InvalidTokenException e) {
+      response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+      return;
+    }
     if (jwtTokenProvider.isTokenValid(token)
         && SecurityContextHolder.getContext().getAuthentication() == null) {
       List<GrantedAuthority> authorities = jwtTokenProvider.getAuthorities(token);

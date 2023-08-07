@@ -51,7 +51,7 @@ public class MentorQuestionServiceImplTest {
 
   @BeforeEach
   void setUp() {
-    validationHandler = new ValidationHandler(messageSource);
+    validationHandler = new ValidationHandler(messageSource, enrolledCourseRepository);
     questionService =
         new MentorQuestionServiceImpl(
             enrolledCourseRepository, mentorQuestionRepository, validationHandler);
@@ -89,19 +89,20 @@ public class MentorQuestionServiceImplTest {
     Pageable pageable = PageRequest.of(0, 2);
     Page<MentorQuestion> questionPage = new PageImpl<>(List.of(question));
     String searchQuery = "Question";
+    String userEmail = "user@gmail.com";
 
     when(mentorQuestionRepository.findQuestionByEnrolledCourseId(
-            enrolledCourseId, pageable, searchQuery))
+            enrolledCourseId, userEmail, pageable, searchQuery))
         .thenReturn(questionPage);
     Page<? extends Question> questionByCourseId =
-        questionService.findQuestionByCourseId(enrolledCourseId, pageable, searchQuery);
+        questionService.findQuestionByCourseId(enrolledCourseId, userEmail, pageable, searchQuery);
 
     assertNotNull(questionByCourseId.stream().findFirst().orElseThrow());
     assertTrue(
         questionByCourseId.stream()
             .allMatch(peersQuestion -> peersQuestion instanceof MentorQuestion));
     verify(mentorQuestionRepository, times(1))
-        .findQuestionByEnrolledCourseId(enrolledCourseId, pageable, searchQuery);
+        .findQuestionByEnrolledCourseId(enrolledCourseId, userEmail, pageable, searchQuery);
   }
 
   @Test
@@ -109,11 +110,13 @@ public class MentorQuestionServiceImplTest {
     long wrongEnrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 2);
     String searchQuery = "qu";
+    String userEmail = "user@gmail.com";
 
     assertThrows(
         InvalidSearchQueryException.class,
         () -> {
-          questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable, searchQuery);
+          questionService.findQuestionByCourseId(
+              wrongEnrolledCourseId, userEmail, pageable, searchQuery);
         });
   }
 
@@ -122,16 +125,18 @@ public class MentorQuestionServiceImplTest {
     long wrongEnrolledCourseId = 1L;
     Pageable pageable = PageRequest.of(0, 2);
     String searchQuery = null;
+    String userEmail = "user@gmail.com";
 
     when(mentorQuestionRepository.findQuestionByEnrolledCourseId(
-            wrongEnrolledCourseId, pageable, searchQuery))
+            wrongEnrolledCourseId, userEmail, pageable, searchQuery))
         .thenReturn(Page.empty(pageable));
     Page<? extends Question> questionByCourseId =
-        questionService.findQuestionByCourseId(wrongEnrolledCourseId, pageable, searchQuery);
+        questionService.findQuestionByCourseId(
+            wrongEnrolledCourseId, userEmail, pageable, searchQuery);
 
     assertTrue(questionByCourseId.getContent().isEmpty());
     verify(mentorQuestionRepository, times(1))
-        .findQuestionByEnrolledCourseId(wrongEnrolledCourseId, pageable, searchQuery);
+        .findQuestionByEnrolledCourseId(wrongEnrolledCourseId, userEmail, pageable, searchQuery);
   }
 
   @Test

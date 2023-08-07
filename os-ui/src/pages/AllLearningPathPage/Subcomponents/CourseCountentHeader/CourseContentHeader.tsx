@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useCheck } from '../../../../custom-hooks/useCheck';
 import { RATING, DIFFICULTY, TITLE } from '../../constant';
 import { Input } from '../../../../component/Input/Input';
@@ -14,12 +13,9 @@ export enum HeaderPath {
 /* eslint-disable max-len */
 const CourseContentHeader = ({ handleChangeHeader }:{handleChangeHeader:(headerTitle:HeaderPath)=>void}) => {
   const [focusedHeader, setFocusedHeader] = useState(HeaderPath.ALL_LEARNING_PATHS);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const params = new URLSearchParams(location.search);
-  const [sortingFeature, setSortingFeature] = useState<any>(params.has('sort') ? params.get('sort') : RATING);
   const { t } = useTranslation();
   const [, , dispatch, handleSearchedResult] = useCheck('courseTitle', '');
+  const [sortingFeature, setSortingFeature] = useState<any>(RATING);
   const [key, setKey] = useState(0);
   const {
     activeNav, nonActiveNav, headerMainContainer, sortingContainer, navAndSortContent,
@@ -33,10 +29,12 @@ const CourseContentHeader = ({ handleChangeHeader }:{handleChangeHeader:(headerT
   };
 
   useEffect(() => {
+    handleSearch('');
+  }, [focusedHeader]);
+
+  useEffect(() => {
     if (focusedHeader === HeaderPath.ALL_LEARNING_PATHS) {
-      params.set('sort', sortingFeature!);
       dispatch(addFilterParams({ sort: sortingFeature }));
-      navigate(`/exploreLearningPaths?${params}`);
     }
   }, [sortingFeature]);
 
@@ -90,6 +88,7 @@ const CourseContentHeader = ({ handleChangeHeader }:{handleChangeHeader:(headerT
       <Input.SearchInput
         className={['search', 'search__allLearningPathSearch']}
         changeUrlQueries={handleSearch}
+        placeholder={t('Search by name')}
       />
     </div>
   );
