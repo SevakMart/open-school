@@ -1,4 +1,4 @@
-simport React from 'react';
+import React from 'react';
 import { BsSearch } from 'react-icons/bs';
 
 const styles = {
