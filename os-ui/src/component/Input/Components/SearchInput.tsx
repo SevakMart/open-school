@@ -35,7 +35,11 @@ export const SearchInput = ({
 
   const handleSearch = (needle: string) => {
     setSearchQuery(needle);
-    changeUrlQueries(needle);
+    if (needle.length >= 3) {
+      changeUrlQueries(needle);
+    } else {
+      changeUrlQueries('');
+    }
   };
 
   useEffect(() => {
